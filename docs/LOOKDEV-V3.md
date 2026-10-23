@@ -42,6 +42,14 @@
 - [移除上半牆體的配置核對圖](../artifacts/floor-plan.png)
 - [姿勢數據](../artifacts/pose-trace.json)
 
-動畫預覽由 `scripts/render-idle-preview.py` 逐幀輸出。這是離線動作檢視，不能作為即時 FPS 證據；影片內也標示此限制。
+[30 秒動作預覽](../artifacts/idle-preview-offline.mp4) 由 `scripts/render-idle-preview.py` 逐幀輸出，480×720、10 fps。這是離線動作檢視，不能作為即時 FPS 證據；影片內也標示此限制。輸出資料在 [idle-preview-metadata.json](../artifacts/idle-preview-metadata.json)。
 
 視覺品質仍需實際操作評估，未把「比參考頁漂亮」當成可由自動測試證明的結果。
+
+## 發布
+
+第三輪已部署至 [GitHub Pages](https://oloid666.github.io/endfield-model-lab/?v=3)。[Build 與部署工作](https://github.com/Oloid666/endfield-model-lab/actions/runs/39997761360) 成功，來源 commit 為 `b127f25650e191e0ee6e6c9aaeed833fdd380139`。
+
+已以正常 TLS 下載公開 HTML、JS、CSS、favicon 與 GLB，核對新玻璃與動作程式標記。模型大小及 SHA-256 與原始檔一致。詳見 [production-check.json](../artifacts/production-check.json)。
+
+本環境 Chromium 存在公開 HTTPS 的代理憑證信任問題；未停用 TLS 驗證。截圖及操作檢查來自本機同版場景，並非公開網址的瀏覽器或 iPhone 真機驗證。
