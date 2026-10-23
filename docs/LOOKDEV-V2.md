@@ -32,3 +32,17 @@ iPhone Safari 真機仍待測。軟體 WebGL 的桌面結果不能用來宣稱�
 - 桌面 Chromium／SwiftShader 的 21 項檢查全部通過，包括省電／標準／細緻切換、模型載入、鏡頭、直橫式、失敗提示與 WebGL 中斷恢復。
 - 最終標準模式持續觀察 60.1 秒，沒有 JavaScript 例外。
 - 1440×1000 的軟體渲染約 0.50 FPS，未達 30 FPS。這不是 iPhone GPU 的效能結果。
+
+## 發布核對
+
+第二輪已成功部署：
+
+https://oloid666.github.io/endfield-model-lab/?v=2
+
+GitHub Actions：
+
+https://github.com/Oloid666/endfield-model-lab/actions/runs/39991499002
+
+發布來源 commit：`f2bd514f5cb980f1f877a174eec644b47e1af320`。已以正常 TLS 下載公開 HTML、新版 JS、CSS、favicon 與模型。JS 中已核對第二輪玻璃與水窪 shader；模型 SHA-256 保持不變。結果見 `artifacts/production-check.json`。
+
+截圖及操作測試來自本機同版場景，未把它們稱為公開網址瀏覽器截圖或 iPhone 真機測試。

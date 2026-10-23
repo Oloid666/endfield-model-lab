@@ -1,23 +1,27 @@
 {
-  "url": "https://oloid666.github.io/endfield-model-lab/",
-  "html_ok": true,
+  "url": "https://oloid666.github.io/endfield-model-lab/?v=2",
+  "release": "lookdev-v2",
+  "commit": "f2bd514f5cb980f1f877a174eec644b47e1af320",
+  "tls_verification": true,
   "assets": [
     {
       "path": "/endfield-model-lab/favicon.svg",
-      "bytes": 232
+      "bytes": 232,
+      "sha256": "596277ac825df58842559f8d419b585c7ff1b2087c598e93a8a7158b6ea061b3"
     },
     {
-      "path": "/endfield-model-lab/assets/index-DjW_hrox.js",
-      "bytes": 822024
+      "path": "/endfield-model-lab/assets/index-CYnA5ewf.js",
+      "bytes": 833413,
+      "sha256": "3b46b8f7a16fc0e8c99aa00d83361bda215cef5424db6092942e57d1f820ddf1"
     },
     {
       "path": "/endfield-model-lab/assets/index-ScfJ575h.css",
-      "bytes": 7520
+      "bytes": 7520,
+      "sha256": "25992883c536c04a8c64b09e627f1992d46406976fd0df65ce088a89e2d41dd8"
     }
   ],
   "model": {
     "bytes": 7520868,
     "sha256": "43c4d1063caf4f5d5f7405aae32cbd02ceb2de0ab043acc54e26dd7aa49ceb94"
-  },
-  "tls_verification": true
+  }
 }

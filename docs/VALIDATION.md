@@ -2,7 +2,7 @@
 
 日期：2026-10-23。
 
-第二輪光影與材質修訂已完成本機測試，詳見 [第二輪場景質感修訂](LOOKDEV-V2.md)。下方保留第一輪紀錄，`qa-results.json` 與主要截圖則已更新為第二輪結果。
+第二輪光影與材質修訂已完成本機測試與發布，詳見 [第二輪場景質感修訂](LOOKDEV-V2.md)。下方保留第一輪紀錄，`qa-results.json` 與主要截圖則已更新為第二輪結果。
 
 ## 交付內容
 
@@ -89,7 +89,7 @@ https://github.com/Oloid666/endfield-model-lab/actions/runs/39987426931
 
 https://oloid666.github.io/endfield-model-lab/
 
-發布版本來源 commit：`fc85bdf49570ace896723851992eb241ca18aa11`。
+第一輪發布版本來源 commit：`fc85bdf49570ace896723851992eb241ca18aa11`。
 
 已用正常 TLS 驗證下載公開 HTML、JavaScript、CSS、favicon 與 GLB。模型大小及 SHA-256 與原始檔完全一致。檢查結果記錄在 `artifacts/production-check.json`。
 
