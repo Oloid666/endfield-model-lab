@@ -1,6 +1,8 @@
-# 莊的晚餐｜雨夜711
+# 終末地模型實驗室｜Endfield Model Lab
 
-以 iPhone Safari 為優先的 Three.js 互動短劇專案。
+以 iPhone Safari 為優先的終末地模型、場景與互動實驗專案。
+
+目前場景：《莊的晚餐｜雨夜711》。
 
 目前為第一階段：雨夜便利店場景與人物預覽。故事、選餐、多結局及走路尚未實作。先確認店面與構圖，再繼續開發。
 
@@ -18,7 +20,7 @@ npm run build
 npm run preview
 ```
 
-預設相對資源路徑。GitHub Pages 工作流程使用 `VITE_BASE_PATH=/zhuang-rainy-711/`。模型依 `import.meta.env.BASE_URL` 載入，沒有路由或後端。
+預設相對資源路徑。GitHub Pages 工作流程使用 `VITE_BASE_PATH=/endfield-model-lab/`。模型依 `import.meta.env.BASE_URL` 載入，沒有路由或後端。
 
 ## 操作
 
