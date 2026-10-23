@@ -37,6 +37,7 @@ npm run preview
 
 - [目前方向與後續故事草案](docs/DIRECTION.md)
 - [初次評估紀錄](docs/ASSESSMENT.md)（歷史紀錄，部分缺口已在開發時解決）
+- [光影、玻璃與樹木改版](docs/LOOKDEV-V2.md)
 - [測試紀錄](docs/VALIDATION.md)
 
 ## 素材

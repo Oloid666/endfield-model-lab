@@ -9,7 +9,7 @@ export class Resources {
     return this.geometries.get(key);
   }
   material(color, opts = {}) {
-    const key = JSON.stringify([color, opts]);
+    const key = JSON.stringify([color, Object.fromEntries(Object.entries(opts).map(([k,v])=>[k,v?.isTexture?v.uuid:v?.isColor?v.getHex():v]))]);
     if (!this.materials.has(key)) this.materials.set(key, this.own(new T.MeshStandardMaterial({ color, roughness:.72, ...opts })));
     return this.materials.get(key);
   }

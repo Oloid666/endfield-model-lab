@@ -7,10 +7,10 @@
       "name": "原模型與骨架節點載入",
       "passed": true,
       "detail": {
-        "time": 0.4167000000000003,
-        "renders": 7,
-        "drawCalls": 154,
-        "triangles": 96706,
+        "time": 0.33659999999999857,
+        "renders": 6,
+        "drawCalls": 311,
+        "triangles": 244744,
         "actorsLoaded": true,
         "bonesSupported": true,
         "camera": [
@@ -54,6 +54,11 @@
       "detail": null
     },
     {
+      "name": "細緻畫質可切換",
+      "passed": true,
+      "detail": null
+    },
+    {
       "name": "視角 store",
       "passed": true,
       "detail": null
@@ -87,8 +92,8 @@
       "name": "場景持續觀察 60 秒",
       "passed": true,
       "detail": {
-        "seconds": 60.08,
-        "frames": 87
+        "seconds": 60.1,
+        "frames": 30
       }
     },
     {
@@ -122,5 +127,5 @@
       "detail": null
     }
   ],
-  "software_render_fps": 1.4480732129215854
+  "software_render_fps": 0.49918976710241314
 }
