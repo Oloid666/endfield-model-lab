@@ -75,16 +75,22 @@
 
 已建立獨立本機 Git Repository，沒有修改舊網站。已準備 `.github/workflows/pages.yml`，包含安裝、建置、Pages artifact 與部署工作。
 
-先前 GitHub 連線無法建立 Repository。使用者已建立並指定新專案：
+使用者已建立並指定新 Repository：
 
 https://github.com/Oloid666/endfield-model-lab
 
-現有程式已成功推送至該專案的 main，Pages 建置路徑已改為 `/endfield-model-lab/`。本機建置及模型 hash 核對通過；GitHub Actions 也已完成 npm 安裝與 Vite 建置。
+使用者已將 Pages Source 設為 GitHub Actions。重新執行工作流程後，建置與部署均成功：
 
-目前尚未發布。啟用 Pages 的 API 請求回覆 `Resource not accessible by integration (HTTP 403)`；Actions 因 Repository 尚未啟用 Pages，在 `actions/configure-pages@v5` 停止。這是 GitHub 連線權限限制，不是沙箱自動審查拒絕。
+https://github.com/Oloid666/endfield-model-lab/actions/runs/39987426931
 
-需要使用者開啟下列設定頁，在 Build and deployment → Source 選擇 GitHub Actions：
+實際網站：
 
-https://github.com/Oloid666/endfield-model-lab/settings/pages
+https://oloid666.github.io/endfield-model-lab/
 
-設定完成後可重新執行部署工作，接著驗證實際網址。尚無已部署網址或 iPhone 真機驗收結果。
+發布版本來源 commit：`fc85bdf49570ace896723851992eb241ca18aa11`。
+
+已用正常 TLS 驗證下載公開 HTML、JavaScript、CSS、favicon 與 GLB。模型大小及 SHA-256 與原始檔完全一致。檢查結果記錄在 `artifacts/production-check.json`。
+
+本環境 Chromium 直接開啟公開網址時，遇到本機代理憑證信任錯誤 `ERR_CERT_AUTHORITY_INVALID`。沒有停用 TLS 驗證；未取得公開網址的瀏覽器截圖。先前本機同版場景的 Chromium 測試與截圖仍有效，但不等同公開網址的端到端瀏覽器驗證。
+
+尚無 iPhone Safari 真機測試結果，不能宣稱達成手機穩定 30 FPS。

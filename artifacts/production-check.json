@@ -1,0 +1,23 @@
+{
+  "url": "https://oloid666.github.io/endfield-model-lab/",
+  "html_ok": true,
+  "assets": [
+    {
+      "path": "/endfield-model-lab/favicon.svg",
+      "bytes": 232
+    },
+    {
+      "path": "/endfield-model-lab/assets/index-DjW_hrox.js",
+      "bytes": 822024
+    },
+    {
+      "path": "/endfield-model-lab/assets/index-ScfJ575h.css",
+      "bytes": 7520
+    }
+  ],
+  "model": {
+    "bytes": 7520868,
+    "sha256": "43c4d1063caf4f5d5f7405aae32cbd02ceb2de0ab043acc54e26dd7aa49ceb94"
+  },
+  "tls_verification": true
+}
