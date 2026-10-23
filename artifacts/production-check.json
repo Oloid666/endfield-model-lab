@@ -1,8 +1,8 @@
 {
-  "url": "https://oloid666.github.io/endfield-model-lab/?v=3",
-  "release": "lookdev-v3",
-  "commit": "b127f25650e191e0ee6e6c9aaeed833fdd380139",
-  "action": "https://github.com/Oloid666/endfield-model-lab/actions/runs/39997761360",
+  "url": "https://oloid666.github.io/endfield-model-lab/?v=4",
+  "release": "lookdev-v4-walk-and-story",
+  "commit": "d310f037782205aae044030518be8bdaecb45039",
+  "action": "https://github.com/Oloid666/endfield-model-lab/actions/runs/40007475278",
   "tls_verification": true,
   "browser_public_url_test": false,
   "real_iphone_test": false,
@@ -13,14 +13,14 @@
       "sha256": "596277ac825df58842559f8d419b585c7ff1b2087c598e93a8a7158b6ea061b3"
     },
     {
-      "path": "/endfield-model-lab/assets/index-BC_Ik2yW.js",
-      "bytes": 845526,
-      "sha256": "a8798154f9e98bbc6fd0c97326f12b7e29b0aed9619be14f179fcb708c9efcc8"
+      "path": "/endfield-model-lab/assets/index-CwElm3TZ.js",
+      "bytes": 909454,
+      "sha256": "7847671eb06807c7da3b4284e578cfb44bc22dc6f892a451ac4e64e5417302e2"
     },
     {
-      "path": "/endfield-model-lab/assets/index-DaHkBAwK.css",
-      "bytes": 7976,
-      "sha256": "cef76b32e9d146100afbb8c54673f1aab21f760176ed3ff3d19a76a8c2c478f8"
+      "path": "/endfield-model-lab/assets/index-D0TO1z3u.css",
+      "bytes": 18084,
+      "sha256": "b98d4d9b883e8222567f4c81263c15a15d60acb8e9776822e3d5c85b76310e61"
     }
   ],
   "model": {
@@ -28,9 +28,9 @@
     "sha256": "43c4d1063caf4f5d5f7405aae32cbd02ceb2de0ab043acc54e26dd7aa49ceb94"
   },
   "new_js_markers_verified": [
-    "uDepth",
-    "RainyThinGlass",
-    "look-at-dragon",
-    "adjust-sleeve"
+    "uWetInverseMatrix",
+    "story-launch",
+    "walking-mode",
+    "uRain"
   ]
 }

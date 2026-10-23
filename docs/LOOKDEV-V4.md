@@ -67,4 +67,12 @@
 
 開發時發現並修正濕地反射的讀寫回授、反射局部／世界座標混用，以及 Raycaster 仍命中隱藏道具的問題。反射擷取期間改用安全的空白紋理，擷取完成後恢復反射；切換視角、調整尺寸、恢復 Context 及切換畫質時強制重新擷取，避免沿用舊鏡頭的反射。最終三段畫質與畫面檢查的 WebGL 錯誤均為零。
 
-iPhone Safari 真機測試仍待進行，不能宣稱已達穩定 30 FPS。公開網址的 HTTP 資源核對與部署結果會另行記錄；本機截圖不會當成真機或公開網址的瀏覽器截圖。
+iPhone Safari 真機測試仍待進行，不能宣稱已達穩定 30 FPS。本機截圖不會當成真機或公開網址的瀏覽器截圖。
+
+## 發布核對
+
+第四輪已部署至 [GitHub Pages](https://oloid666.github.io/endfield-model-lab/?v=4)。[Build 與 Pages 部署](https://github.com/Oloid666/endfield-model-lab/actions/runs/40007475278) 成功，來源 commit：`d310f037782205aae044030518be8bdaecb45039`。
+
+已以正常 TLS 下載公開 HTML、新 JS、CSS、favicon 與 GLB，核對濕地投影、故事、散步與雨水程式標記。GLB 保持 7,520,868 bytes，SHA-256 與原始值相同。結果記錄於 `artifacts/production-check.json`。
+
+此環境先前開啟公開 HTTPS 時有 Chromium 代理憑證信任問題，未停用 TLS 驗證。發布核對屬正常 TLS 的 HTTP 資源驗證；本機操作測試與截圖已另外列出，沒有宣稱公開網址瀏覽器端到端或 iPhone 真機驗證。
