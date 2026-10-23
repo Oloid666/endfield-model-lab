@@ -1,0 +1,126 @@
+{
+  "url": "http://127.0.0.1:5173/",
+  "browser": "Desktop Chromium, SwiftShader software WebGL",
+  "real_iphone_test": false,
+  "checks": [
+    {
+      "name": "原模型與骨架節點載入",
+      "passed": true,
+      "detail": {
+        "time": 0.4167000000000003,
+        "renders": 7,
+        "drawCalls": 154,
+        "triangles": 96706,
+        "actorsLoaded": true,
+        "bonesSupported": true,
+        "camera": [
+          21.99999999999999,
+          14.800000000000002,
+          30.000000000000004
+        ],
+        "quality": "balanced",
+        "actorsVisible": true,
+        "rendererCount": 1
+      }
+    },
+    {
+      "name": "單一 Canvas",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "直式無頁面溢出",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "設定可開啟",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "人物可隱藏",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "人物可還原",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "畫質可切換",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "視角 store",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "視角 awning",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "視角 reset",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "單指拖曳解除自動鏡頭",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "模擬隱藏分頁時鐘暫停",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "橫式無頁面溢出",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "場景持續觀察 60 秒",
+      "passed": true,
+      "detail": {
+        "seconds": 60.08,
+        "frames": 87
+      }
+    },
+    {
+      "name": "沒有 JavaScript 例外",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "Context Lost 提示",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Context Restored 恢復",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "恢復後仍只有一個 Canvas",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "模型失敗時保留場景與提示",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "WebGL 不可用時提示重試",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "software_render_fps": 1.4480732129215854
+}

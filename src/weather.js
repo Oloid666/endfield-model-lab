@@ -1,0 +1,48 @@
+import * as T from 'three';
+import { Reflector } from 'three/addons/objects/Reflector.js';
+import { config } from './config.js';
+
+export function buildWeather(scene,r) {
+  const root=new T.Group();scene.add(root);
+  let seed=711;const random=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;};
+  const max=2200,positions=new Float32Array(max*6),origins=new Float32Array(max*4);
+  for(let i=0;i<max;i++){origins[i*4]=(random()-.5)*24;origins[i*4+1]=random()*12;origins[i*4+2]=(random()-.5)*22;origins[i*4+3]=.8+random()*.6;}
+  const geo=r.own(new T.BufferGeometry());geo.setAttribute('position',new T.BufferAttribute(positions,3).setUsage(T.DynamicDrawUsage));geo.setDrawRange(0,config.rainCount.balanced*2);
+  const material=r.own(new T.LineBasicMaterial({color:0xa8c4d1,transparent:true,opacity:.17,depthWrite:false}));
+  const rain=new T.LineSegments(geo,material);rain.frustumCulled=false;root.add(rain);
+  const splashMat=r.own(new T.MeshBasicMaterial({color:0xa2bdbb,transparent:true,opacity:.2,depthWrite:false,side:T.DoubleSide}));
+  const splashes=new T.InstancedMesh(r.geometry('RingGeometry',.95,1,18),splashMat,36);splashes.frustumCulled=false;root.add(splashes);
+  const drops=Array.from({length:36},()=>({x:(random()-.5)*18,z:5.3+random()*5,offset:random()*2}));
+  const drips=new T.InstancedMesh(r.geometry('SphereGeometry',1,6,4),r.material('#8eafb3',{roughness:.22,metalness:.2}),10);root.add(drips);
+  const dummy=new T.Object3D();dummy.rotation.x=-Math.PI/2;
+  const reflection=new Reflector(r.geometry('PlaneGeometry',23,22),{textureWidth:384,textureHeight:384,color:0x879b99,clipBias:.003,multisample:0});
+  reflection.rotation.x=-Math.PI/2;reflection.position.y=-.012;
+  reflection.material.uniforms.uTime={value:0};
+  reflection.material.fragmentShader=reflection.material.fragmentShader
+    .replace('uniform vec3 color;','uniform vec3 color;\nuniform float uTime;')
+    .replace('vec4 base = texture2DProj( tDiffuse, vUv );',`vec4 wetUv=vUv;
+      float stripe=sin(vUv.x*1350.0+sin(vUv.y*450.0)*2.0+uTime*.8);
+      wetUv.x+=stripe*.0009*wetUv.w;
+      wetUv.y+=sin(vUv.x*390.0+uTime*.5)*.0007*wetUv.w;
+      vec4 base=texture2DProj(tDiffuse,wetUv);`)
+    .replace('gl_FragColor = vec4( blendOverlay( base.rgb, color ), 1.0 );',`float grain=fract(sin(dot(gl_FragCoord.xy,vec2(12.9898,78.233)))*43758.5453);
+      vec3 road=vec3(.035,.065,.08);
+      gl_FragColor=vec4(mix(road,base.rgb,.36+grain*.025),1.0);`);
+  scene.add(reflection);
+  const nativeReflect=reflection.onBeforeRender;let lastFrame=-1,frame=0,stride=2;
+  reflection.onBeforeRender=function(...args){if(frame===lastFrame||frame%stride!==0)return;lastFrame=frame;const wasVisible=root.visible;root.visible=false;nativeReflect.apply(this,args);root.visible=wasVisible;};
+  r.own(reflection);
+  return {root,reflection,update(t){frame++;reflection.material.uniforms.uTime.value=t;if(!root.visible)return;
+    for(let i=0;i<max;i++){
+      const x=origins[i*4],y=12-((t*6.8*origins[i*4+3]+origins[i*4+1])%12),z=origins[i*4+2],j=i*6;
+      // The canopy and enclosed building remain dry.
+      const sheltered=Math.abs(x)<4.85&&z>-3.25&&z<3.4&&y<3.5;
+      positions[j]=x;positions[j+1]=sheltered?-4:y;positions[j+2]=z;positions[j+3]=x-.025;positions[j+4]=(sheltered?-4:y)+.14;positions[j+5]=z-.015;
+    }
+    geo.attributes.position.needsUpdate=true;
+    for(let i=0;i<drops.length;i++){const d=drops[i],p=(t*1.3+d.offset)%1;dummy.position.set(d.x,.002,d.z);dummy.scale.setScalar(p*.24+.005);dummy.updateMatrix();splashes.setMatrixAt(i,dummy.matrix);}splashes.instanceMatrix.needsUpdate=true;
+    dummy.rotation.set(0,0,0);
+    for(let i=0;i<10;i++){const p=(t*.95+i*.137)%1;dummy.position.set(-4.4+i*.98,2.62-p*p*2.38,3.42);dummy.scale.set(.009,.015+p*.028,.009);dummy.updateMatrix();drips.setMatrixAt(i,dummy.matrix);}drips.instanceMatrix.needsUpdate=true;
+    dummy.rotation.x=-Math.PI/2;
+  },quality(value){geo.setDrawRange(0,config.rainCount[value]*2);const size=config.reflection[value];reflection.getRenderTarget().setSize(size,size);stride=value==='high'?1:value==='low'?3:2;},dispose(){root.removeFromParent();reflection.removeFromParent();}};
+}
