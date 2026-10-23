@@ -75,6 +75,16 @@
 
 已建立獨立本機 Git Repository，沒有修改舊網站。已準備 `.github/workflows/pages.yml`，包含安裝、建置、Pages artifact 與部署工作。
 
-目前 GitHub 連線以 Oloid666 登入，但建立 `Oloid666/zhuang-rainy-711` 時收到：`GraphQL: Resource not accessible by integration (createRepository)`。
+先前 GitHub 連線無法建立 Repository。使用者已建立並指定新專案：
 
-這是 GitHub 連線權限限制，不是沙箱自動審查拒絕。沒有新遠端 Repository、已推送 commit、已執行 Actions 或已部署網址。需要先建立公開空白 Repository，並讓目前 GitHub 連線能存取；之後才可推送、啟用 Pages 與驗證實際網址。
+https://github.com/Oloid666/endfield-model-lab
+
+現有程式已成功推送至該專案的 main，Pages 建置路徑已改為 `/endfield-model-lab/`。本機建置及模型 hash 核對通過；GitHub Actions 也已完成 npm 安裝與 Vite 建置。
+
+目前尚未發布。啟用 Pages 的 API 請求回覆 `Resource not accessible by integration (HTTP 403)`；Actions 因 Repository 尚未啟用 Pages，在 `actions/configure-pages@v5` 停止。這是 GitHub 連線權限限制，不是沙箱自動審查拒絕。
+
+需要使用者開啟下列設定頁，在 Build and deployment → Source 選擇 GitHub Actions：
+
+https://github.com/Oloid666/endfield-model-lab/settings/pages
+
+設定完成後可重新執行部署工作，接著驗證實際網址。尚無已部署網址或 iPhone 真機驗收結果。
