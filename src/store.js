@@ -1,5 +1,7 @@
 import * as T from 'three';
 import { createSurfaces } from './surfaces.js';
+import { makeThinGlass } from './glass.js';
+import { buildInterior } from './interior.js';
 import { buildTrees } from './trees.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 
@@ -18,14 +20,19 @@ export function buildStore(scene, r) {
   const text=(str,p,s,options={},rotation=0)=>{const m=r.mesh(r.geometry('PlaneGeometry',1,1),r.label(str,options),root,p,s);m.rotation.y=rotation;return m;};
   const dark='#193739', wall='#637774', trim='#a3afa0', cream='#c7c4ac', green='#155b42';
   // Island, pavements, drains and a complete enclosed building.
-  B('#293e44',[0,-.22,0],[23,.4,22],{roughness:.35});
+  B('#293e44',[0,-.22,1],[23,.4,28],{roughness:.35});
   B('#64716d',[0,.015,-.1],[13.7,.32,10]);
-  B('#a1a79a',[0,.13,4.87],[13.8,.22,.18]);
+  // Both crossing landings have a curb opening and a sloped approach.
+  B('#a1a79a',[-6.65,.13,4.87],[.5,.22,.18]);B('#a1a79a',[1.38,.13,4.87],[11.05,.22,.18]);
+  B('#64716d',[0,.015,12.65],[23,.32,2.1]);
+  B('#a1a79a',[-8.95,.13,11.65],[5.1,.22,.18]);B('#a1a79a',[3.67,.13,11.65],[15.65,.22,.18]);
+  for(const [z,tilt] of [[4.82,.22],[11.72,-.22]]){const ramp=B('#92988e',[-5.25,.09,z],[2.16,.1,.72],{roughness:.68});ramp.rotation.x=tilt;}
+
   B('#d2c7a6',[0,.24,2.5],[9.2,.14,2.25]);
   for(let i=0;i<20;i++)B('#4c5b57',[-6.6+i*.7,.184,3.5],[.018,.006,2.7]);
   for(const z of [2.1,2.8,3.5,4.2])B('#4b5c59',[0,.186,z],[13.4,.006,.012]);
-  B('#293638',[0,.205,4.55],[9.8,.025,.22]);
-  for(let i=0;i<75;i++)B('#85928b',[-4.8+i*.13,.224,4.55],[.035,.008,.2]);
+  B('#293638',[.4,.205,4.55],[9,.025,.22]);
+  for(let i=0;i<75;i++){const x=-4.8+i*.13;if(x>-6.4&&x<-4.1)continue;B('#85928b',[x,.224,4.55],[.035,.008,.2]);}
   // Main shop shell. Its interior remains readable through open display bays.
   B(wall,[0,1.8,-3.13],[8.8,3.25,.24]);
   B(wall,[-4.3,1.8,-.72],[.22,3.25,4.7]);
@@ -89,82 +96,34 @@ export function buildStore(scene, r) {
   // Canopy with an illuminated underside. Slender supports frame the actors.
   B('#24332f',[0,2.79,2.23],[9.65,.09,1.28],{roughness:.24,metalness:.35});
   B('#49746a',[0,2.7,2.87],[9.72,.12,.08],{roughness:.3});
-  B('#ced6bc',[0,2.69,2.55],[8.9,.025,.045],{emissive:0xffd69a,emissiveIntensity:2.5});
+  B('#ced6bc',[0,2.69,2.55],[8.9,.025,.045],{emissive:0xffd69a,emissiveIntensity:.85});
   for(const x of [-4.63,4.63]){B('#314d47',[x,1.48,2.78],[.11,2.5,.11],{roughness:.45});B('#777e6d',[x,.33,2.78],[.26,.2,.26]);}
   // Reflected street and neon remain visible over the warm interior.
-  const glass=r.own(new T.MeshPhysicalMaterial({color:0xe2efeb,roughness:.035,metalness:.08,transmission:0,transparent:true,opacity:.25,thickness:.045,ior:1.48,attenuationColor:0xbad8d0,attenuationDistance:6,depthWrite:false,side:T.FrontSide,clearcoat:1,clearcoatRoughness:.035,bumpMap:surfaces.glassBump,bumpScale:.006,envMapIntensity:2.2}));
-  // Preserve a clear interior at the default mobile tier; increase reflection at grazing angles.
-  glass.onBeforeCompile=shader=>{
-    shader.fragmentShader=shader.fragmentShader.replace('#include <opaque_fragment>',`
-      #ifndef USE_TRANSMISSION
-      float paneFresnel=pow(1.0-clamp(dot(normal,normalize(vViewPosition)),0.0,1.0),2.0);
-      diffuseColor.a=.18+paneFresnel*.55;
-      #endif
-      #include <opaque_fragment>`);
-  };
+  const glass=makeThinGlass(r,surfaces.glassBump);
   const glassMeshes=[];
-  for(const [x,width] of [[-2.84,2.75],[.5,2.95],[3.38,1.55]]){
-    B(dark,[x,.45,1.74],[width,.26,.18]);
-    B(cream,[x,.59,1.79],[width,.055,.23],{metalness:.45,roughness:.3});
+  for(const [x,width] of [[-2.62,3.14],[2.4,3.3]]){
+    B(dark,[x,.45,1.74],[width,.26,.18]);B(cream,[x,.59,1.79],[width,.055,.23],{metalness:.45,roughness:.3});
     glassMeshes.push(r.mesh(r.geometry('PlaneGeometry',1,1),glass,root,[x,1.65,1.84],[width,2.08,1]));
-    for(const dx of [-width/2,width/2])B(dark,[x+dx,1.69,1.82],[.07,2.18,.08]);
-    B(dark,[x,2.7,1.82],[width,.08,.09]);
   }
+  // Separate sliding entrance: no opaque sill or rack across the opening.
+  for(const x of [-.62,.18])glassMeshes.push(r.mesh(r.geometry('PlaneGeometry',1,1),glass,root,[x,1.48,1.86],[.78,2.3,1]));
+  for(const x of [-4.23,-1.02,.6,4.23])B(dark,[x,1.68,1.88],[.06,2.2,.065]);
+  for(const x of [-.25,-.12])B('#c2c6ac',[x,1.45,1.93],[.022,.32,.035],{metalness:.7,roughness:.25});
+  B('#b8a870',[-.22,.98,1.89],[1.59,.045,.014]);
   const sideGlass=r.mesh(r.geometry('PlaneGeometry',1,1),glass,root,[4.43,1.65,-.72],[4.45,2.08,1]);sideGlass.rotation.y=Math.PI/2;glassMeshes.push(sideGlass);
   for(const x of [-2.85,0,2.85])glassMeshes.push(r.mesh(r.geometry('PlaneGeometry',1,1),glass,root,[x,4.58,1.95],[1.64,1.12,1]));
-  // Door, handles, safety strips.
-  for(const x of [-.9,.05])B('#557b6a',[x,1.65,1.87],[.035,2.07,.06]);
-  for(const x of [-.5,-.35])B('#c2c6ac',[x,1.48,1.91],[.028,.34,.045],{metalness:.6,roughness:.3});
-  B('#b8a870',[-.43,1.05,1.89],[.94,.06,.025]);
-  // Rear refrigerator wall and chilled drinks.
-  B('#354b42',[0,1.55,-2.85],[7.9,2.35,.4]);
-  for(let x=-3.6;x<4;x+=1.2){
-    B('#b4c5b0',[x,1.55,-2.59],[1.1,2.05,.03],{emissive:0xd8e3bd,emissiveIntensity:.22});
-    B('#526353',[x+.52,1.55,-2.54],[.04,2.07,.05]);
-    for(const y of [.7,1.18,1.66,2.14])B('#d7d6b9',[x,y,-2.36],[1.05,.045,.4]);
-  }
+  const floorPlan=buildInterior(root,r,surfaces,glass,glassMeshes);
   const productColors=['#cd7849','#b4bb64','#dde0be','#b74b46','#4f927c','#b8a4c0','#dba24c'];
-  const products=[];
-  for(let i=0;i<7;i++){
-    const inst=new T.InstancedMesh(r.geometry('BoxGeometry',1,1,1),r.material(productColors[i],{roughness:.48,map:surfaces.packaging}),90);root.add(inst);products.push({inst,count:0});
-  }
-  const dummy=new T.Object3D();
-  function product(x,y,z,w,h,d,index){const p=products[index%products.length];dummy.position.set(x,y,z);dummy.scale.set(w,h,d);dummy.rotation.set(0,0,0);dummy.updateMatrix();p.inst.setMatrixAt(p.count++,dummy.matrix);}
-  for(let col=0;col<38;col++)for(let row=0;row<4;row++)product(-3.8+col*.2,.88+row*.48,-2.4,.11,.25,.12,(col+row*3)%7);
-  // Central gondola, visible through the glass.
-  for(const x of [-2.6,2.2]){
-    B('#a8a895',[x,.86,-.75],[1.7,1.1,.68]);
-    for(const y of [.53,.91,1.29]){
-      B('#e3d4ab',[x,y,-.75],[1.85,.05,.82]);
-      for(let col=0;col<9;col++)product(x-.76+col*.19,y+.13,-.43,.14,.21,.14,col+Math.round(y*4));
-      B('#d2b664',[x,y+.01,-.315],[1.8,.07,.015]);
-    }
-  }
-  for(const {inst,count} of products){inst.count=count;inst.instanceMatrix.needsUpdate=true;inst.computeBoundingSphere();}
-  // Counter, register, microwave and oden pot.
-  B('#5f705e',[2.43,.87,.83],[2.65,1.12,.75]);
-  B('#d1c7a3',[2.43,1.46,.8],[2.8,.12,.95],{roughness:.4});
-  B('#273b33',[2.56,1.76,.74],[.44,.44,.2]);
-  B('#a7cbb0',[2.56,1.78,.86],[.34,.24,.018],{emissive:0x98c4a5,emissiveIntensity:.6});
-  B('#e1d8b9',[3.48,1.78,.65],[.73,.53,.6]);
-  B('#2a3f3b',[3.4,1.78,.961],[.48,.32,.025]);
-  B('#e1bd76',[3.72,1.84,.967],[.06,.07,.025],{emissive:0xf6c77f,emissiveIntensity:1.4});
-  B('#697c70',[1.5,1.55,.8],[.62,.12,.6],{metalness:.6});
-  for(const x of [1.32,1.58])for(const z of [.65,.92]){
-    const food=r.cylinder(root,'#c8aa6a',[x,1.65,z],.09,.08);
-    const stick=B('#b9a373',[x,1.84,z],[.014,.35,.014]);stick.rotation.z=.1;
-  }
-  text('熱食 · 好好吃飯',[2.45,.96,1.216],[1.7,.27,1],{width:1024,height:128,font:'52px sans-serif',bg:'#5f705e',color:'#e0d9bb'});
   // Warm ceiling strips; practical light is restrained to three real lights.
-  for(const x of [-2.3,2.2])B('#fbefc3',[x,3.17,-.6],[.07,.035,3.5],{emissive:0xffe2a3,emissiveIntensity:3});
-  const warm=new T.PointLight(0xffd5a0,35,9,2);warm.position.set(0,2.75,-.4);root.add(warm);
-  const doorway=new T.PointLight(0xffe1b5,16,7,2);doorway.position.set(.4,2.5,2.2);root.add(doorway);
+  for(const x of [-2.3,2.2])B('#fbefc3',[x,3.17,-.6],[.07,.035,3.5],{emissive:0xffe2a3,emissiveIntensity:1.1});
+  const warm=new T.PointLight(0xffd8af,10,6,2);warm.position.set(-1.4,2.75,-1.1);root.add(warm);
+  const doorway=new T.PointLight(0xffdfbc,7,5.5,2);doorway.position.set(2.5,2.65,-.8);root.add(doorway);
   // A single cached shadow map anchors the canopy, street furniture and trees.
-  const spill=new T.SpotLight(0xffd4a0,45,13,Math.PI*.36,.65,2);spill.position.set(0,2.63,1.4);spill.target.position.set(0,.1,5.2);spill.castShadow=true;spill.shadow.mapSize.set(1024,1024);spill.shadow.camera.near=.2;spill.shadow.camera.far=14;spill.shadow.bias=-.0003;spill.shadow.normalBias=.025;spill.shadow.autoUpdate=false;spill.shadow.needsUpdate=true;root.add(spill,spill.target);
+  const spill=new T.SpotLight(0xffd4a0,13,10,Math.PI*.36,.65,2);spill.position.set(0,2.63,1.4);spill.target.position.set(0,.1,5.2);spill.castShadow=true;spill.shadow.mapSize.set(1024,1024);spill.shadow.camera.near=.2;spill.shadow.camera.far=14;spill.shadow.bias=-.0003;spill.shadow.normalBias=.025;spill.shadow.autoUpdate=false;spill.shadow.needsUpdate=true;root.add(spill,spill.target);
   // Small wall sconces, warm pools on plaster.
   for(const x of [-3.75,3.7]){
     B('#b6a37a',[x,4.8,1.94],[.16,.36,.12],{emissive:0xffcc84,emissiveIntensity:2});
-    const sconce=new T.PointLight(0xffc584,3.5,2.4,2);sconce.position.set(x,4.75,2.13);root.add(sconce);
+    const sconce=new T.PointLight(0xffc584,2,2.4,2);sconce.position.set(x,4.75,2.13);root.add(sconce);
   }
   // Sidewall utility details, vent, condenser and downpipe.
   B('#abb5a4',[4.47,4.44,-1.2],[.25,.85,1.27]);
@@ -191,10 +150,9 @@ export function buildStore(scene, r) {
   B('#263933',[-5.2,.53,1.06],[.52,.18,.03]);
   for(const x of [5.3,5.95]){r.cylinder(root,'#455f57',[x,.65,2.8],.25,.85);r.cylinder(root,'#82907c',[x,1.08,2.8],.27,.08);}
   buildTrees(root,r);
-  // Street markings, curb paint, low bollards and a warm streetlamp.
-  for(let i=0;i<6;i++)B('#b4b9a0',[-6.5+i*.72,-.009,8],[.37,.012,2.5],{roughness:.33});
-  for(const x of [-10,-5,0,5,10])B('#c2b78e',[x,-.008,10.3],[2.6,.01,.065],{roughness:.35});
-  B('#a38555',[0,.251,4.98],[12.3,.035,.055]);
+  // Crossing runs across the front road, from z=4.9 to z=11.65.
+  for(let i=0;i<9;i++)B('#c8c9b9',[-5.25,-.004,5.38+i*.69],[2.1,.012,.34],{roughness:.6});
+  for(const x of [-9,-.9,4.5,9.7])B('#b6b6a2',[x,-.004,8.28],[2.2,.012,.065],{roughness:.55});
   for(const x of [-6.5,6.5]){r.cylinder(root,'#293f42',[x,.72,4.1],.065,1.1,{metalness:.3});r.cylinder(root,'#ccbc83',[x,1.02,4.1],.067,.08);}
   const lamp=new T.Group();lamp.position.set(-6.35,.2,3.4);root.add(lamp);
   r.cylinder(lamp,'#304b4a',[0,2.7,0],.065,5.4,{metalness:.5});
@@ -210,15 +168,16 @@ export function buildStore(scene, r) {
     const curve=new T.QuadraticBezierCurve3(new T.Vector3(-10,7,z),new T.Vector3(0,5.4,z),new T.Vector3(10,7,z));
     const geo=r.own(new T.TubeGeometry(curve,32,.012,3,false));r.mesh(geo,r.material('#172c32'),root);
   }
+  for(const mesh of glassMeshes)mesh.layers.set(1);
   // Merge the static set by material. Keep instanced goods, glass and lights separate.
   root.updateMatrixWorld(true);
   const batches=new Map(), sources=[];
   root.traverse(mesh=>{
-    if(!mesh.isMesh||mesh.isInstancedMesh||mesh.material.transparent||mesh.material.transmission>0)return;
+    if(!mesh.isMesh||mesh.material===glass||mesh.isInstancedMesh||mesh.material.transparent||mesh.material.transmission>0)return;
     const geometry=mesh.geometry.clone().applyMatrix4(mesh.matrixWorld);
     const list=batches.get(mesh.material)||[];list.push(geometry);batches.set(mesh.material,list);sources.push(mesh);
   });
   for(const mesh of sources)mesh.removeFromParent();
   for(const [material,geometries] of batches){const merged=mergeGeometries(geometries);if(merged){const mesh=new T.Mesh(r.own(merged),material);mesh.castShadow=true;mesh.receiveShadow=true;root.add(mesh);}for(const g of geometries)g.dispose();}
-  return {root,glass,glassMeshes,spill};
+  return {root,glass,glassMeshes,spill,floorPlan};
 }

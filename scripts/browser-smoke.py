@@ -22,10 +22,11 @@ async def main():
  async with async_playwright() as p:
   browser=await p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox','--use-angle=swiftshader','--enable-unsafe-swiftshader'])
   context=await browser.new_context(viewport={'width':390,'height':844},device_scale_factor=1,is_mobile=True,has_touch=True,reduced_motion='reduce')
-  page=await context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
+  page=await context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)));page.on('console',lambda m:errors.append(m.text) if m.type=='error' else None)
   await ready(page)
   state=await page.evaluate('JSON.parse(JSON.stringify(window.__rainy711))')
   check('原模型與骨架節點載入',state['actorsLoaded'] and state['bonesSupported'],state)
+  check('玻璃共用畫面與深度有效',await page.evaluate('window.__rainy711.glassReady'))
   check('單一 Canvas',state['rendererCount']==1)
   check('直式無頁面溢出',await page.evaluate('document.documentElement.scrollWidth===innerWidth && document.documentElement.scrollHeight===innerHeight'))
   await page.screenshot(path=str(OUT/'iphone-portrait.png'))
@@ -44,7 +45,33 @@ async def main():
   for view in ['store','awning','reset']:
    await page.locator(f'[data-view={view}]').click()
    check(f'視角 {view}',await page.locator('[data-view=street]' if view=='reset' else f'[data-view={view}]').get_attribute('aria-pressed')=='true')
-   if view=='awning':await page.screenshot(path=str(OUT/'awning.png'))
+   if view=='awning':
+    await page.wait_for_function('document.querySelector("#app").classList.contains("close-view")')
+    check('近景文案不遮人物',not await page.locator('.scene-caption').is_visible())
+    await page.evaluate('window.__rainy711.pauseForCapture()')
+    trace=[]
+    for t in [0,8,19,28,37.6,46,55]:
+     await page.evaluate('(t)=>window.__rainy711.samplePose(t)',t)
+     state=await page.evaluate('({idle:window.__rainy711.idle,pose:window.__rainy711.poseData})');trace.append({'time':t,**state})
+     if t in [0,19,28,37.6]:await page.screenshot(path=str(OUT/f'pose-{t}.png'))
+    check('換重心時雙腳保持地面',max(item['idle']['footDrift'] for item in trace)<.01,trace)
+    check('頭部與手部姿勢確實改變',trace[0]['pose']['head']!=trace[2]['pose']['head'] and trace[0]['pose']['wrist']!=trace[3]['pose']['wrist'])
+    plan=await page.evaluate('window.__rainy711.floorPlan')
+    check('後側貨架通道至少 0.85m',plan['rearAisle']>=.85,plan)
+    # Walk a person-sized circle from the entrance to the rear and cashier.
+    path=[(-.2,1.9),(-.2,-1.55),(-3.65,-1.55),(-.2,-1.55),(1.8,-1.55),(1.8,.8),(2.0,.8)]
+    clear=True
+    for a,b in zip(path,path[1:]):
+     for n in range(41):
+      x=a[0]+(b[0]-a[0])*n/40;z=a[1]+(b[1]-a[1])*n/40
+      for rack in plan['racks']:
+       dx=max(abs(x-rack['x'])-rack['w']/2,0);dz=max(abs(z-rack['z'])-rack['d']/2,0)
+       if dx*dx+dz*dz<.28*.28:clear=False
+    check('入口到冰箱與收銀路徑可通行',clear)
+    (OUT/'pose-trace.json').write_text(json.dumps(trace,ensure_ascii=False,indent=2))
+    await page.evaluate('window.__rainy711.samplePose(0)')
+    await page.screenshot(path=str(OUT/'awning.png'))
+    await page.evaluate('window.__rainy711.resume()')
   # Real touch move through Chromium's input channel. No hotspot handlers exist in phase one.
   cdp=await context.new_cdp_session(page)
   await cdp.send('Input.dispatchTouchEvent',{'type':'touchStart','touchPoints':[{'x':180,'y':390}]})
@@ -78,6 +105,9 @@ async def main():
   await page.evaluate('window.qaLoss.restoreContext()');await page.wait_for_timeout(1800)
   check('Context Restored 恢復',not await page.locator('#error').is_visible())
   check('恢復後仍只有一個 Canvas',await page.locator('#scene canvas').count()==1)
+  await page.evaluate('window.__rainy711.inspectLayout()')
+  await page.add_style_tag(content='.masthead,.scene-footer{display:none!important}')
+  await page.screenshot(path=str(OUT/'floor-plan.png'))
   await context.close()
   fallback=await browser.new_page(viewport={'width':390,'height':844})
   await fallback.route('**/models/zhuang-fangyi.glb',lambda route:route.abort())

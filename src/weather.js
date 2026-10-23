@@ -8,15 +8,19 @@ export function buildWeather(scene,r) {
   const max=2200,positions=new Float32Array(max*6),origins=new Float32Array(max*4);
   for(let i=0;i<max;i++){origins[i*4]=(random()-.5)*24;origins[i*4+1]=random()*12;origins[i*4+2]=(random()-.5)*22;origins[i*4+3]=.8+random()*.6;}
   const geo=r.own(new T.BufferGeometry());geo.setAttribute('position',new T.BufferAttribute(positions,3).setUsage(T.DynamicDrawUsage));geo.setDrawRange(0,config.rainCount.balanced*2);
-  const material=r.own(new T.LineBasicMaterial({color:0xa8c4d1,transparent:true,opacity:.17,depthWrite:false}));
+  const material=r.own(new T.ShaderMaterial({transparent:true,depthWrite:false,
+    vertexShader:'varying vec3 vRainWorld;void main(){vec4 p=modelMatrix*vec4(position,1.0);vRainWorld=p.xyz;gl_Position=projectionMatrix*viewMatrix*p;}',
+    fragmentShader:'varying vec3 vRainWorld;void main(){float shop=exp(-abs(vRainWorld.z-2.0)*.7)*exp(-max(abs(vRainWorld.x)-4.5,0.0)*.6);float lamp=exp(-length(vRainWorld-vec3(-5.6,4.4,3.4))*.55);float light=max(shop,lamp);vec3 color=mix(vec3(.24,.39,.58),vec3(.85,.77,.59),light);gl_FragColor=vec4(color,.055+light*.22);}'
+  }));
   const rain=new T.LineSegments(geo,material);rain.frustumCulled=false;root.add(rain);
   const splashMat=r.own(new T.MeshBasicMaterial({color:0xa2bdbb,transparent:true,opacity:.2,depthWrite:false,side:T.DoubleSide}));
   const splashes=new T.InstancedMesh(r.geometry('RingGeometry',.95,1,18),splashMat,36);splashes.frustumCulled=false;root.add(splashes);
   const drops=Array.from({length:36},()=>({x:(random()-.5)*18,z:5.3+random()*5,offset:random()*2}));
   const drips=new T.InstancedMesh(r.geometry('SphereGeometry',1,6,4),r.material('#8eafb3',{roughness:.22,metalness:.2}),10);root.add(drips);
+  const cueDrop=r.mesh(r.geometry('SphereGeometry',1,8,6),r.material('#c5d1cf',{roughness:.12,metalness:.3}),root,[-2.03,2.6,2.94],[.012,.035,.012]);
   const dummy=new T.Object3D();dummy.rotation.x=-Math.PI/2;
-  const reflection=new Reflector(r.geometry('PlaneGeometry',23,22),{textureWidth:384,textureHeight:384,color:0x879b99,clipBias:.003,multisample:0});
-  reflection.rotation.x=-Math.PI/2;reflection.position.y=-.012;
+  const reflection=new Reflector(r.geometry('PlaneGeometry',23,28),{textureWidth:384,textureHeight:384,color:0x879b99,clipBias:.003,multisample:0});
+  reflection.rotation.x=-Math.PI/2;reflection.position.set(0,-.012,1);
   reflection.material.uniforms.uTime={value:0};
   reflection.material.uniforms.uTexel={value:new T.Vector2(1/384,1/384)};
   reflection.material.vertexShader=reflection.material.vertexShader
@@ -48,7 +52,7 @@ export function buildWeather(scene,r) {
   const nativeReflect=reflection.onBeforeRender;let lastFrame=-1,frame=0,stride=2;
   reflection.onBeforeRender=function(...args){if(frame===lastFrame||frame%stride!==0)return;lastFrame=frame;const wasVisible=root.visible;root.visible=false;nativeReflect.apply(this,args);root.visible=wasVisible;};
   r.own(reflection);
-  return {root,reflection,update(t){frame++;reflection.material.uniforms.uTime.value=t;if(!root.visible)return;
+  return {root,reflection,update(t){frame++;reflection.material.uniforms.uTime.value=t;if(!root.visible)return;const fall=((t%58)-36.95)/.45;cueDrop.visible=fall>=0&&fall<=1;if(cueDrop.visible)cueDrop.position.y=2.62-fall*fall*2.25;
     for(let i=0;i<max;i++){
       const x=origins[i*4],y=12-((t*6.8*origins[i*4+3]+origins[i*4+1])%12),z=origins[i*4+2],j=i*6;
       // The canopy and enclosed building remain dry.
