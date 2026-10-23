@@ -1,0 +1,103 @@
+{
+  "url": "http://127.0.0.1:4174/",
+  "real_iphone_test": false,
+  "checks": [
+    {
+      "name": "MSAA framebuffer clean low",
+      "passed": true,
+      "detail": 0
+    },
+    {
+      "name": "MSAA framebuffer clean high",
+      "passed": true,
+      "detail": 0
+    },
+    {
+      "name": "MSAA framebuffer clean balanced",
+      "passed": true,
+      "detail": 0
+    },
+    {
+      "name": "Rendered scene visible v4-portrait.png",
+      "passed": true,
+      "detail": 61.04
+    },
+    {
+      "name": "Rendered scene visible v4-detail.png",
+      "passed": true,
+      "detail": 53.86
+    },
+    {
+      "name": "Walking can be enabled during story",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Choice stops walking controls",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Rendered scene visible v4-dinner-choice.png",
+      "passed": true,
+      "detail": 69.46
+    },
+    {
+      "name": "Rendered scene visible v4-meal-A.png",
+      "passed": true,
+      "detail": 56.17
+    },
+    {
+      "name": "Rendered scene visible v4-meal-B.png",
+      "passed": true,
+      "detail": 56.45
+    },
+    {
+      "name": "Rendered scene visible v4-meal-C.png",
+      "passed": true,
+      "detail": 56.44
+    },
+    {
+      "name": "Ending panel does not overlap replay badge",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Rendered scene visible v4-coda.png",
+      "passed": true,
+      "detail": 56.44
+    },
+    {
+      "name": "Collapse shows resume and freezes story",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Resume hides replay badge",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Rendered scene visible v4-landscape.png",
+      "passed": true,
+      "detail": 56.2
+    },
+    {
+      "name": "Rendered scene visible v4-desktop.png",
+      "passed": true,
+      "detail": 63.49
+    },
+    {
+      "name": "Final framebuffer clean",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "No runtime or shader errors",
+      "passed": true,
+      "detail": []
+    }
+  ],
+  "passed": true,
+  "errors": []
+}

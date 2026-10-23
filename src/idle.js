@@ -16,6 +16,7 @@ export function sampleIdle(time,out){
   out.nod=windowed(t,20.2,20.55,20.7,21.1);
   out.shift=windowed(t,3.5,6,44,47);
   out.exhale=windowed(t,43,44.3,45,47);
+  out.phone=windowed(t,49,50.3,52,53.8);
   let blink=0;
   for(const at of BLINKS)blink=Math.max(blink,Math.max(0,1-Math.abs(t-at)/.1));
   out.blink=blink;

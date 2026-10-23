@@ -49,10 +49,10 @@ export function buildWeather(scene,r) {
       float reflectionWeight=mix(.18,.62,puddle)+fresnel*.28;
       gl_FragColor=vec4(asphalt+base.rgb*reflectionWeight,1.0);`);
   scene.add(reflection);
-  const nativeReflect=reflection.onBeforeRender;let lastFrame=-1,frame=0,stride=2;
-  reflection.onBeforeRender=function(...args){if(frame===lastFrame||frame%stride!==0)return;lastFrame=frame;const wasVisible=root.visible;root.visible=false;nativeReflect.apply(this,args);root.visible=wasVisible;};
+  const nativeReflect=reflection.onBeforeRender;let lastFrame=-1,frame=0,stride=2,forceReflection=true;
+  reflection.onBeforeRender=function(...args){if(frame===lastFrame||(!forceReflection&&frame%stride!==0))return;lastFrame=frame;forceReflection=false;const wasVisible=root.visible;root.visible=false;try{nativeReflect.apply(this,args);}finally{root.visible=wasVisible;}};
   r.own(reflection);
-  return {root,reflection,update(t){frame++;reflection.material.uniforms.uTime.value=t;if(!root.visible)return;const fall=((t%58)-36.95)/.45;cueDrop.visible=fall>=0&&fall<=1;if(cueDrop.visible)cueDrop.position.y=2.62-fall*fall*2.25;
+  return {root,reflection,invalidateReflection(){forceReflection=true;lastFrame=-1;},update(t){frame++;reflection.material.uniforms.uTime.value=t;if(!root.visible)return;const fall=((t%58)-36.95)/.45;cueDrop.visible=fall>=0&&fall<=1;if(cueDrop.visible)cueDrop.position.y=2.62-fall*fall*2.25;
     for(let i=0;i<max;i++){
       const x=origins[i*4],y=12-((t*6.8*origins[i*4+3]+origins[i*4+1])%12),z=origins[i*4+2],j=i*6;
       // The canopy and enclosed building remain dry.
@@ -64,5 +64,5 @@ export function buildWeather(scene,r) {
     dummy.rotation.set(0,0,0);
     for(let i=0;i<10;i++){const p=(t*.95+i*.137)%1;dummy.position.set(-4.4+i*.98,2.62-p*p*2.38,2.94);dummy.scale.set(.009,.015+p*.028,.009);dummy.updateMatrix();drips.setMatrixAt(i,dummy.matrix);}drips.instanceMatrix.needsUpdate=true;
     dummy.rotation.x=-Math.PI/2;
-  },quality(value){geo.setDrawRange(0,config.rainCount[value]*2);const size=config.reflection[value];reflection.getRenderTarget().setSize(size,size);reflection.material.uniforms.uTexel.value.set(1/size,1/size);stride=value==='high'?1:value==='low'?3:2;},dispose(){root.removeFromParent();reflection.removeFromParent();}};
+  },quality(value){geo.setDrawRange(0,config.rainCount[value]*2);const size=config.reflection[value];reflection.getRenderTarget().setSize(size,size);reflection.material.uniforms.uTexel.value.set(1/size,1/size);stride=value==='high'?1:value==='low'?3:2;forceReflection=true;lastFrame=-1;},dispose(){root.removeFromParent();reflection.removeFromParent();}};
 }

@@ -4,6 +4,7 @@ import * as T from 'three';
 export function buildInterior(root,r,surfaces,glass,glassMeshes) {
   const box=(c,p,s,o={})=>r.box(root,c,p,s,o);
   const white='#c9d1c9',steel='#66766d';
+  const metal={metalness:.78,roughness:.24};
   const atlas=document.createElement('canvas');atlas.width=1024;atlas.height=1024;const c=atlas.getContext('2d');
   const names=['海苔米香','焙茶','醇乳','脆餅','好米飯','可可','果實','燕麥'];
   const colors=['#2b6952','#b58e54','#467a9c','#be613c','#e9d8a6','#634a4a','#a35d71','#aeaa76'];
@@ -38,11 +39,18 @@ export function buildInterior(root,r,surfaces,glass,glassMeshes) {
     box('#aabeb5',[x,1.56,-2.61],[1.01,2.2,.025],{emissive:0x8fb3c5,emissiveIntensity:.22});
     for(let row=0;row<4;row++){
       const y=.53+row*.45;box(white,[x,y,-2.33],[1.02,.035,.5],{roughness:.38,metalness:.12});
-      for(let k=0;k<6;k++)bottle(x-.4+k*.16,y+.02,-2.21,door+row+k);
+      for(let k=0;k<6;k++){
+        if(door>=3&&row>=2)pack(x-.4+k*.16,y+.02,-2.21,.105,.245,.11,2+k%2);
+        else bottle(x-.4+k*.16,y+.02,-2.21,door+row+k);
+      }
       box('#dddcc5',[x,y-.018,-2.065],[1.02,.055,.02]);
+      if(row===1)label(door<3?'35    40    35':'32    38    42',[x,y-.018,-2.05],[.9,.045,1],{bg:'#f0e8d5',color:'#29452f',font:'bold 30px Arial'});
     }
     const pane=r.mesh(r.geometry('PlaneGeometry',1,1),glass,root,[x,1.54,-2.005],[1.03,2.23,1]);glassMeshes.push(pane);
-    for(const dx of [-.54,.54])box(steel,[x+dx,1.53,-2.03],[.032,2.28,.04],{metalness:.65,roughness:.25});
+    for(const dx of [-.54,.54]){
+      box(steel,[x+dx,1.53,-2.03],[.032,2.28,.04],{metalness:.65,roughness:.25});
+      box('#d3e6db',[x+dx*.91,1.53,-2.1],[.012,2.12,.014],{emissive:0xcce7df,emissiveIntensity:1.25,roughness:.3});
+    }
     box('#cbd3c5',[x+.43,1.5,-1.99],[.02,.33,.025],{metalness:.7,roughness:.22});
     label(door<3?'冷藏飲品':'鮮乳・茶',[x,2.68,-2.015],[.94,.16,1],{font:'36px sans-serif'});
   }
@@ -68,22 +76,78 @@ export function buildInterior(root,r,surfaces,glass,glassMeshes) {
   });
   for(const g of goods){g.mesh.count=g.count;g.mesh.instanceMatrix.needsUpdate=true;g.mesh.computeBoundingSphere();}
   bottles.count=bottleCount;bottles.instanceMatrix.needsUpdate=true;bottles.instanceColor.needsUpdate=true;bottles.computeBoundingSphere();for(const mesh of [labels,caps]){mesh.count=bottleCount;mesh.instanceMatrix.needsUpdate=true;mesh.computeBoundingSphere();}
-  // Side counter: customers on its left, 0.85m staff space on its right.
-  box('#4b6253',[2.85,.82,.2],[.86,1.0,2.1]);box('#c1bda6',[2.85,1.35,.2],[1,.1,2.22],{roughness:.31});
-  box('#263b37',[2.73,1.57,.73],[.16,.38,.47]);
-  label('歡迎光臨',[2.64,1.59,.73],[.37,.24,1],{bg:'#193d36',color:'#9bc8ac',font:'30px sans-serif'},-Math.PI/2);
-  box('#323f39',[2.58,1.42,.94],[.26,.04,.24]);box('#a3ad99',[2.82,1.42,-.7],[.62,.08,.55],{metalness:.65,roughness:.25});
-  for(const xx of [2.65,2.9])for(const zz of [-.82,-.58]){
-    r.cylinder(root,'#c8ab6a',[xx,1.49,zz],.08,.07);const stick=box('#b9a373',[xx,1.64,zz],[.012,.27,.012]);stick.rotation.z=.1;
+  // Customer queue remains west of the counter; staff work in the 0.88m east aisle.
+  // Heights are measured from the shop floor at y=.31: counter top=.98m.
+  const cashier={x:2.85,z:.2,w:.86,d:2.1};
+  box('#465d51',[2.85,.775,.2],[.86,.93,2.1]);
+  box('#d3cdbd',[2.85,1.275,.2],[1,.07,2.22],{roughness:.25});
+  box('#233b34',[2.41,.75,.2],[.025,.58,1.95]);
+  box('#c8a56a',[2.395,1.06,.2],[.025,.025,2.04],{metalness:.6,roughness:.3});
+  // Bagging end, then register, then heated-food bay. They do not share one surface.
+  box('#b9b7a7',[2.87,1.321,.99],[.75,.016,.42],{roughness:.36});
+  box('#526158',[2.91,1.35,.49],[.24,.07,.28]);
+  const registerNeck=box('#263b36',[3.0,1.48,.46],[.07,.26,.08]);registerNeck.rotation.z=.12;
+  const register=box('#253b35',[2.97,1.65,.46],[.075,.31,.4]);register.rotation.z=.09;
+  label('POS · 24H',[3.013,1.65,.46],[.35,.24,1],{bg:'#213b34',color:'#b7d9ba',font:'bold 38px Arial'},Math.PI/2);
+  // Independent customer-facing price display and payment terminal face the queue.
+  box('#2b3f37',[2.56,1.41,.61],[.055,.2,.28]);
+  label('NT$ 145',[2.526,1.42,.61],[.24,.14,1],{bg:'#142f2b',color:'#d0e5b3',font:'bold 46px Arial'},-Math.PI/2);
+  const pay=box('#293f39',[2.46,1.344,.31],[.18,.06,.22]);pay.rotation.z=.2;
+  box('#9abfa6',[2.366,1.372,.31],[.009,.045,.09],{emissive:0x70c2a0,emissiveIntensity:.32});
+  box('#d3d1bf',[3.04,1.39,.04],[.24,.16,.25]);box('#1a2e29',[3.04,1.472,.04],[.2,.012,.025]);
+  box('#f1edde',[3.04,1.478,.09],[.12,.006,.08]);
+  // Recessed stainless hot-food bath: raised guard, broth, dividers and skewers.
+  box('#a9b0a5',[2.85,1.36,-.57],[.66,.1,.62],metal);
+  box('#7d6640',[2.85,1.418,-.57],[.56,.015,.5],{roughness:.3});
+  for(const xx of [2.67,2.85,3.03])box('#b7c1b2',[xx,1.43,-.57],[.018,.035,.52],metal);
+  for(const zz of [-.72,-.46])box('#b7c1b2',[2.85,1.43,zz],[.57,.035,.018],metal);
+  for(const xx of [2.73,2.97])for(const zz of [-.7,-.44]){
+    r.cylinder(root,'#cdb17b',[xx,1.445,zz],.064,.04);
+    const skewer=box('#b99d68',[xx,1.535,zz],[.008,.2,.008]);skewer.rotation.z=.1;
   }
-  // Microwave and bagging area behind the cashier, clear of the entrance.
-  box('#53675d',[3.72,.83,-1.67],[.8,1.02,.66]);box('#c8cabb',[3.72,1.64,-1.67],[.75,.55,.58]);
-  box('#1d3030',[3.64,1.65,-1.368],[.48,.34,.025]);box('#d6a960',[3.96,1.72,-1.35],[.045,.055,.02],{emissive:0xd5a45e,emissiveIntensity:.4});
-  label('熱食・微波',[3.72,2.08,-1.32],[.75,.14,1],{font:'32px sans-serif'});
-  label('結帳',[2.35,1.02,.72],[.4,.23,1],{bg:'#4b6253',color:'#e0d9bd',font:'42px sans-serif'},-Math.PI/2);
+  for(const xx of [2.52,3.18])box('#afb9ac',[xx,1.61,-.86],[.018,.52,.018],metal);
+  box('#dbe2d4',[2.85,1.87,-.82],[.71,.025,.2],{roughness:.14,metalness:.18});
+  label('關東煮',[2.85,1.76,-.704],[.4,.13,1],{font:'bold 44px sans-serif',bg:'#cdbd91',color:'#4c543b'});
+  label('結帳',[2.397,.92,.72],[.39,.22,1],{bg:'#233b34',color:'#eee5c8',font:'42px sans-serif'},-Math.PI/2);
+  // Back service bench faces into the staff aisle. Coffee and microwave have their own bays.
+  box('#52665a',[3.15,.765,-2.47],[1.94,.91,.78]);
+  box('#cec9b6',[3.15,1.255,-2.47],[2.03,.07,.84],{roughness:.27});
+  for(const xx of [2.56,3.14,3.73]){
+    box('#2a4439',[xx,.83,-2.064],[.015,.74,.018]);
+    box('#a7b3a2',[xx+.15,1.08,-2.05],[.16,.022,.025],metal);
+  }
+  // Microwave: vent slots, dark door, control column and a lit timer.
+  box('#c2c9bb',[2.63,1.58,-2.48],[.77,.55,.61],{roughness:.36,metalness:.2});
+  box('#243b35',[2.54,1.59,-2.164],[.49,.34,.024]);
+  box('#728071',[2.78,1.59,-2.14],[.022,.27,.018],metal);
+  label('00:45',[2.926,1.72,-2.16],[.13,.07,1],{bg:'#21392e',color:'#b3d195',font:'bold 44px Arial'});
+  for(const yy of [1.46,1.54])r.cylinder(root,'#96a792',[2.91,yy,-2.135],.025,.025,metal).rotation.x=Math.PI/2;
+  for(let k=0;k<6;k++)box('#66756a',[2.39+k*.075,1.876,-2.49],[.025,.008,.28]);
+  // Espresso unit: a dedicated back-bar machine, with hoppers, brew head and tray.
+  box('#2d3d36',[3.58,1.59,-2.49],[.56,.59,.53],{roughness:.32,metalness:.3});
+  box('#b2b9aa',[3.58,1.52,-2.205],[.49,.29,.04],metal);
+  box('#253d32',[3.58,1.68,-2.178],[.25,.13,.014],{roughness:.2});
+  label('CITY CAFÉ',[3.58,1.69,-2.168],[.22,.07,1],{bg:'#1e372e',color:'#e8dcb9',font:'bold 38px Arial'});
+  box('#1c2a24',[3.58,1.49,-2.145],[.18,.09,.1],metal);
+  for(const xx of [3.54,3.62])r.cylinder(root,'#b9c3b0',[xx,1.438,-2.1],.012,.07,metal);
+  box('#a8b1a4',[3.58,1.322,-2.1],[.47,.025,.27],metal);
+  for(let k=0;k<9;k++)box('#293a31',[3.39+k*.045,1.337,-2.1],[.012,.007,.22]);
+  for(const xx of [3.44,3.72]){
+    r.cylinder(root,'#5b4e38',[xx,1.96,-2.49],.105,.18,{roughness:.4,metalness:.12});
+    r.cylinder(root,'#303f34',[xx,2.058,-2.49],.115,.025,{roughness:.3});
+  }
+  // A waiting cup under the brew head, with paper sleeve and lid/cup storage beside it.
+  const cupGeo=r.geometry('CylinderGeometry',.048,.035,.1,16);
+  r.mesh(cupGeo,r.material('#f0e6cc',{roughness:.7}),root,[3.58,1.393,-2.09]);
+  r.cylinder(root,'#97774f',[3.58,1.392,-2.09],.045,.04);
+  for(let k=0;k<4;k++)r.mesh(cupGeo,r.material('#e8dfc7'),root,[3.98,1.34+k*.025,-2.39]);
+  r.cylinder(root,'#d8d2bd',[3.98,1.345,-2.67],.065,.08);
+  label('現煮咖啡',[3.58,2.2,-2.19],[.62,.18,1],{bg:'#d0c1a2',color:'#3b523f',font:'bold 48px sans-serif'});
+  label('加熱服務',[2.63,2.08,-2.19],[.73,.14,1],{font:'36px sans-serif'});
   const shadowCanvas=document.createElement('canvas');shadowCanvas.width=shadowCanvas.height=128;const sc=shadowCanvas.getContext('2d'),gradient=sc.createRadialGradient(64,64,15,64,64,63);gradient.addColorStop(0,'rgba(9,17,14,.55)');gradient.addColorStop(1,'rgba(9,17,14,0)');sc.fillStyle=gradient;sc.fillRect(0,0,128,128);
   const shadowMap=r.own(new T.CanvasTexture(shadowCanvas)),shadowMat=r.own(new T.MeshBasicMaterial({map:shadowMap,transparent:true,depthWrite:false}));
   for(const rack of [...racks,{x:2.85,z:.2,w:.9,d:2.1}]){const sh=r.mesh(r.geometry('PlaneGeometry',1,1),shadowMat,root,[rack.x,.315,rack.z],[rack.w+.4,rack.d+.4,1]);sh.rotation.x=-Math.PI/2;}
   // Small perforations and shelf-edge strips supply detail without a wall of boxes.
-  return {racks,entrance:{minX:-1,maxX:.6,z:1.8},cashier:{x:2.85,z:.2},rearAisle:Math.min(...racks.map(rack=>rack.z-rack.d/2+2.005))};
+  const walkObstacles=[...racks,cashier,{x:3.15,z:-2.47,w:1.94,d:.78}];
+  return {racks,entrance:{minX:-1,maxX:.6,z:1.8},cashier,coffee:{x:3.58,z:-2.49},staffAisle:.88,rearAisle:Math.min(...racks.map(rack=>rack.z-rack.d/2+2.005)),obstacles:walkObstacles,walkObstacles};
 }

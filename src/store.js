@@ -3,19 +3,24 @@ import { createSurfaces } from './surfaces.js';
 import { makeThinGlass } from './glass.js';
 import { buildInterior } from './interior.js';
 import { buildTrees } from './trees.js';
+import { buildAutomaticDoors } from './auto-doors.js';
+import { buildStreetProps } from './street-props.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 
 // Original street set. Repeated products, tiles and frames share resources.
 export function buildStore(scene, r) {
   const root = new T.Group();scene.add(root);
   const surfaces=createSurfaces(r);
+  const wetMaterials=new Set();
   const B=(c,p,s,o={})=>{
     let options=o,color=c;
     if(['#637774','#6a807a','#293e43'].includes(c)){options={...surfaces.wall,...o};color=c==='#293e43'?'#78828a':'#d4d0c4';}
     else if(['#64716d','#d2c7a6'].includes(c)){options={...surfaces.pavement,...o};color='#d3d5d0';}
     else if(['#193739','#304c48'].includes(c)){options={roughness:.29,metalness:.42,...o};}
     else if(c==='#9a7953'){options={...surfaces.timber,...o};color='#c4b090';}
-    return r.box(root,color,p,s,options);
+    const mesh=r.box(root,color,p,s,options);
+    if((['#64716d','#d2c7a6','#a1a79a','#92988e','#4c5b57','#4b5c59'].includes(c))&&p[1]<.31){mesh.material.userData.wetPavement=true;wetMaterials.add(mesh.material);}
+    return mesh;
   };
   const text=(str,p,s,options={},rotation=0)=>{const m=r.mesh(r.geometry('PlaneGeometry',1,1),r.label(str,options),root,p,s);m.rotation.y=rotation;return m;};
   const dark='#193739', wall='#637774', trim='#a3afa0', cream='#c7c4ac', green='#155b42';
@@ -70,29 +75,49 @@ export function buildStore(scene, r) {
     B('#34413f',[0,6.02,z],[9.1,.035,.035],{metalness:.6,roughness:.32});
     for(let x=-4.5;x<=4.5;x+=.36)B('#34413f',[x,6.18,z],[.027,.67,.027],{metalness:.6,roughness:.32});
   }
-  const tank=r.cylinder(root,'#77837e',[1.8,6.6,-1.7],.58,1.5,{metalness:.65,roughness:.38});
-  r.cylinder(root,'#a0aaa1',[1.8,7.37,-1.7],.61,.08,{metalness:.7,roughness:.25});
-  for(const y of [5.94,6.65,7.23])r.cylinder(root,'#424e4c',[1.8,y,-1.7],.596,.04,{metalness:.6,roughness:.32});
+  // Two refined stainless tanks, screened by a slatted utility enclosure.
+  for(const tx of [1.15,2.2]){
+    const foot=r.cylinder(root,'#536665',[tx,5.98,-1.7],.49,.18,{metalness:.55,roughness:.35});
+    const geo=r.own(new T.LatheGeometry([new T.Vector2(0,0),new T.Vector2(.37,0),new T.Vector2(.44,.1),new T.Vector2(.45,.2),new T.Vector2(.45,1.2),new T.Vector2(.41,1.3),new T.Vector2(.28,1.38),new T.Vector2(0,1.39)],32));
+    r.mesh(geo,r.material('#a4b5ac',{metalness:.8,roughness:.24}),root,[tx,6.04,-1.7]);
+    for(const y of [6.25,6.7,7.12])r.cylinder(root,'#71877f',[tx,y,-1.7],.459,.022,{metalness:.8,roughness:.22});
+    r.cylinder(root,'#bac4b6',[tx,7.45,-1.7],.15,.04,{metalness:.7,roughness:.27});
+    r.cylinder(root,'#798e84',[tx+.32,6.02,-1.8],.035,.26,{metalness:.6,roughness:.35});
+  }
   B('#5c6865',[-2.1,6.1,-1.5],[1.9,.6,1.4],{roughness:.8});
   for(let z=-2.1;z<-1;z+=.15)B('#293737',[-2.1,6.41,z],[1.65,.03,.04]);
-  // Bright wraparound sign band.
-  B('#e5e2ce',[0,3.09,1.95],[9.15,.63,.38],{emissive:0xd6d4ae,emissiveIntensity:1.4});
-  const stripes=[['#da702d',3.27],['#17784d',3.09],['#d13e35',2.92]];
-  for(const [c,y] of stripes){B(c,[0,y,2.15],[9.1,.12,.025],{emissive:new T.Color(c),emissiveIntensity:1.8});B(c,[4.58,y,-.55],[.03,.12,5.4],{emissive:new T.Color(c),emissiveIntensity:1.5});B(c,[-4.58,y,-.55],[.03,.12,5.4]);}
-  function logoMaterial(tall=false){
-    const canvas=document.createElement('canvas');canvas.width=512;canvas.height=tall?896:512;const c=canvas.getContext('2d');c.fillStyle='#f7f6ee';c.fillRect(0,0,512,canvas.height);
-    c.fillStyle='#e97421';c.font='bold 440px Arial';c.textAlign='center';c.fillText('7',270,385);
-    c.fillStyle='#f7f6ee';c.fillRect(52,246,410,80);c.fillStyle='#08794d';c.font='bold 70px Arial';c.fillText('ELEVEN',256,309);
-    if(tall){c.fillStyle='#d33736';c.fillRect(20,530,472,336);c.fillStyle='#f7f6ee';c.font='bold 72px Arial';c.fillText('ATM',256,659);c.font='40px sans-serif';c.fillText('24 小時營業',256,772);}
-    const map=r.own(new T.CanvasTexture(canvas));map.colorSpace=T.SRGBColorSpace;
-    return r.own(new T.MeshStandardMaterial({map,emissiveMap:map,emissive:0xffffff,emissiveIntensity:.8,roughness:.32}));
+  for(const x of [-.1,3.32])B('#3d5a52',[x,6.58,-1.7],[.045,1.35,2.3],{metalness:.4,roughness:.48});
+  for(let y=6.05;y<7.22;y+=.12)B('#607b6b',[1.61,y,-.55],[3.5,.055,.045],{metalness:.4,roughness:.5});
+  // A continuous fluorescent lightbox, accurate band proportions and inset logo.
+  B('#c8d0bd',[0,3.1,1.96],[9.18,.7,.4],{metalness:.28,roughness:.35});
+  B('#ecefe0',[0,3.1,2.167],[9.03,.59,.015],{emissive:0xe2eacb,emissiveIntensity:1.25,roughness:.25});
+  const stripes=[['#ee812d',3.285],['#158151',3.102],['#d84636',2.925]];
+  for(const [c,y] of stripes){
+    B(c,[0,y,2.181],[9.02,.116,.008],{emissive:new T.Color(c),emissiveIntensity:1.15,roughness:.3});
+    B(c,[4.595,y,-.55],[.018,.116,5.35],{emissive:new T.Color(c),emissiveIntensity:1.1});
+    B(c,[-4.595,y,-.55],[.018,.116,5.35],{emissive:new T.Color(c),emissiveIntensity:.5});
   }
-  B('#ece7cf',[0,3.1,2.19],[1.3,.73,.08],{emissive:0xeee4b9,emissiveIntensity:1.2});
-  r.mesh(r.geometry('PlaneGeometry',1,1),logoMaterial(),root,[0,3.1,2.238],[.73,.69,1]);
-  // Lit blade sign, separate from the dark upper wall.
-  B('#1b3433',[4.65,3.9,1.3],[.18,1.7,.13]);
-  B('#e7e1c3',[5.08,4.05,1.3],[.84,1.96,.24],{emissive:0xecdcc1,emissiveIntensity:1.25});
-  r.mesh(r.geometry('PlaneGeometry',1,1),logoMaterial(true),root,[5.08,4.05,1.429],[.78,1.9,1]);
+  function logoMaterial(tall=false){
+    const canvas=document.createElement('canvas');canvas.width=tall?768:1536;canvas.height=tall?1792:384;const c=canvas.getContext('2d');
+    c.fillStyle='#f6f5e8';c.fillRect(0,0,canvas.width,canvas.height);
+    // The familiar cut seven is drawn as a vector silhouette, not a font glyph.
+    const ox=tall?70:55,oy=tall?90:16,scale=tall?.92:.58;
+    c.save();c.translate(ox,oy);c.scale(scale,scale);
+    c.fillStyle='#ed7a23';c.beginPath();c.moveTo(78,24);c.lineTo(610,24);c.lineTo(610,138);c.lineTo(315,138);c.lineTo(315,201);c.lineTo(78,201);c.closePath();c.fill();
+    c.fillStyle='#d24a35';c.beginPath();c.moveTo(345,160);c.lineTo(580,160);c.lineTo(402,562);c.lineTo(210,562);c.closePath();c.fill();
+    c.fillStyle='#f6f5e8';c.fillRect(18,205,650,109);c.fillStyle='#087d4d';c.textAlign='center';c.font='900 105px Arial';c.fillText('ELEVEN',349,290);c.restore();
+    if(!tall){c.fillStyle='#176d4b';c.textAlign='left';c.font='bold 132px Arial';c.fillText('7-ELEVEN',565,187);c.font='40px sans-serif';c.fillStyle='#637563';c.fillText('OPEN 24 HOURS',570,266);}
+    else{c.fillStyle='#d74436';c.fillRect(32,955,704,780);c.fillStyle='#fbf5e2';c.textAlign='center';c.font='bold 175px Arial';c.fillText('ATM',384,1280);c.font='58px sans-serif';c.fillText('24H · 每一刻都在',384,1480);}
+    const map=r.own(new T.CanvasTexture(canvas));map.colorSpace=T.SRGBColorSpace;map.anisotropy=8;
+    return r.own(new T.MeshStandardMaterial({map,emissiveMap:map,emissive:0xffffff,emissiveIntensity:.8,roughness:.3}));
+  }
+  B('#f3f1df',[0,3.1,2.197],[2.73,.615,.045],{emissive:0xe1e8c8,emissiveIntensity:1});
+  r.mesh(r.geometry('PlaneGeometry',1,1),logoMaterial(),root,[0,3.1,2.224],[2.66,.57,1]);
+  // Double-faced projecting lightbox and visible mounting brackets.
+  for(const y of [3.58,4.77])B('#435a50',[4.78,y,1.3],[.75,.055,.07],{metalness:.6,roughness:.32});
+  B('#798f7e',[5.08,4.12,1.3],[.97,2.24,.24],{metalness:.6,roughness:.3});
+  B('#e9e9d7',[5.08,4.12,1.43],[.9,2.16,.025],{emissive:0xf0e8c9,emissiveIntensity:1});
+  for(const [z,rotation] of [[1.451,0],[1.169,Math.PI]])r.mesh(r.geometry('PlaneGeometry',1,1),logoMaterial(true),root,[5.08,4.12,z],[.87,2.11,1]).rotation.y=rotation;
   // Canopy with an illuminated underside. Slender supports frame the actors.
   B('#24332f',[0,2.79,2.23],[9.65,.09,1.28],{roughness:.24,metalness:.35});
   B('#49746a',[0,2.7,2.87],[9.72,.12,.08],{roughness:.3});
@@ -105,11 +130,14 @@ export function buildStore(scene, r) {
     B(dark,[x,.45,1.74],[width,.26,.18]);B(cream,[x,.59,1.79],[width,.055,.23],{metalness:.45,roughness:.3});
     glassMeshes.push(r.mesh(r.geometry('PlaneGeometry',1,1),glass,root,[x,1.65,1.84],[width,2.08,1]));
   }
-  // Separate sliding entrance: no opaque sill or rack across the opening.
-  for(const x of [-.62,.18])glassMeshes.push(r.mesh(r.geometry('PlaneGeometry',1,1),glass,root,[x,1.48,1.86],[.78,2.3,1]));
+  // Separate automatic entrance: the leaves slide behind the fixed display panes.
+  const automaticDoors=buildAutomaticDoors(root,r,glass,glassMeshes);
   for(const x of [-4.23,-1.02,.6,4.23])B(dark,[x,1.68,1.88],[.06,2.2,.065]);
-  for(const x of [-.25,-.12])B('#c2c6ac',[x,1.45,1.93],[.022,.32,.035],{metalness:.7,roughness:.25});
-  B('#b8a870',[-.22,.98,1.89],[1.59,.045,.014]);
+  // Printed promotions cover a modest part of the glass and leave the centre clear.
+  text('今晚，熱一點。',[-3.48,2.12,1.869],[.72,.38,1],{width:768,height:384,font:'bold 70px sans-serif',bg:'#174b42',color:'#f0deb5'});
+  text('鮮食・每日到店',[-3.48,1.61,1.87],[.72,.56,1],{width:512,height:512,font:'bold 47px sans-serif',bg:'#e5c788',color:'#365147'});
+  text('CITY CAFE',[3.53,2.12,1.87],[.66,.42,1],{width:768,height:384,font:'bold 88px Arial',bg:'#695544',color:'#f0e7d4'});
+  text('第二杯  咖啡時光',[3.53,1.61,1.87],[.66,.51,1],{width:768,height:512,font:'bold 62px sans-serif',bg:'#d9cfad',color:'#4e624e'});
   const sideGlass=r.mesh(r.geometry('PlaneGeometry',1,1),glass,root,[4.43,1.65,-.72],[4.45,2.08,1]);sideGlass.rotation.y=Math.PI/2;glassMeshes.push(sideGlass);
   for(const x of [-2.85,0,2.85])glassMeshes.push(r.mesh(r.geometry('PlaneGeometry',1,1),glass,root,[x,4.58,1.95],[1.64,1.12,1]));
   const floorPlan=buildInterior(root,r,surfaces,glass,glassMeshes);
@@ -126,14 +154,19 @@ export function buildStore(scene, r) {
     const sconce=new T.PointLight(0xffc584,2,2.4,2);sconce.position.set(x,4.75,2.13);root.add(sconce);
   }
   // Sidewall utility details, vent, condenser and downpipe.
-  B('#abb5a4',[4.47,4.44,-1.2],[.25,.85,1.27]);
-  for(let i=0;i<8;i++)B('#5c7068',[4.61,4.14+i*.08,-1.2],[.02,.024,1.1]);
   const pipe=r.cylinder(root,'#4b6f65',[4.64,2.83,-2.55],.055,5.3,{metalness:.3});
   B('#3d5b54',[4.65,.32,-2.36],[.11,.11,.4]);
-  // Outside seating, food bag and hot drink. Reserved for later story blocking.
+  // A street bench has slatted seat and back, cast legs, armrests and real fasteners.
   const bench=new T.Group();bench.position.set(2.75,.25,2.65);root.add(bench);
-  for(const z of [-.22,0,.22])r.box(bench,'#9a7953',[0,.52,z],[2,.09,.16],{roughness:.6});
-  for(const x of [-.75,.75])r.box(bench,'#31443b',[x,.27,0],[.08,.5,.48]);
+  for(const z of [-.22,-.075,.075,.22])r.box(bench,'#9a7953',[0,.52,z],[2,.075,.125],{...surfaces.timber,roughness:.5});
+  for(const y of [.75,.95,1.15])r.box(bench,'#9a7953',[0,y,-.24],[2,.115,.065],{...surfaces.timber,roughness:.53});
+  for(const x of [-.78,.78]){
+    r.box(bench,'#31443b',[x,.28,0],[.075,.5,.47],{metalness:.55,roughness:.4});
+    r.box(bench,'#31443b',[x,.83,-.27],[.075,.77,.075],{metalness:.55,roughness:.4});
+    r.box(bench,'#31443b',[x,.77,.02],[.065,.055,.56],{metalness:.55,roughness:.4});
+    r.box(bench,'#31443b',[x,.66,.25],[.065,.22,.065],{metalness:.55,roughness:.4});
+    for(const z of [-.2,.2])r.cylinder(bench,'#92a18e',[x,.563,z],.014,.004,{metalness:.7,roughness:.25});
+  }
   B('#bba578',[3.25,1.01,2.61],[.38,.48,.25]);
   const handle=r.mesh(r.geometry('TorusGeometry',.1,.014,5,14),r.material('#bba578'),root,[3.25,1.29,2.61]);
   r.cylinder(root,'#e5d0a6',[2.7,.91,2.62],.09,.22);r.cylinder(root,'#3c4338',[2.7,1.025,2.62],.096,.024);
@@ -148,7 +181,7 @@ export function buildStore(scene, r) {
   text('DRINK',[-5.2,2.02,1.06],[.7,.23,1],{font:'bold 62px Arial',height:128,bg:'#405a53',color:'#e5d9af'});
   for(let x=0;x<3;x++)for(let y=0;y<3;y++)B(productColors[(x+y)%7],[-5.42+x*.22,.98+y*.27,1.083],[.11,.2,.015]);
   B('#263933',[-5.2,.53,1.06],[.52,.18,.03]);
-  for(const x of [5.3,5.95]){r.cylinder(root,'#455f57',[x,.65,2.8],.25,.85);r.cylinder(root,'#82907c',[x,1.08,2.8],.27,.08);}
+
   buildTrees(root,r);
   // Crossing runs across the front road, from z=4.9 to z=11.65.
   for(let i=0;i<9;i++)B('#c8c9b9',[-5.25,-.004,5.38+i*.69],[2.1,.012,.34],{roughness:.6});
@@ -163,7 +196,8 @@ export function buildStore(scene, r) {
     B('#293e43',[x,h/2-.1,z],[w,h,d]);B('#23393c',[x,h+.05,z],[w+.3,.18,d+.3]);
     for(let y=2;y<h-1;y+=1.7)for(let dx=-w/2+.6;dx<w/2;dx+=1.3)B('#607b70',[x+dx,y,z+d/2+.02],[.55,.75,.025],{emissive:0x70876a,emissiveIntensity:((y+dx)%3)>.8?.13:0});
   }
-  // Fine utility cables, not a collision or walking system.
+  buildStreetProps(root,r,surfaces);
+  // Fine utility cables frame the back street.
   for(const z of [-3.7,-3.9]){
     const curve=new T.QuadraticBezierCurve3(new T.Vector3(-10,7,z),new T.Vector3(0,5.4,z),new T.Vector3(10,7,z));
     const geo=r.own(new T.TubeGeometry(curve,32,.012,3,false));r.mesh(geo,r.material('#172c32'),root);
@@ -173,11 +207,11 @@ export function buildStore(scene, r) {
   root.updateMatrixWorld(true);
   const batches=new Map(), sources=[];
   root.traverse(mesh=>{
-    if(!mesh.isMesh||mesh.material===glass||mesh.isInstancedMesh||mesh.material.transparent||mesh.material.transmission>0)return;
+    if(!mesh.isMesh||mesh.userData.dynamic||mesh.material===glass||mesh.isInstancedMesh||mesh.material.transparent||mesh.material.transmission>0)return;
     const geometry=mesh.geometry.clone().applyMatrix4(mesh.matrixWorld);
     const list=batches.get(mesh.material)||[];list.push(geometry);batches.set(mesh.material,list);sources.push(mesh);
   });
   for(const mesh of sources)mesh.removeFromParent();
   for(const [material,geometries] of batches){const merged=mergeGeometries(geometries);if(merged){const mesh=new T.Mesh(r.own(merged),material);mesh.castShadow=true;mesh.receiveShadow=true;root.add(mesh);}for(const g of geometries)g.dispose();}
-  return {root,glass,glassMeshes,spill,floorPlan};
+  return {root,glass,glassMeshes,spill,floorPlan,wetMaterials:[...wetMaterials],walkObstacles:floorPlan.obstacles||floorPlan.racks,doors:automaticDoors,triggerDoor:()=>automaticDoors.triggerDoor(),update:(t,delta,actorPosition)=>automaticDoors.update(t,delta,actorPosition)};
 }

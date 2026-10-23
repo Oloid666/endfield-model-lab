@@ -1,0 +1,284 @@
+{
+  "url": "http://127.0.0.1:4173/",
+  "browser": "Desktop Chromium / SwiftShader",
+  "real_iphone_test": false,
+  "checks": [
+    {
+      "name": "HDR multisample and FXAA active",
+      "passed": true,
+      "detail": {
+        "aa": {
+          "msaa": 4,
+          "fxaa": true,
+          "dpr": 1
+        },
+        "glass": true,
+        "cloth": 58,
+        "minZoom": 0.75
+      }
+    },
+    {
+      "name": "Shared glass depth ready",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "58 secondary cloth joints",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Closer zoom available",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Portrait no overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Detail hides large caption",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "No WebGL framebuffer error",
+      "passed": true,
+      "detail": 0
+    },
+    {
+      "name": "Low quality keeps AA",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "High quality and glass remain valid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Door opens for nearby actor",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Door closes after actor leaves",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Walking moves the actual model",
+      "passed": true,
+      "detail": {
+        "before": [
+          -1.25,
+          0.32,
+          2.48
+        ],
+        "after": [
+          0.12640493381747336,
+          0.32,
+          2.48
+        ],
+        "pose": {
+          "head": [
+            -0.09842409537631852,
+            -0.000255881447235824,
+            -0.0007142914634575166,
+            0.9951442986095587
+          ],
+          "wrist": [
+            0.22893311083316803,
+            0.4324272871017456,
+            0.8651455640792847,
+            0.11008815467357635
+          ],
+          "hip": [
+            -0.9973103596539548,
+            0.005455208318856181,
+            0.002878452973545188,
+            0.07303425080785178
+          ],
+          "knee": [
+            -0.022203717350830023,
+            0.0004141725003498826,
+            -0.00022292331716403796,
+            0.99975335642831
+          ],
+          "cloth": [
+            -0.008040138559410395,
+            -0.0008438335118506634,
+            -0.000649165559725619,
+            0.9999671108097312
+          ]
+        }
+      }
+    },
+    {
+      "name": "Walk toggle and keyboard usable",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Walking can stop",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Story starts with Dragon",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Tap reveals full current line",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Three dinner choices A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Dinner choice waits without timeout",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Dinner prop A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Distinct ending A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Ending remains alive A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Three dinner choices B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Dinner prop B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Distinct ending B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Ending remains alive B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Three dinner choices C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Dinner prop C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Distinct ending C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Ending remains alive C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Three distinct prop choices",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Hotspot response accepted after ending",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "No overlapping hotspot response",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Drag does not trigger a response",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Replay does not duplicate story UI",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Ending real 60s observation",
+      "passed": true,
+      "detail": {
+        "seconds": 60.13,
+        "frames": 29,
+        "phases": [
+          "idle",
+          "idle",
+          "chat",
+          "chat",
+          "chat",
+          "idle",
+          "idle",
+          "idle",
+          "chat",
+          "chat",
+          "idle",
+          "idle"
+        ]
+      }
+    },
+    {
+      "name": "Postending chatter runs",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Landscape no overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Only one canvas",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Context lost has recovery prompt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Context restores glass and single canvas",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "No JavaScript or shader errors",
+      "passed": true,
+      "detail": []
+    }
+  ],
+  "software_render_fps": 0.4822924067521693,
+  "passed": true,
+  "errors": []
+}

@@ -3,13 +3,14 @@ import * as T from 'three';
 // A small original fan model, adapted from the permitted dragon-only reference.
 // Eyes are painted on a curved surface. The rest of the racing props are excluded.
 export function buildDragon(r) {
-  const root=new T.Group(),body=new T.Group();root.add(body);
+  const root=new T.Group(),body=new T.Group();root.add(body);root.name='dragon';root.userData.hotspot='dragon';
+  const foodMount=new T.Group();foodMount.position.set(0,.42,.53);body.add(foodMount);
   const sphere=r.geometry('SphereGeometry',1,20,16);
   const white=r.material('#e0e4cc',{roughness:.74});
   const part=(mat,p,s,parent=body)=>r.mesh(sphere,mat,parent,p,s);
   part(white,[0,.63,0],[.56,.59,.49]);
-  for(const side of [-1,1]){
-    part(white,[side*.23,.14,.12],[.15,.14,.17]);
+  const feet=[];for(const side of [-1,1]){
+    feet.push(part(white,[side*.23,.14,.12],[.15,.14,.17]));
     const horn=r.mesh(r.geometry('ConeGeometry',.12,.48,10),r.material('#bf9e52',{roughness:.48}),body,[side*.32,1.17,-.02]);horn.rotation.z=side*-.32;
   }
   const arms=[];for(const side of [-1,1])arms.push(part(white,[side*.53,.43,.07],[.16,.11,.15]));
@@ -35,14 +36,17 @@ export function buildDragon(r) {
     vertices.push(x,.64+y,z);uv.push(u,1-v);if(row&&col){const i=row*13+col;index.push(i-14,i-1,i-13,i-13,i-1,i);}
   }
   const geo=r.own(new T.BufferGeometry());geo.setAttribute('position',new T.Float32BufferAttribute(vertices,3));geo.setAttribute('uv',new T.Float32BufferAttribute(uv,2));geo.setIndex(index);geo.computeVertexNormals();r.mesh(geo,material,body);
-  return {root,update(t,s={}){
+  root.traverse(n=>n.userData.hotspot='dragon');
+  return {root,foodMount,update(t,s={}){
     const blink=Math.max(0,1-Math.abs((t+.7)%4.3-.15)/.11);
     material.map=maps[blink>.3?1:(s.nod||0)>.15?2:0];
-    const curiosity=s.curious||0,startle=s.startle||0,attention=s.dragon||0;
-    body.rotation.set(curiosity*.11-startle*.12,attention*.3+(s.rain||0)*.15,curiosity*-.05+startle*.11);
+    const gesture=s.gestureAmount||0,happy=s.gesture==='happy'?gesture:0,wave=s.gesture==='wave'?gesture:0,point=s.gesture==='point'?gesture:0,roll=s.gesture==='roll'?gesture:0,nod=s.gesture==='nod'?gesture:0;
+    const curiosity=s.curious||0,startle=Math.max(s.startle||0,s.gesture==='rain'?gesture*.7:0),attention=s.dragon||0,walk=s.walk||0;
+    body.rotation.set(curiosity*.11-startle*.12+walk*.035+nod*Math.sin(t*7)*.06,attention*.3+(s.rain||0)*.15,curiosity*-.05+startle*.11+walk*Math.sin(s.walkPhase||0)*.045+happy*Math.sin(gesture*Math.PI)*.28+roll*Math.PI);
     body.scale.set(1+startle*.035,1-startle*.075,1+startle*.035);
-    root.position.x=-.82+startle*.12;root.position.y=.005;
-    arms[0].rotation.z=-curiosity*.3+startle*.45;arms[1].rotation.z=attention*.22-startle*.45;
+    root.position.y=.005;
+    arms[0].rotation.z=-curiosity*.3+startle*.45-(s.holding?.28:0);arms[1].rotation.z=attention*.22-startle*.45+(s.holding?.28:0)+wave*Math.sin(t*9)*.45+point*.8;
+    for(let i=0;i<feet.length;i++){const stride=Math.sin((s.walkPhase||0)+i*Math.PI);feet[i].position.z=.12+walk*stride*.11;feet[i].position.y=.14+walk*Math.max(0,stride)*.06;feet[i].rotation.x=walk*stride*.22;}
     tail.rotation.z=Math.sin(t*1.1)*.045+curiosity*.13;
   },dispose(){root.removeFromParent();}};
 }

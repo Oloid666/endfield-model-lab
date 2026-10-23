@@ -1,0 +1,127 @@
+import * as T from 'three';
+import { config } from './config.js';
+import { sampleIdle } from './idle.js';
+import { buildDragon } from './companion.js';
+import { makeLocomotion } from './locomotion.js';
+import { buildMeals } from './meal-props.js';
+
+const aliases={look:'player',lookPlayer:'player',lookDragon:'dragon',lookGoods:'goods',lookPhone:'phone',receiveBag:'receive',holdFood:'hold',shakeHead:'shake',adjustSleeve:'sleeve',rainStartle:'rain',celebrate:'happy',bow:'nod',sigh:'exhale',hug:'hold',protect:'hold',offer:'receive'};
+
+export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gltf}){
+  function remember(key,bone){
+    if(!bone)return;const inverse=bone.getWorldQuaternion(new T.Quaternion()).invert();
+    poses[key]={bone,rest:bone.position.clone(),q:bone.quaternion.clone(),x:new T.Vector3(1,0,0).applyQuaternion(inverse),y:new T.Vector3(0,1,0).applyQuaternion(inverse),z:new T.Vector3(0,0,1).applyQuaternion(inverse)};
+  }
+  // Finger roots are selected by verified GLB node IDs. Names in this asset are damaged.
+  const fingers=[];for(const [i,id]of [349,353,357,361,396,400,404,408].entries()){const key=`finger${i}`;remember(key,byId(id));if(poses[key])fingers.push(key);}
+  const secondary=[];
+  for(const bone of bones){
+    const name=bone.name,id=gltf.parser.associations.get(bone)?.nodes;
+    const chain=/clothes_base_.*__jnt(\d+)_/.exec(name)||/hair_base_.*__jnt(\d+)_/.exec(name);
+    const ribbon=/clothes_ribbon_.*_0[12]_jnt_/.test(name),sleeve=/sleeve_base_/.test(name);
+    // One joint out of four along the long chains. Small rotations, no cloth solver.
+    if((chain&&Number(chain[1])%4===2)||ribbon||sleeve){
+      const key=`secondary${id}`;remember(key,bone);secondary.push({key,id,type:name.startsWith('hair')?'hair':ribbon?'ribbon':sleeve?'sleeve':'cloth',weight:chain?Math.min(1,Number(chain[1])/10):1});
+    }
+  }
+  const quaternion=new T.Quaternion(),axis=new T.Quaternion();
+  function pose(name,pitch=0,yaw=0,roll=0){const p=poses[name];if(p){quaternion.setFromAxisAngle(p.x,pitch).multiply(axis.setFromAxisAngle(p.y,yaw)).multiply(axis.setFromAxisAngle(p.z,roll));p.bone.quaternion.copy(p.q).multiply(quaternion);}}
+  const dragon=buildDragon(r);dragon.root.scale.setScalar(.59);dragon.root.position.set(-.82,.005,.09);dragon.root.rotation.y=.15;root.add(dragon.root);
+  const meal=buildMeals(r,root),dragonMeal=buildMeals(r,dragon.foodMount,.68);meal.setDinner(null);dragonMeal.setDinner(null);
+  const phone=new T.Group();phone.name='phone';phone.userData.hotspot='phone';root.add(phone);
+  r.box(phone,'#1a272b',[0,0,0],[.075,.145,.012],{roughness:.25,metalness:.45});
+  const screen=r.box(phone,'#9dbbc4',[0,.002,.008],[.063,.118,.004],{emissive:0x6d9fa8,emissiveIntensity:.4,roughness:.2});
+  for(let i=0;i<3;i++)r.box(phone,'#d9e1d4',[0,.027-i*.024,.011],[.045,.004,.002],{emissive:0x798e85,emissiveIntensity:.2});
+  phone.traverse(n=>n.userData.hotspot='phone');phone.visible=false;
+  const canvas=document.createElement('canvas');canvas.width=canvas.height=128;const c=canvas.getContext('2d'),gradient=c.createRadialGradient(64,64,5,64,64,63);gradient.addColorStop(0,'rgba(5,15,19,.65)');gradient.addColorStop(1,'rgba(5,15,19,0)');c.fillStyle=gradient;c.fillRect(0,0,128,128);
+  const shadowMap=r.own(new T.CanvasTexture(canvas)),shadowMaterial=r.own(new T.MeshBasicMaterial({map:shadowMap,transparent:true,depthWrite:false}));
+  const shadows=[];for(const [x,s]of [[0,.7],[-.82,.53]]){const shadow=r.mesh(r.geometry('PlaneGeometry',1,1),shadowMaterial,root,[x,.006,.04],[s,.48,1]);shadow.rotation.x=-Math.PI/2;shadows.push(shadow);}
+  scene.add(root);root.updateMatrixWorld(true);
+  const locomotion=makeLocomotion(root,pivot),idle={};let raining=true,dinner=null,lastTime=0,lastWalking=false;
+  const gesture={name:'',start:-100,speaker:''};
+  const feet=['L','R'].map(side=>({side,hip:poses['hip'+side]?.bone,knee:poses['knee'+side]?.bone,foot:poses['foot'+side]?.bone,target:new T.Vector3(),local:new T.Vector3(),orientation:new T.Quaternion(),localOrientation:new T.Quaternion()}));
+  const pivotInverse=pivot.getWorldQuaternion(new T.Quaternion()).invert();
+  for(const leg of feet)if(leg.foot){leg.foot.getWorldPosition(leg.target);leg.local.copy(leg.target);pivot.worldToLocal(leg.local);leg.foot.getWorldQuaternion(leg.orientation);leg.localOrientation.copy(pivotInverse).multiply(leg.orientation);leg.upperLength=leg.hip.getWorldPosition(new T.Vector3()).distanceTo(leg.knee.getWorldPosition(new T.Vector3()));leg.lowerLength=leg.knee.getWorldPosition(new T.Vector3()).distanceTo(leg.target);}
+  const jointPosition=new T.Vector3(),footPosition=new T.Vector3(),toFoot=new T.Vector3(),toTarget=new T.Vector3(),handPosition=new T.Vector3(),rootQuaternion=new T.Quaternion();
+  const deltaQuaternion=new T.Quaternion(),worldQuaternion=new T.Quaternion(),parentQuaternion=new T.Quaternion();
+  const desiredKnee=new T.Vector3(),kneePosition=new T.Vector3(),pole=new T.Vector3(),legDirection=new T.Vector3(),targetDirection=new T.Vector3();
+  const pelvis=poses.pelvis,parentScale=pelvis?.bone.parent.getWorldScale(new T.Vector3())||new T.Vector3(1,1,1);
+  const inverseParent=pelvis?.bone.parent.getWorldQuaternion(new T.Quaternion()).invert()||new T.Quaternion();
+  const shiftAxis=new T.Vector3(1,0,0).applyQuaternion(inverseParent).divide(parentScale),downAxis=new T.Vector3(0,-1,0).applyQuaternion(inverseParent).divide(parentScale);
+  const footNames=['hipL','kneeL','footL','hipR','kneeR','footR'];
+  function pinFeet(){
+    for(const leg of feet){
+      if(!leg.hip||!leg.knee||!leg.foot)continue;
+      if(status.moving){
+        // Analytic knee placement handles toe clearance even at a straight-leg pose.
+        leg.hip.getWorldPosition(jointPosition);legDirection.copy(leg.target).sub(jointPosition);
+        const distance=Math.max(.05,Math.min(leg.upperLength+leg.lowerLength-.0001,legDirection.length()));legDirection.normalize();
+        const along=(leg.upperLength**2-leg.lowerLength**2+distance**2)/(2*distance),height=Math.sqrt(Math.max(0,leg.upperLength**2-along**2));
+        pole.set(Math.sin(status.heading),0,Math.cos(status.heading));pole.addScaledVector(legDirection,-pole.dot(legDirection)).normalize();
+        desiredKnee.copy(jointPosition).addScaledVector(legDirection,along).addScaledVector(pole,height);
+        leg.knee.getWorldPosition(kneePosition);toFoot.copy(kneePosition).sub(jointPosition).normalize();toTarget.copy(desiredKnee).sub(jointPosition).normalize();
+        deltaQuaternion.setFromUnitVectors(toFoot,toTarget);leg.hip.getWorldQuaternion(worldQuaternion);worldQuaternion.premultiply(deltaQuaternion);leg.hip.parent.getWorldQuaternion(parentQuaternion).invert();leg.hip.quaternion.copy(parentQuaternion.multiply(worldQuaternion));leg.hip.updateWorldMatrix(false,true);
+        leg.knee.getWorldPosition(jointPosition);leg.foot.getWorldPosition(footPosition);toFoot.copy(footPosition).sub(jointPosition).normalize();targetDirection.copy(leg.target).sub(jointPosition).normalize();
+        deltaQuaternion.setFromUnitVectors(toFoot,targetDirection);leg.knee.getWorldQuaternion(worldQuaternion);worldQuaternion.premultiply(deltaQuaternion);leg.knee.parent.getWorldQuaternion(parentQuaternion).invert();leg.knee.quaternion.copy(parentQuaternion.multiply(worldQuaternion));leg.knee.updateWorldMatrix(false,true);
+      }else{
+        for(let iteration=0;iteration<3;iteration++)for(const joint of [leg.knee,leg.hip]){
+          joint.getWorldPosition(jointPosition);leg.foot.getWorldPosition(footPosition);toFoot.copy(footPosition).sub(jointPosition).normalize();toTarget.copy(leg.target).sub(jointPosition).normalize();
+          deltaQuaternion.setFromUnitVectors(toFoot,toTarget);joint.getWorldQuaternion(worldQuaternion);worldQuaternion.premultiply(deltaQuaternion);joint.parent.getWorldQuaternion(parentQuaternion).invert();joint.quaternion.copy(parentQuaternion.multiply(worldQuaternion));joint.updateWorldMatrix(false,true);
+        }
+      }
+      leg.foot.parent.getWorldQuaternion(parentQuaternion).invert();leg.foot.quaternion.copy(parentQuaternion.multiply(leg.orientation));leg.foot.updateWorldMatrix(false,true);
+    }
+  }
+  function settleFeet(){root.updateMatrixWorld(true);for(const leg of feet)if(leg.foot){leg.foot.getWorldPosition(leg.target);leg.foot.getWorldQuaternion(leg.orientation);}}
+  const status={phase:0,action:'settle',footDrift:0,moving:false,speed:0,distance:0,clothJoints:secondary.length,dinner:null,gesture:''};
+  const api={root,status,supported:Object.keys(config.zhuangNodes).every(name=>poses[name]),
+    get position(){return root.position;},get moving(){return status.moving;},
+    get poseData(){return {head:poses.head?.bone.quaternion.toArray(),wrist:poses.wristL?.bone.quaternion.toArray(),hip:poses.hipL?.bone.quaternion.toArray(),knee:poses.kneeL?.bone.quaternion.toArray(),cloth:secondary.length?poses[secondary[0].key].bone.quaternion.toArray():null};},
+    setRain(value){raining=value;},setMove:(x,z,enabled=true)=>locomotion.setMove(x,z,enabled),setObstacles:layout=>locomotion.setObstacles(layout),
+    setGesture(name,node={}){gesture.name=aliases[name]||String(name||'');gesture.start=lastTime;gesture.speaker=node.speaker||'';},
+    setDinner(value){dinner=['A','B','C'].includes(String(value).toUpperCase())?String(value).toUpperCase():null;meal.setDinner(dinner);dragonMeal.setDinner(dinner);status.dinner=dinner;},
+    teleport(x,z){const success=locomotion.teleport(x,z);if(success){lastWalking=true;api.update(lastTime,0);}return success;},
+    update(t,delta=0){
+      lastTime=t;const motion=locomotion.update(delta),walk=motion.amount,walking=motion.moving;
+      sampleIdle(t,idle);if(!raining){idle.rain=0;idle.startle=0;}
+      const elapsed=t-gesture.start,g=T.MathUtils.smoothstep(elapsed,0,.3)*(1-T.MathUtils.smoothstep(elapsed,2.1,2.75));
+      const dragonSpeaker=gesture.speaker==='dragon'||gesture.speaker==='龍泡泡'||gesture.speaker==='龍';
+      const gest=name=>!dragonSpeaker&&gesture.name===name?g:0;
+      const sleeve=Math.max(idle.sleeve,gest('sleeve')),attention=Math.max(idle.dragon,gest('dragon')),goods=Math.max(idle.goods,gest('goods')),rain=Math.max(idle.rain,gest('rain'));
+      const phoneLook=Math.max(idle.phone||0,gest('phone')),hold=dinner?1:Math.max(gest('hold'),gest('receive'),gest('eat'));
+      const nod=Math.max(idle.nod,gest('nod')*Math.sin(elapsed*5)),shake=gest('shake')*Math.sin(elapsed*6.3),point=gest('point'),wave=gest('wave'),player=gest('player'),exhale=Math.max(idle.exhale,gest('exhale'));
+      Object.assign(status,{phase:idle.phase,gesture:g>.01?gesture.name:'',moving:walking,speed:motion.speed,distance:motion.distance,walkPhase:motion.phase,walkBlend:walk,heading:motion.heading});
+      status.action=walking?'walking':g>.1?gesture.name:idle.startle>.1?'rain-response':sleeve>.1?'adjust-sleeve':attention>.1?'look-at-dragon':goods>.1?'look-at-display':'rest';
+      for(const name of footNames)poses[name]?.bone.quaternion.copy(poses[name].q);
+      const stride=Math.sin(motion.phase),breathe=Math.sin(t*1.17)*.007+Math.sin(t*.53)*.003;
+      if(pelvis){pelvis.bone.position.copy(pelvis.rest).addScaledVector(shiftAxis,idle.shift*.009*(1-walk)).addScaledVector(downAxis,idle.shift*.002+walk*(.012+.008*Math.cos(motion.phase*2)));pose('pelvis',walk*.015,walk*stride*.025,idle.shift*.009*(1-walk)+walk*stride*.018);}
+      pose('spine',breathe-exhale*.022-phoneLook*.045+walk*.025,-goods*.035-walk*stride*.035,-idle.shift*.004);
+      pose('head',.015+attention*.17+nod*.065-rain*.065+phoneLook*.12,-attention*.35-goods*.25+rain*.15+shake*.12,-player*.025+Math.sin(t*.27)*.008);
+      const sway=Math.sin(t*.63)*.012;
+      pose('armL',.025+sleeve*.12+hold*.36-walk*stride*.22,.04,-.88+sleeve*.12+hold*.26+point*.23);
+      pose('armR',-.015+sleeve*.12+phoneLook*.32+point*.12+walk*stride*.22,-.035,.9-sleeve*.1-phoneLook*.28-wave*.48-point*.24+sway);
+      pose('elbowL',.08+sleeve*.32+hold*.78+point*.2,.015,.025+sleeve*.13+hold*.12);pose('wristL',sleeve*.1+hold*.13,hold*.08,sleeve*.1-hold*.08);
+      pose('elbowR',.08+sleeve*.25+phoneLook*.9+wave*.65+point*.1,0,-.035-sleeve*.09-phoneLook*.08);pose('wristR',.015+sleeve*.06+phoneLook*.16,0,-sleeve*.08+wave*Math.sin(elapsed*8)*.2);
+      for(let i=0;i<fingers.length;i++)pose(fingers[i],hold*.075+phoneLook*.04+Math.sin(t*.41+i)*.035,0,0);
+      const eye=-Math.max(idle.goodsEyes,goods)*.13-Math.max(idle.dragonEyes,attention)*.14+rain*.06;pose('eyeL',0,eye);pose('eyeR',0,eye);
+      for(const p of eyelids)p.b.position.lerpVectors(p.rest,p.target,idle.blink);
+      for(const s of secondary){const phase=s.id*.51,wind=Math.sin(t*.81-phase)*.6+Math.sin(t*1.37-phase*.2)*.4,amplitude=s.type==='ribbon'?.021:s.type==='sleeve'?.018:s.type==='hair'?.012:.006;pose(s.key,wind*amplitude*s.weight+walk*Math.sin(motion.phase-.75-phase*.1)*amplitude*1.7,0,Math.sin(t*.56-phase)*amplitude*.6*s.weight);}
+      root.updateMatrixWorld(true);
+      if(walking){
+        pivot.getWorldQuaternion(rootQuaternion);
+        for(let i=0;i<feet.length;i++){const leg=feet[i],cycle=motion.phase+i*Math.PI;leg.target.copy(leg.local);leg.target.z+=Math.sin(cycle)*.155*walk;leg.target.y+=Math.max(0,Math.cos(cycle))*.075*walk;pivot.localToWorld(leg.target);leg.orientation.copy(rootQuaternion).multiply(leg.localOrientation);pose('hip'+leg.side,Math.sin(cycle)*.21*walk);pose('knee'+leg.side,-Math.max(0,Math.cos(cycle))*.35*walk);}
+        root.updateMatrixWorld(true);
+      }else if(lastWalking)settleFeet();
+      pinFeet();status.footDrift=0;for(const leg of feet)if(leg.foot)status.footDrift=Math.max(status.footDrift,leg.foot.getWorldPosition(footPosition).distanceTo(leg.target));lastWalking=walking;
+      idle.dragon=attention;idle.rain=rain;idle.nod=Math.max(idle.nod,gest('happy'));idle.walk=walk;idle.walkPhase=motion.phase;idle.gesture=status.gesture;idle.gestureAmount=g;idle.holding=!!dinner;dragon.update(t,idle);
+      const followX=-.76*Math.cos(motion.heading)-.27*Math.sin(motion.heading)*walk,followZ=.76*Math.sin(motion.heading)-.27*Math.cos(motion.heading)*walk,follow=delta>0?1-Math.exp(-Math.min(delta,.06)*7):1;
+      dragon.root.position.x=T.MathUtils.lerp(dragon.root.position.x,followX+(idle.startle||0)*.12,follow);dragon.root.position.z=T.MathUtils.lerp(dragon.root.position.z,followZ,follow);dragon.root.rotation.y=T.MathUtils.lerp(dragon.root.rotation.y,motion.heading+attention*.3,follow);
+      shadows[1].position.x=dragon.root.position.x;shadows[1].position.z=dragon.root.position.z;root.updateMatrixWorld(true);
+      if(poses.wristL){poses.wristL.bone.getWorldPosition(handPosition);root.worldToLocal(handPosition);meal.mount.position.copy(handPosition);meal.mount.position.y+=.015;meal.mount.position.z+=.04;meal.mount.rotation.set(-.06,motion.heading,0);}
+      phone.visible=phoneLook>.06;
+      if(phone.visible&&poses.wristR){poses.wristR.bone.getWorldPosition(handPosition);root.worldToLocal(handPosition);phone.position.copy(handPosition);phone.position.y+=.055;phone.position.z+=.025;phone.rotation.set(-.23,motion.heading+.1,-.08);screen.material.emissiveIntensity=.35+phoneLook*.7;}
+    },
+    dispose(){for(const p of Object.values(poses)){p.bone.quaternion.copy(p.q);p.bone.position.copy(p.rest);}for(const p of eyelids)p.b.position.copy(p.rest);root.removeFromParent();},
+  };
+  api.update(0,0);return api;
+}
