@@ -92,7 +92,8 @@ export class World {
   setWalking(value){const was=this.walkCamera.enabled;this.walkCamera.setEnabled(value,this.actors?.position);if(was&&!value)this.manualUntil=this.time+14;if(value){this.manualUntil=this.time;this.transition=null;this.currentView=null;this.onManualView();this.weather.invalidateReflection();}}
   projectPoint(point){const p=new T.Vector3().fromArray(point).project(this.camera);return p.toArray();}
   tick(t,delta=.016,render=true){
-    this.time=t;this.onTick(t,delta);this.director.beforeActors(this.missionState);this.actors?.update(t,delta);this.director.afterActors(t,delta);
+    this.time=t;this.onTick(t,delta);if(this.presentationSuspended)return;
+    this.director.beforeActors(this.missionState);this.actors?.update(t,delta);this.director.afterActors(t,delta);
     if(this.actors){
       const p=this.actors.position;this.walkCamera.update(p,delta,this.time<this.manualUntil);
       if(this.walkCamera.automatic&&this.currentView){this.currentView=null;this.onManualView();}

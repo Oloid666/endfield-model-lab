@@ -5,29 +5,50 @@ import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 export function buildServerRoom(parent,r){
   const root=new T.Group();root.name='upstairs-server-room';root.position.set(0,3.51,.72);parent.add(root);
   const steel=r.material('#263a3e',{roughness:.38,metalness:.68}),panel=r.material('#101e25',{roughness:.48,metalness:.32});
-  const rails=r.material('#8ca1a1',{roughness:.26,metalness:.8}),cyan=r.own(new T.MeshBasicMaterial({color:0x8adbd6})),green=r.own(new T.MeshBasicMaterial({color:0x8fc77a}));
-  const ledMeshes=[],fans=[],shards=[];
+  const rails=r.material('#8ca1a1',{roughness:.26,metalness:.8}),cyan=r.own(new T.MeshBasicMaterial({color:0x8adbd6}));
+  const shards=[],ledRecords=[],ledTime={value:0};
   function box(mat,p,s,owner=root){return r.mesh(r.geometry('BoxGeometry',1,1,1),mat,owner,p,s);}
+  const labelMaterial=r.label('SERVER 01    /    UPLINK 02',{width:1024,height:128,bg:'#101d22',color:'#c9d5c8',font:'bold 38px monospace'});
   for(const x of [-.39,.39]){
-    box(steel,[x,.85,0],[.66,1.7,.59]);
-    box(panel,[x,.87,.31],[.59,1.57,.025]);
-    for(const dx of [-.295,.295])box(rails,[x+dx,.86,.332],[.016,1.57,.018]);
-    for(let row=0;row<8;row++){
-      const y=.19+row*.18;box(steel,[x,y,.337],[.54,.14,.032]);
-      for(let slit=0;slit<5;slit++)box(panel,[x-.08+slit*.06,y,.358],[.034,.08,.007]);
-      const led=box(row%3?green:cyan,[x-.22,y+.025,.362],[.018,.018,.01]);ledMeshes.push({mesh:led,offset:row*.37+(x>0?.6:0)});
+    // Open 19-inch rack frames, rectangular 1U/2U blades, handles and separate patch switch.
+    box(panel,[x,.85,-.04],[.65,1.75,.77]);
+    box(panel,[x,.89,.358],[.57,1.6,.035]);
+    for(const dx of [-.306,.306]){
+      box(steel,[x+dx,.87,.38],[.032,1.74,.06]);
+      for(let hole=0;hole<19;hole++)box(rails,[x+dx,.12+hole*.083,.414],[.012,.017,.007]);
     }
-    const fan=new T.Group();fan.position.set(x,1.31,.366);root.add(fan);
-    const ring=r.mesh(r.geometry('TorusGeometry',.096,.009,4,16),rails,fan);ring.rotation.x=0;
-    for(let side=0;side<4;side++){const blade=box(steel,[0,0,.008],[.14,.025,.012],fan);blade.rotation.z=side*Math.PI/2+.3;}
-    const blades=fan.children.filter(n=>n.isMesh&&n.geometry.type==='BoxGeometry'),geometries=blades.map(n=>{n.updateMatrix();return n.geometry.clone().applyMatrix4(n.matrix);});
-    const merged=mergeGeometries(geometries,false);for(const g of geometries)g.dispose();
-    if(merged){fan.add(new T.Mesh(r.own(merged),steel));for(const blade of blades)blade.removeFromParent();}
-    fan.traverse(n=>n.userData.serverMoving=true);fans.push(fan);
+    for(const y of [.06,1.71])box(steel,[x,y,.375],[.65,.05,.07]);
+    r.mesh(r.geometry('PlaneGeometry',1,1),labelMaterial,root,[x,1.57,.423],[.54,.075,1]);
+    for(let row=0;row<12;row++){
+      const y=.21+row*.103,unit=row%4===0;
+      box(steel,[x,y,.396],[.55,.086,.034]);
+      for(const side of [-1,1]){
+        box(rails,[x+side*.251,y,.422],[.018,.058,.028]);
+        box(rails,[x+side*.224,y,.435],[.046,.013,.013]);
+      }
+      // Repeating drive caddies read as rack equipment, never a luminous desktop fan.
+      for(let bay=0;bay<4;bay++){
+        const bx=x-.15+bay*.092;box(panel,[bx,y,.421],[.078,.061,.014]);
+        for(let slit=0;slit<3;slit++)box(rails,[bx-.021+slit*.021,y+.006,.431],[.005,.035,.005]);
+      }
+      ledRecords.push({p:[x-.188,y-.018,.436],color:row%5===0?0xe0ae58:0x8ac281,offset:row*.37+(x>0?.6:0)});
+      if(unit)ledRecords.push({p:[x+.196,y+.018,.436],color:0x8ed4ca,offset:row*.59});
+    }
+    box(steel,[x,1.43,.407],[.55,.095,.05]);
+    for(let port=0;port<8;port++){
+      box(rails,[x-.217+port*.062,1.43,.436],[.046,.035,.015]);
+      box(panel,[x-.217+port*.062,1.43,.446],[.033,.023,.006]);
+    }
+    // Service loops hang from the patch panel in distinct restrained cable colours.
+    for(let cable=0;cable<4;cable++){
+      const px=x-.2+cable*.13,curve=new T.CubicBezierCurve3(new T.Vector3(px,1.43,.46),new T.Vector3(px+.11,1.07,.56),new T.Vector3(px-.08,.72,.54),new T.Vector3(px,.82+cable*.085,.435));
+      r.mesh(r.own(new T.TubeGeometry(curve,10,.009,3,false)),r.material(['#687e91','#987348','#7d9482','#88758e'][cable],{roughness:.48}),root);
+    }
   }
   // Independent UPS is deliberately visible below the surviving racks.
   box(steel,[0,.12,-.03],[1.55,.22,.72]);
-  const ups=box(cyan,[.51,.13,.34],[.17,.047,.012]);ledMeshes.push({mesh:ups,offset:1.3});
+  box(panel,[.51,.13,.366],[.2,.07,.012]);ledRecords.push({p:[.51,.13,.378],color:0x8adbd6,offset:1.3});
+  for(let i=0;i<7;i++)box(panel,[-.45+i*.09,.12,.366],[.045,.08,.009]);
   const strip=box(cyan,[0,1.82,-.21],[1.43,.035,.05]);
   const spill=new T.PointLight(0x8fd7e0,1.6,3.2,2);spill.position.set(0,1.37,.7);root.add(spill);
   // A short visible patch lead; it does not require a physics solver.
@@ -35,10 +56,16 @@ export function buildServerRoom(parent,r){
     const curve=new T.QuadraticBezierCurve3(new T.Vector3(side*.5,.3,-.3),new T.Vector3(side*.8,.7,-.39),new T.Vector3(side*.43,1.64,-.3));
     r.mesh(r.own(new T.TubeGeometry(curve,8,.012,3,false)),r.material(side<0?'#376e78':'#b09154'),root);
   }
-  // Merge the static rack casing and vents. LEDs and fans retain their own small animations.
+  // All status lamps share one instance draw and pulse on the scene clock.
+  const ledMaterial=r.own(new T.MeshBasicMaterial({color:0xffffff,vertexColors:true,toneMapped:false}));
+  ledMaterial.onBeforeCompile=shader=>{shader.uniforms.uServerTime=ledTime;shader.vertexShader=shader.vertexShader.replace('#include <common>','#include <common>\nuniform float uServerTime;');shader.vertexShader=shader.vertexShader.replace('#include <color_vertex>','#include <color_vertex>\n#ifdef USE_INSTANCING_COLOR\nvColor*=.28+.72*step(-.08,sin(uServerTime*3.1+instanceMatrix[3].y*9.7+instanceMatrix[3].x*2.7));\n#endif');};
+  ledMaterial.customProgramCacheKey=()=> 'server-status-led-v7';
+  const ledMesh=r.own(new T.InstancedMesh(r.geometry('BoxGeometry',1,1,1),ledMaterial,ledRecords.length)),dummy=new T.Object3D(),ledColor=new T.Color();
+  for(let i=0;i<ledRecords.length;i++){dummy.position.fromArray(ledRecords[i].p);dummy.scale.set(.014,.009,.008);dummy.updateMatrix();ledMesh.setMatrixAt(i,dummy.matrix);ledMesh.setColorAt(i,ledColor.setHex(ledRecords[i].color));}ledMesh.instanceMatrix.needsUpdate=true;ledMesh.instanceColor.needsUpdate=true;ledMesh.name='rack-network-status-lamps';root.add(ledMesh);
+  // Merge the static rack casing, drive caddies, switch ports and patch leads.
   root.updateWorldMatrix(true,true);const inverse=root.matrixWorld.clone().invert(),transform=new T.Matrix4(),batches=new Map();
   root.traverse(mesh=>{
-    if(!mesh.isMesh||mesh.userData.serverMoving||mesh.material.isMeshBasicMaterial)return;
+    if(!mesh.isMesh||mesh.isInstancedMesh||mesh.material.isMeshBasicMaterial)return;
     const geometry=mesh.geometry.clone();transform.multiplyMatrices(inverse,mesh.matrixWorld);geometry.applyMatrix4(transform);
     const list=batches.get(mesh.material)||[];list.push({mesh,geometry});batches.set(mesh.material,list);
   });
@@ -53,11 +80,11 @@ export function buildServerRoom(parent,r){
   }
   for(const owner of [root,shattered])owner.traverse(n=>{if(n.isMesh)n.userData.dynamic=true;});
   const position=[0,4.38,1.06];let progress=0,alive=true,destroyedAt=-Infinity,time=0,lower=0;
-  function reset(){progress=0;alive=true;destroyedAt=-Infinity;lower=0;root.visible=true;root.position.set(0,3.51,.72);shattered.visible=false;for(const {mesh} of ledMeshes)mesh.visible=true;for(const shard of shards){shard.mesh.position.copy(shard.p);shard.mesh.rotation.set(0,0,0);}strip.visible=true;spill.visible=true;spill.intensity=1.6;position[1]=4.38;}
+  function reset(){progress=0;alive=true;destroyedAt=-Infinity;lower=0;root.visible=true;root.position.set(0,3.51,.72);shattered.visible=false;ledMesh.visible=true;for(const shard of shards){shard.mesh.position.copy(shard.p);shard.mesh.rotation.set(0,0,0);}strip.visible=true;spill.visible=true;spill.intensity=1.6;position[1]=4.38;}
   reset();
   return {root,shattered,position,
     setProgress(value){progress=value;},
-    destroy(){if(!alive)return false;alive=false;destroyedAt=time;root.visible=false;spill.visible=false;for(const {mesh}of ledMeshes)mesh.visible=false;shattered.visible=true;return true;},
+    destroy(){if(!alive)return false;alive=false;destroyedAt=time;root.visible=false;spill.visible=false;ledMesh.visible=false;shattered.visible=true;return true;},
     reset,
     update(t,delta=0){
       time=t;
@@ -66,13 +93,12 @@ export function buildServerRoom(parent,r){
       if(alive){
         const pulse=.47+.36*Math.sin(t*5.3)+.17*Math.sin(t*11.7+1.3);spill.intensity=1.15+pulse*.9;
         cyan.color.setRGB(.31+pulse*.2,.63+pulse*.2,.72+pulse*.2);
-        for(const led of ledMeshes)led.mesh.visible=Math.sin(t*3.1+led.offset)>.02;
-        for(let i=0;i<fans.length;i++)fans[i].rotation.z=t*(4.2+i*.6);
+        ledTime.value=t;
       }else{
         const elapsed=Math.max(0,t-destroyedAt),p=Math.min(1,elapsed/1.05),ease=1-(1-p)**3;
         for(const shard of shards){shard.mesh.position.lerpVectors(shard.p,shard.end,ease);shard.mesh.position.y+=Math.sin(p*Math.PI)*.9;shard.mesh.rotation.set(shard.rotation.x*p,shard.rotation.y*p,shard.rotation.z*p);}
       }
     },
-    get state(){return {alive,lowered:lower,position:[...position],visibleLEDs:ledMeshes.filter(n=>n.mesh.visible&&root.visible).length};}
+    get state(){return {alive,lowered:lower,position:[...position],visibleLEDs:alive&&root.visible&&ledMesh.visible?ledRecords.length:0,rackUnits:24,networkPorts:16,style:'19-inch rackmount blades, patch switches and UPS'};}
   };
 }

@@ -1,0 +1,12 @@
+{
+  "passed": 57,
+  "prototypes": [
+    "cannon",
+    "compress",
+    "washer",
+    "microwave",
+    "scan",
+    "pack"
+  ],
+  "notes": "Deterministic gameplay state checks. No GPU or iPhone performance claim."
+}

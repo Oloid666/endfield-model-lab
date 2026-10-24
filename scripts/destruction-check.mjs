@@ -2,6 +2,7 @@
 import * as T from 'three';
 import {Resources} from '../src/resources.js';
 import {buildStore} from '../src/store.js';
+import {buildPearGarden} from '../src/pear-garden.js';
 import {optimizeStaticSet} from '../src/static-batches.js';
 import fs from 'node:fs';
 const ctx=new Proxy({measureText:s=>({width:s.length*12}),createLinearGradient:()=>({addColorStop(){}}),createRadialGradient:()=>({addColorStop(){}})},{get:(o,k)=>k in o?o[k]:(()=>{})});
@@ -10,6 +11,9 @@ const scene=new T.Scene(),r=new Resources(),store=buildStore(scene,r),d=store.de
 const batches=optimizeStaticSet(store.root,r),checks=[];
 function check(name,passed,detail=null){checks.push({name,passed,detail});if(!passed)throw Error(name);}
 const initial=d.state;
+check('Neighbor shell replaces former solid box',initial.neighbor.hollow&&!initial.neighbor.hit&&initial.neighbor.fragments===0,initial.neighbor);
+check('Server uses 24 rectangular blade units and 16 switch ports',initial.server.rackUnits===24&&initial.server.networkPorts===16,initial.server);
+check('Third equipment floor is part of the destructible roof',initial.thirdFloor);
 check('Initial real shop and server visible',initial.progress===0&&initial.visibleIntact>20&&initial.visibleDebris===0&&initial.serverAlive,initial);
 d.setProgress(8);for(let n=0;n<120;n++)d.update(n/60,1/60);
 check('First ordinary hit removes actual window geometry',d.state.visibleIntact<initial.visibleIntact&&d.state.visibleDebris>=18,d.state);
@@ -17,17 +21,33 @@ d.setProgress(44);for(let n=120;n<270;n++)d.update(n/60,1/60);const partial=d.st
 check('Partial damage removes real meshes and retains pooled rubble',partial.visibleIntact<initial.visibleIntact&&partial.visibleIntact>0&&partial.visibleDebris>=54&&partial.serverAlive,partial);
 d.setProgress(99);for(let n=270;n<550;n++)d.update(n/60,1/60);const final=d.state;
 check('Entire shop removed and one server survives',final.visibleIntact===0&&final.visibleDebris>=108&&final.serverAlive&&final.serverPosition[1]<1.25&&final.settled,final);
+check('Forty-eight branded items settle in four shared product draws',final.products.visible===48&&final.products.settled===48&&final.products.families===4,final.products);
+check('Debris bursts persist as 180 fragments plus structural ruins',final.visibleDebris>=188,final.visibleDebris);
 check('Last target follows surviving lowered rack',d.targets.at(-1).position[1]===final.serverPosition[1],d.targets.at(-1));
 check('Server destruction starts once',d.destroyServer()&&!d.destroyServer());
 for(let n=550;n<630;n++)d.update(n/60,1/60);
 check('Server LED and body off after final hit',!d.state.serverAlive&&d.state.server.visibleLEDs===0&&!d.server.root.visible&&d.server.shattered.visible,d.state);
+const neighbor=d.neighbor;scene.updateMatrixWorld(true);
+const ray=new T.Raycaster(new T.Vector3(neighbor.position[0],neighbor.position[1],1),new T.Vector3(0,0,-1));
+function visibleDistance(){return ray.intersectObject(neighbor.root,true).find(hit=>{let n=hit.object;while(n){if(!n.visible)return false;n=n.parent;}return true;})?.distance??Infinity;}
+const closedDistance=visibleDistance();
+check('Neighbor impact removes true wall plug exactly once',neighbor.impact()&&!neighbor.impact()&&neighbor.state.holeVisible,neighbor.state);
+scene.updateMatrixWorld(true);const openedDistance=visibleDistance();
+check('Ray enters the room through a real hole',openedDistance>closedDistance+1,{closedDistance,openedDistance});
+for(let n=630;n<750;n++)d.update(n/60,1/60);
+check('Neighbor fragments land and stay visible',neighbor.state.fragments===22&&neighbor.state.settled,neighbor.state);
 d.reset();
+check('Replay repairs collateral wall and hides spilled goods',!d.state.neighbor.hit&&!d.state.neighbor.holeVisible&&d.state.neighbor.fragments===0&&d.state.products.visible===0,d.state.neighbor);
 check('Replay restores intact geometry and room height',d.state.visibleIntact===initial.visibleIntact&&d.state.visibleDebris===0&&d.state.serverAlive&&d.state.serverPosition[1]===initial.serverPosition[1],d.state);
 d.setProgress(99);d.update(12,1/60);d.setProgress(0);
 check('Decreasing progress resets safely',d.state.stage===0&&d.state.visibleDebris===0&&d.state.visibleIntact===initial.visibleIntact,d.state);
 let dynamic=0,wrong=0;
 store.root.traverse(n=>{if(n.isMesh&&n.userData.dynamic)dynamic++;if(n.name?.startsWith('collapse-'))n.traverse(m=>{if(m.isMesh&&!m.userData.dynamic)wrong++;});});
 check('Both batch passes preserve destructible meshes',dynamic>0&&wrong===0,{dynamic,batches});
+const garden=buildPearGarden(scene,r);
+check('Standard garden has twice the V6 blossom count',garden.state.blossoms===2700&&garden.state.trees===3,garden.state);
+garden.quality('low');check('Low quality keeps flowers in one shared draw',garden.state.blossoms===1400,garden.state);
+garden.quality('high');check('High quality retains full flowering canopy',garden.state.blossoms===3600,garden.state);
 const result={passed:true,kind:'Node actual scene geometry; Canvas pixels stubbed; not an iPhone or GPU test',checks:checks.length,results:checks};
-fs.writeFileSync('artifacts/v6-destruction-check.json',JSON.stringify(result,null,2)+'\n');
+fs.writeFileSync('artifacts/v7-destruction-check.json',JSON.stringify(result,null,2)+'\n');
 console.log(JSON.stringify({passed:true,checks:checks.length,intactMeshes:initial.visibleIntact,ruins:final.visibleDebris,batches},null,2));r.dispose();

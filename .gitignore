@@ -1,6 +1,7 @@
 node_modules/
 dist/
 .DS_Store
+__pycache__/
 artifacts/*.webm
 
 # Local private preview identity; GitHub Pages is the selected host.

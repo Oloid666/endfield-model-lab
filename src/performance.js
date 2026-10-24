@@ -39,7 +39,7 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
   const shadows=[];for(const [x,s]of [[0,.7],[-.82,.53]]){const shadow=r.mesh(r.geometry('PlaneGeometry',1,1),shadowMaterial,root,[x,.006,.04],[s,.48,1]);shadow.rotation.x=-Math.PI/2;shadows.push(shadow);}
   scene.add(root);root.updateMatrixWorld(true);
   const locomotion=makeLocomotion(root,pivot),follower=makeFollower(root.position,locomotion),idle={};let raining=true,dinner=null,lastTime=0,lastWalking=false;
-  const pivotRest=pivot.position.clone(),cinematic={phase:'',elapsed:0,charge:0,flight:0};
+  const pivotRest=pivot.position.clone(),cinematic={phase:'',elapsed:0,charge:0,flight:0,recoil:0,distance:1.2,height:2.7};
   const heroWorld=new T.Vector3(),projectileWorld=new T.Vector3();let castActive=false,projectileActive=false,projectileRoll=0,landingFeet=false;
   const castPhases=new Set(['charge','combat','last','aim-final','finisher','landing']);
   const walkPose={shoulderL:0,shoulderR:0,elbowL:0,elbowR:0,wristL:0,wristR:0};
@@ -80,7 +80,7 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
     }
   }
   function settleFeet(){root.updateMatrixWorld(true);for(const leg of feet)if(leg.foot){leg.foot.getWorldPosition(leg.target);leg.foot.getWorldQuaternion(leg.orientation);}}
-  const cinematicStatus={phase:'',lift:0,forward:0,heading:.08,airborne:false,dragonProjectile:false};
+  const cinematicStatus={phase:'',lift:0,forward:0,heading:.08,airborne:false,dragonProjectile:false,recoil:0};
   const status={phase:0,action:'settle',footDrift:0,moving:false,speed:0,distance:0,clothJoints:secondary.length,dinner:null,gesture:'',companion:follower.state,arms:walkPose,cinematic:cinematicStatus};
   const api={root,status,supported:Object.keys(config.zhuangNodes).every(name=>poses[name]),
     get position(){return root.position;},get moving(){return status.moving;},
@@ -94,7 +94,7 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
     setCinematic(value){
       const active=Boolean(value&&castPhases.has(value.phase));
       if(castActive&&!active)landingFeet=true;
-      castActive=active;cinematic.phase=value?.phase||'';cinematic.elapsed=Math.max(0,Number(value?.elapsed)||0);cinematic.charge=T.MathUtils.clamp(Number(value?.charge)||0,0,1);cinematic.flight=T.MathUtils.clamp(Number(value?.flight)||0,0,1);
+      castActive=active;cinematic.phase=value?.phase||'';cinematic.elapsed=Math.max(0,Number(value?.elapsed)||0);cinematic.charge=T.MathUtils.clamp(Number(value?.charge)||0,0,1);cinematic.flight=T.MathUtils.clamp(Number(value?.flight)||0,0,1);cinematic.recoil=T.MathUtils.clamp(Number(value?.recoil)||0,0,1.5);cinematic.distance=Number.isFinite(value?.distance)?value.distance:1.2;cinematic.height=Number.isFinite(value?.height)?value.height:2.7;
       if(!active){pivot.position.copy(pivotRest);projectileActive=false;}
     },
     setDragonProjectile(position,roll=0){projectileActive=Boolean(position);if(position)projectileWorld.fromArray(position);projectileRoll=Number(roll)||0;},
@@ -102,10 +102,10 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
     update(t,delta=0){
       lastTime=t;const motion=locomotion.update(delta),walk=motion.amount,walking=motion.moving;
       const launch=cinematic.phase==='charge'?T.MathUtils.smootherstep(cinematic.charge,.12,.86):cinematic.phase==='landing'?1-T.MathUtils.smootherstep(cinematic.elapsed,0,2.8):1;
-      const lift=castActive?2.7*launch:0,forward=castActive?1.2*launch:0;
-      pivot.position.copy(pivotRest);pivot.position.y+=lift+(lift>.1?Math.sin(t*1.8)*.025*launch:0);pivot.position.z+=forward;
+      const recoil=castActive?cinematic.recoil:0,lift=castActive?cinematic.height*launch:0,forward=castActive?cinematic.distance*launch:0;
+      pivot.position.copy(pivotRest);pivot.position.y+=lift+(lift>.1?Math.sin(t*1.8)*.025*launch:0);pivot.position.z+=forward+recoil*.62;pivot.position.y+=recoil*.085;
       if(castActive)pivot.rotation.y=T.MathUtils.lerp(.08,Math.PI-.23,T.MathUtils.smootherstep(cinematic.phase==='charge'?cinematic.charge:1,.02,.4));
-      Object.assign(cinematicStatus,{phase:cinematic.phase,lift,forward,heading:pivot.rotation.y,airborne:lift>.015,dragonProjectile:projectileActive});
+      Object.assign(cinematicStatus,{phase:cinematic.phase,lift,forward,heading:pivot.rotation.y,airborne:lift>.015,dragonProjectile:projectileActive,recoil});
       sampleIdle(t,idle);if(!raining){idle.rain=0;idle.startle=0;}
       const elapsed=t-gesture.start,g=T.MathUtils.smoothstep(elapsed,0,.3)*(1-T.MathUtils.smoothstep(elapsed,2.1,2.75));
       const dragonSpeaker=gesture.speaker==='dragon'||gesture.speaker==='龍泡泡'||gesture.speaker==='龍';
@@ -137,12 +137,12 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
         const summon=T.MathUtils.smootherstep(cinematic.phase==='charge'?cinematic.charge:1,0,.38)*Math.max(.15,launch),release=cinematic.phase==='finisher'?Math.exp(-Math.max(0,cinematic.elapsed-.7)*2):0;
         const foodArm=cinematic.phase==='aim-final'||cinematic.phase==='finisher'||cinematic.phase==='landing';
         status.action=cinematic.phase==='charge'?'summoning':cinematic.phase==='landing'?'landing':'casting';
-        pose('spine',-.025*summon,Math.sin(t*.7)*.01,-.018*summon);pose('head',-.035*summon,.065*summon,0);
+        pose('spine',-.025*summon-recoil*.17,Math.sin(t*.7)*.01,-.018*summon+recoil*.025);pose('head',-.035*summon+recoil*.085,.065*summon,0);
         pose('armL',foodArm?.37:.28*summon,-.035,-.88+summon*(foodArm?.26:.32));
         pose('elbowL',foodArm?.88:.45*summon,.02,foodArm?.12:.035);pose('wristL',foodArm?.13:.04,0,-.06*summon);
-        pose('armR',.88*summon+release*.16,.04,.9-summon*.58);pose('elbowR',.1+summon*.3-release*.18,0,-.05);pose('wristR',-.08*summon,0,Math.sin(t*.9)*.015);
+        pose('armR',.88*summon+release*.16-recoil*.24,.04,.9-summon*.58+recoil*.16);pose('elbowR',.1+summon*.3-release*.18+recoil*.38,0,-.05);pose('wristR',-.08*summon,0,Math.sin(t*.9)*.015);
         pose('hipL',.04*launch,0,0);pose('hipR',-.065*launch,0,0);pose('kneeL',-.055*launch);pose('kneeR',-.23*launch);pose('footL',-.08*launch);pose('footR',-.14*launch);
-        for(const s of secondary){const phase=s.id*.37,amplitude=s.type==='ribbon'?.055:s.type==='sleeve'?.038:s.type==='hair'?.032:.016;pose(s.key,(Math.sin(t*2-phase)*.6+.4)*amplitude*s.weight*launch,0,Math.cos(t*1.3-phase)*amplitude*.45*launch);}
+        for(const s of secondary){const phase=s.id*.37,amplitude=s.type==='ribbon'?.055:s.type==='sleeve'?.038:s.type==='hair'?.032:.016;pose(s.key,(Math.sin(t*2-phase)*.6+.4)*amplitude*s.weight*launch+recoil*amplitude*2.8*Math.sin(phase),0,Math.cos(t*1.3-phase)*amplitude*.45*launch+recoil*amplitude*1.6);}
       }
       root.updateMatrixWorld(true);
       if(landingFeet){settleFeet();landingFeet=false;}

@@ -1,0 +1,403 @@
+{
+  "url": "http://127.0.0.1:4190/endfield-model-lab/",
+  "browser": "Desktop Chromium / SwiftShader",
+  "real_iphone_test": false,
+  "checks": [
+    {
+      "name": "Portrait ready entry clears controls",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "Actual rendered image v7-home-final.png",
+      "passed": true,
+      "detail": {
+        "image_spread": 54.33,
+        "pooled_smoke": 0
+      }
+    },
+    {
+      "name": "Landscape ready entry clears controls",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "Landscape ready stays inside viewport",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Actual rendered image v7-home-landscape.png",
+      "passed": true,
+      "detail": {
+        "image_spread": 49.29,
+        "pooled_smoke": 0
+      }
+    },
+    {
+      "name": "Prototype initial power label agrees with 25 percent state",
+      "passed": true,
+      "detail": "出力 25%"
+    },
+    {
+      "name": "Prototype hit shows visible shot feedback",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Prototype retry clears old shot pulse",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Charge at14 seconds hero fits frame",
+      "passed": true,
+      "detail": {
+        "origin": [
+          -1.25,
+          2.086953967342294,
+          8.543424765811675
+        ],
+        "foot": [
+          -0.16350475963292477,
+          -0.35512351739369236,
+          0.9887988219108941
+        ],
+        "head": [
+          -0.17202904582642087,
+          0.30418109247439756,
+          0.9881731263300226
+        ],
+        "left": [
+          0.1203702818681657,
+          -0.01682719706282981,
+          0.988989877695423
+        ],
+        "right": [
+          -0.4809382620647895,
+          -0.05235695994794693,
+          0.9879544873107242
+        ]
+      }
+    },
+    {
+      "name": "Actual rendered image v7-charge-final.png",
+      "passed": true,
+      "detail": {
+        "image_spread": 57.52,
+        "pooled_smoke": 0
+      }
+    },
+    {
+      "name": "Actual rendered image v7-charge-wide.png",
+      "passed": true,
+      "detail": {
+        "image_spread": 60.78,
+        "pooled_smoke": 0
+      }
+    },
+    {
+      "name": "Final build reaches combat",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Actual body recoils 1",
+      "passed": true,
+      "detail": 0.3661636391717556
+    },
+    {
+      "name": "Actual rendered image v7-cannon-blast.png",
+      "passed": true,
+      "detail": {
+        "image_spread": 61.69,
+        "pooled_smoke": 0
+      }
+    },
+    {
+      "name": "Combat view 1 hero fits frame",
+      "passed": true,
+      "detail": {
+        "origin": [
+          -1.25,
+          4.300039159595493,
+          15.250202917565053
+        ],
+        "foot": [
+          -0.27893510359467605,
+          -0.08438879337653533,
+          0.9966945764018497
+        ],
+        "head": [
+          -0.2844855517172354,
+          0.09368982117941174,
+          0.9966128774071261
+        ],
+        "left": [
+          -0.3774239148412637,
+          0.004660678342738672,
+          0.996664426890858
+        ],
+        "right": [
+          -0.1854641188272749,
+          0.0028816070421865785,
+          0.996643780356821
+        ]
+      }
+    },
+    {
+      "name": "Actual rendered image v7-combat-view-1.png",
+      "passed": true,
+      "detail": {
+        "image_spread": 61.66,
+        "pooled_smoke": 3
+      }
+    },
+    {
+      "name": "Actual body recoils 2",
+      "passed": true,
+      "detail": 0.3661636391717556
+    },
+    {
+      "name": "Combat view 2 hero fits frame",
+      "passed": true,
+      "detail": {
+        "origin": [
+          -1.25,
+          4.3035741564982475,
+          15.250202917565053
+        ],
+        "foot": [
+          -0.1537230033374776,
+          -0.13453911939599963,
+          0.9967709197224205
+        ],
+        "head": [
+          -0.15776559749125613,
+          0.0365180599074954,
+          0.9966649549014804
+        ],
+        "left": [
+          -0.25113624292875275,
+          -0.04976182281199555,
+          0.9967213322860977
+        ],
+        "right": [
+          -0.06017314367657552,
+          -0.050479745478190584,
+          0.9967159139853022
+        ]
+      }
+    },
+    {
+      "name": "Actual rendered image v7-combat-view-2.png",
+      "passed": true,
+      "detail": {
+        "image_spread": 60.0,
+        "pooled_smoke": 3
+      }
+    },
+    {
+      "name": "Actual body recoils 3",
+      "passed": true,
+      "detail": 0.3661636391717556
+    },
+    {
+      "name": "Combat view 0 hero fits frame",
+      "passed": true,
+      "detail": {
+        "origin": [
+          -1.25,
+          4.321080102373548,
+          15.250202917565053
+        ],
+        "foot": [
+          -0.034463325702765564,
+          -0.08674365039600362,
+          0.9966595305576188
+        ],
+        "head": [
+          -0.035161692994316346,
+          0.09266478425183408,
+          0.9965756213022517
+        ],
+        "left": [
+          -0.13282486188504924,
+          0.0016512876348450597,
+          0.9966132689192635
+        ],
+        "right": [
+          0.06298574743373593,
+          0.0024693828025571943,
+          0.9966227139197336
+        ]
+      }
+    },
+    {
+      "name": "Actual rendered image v7-combat-view-0.png",
+      "passed": true,
+      "detail": {
+        "image_spread": 54.47,
+        "pooled_smoke": 3
+      }
+    },
+    {
+      "name": "Final build demolishes through timing input",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Final build accepts player-triggered finisher",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Actual rendered image v7-dragon-flight-final.png",
+      "passed": true,
+      "detail": {
+        "image_spread": 52.71,
+        "pooled_smoke": 0
+      }
+    },
+    {
+      "name": "Final build opens real neighbor hole",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Actual rendered image v7-smoke-final.png",
+      "passed": true,
+      "detail": {
+        "image_spread": 34.08,
+        "pooled_smoke": 12
+      }
+    },
+    {
+      "name": "Dragon remains stuck during ending dialogue",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Landing closeup dragon fits frame",
+      "passed": true,
+      "detail": {
+        "origin": [
+          -8.032576214956414,
+          2.7905037144695597,
+          -1.9576146558632574
+        ],
+        "foot": [
+          -0.04532788118384919,
+          -0.21818508929302624,
+          0.9868839646910635
+        ],
+        "head": [
+          -0.046055204027492504,
+          0.16282978018786648,
+          0.9866606654115644
+        ],
+        "left": [
+          -0.3822531303712173,
+          -0.0385959551378637,
+          0.9864053784566638
+        ],
+        "right": [
+          0.27410432959011327,
+          -0.02026038921536033,
+          0.9871226996237946
+        ]
+      }
+    },
+    {
+      "name": "Actual rendered image v7-stuck-dialogue.png",
+      "passed": true,
+      "detail": {
+        "image_spread": 2.55,
+        "pooled_smoke": 12
+      }
+    },
+    {
+      "name": "Final build completes at100 percent",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Complete closeup dragon fits frame",
+      "passed": true,
+      "detail": {
+        "origin": [
+          -8.016386308358188,
+          2.7938292050526647,
+          -1.9461327732352292
+        ],
+        "foot": [
+          -0.026690300859228615,
+          -0.21872106067296015,
+          0.9868092036653293
+        ],
+        "head": [
+          -0.027120771126213795,
+          0.16610657180150687,
+          0.9865835501715415
+        ],
+        "left": [
+          -0.3662032814433103,
+          -0.03732414813533589,
+          0.9863245221360605
+        ],
+        "right": [
+          0.2953601408648134,
+          -0.018844684155415795,
+          0.9870513214894935
+        ]
+      }
+    },
+    {
+      "name": "Actual rendered image v7-ending-final.png",
+      "passed": true,
+      "detail": {
+        "image_spread": 40.06,
+        "pooled_smoke": 0
+      }
+    },
+    {
+      "name": "Server dead and neighbor hole persists",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Actual rendered image v7-ending-landscape.png",
+      "passed": true,
+      "detail": {
+        "image_spread": 30.76,
+        "pooled_smoke": 0
+      }
+    },
+    {
+      "name": "Final landscape stays inside viewport",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Final build replay clears damage and restores first target",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Final build one canvas and no runtime errors",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "Final build framebuffer clean",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "assets": [
+    "http://127.0.0.1:4190/endfield-model-lab/assets/index-Ufsno2o6.js",
+    "http://127.0.0.1:4190/endfield-model-lab/assets/index-DLSQOmJy.css"
+  ],
+  "passed": true,
+  "errors": []
+}

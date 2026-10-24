@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "checks": 101,
+  "checks": 116,
   "kind": "Deterministic actual mission state/data/input-clock tests; not a browser or iPhone test",
   "results": [
     {
@@ -65,6 +65,81 @@
     },
     {
       "name": "Meter zone boundaries",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Opening waits indefinitely for player inspection",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Evidence and anger are explicit dialogue moods",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Concrete illuminance uses lux",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Charge contains insurance joke without interrupted sequence",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Dragon shocked instead of bargaining desserts",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pear survival is the damage criterion",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Ending gives every line three readable seconds",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Invalid output cannot alter mode",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Overload changes visible speed and width",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Overload has stronger damage and physical recoil metadata",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Shot starts a fresh timing sweep",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Overload has a real miss penalty at formerly safe edge",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pause locks output selection",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Destruction escalates meter tempo",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Replay clears output risk and stage",
       "passed": true,
       "detail": null
     },
@@ -169,7 +244,7 @@
       "detail": null
     },
     {
-      "name": "Completion waits for returned dragon A",
+      "name": "Completion waits for smoke-clear ending A",
       "passed": true,
       "detail": null
     },
@@ -309,7 +384,7 @@
       "detail": null
     },
     {
-      "name": "Completion waits for returned dragon B",
+      "name": "Completion waits for smoke-clear ending B",
       "passed": true,
       "detail": null
     },
@@ -449,7 +524,7 @@
       "detail": null
     },
     {
-      "name": "Completion waits for returned dragon C",
+      "name": "Completion waits for smoke-clear ending C",
       "passed": true,
       "detail": null
     },

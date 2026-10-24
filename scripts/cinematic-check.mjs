@@ -140,6 +140,12 @@ check('Cinematic charge begins on the ground',Math.abs(a.heroPosition[1]-.32)<.0
 a.setCinematic({phase:'charge',elapsed:30,charge:1});a.update(130,1/60);
 check('Only the hero lifts and clears the canopy',a.heroPosition[1]>2.99&&a.heroPosition[2]>4.4&&a.position.distanceTo(grounded)<.001,{hero:a.heroPosition,root:a.position.toArray()});
 check('Companion remains on the ground during charging',Math.abs(a.dragonPosition[1]-.325)<.001,{dragon:a.dragonPosition});
+a.setCinematic({phase:'combat',charge:1,distance:12,height:4,recoil:0});a.update(130.1,1/60);
+const farHero=[...a.heroPosition],unrecoiledArm=poses.elbowR.bone.quaternion.clone();
+check('V7 casting clears the road by twelve metres without moving the walking root',Math.abs(farHero[2]-(grounded.z+12))<.001&&farHero[1]>4.29&&a.position.distanceTo(grounded)<.001,{hero:farHero,walkingRoot:a.position.toArray()});
+a.setCinematic({phase:'combat',charge:1,distance:12,height:4,recoil:1});a.update(130.2,1/60);
+check('Shot recoil displaces the original body and bends its real elbow',a.heroPosition[2]-farHero[2]>.6&&unrecoiledArm.angleTo(poses.elbowR.bone.quaternion)>.3,{bodyRetreat:a.heroPosition[2]-farHero[2],elbowRadians:unrecoiledArm.angleTo(poses.elbowR.bone.quaternion)});
+
 check('Food moves off the casting hero',!food.visible&&root.getObjectByName('dragon').getObjectByName('food').visible);
 a.setCinematic({phase:'finisher',elapsed:2,charge:1});a.setDragonProjectile([2,5,1],.4);a.update(132,1/60);
 check('Actual companion follows explicit projectile world coordinates',a.dragonPosition.every((v,i)=>Math.abs(v-[2,5,1][i])<.00001),{dragon:a.dragonPosition});
@@ -156,12 +162,14 @@ check('FX active particles stay within the selected quality cap',fx.state.partic
 fx.reset();fx.update(4,1/60,{phase:'combat',hero:a.heroPosition,target:[0,1.2,0]});fx.fire({from:[-1,4,4],to:[0,1,0],finisher:true});fx.update(5.4,1/60,{phase:'finisher',elapsed:3.4,hero:a.heroPosition,dragon:a.dragonPosition,target:[0,1,0]});
 check('Finisher beam awaits the explicit collision impact',fx.state.beams===1&&fx.state.pulses===0,fx.state);
 fx.impact([0,1,0],1.5);fx.update(5.5,1/60,{phase:'finisher',elapsed:4.9,hero:a.heroPosition,dragon:a.dragonPosition,target:[0,1,0]});check('Explicit finisher impact creates a pooled pulse',fx.state.pulses===1,fx.state);
+check('A final impact creates pooled opaque smoke without a new light or resource',fx.state.smoke===12&&resources.items.size===allocationCount&&!scene.children.some(n=>n.isLight),fx.state);
+
 fx.quality('low');fx.update(5.6,1/60,{});check('Low FX quality caps the particle pool at thirty-six',fx.state.particleLimit===36&&fx.state.particles<=36,fx.state);
-fx.reset();check('FX reset clears every active effect',!fx.root.visible&&fx.state.beams===0&&fx.state.particles===0&&fx.state.pulses===0,fx.state);fx.dispose();
+fx.reset();check('FX reset clears every active effect',!fx.root.visible&&fx.state.beams===0&&fx.state.particles===0&&fx.state.pulses===0&&fx.state.smoke===0,fx.state);fx.dispose();
 
 a.dispose();resources.dispose();
 const finalHash=createHash('sha256').update(await fs.readFile(file)).digest('hex');check('Original GLB unchanged after tests',finalHash===expectedHash);
 const result={kind:'Node actual-GLB geometry, skeleton, controller, cinematic and pooled FX checks; in-memory image materials removed and Canvas painting stubbed; not a render, GPU benchmark or iPhone test',passed:checks.every(c=>c.passed),checks,trace};
-await fs.writeFile(new URL('../artifacts/v6-cinematic-check.json',import.meta.url),JSON.stringify(result,null,2)+'\n');
+await fs.writeFile(new URL('../artifacts/v7-cinematic-check.json',import.meta.url),JSON.stringify(result,null,2)+'\n');
 console.log(JSON.stringify({passed:result.passed,checks:checks.length,failed:checks.filter(c=>!c.passed),maxIdleFootError:maxIdle,maxWalkingFootError:maxWalk,secondaryJoints:a.status.clothJoints},null,2));
 if(!result.passed)process.exitCode=1;

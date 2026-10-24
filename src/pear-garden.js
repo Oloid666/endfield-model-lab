@@ -89,11 +89,11 @@ export function buildPearGarden(scene,r){
     };
     material.customProgramCacheKey=()=>falling?'pear-falling-v1':'pear-wind-v1';return material;
   }
-  const blossoms=r.own(new T.InstancedMesh(flowerGeometry(),windMaterial({color:'#fffaf2',vertexColors:true,roughness:.79,emissive:0xecd9c6,emissiveIntensity:.09}),1800));root.add(blossoms);blossoms.name='pear-five-petal-blossoms';blossoms.receiveShadow=true;
-  for(let i=0;i<1800;i++){
+  const blossoms=r.own(new T.InstancedMesh(flowerGeometry(),windMaterial({color:'#fffaf2',vertexColors:true,roughness:.79,emissive:0xecd9c6,emissiveIntensity:.09}),3600));root.add(blossoms);blossoms.name='pear-five-petal-blossoms';blossoms.receiveShadow=true;
+  for(let i=0;i<3600;i++){
     const ends=tips[i%3],segment=ends[Math.floor(random()*ends.length)],along=.12+random()*.95;
     dummy.position.lerpVectors(segment.a,segment.b,along);dummy.position.x+=(random()-.5)*.34;dummy.position.y+=(random()-.5)*.32;dummy.position.z+=(random()-.5)*.34;
-    dummy.rotation.set((random()-.5)*Math.PI*1.7,random()*Math.PI*2,random()*Math.PI*2);dummy.scale.setScalar((.068+random()*.045)*1.2);dummy.updateMatrix();blossoms.setMatrixAt(i,dummy.matrix);
+    dummy.rotation.set((random()-.5)*Math.PI*1.7,random()*Math.PI*2,random()*Math.PI*2);dummy.scale.setScalar((.068+random()*.045)*1.42);dummy.updateMatrix();blossoms.setMatrixAt(i,dummy.matrix);
     color.setHSL(.065+random()*.035,.02+random()*.035,.86+random()*.1);blossoms.setColorAt(i,color);
   }
   blossoms.instanceMatrix.needsUpdate=true;blossoms.instanceColor.needsUpdate=true;blossoms.computeBoundingSphere();
@@ -126,7 +126,7 @@ export function buildPearGarden(scene,r){
   const ring=r.mesh(r.geometry('RingGeometry',2.37,2.395,80),ringMaterial,protection);ring.rotation.x=-Math.PI/2;
   const arcGeometry=r.geometry('TorusGeometry',2.49,.008,3,64,Math.PI*.63),arcs=r.own(new T.InstancedMesh(arcGeometry,ringMaterial,3));protection.add(arcs);
   for(let i=0;i<3;i++){dummy.position.set(0,.02,0);dummy.rotation.set(-Math.PI/2,0,i*Math.PI*2/3);dummy.scale.set(1,1,1);dummy.updateMatrix();arcs.setMatrixAt(i,dummy.matrix);}arcs.instanceMatrix.needsUpdate=true;arcs.computeBoundingSphere();
-  function setQuality(value){quality=['low','balanced','high'].includes(value)?value:'balanced';blossoms.count=quality==='low'?720:quality==='high'?1800:1350;leaves.count=quality==='low'?240:420;falling.count=quality==='low'?12:quality==='high'?30:24;}
+  function setQuality(value){quality=['low','balanced','high'].includes(value)?value:'balanced';blossoms.count=quality==='low'?1400:quality==='high'?3600:2700;leaves.count=quality==='low'?240:420;falling.count=quality==='low'?12:quality==='high'?30:24;}
   setQuality('balanced');
   return {root,center,wetMaterials:[stone],
     update(t,delta=0,options){time.value=t;if(options?.protected!==undefined)protectedTarget=Boolean(options.protected);shieldAmount=T.MathUtils.damp(shieldAmount,protectedTarget?1:0,3,Math.max(0,Math.min(.1,delta)));protection.visible=shieldAmount>.003;ringMaterial.opacity=shieldAmount*(.16+Math.sin(t*1.7)*.025);protection.rotation.y=Math.sin(t*.22)*.04;},

@@ -1,0 +1,2703 @@
+{
+  "url": "http://127.0.0.1:4190/endfield-model-lab/",
+  "browser": "Desktop Chromium / SwiftShader",
+  "viewport": [
+    390,
+    844
+  ],
+  "real_iphone_test": false,
+  "checks": [
+    {
+      "name": "Original model and skeleton load",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "One WebGL canvas retained",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Portrait fits the viewport",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Opening waits for player",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Opening tells player to inspect model",
+      "passed": true,
+      "detail": "先看看她。故事會等你。\n拖曳旋轉，雙指放大。準備好再開始。\n\n一場雨，一頓飯。\n去買晚餐\n↗\n\n武陵城，又過了平安的一天。"
+    },
+    {
+      "name": "Model inspection has no countdown",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Homepage experiment entry clears model and navigation controls",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "Rendered image v7-opening.png",
+      "passed": true,
+      "detail": 53.18
+    },
+    {
+      "name": "Opening framebuffer clean",
+      "passed": true,
+      "detail": 0
+    },
+    {
+      "name": "Experiment area opens",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Six playable prototypes listed",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Experiments pause the main story",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Prototype status is clearly labelled",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Rendered image v7-playground.png",
+      "passed": true,
+      "detail": 28.56
+    },
+    {
+      "name": "Prototype starts cannon",
+      "passed": true,
+      "detail": {
+        "open": true,
+        "screen": "game",
+        "activeId": "cannon",
+        "clock": 0,
+        "id": "cannon",
+        "status": "running",
+        "time": 0,
+        "progress": 0,
+        "message": "第一步：鎖定出力。高出力的校準區更窄。",
+        "result": "",
+        "score": 0,
+        "step": "power",
+        "power": 0.25,
+        "meter": 0,
+        "sweetWidth": 0.2,
+        "shots": 0,
+        "hits": 0,
+        "entered": 0,
+        "zones": null,
+        "metrics": [
+          {
+            "label": "出力",
+            "value": "25%",
+            "percent": 25
+          },
+          {
+            "label": "射擊",
+            "value": "0 / 6",
+            "percent": null
+          },
+          {
+            "label": "破壞",
+            "value": "0%",
+            "percent": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "Actual DOM gameplay wins cannon",
+      "passed": true,
+      "detail": {
+        "open": true,
+        "screen": "game",
+        "activeId": "cannon",
+        "clock": 4.679999999999988,
+        "id": "cannon",
+        "status": "won",
+        "time": 4.679999999999988,
+        "progress": 100,
+        "message": "店體拆除。梨花沒事，判定無損失。",
+        "result": "店體拆除。梨花沒事，判定無損失。",
+        "score": 931,
+        "step": "aim",
+        "power": 0.9009999999999962,
+        "meter": 0.4850719999999886,
+        "sweetWidth": 0.14178000000000085,
+        "shots": 3,
+        "hits": 3,
+        "entered": 4.359999999999995,
+        "zones": null,
+        "metrics": [
+          {
+            "label": "出力",
+            "value": "90%",
+            "percent": 90.09999999999962
+          },
+          {
+            "label": "射擊",
+            "value": "3 / 6",
+            "percent": null
+          },
+          {
+            "label": "破壞",
+            "value": "100%",
+            "percent": 100
+          }
+        ]
+      }
+    },
+    {
+      "name": "Rendered image v7-playground-cannon.png",
+      "passed": true,
+      "detail": 46.75
+    },
+    {
+      "name": "Retry resets cannon",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Prototype starts compress",
+      "passed": true,
+      "detail": {
+        "open": true,
+        "screen": "game",
+        "activeId": "compress",
+        "clock": 0,
+        "id": "compress",
+        "status": "running",
+        "time": 0,
+        "progress": 0,
+        "message": "投料後按壓縮。壓力過高，先卸壓。",
+        "result": "",
+        "score": 0,
+        "pressure": 10,
+        "load": 0,
+        "compacted": 0,
+        "vents": 0,
+        "zones": null,
+        "metrics": [
+          {
+            "label": "壓力",
+            "value": "10%",
+            "percent": 10
+          },
+          {
+            "label": "料槽",
+            "value": "0%",
+            "percent": 0
+          },
+          {
+            "label": "回收",
+            "value": "0%",
+            "percent": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "Actual DOM gameplay wins compress",
+      "passed": true,
+      "detail": {
+        "open": true,
+        "screen": "game",
+        "activeId": "compress",
+        "clock": 0,
+        "id": "compress",
+        "status": "won",
+        "time": 0,
+        "progress": 100,
+        "message": "萬噸息壤壓成一塊。折價券：三元。還有集點。",
+        "result": "萬噸息壤壓成一塊。折價券：三元。還有集點。",
+        "score": 940,
+        "pressure": 32,
+        "load": 0,
+        "compacted": 100,
+        "vents": 3,
+        "zones": null,
+        "metrics": [
+          {
+            "label": "壓力",
+            "value": "32%",
+            "percent": 32
+          },
+          {
+            "label": "料槽",
+            "value": "0%",
+            "percent": 0
+          },
+          {
+            "label": "回收",
+            "value": "100%",
+            "percent": 100
+          }
+        ]
+      }
+    },
+    {
+      "name": "Rendered image v7-playground-compress.png",
+      "passed": true,
+      "detail": 41.11
+    },
+    {
+      "name": "Retry resets compress",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Prototype starts washer",
+      "passed": true,
+      "detail": {
+        "open": true,
+        "screen": "game",
+        "activeId": "washer",
+        "clock": 0,
+        "id": "washer",
+        "status": "running",
+        "time": 0,
+        "progress": 0,
+        "message": "開低速或高速。配重靠近中央，泡沫高了就排水。",
+        "result": "",
+        "score": 0,
+        "rpm": 0,
+        "balance": 0.06,
+        "foam": 10,
+        "clean": 0,
+        "drains": 0,
+        "zones": null,
+        "metrics": [
+          {
+            "label": "轉速",
+            "value": "停止",
+            "percent": null
+          },
+          {
+            "label": "泡沫",
+            "value": "10%",
+            "percent": 10
+          },
+          {
+            "label": "洗淨",
+            "value": "0%",
+            "percent": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "Actual DOM gameplay wins washer",
+      "passed": true,
+      "detail": {
+        "open": true,
+        "screen": "game",
+        "activeId": "washer",
+        "clock": 9.650000000000059,
+        "id": "washer",
+        "status": "won",
+        "time": 9.650000000000059,
+        "progress": 100,
+        "message": "強力洗程完成。錢洗白了，晚餐要怎麼付？",
+        "result": "強力洗程完成。錢洗白了，晚餐要怎麼付？",
+        "score": 908,
+        "rpm": 2,
+        "balance": 0.03099912397837158,
+        "foam": 32.149999999999025,
+        "clean": 100,
+        "drains": 2,
+        "zones": null,
+        "metrics": [
+          {
+            "label": "轉速",
+            "value": "高速",
+            "percent": null
+          },
+          {
+            "label": "泡沫",
+            "value": "32%",
+            "percent": 32.149999999999025
+          },
+          {
+            "label": "洗淨",
+            "value": "100%",
+            "percent": 100
+          }
+        ]
+      }
+    },
+    {
+      "name": "Rendered image v7-playground-washer.png",
+      "passed": true,
+      "detail": 46.14
+    },
+    {
+      "name": "Retry resets washer",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Prototype starts microwave",
+      "passed": true,
+      "detail": {
+        "open": true,
+        "screen": "game",
+        "activeId": "microwave",
+        "clock": 0,
+        "id": "microwave",
+        "status": "running",
+        "time": 0,
+        "progress": 0,
+        "message": "選區域，開電源。三格都要 80°C，任何一格別超過 112°C。",
+        "result": "",
+        "score": 0,
+        "zone": 0,
+        "zones": [
+          20,
+          20,
+          20
+        ],
+        "power": false,
+        "heat": 0,
+        "vents": 0,
+        "metrics": [
+          {
+            "label": "第 1 格",
+            "value": "20°C",
+            "percent": 17.857142857142858
+          },
+          {
+            "label": "第 2 格",
+            "value": "20°C",
+            "percent": 17.857142857142858
+          },
+          {
+            "label": "第 3 格",
+            "value": "20°C",
+            "percent": 17.857142857142858
+          },
+          {
+            "label": "機體熱度",
+            "value": "0%",
+            "percent": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "Actual DOM gameplay wins microwave",
+      "passed": true,
+      "detail": {
+        "open": true,
+        "screen": "game",
+        "activeId": "microwave",
+        "clock": 11.433333333333481,
+        "id": "microwave",
+        "status": "won",
+        "time": 11.433333333333481,
+        "progress": 100,
+        "message": "三格都熱好了。螢幕顯示：請再靜置一分鐘。",
+        "result": "三格都熱好了。螢幕顯示：請再靜置一分鐘。",
+        "score": 920,
+        "zone": 2,
+        "zones": [
+          85.6533333333344,
+          86.44333333333368,
+          80.06666666666642
+        ],
+        "power": true,
+        "heat": 57.1666666666672,
+        "vents": 0,
+        "metrics": [
+          {
+            "label": "第 1 格",
+            "value": "86°C",
+            "percent": 76.47619047619143
+          },
+          {
+            "label": "第 2 格",
+            "value": "86°C",
+            "percent": 77.18154761904793
+          },
+          {
+            "label": "第 3 格",
+            "value": "80°C",
+            "percent": 71.48809523809501
+          },
+          {
+            "label": "機體熱度",
+            "value": "57%",
+            "percent": 57.1666666666672
+          }
+        ]
+      }
+    },
+    {
+      "name": "Retry resets microwave",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Prototype starts scan",
+      "passed": true,
+      "detail": {
+        "open": true,
+        "screen": "game",
+        "activeId": "scan",
+        "clock": 0,
+        "id": "scan",
+        "status": "running",
+        "time": 0,
+        "progress": 0,
+        "message": "等掃描線進入金色商品，再按掃描。共七次機會。",
+        "result": "",
+        "score": 0,
+        "cursor": 0,
+        "target": 0.24,
+        "width": 0.14,
+        "attempts": 0,
+        "scanned": 0,
+        "zones": null,
+        "metrics": [
+          {
+            "label": "商品",
+            "value": "0 / 3",
+            "percent": 0
+          },
+          {
+            "label": "機會",
+            "value": "7 / 7",
+            "percent": null
+          }
+        ]
+      }
+    },
+    {
+      "name": "Actual DOM gameplay wins scan",
+      "passed": true,
+      "detail": {
+        "open": true,
+        "screen": "game",
+        "activeId": "scan",
+        "clock": 1.4600000000000009,
+        "id": "scan",
+        "status": "won",
+        "time": 1.4600000000000009,
+        "progress": 100,
+        "message": "三件商品掃描完成。這次沒有多送一間店。",
+        "result": "三件商品掃描完成。這次沒有多送一間店。",
+        "score": 945,
+        "cursor": 0.452399999999999,
+        "target": 0.43,
+        "width": 0.1,
+        "attempts": 3,
+        "scanned": 3,
+        "zones": null,
+        "metrics": [
+          {
+            "label": "商品",
+            "value": "3 / 3",
+            "percent": 100
+          },
+          {
+            "label": "機會",
+            "value": "4 / 7",
+            "percent": null
+          }
+        ]
+      }
+    },
+    {
+      "name": "Retry resets scan",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Prototype starts pack",
+      "passed": true,
+      "detail": {
+        "open": true,
+        "screen": "game",
+        "activeId": "pack",
+        "clock": 0,
+        "id": "pack",
+        "status": "running",
+        "time": 0,
+        "progress": 0,
+        "message": "旋轉紙箱，對準虛線再封箱。共三道封條。",
+        "result": "",
+        "score": 0,
+        "angle": -30,
+        "targetAngle": 0,
+        "stage": 0,
+        "seals": 0,
+        "integrity": 100,
+        "zones": null,
+        "metrics": [
+          {
+            "label": "封條",
+            "value": "0 / 3",
+            "percent": 0
+          },
+          {
+            "label": "完整度",
+            "value": "100%",
+            "percent": 100
+          },
+          {
+            "label": "剩餘",
+            "value": "45 秒",
+            "percent": null
+          }
+        ]
+      }
+    },
+    {
+      "name": "Actual DOM gameplay wins pack",
+      "passed": true,
+      "detail": {
+        "open": true,
+        "screen": "game",
+        "activeId": "pack",
+        "clock": 0,
+        "id": "pack",
+        "status": "won",
+        "time": 0,
+        "progress": 100,
+        "message": "整間店裝箱完成。梨花留在原地。龍泡泡列為隨貨贈品。",
+        "result": "整間店裝箱完成。梨花留在原地。龍泡泡列為隨貨贈品。",
+        "score": 1000,
+        "angle": -45,
+        "targetAngle": -45,
+        "stage": 3,
+        "seals": 3,
+        "integrity": 100,
+        "zones": null,
+        "metrics": [
+          {
+            "label": "封條",
+            "value": "3 / 3",
+            "percent": 100
+          },
+          {
+            "label": "完整度",
+            "value": "100%",
+            "percent": 100
+          },
+          {
+            "label": "剩餘",
+            "value": "45 秒",
+            "percent": null
+          }
+        ]
+      }
+    },
+    {
+      "name": "Retry resets pack",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Prototype switching keeps one UI owner",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Poor gameplay can fail",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Closed experiment stops its game clock",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Closing experiments restores inspection",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Player starts dinner scene",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Three dinner options retained A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Dinner choice has no countdown",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Distinct model food prop A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Three dinner options retained B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Distinct model food prop B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Three dinner options retained C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Distinct model food prop C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mifoe communication reached",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Communication has visible portrait card",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Rendered image v7-communication.png",
+      "passed": true,
+      "detail": 65.76
+    },
+    {
+      "name": "Quoted profile has special typography",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Zhuang reply has angry emphasis",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Charge begins at zero",
+      "passed": true,
+      "detail": {
+        "phase": "charge",
+        "node": {
+          "id": "charge_0",
+          "speaker": "mifoe",
+          "text": "儲能網接通，開始充電。",
+          "mood": "calm",
+          "gesture": "look",
+          "next": "charge_1",
+          "at": 0
+        },
+        "nodeId": "charge_0",
+        "speaker": "mifoe",
+        "text": "儲能網接通，開始充電。",
+        "revealed": 11,
+        "branch": "C",
+        "choices": [],
+        "waitingChoice": false,
+        "progress": 0,
+        "energy": 100,
+        "charge": 0.0033333333333492496,
+        "meter": 0.0007407407407442776,
+        "meterElapsed": 0.0010000000000047748,
+        "meterPeriod": 2.7,
+        "meterSettings": {
+          "id": "steady",
+          "label": "穩壓",
+          "hint": "寬判定 · 低後座",
+          "multiplier": 1,
+          "speed": 1,
+          "width": 0.18,
+          "miss": 0.38,
+          "perfect": 0.06,
+          "recoil": 0.7,
+          "period": 2.7,
+          "stage": 0
+        },
+        "output": "steady",
+        "outputModes": [
+          {
+            "id": "steady",
+            "label": "穩壓",
+            "hint": "寬判定 · 低後座",
+            "multiplier": 1,
+            "speed": 1,
+            "width": 0.18,
+            "miss": 0.38,
+            "perfect": 0.06,
+            "recoil": 0.7
+          },
+          {
+            "id": "strong",
+            "label": "強攻",
+            "hint": "威力 +20% · 較快",
+            "multiplier": 1.2,
+            "speed": 1.2,
+            "width": 0.15,
+            "miss": 0.34,
+            "perfect": 0.05,
+            "recoil": 1.15
+          },
+          {
+            "id": "overload",
+            "label": "過載",
+            "hint": "威力 +50% · 窄判定",
+            "multiplier": 1.5,
+            "speed": 1.45,
+            "width": 0.12,
+            "miss": 0.29,
+            "perfect": 0.04,
+            "recoil": 1.8
+          }
+        ],
+        "landingDuration": 12,
+        "phaseElapsed": 0.0010000000000047748,
+        "time": 104.27250000000001,
+        "clock": 104.27250000000001,
+        "sourceTime": 132.02250000000046,
+        "paused": false,
+        "auto": false,
+        "target": "glass",
+        "targetLabel": "櫥窗與入口",
+        "targets": [
+          {
+            "id": "glass",
+            "label": "櫥窗與入口",
+            "position": [
+              -2.5,
+              1.7,
+              1.9
+            ]
+          }
+        ],
+        "feedback": null,
+        "shots": 0,
+        "hits": 0,
+        "canAttack": false,
+        "ended": false,
+        "busy": true,
+        "sequenceKind": null,
+        "endingCaption": "武陵城，又過了平安的一天。",
+        "revision": 83
+      }
+    },
+    {
+      "name": "Rendered image v7-charge.png",
+      "passed": true,
+      "detail": 64.28
+    },
+    {
+      "name": "Pause freezes charge",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Charge waits full thirty seconds",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Charge enters playable combat",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Charge dialogue continues",
+      "passed": true,
+      "detail": [
+        "儲能網接通，開始充電。",
+        "711 怎麼辦？",
+        "沒關係，它有保天災打雷險。",
+        "您現在算天災？",
+        "雷是我打的，條件符合。",
+        "理賠原因怎麼填？",
+        "範圍是整棟。",
+        "武陵的局部。避開梨花。"
+      ]
+    },
+    {
+      "name": "Attack is touch friendly",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Three output choices exposed",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Output modes change risk or timing",
+      "passed": true,
+      "detail": [
+        {
+          "phase": "combat",
+          "node": null,
+          "nodeId": null,
+          "speaker": null,
+          "text": "",
+          "revealed": 0,
+          "branch": "C",
+          "choices": [],
+          "waitingChoice": false,
+          "progress": 0,
+          "energy": 100,
+          "charge": 100,
+          "meter": 0.014814814814822393,
+          "meterElapsed": 0.020000000000010232,
+          "meterPeriod": 2.7,
+          "meterSettings": {
+            "id": "steady",
+            "label": "穩壓",
+            "hint": "寬判定 · 低後座",
+            "multiplier": 1,
+            "speed": 1,
+            "width": 0.18,
+            "miss": 0.38,
+            "perfect": 0.06,
+            "recoil": 0.7,
+            "period": 2.7,
+            "stage": 0
+          },
+          "output": "steady",
+          "outputModes": [
+            {
+              "id": "steady",
+              "label": "穩壓",
+              "hint": "寬判定 · 低後座",
+              "multiplier": 1,
+              "speed": 1,
+              "width": 0.18,
+              "miss": 0.38,
+              "perfect": 0.06,
+              "recoil": 0.7
+            },
+            {
+              "id": "strong",
+              "label": "強攻",
+              "hint": "威力 +20% · 較快",
+              "multiplier": 1.2,
+              "speed": 1.2,
+              "width": 0.15,
+              "miss": 0.34,
+              "perfect": 0.05,
+              "recoil": 1.15
+            },
+            {
+              "id": "overload",
+              "label": "過載",
+              "hint": "威力 +50% · 窄判定",
+              "multiplier": 1.5,
+              "speed": 1.45,
+              "width": 0.12,
+              "miss": 0.29,
+              "perfect": 0.04,
+              "recoil": 1.8
+            }
+          ],
+          "landingDuration": 12,
+          "phaseElapsed": 0.020000000000010232,
+          "time": 134.2915,
+          "clock": 134.2915,
+          "sourceTime": 168.04150000000047,
+          "paused": false,
+          "auto": false,
+          "target": "glass",
+          "targetLabel": "櫥窗與入口",
+          "targets": [
+            {
+              "id": "glass",
+              "label": "櫥窗與入口",
+              "position": [
+                -2.5,
+                1.7,
+                1.9
+              ]
+            }
+          ],
+          "feedback": null,
+          "shots": 0,
+          "hits": 0,
+          "canAttack": true,
+          "ended": false,
+          "busy": true,
+          "sequenceKind": null,
+          "endingCaption": "武陵城，又過了平安的一天。",
+          "revision": 104
+        },
+        {
+          "phase": "combat",
+          "node": null,
+          "nodeId": null,
+          "speaker": null,
+          "text": "",
+          "revealed": 0,
+          "branch": "C",
+          "choices": [],
+          "waitingChoice": false,
+          "progress": 0,
+          "energy": 100,
+          "charge": 100,
+          "meter": 0,
+          "meterElapsed": 0,
+          "meterPeriod": 2.2500000000000004,
+          "meterSettings": {
+            "id": "strong",
+            "label": "強攻",
+            "hint": "威力 +20% · 較快",
+            "multiplier": 1.2,
+            "speed": 1.2,
+            "width": 0.15,
+            "miss": 0.34,
+            "perfect": 0.05,
+            "recoil": 1.15,
+            "period": 2.2500000000000004,
+            "stage": 0
+          },
+          "output": "strong",
+          "outputModes": [
+            {
+              "id": "steady",
+              "label": "穩壓",
+              "hint": "寬判定 · 低後座",
+              "multiplier": 1,
+              "speed": 1,
+              "width": 0.18,
+              "miss": 0.38,
+              "perfect": 0.06,
+              "recoil": 0.7
+            },
+            {
+              "id": "strong",
+              "label": "強攻",
+              "hint": "威力 +20% · 較快",
+              "multiplier": 1.2,
+              "speed": 1.2,
+              "width": 0.15,
+              "miss": 0.34,
+              "perfect": 0.05,
+              "recoil": 1.15
+            },
+            {
+              "id": "overload",
+              "label": "過載",
+              "hint": "威力 +50% · 窄判定",
+              "multiplier": 1.5,
+              "speed": 1.45,
+              "width": 0.12,
+              "miss": 0.29,
+              "perfect": 0.04,
+              "recoil": 1.8
+            }
+          ],
+          "landingDuration": 12,
+          "phaseElapsed": 0.020000000000010232,
+          "time": 134.2915,
+          "clock": 134.2915,
+          "sourceTime": 168.04150000000047,
+          "paused": false,
+          "auto": false,
+          "target": "glass",
+          "targetLabel": "櫥窗與入口",
+          "targets": [
+            {
+              "id": "glass",
+              "label": "櫥窗與入口",
+              "position": [
+                -2.5,
+                1.7,
+                1.9
+              ]
+            }
+          ],
+          "feedback": null,
+          "shots": 0,
+          "hits": 0,
+          "canAttack": true,
+          "ended": false,
+          "busy": true,
+          "sequenceKind": null,
+          "endingCaption": "武陵城，又過了平安的一天。",
+          "revision": 105
+        },
+        {
+          "phase": "combat",
+          "node": null,
+          "nodeId": null,
+          "speaker": null,
+          "text": "",
+          "revealed": 0,
+          "branch": "C",
+          "choices": [],
+          "waitingChoice": false,
+          "progress": 0,
+          "energy": 100,
+          "charge": 100,
+          "meter": 0,
+          "meterElapsed": 0,
+          "meterPeriod": 1.8620689655172415,
+          "meterSettings": {
+            "id": "overload",
+            "label": "過載",
+            "hint": "威力 +50% · 窄判定",
+            "multiplier": 1.5,
+            "speed": 1.45,
+            "width": 0.12,
+            "miss": 0.29,
+            "perfect": 0.04,
+            "recoil": 1.8,
+            "period": 1.8620689655172415,
+            "stage": 0
+          },
+          "output": "overload",
+          "outputModes": [
+            {
+              "id": "steady",
+              "label": "穩壓",
+              "hint": "寬判定 · 低後座",
+              "multiplier": 1,
+              "speed": 1,
+              "width": 0.18,
+              "miss": 0.38,
+              "perfect": 0.06,
+              "recoil": 0.7
+            },
+            {
+              "id": "strong",
+              "label": "強攻",
+              "hint": "威力 +20% · 較快",
+              "multiplier": 1.2,
+              "speed": 1.2,
+              "width": 0.15,
+              "miss": 0.34,
+              "perfect": 0.05,
+              "recoil": 1.15
+            },
+            {
+              "id": "overload",
+              "label": "過載",
+              "hint": "威力 +50% · 窄判定",
+              "multiplier": 1.5,
+              "speed": 1.45,
+              "width": 0.12,
+              "miss": 0.29,
+              "perfect": 0.04,
+              "recoil": 1.8
+            }
+          ],
+          "landingDuration": 12,
+          "phaseElapsed": 0.020000000000010232,
+          "time": 134.2915,
+          "clock": 134.2915,
+          "sourceTime": 168.04150000000047,
+          "paused": false,
+          "auto": false,
+          "target": "glass",
+          "targetLabel": "櫥窗與入口",
+          "targets": [
+            {
+              "id": "glass",
+              "label": "櫥窗與入口",
+              "position": [
+                -2.5,
+                1.7,
+                1.9
+              ]
+            }
+          ],
+          "feedback": null,
+          "shots": 0,
+          "hits": 0,
+          "canAttack": true,
+          "ended": false,
+          "busy": true,
+          "sequenceKind": null,
+          "endingCaption": "武陵城，又過了平安的一天。",
+          "revision": 106
+        }
+      ]
+    },
+    {
+      "name": "Edge is MISS and causes no damage",
+      "passed": true,
+      "detail": {
+        "phase": "combat",
+        "node": null,
+        "nodeId": null,
+        "speaker": null,
+        "text": "",
+        "revealed": 0,
+        "branch": "C",
+        "choices": [],
+        "waitingChoice": false,
+        "progress": 0,
+        "energy": 100,
+        "charge": 100,
+        "meter": 0,
+        "meterElapsed": 0,
+        "meterPeriod": 2.7,
+        "meterSettings": {
+          "id": "steady",
+          "label": "穩壓",
+          "hint": "寬判定 · 低後座",
+          "multiplier": 1,
+          "speed": 1,
+          "width": 0.18,
+          "miss": 0.38,
+          "perfect": 0.06,
+          "recoil": 0.7,
+          "period": 2.7,
+          "stage": 0
+        },
+        "output": "steady",
+        "outputModes": [
+          {
+            "id": "steady",
+            "label": "穩壓",
+            "hint": "寬判定 · 低後座",
+            "multiplier": 1,
+            "speed": 1,
+            "width": 0.18,
+            "miss": 0.38,
+            "perfect": 0.06,
+            "recoil": 0.7
+          },
+          {
+            "id": "strong",
+            "label": "強攻",
+            "hint": "威力 +20% · 較快",
+            "multiplier": 1.2,
+            "speed": 1.2,
+            "width": 0.15,
+            "miss": 0.34,
+            "perfect": 0.05,
+            "recoil": 1.15
+          },
+          {
+            "id": "overload",
+            "label": "過載",
+            "hint": "威力 +50% · 窄判定",
+            "multiplier": 1.5,
+            "speed": 1.45,
+            "width": 0.12,
+            "miss": 0.29,
+            "perfect": 0.04,
+            "recoil": 1.8
+          }
+        ],
+        "landingDuration": 12,
+        "phaseElapsed": 2.7335000000000207,
+        "time": 137.00500000000002,
+        "clock": 137.00500000000002,
+        "sourceTime": 170.75500000000048,
+        "paused": false,
+        "auto": false,
+        "target": "glass",
+        "targetLabel": "櫥窗與入口",
+        "targets": [
+          {
+            "id": "glass",
+            "label": "櫥窗與入口",
+            "position": [
+              -2.5,
+              1.7,
+              1.9
+            ]
+          }
+        ],
+        "feedback": {
+          "result": "miss",
+          "power": 0,
+          "damage": 0,
+          "position": 0.010000000000007616,
+          "progress": 0,
+          "target": "glass",
+          "finisher": false,
+          "finalAttempt": false,
+          "time": 137.00500000000002,
+          "number": 1,
+          "mode": "steady",
+          "recoil": 0.7
+        },
+        "shots": 1,
+        "hits": 0,
+        "canAttack": false,
+        "ended": false,
+        "busy": true,
+        "sequenceKind": null,
+        "endingCaption": "武陵城，又過了平安的一天。",
+        "revision": 109
+      }
+    },
+    {
+      "name": "Shot moves actual casting body",
+      "passed": true,
+      "detail": {
+        "director": {
+          "phase": "combat",
+          "recoil": 0.34993507915819266,
+          "shotNumber": 2,
+          "serverImpacted": false,
+          "neighborImpacted": false,
+          "dragonStuck": false,
+          "stuckPosition": [
+            -8.03,
+            2.8,
+            -1.96
+          ],
+          "flightDistance": 12,
+          "lift": 4
+        },
+        "actor": {
+          "phase": "combat",
+          "lift": 4,
+          "forward": 12,
+          "heading": 2.911592653589793,
+          "airborne": true,
+          "dragonProjectile": false,
+          "recoil": 0.34993507915819266
+        }
+      }
+    },
+    {
+      "name": "Real touch at center damages building",
+      "passed": true,
+      "detail": {
+        "phase": "combat",
+        "node": null,
+        "nodeId": null,
+        "speaker": null,
+        "text": "",
+        "revealed": 0,
+        "branch": "C",
+        "choices": [],
+        "waitingChoice": false,
+        "progress": 18,
+        "energy": 81.81818181818181,
+        "charge": 100,
+        "meter": 0.03703703703704546,
+        "meterElapsed": 0.05000000000001137,
+        "meterPeriod": 2.7,
+        "meterSettings": {
+          "id": "steady",
+          "label": "穩壓",
+          "hint": "寬判定 · 低後座",
+          "multiplier": 1,
+          "speed": 1,
+          "width": 0.18,
+          "miss": 0.38,
+          "perfect": 0.06,
+          "recoil": 0.7,
+          "period": 2.7,
+          "stage": 0
+        },
+        "output": "steady",
+        "outputModes": [
+          {
+            "id": "steady",
+            "label": "穩壓",
+            "hint": "寬判定 · 低後座",
+            "multiplier": 1,
+            "speed": 1,
+            "width": 0.18,
+            "miss": 0.38,
+            "perfect": 0.06,
+            "recoil": 0.7
+          },
+          {
+            "id": "strong",
+            "label": "強攻",
+            "hint": "威力 +20% · 較快",
+            "multiplier": 1.2,
+            "speed": 1.2,
+            "width": 0.15,
+            "miss": 0.34,
+            "perfect": 0.05,
+            "recoil": 1.15
+          },
+          {
+            "id": "overload",
+            "label": "過載",
+            "hint": "威力 +50% · 窄判定",
+            "multiplier": 1.5,
+            "speed": 1.45,
+            "width": 0.12,
+            "miss": 0.29,
+            "perfect": 0.04,
+            "recoil": 1.8
+          }
+        ],
+        "landingDuration": 12,
+        "phaseElapsed": 6.158500000000032,
+        "time": 140.43000000000004,
+        "clock": 140.43000000000004,
+        "sourceTime": 174.1800000000005,
+        "paused": false,
+        "auto": false,
+        "target": "upper",
+        "targetLabel": "二樓外牆",
+        "targets": [
+          {
+            "id": "upper",
+            "label": "二樓外牆",
+            "position": [
+              -2.4,
+              4.5,
+              1.82
+            ]
+          }
+        ],
+        "feedback": {
+          "result": "perfect",
+          "power": 0.9999999999999996,
+          "damage": 18,
+          "position": 0.49999999999999983,
+          "progress": 18,
+          "target": "glass",
+          "finisher": false,
+          "finalAttempt": false,
+          "time": 140.38000000000002,
+          "number": 2,
+          "mode": "steady",
+          "recoil": 0.7
+        },
+        "shots": 2,
+        "hits": 1,
+        "canAttack": false,
+        "ended": false,
+        "busy": true,
+        "sequenceKind": null,
+        "endingCaption": "武陵城，又過了平安的一天。",
+        "revision": 111
+      }
+    },
+    {
+      "name": "Hit removes real building meshes and sprays debris",
+      "passed": true,
+      "detail": {
+        "progress": 18,
+        "stage": 1,
+        "serverAlive": true,
+        "serverPosition": [
+          0,
+          4.38,
+          1.06
+        ],
+        "visibleIntact": 116,
+        "visibleDebris": 30,
+        "settled": true,
+        "milestones": [
+          {
+            "id": "glass",
+            "threshold": 8,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "upper",
+            "threshold": 27,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "sign",
+            "threshold": 44,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "interior",
+            "threshold": 62,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "roof",
+            "threshold": 80,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "structure",
+            "threshold": 97,
+            "active": false,
+            "visible": true
+          }
+        ],
+        "server": {
+          "alive": true,
+          "lowered": 0,
+          "position": [
+            0,
+            4.38,
+            1.06
+          ],
+          "visibleLEDs": 31,
+          "rackUnits": 24,
+          "networkPorts": 16,
+          "style": "19-inch rackmount blades, patch switches and UPS"
+        },
+        "products": {
+          "visible": 0,
+          "settled": 0,
+          "families": 4,
+          "labels": [
+            "牧場鮮乳",
+            "無糖綠茶",
+            "黑咖啡",
+            "鮮蔬便當",
+            "鮪魚飯糰",
+            "蛋沙拉三明治",
+            "雞蛋布丁",
+            "紅燒湯麵"
+          ]
+        },
+        "neighbor": {
+          "hit": false,
+          "holeVisible": false,
+          "position": [
+            -8.03,
+            3.15,
+            -2.23
+          ],
+          "normal": [
+            0,
+            0,
+            1
+          ],
+          "fragments": 0,
+          "settled": false,
+          "hollow": true
+        },
+        "thirdFloor": true,
+        "targets": [
+          {
+            "id": "glass",
+            "label": "櫥窗與入口",
+            "position": [
+              -2.5,
+              1.7,
+              1.9
+            ]
+          },
+          {
+            "id": "upper",
+            "label": "二樓外牆",
+            "position": [
+              -2.4,
+              4.5,
+              1.82
+            ]
+          },
+          {
+            "id": "sign",
+            "label": "招牌與雨棚",
+            "position": [
+              2.5,
+              3.15,
+              2.18
+            ]
+          },
+          {
+            "id": "interior",
+            "label": "機房下方樓板",
+            "position": [
+              0,
+              3.3,
+              0.1
+            ]
+          },
+          {
+            "id": "roof",
+            "label": "屋頂支撐",
+            "position": [
+              1.4,
+              5.8,
+              0.1
+            ]
+          },
+          {
+            "id": "structure",
+            "label": "最後承重結構",
+            "position": [
+              -3.7,
+              2.4,
+              -0.1
+            ]
+          },
+          {
+            "id": "server",
+            "label": "最後機櫃",
+            "position": [
+              0,
+              4.38,
+              1.06
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "Rendered image v7-combat.png",
+      "passed": true,
+      "detail": 60.98
+    },
+    {
+      "name": "Orbit, pinch and cancel do not fire",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Player damage reaches last-shot dialogue",
+      "passed": true,
+      "detail": {
+        "shots": 5,
+        "state": {
+          "phase": "last",
+          "node": {
+            "id": "last_0",
+            "speaker": "mifoe",
+            "text": "頭，能量用完了。砲擊如何？",
+            "mood": "calm",
+            "gesture": "look",
+            "next": "last_1"
+          },
+          "nodeId": "last_0",
+          "speaker": "mifoe",
+          "text": "頭，能量用完了。砲擊如何？",
+          "revealed": 0,
+          "branch": "C",
+          "choices": [],
+          "waitingChoice": false,
+          "progress": 99,
+          "energy": 0,
+          "charge": 100,
+          "meter": 0.02888888888888998,
+          "meterElapsed": 0.030000000000001137,
+          "meterPeriod": 2.076923076923077,
+          "meterSettings": {
+            "id": "steady",
+            "label": "穩壓",
+            "hint": "寬判定 · 低後座",
+            "multiplier": 1,
+            "speed": 1,
+            "width": 0.18,
+            "miss": 0.38,
+            "perfect": 0.06,
+            "recoil": 0.7,
+            "period": 2.076923076923077,
+            "stage": 3
+          },
+          "output": "steady",
+          "outputModes": [
+            {
+              "id": "steady",
+              "label": "穩壓",
+              "hint": "寬判定 · 低後座",
+              "multiplier": 1,
+              "speed": 1,
+              "width": 0.18,
+              "miss": 0.38,
+              "perfect": 0.06,
+              "recoil": 0.7
+            },
+            {
+              "id": "strong",
+              "label": "強攻",
+              "hint": "威力 +20% · 較快",
+              "multiplier": 1.2,
+              "speed": 1.2,
+              "width": 0.15,
+              "miss": 0.34,
+              "perfect": 0.05,
+              "recoil": 1.15
+            },
+            {
+              "id": "overload",
+              "label": "過載",
+              "hint": "威力 +50% · 窄判定",
+              "multiplier": 1.5,
+              "speed": 1.45,
+              "width": 0.12,
+              "miss": 0.29,
+              "perfect": 0.04,
+              "recoil": 1.8
+            }
+          ],
+          "landingDuration": 12,
+          "phaseElapsed": 0.030000000000001137,
+          "time": 155.07433566433568,
+          "clock": 155.07433566433568,
+          "sourceTime": 188.82433566433613,
+          "paused": false,
+          "auto": false,
+          "target": "server",
+          "targetLabel": "最後機櫃",
+          "targets": [
+            {
+              "id": "server",
+              "label": "最後機櫃",
+              "position": [
+                0,
+                1.4712523678742215,
+                1.06
+              ]
+            }
+          ],
+          "feedback": {
+            "result": "perfect",
+            "power": 0.9999999999999829,
+            "damage": 18,
+            "position": 0.4999999999999935,
+            "progress": 99,
+            "target": "structure",
+            "finisher": false,
+            "finalAttempt": false,
+            "time": 155.04433566433568,
+            "number": 7,
+            "mode": "steady",
+            "recoil": 0.7
+          },
+          "shots": 7,
+          "hits": 6,
+          "canAttack": false,
+          "ended": false,
+          "busy": true,
+          "sequenceKind": null,
+          "endingCaption": "武陵城，又過了平安的一天。",
+          "revision": 124
+        }
+      }
+    },
+    {
+      "name": "Combat timing varies with progress",
+      "passed": true,
+      "detail": [
+        2.7,
+        2.4545454545454546,
+        2.2500000000000004,
+        2.2500000000000004,
+        2.076923076923077
+      ]
+    },
+    {
+      "name": "Recognizable store products remain scattered",
+      "passed": true,
+      "detail": {
+        "visible": 48,
+        "settled": 48,
+        "families": 4,
+        "labels": [
+          "牧場鮮乳",
+          "無糖綠茶",
+          "黑咖啡",
+          "鮮蔬便當",
+          "鮪魚飯糰",
+          "蛋沙拉三明治",
+          "雞蛋布丁",
+          "紅燒湯麵"
+        ]
+      }
+    },
+    {
+      "name": "Building is destroyed while server survives",
+      "passed": true,
+      "detail": {
+        "progress": 99,
+        "stage": 6,
+        "serverAlive": true,
+        "serverPosition": [
+          0,
+          1.21,
+          1.06
+        ],
+        "visibleIntact": 0,
+        "visibleDebris": 188,
+        "settled": true,
+        "milestones": [
+          {
+            "id": "glass",
+            "threshold": 8,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "upper",
+            "threshold": 27,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "sign",
+            "threshold": 44,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "interior",
+            "threshold": 62,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "roof",
+            "threshold": 80,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "structure",
+            "threshold": 97,
+            "active": true,
+            "visible": false
+          }
+        ],
+        "server": {
+          "alive": true,
+          "lowered": 1,
+          "position": [
+            0,
+            1.21,
+            1.06
+          ],
+          "visibleLEDs": 31,
+          "rackUnits": 24,
+          "networkPorts": 16,
+          "style": "19-inch rackmount blades, patch switches and UPS"
+        },
+        "products": {
+          "visible": 48,
+          "settled": 48,
+          "families": 4,
+          "labels": [
+            "牧場鮮乳",
+            "無糖綠茶",
+            "黑咖啡",
+            "鮮蔬便當",
+            "鮪魚飯糰",
+            "蛋沙拉三明治",
+            "雞蛋布丁",
+            "紅燒湯麵"
+          ]
+        },
+        "neighbor": {
+          "hit": false,
+          "holeVisible": false,
+          "position": [
+            -8.03,
+            3.15,
+            -2.23
+          ],
+          "normal": [
+            0,
+            0,
+            1
+          ],
+          "fragments": 0,
+          "settled": false,
+          "hollow": true
+        },
+        "thirdFloor": true,
+        "targets": [
+          {
+            "id": "glass",
+            "label": "櫥窗與入口",
+            "position": [
+              -2.5,
+              1.7,
+              1.9
+            ]
+          },
+          {
+            "id": "upper",
+            "label": "二樓外牆",
+            "position": [
+              -2.4,
+              4.5,
+              1.82
+            ]
+          },
+          {
+            "id": "sign",
+            "label": "招牌與雨棚",
+            "position": [
+              2.5,
+              3.15,
+              2.18
+            ]
+          },
+          {
+            "id": "interior",
+            "label": "機房下方樓板",
+            "position": [
+              0,
+              3.3,
+              0.1
+            ]
+          },
+          {
+            "id": "roof",
+            "label": "屋頂支撐",
+            "position": [
+              1.4,
+              5.8,
+              0.1
+            ]
+          },
+          {
+            "id": "structure",
+            "label": "最後承重結構",
+            "position": [
+              -3.7,
+              2.4,
+              -0.1
+            ]
+          },
+          {
+            "id": "server",
+            "label": "最後機櫃",
+            "position": [
+              0,
+              1.21,
+              1.06
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "Rendered image v7-rubble.png",
+      "passed": true,
+      "detail": 45.19
+    },
+    {
+      "name": "Final MISS does not launch dragon",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Rendered image v7-final-ui.png",
+      "passed": true,
+      "detail": 45.88
+    },
+    {
+      "name": "Player launches original dragon model",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Rendered image v7-dragon-flight.png",
+      "passed": true,
+      "detail": 44.91
+    },
+    {
+      "name": "Server is physically destroyed by final attack",
+      "passed": true,
+      "detail": {
+        "d": {
+          "progress": 99,
+          "stage": 6,
+          "serverAlive": false,
+          "serverPosition": [
+            0,
+            1.21,
+            1.06
+          ],
+          "visibleIntact": 0,
+          "visibleDebris": 188,
+          "settled": true,
+          "milestones": [
+            {
+              "id": "glass",
+              "threshold": 8,
+              "active": true,
+              "visible": false
+            },
+            {
+              "id": "upper",
+              "threshold": 27,
+              "active": true,
+              "visible": false
+            },
+            {
+              "id": "sign",
+              "threshold": 44,
+              "active": true,
+              "visible": false
+            },
+            {
+              "id": "interior",
+              "threshold": 62,
+              "active": true,
+              "visible": false
+            },
+            {
+              "id": "roof",
+              "threshold": 80,
+              "active": true,
+              "visible": false
+            },
+            {
+              "id": "structure",
+              "threshold": 97,
+              "active": true,
+              "visible": false
+            }
+          ],
+          "server": {
+            "alive": false,
+            "lowered": 1,
+            "position": [
+              0,
+              1.21,
+              1.06
+            ],
+            "visibleLEDs": 0,
+            "rackUnits": 24,
+            "networkPorts": 16,
+            "style": "19-inch rackmount blades, patch switches and UPS"
+          },
+          "products": {
+            "visible": 48,
+            "settled": 48,
+            "families": 4,
+            "labels": [
+              "牧場鮮乳",
+              "無糖綠茶",
+              "黑咖啡",
+              "鮮蔬便當",
+              "鮪魚飯糰",
+              "蛋沙拉三明治",
+              "雞蛋布丁",
+              "紅燒湯麵"
+            ]
+          },
+          "neighbor": {
+            "hit": true,
+            "holeVisible": true,
+            "position": [
+              -8.03,
+              3.15,
+              -2.23
+            ],
+            "normal": [
+              0,
+              0,
+              1
+            ],
+            "fragments": 22,
+            "settled": false,
+            "hollow": true
+          },
+          "thirdFloor": true,
+          "targets": [
+            {
+              "id": "glass",
+              "label": "櫥窗與入口",
+              "position": [
+                -2.5,
+                1.7,
+                1.9
+              ]
+            },
+            {
+              "id": "upper",
+              "label": "二樓外牆",
+              "position": [
+                -2.4,
+                4.5,
+                1.82
+              ]
+            },
+            {
+              "id": "sign",
+              "label": "招牌與雨棚",
+              "position": [
+                2.5,
+                3.15,
+                2.18
+              ]
+            },
+            {
+              "id": "interior",
+              "label": "機房下方樓板",
+              "position": [
+                0,
+                3.3,
+                0.1
+              ]
+            },
+            {
+              "id": "roof",
+              "label": "屋頂支撐",
+              "position": [
+                1.4,
+                5.8,
+                0.1
+              ]
+            },
+            {
+              "id": "structure",
+              "label": "最後承重結構",
+              "position": [
+                -3.7,
+                2.4,
+                -0.1
+              ]
+            },
+            {
+              "id": "server",
+              "label": "最後機櫃",
+              "position": [
+                0,
+                1.21,
+                1.06
+              ]
+            }
+          ]
+        },
+        "p": [
+          -8.03259971772963,
+          2.7971814035495015,
+          -1.95521730859822
+        ]
+      }
+    },
+    {
+      "name": "Rendered image v7-impact.png",
+      "passed": true,
+      "detail": 37.76
+    },
+    {
+      "name": "Finisher waits nine seconds",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Landing resolves mission at 100 percent",
+      "passed": true,
+      "detail": {
+        "phase": "complete",
+        "node": null,
+        "nodeId": null,
+        "speaker": null,
+        "text": "",
+        "revealed": 0,
+        "branch": "C",
+        "choices": [],
+        "waitingChoice": false,
+        "progress": 100,
+        "energy": 0,
+        "charge": 100,
+        "meter": 0.14444444444442253,
+        "meterElapsed": 0.14999999999997726,
+        "meterPeriod": 2.076923076923077,
+        "meterSettings": {
+          "id": "steady",
+          "label": "穩壓",
+          "hint": "寬判定 · 低後座",
+          "multiplier": 1,
+          "speed": 1,
+          "width": 0.18,
+          "miss": 0.38,
+          "perfect": 0.06,
+          "recoil": 0.7,
+          "period": 2.076923076923077,
+          "stage": 3
+        },
+        "output": "steady",
+        "outputModes": [
+          {
+            "id": "steady",
+            "label": "穩壓",
+            "hint": "寬判定 · 低後座",
+            "multiplier": 1,
+            "speed": 1,
+            "width": 0.18,
+            "miss": 0.38,
+            "perfect": 0.06,
+            "recoil": 0.7
+          },
+          {
+            "id": "strong",
+            "label": "強攻",
+            "hint": "威力 +20% · 較快",
+            "multiplier": 1.2,
+            "speed": 1.2,
+            "width": 0.15,
+            "miss": 0.34,
+            "perfect": 0.05,
+            "recoil": 1.15
+          },
+          {
+            "id": "overload",
+            "label": "過載",
+            "hint": "威力 +50% · 窄判定",
+            "multiplier": 1.5,
+            "speed": 1.45,
+            "width": 0.12,
+            "miss": 0.29,
+            "perfect": 0.04,
+            "recoil": 1.8
+          }
+        ],
+        "landingDuration": 12,
+        "phaseElapsed": 0.14999999999997726,
+        "time": 183.22722027972029,
+        "clock": 183.22722027972029,
+        "sourceTime": 216.97722027972074,
+        "paused": false,
+        "auto": false,
+        "target": "server",
+        "targetLabel": "最後機櫃",
+        "targets": [
+          {
+            "id": "server",
+            "label": "最後機櫃",
+            "position": [
+              0,
+              1.21,
+              1.06
+            ]
+          }
+        ],
+        "feedback": {
+          "result": "perfect",
+          "power": 0.9999999999999706,
+          "damage": 22,
+          "position": 0.50000000000001,
+          "progress": 99,
+          "target": "server",
+          "finisher": true,
+          "finalAttempt": true,
+          "time": 162.0772202797203,
+          "number": 9,
+          "mode": "strong",
+          "recoil": 1.15
+        },
+        "shots": 9,
+        "hits": 7,
+        "canAttack": false,
+        "ended": true,
+        "busy": false,
+        "sequenceKind": null,
+        "endingCaption": "武陵城，又過了平安的一天。",
+        "revision": 168
+      }
+    },
+    {
+      "name": "Neighbor wall is actually hit",
+      "passed": true,
+      "detail": {
+        "hit": true,
+        "holeVisible": true,
+        "position": [
+          -8.03,
+          3.15,
+          -2.23
+        ],
+        "normal": [
+          0,
+          0,
+          1
+        ],
+        "fragments": 22,
+        "settled": true,
+        "hollow": true
+      }
+    },
+    {
+      "name": "Dragon remains at neighbor wall",
+      "passed": true,
+      "detail": {
+        "dragon": [
+          -8.047367391942354,
+          2.8105124841084956,
+          -1.9746445342429757
+        ],
+        "neighbor": {
+          "hit": true,
+          "holeVisible": true,
+          "position": [
+            -8.03,
+            3.15,
+            -2.23
+          ],
+          "normal": [
+            0,
+            0,
+            1
+          ],
+          "fragments": 22,
+          "settled": true,
+          "hollow": true
+        }
+      }
+    },
+    {
+      "name": "Rendered image v7-ending.png",
+      "passed": true,
+      "detail": 32.89
+    },
+    {
+      "name": "Finale framebuffer clean",
+      "passed": true,
+      "detail": 0
+    },
+    {
+      "name": "Ending remains alive for real observation",
+      "passed": true,
+      "detail": {
+        "seconds": 60.04,
+        "frames": 68,
+        "software_render_fps": 1.1324883264890704
+      }
+    },
+    {
+      "name": "Landscape fits viewport",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Rendered image v7-landscape.png",
+      "passed": true,
+      "detail": 30.33
+    },
+    {
+      "name": "Replay restores shop, server and neighbor",
+      "passed": true,
+      "detail": {
+        "progress": 0,
+        "stage": 0,
+        "serverAlive": true,
+        "serverPosition": [
+          0,
+          4.38,
+          1.06
+        ],
+        "visibleIntact": 144,
+        "visibleDebris": 0,
+        "settled": true,
+        "milestones": [
+          {
+            "id": "glass",
+            "threshold": 8,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "upper",
+            "threshold": 27,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "sign",
+            "threshold": 44,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "interior",
+            "threshold": 62,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "roof",
+            "threshold": 80,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "structure",
+            "threshold": 97,
+            "active": false,
+            "visible": true
+          }
+        ],
+        "server": {
+          "alive": true,
+          "lowered": 0,
+          "position": [
+            0,
+            4.38,
+            1.06
+          ],
+          "visibleLEDs": 31,
+          "rackUnits": 24,
+          "networkPorts": 16,
+          "style": "19-inch rackmount blades, patch switches and UPS"
+        },
+        "products": {
+          "visible": 0,
+          "settled": 0,
+          "families": 4,
+          "labels": [
+            "牧場鮮乳",
+            "無糖綠茶",
+            "黑咖啡",
+            "鮮蔬便當",
+            "鮪魚飯糰",
+            "蛋沙拉三明治",
+            "雞蛋布丁",
+            "紅燒湯麵"
+          ]
+        },
+        "neighbor": {
+          "hit": false,
+          "holeVisible": false,
+          "position": [
+            -8.03,
+            3.15,
+            -2.23
+          ],
+          "normal": [
+            0,
+            0,
+            1
+          ],
+          "fragments": 0,
+          "settled": false,
+          "hollow": true
+        },
+        "thirdFloor": true,
+        "targets": [
+          {
+            "id": "glass",
+            "label": "櫥窗與入口",
+            "position": [
+              -2.5,
+              1.7,
+              1.9
+            ]
+          },
+          {
+            "id": "upper",
+            "label": "二樓外牆",
+            "position": [
+              -2.4,
+              4.5,
+              1.82
+            ]
+          },
+          {
+            "id": "sign",
+            "label": "招牌與雨棚",
+            "position": [
+              2.5,
+              3.15,
+              2.18
+            ]
+          },
+          {
+            "id": "interior",
+            "label": "機房下方樓板",
+            "position": [
+              0,
+              3.3,
+              0.1
+            ]
+          },
+          {
+            "id": "roof",
+            "label": "屋頂支撐",
+            "position": [
+              1.4,
+              5.8,
+              0.1
+            ]
+          },
+          {
+            "id": "structure",
+            "label": "最後承重結構",
+            "position": [
+              -3.7,
+              2.4,
+              -0.1
+            ]
+          },
+          {
+            "id": "server",
+            "label": "最後機櫃",
+            "position": [
+              0,
+              4.38,
+              1.06
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "Replay preserves one mission and playground owner",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Context loss offers recovery prompt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Context-restored framebuffer clean",
+      "passed": true,
+      "detail": 0
+    },
+    {
+      "name": "No JavaScript or shader errors",
+      "passed": true,
+      "detail": []
+    }
+  ],
+  "deterministic_scene_clock": true,
+  "playground_outcomes": [
+    {
+      "open": true,
+      "screen": "game",
+      "activeId": "cannon",
+      "clock": 4.679999999999988,
+      "id": "cannon",
+      "status": "won",
+      "time": 4.679999999999988,
+      "progress": 100,
+      "message": "店體拆除。梨花沒事，判定無損失。",
+      "result": "店體拆除。梨花沒事，判定無損失。",
+      "score": 931,
+      "step": "aim",
+      "power": 0.9009999999999962,
+      "meter": 0.4850719999999886,
+      "sweetWidth": 0.14178000000000085,
+      "shots": 3,
+      "hits": 3,
+      "entered": 4.359999999999995,
+      "zones": null,
+      "metrics": [
+        {
+          "label": "出力",
+          "value": "90%",
+          "percent": 90.09999999999962
+        },
+        {
+          "label": "射擊",
+          "value": "3 / 6",
+          "percent": null
+        },
+        {
+          "label": "破壞",
+          "value": "100%",
+          "percent": 100
+        }
+      ]
+    },
+    {
+      "open": true,
+      "screen": "game",
+      "activeId": "compress",
+      "clock": 0,
+      "id": "compress",
+      "status": "won",
+      "time": 0,
+      "progress": 100,
+      "message": "萬噸息壤壓成一塊。折價券：三元。還有集點。",
+      "result": "萬噸息壤壓成一塊。折價券：三元。還有集點。",
+      "score": 940,
+      "pressure": 32,
+      "load": 0,
+      "compacted": 100,
+      "vents": 3,
+      "zones": null,
+      "metrics": [
+        {
+          "label": "壓力",
+          "value": "32%",
+          "percent": 32
+        },
+        {
+          "label": "料槽",
+          "value": "0%",
+          "percent": 0
+        },
+        {
+          "label": "回收",
+          "value": "100%",
+          "percent": 100
+        }
+      ]
+    },
+    {
+      "open": true,
+      "screen": "game",
+      "activeId": "washer",
+      "clock": 9.650000000000059,
+      "id": "washer",
+      "status": "won",
+      "time": 9.650000000000059,
+      "progress": 100,
+      "message": "強力洗程完成。錢洗白了，晚餐要怎麼付？",
+      "result": "強力洗程完成。錢洗白了，晚餐要怎麼付？",
+      "score": 908,
+      "rpm": 2,
+      "balance": 0.03099912397837158,
+      "foam": 32.149999999999025,
+      "clean": 100,
+      "drains": 2,
+      "zones": null,
+      "metrics": [
+        {
+          "label": "轉速",
+          "value": "高速",
+          "percent": null
+        },
+        {
+          "label": "泡沫",
+          "value": "32%",
+          "percent": 32.149999999999025
+        },
+        {
+          "label": "洗淨",
+          "value": "100%",
+          "percent": 100
+        }
+      ]
+    },
+    {
+      "open": true,
+      "screen": "game",
+      "activeId": "microwave",
+      "clock": 11.433333333333481,
+      "id": "microwave",
+      "status": "won",
+      "time": 11.433333333333481,
+      "progress": 100,
+      "message": "三格都熱好了。螢幕顯示：請再靜置一分鐘。",
+      "result": "三格都熱好了。螢幕顯示：請再靜置一分鐘。",
+      "score": 920,
+      "zone": 2,
+      "zones": [
+        85.6533333333344,
+        86.44333333333368,
+        80.06666666666642
+      ],
+      "power": true,
+      "heat": 57.1666666666672,
+      "vents": 0,
+      "metrics": [
+        {
+          "label": "第 1 格",
+          "value": "86°C",
+          "percent": 76.47619047619143
+        },
+        {
+          "label": "第 2 格",
+          "value": "86°C",
+          "percent": 77.18154761904793
+        },
+        {
+          "label": "第 3 格",
+          "value": "80°C",
+          "percent": 71.48809523809501
+        },
+        {
+          "label": "機體熱度",
+          "value": "57%",
+          "percent": 57.1666666666672
+        }
+      ]
+    },
+    {
+      "open": true,
+      "screen": "game",
+      "activeId": "scan",
+      "clock": 1.4600000000000009,
+      "id": "scan",
+      "status": "won",
+      "time": 1.4600000000000009,
+      "progress": 100,
+      "message": "三件商品掃描完成。這次沒有多送一間店。",
+      "result": "三件商品掃描完成。這次沒有多送一間店。",
+      "score": 945,
+      "cursor": 0.452399999999999,
+      "target": 0.43,
+      "width": 0.1,
+      "attempts": 3,
+      "scanned": 3,
+      "zones": null,
+      "metrics": [
+        {
+          "label": "商品",
+          "value": "3 / 3",
+          "percent": 100
+        },
+        {
+          "label": "機會",
+          "value": "4 / 7",
+          "percent": null
+        }
+      ]
+    },
+    {
+      "open": true,
+      "screen": "game",
+      "activeId": "pack",
+      "clock": 0,
+      "id": "pack",
+      "status": "won",
+      "time": 0,
+      "progress": 100,
+      "message": "整間店裝箱完成。梨花留在原地。龍泡泡列為隨貨贈品。",
+      "result": "整間店裝箱完成。梨花留在原地。龍泡泡列為隨貨贈品。",
+      "score": 1000,
+      "angle": -45,
+      "targetAngle": -45,
+      "stage": 3,
+      "seals": 3,
+      "integrity": 100,
+      "zones": null,
+      "metrics": [
+        {
+          "label": "封條",
+          "value": "3 / 3",
+          "percent": 100
+        },
+        {
+          "label": "完整度",
+          "value": "100%",
+          "percent": 100
+        },
+        {
+          "label": "剩餘",
+          "value": "45 秒",
+          "percent": null
+        }
+      ]
+    }
+  ],
+  "ending_observation": {
+    "seconds": 60.04,
+    "frames": 68,
+    "software_render_fps": 1.1324883264890704
+  },
+  "passed": true,
+  "errors": []
+}

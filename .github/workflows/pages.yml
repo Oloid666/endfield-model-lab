@@ -25,6 +25,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: node scripts/mission-check.mjs
+      - run: node scripts/playground-check.mjs
       - run: node scripts/destruction-check.mjs
       - run: node scripts/cinematic-check.mjs
       - run: npm run build
