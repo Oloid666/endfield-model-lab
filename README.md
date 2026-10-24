@@ -4,7 +4,7 @@
 
 目前場景：《莊的晚餐｜雨夜711》。
 
-**[開啟網站](https://oloid666.github.io/endfield-model-lab/)**
+**[開啟網站](https://oloid666.github.io/endfield-model-lab/?v=5)**
 
 目前版本：雨夜便利店、可控制的騎樓／店內散步，以及三條晚餐短劇。故事結束後，兩人會繼續閒聊與回應點擊。
 

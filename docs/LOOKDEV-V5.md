@@ -66,4 +66,10 @@
 
 ## 發布狀態
 
-本輪已完成本機檢查，等待 GitHub Actions 建置與 Pages 發布後記錄公開資源核對結果。
+已發布：[開啟第五輪網站](https://oloid666.github.io/endfield-model-lab/?v=5)。
+
+程式來源 commit：`1e7393e44e8413bc0d426707770100205abb3622`。GitHub Actions 的 build 與 deploy 均成功：[工作流程 40054152794](https://github.com/Oloid666/endfield-model-lab/actions/runs/40054152794)。
+
+已透過正常 TLS 下載公開 HTML、JavaScript、CSS、favicon 與模型。程式、樣式及圖示雜湊與實際測試的本機正式建置一致；原始 GLB 的大小及 SHA-256 也一致。結果為 `artifacts/production-check.json`。
+
+公開網址的 Chromium 檢查遇到此環境的代理憑證信任錯誤 `ERR_CERT_AUTHORITY_INVALID`，未停用 TLS 驗證。結果記錄於 `artifacts/v5-public-browser.json`。因此本輪截圖來自同版的本機正式子路徑建置，不宣稱是公開網站端到端瀏覽器或 iPhone 真機驗證。

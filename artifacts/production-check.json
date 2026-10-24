@@ -1,8 +1,8 @@
 {
-  "url": "https://oloid666.github.io/endfield-model-lab/?v=4",
-  "release": "lookdev-v4-walk-and-story",
-  "commit": "d310f037782205aae044030518be8bdaecb45039",
-  "action": "https://github.com/Oloid666/endfield-model-lab/actions/runs/40007475278",
+  "url": "https://oloid666.github.io/endfield-model-lab/?v=5",
+  "release": "lookdev-v5-follower-store-camera-ui",
+  "commit": "1e7393e44e8413bc0d426707770100205abb3622",
+  "action": "https://github.com/Oloid666/endfield-model-lab/actions/runs/40054152794",
   "tls_verification": true,
   "browser_public_url_test": false,
   "real_iphone_test": false,
@@ -10,17 +10,20 @@
     {
       "path": "/endfield-model-lab/favicon.svg",
       "bytes": 232,
-      "sha256": "596277ac825df58842559f8d419b585c7ff1b2087c598e93a8a7158b6ea061b3"
+      "sha256": "596277ac825df58842559f8d419b585c7ff1b2087c598e93a8a7158b6ea061b3",
+      "matches_tested_build": true
     },
     {
-      "path": "/endfield-model-lab/assets/index-CwElm3TZ.js",
-      "bytes": 909454,
-      "sha256": "7847671eb06807c7da3b4284e578cfb44bc22dc6f892a451ac4e64e5417302e2"
+      "path": "/endfield-model-lab/assets/index-CSSSvSHR.js",
+      "bytes": 937317,
+      "sha256": "0c42d4b6e2587463349e22c5cad8c5daf316be10805397f3e5a3a317ede8210b",
+      "matches_tested_build": true
     },
     {
-      "path": "/endfield-model-lab/assets/index-D0TO1z3u.css",
-      "bytes": 18084,
-      "sha256": "b98d4d9b883e8222567f4c81263c15a15d60acb8e9776822e3d5c85b76310e61"
+      "path": "/endfield-model-lab/assets/index-CZCMv0YH.css",
+      "bytes": 20530,
+      "sha256": "bce2bebb840797c0bb65bf13d8439b52842d55ba7a719dfc96d1cf1799019d45",
+      "matches_tested_build": true
     }
   ],
   "model": {
@@ -28,9 +31,10 @@
     "sha256": "43c4d1063caf4f5d5f7405aae32cbd02ceb2de0ab043acc54e26dd7aa49ceb94"
   },
   "new_js_markers_verified": [
-    "uWetInverseMatrix",
-    "story-launch",
-    "walking-mode",
-    "uRain"
+    "rainOnGPU",
+    "instanceAtlas",
+    "unlit-fresnel",
+    "single-file",
+    "postSamples"
   ]
 }

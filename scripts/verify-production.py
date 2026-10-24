@@ -13,7 +13,10 @@ paths=re.findall(r'(?:src|href)="([^"]+)"',html)
 assets=[];javascript=''
 for path in paths:
     if not path.endswith(('.js','.css','.svg')):continue
-    data=fetch(urljoin(URL,path));assets.append({'path':path,'bytes':len(data),'sha256':digest(data)})
+    data=fetch(urljoin(URL,path));local=Path('dist')/path.removeprefix('/endfield-model-lab/')
+    matches=local.is_file() and digest(local.read_bytes())==digest(data)
+    assert matches,('Public asset differs from the tested local build',path)
+    assets.append({'path':path,'bytes':len(data),'sha256':digest(data),'matches_tested_build':matches})
     if path.endswith('.js'):javascript+=data.decode()
 markers=['rainOnGPU','instanceAtlas','unlit-fresnel','single-file','postSamples']
 for marker in markers:assert marker in javascript,marker
