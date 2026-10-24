@@ -1,0 +1,131 @@
+{
+  "url": "http://127.0.0.1:4185/",
+  "kind": "Desktop Chromium SwiftShader; paused render; synchronous 1px readback; not iPhone",
+  "viewport": [
+    390,
+    844
+  ],
+  "dpr": 1,
+  "samples": [
+    {
+      "view": "street",
+      "mean_ms": 1366.5166666662942,
+      "median_ms": 1279.0,
+      "mean_calls": 273.3333333333333,
+      "mean_triangles": 237966.66666666666,
+      "frames": [
+        {
+          "ms": 1248.3999999985099,
+          "calls": 214,
+          "triangles": 179346,
+          "glError": 0
+        },
+        {
+          "ms": 1237.5,
+          "calls": 214,
+          "triangles": 179346,
+          "glError": 0
+        },
+        {
+          "ms": 1662.2999999988824,
+          "calls": 392,
+          "triangles": 355208,
+          "glError": 0
+        },
+        {
+          "ms": 1293.0999999996275,
+          "calls": 214,
+          "triangles": 179346,
+          "glError": 0
+        },
+        {
+          "ms": 1264.9000000003725,
+          "calls": 214,
+          "triangles": 179346,
+          "glError": 0
+        },
+        {
+          "ms": 1492.9000000003725,
+          "calls": 392,
+          "triangles": 355208,
+          "glError": 0
+        }
+      ]
+    },
+    {
+      "view": "awning",
+      "mean_ms": 2177.266666666915,
+      "median_ms": 2159.4000000003725,
+      "mean_calls": 172.66666666666666,
+      "mean_triangles": 207862,
+      "frames": [
+        {
+          "ms": 2101.0999999996275,
+          "calls": 138,
+          "triangles": 157240,
+          "glError": 0
+        },
+        {
+          "ms": 1968.0999999996275,
+          "calls": 138,
+          "triangles": 157240,
+          "glError": 0
+        },
+        {
+          "ms": 2205.300000000745,
+          "calls": 242,
+          "triangles": 309106,
+          "glError": 0
+        },
+        {
+          "ms": 2452.2000000011176,
+          "calls": 138,
+          "triangles": 157240,
+          "glError": 0
+        },
+        {
+          "ms": 2113.5,
+          "calls": 138,
+          "triangles": 157240,
+          "glError": 0
+        },
+        {
+          "ms": 2223.4000000003725,
+          "calls": 242,
+          "triangles": 309106,
+          "glError": 0
+        }
+      ]
+    }
+  ],
+  "aa": {
+    "msaa": 4,
+    "postSamples": 0,
+    "postDepth": false,
+    "fxaa": true,
+    "dpr": 1
+  },
+  "metrics": {
+    "batches": {
+      "meshesBefore": 274,
+      "meshesAfter": 173,
+      "consolidated": 116,
+      "sharedDraws": 15
+    },
+    "lights": 14,
+    "weather": {
+      "rainOnGPU": true,
+      "rainCount": 1400,
+      "reflectionCaptures": 9,
+      "reflectionInterval": 0.08333333333333333,
+      "reflectionFrameGap": 2
+    },
+    "camera": {
+      "enabled": false,
+      "inside": false,
+      "stage": "",
+      "automatic": false
+    }
+  },
+  "errors": []
+}

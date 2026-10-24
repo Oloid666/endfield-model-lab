@@ -1,0 +1,108 @@
+{
+  "url": "http://127.0.0.1:4184/",
+  "kind": "Desktop Chromium SwiftShader; paused render; synchronous 1px readback; not iPhone",
+  "viewport": [
+    390,
+    844
+  ],
+  "dpr": 1,
+  "samples": [
+    {
+      "view": "street",
+      "mean_ms": 1559.7999999995034,
+      "median_ms": 1597.25,
+      "mean_calls": 450,
+      "mean_triangles": 229436,
+      "frames": [
+        {
+          "ms": 1682.5,
+          "calls": 589,
+          "triangles": 304932,
+          "glError": 0
+        },
+        {
+          "ms": 1355.3999999985099,
+          "calls": 311,
+          "triangles": 153940,
+          "glError": 0
+        },
+        {
+          "ms": 1708.8999999985099,
+          "calls": 589,
+          "triangles": 304932,
+          "glError": 0
+        },
+        {
+          "ms": 1308.300000000745,
+          "calls": 311,
+          "triangles": 153940,
+          "glError": 0
+        },
+        {
+          "ms": 1791.699999999255,
+          "calls": 589,
+          "triangles": 304932,
+          "glError": 0
+        },
+        {
+          "ms": 1512,
+          "calls": 311,
+          "triangles": 153940,
+          "glError": 0
+        }
+      ]
+    },
+    {
+      "view": "awning",
+      "mean_ms": 2366.349999999938,
+      "median_ms": 2404.899999999441,
+      "mean_calls": 223,
+      "mean_triangles": 194529,
+      "frames": [
+        {
+          "ms": 2249.199999999255,
+          "calls": 160,
+          "triangles": 132446,
+          "glError": 0
+        },
+        {
+          "ms": 2560.5999999996275,
+          "calls": 286,
+          "triangles": 256612,
+          "glError": 0
+        },
+        {
+          "ms": 2006.7000000011176,
+          "calls": 160,
+          "triangles": 132446,
+          "glError": 0
+        },
+        {
+          "ms": 2573.5,
+          "calls": 286,
+          "triangles": 256612,
+          "glError": 0
+        },
+        {
+          "ms": 2149.5999999996275,
+          "calls": 160,
+          "triangles": 132446,
+          "glError": 0
+        },
+        {
+          "ms": 2658.5,
+          "calls": 286,
+          "triangles": 256612,
+          "glError": 0
+        }
+      ]
+    }
+  ],
+  "aa": {
+    "msaa": 4,
+    "fxaa": true,
+    "dpr": 1
+  },
+  "metrics": null,
+  "errors": []
+}

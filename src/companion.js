@@ -14,6 +14,7 @@ export function buildDragon(r) {
     const horn=r.mesh(r.geometry('ConeGeometry',.12,.48,10),r.material('#bf9e52',{roughness:.48}),body,[side*.32,1.17,-.02]);horn.rotation.z=side*-.32;
   }
   const arms=[];for(const side of [-1,1])arms.push(part(white,[side*.53,.43,.07],[.16,.11,.15]));
+  const ears=[];for(const side of [-1,1]){const ear=part(white,[side*.49,.88,-.025],[.12,.14,.075]);ear.rotation.z=side*-.28;ears.push(ear);}
   const tail=r.mesh(r.geometry('ConeGeometry',.15,.53,10),r.material('#80ab8d'),body,[0,.27,-.48]);tail.rotation.x=-1.1;
   const tuft=r.mesh(r.geometry('ConeGeometry',.1,.25,8),r.material('#a9c0b3'),body,[0,1.34,-.08]);tuft.rotation.z=-.18;
   r.box(body,'#b65843',[.42,1.19,.05],[.28,.06,.08]);r.box(body,'#b65843',[.54,1.03,.03],[.06,.3,.05]);
@@ -41,12 +42,16 @@ export function buildDragon(r) {
     const blink=Math.max(0,1-Math.abs((t+.7)%4.3-.15)/.11);
     material.map=maps[blink>.3?1:(s.nod||0)>.15?2:0];
     const gesture=s.gestureAmount||0,happy=s.gesture==='happy'?gesture:0,wave=s.gesture==='wave'?gesture:0,point=s.gesture==='point'?gesture:0,roll=s.gesture==='roll'?gesture:0,nod=s.gesture==='nod'?gesture:0;
-    const curiosity=s.curious||0,startle=Math.max(s.startle||0,s.gesture==='rain'?gesture*.7:0),attention=s.dragon||0,walk=s.walk||0;
-    body.rotation.set(curiosity*.11-startle*.12+walk*.035+nod*Math.sin(t*7)*.06,attention*.3+(s.rain||0)*.15,curiosity*-.05+startle*.11+walk*Math.sin(s.walkPhase||0)*.045+happy*Math.sin(gesture*Math.PI)*.28+roll*Math.PI);
+    const curiosity=Math.max(s.curious||0,s.glance?.35:0),startle=Math.max(s.startle||0,s.gesture==='rain'?gesture*.7:0),attention=s.dragon||0,walk=s.walk||0;
+    const catchUp=s.followerMode==='catch-up'?1:0,hesitate=s.followerMode==='hesitate'?1:0,phase=s.walkPhase||0;
+    body.rotation.set(curiosity*.11-startle*.12+walk*.035+nod*Math.sin(t*7)*.06+(s.lookPitch||0),attention*.3+(s.rain||0)*.15+(s.lookYaw||0)*.72,curiosity*-.05+startle*.11+walk*Math.sin(phase)*.035+happy*Math.sin(gesture*Math.PI)*.28+roll*Math.PI);
+    body.position.y=walk*Math.max(0,Math.cos(phase*2))*.006;
     body.scale.set(1+startle*.035,1-startle*.075,1+startle*.035);
     root.position.y=.005;
-    arms[0].rotation.z=-curiosity*.3+startle*.45-(s.holding?.28:0);arms[1].rotation.z=attention*.22-startle*.45+(s.holding?.28:0)+wave*Math.sin(t*9)*.45+point*.8;
+    arms[0].rotation.z=-curiosity*.3+startle*.45-(s.holding?.28:0)+walk*Math.sin(phase-.3)*.075;arms[1].rotation.z=attention*.22-startle*.45+(s.holding?.28:0)+wave*Math.sin(t*9)*.45+point*.8-walk*Math.sin(phase-.5)*.09;
     for(let i=0;i<feet.length;i++){const stride=Math.sin((s.walkPhase||0)+i*Math.PI);feet[i].position.z=.12+walk*stride*.11;feet[i].position.y=.14+walk*Math.max(0,stride)*.06;feet[i].rotation.x=walk*stride*.22;}
-    tail.rotation.z=Math.sin(t*1.1)*.045+curiosity*.13;
+    for(let i=0;i<ears.length;i++){const side=i?1:-1;ears[i].rotation.z=side*(-.28-startle*.18-catchUp*.09+curiosity*.1)+Math.sin(t*.65+i)*.009;ears[i].rotation.x=hesitate*.08+(s.lookYaw||0)*side*.08;}
+    tail.rotation.z=Math.sin(t*(catchUp?3.2:1.1))*(.016+curiosity*.07+catchUp*.07)+curiosity*.09;
+    tail.rotation.x=-1.1+walk*.09+hesitate*.06;tuft.rotation.z=-.18+(s.lookYaw||0)*.1;
   },dispose(){root.removeFromParent();}};
 }

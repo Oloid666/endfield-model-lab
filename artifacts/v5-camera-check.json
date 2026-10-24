@@ -1,0 +1,213 @@
+{
+  "passed": true,
+  "kind": "Node actual camera-path, portrait proxy framing and portal-clearance checks; no GPU or iPhone test",
+  "checks": 12,
+  "results": [
+    {
+      "name": "Deep entry reaches a stable indoor camera",
+      "passed": true,
+      "detail": {
+        "camera": [
+          0.6297816036188936,
+          2.6799280573052378,
+          1.5000180135735897
+        ],
+        "owner": [
+          -0.22,
+          0.32,
+          -0.9
+        ],
+        "fov": 71.98100665511382,
+        "state": {
+          "enabled": true,
+          "inside": true,
+          "inRoom": true,
+          "stage": "",
+          "automatic": true
+        }
+      }
+    },
+    {
+      "name": "Portrait indoor frame includes the character and either-side companion",
+      "passed": true,
+      "detail": {
+        "projected": [
+          [
+            -0.15982032385491526,
+            -0.45852215314718114,
+            0.975233780354881
+          ],
+          [
+            -0.22312819839034356,
+            0.41897250921406093,
+            0.9651063869594438
+          ],
+          [
+            -0.849775814966164,
+            -0.27627482356702937,
+            0.979178769858855
+          ],
+          [
+            -0.7230114636680371,
+            -0.020169159408079885,
+            0.9761701309629421
+          ],
+          [
+            0.8793587116447449,
+            -0.4493428406599555,
+            0.9753809300008085
+          ],
+          [
+            0.6932720522066942,
+            -0.12374435561207668,
+            0.9726716281315833
+          ]
+        ]
+      }
+    },
+    {
+      "name": "Manual view is preserved for fourteen seconds",
+      "passed": true,
+      "detail": {
+        "camera": [
+          10.1,
+          8,
+          16
+        ]
+      }
+    },
+    {
+      "name": "Automatic resume restores the interior UI and a portal route",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Exit returns to the street camera and clears the interior UI",
+      "passed": true,
+      "detail": {
+        "camera": [
+          0.5299980376321962,
+          2.4999997384597274,
+          8.49998076594076
+        ],
+        "state": {
+          "enabled": true,
+          "inside": false,
+          "inRoom": false,
+          "stage": "",
+          "automatic": true
+        }
+      }
+    },
+    {
+      "name": "Every camera crossing uses the clear entrance below the lintel",
+      "passed": true,
+      "detail": [
+        {
+          "camera": [
+            -0.2199523280736661,
+            2.400009831843761,
+            1.8925254285348023
+          ],
+          "ownerZ": -0.9,
+          "inRoom": true
+        },
+        {
+          "camera": [
+            -0.21523241904457333,
+            2.4025870594331766,
+            1.877743142408023
+          ],
+          "ownerZ": -0.9,
+          "inRoom": true
+        },
+        {
+          "camera": [
+            -0.1338181263831103,
+            2.4254009733332147,
+            1.9159827470073674
+          ],
+          "ownerZ": 0.5000000000000009,
+          "inRoom": false
+        }
+      ]
+    },
+    {
+      "name": "The camera enters only once there is floor behind the character",
+      "passed": true,
+      "detail": [
+        {
+          "camera": [
+            -0.2199523280736661,
+            2.400009831843761,
+            1.8925254285348023
+          ],
+          "ownerZ": -0.9,
+          "inRoom": true
+        },
+        {
+          "camera": [
+            -0.21523241904457333,
+            2.4025870594331766,
+            1.877743142408023
+          ],
+          "ownerZ": -0.9,
+          "inRoom": true
+        }
+      ]
+    },
+    {
+      "name": "Stopping just inside the door keeps a usable camera distance",
+      "passed": true,
+      "detail": {
+        "camera": [
+          -0.21999999999682482,
+          2.400000000001739,
+          4.650000000003526
+        ],
+        "ownerZ": 1.4,
+        "gap": 3.2500000000035265,
+        "downwardAngleDegrees": 17.764654122727933,
+        "fov": 73.98098287558432
+      }
+    },
+    {
+      "name": "Portrait doorway frame leaves room for either-side companion",
+      "passed": true,
+      "detail": [
+        [
+          -0.7172510360968333,
+          -0.3267718008150504,
+          0.9799909995907943
+        ],
+        [
+          0.8463698504731555,
+          -0.3360782528821126,
+          0.979733500246128
+        ]
+      ]
+    },
+    {
+      "name": "Shallow movement does not force repeated portal crossings",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Manual walking still translates the camera with the owner",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Disabling walking clears the zone and leaves the camera still",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "zones": [
+    false,
+    true,
+    false,
+    true,
+    false
+  ]
+}

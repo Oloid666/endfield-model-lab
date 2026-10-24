@@ -10,6 +10,7 @@ import { createHash } from 'node:crypto';
 import { Resources } from '../src/resources.js';
 import { buildPerformance } from '../src/performance.js';
 import { makeLocomotion } from '../src/locomotion.js';
+import { makeFollower } from '../src/follower.js';
 import { config } from '../src/config.js';
 
 const checks=[];
@@ -56,17 +57,20 @@ check('Head and wrist react to different beats',JSON.stringify(trace[0].pose.hea
 check('Cloth joint actually changes its pose',JSON.stringify(trace[1].pose.cloth)!==JSON.stringify(trace[2].pose.cloth));
 
 const start=a.position.clone(),restAnkleHeight=poses.footR.bone.getWorldPosition(vector()).y;
-let maxWalk=0,actualLift=0,liftSample=null;
+let maxWalk=0,actualLift=0,liftSample=null,maxArmL=0,maxArmR=0;
+const neutralArmL=poses.armL.bone.quaternion.clone(),neutralArmR=poses.armR.bone.quaternion.clone();
 a.setMove(1,0,true);
 for(let i=0;i<120;i++){
   const time=60+i/60;a.update(time,1/60);maxWalk=Math.max(maxWalk,a.status.footDrift);
   const left=poses.footL.bone.getWorldPosition(vector()).y,right=poses.footR.bone.getWorldPosition(vector()).y;
   actualLift=Math.max(actualLift,left-restAnkleHeight,right-restAnkleHeight);
+  maxArmL=Math.max(maxArmL,neutralArmL.angleTo(poses.armL.bone.quaternion));maxArmR=Math.max(maxArmR,neutralArmR.angleTo(poses.armR.bone.quaternion));
   if(i===23)liftSample={time,phase:a.status.walkPhase,leftAnkleY:left,rightAnkleY:right,baselineAnkleY:restAnkleHeight,pose:a.poseData};
 }
 check('Walking changes position and hips/knees',a.position.distanceTo(start)>.8&&JSON.stringify(trace[0].pose.hip)!==JSON.stringify(a.poseData.hip)&&JSON.stringify(trace[0].pose.knee)!==JSON.stringify(a.poseData.knee),{distance:a.position.distanceTo(start)});
 check('Walking swing foot lifts at about 60.38 seconds',Math.max(liftSample.leftAnkleY,liftSample.rightAnkleY)-restAnkleHeight>.045,liftSample);
 check('Walking ankle target error remains within 2 cm',maxWalk<.02,{maxFootTargetErrorMetres:maxWalk,maxActualFootLiftMetres:actualLift});
+check('Real shoulder bones have a small, asymmetric walking excursion',maxArmL>.025&&maxArmR>.025&&maxArmL<.15&&maxArmR<.15&&Math.abs(maxArmL-maxArmR)>.005,{leftPeakRadians:maxArmL,rightPeakRadians:maxArmR});
 a.setMove(0,0,false);for(let i=0;i<90;i++)a.update(62+i/60,1/60);
 const stopped=a.position.clone();let stoppedDrift=0;
 for(let i=0;i<120;i++){a.update(64+i/60,1/60);stoppedDrift=Math.max(stoppedDrift,a.status.footDrift);}
@@ -83,6 +87,10 @@ a.setDinner(null);check('Replay clears meal props',!food.visible&&a.status.dinne
 a.setGesture('phone',{speaker:'zhuang'});a.update(66.2,0);a.update(66.8,0);
 check('Phone follows a real wrist during gesture',root.getObjectByName('phone').visible,{phonePosition:root.getObjectByName('phone').position.toArray()});
 a.teleport(-1.25,2.48);check('Teleport resets heading and walking input',Math.abs(pivot.rotation.y-.08)<.000001&&!a.moving,{heading:pivot.rotation.y,position:a.position.toArray()});
+a.setDinner('A');a.update(70,0);const heldArm=poses.armL.bone.quaternion.clone();let heldExcursion=0;a.setMove(1,0,true);
+for(let i=0;i<120;i++){a.update(70+i/60,1/60);heldExcursion=Math.max(heldExcursion,heldArm.angleTo(poses.armL.bone.quaternion));}
+check('The food-holding shoulder stays protected while walking',heldExcursion<maxArmL*.3,{heldPeakRadians:heldExcursion,freePeakRadians:maxArmL});
+a.setMove(0,0,false);a.teleport(-1.25,2.48);a.setDinner(null);
 
 const testRoot=new T.Group(),testPivot=new T.Group();testRoot.add(testPivot);const move=makeLocomotion(testRoot,testPivot);
 move.setObstacles({obstacles:[],entrance:{minX:-1,maxX:.6,z:1.8}});
@@ -94,6 +102,34 @@ move.teleport(-.2,2.48);move.setMove(0,1);for(let i=0;i<240;i++)move.update(1/60
 check('Walking stays on raised awning surface',testRoot.position.z<=3.4,{maxZ:testRoot.position.z});
 move.setObstacles([{x:0,z:2.6,w:1,d:.4}]);move.teleport(-1,2.6);move.setMove(1,0);for(let i=0;i<240;i++)move.update(1/60);
 check('A counter/rack rectangle blocks movement',testRoot.position.x<=-.7,{x:testRoot.position.x});
+
+function followScenario(start,waypoints,layout=null){
+  const owner=new T.Group(),facing=new T.Group();owner.add(facing);owner.position.set(start[0],.32,start[1]);
+  const controller=makeLocomotion(owner,facing);if(layout)controller.setObstacles(layout);
+  const follower=makeFollower(owner.position,controller),modes={},snapshots=[];let time=0,minimumGap=Infinity,maximumGap=0,collisions=0,largestStep=0,doorX=null,settleTravel=0;
+  let lastX=follower.state.position[0],lastZ=follower.state.position[2];
+  function tick(x,z,settling=false){
+    controller.setMove(x,z,true);controller.update(1/60);follower.update(1/60,time+=1/60);
+    const s=follower.state,px=s.position[0],pz=s.position[2],step=Math.hypot(px-lastX,pz-lastZ);
+    modes[s.mode]=(modes[s.mode]||0)+1;minimumGap=Math.min(minimumGap,s.distance);maximumGap=Math.max(maximumGap,s.distance);largestStep=Math.max(largestStep,step);
+    if(!controller.free(px,pz,.27))collisions++;if(lastZ>=1.8&&pz<1.8)doorX=px;if(settling)settleTravel+=step;lastX=px;lastZ=pz;
+  }
+  let reached=true;for(const [x,z]of waypoints){let arrived=false;for(let i=0;i<900;i++){const dx=x-owner.position.x,dz=z-owner.position.z,d=Math.hypot(dx,dz);if(d<.05){arrived=true;break;}tick(dx/d,dz/d);}reached&&=arrived;snapshots.push({owner:owner.position.toArray(),companion:structuredClone(follower.state)});}
+  for(let i=0;i<420;i++)tick(0,0,true);
+  const result={reached,minimumGap,maximumGap,collisions,largestStep,doorX,settleTravel,modes,final:structuredClone(follower.state),owner:owner.position.toArray(),snapshots};
+  const beforePause=[...follower.state.position],phaseBefore=follower.state.phase;follower.update(0,time+100);result.paused=beforePause.every((v,i)=>v===follower.state.position[i])&&phaseBefore===follower.state.phase;
+  controller.teleport(start[0],start[1]);follower.reset();result.resetHeading=follower.state.heading;result.resetDistance=follower.state.distance;return result;
+}
+const doorFollow=followScenario([-1.25,2.48],[[-.2,2.48],[-.2,.75],[-1.2,.75]]);
+check('Companion follows turns through the actual doorway without collisions',doorFollow.reached&&doorFollow.collisions===0&&doorFollow.doorX!==null&&doorFollow.doorX>-.73&&doorFollow.doorX<.33,doorFollow);
+check('Companion hesitates, catches up, uses single file, then settles',doorFollow.modes.hesitate>0&&doorFollow.modes['catch-up']>0&&doorFollow.modes['single-file']>0&&doorFollow.modes.settle>0&&doorFollow.final.mode==='idle');
+check('Companion maintains space and moves continuously in world space',doorFollow.minimumGap>=.55&&doorFollow.maximumGap<1.6&&doorFollow.largestStep<.025,{minimumGap:doorFollow.minimumGap,maximumGap:doorFollow.maximumGap,largestStep:doorFollow.largestStep});
+check('Companion keeps walking after owner stops, then stops its gait',doorFollow.settleTravel>.3&&doorFollow.final.speed===0&&doorFollow.final.walk<.001,{settleTravel:doorFollow.settleTravel,finalPhase:doorFollow.final.phase});
+check('Companion freezes with a paused clock and resets on teleport',doorFollow.paused&&Math.abs(doorFollow.resetHeading-.08)<.00001&&doorFollow.resetDistance>.6&&doorFollow.resetDistance<.9);
+const yieldingFollow=followScenario([-1.25,2.48],[[-3,2.48]]);
+check('Companion yields when the owner walks toward it',yieldingFollow.reached&&yieldingFollow.minimumGap>=.55&&yieldingFollow.collisions===0&&yieldingFollow.modes.yield>0,yieldingFollow);
+const rackFollow=followScenario([-1.15,-.5],[[-1.15,.9],[1.15,.9],[1.15,-.5]],{obstacles:[{x:0,z:0,w:.8,d:.9}],entrance:{minX:-1,maxX:.6,z:10}});
+check('Companion routes around a shelf instead of cutting the corner',rackFollow.reached&&rackFollow.collisions===0&&rackFollow.largestStep<.025&&rackFollow.minimumGap>=.55&&rackFollow.final.mode==='idle',rackFollow);
 
 a.dispose();resources.dispose();
 const finalHash=createHash('sha256').update(await fs.readFile(file)).digest('hex');check('Original GLB unchanged after tests',finalHash===expectedHash);

@@ -133,11 +133,7 @@ export function buildStore(scene, r) {
   // Separate automatic entrance: the leaves slide behind the fixed display panes.
   const automaticDoors=buildAutomaticDoors(root,r,glass,glassMeshes);
   for(const x of [-4.23,-1.02,.6,4.23])B(dark,[x,1.68,1.88],[.06,2.2,.065]);
-  // Printed promotions cover a modest part of the glass and leave the centre clear.
-  text('今晚，熱一點。',[-3.48,2.12,1.869],[.72,.38,1],{width:768,height:384,font:'bold 70px sans-serif',bg:'#174b42',color:'#f0deb5'});
-  text('鮮食・每日到店',[-3.48,1.61,1.87],[.72,.56,1],{width:512,height:512,font:'bold 47px sans-serif',bg:'#e5c788',color:'#365147'});
-  text('CITY CAFE',[3.53,2.12,1.87],[.66,.42,1],{width:768,height:384,font:'bold 88px Arial',bg:'#695544',color:'#f0e7d4'});
-  text('第二杯  咖啡時光',[3.53,1.61,1.87],[.66,.51,1],{width:768,height:512,font:'bold 62px sans-serif',bg:'#d9cfad',color:'#4e624e'});
+  // Illustrated window promotions are built from one shared atlas in the interior.
   const sideGlass=r.mesh(r.geometry('PlaneGeometry',1,1),glass,root,[4.43,1.65,-.72],[4.45,2.08,1]);sideGlass.rotation.y=Math.PI/2;glassMeshes.push(sideGlass);
   for(const x of [-2.85,0,2.85])glassMeshes.push(r.mesh(r.geometry('PlaneGeometry',1,1),glass,root,[x,4.58,1.95],[1.64,1.12,1]));
   const floorPlan=buildInterior(root,r,surfaces,glass,glassMeshes);
@@ -213,5 +209,5 @@ export function buildStore(scene, r) {
   });
   for(const mesh of sources)mesh.removeFromParent();
   for(const [material,geometries] of batches){const merged=mergeGeometries(geometries);if(merged){const mesh=new T.Mesh(r.own(merged),material);mesh.castShadow=true;mesh.receiveShadow=true;root.add(mesh);}for(const g of geometries)g.dispose();}
-  return {root,glass,glassMeshes,spill,floorPlan,wetMaterials:[...wetMaterials],walkObstacles:floorPlan.obstacles||floorPlan.racks,doors:automaticDoors,triggerDoor:()=>automaticDoors.triggerDoor(),update:(t,delta,actorPosition)=>automaticDoors.update(t,delta,actorPosition)};
+  return {root,glass,glassMeshes,spill,floorPlan,wetMaterials:[...wetMaterials],walkObstacles:floorPlan.obstacles||floorPlan.racks,doors:automaticDoors,triggerDoor:()=>automaticDoors.triggerDoor(),update:(t,delta,actorPosition,companionPosition)=>automaticDoors.update(t,delta,actorPosition,companionPosition)};
 }

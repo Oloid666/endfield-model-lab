@@ -1,4 +1,5 @@
 import * as T from 'three';
+import { buildFridgeProducts, buildWindowPromotions } from './fridge-products.js';
 
 // Metres: 8.5 × 4.7 shop; entrance → central aisle → rear fridges.
 export function buildInterior(root,r,surfaces,glass,glassMeshes) {
@@ -25,12 +26,6 @@ export function buildInterior(root,r,surfaces,glass,glassMeshes) {
     const mesh=new T.InstancedMesh(geo,goodsMaterial,100);root.add(mesh);goods.push({mesh,count:0});
   }
   function pack(x,y,z,w,h,d,n,rotation=0){const g=goods[n%8];dummy.position.set(x,y+h/2,z);dummy.scale.set(w,h,d);dummy.rotation.set(0,rotation,0);dummy.updateMatrix();g.mesh.setMatrixAt(g.count++,dummy.matrix);}
-  const bottleGeo=r.own(new T.LatheGeometry([new T.Vector2(0,0),new T.Vector2(.048,0),new T.Vector2(.053,.025),new T.Vector2(.053,.17),new T.Vector2(.028,.21),new T.Vector2(.025,.26),new T.Vector2(0,.26)],10));
-  const bottles=new T.InstancedMesh(bottleGeo,r.material('#ced9bf',{roughness:.25,metalness:.02}),140);root.add(bottles);let bottleCount=0;
-  const labelMat=r.label('武陵  冷藏  SELECT',{width:512,height:128,bg:'#f4edda',color:'#3f594a',font:'bold 37px sans-serif'});
-  const labels=new T.InstancedMesh(r.geometry('CylinderGeometry',.054,.054,.085,10),labelMat,140),caps=new T.InstancedMesh(r.geometry('CylinderGeometry',.027,.027,.025,10),r.material('#c0c9bb',{roughness:.35}),140);root.add(labels,caps);
-  const tint=new T.Color();
-  function bottle(x,y,z,n){dummy.position.set(x,y,z);dummy.rotation.set(0,0,0);dummy.scale.setScalar(1);dummy.updateMatrix();bottles.setMatrixAt(bottleCount,dummy.matrix);tint.set(colors[n%8]);bottles.setColorAt(bottleCount,tint);dummy.position.set(x,y+.117,z);dummy.updateMatrix();labels.setMatrixAt(bottleCount,dummy.matrix);dummy.position.y=y+.26;dummy.updateMatrix();caps.setMatrixAt(bottleCount,dummy.matrix);bottleCount++;}
   const label=(text,p,s,options={},rot=0)=>{const m=r.mesh(r.geometry('PlaneGeometry',1,1),r.label(text,{width:512,height:128,font:'bold 48px sans-serif',bg:'#e0dec7',color:'#40584a',...options}),root,p,s);m.rotation.y=rot;return m;};
   // Five actual fridge bays, with a clear rear service aisle.
   for(let door=0;door<5;door++){
@@ -39,12 +34,7 @@ export function buildInterior(root,r,surfaces,glass,glassMeshes) {
     box('#aabeb5',[x,1.56,-2.61],[1.01,2.2,.025],{emissive:0x8fb3c5,emissiveIntensity:.22});
     for(let row=0;row<4;row++){
       const y=.53+row*.45;box(white,[x,y,-2.33],[1.02,.035,.5],{roughness:.38,metalness:.12});
-      for(let k=0;k<6;k++){
-        if(door>=3&&row>=2)pack(x-.4+k*.16,y+.02,-2.21,.105,.245,.11,2+k%2);
-        else bottle(x-.4+k*.16,y+.02,-2.21,door+row+k);
-      }
       box('#dddcc5',[x,y-.018,-2.065],[1.02,.055,.02]);
-      if(row===1)label(door<3?'35    40    35':'32    38    42',[x,y-.018,-2.05],[.9,.045,1],{bg:'#f0e8d5',color:'#29452f',font:'bold 30px Arial'});
     }
     const pane=r.mesh(r.geometry('PlaneGeometry',1,1),glass,root,[x,1.54,-2.005],[1.03,2.23,1]);glassMeshes.push(pane);
     for(const dx of [-.54,.54]){
@@ -52,8 +42,8 @@ export function buildInterior(root,r,surfaces,glass,glassMeshes) {
       box('#d3e6db',[x+dx*.91,1.53,-2.1],[.012,2.12,.014],{emissive:0xcce7df,emissiveIntensity:1.25,roughness:.3});
     }
     box('#cbd3c5',[x+.43,1.5,-1.99],[.02,.33,.025],{metalness:.7,roughness:.22});
-    label(door<3?'冷藏飲品':'鮮乳・茶',[x,2.68,-2.015],[.94,.16,1],{font:'36px sans-serif'});
   }
+  const fridge=buildFridgeProducts(root,r),promotions=buildWindowPromotions(root,r);
   // Low double-sided gondolas. Left aisle 1.0m; rear aisle ≥0.85m; cashier aisle ≥1.2m.
   const racks=[{x:-2.7,z:-.25,w:1,d:1.65},{x:.6,z:-.32,w:.8,d:1.4}];
   racks.forEach((rack,index)=>{
@@ -75,7 +65,6 @@ export function buildInterior(root,r,surfaces,glass,glassMeshes) {
     label(index?'點心・即食':'米食・輕食',[x,1.48,z+d/2+.065],[w,.14,1],{font:'34px sans-serif'});
   });
   for(const g of goods){g.mesh.count=g.count;g.mesh.instanceMatrix.needsUpdate=true;g.mesh.computeBoundingSphere();}
-  bottles.count=bottleCount;bottles.instanceMatrix.needsUpdate=true;bottles.instanceColor.needsUpdate=true;bottles.computeBoundingSphere();for(const mesh of [labels,caps]){mesh.count=bottleCount;mesh.instanceMatrix.needsUpdate=true;mesh.computeBoundingSphere();}
   // Customer queue remains west of the counter; staff work in the 0.88m east aisle.
   // Heights are measured from the shop floor at y=.31: counter top=.98m.
   const cashier={x:2.85,z:.2,w:.86,d:2.1};
@@ -149,5 +138,5 @@ export function buildInterior(root,r,surfaces,glass,glassMeshes) {
   for(const rack of [...racks,{x:2.85,z:.2,w:.9,d:2.1}]){const sh=r.mesh(r.geometry('PlaneGeometry',1,1),shadowMat,root,[rack.x,.315,rack.z],[rack.w+.4,rack.d+.4,1]);sh.rotation.x=-Math.PI/2;}
   // Small perforations and shelf-edge strips supply detail without a wall of boxes.
   const walkObstacles=[...racks,cashier,{x:3.15,z:-2.47,w:1.94,d:.78}];
-  return {racks,entrance:{minX:-1,maxX:.6,z:1.8},cashier,coffee:{x:3.58,z:-2.49},staffAisle:.88,rearAisle:Math.min(...racks.map(rack=>rack.z-rack.d/2+2.005)),obstacles:walkObstacles,walkObstacles};
+  return {fridgeCategories:fridge.categories,fridgeStock:fridge.stock,promotions,racks,entrance:{minX:-1,maxX:.6,z:1.8},cashier,coffee:{x:3.58,z:-2.49},staffAisle:.88,rearAisle:Math.min(...racks.map(rack=>rack.z-rack.d/2+2.005)),obstacles:walkObstacles,walkObstacles};
 }

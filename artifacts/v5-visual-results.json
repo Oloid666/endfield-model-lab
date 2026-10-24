@@ -1,0 +1,184 @@
+{
+  "url": "http://127.0.0.1:4186/endfield-model-lab/",
+  "real_iphone_test": false,
+  "checks": [
+    {
+      "name": "Pages base path loads original model",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Reload at repository path works",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Shallow entry keeps camera behind performer",
+      "passed": true,
+      "detail": {
+        "camera": [
+          -0.22000174921640872,
+          2.3999992394711267,
+          4.65003688565036
+        ],
+        "owner": [
+          -0.22,
+          0.32,
+          1.4
+        ],
+        "state": {
+          "enabled": true,
+          "inside": true,
+          "inRoom": false,
+          "stage": "",
+          "automatic": true
+        }
+      }
+    },
+    {
+      "name": "Scene visible v5-entry-threshold.png",
+      "passed": true,
+      "detail": 56.36
+    },
+    {
+      "name": "Deep entry camera passes below lintel",
+      "passed": true,
+      "detail": {
+        "camera": [
+          0.574399067827975,
+          2.679985474899592,
+          1.500003634144968
+        ],
+        "owner": [
+          -0.27555972030643006,
+          0.32,
+          -0.8679667117394696
+        ],
+        "state": {
+          "enabled": true,
+          "inside": true,
+          "inRoom": true,
+          "stage": "",
+          "automatic": true
+        },
+        "dragon": {
+          "mode": "settle",
+          "distance": 0.7284630380308336,
+          "speed": 0.26412889363492287,
+          "walk": 0.5135666116052532,
+          "phase": 61.37336685435282,
+          "heading": 4.039240481497539,
+          "lookYaw": -0.55,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -0.9895722093342727,
+            0.325,
+            -0.7235902479741574
+          ],
+          "target": [
+            -1.0343707683031194,
+            0.325,
+            -0.7593122436391373
+          ],
+          "trailPoints": 56,
+          "glance": false
+        }
+      }
+    },
+    {
+      "name": "Dragon follows actual keyboard route inside",
+      "passed": true,
+      "detail": {
+        "mode": "settle",
+        "distance": 0.7284630380308336,
+        "speed": 0.26412889363492287,
+        "walk": 0.5135666116052532,
+        "phase": 61.37336685435282,
+        "heading": 4.039240481497539,
+        "lookYaw": -0.55,
+        "lookPitch": -0.095,
+        "blocked": false,
+        "position": [
+          -0.9895722093342727,
+          0.325,
+          -0.7235902479741574
+        ],
+        "target": [
+          -1.0343707683031194,
+          0.325,
+          -0.7593122436391373
+        ],
+        "trailPoints": 56,
+        "glance": false
+      }
+    },
+    {
+      "name": "Scene visible v5-entry.png",
+      "passed": true,
+      "detail": 54.59
+    },
+    {
+      "name": "Stopping and street preset clear indoor UI",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Scene visible v5-storefront.png",
+      "passed": true,
+      "detail": 69.99
+    },
+    {
+      "name": "Active dialogue leaves replay badge hidden",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Scene visible v5-coda.png",
+      "passed": true,
+      "detail": 69.76
+    },
+    {
+      "name": "Collapse pauses story and reveals resume",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Resume hides badge",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Scene visible v5-landscape.png",
+      "passed": true,
+      "detail": 58.32
+    },
+    {
+      "name": "Landscape fits viewport",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Scene visible v5-desktop.png",
+      "passed": true,
+      "detail": 60.17
+    },
+    {
+      "name": "Scene visible v5-layout.png",
+      "passed": true,
+      "detail": 56.77
+    },
+    {
+      "name": "Final framebuffer clean",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "One canvas and no runtime/shader errors",
+      "passed": true,
+      "detail": []
+    }
+  ],
+  "passed": true,
+  "errors": []
+}

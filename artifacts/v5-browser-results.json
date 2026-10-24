@@ -1,0 +1,906 @@
+{
+  "url": "http://127.0.0.1:4185/",
+  "browser": "Desktop Chromium / SwiftShader",
+  "real_iphone_test": false,
+  "checks": [
+    {
+      "name": "HDR multisample and FXAA active",
+      "passed": true,
+      "detail": {
+        "aa": {
+          "msaa": 4,
+          "postSamples": 0,
+          "postDepth": false,
+          "fxaa": true,
+          "dpr": 1
+        },
+        "glass": true,
+        "cloth": 58,
+        "minZoom": 0.75
+      }
+    },
+    {
+      "name": "Single sample postprocessing",
+      "passed": true,
+      "detail": {
+        "msaa": 4,
+        "postSamples": 0,
+        "postDepth": false,
+        "fxaa": true,
+        "dpr": 1
+      }
+    },
+    {
+      "name": "Shared glass depth ready",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "58 secondary cloth joints",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Closer zoom available",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Portrait no overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Detail hides large caption",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "No WebGL framebuffer error",
+      "passed": true,
+      "detail": 0
+    },
+    {
+      "name": "Low quality keeps AA",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "High quality and glass remain valid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Five fridge categories and forty SKUs",
+      "passed": true,
+      "detail": {
+        "total": 276,
+        "skuCount": 40,
+        "bays": [
+          {
+            "id": "water-soda",
+            "name": "水・氣泡飲",
+            "x": -3.35,
+            "rows": [
+              {
+                "shelf": 0,
+                "skus": [
+                  "water-1000",
+                  "mineral-1000"
+                ],
+                "prices": [
+                  32,
+                  35
+                ],
+                "counts": {
+                  "water-1000": 6,
+                  "mineral-1000": 3
+                },
+                "total": 9
+              },
+              {
+                "shelf": 1,
+                "skus": [
+                  "water-600",
+                  "mineral-600"
+                ],
+                "prices": [
+                  22,
+                  25
+                ],
+                "counts": {
+                  "water-600": 8,
+                  "mineral-600": 5
+                },
+                "total": 13
+              },
+              {
+                "shelf": 2,
+                "skus": [
+                  "cola",
+                  "citrus-soda"
+                ],
+                "prices": [
+                  35,
+                  35
+                ],
+                "counts": {
+                  "cola": 8,
+                  "citrus-soda": 6
+                },
+                "total": 14
+              },
+              {
+                "shelf": 3,
+                "skus": [
+                  "sparkling",
+                  "grape-soda"
+                ],
+                "prices": [
+                  38,
+                  38
+                ],
+                "counts": {
+                  "sparkling": 8,
+                  "grape-soda": 6
+                },
+                "total": 14
+              }
+            ],
+            "total": 50,
+            "families": [
+              "pet"
+            ]
+          },
+          {
+            "id": "tea-pet",
+            "name": "茶・無糖好茶",
+            "x": -2.18,
+            "rows": [
+              {
+                "shelf": 0,
+                "skus": [
+                  "green-tea",
+                  "oolong"
+                ],
+                "prices": [
+                  30,
+                  30
+                ],
+                "counts": {
+                  "green-tea": 8,
+                  "oolong": 6
+                },
+                "total": 14
+              },
+              {
+                "shelf": 1,
+                "skus": [
+                  "black-tea",
+                  "barley-tea"
+                ],
+                "prices": [
+                  30,
+                  28
+                ],
+                "counts": {
+                  "black-tea": 7,
+                  "barley-tea": 6
+                },
+                "total": 13
+              },
+              {
+                "shelf": 2,
+                "skus": [
+                  "jasmine",
+                  "roast-tea"
+                ],
+                "prices": [
+                  32,
+                  32
+                ],
+                "counts": {
+                  "jasmine": 7,
+                  "roast-tea": 6
+                },
+                "total": 13
+              },
+              {
+                "shelf": 3,
+                "skus": [
+                  "lemon-tea",
+                  "milk-tea"
+                ],
+                "prices": [
+                  35,
+                  35
+                ],
+                "counts": {
+                  "lemon-tea": 8,
+                  "milk-tea": 5
+                },
+                "total": 13
+              }
+            ],
+            "total": 53,
+            "families": [
+              "pet"
+            ]
+          },
+          {
+            "id": "dairy",
+            "name": "鮮乳・乳飲",
+            "x": -1.0100000000000002,
+            "rows": [
+              {
+                "shelf": 0,
+                "skus": [
+                  "milk-1000",
+                  "lowfat-1000"
+                ],
+                "prices": [
+                  92,
+                  92
+                ],
+                "counts": {
+                  "milk-1000": 6,
+                  "lowfat-1000": 4
+                },
+                "total": 10
+              },
+              {
+                "shelf": 1,
+                "skus": [
+                  "milk-400",
+                  "soy-400"
+                ],
+                "prices": [
+                  42,
+                  32
+                ],
+                "counts": {
+                  "milk-400": 8,
+                  "soy-400": 6
+                },
+                "total": 14
+              },
+              {
+                "shelf": 2,
+                "skus": [
+                  "cultured",
+                  "strawberry-milk"
+                ],
+                "prices": [
+                  28,
+                  30
+                ],
+                "counts": {
+                  "cultured": 8,
+                  "strawberry-milk": 8
+                },
+                "total": 16
+              },
+              {
+                "shelf": 3,
+                "skus": [
+                  "coffee-milk",
+                  "oat-milk"
+                ],
+                "prices": [
+                  38,
+                  45
+                ],
+                "counts": {
+                  "coffee-milk": 8,
+                  "oat-milk": 6
+                },
+                "total": 14
+              }
+            ],
+            "total": 54,
+            "families": [
+              "carton",
+              "pet"
+            ]
+          },
+          {
+            "id": "juice-cans",
+            "name": "果汁・罐裝飲",
+            "x": 0.1599999999999997,
+            "rows": [
+              {
+                "shelf": 0,
+                "skus": [
+                  "orange-juice",
+                  "apple-juice"
+                ],
+                "prices": [
+                  45,
+                  45
+                ],
+                "counts": {
+                  "orange-juice": 7,
+                  "apple-juice": 6
+                },
+                "total": 13
+              },
+              {
+                "shelf": 1,
+                "skus": [
+                  "grape-juice",
+                  "tomato-juice"
+                ],
+                "prices": [
+                  45,
+                  42
+                ],
+                "counts": {
+                  "grape-juice": 8,
+                  "tomato-juice": 5
+                },
+                "total": 13
+              },
+              {
+                "shelf": 2,
+                "skus": [
+                  "coffee-can",
+                  "cocoa-can"
+                ],
+                "prices": [
+                  35,
+                  35
+                ],
+                "counts": {
+                  "coffee-can": 20,
+                  "cocoa-can": 15
+                },
+                "total": 35
+              },
+              {
+                "shelf": 3,
+                "skus": [
+                  "sports",
+                  "fruit-water"
+                ],
+                "prices": [
+                  35,
+                  35
+                ],
+                "counts": {
+                  "sports": 8,
+                  "fruit-water": 6
+                },
+                "total": 14
+              }
+            ],
+            "total": 75,
+            "families": [
+              "carton",
+              "can",
+              "pet"
+            ]
+          },
+          {
+            "id": "chilled-food",
+            "name": "輕食・優格",
+            "x": 1.3299999999999996,
+            "rows": [
+              {
+                "shelf": 0,
+                "skus": [
+                  "egg-sandwich",
+                  "chicken-sandwich"
+                ],
+                "prices": [
+                  49,
+                  59
+                ],
+                "counts": {
+                  "egg-sandwich": 6,
+                  "chicken-sandwich": 4
+                },
+                "total": 10
+              },
+              {
+                "shelf": 1,
+                "skus": [
+                  "green-salad",
+                  "corn-salad"
+                ],
+                "prices": [
+                  65,
+                  65
+                ],
+                "counts": {
+                  "green-salad": 4,
+                  "corn-salad": 4
+                },
+                "total": 8
+              },
+              {
+                "shelf": 2,
+                "skus": [
+                  "plain-yogurt",
+                  "berry-yogurt"
+                ],
+                "prices": [
+                  39,
+                  42
+                ],
+                "counts": {
+                  "plain-yogurt": 7,
+                  "berry-yogurt": 6
+                },
+                "total": 13
+              },
+              {
+                "shelf": 3,
+                "skus": [
+                  "custard",
+                  "cocoa-pudding"
+                ],
+                "prices": [
+                  32,
+                  35
+                ],
+                "counts": {
+                  "custard": 7,
+                  "cocoa-pudding": 6
+                },
+                "total": 13
+              }
+            ],
+            "total": 44,
+            "families": [
+              "sandwich",
+              "salad",
+              "yogurt"
+            ]
+          }
+        ],
+        "drawCalls": 14,
+        "geometryFamilies": [
+          "pet-shell",
+          "liquid",
+          "bottle-wrap",
+          "caps",
+          "cartons",
+          "carton-seals",
+          "cans",
+          "can-lids",
+          "sandwiches",
+          "salad-trays",
+          "salad-lids",
+          "yogurt-pots",
+          "yogurt-lids",
+          "shelf-cards"
+        ],
+        "atlasTextures": 1,
+        "shelfCards": 25,
+        "petTransmission": false,
+        "shellLighting": "unlit-fresnel",
+        "shellPBRLights": 0
+      }
+    },
+    {
+      "name": "Instanced clear shells avoid PBR light loop",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Four illustrated posters leave glass visible",
+      "passed": true,
+      "detail": {
+        "count": 4,
+        "frontGlassCoverage": 0.1765557811753464,
+        "illustrated": true
+      }
+    },
+    {
+      "name": "Static batches and GPU rain active",
+      "passed": true,
+      "detail": {
+        "batches": {
+          "meshesBefore": 274,
+          "meshesAfter": 173,
+          "consolidated": 116,
+          "sharedDraws": 15
+        },
+        "lights": 14,
+        "weather": {
+          "rainOnGPU": true,
+          "rainCount": 1400,
+          "reflectionCaptures": 7,
+          "reflectionInterval": 0.08333333333333333,
+          "reflectionFrameGap": 2
+        },
+        "camera": {
+          "enabled": false,
+          "inside": false,
+          "stage": "",
+          "automatic": false
+        }
+      }
+    },
+    {
+      "name": "Keyboard enters shop through doorway",
+      "passed": true,
+      "detail": {
+        "steps": 255,
+        "owner": [
+          -1.0980950740853255,
+          0.32,
+          -0.45637970128154354
+        ],
+        "dragon": {
+          "mode": "follow",
+          "distance": 0.9917934705530709,
+          "speed": 0.8310253057650488,
+          "walk": 0.9999999999999456,
+          "phase": 59.445663739820375,
+          "heading": 3.4822632906213307,
+          "lookYaw": 0.15102092021525618,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -0.6298517914604295,
+            0.325,
+            0.41792145764961497
+          ],
+          "target": [
+            -0.7430855351800377,
+            0.325,
+            0.12349320943334222
+          ],
+          "trailPoints": 84,
+          "glance": false
+        }
+      }
+    },
+    {
+      "name": "Entry camera stays under shop ceiling",
+      "passed": true,
+      "detail": {
+        "camera": [
+          -0.17901556153820342,
+          2.8699998759793246,
+          1.5000000184755569
+        ],
+        "state": {
+          "enabled": true,
+          "inside": true,
+          "stage": "",
+          "automatic": true
+        },
+        "owner": [
+          -1.1290166861605855,
+          0.32,
+          -0.5098003283083037
+        ],
+        "dragon": {
+          "mode": "idle",
+          "distance": 0.7507903887806244,
+          "speed": 0,
+          "walk": 5.588909891924471e-06,
+          "phase": 86.4024031544417,
+          "heading": 4.654187764729012,
+          "lookYaw": 0.4297256440194215,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -0.42944896738311744,
+            0.325,
+            -0.7823644762255428
+          ],
+          "target": [
+            -0.4213500099429849,
+            0.325,
+            -0.8044320906339797
+          ],
+          "trailPoints": 86,
+          "glance": false
+        }
+      }
+    },
+    {
+      "name": "Dragon independently follows into shop",
+      "passed": true,
+      "detail": {
+        "mode": "idle",
+        "distance": 0.7507903887806244,
+        "speed": 0,
+        "walk": 5.588909891924471e-06,
+        "phase": 86.4024031544417,
+        "heading": 4.654187764729012,
+        "lookYaw": 0.4297256440194215,
+        "lookPitch": -0.095,
+        "blocked": false,
+        "position": [
+          -0.42944896738311744,
+          0.325,
+          -0.7823644762255428
+        ],
+        "target": [
+          -0.4213500099429849,
+          0.325,
+          -0.8044320906339797
+        ],
+        "trailPoints": 86,
+        "glance": false
+      }
+    },
+    {
+      "name": "Door opens for nearby actor",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Door closes after both leave",
+      "passed": true,
+      "detail": {
+        "door": {
+          "open": 0
+        },
+        "owner": [
+          -3,
+          0.32,
+          3.2
+        ],
+        "dragon": {
+          "mode": "idle",
+          "distance": 0.7624942281679084,
+          "speed": 0,
+          "walk": 1.5878624158621897e-17,
+          "phase": 1.2940921772864744,
+          "heading": -4.709478939072566,
+          "lookYaw": -0.003816513539691502,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -3.7624939149002645,
+            0.325,
+            3.1993088202531412
+          ],
+          "target": [
+            -3.7655607661869084,
+            0.325,
+            3.161054996786309
+          ],
+          "trailPoints": 1,
+          "glance": false
+        }
+      }
+    },
+    {
+      "name": "Walking moves the actual model",
+      "passed": true,
+      "detail": {
+        "before": [
+          -1.25,
+          0.32,
+          2.48
+        ],
+        "after": [
+          0.12640493381747336,
+          0.32,
+          2.48
+        ],
+        "pose": {
+          "head": [
+            -0.09867401412636048,
+            0.00028188859480990423,
+            0.002379516052444027,
+            0.9951169532631498
+          ],
+          "wrist": [
+            0.2303692211053238,
+            0.4329651274352102,
+            0.8648580397350407,
+            0.1071996651553783
+          ],
+          "hip": [
+            -0.9972116456258644,
+            0.0035530632312337634,
+            0.003061336388282937,
+            0.0744777673610107
+          ],
+          "knee": [
+            -0.022207971544934868,
+            0.00040339301757397195,
+            -9.009169992648877e-05,
+            0.9997532871388961
+          ],
+          "armL": [
+            0.7075212495220625,
+            -0.050022529263939755,
+            0.699897588898297,
+            -0.08399324742404812
+          ],
+          "armR": [
+            0.6826692781490733,
+            -0.005566040933438373,
+            0.7305586124524028,
+            0.014689813643972788
+          ],
+          "elbow": [
+            0.018128258830626093,
+            0.038509960253076486,
+            -0.011968416386400694,
+            0.9990221733735442
+          ],
+          "cloth": [
+            -0.0071356381166894555,
+            -0.0007859115261210363,
+            -0.000745705146287525,
+            0.9999739541286616
+          ]
+        }
+      }
+    },
+    {
+      "name": "Walk toggle and keyboard usable",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Walking can stop",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Story starts with Dragon",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Tap reveals full current line",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Three dinner choices A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Dinner choice waits without timeout",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Dinner prop A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Distinct ending A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Ending remains alive A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Three dinner choices B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Dinner prop B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Distinct ending B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Ending remains alive B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Three dinner choices C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Dinner prop C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Distinct ending C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Ending remains alive C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Three distinct prop choices",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Hotspot response accepted after ending",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "No overlapping hotspot response",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Drag does not trigger a response",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Replay does not duplicate story UI",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Ending real 60s observation",
+      "passed": true,
+      "detail": {
+        "seconds": 60.16,
+        "frames": 32,
+        "phases": [
+          "idle",
+          "idle",
+          "chat",
+          "chat",
+          "idle",
+          "idle",
+          "idle",
+          "chat",
+          "chat",
+          "chat",
+          "idle",
+          "idle"
+        ]
+      }
+    },
+    {
+      "name": "Postending chatter runs",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Landscape no overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Only one canvas",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Context lost has recovery prompt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Context restores glass and single canvas",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "No JavaScript or shader errors",
+      "passed": true,
+      "detail": []
+    }
+  ],
+  "software_render_fps": 0.5319205198701618,
+  "passed": true,
+  "errors": []
+}
