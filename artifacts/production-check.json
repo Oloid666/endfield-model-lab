@@ -1,8 +1,8 @@
 {
-  "url": "https://oloid666.github.io/endfield-model-lab/?v=5",
-  "release": "lookdev-v5-follower-store-camera-ui",
-  "commit": "1e7393e44e8413bc0d426707770100205abb3622",
-  "action": "https://github.com/Oloid666/endfield-model-lab/actions/runs/40054152794",
+  "url": "https://oloid666.github.io/endfield-model-lab/?v=6",
+  "release": "lookdev-v6-pear-server-demolition",
+  "commit": "089624bfb0ae19a7479f381d707dd5d153608228",
+  "action": "https://github.com/Oloid666/endfield-model-lab/actions/runs/40074060226",
   "tls_verification": true,
   "browser_public_url_test": false,
   "real_iphone_test": false,
@@ -14,15 +14,15 @@
       "matches_tested_build": true
     },
     {
-      "path": "/endfield-model-lab/assets/index-CSSSvSHR.js",
-      "bytes": 937317,
-      "sha256": "0c42d4b6e2587463349e22c5cad8c5daf316be10805397f3e5a3a317ede8210b",
+      "path": "/endfield-model-lab/assets/index-BbNkO8i1.js",
+      "bytes": 978207,
+      "sha256": "00a504d8e91d27767faeb33daa0390898a9c33f13e772fc060f81ecbdcb0f77a",
       "matches_tested_build": true
     },
     {
-      "path": "/endfield-model-lab/assets/index-CZCMv0YH.css",
-      "bytes": 20530,
-      "sha256": "bce2bebb840797c0bb65bf13d8439b52842d55ba7a719dfc96d1cf1799019d45",
+      "path": "/endfield-model-lab/assets/index-DIZBAUTZ.css",
+      "bytes": 22036,
+      "sha256": "8758d58685d28816c537e04630924b0084b6a78386b1d121a3f753157360283e",
       "matches_tested_build": true
     }
   ],
@@ -34,7 +34,8 @@
     "rainOnGPU",
     "instanceAtlas",
     "unlit-fresnel",
-    "single-file",
-    "postSamples"
+    "mission-attack",
+    "pear-five-petal-blossoms",
+    "permanent-shop-rubble"
   ]
 }

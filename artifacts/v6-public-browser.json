@@ -1,0 +1,8 @@
+{
+  "url": "https://oloid666.github.io/endfield-model-lab/?v=6",
+  "tls_verification": true,
+  "real_iphone_test": false,
+  "browser": "Desktop Chromium / SwiftShader",
+  "passed": false,
+  "error": "Page.goto: net::ERR_CERT_AUTHORITY_INVALID at https://oloid666.github.io/endfield-model-lab/?v=6\nCall log:\n  - navigating to \"https://oloid666.github.io/endfield-model-lab/?v=6\", waiting until \"networkidle\"\n"
+}

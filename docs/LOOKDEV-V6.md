@@ -1,6 +1,6 @@
 # 第六輪：梨花、機房與互動砲擊
 
-本輪將晚餐短劇接到單一路線的機房事件。主要實作、本機功能與構圖驗證已完成；公開部署結果等待發布後補記。
+本輪將晚餐短劇接到單一路線的機房事件。主要實作、本機功能與構圖驗證已完成，公開版本已發布。
 
 ## 目前行為
 
@@ -50,4 +50,16 @@
 
 截圖來自本機正式子路徑建置，沒有使用生成圖代替網頁，也不宣稱是公開網址或 iPhone 真機截圖。
 
-尚未取得公開部署結果。未取得 iPhone GPU、Safe Area、Safari 工具列收合或長時間溫度表現的真機資料，不能宣稱手機穩定 30 FPS。
+尚未取得 iPhone GPU、Safe Area、Safari 工具列收合或長時間溫度表現的真機資料，不能宣稱手機穩定 30 FPS。
+
+## 建置與發布
+
+驗證及發布日期：2026-10-24。`VITE_BASE_PATH=/endfield-model-lab/ npm run build` 成功。JavaScript 約 978 kB，gzip 約 273 kB；Vite 的單一 chunk 超過 500 kB 提示仍保留。沒有新增套件。
+
+已發布：[開啟 V6](https://oloid666.github.io/endfield-model-lab/?v=6)。程式來源 commit：`089624bfb0ae19a7479f381d707dd5d153608228`。
+
+[GitHub Actions 40074060226](https://github.com/Oloid666/endfield-model-lab/actions/runs/40074060226) 的三項 Node 檢查、build 與 deploy 均成功。
+
+已透過正常 TLS 下載公開 HTML、JavaScript、CSS、favicon 與 GLB。公開程式、樣式與圖示的 SHA-256 和本機實際測試的正式建置一致；模型仍為 7,520,868 bytes，SHA-256 為 `43c4d1063caf4f5d5f7405aae32cbd02ceb2de0ab043acc54e26dd7aa49ceb94`。核對結果在 `artifacts/production-check.json`。
+
+公開網址的 Chromium 檢查遇到此環境的代理憑證信任錯誤 `ERR_CERT_AUTHORITY_INVALID`，未停用 TLS 驗證；結果為 `artifacts/v6-public-browser.json`。本輪截圖來自同版的本機正式建置，沒有宣稱公開網址端到端瀏覽器或 iPhone 真機驗證通過。
