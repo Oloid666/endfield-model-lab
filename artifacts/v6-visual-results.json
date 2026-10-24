@@ -1,0 +1,1022 @@
+{
+  "url": "http://127.0.0.1:4188/endfield-model-lab/",
+  "browser": "Desktop Chromium / SwiftShader",
+  "real_iphone_test": false,
+  "checks": [
+    {
+      "name": "Original model loads at preview path",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Repository path survives reload",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Quality low renders cleanly",
+      "passed": true,
+      "detail": {
+        "aa": {
+          "msaa": 2,
+          "postSamples": 0,
+          "postDepth": false,
+          "fxaa": true,
+          "dpr": 1
+        },
+        "garden": {
+          "quality": "low",
+          "trees": 3,
+          "blossoms": 720,
+          "newLeaves": 240,
+          "fallingPetals": 12,
+          "protected": false,
+          "shield": 0,
+          "center": [
+            7.65,
+            0.29,
+            -0.65
+          ]
+        },
+        "effects": {
+          "active": false,
+          "phase": "ready",
+          "beams": 0,
+          "particles": 0,
+          "pulses": 0,
+          "charge": 0,
+          "quality": "low",
+          "particleLimit": 36,
+          "geometryAllocatedPerFrame": 0
+        },
+        "error": 0
+      }
+    },
+    {
+      "name": "Quality high renders cleanly",
+      "passed": true,
+      "detail": {
+        "aa": {
+          "msaa": 4,
+          "postSamples": 0,
+          "postDepth": false,
+          "fxaa": true,
+          "dpr": 1
+        },
+        "garden": {
+          "quality": "high",
+          "trees": 3,
+          "blossoms": 1800,
+          "newLeaves": 420,
+          "fallingPetals": 30,
+          "protected": false,
+          "shield": 0,
+          "center": [
+            7.65,
+            0.29,
+            -0.65
+          ]
+        },
+        "effects": {
+          "active": false,
+          "phase": "ready",
+          "beams": 0,
+          "particles": 0,
+          "pulses": 0,
+          "charge": 0,
+          "quality": "high",
+          "particleLimit": 96,
+          "geometryAllocatedPerFrame": 0
+        },
+        "error": 0
+      }
+    },
+    {
+      "name": "Quality balanced renders cleanly",
+      "passed": true,
+      "detail": {
+        "aa": {
+          "msaa": 4,
+          "postSamples": 0,
+          "postDepth": false,
+          "fxaa": true,
+          "dpr": 1
+        },
+        "garden": {
+          "quality": "balanced",
+          "trees": 3,
+          "blossoms": 1350,
+          "newLeaves": 420,
+          "fallingPetals": 24,
+          "protected": false,
+          "shield": 0,
+          "center": [
+            7.65,
+            0.29,
+            -0.65
+          ]
+        },
+        "effects": {
+          "active": false,
+          "phase": "ready",
+          "beams": 0,
+          "particles": 0,
+          "pulses": 0,
+          "charge": 0,
+          "quality": "balanced",
+          "particleLimit": 72,
+          "geometryAllocatedPerFrame": 0
+        },
+        "error": 0
+      }
+    },
+    {
+      "name": "Low quality reduces blossom and particle budgets",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Actual rendered scene v6-street.png",
+      "passed": true,
+      "detail": 54.1
+    },
+    {
+      "name": "Actual rendered scene v6-pear.png",
+      "passed": true,
+      "detail": 47.76
+    },
+    {
+      "name": "Hero rises while companion stays grounded",
+      "passed": true,
+      "detail": {
+        "pose": {
+          "phase": "charge",
+          "lift": 1.1910205723076273,
+          "forward": 0.5293424765811676,
+          "heading": 2.911592653589793,
+          "airborne": true,
+          "dragonProjectile": false
+        },
+        "dragon": [
+          -2.0126628993912794,
+          0.325,
+          3.2472010222923973
+        ]
+      }
+    },
+    {
+      "name": "Charge character proxy bounds within frame",
+      "passed": true,
+      "detail": {
+        "points": {
+          "heroFoot": [
+            -0.385650207169585,
+            -0.15594105069952308,
+            0.9928760552522484
+          ],
+          "heroHead": [
+            -0.4082913336451594,
+            0.2724652639386484,
+            0.9924108298227178
+          ],
+          "heroLeft": [
+            -0.5651666410618575,
+            0.08172492150404977,
+            0.9929453492718425
+          ],
+          "heroRight": [
+            -0.21535965876617716,
+            0.033994943371024114,
+            0.9923161865087512
+          ],
+          "dragonFoot": [
+            -0.4082604514631198,
+            -0.3123609478166413,
+            0.9937312702511472
+          ],
+          "dragonHead": [
+            -0.41697924702244177,
+            -0.15986444348900852,
+            0.993580303875505
+          ],
+          "dragonLeft": [
+            -0.5047433771340256,
+            -0.22006882041576295,
+            0.9938042278315827
+          ],
+          "dragonRight": [
+            -0.31626359524004816,
+            -0.2582821654629489,
+            0.9935064154322426
+          ]
+        },
+        "panels": [
+          {
+            "selector": ".mission-status",
+            "x": 22,
+            "y": 83,
+            "w": 281,
+            "h": 53.5
+          },
+          {
+            "selector": ".mission-pause",
+            "x": 316,
+            "y": 85,
+            "w": 54,
+            "h": 46
+          },
+          {
+            "selector": ".mission-panel",
+            "x": 14,
+            "y": 701,
+            "w": 362,
+            "h": 119
+          }
+        ],
+        "hero": [
+          -1.25,
+          1.5133718393449274,
+          3.7793424765811676
+        ],
+        "dragon": [
+          -2.0126628993912794,
+          0.325,
+          3.2472010222923973
+        ],
+        "phase": "charge",
+        "phaseElapsed": 14.001,
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "Charge heads clear dialogue and HUD",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "Actual rendered scene v6-charge.png",
+      "passed": true,
+      "detail": 66.21
+    },
+    {
+      "name": "Thirty-second charge reaches combat",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Combat character proxy bounds within frame",
+      "passed": true,
+      "detail": {
+        "points": {
+          "heroFoot": [
+            -0.5818098644410802,
+            -0.023185418787040876,
+            0.9968795965216909
+          ],
+          "heroHead": [
+            -0.5934630582783469,
+            0.15865270063766704,
+            0.9968010675125426
+          ],
+          "heroLeft": [
+            -0.6867527482061693,
+            0.07284423198443142,
+            0.996877200252079
+          ],
+          "heroRight": [
+            -0.48684438296924143,
+            0.06638302056168187,
+            0.9968010818334881
+          ],
+          "dragonFoot": [
+            -0.5832390786989701,
+            -0.22502216159791213,
+            0.9972179678700281
+          ],
+          "dragonHead": [
+            -0.5876958266165871,
+            -0.15719114891297528,
+            0.9971905937767117
+          ],
+          "dragonLeft": [
+            -0.6412045274102784,
+            -0.1888562251315387,
+            0.9972239502800503
+          ],
+          "dragonRight": [
+            -0.5289997239436687,
+            -0.1953042648867782,
+            0.9971851740666534
+          ]
+        },
+        "panels": [
+          {
+            "selector": ".mission-status",
+            "x": 22,
+            "y": 83,
+            "w": 281,
+            "h": 53.5
+          },
+          {
+            "selector": ".mission-pause",
+            "x": 316,
+            "y": 85,
+            "w": 54,
+            "h": 46
+          },
+          {
+            "selector": ".mission-combat",
+            "x": 14,
+            "y": 656,
+            "w": 362,
+            "h": 164
+          }
+        ],
+        "hero": [
+          -1.25,
+          3.0415936982817993,
+          4.45
+        ],
+        "dragon": [
+          -2.0126628993912794,
+          0.325,
+          3.2472010222923973
+        ],
+        "phase": "combat",
+        "phaseElapsed": 2.5009999999999977,
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "Combat heads clear dialogue and HUD",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "Actual rendered scene v6-combat.png",
+      "passed": true,
+      "detail": 66.83
+    },
+    {
+      "name": "Interactive damage reaches last-shot scene",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Final shot starts from player timing",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Finisher at three seconds character proxy bounds within frame",
+      "passed": true,
+      "detail": {
+        "points": {
+          "heroFoot": [
+            -0.5950260328008176,
+            -6.739046007355562e-05,
+            0.99252262370014
+          ],
+          "heroHead": [
+            -0.6167337170204822,
+            0.40312579758890116,
+            0.9922206375512692
+          ],
+          "heroLeft": [
+            -0.7987609747493608,
+            0.2081505628442397,
+            0.9925993047146168
+          ],
+          "heroRight": [
+            -0.40217649587916104,
+            0.19992751224398975,
+            0.9921267934238273
+          ],
+          "dragonFoot": [
+            -0.24159954616616183,
+            0.31175114873142695,
+            0.9926434958423298
+          ],
+          "dragonHead": [
+            -0.24519413831023598,
+            0.48082355023663176,
+            0.9925221361089889
+          ],
+          "dragonLeft": [
+            -0.3667358707243489,
+            0.39289291185426634,
+            0.9927210281834016
+          ],
+          "dragonRight": [
+            -0.11570920747965174,
+            0.3943348932755003,
+            0.992443782531939
+          ]
+        },
+        "panels": [
+          {
+            "selector": ".mission-status",
+            "x": 22,
+            "y": 83,
+            "w": 281,
+            "h": 53.5
+          },
+          {
+            "selector": ".mission-pause",
+            "x": 316,
+            "y": 85,
+            "w": 54,
+            "h": 46
+          }
+        ],
+        "hero": [
+          -1.25,
+          3.0174640431635744,
+          4.45
+        ],
+        "dragon": [
+          -0.7615502890647423,
+          4.521880073773101,
+          3.7000410020911065
+        ],
+        "phase": "finisher",
+        "phaseElapsed": 3,
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "Finisher at three seconds heads clear dialogue and HUD",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "Actual rendered scene v6-finale.png",
+      "passed": true,
+      "detail": 43.54
+    },
+    {
+      "name": "Fast-skipped finisher tracks the lowered live rack",
+      "passed": true,
+      "detail": {
+        "before": {
+          "alive": true,
+          "lowered": 0.373746476342444,
+          "position": [
+            0,
+            3.1952236699944523,
+            1.06
+          ],
+          "visibleLEDs": 12
+        },
+        "nearImpact": {
+          "dragon": [
+            -0.00033477387346758647,
+            1.2212821655771229,
+            1.0611605494280214
+          ],
+          "rack": [
+            0,
+            1.21,
+            1.06
+          ],
+          "phase": "finisher",
+          "elapsed": 4.869999999999997
+        },
+        "distance": 0.011346638648994442
+      }
+    },
+    {
+      "name": "Actual finisher impact stops server",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Actual rendered scene v6-impact.png",
+      "passed": true,
+      "detail": 38.88
+    },
+    {
+      "name": "Flight and landing finish at 100",
+      "passed": true,
+      "detail": {
+        "phase": "complete",
+        "node": null,
+        "nodeId": null,
+        "speaker": null,
+        "text": "",
+        "revealed": 0,
+        "branch": "A",
+        "choices": [],
+        "waitingChoice": false,
+        "progress": 100,
+        "energy": 0,
+        "charge": 100,
+        "meter": 0.0518518518518468,
+        "meterElapsed": 0.06999999999999318,
+        "meterPeriod": 2.7,
+        "phaseElapsed": 0.06999999999999318,
+        "time": 59.68099999999999,
+        "clock": 59.68099999999999,
+        "sourceTime": 59.74099999999999,
+        "paused": false,
+        "auto": false,
+        "target": "server",
+        "targetLabel": "最後機櫃",
+        "targets": [
+          {
+            "id": "server",
+            "label": "最後機櫃",
+            "position": [
+              0,
+              1.21,
+              1.06
+            ]
+          }
+        ],
+        "feedback": {
+          "result": "perfect",
+          "power": 0.9999999999999943,
+          "damage": 18,
+          "position": 0.49999999999999784,
+          "progress": 99,
+          "target": "server",
+          "finisher": true,
+          "finalAttempt": true,
+          "time": 47.611,
+          "number": 7
+        },
+        "shots": 7,
+        "hits": 7,
+        "canAttack": false,
+        "ended": true,
+        "busy": false,
+        "sequenceKind": null,
+        "endingCaption": "武陵城，又過了平安的一天。",
+        "revision": 118
+      }
+    },
+    {
+      "name": "Close ending at two seconds character proxy bounds within frame",
+      "passed": true,
+      "detail": {
+        "points": {
+          "heroFoot": [
+            0.07896212320603371,
+            -0.2372922965680478,
+            0.9930174679874827
+          ],
+          "heroHead": [
+            0.08275449200684185,
+            0.214074427787303,
+            0.9926436755355982
+          ],
+          "heroLeft": [
+            -0.1702727020054761,
+            0.004465460454356328,
+            0.9930159036912771
+          ],
+          "heroRight": [
+            0.34436262116113253,
+            -0.02501307527183471,
+            0.992633264261886
+          ],
+          "dragonFoot": [
+            -0.2575577935415842,
+            -0.20955952330996183,
+            0.9932631391325816
+          ],
+          "dragonHead": [
+            -0.2624815903652534,
+            -0.029364457517090756,
+            0.9931190489564133
+          ],
+          "dragonLeft": [
+            -0.4047747224211657,
+            -0.11237199453581785,
+            0.993299674087697
+          ],
+          "dragonRight": [
+            -0.1109399466333341,
+            -0.13294278457956604,
+            0.9930843444132224
+          ]
+        },
+        "panels": [],
+        "hero": [
+          -1.25,
+          0.32,
+          3.25
+        ],
+        "dragon": [
+          -2.0126628993912794,
+          0.325,
+          3.2472010222923973
+        ],
+        "phase": "complete",
+        "phaseElapsed": 2,
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "Close ending at two seconds heads clear dialogue and HUD",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "Actual rendered scene v6-complete.png",
+      "passed": true,
+      "detail": 47.7
+    },
+    {
+      "name": "Wide ending at eighteen seconds character proxy bounds within frame",
+      "passed": true,
+      "detail": {
+        "points": {
+          "heroFoot": [
+            -0.5766660911178006,
+            -0.10574164734158038,
+            0.9982709905106254
+          ],
+          "heroHead": [
+            -0.584574858646922,
+            0.009318363544924275,
+            0.9982363016668444
+          ],
+          "heroLeft": [
+            -0.6444256958877961,
+            -0.04382938039090371,
+            0.9982690636677266
+          ],
+          "heroRight": [
+            -0.5162038541151225,
+            -0.04985609556847865,
+            0.9982371923427108
+          ],
+          "dragonFoot": [
+            -0.6640597477752547,
+            -0.1007918270418261,
+            0.998292706660643
+          ],
+          "dragonHead": [
+            -0.6678460241199934,
+            -0.05292867185106278,
+            0.9982784089749527
+          ],
+          "dragonLeft": [
+            -0.7045531107193546,
+            -0.07556325994556354,
+            0.9982953167532655
+          ],
+          "dragonRight": [
+            -0.6269532755012457,
+            -0.07947554298404585,
+            0.9982761149102591
+          ]
+        },
+        "panels": [
+          {
+            "selector": ".mission-panel",
+            "x": 14,
+            "y": 582,
+            "w": 362,
+            "h": 174
+          }
+        ],
+        "hero": [
+          -1.25,
+          0.32,
+          3.25
+        ],
+        "dragon": [
+          -2.0126628993912794,
+          0.325,
+          3.2472010222923973
+        ],
+        "phase": "complete",
+        "phaseElapsed": 17.999999999999993,
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "Wide ending at eighteen seconds heads clear dialogue and HUD",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "Actual rendered scene v6-complete-wide.png",
+      "passed": true,
+      "detail": 40.01
+    },
+    {
+      "name": "Landscape fits viewport",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Landscape ending character proxy bounds within frame",
+      "passed": true,
+      "detail": {
+        "points": {
+          "heroFoot": [
+            -0.2738078637058611,
+            -0.1929736043191873,
+            0.9968566160023952
+          ],
+          "heroHead": [
+            -0.28015340386112886,
+            0.06292476775560549,
+            0.9967652200411866
+          ],
+          "heroLeft": [
+            -0.3017405352222652,
+            -0.05205461972192939,
+            0.9968672395020194
+          ],
+          "heroRight": [
+            -0.25161520596207637,
+            -0.0733186567687885,
+            0.9967511271560239
+          ],
+          "dragonFoot": [
+            -0.3074305221559347,
+            -0.1754151468162673,
+            0.9969339022823944
+          ],
+          "dragonHead": [
+            -0.31034346445166844,
+            -0.07062515840888504,
+            0.9968972674941614
+          ],
+          "dragonLeft": [
+            -0.32351598787690594,
+            -0.11766593857257707,
+            0.9969498220101086
+          ],
+          "dragonRight": [
+            -0.29391411585217586,
+            -0.13154546731190278,
+            0.9968818186719967
+          ]
+        },
+        "panels": [
+          {
+            "selector": ".mission-panel",
+            "x": 420,
+            "y": 161,
+            "w": 405,
+            "h": 156
+          }
+        ],
+        "hero": [
+          -1.25,
+          0.32,
+          3.25
+        ],
+        "dragon": [
+          -2.0126628993912794,
+          0.325,
+          3.2472010222923973
+        ],
+        "phase": "complete",
+        "phaseElapsed": 19.999999999999993,
+        "width": 844,
+        "height": 390
+      }
+    },
+    {
+      "name": "Landscape ending heads clear dialogue and HUD",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "Actual rendered scene v6-landscape.png",
+      "passed": true,
+      "detail": 33.73
+    },
+    {
+      "name": "Actual rendered scene v6-desktop.png",
+      "passed": true,
+      "detail": 42.44
+    },
+    {
+      "name": "Replay restores geometry and first target",
+      "passed": true,
+      "detail": {
+        "mission": {
+          "phase": "choice",
+          "node": null,
+          "nodeId": null,
+          "speaker": null,
+          "text": "",
+          "revealed": 0,
+          "branch": null,
+          "choices": [
+            {
+              "id": "A",
+              "label": "熱便當＋湯",
+              "hint": "先吃頓熱的。"
+            },
+            {
+              "id": "B",
+              "label": "飯糰＋茶葉蛋",
+              "hint": "簡單吃一點。"
+            },
+            {
+              "id": "C",
+              "label": "甜點＋熱飲",
+              "hint": "先救心情。"
+            }
+          ],
+          "waitingChoice": true,
+          "progress": 0,
+          "energy": 100,
+          "charge": 0,
+          "meter": 0.07407407407406986,
+          "meterElapsed": 0.09999999999999432,
+          "meterPeriod": 2.7,
+          "phaseElapsed": 0.09999999999999432,
+          "time": 81.71099999999998,
+          "clock": 81.71099999999998,
+          "sourceTime": 81.77099999999999,
+          "paused": false,
+          "auto": false,
+          "target": "glass",
+          "targetLabel": "櫥窗與入口",
+          "targets": [
+            {
+              "id": "glass",
+              "label": "櫥窗與入口",
+              "position": [
+                -2.5,
+                1.7,
+                1.9
+              ]
+            }
+          ],
+          "feedback": null,
+          "shots": 0,
+          "hits": 0,
+          "canAttack": false,
+          "ended": false,
+          "busy": true,
+          "sequenceKind": null,
+          "endingCaption": "武陵城，又過了平安的一天。",
+          "revision": 146
+        },
+        "store": {
+          "progress": 0,
+          "stage": 0,
+          "serverAlive": true,
+          "serverPosition": [
+            0,
+            4.38,
+            1.06
+          ],
+          "visibleIntact": 141,
+          "visibleDebris": 0,
+          "settled": true,
+          "milestones": [
+            {
+              "id": "glass",
+              "threshold": 8,
+              "active": false,
+              "visible": true
+            },
+            {
+              "id": "upper",
+              "threshold": 27,
+              "active": false,
+              "visible": true
+            },
+            {
+              "id": "sign",
+              "threshold": 44,
+              "active": false,
+              "visible": true
+            },
+            {
+              "id": "interior",
+              "threshold": 62,
+              "active": false,
+              "visible": true
+            },
+            {
+              "id": "roof",
+              "threshold": 80,
+              "active": false,
+              "visible": true
+            },
+            {
+              "id": "structure",
+              "threshold": 97,
+              "active": false,
+              "visible": true
+            }
+          ],
+          "server": {
+            "alive": true,
+            "lowered": 0,
+            "position": [
+              0,
+              4.38,
+              1.06
+            ],
+            "visibleLEDs": 6
+          },
+          "targets": [
+            {
+              "id": "glass",
+              "label": "櫥窗與入口",
+              "position": [
+                -2.5,
+                1.7,
+                1.9
+              ]
+            },
+            {
+              "id": "upper",
+              "label": "二樓外牆",
+              "position": [
+                -2.4,
+                4.5,
+                1.82
+              ]
+            },
+            {
+              "id": "sign",
+              "label": "招牌與雨棚",
+              "position": [
+                2.5,
+                3.15,
+                2.18
+              ]
+            },
+            {
+              "id": "interior",
+              "label": "機房下方樓板",
+              "position": [
+                0,
+                3.3,
+                0.1
+              ]
+            },
+            {
+              "id": "roof",
+              "label": "屋頂支撐",
+              "position": [
+                1.4,
+                5.8,
+                0.1
+              ]
+            },
+            {
+              "id": "structure",
+              "label": "最後承重結構",
+              "position": [
+                -3.7,
+                2.4,
+                -0.1
+              ]
+            },
+            {
+              "id": "server",
+              "label": "最後機櫃",
+              "position": [
+                0,
+                4.38,
+                1.06
+              ]
+            }
+          ]
+        },
+        "hero": [
+          -1.25,
+          0.32,
+          2.48
+        ],
+        "dragon": [
+          -2.007569296789991,
+          0.325,
+          2.540735167416571
+        ]
+      }
+    },
+    {
+      "name": "Single renderer and no runtime or shader errors",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "Final framebuffer clean",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "passed": true,
+  "errors": []
+}

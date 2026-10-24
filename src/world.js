@@ -15,6 +15,9 @@ import { Resources } from './resources.js';
 import { buildStore } from './store.js';
 import { buildWeather } from './weather.js';
 import { WalkCamera } from './walk-camera.js';
+import { buildPearGarden } from './pear-garden.js';
+import { buildSiegeEffects } from './siege-effects.js';
+import { MissionDirector } from './mission-director.js';
 
 export class World {
   constructor(container,{onContextLost,onContextRestored,onManual,onFraming=()=>{},onZone=()=>{}}) {
@@ -40,10 +43,13 @@ export class World {
     const alleyFill=new T.PointLight(0x7ba3d2,25,14,2);alleyFill.position.set(7,5.3,-3.4);this.scene.add(alleyFill);
     // Mixed fluorescent/halogen light, with a long source reflected in wet surfaces.
     const glow=r=>{const c=document.createElement('canvas');c.width=16;c.height=128;const ctx=c.getContext('2d'),g=ctx.createLinearGradient(0,0,0,128);g.addColorStop(0,'rgba(142,182,255,0)');g.addColorStop(.45,'rgba(174,207,255,.1)');g.addColorStop(.5,'rgba(222,239,255,.22)');g.addColorStop(.55,'rgba(174,207,255,.1)');g.addColorStop(1,'rgba(142,182,255,0)');ctx.fillStyle=g;ctx.fillRect(0,0,16,128);const tex=r.own(new T.CanvasTexture(c));return r.own(new T.MeshBasicMaterial({map:tex,transparent:true,depthWrite:false,blending:T.AdditiveBlending}));};
-    this.r.mesh(this.r.geometry('PlaneGeometry',1,1),glow(this.r),this.scene,[0,3.51,2.2],[9.05,1.4,1]);
-    this.r.mesh(this.r.geometry('BoxGeometry',1,1,1),this.r.material('#e6f1ff',{emissive:0xb6d5ff,emissiveIntensity:2.5}),this.scene,[0,3.45,2.16],[8.95,.045,.06]);
+    this.shopFixtures=[this.r.mesh(this.r.geometry('PlaneGeometry',1,1),glow(this.r),this.scene,[0,3.51,2.2],[9.05,1.4,1]),
+    this.r.mesh(this.r.geometry('BoxGeometry',1,1,1),this.r.material('#e6f1ff',{emissive:0xb6d5ff,emissiveIntensity:2.5}),this.scene,[0,3.45,2.16],[8.95,.045,.06])];
     this.scene.environment=makeNightEnvironment(this.renderer,this.r);this.scene.environmentIntensity=.48;
-    this.store=buildStore(this.scene,this.r);this.batchStats=optimizeStaticSet(this.store.root,this.r);this.weather=buildWeather(this.scene,this.r);this.wet=applyWetPavement(this.store.wetMaterials||[],this.weather.reflection,this.r);this.refreshGlassProbe();
+    this.store=buildStore(this.scene,this.r);this.batchStats=optimizeStaticSet(this.store.root,this.r);
+    this.garden=buildPearGarden(this.scene,this.r);this.siege=buildSiegeEffects(this.scene,this.r);
+    this.weather=buildWeather(this.scene,this.r);this.wet=applyWetPavement([...(this.store.wetMaterials||[]),...(this.garden.wetMaterials||[])],this.weather.reflection,this.r);
+    this.director=new MissionDirector(this);this.refreshGlassProbe();
     const target=new T.WebGLRenderTarget(1,1,{type:T.HalfFloatType,depthBuffer:true});target.depthTexture=new T.DepthTexture(1,1,T.UnsignedIntType);
     const gl=this.renderer.getContext(),samples=gl.getInternalformatParameter(gl.RENDERBUFFER,gl.RGBA16F,gl.SAMPLES)||[];
     target.samples=Math.min(4,Math.max(0,...samples));target.resolveDepthBuffer=true;this.msaaSamples=target.samples;this.supportedSamples=target.samples;
@@ -52,15 +58,15 @@ export class World {
     this.bloom=new UnrealBloomPass(new T.Vector2(1,1),.29,.62,1.05);this.composer.addPass(this.bloom);this.output=new OutputPass();this.composer.addPass(this.output);this.fxaa=new ShaderPass(FXAAShader);this.composer.addPass(this.fxaa);
     this.resize=()=>{if(this.disposed)return;const width=container.clientWidth,height=Math.max(1,container.clientHeight);this.camera.aspect=width/height;this.camera.updateProjectionMatrix();this.weather?.invalidateReflection();this.renderer.setSize(width,height,false);this.composer.setSize(width,height);this.fxaa.uniforms.resolution.value.set(1/(width*this.renderer.getPixelRatio()),1/(height*this.renderer.getPixelRatio()));this.bloom.resolution.set(width*.5,height*.5);this.bloom.setSize(width*.5,height*.5);const mobile=width/height<.85;if(this.mobile!==mobile&&this.currentView)this.setView(this.currentView,true);this.mobile=mobile;};
     this.observer=new ResizeObserver(this.resize);this.observer.observe(container);this.resize();this.setView('street',true);
-    this.visibility=()=>{this.previous=undefined;};document.addEventListener('visibilitychange',this.visibility);
+    this.visibility=()=>{this.previous=undefined;this.onClockState?.(!document.hidden&&this.running);};document.addEventListener('visibilitychange',this.visibility);
   }
   refreshGlassProbe(){
-    const target=this.r.own(new T.WebGLCubeRenderTarget(128,{type:T.HalfFloatType}));
+    const target=this.glassProbe||(this.glassProbe=this.r.own(new T.WebGLCubeRenderTarget(128,{type:T.HalfFloatType})));
     const camera=new T.CubeCamera(.1,45,target);camera.position.set(0,1.9,2.02);
-    for(const mesh of this.store.glassMeshes)mesh.visible=false;
+    const panes=this.store.glassMeshes.map(mesh=>mesh.visible);for(const mesh of this.store.glassMeshes)mesh.visible=false;
     const visible=this.weather.reflection.visible;this.weather.reflection.visible=false;
     camera.update(this.renderer,this.scene);
-    for(const mesh of this.store.glassMeshes)mesh.visible=true;this.weather.reflection.visible=visible;
+    this.store.glassMeshes.forEach((mesh,i)=>mesh.visible=panes[i]);this.weather.reflection.visible=visible;
     this.store.glass.uniforms.uEnvironment.value=target.texture;
   }
   inspectLayout(){
@@ -82,29 +88,33 @@ export class World {
     else this.transition={start:this.time,position:this.camera.position.clone(),target:this.controls.target.clone(),endPosition:position,endTarget:target};
     this.controls.update();const close=this.camera.position.distanceTo(this.controls.target)<(this.camera.aspect<.85?14:11);if(close!==this.closeFraming){this.closeFraming=close;this.onFraming(close);}
   }
-  setQuality(value){if(!config.dpr[value])return;this.quality=value;this.renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,config.dpr[value]));this.composer.setPixelRatio(this.renderer.getPixelRatio());this.msaaSamples=Math.min(this.supportedSamples,value==='low'?2:4);for(const target of [this.opaqueTarget])if(target.samples!==this.msaaSamples){target.samples=this.msaaSamples;target.dispose();}this.bloom.enabled=value!=='low';this.weather.quality(value);this.store.glass.uniforms.uRefraction.value=value==='low'?.0012:value==='high'?.005:.003;const size=value==='low'?512:1024;this.store.spill.shadow.mapSize.set(size,size);this.store.spill.shadow.map?.dispose();this.store.spill.shadow.map=null;this.store.spill.shadow.needsUpdate=true;this.resize();}
-  setWalking(value){this.walkCamera.setEnabled(value,this.actors?.position);if(value){this.manualUntil=this.time;this.transition=null;this.currentView=null;this.onManualView();this.weather.invalidateReflection();}}
+  setQuality(value){if(!config.dpr[value])return;this.quality=value;this.renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,config.dpr[value]));this.composer.setPixelRatio(this.renderer.getPixelRatio());this.msaaSamples=Math.min(this.supportedSamples,value==='low'?2:4);for(const target of [this.opaqueTarget])if(target.samples!==this.msaaSamples){target.samples=this.msaaSamples;target.dispose();}this.bloom.enabled=value!=='low';this.weather.quality(value);this.garden.quality(value);this.siege.quality(value);this.store.glass.uniforms.uRefraction.value=value==='low'?.0012:value==='high'?.005:.003;const size=value==='low'?512:1024;this.store.spill.shadow.mapSize.set(size,size);this.store.spill.shadow.map?.dispose();this.store.spill.shadow.map=null;this.store.spill.shadow.needsUpdate=true;this.resize();}
+  setWalking(value){const was=this.walkCamera.enabled;this.walkCamera.setEnabled(value,this.actors?.position);if(was&&!value)this.manualUntil=this.time+14;if(value){this.manualUntil=this.time;this.transition=null;this.currentView=null;this.onManualView();this.weather.invalidateReflection();}}
+  projectPoint(point){const p=new T.Vector3().fromArray(point).project(this.camera);return p.toArray();}
   tick(t,delta=.016,render=true){
-    this.time=t;this.onTick(t,delta);this.actors?.update(t,delta);
+    this.time=t;this.onTick(t,delta);this.director.beforeActors(this.missionState);this.actors?.update(t,delta);this.director.afterActors(t,delta);
     if(this.actors){
       const p=this.actors.position;this.walkCamera.update(p,delta,this.time<this.manualUntil);
       if(this.walkCamera.automatic&&this.currentView){this.currentView=null;this.onManualView();}
-      this.portrait.key.position.set(p.x-2.35,3.7,p.z+4.22);this.portrait.key.target.position.set(p.x-.35,1.3,p.z);
-      this.portrait.fill.position.set(p.x+3.25,2.8,p.z+2.92);this.portrait.fill.target.position.set(p.x-.15,1.25,p.z);
+      const h=this.actors.heroPosition||p.toArray();
+      const cast=this.actors.status.cinematic,yaw=cast?.phase?cast.heading:0,c=Math.cos(yaw),s=Math.sin(yaw);
+      this.portrait.key.position.set(h[0]-2.35*c+4.22*s,h[1]+3.38,h[2]+2.35*s+4.22*c);this.portrait.key.target.position.set(h[0]-.35,h[1]+.98,h[2]);
+      this.portrait.fill.position.set(h[0]+3.25*c+2.92*s,h[1]+2.48,h[2]-3.25*s+2.92*c);this.portrait.fill.target.position.set(h[0]-.15,h[1]+.93,h[2]);
     }
     this.store.update(t,delta,this.actors?.position,this.actors?.status.companion?.position);
     this.controls.update();const close=this.camera.position.distanceTo(this.controls.target)<(this.camera.aspect<.85?14:11);
     if(close!==this.closeFraming){this.closeFraming=close;this.onFraming(close);}
+    const damage=this.store.destruction.state.progress;this.weather.setShelter(damage<80,damage<44);
     this.store.glass.uniforms.uTime.value=t;this.wet.update(t);this.weather.update(t);
     if(render){this.renderer.info.reset();this.composer.render();this.renderCount++;}
   }
-  start(){this.stop();this.renderer.setAnimationLoop(now=>{
+  start(){this.stop();this.running=true;this.onClockState?.(!document.hidden);this.renderer.setAnimationLoop(now=>{
     if(document.hidden){this.previous=undefined;return;}
     const delta=this.previous===undefined?0:Math.max(0,(now-this.previous)/1000);this.previous=now;
     this.time+=delta;
     if(this.transition){const p=this.transition,w=T.MathUtils.smootherstep(this.time-p.start,0,1.5);this.camera.position.lerpVectors(p.position,p.endPosition,w);this.controls.target.lerpVectors(p.target,p.endTarget,w);if(w===1)this.transition=null;}
     this.tick(this.time,Math.min(delta,.08));
   });}
-  stop(){this.renderer.setAnimationLoop(null);this.previous=undefined;}
-  dispose(){if(this.disposed)return;this.disposed=true;this.stop();this.observer.disconnect();document.removeEventListener('visibilitychange',this.visibility);this.controls.removeEventListener('start',this.manual);this.controls.dispose();this.renderer.domElement.removeEventListener('webglcontextlost',this.contextLost);this.renderer.domElement.removeEventListener('webglcontextrestored',this.contextRestored);this.actors?.dispose();this.store.spill.shadow.dispose();this.weather.dispose();for(const pass of this.composer.passes)pass.dispose?.();this.composer.dispose();this.r.dispose();this.renderer.dispose();this.renderer.domElement.remove();}
+  stop(){this.renderer.setAnimationLoop(null);this.previous=undefined;this.running=false;this.onClockState?.(false);}
+  dispose(){if(this.disposed)return;this.disposed=true;this.stop();this.observer.disconnect();document.removeEventListener('visibilitychange',this.visibility);this.controls.removeEventListener('start',this.manual);this.controls.dispose();this.renderer.domElement.removeEventListener('webglcontextlost',this.contextLost);this.renderer.domElement.removeEventListener('webglcontextrestored',this.contextRestored);this.actors?.dispose();this.siege.dispose();this.garden.root.removeFromParent();this.store.spill.shadow.dispose();this.weather.dispose();for(const pass of this.composer.passes)pass.dispose?.();this.composer.dispose();this.r.dispose();this.renderer.dispose();this.renderer.domElement.remove();}
 }

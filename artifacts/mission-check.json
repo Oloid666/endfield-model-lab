@@ -1,0 +1,514 @@
+{
+  "passed": true,
+  "checks": 101,
+  "kind": "Deterministic actual mission state/data/input-clock tests; not a browser or iPhone test",
+  "results": [
+    {
+      "name": "Data schema intro",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Data schema mealA",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Data schema mealB",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Data schema mealC",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Data schema briefing",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Data schema last",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Data schema landing",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Three food choices only",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Ten timed charge lines cover full charge",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Sixteen complete chatter groups",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Five hotspot types with three groups each",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Meter linear triangle travels full width",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Meter zone boundaries",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Food choice never times out A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Unknown dinner rejected A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Correct food prop and branch A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Charge cannot be skipped A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Charge is still charging before thirty seconds A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "All charge dialogue is scheduled A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pause freezes charge and local clock A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Charge completes at exactly thirty active seconds A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Target selection validates ids A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Edge MISS consumes no energy or progress A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Ordinary hit causes real positive damage A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Timing accuracy changes damage A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "One input cannot fire twice A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Building destruction stops at ninety-nine A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Final dialogue cannot auto-complete mission A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Final shot requires central timing A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Final central hit fires dragon exactly once A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Flight has full nine seconds A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Flight transitions to landing A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pause freezes landing A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Completion waits for returned dragon A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mission completes only after landing A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Ending hotspot accepted A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Hotspots do not overlap A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Hotspot cooldown enforced A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Postending chatter starts after quiet A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Replay restores all mission state A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Every important phase is delivered A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Food choice never times out B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Unknown dinner rejected B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Correct food prop and branch B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Charge cannot be skipped B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Charge is still charging before thirty seconds B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "All charge dialogue is scheduled B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pause freezes charge and local clock B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Charge completes at exactly thirty active seconds B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Target selection validates ids B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Edge MISS consumes no energy or progress B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Ordinary hit causes real positive damage B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Timing accuracy changes damage B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "One input cannot fire twice B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Building destruction stops at ninety-nine B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Final dialogue cannot auto-complete mission B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Final shot requires central timing B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Final central hit fires dragon exactly once B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Flight has full nine seconds B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Flight transitions to landing B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pause freezes landing B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Completion waits for returned dragon B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mission completes only after landing B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Ending hotspot accepted B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Hotspots do not overlap B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Hotspot cooldown enforced B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Postending chatter starts after quiet B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Replay restores all mission state B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Every important phase is delivered B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Food choice never times out C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Unknown dinner rejected C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Correct food prop and branch C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Charge cannot be skipped C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Charge is still charging before thirty seconds C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "All charge dialogue is scheduled C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pause freezes charge and local clock C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Charge completes at exactly thirty active seconds C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Target selection validates ids C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Edge MISS consumes no energy or progress C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Ordinary hit causes real positive damage C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Timing accuracy changes damage C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "One input cannot fire twice C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Building destruction stops at ninety-nine C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Final dialogue cannot auto-complete mission C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Final shot requires central timing C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Final central hit fires dragon exactly once C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Flight has full nine seconds C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Flight transitions to landing C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pause freezes landing C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Completion waits for returned dragon C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mission completes only after landing C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Ending hotspot accepted C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Hotspots do not overlap C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Hotspot cooldown enforced C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Postending chatter starts after quiet C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Replay restores all mission state C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Every important phase is delivered C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Delayed input uses original touch timestamp",
+      "passed": true,
+      "detail": {
+        "position": 0.49999999999999784
+      }
+    },
+    {
+      "name": "Paused meter does not move and rejects attacks",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Meter resumes without jumping",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Large clock step still runs final phases once",
+      "passed": true,
+      "detail": null
+    }
+  ]
+}

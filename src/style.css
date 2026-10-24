@@ -91,7 +91,7 @@ details a { display: inline-block; padding: 3px 0; color: #ddc18b; text-underlin
 .scene-meta { display: flex; align-items: center; gap: 7px; color: #a0b3aa; font-size: 9px; letter-spacing: .12em; }
 .scene-meta b { width: 4px; height: 4px; border-radius: 50%; background: #a0b596; }
 .view-dock {
-  display: flex; align-items: center; gap: 2px; width: 286px; padding: 4px;
+  display: flex; align-items: center; gap: 2px; width: 322px; padding: 4px;
   border: 1px solid var(--control-edge); border-radius: 14px; background: var(--control-surface); box-shadow: var(--control-shadow);
   backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); pointer-events: auto;
 }

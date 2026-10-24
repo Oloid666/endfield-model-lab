@@ -6,11 +6,12 @@ import { buildTrees } from './trees.js';
 import { buildAutomaticDoors } from './auto-doors.js';
 import { buildStreetProps } from './street-props.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+import {collectBuildingPart,makeDestructibleStore} from './destructible-store.js';
 
 // Original street set. Repeated products, tiles and frames share resources.
 export function buildStore(scene, r) {
   const root = new T.Group();scene.add(root);
-  const surfaces=createSurfaces(r);
+  const surfaces=createSurfaces(r),buildingParts={};let section;
   const wetMaterials=new Set();
   const B=(c,p,s,o={})=>{
     let options=o,color=c;
@@ -39,33 +40,40 @@ export function buildStore(scene, r) {
   B('#293638',[.4,.205,4.55],[9,.025,.22]);
   for(let i=0;i<75;i++){const x=-4.8+i*.13;if(x>-6.4&&x<-4.1)continue;B('#85928b',[x,.224,4.55],[.035,.008,.2]);}
   // Main shop shell. Its interior remains readable through open display bays.
+  section=new Set(root.children);
   B(wall,[0,1.8,-3.13],[8.8,3.25,.24]);
   B(wall,[-4.3,1.8,-.72],[.22,3.25,4.7]);
   B(wall,[4.3,.46,-.72],[.22,.34,4.7]);
   B(wall,[4.3,3.01,-.72],[.22,.6,4.7]);
   for(const z of [-3.02,-1.5,0,1.6])B(dark,[4.3,1.68,z],[.13,2.16,.065],{metalness:.45,roughness:.3});
   B('#d4c8a7',[0,.24,-.72],[8.5,.13,4.7]);
-  B('#d2c9ac',[0,3.31,-.72],[8.8,.16,5]);
+  const upperFloorSlab=B('#d2c9ac',[0,3.31,-.72],[8.8,.16,5]);
   // Interior floor tiles.
   for(let x=-4;x<=4;x+=.8)B('#938e77',[x,.311,-.7],[.015,.004,4.7]);
   for(let z=-2.9;z<1.7;z+=.8)B('#938e77',[0,.311,z],[8.5,.004,.015]);
-  // Upper floor: Wuling-inspired plaster, wood lattice and tiled roof.
-  B('#6a807a',[0,4.5,-.73],[8.8,2.2,4.95]);
+  collectBuildingPart(root,buildingParts,'structure',section);section=new Set(root.children);
+  // Hollow upper floor: the centre window opens onto a real server room.
+  B('#6a807a',[0,4.5,-3.12],[8.8,2.2,.22]);
+  for(const x of [-4.29,4.29])B('#6a807a',[x,4.5,-.73],[.22,2.2,4.95]);
+  B('#6a807a',[0,3.51,-.73],[8.8,.12,4.95]);
+  B('#6a807a',[0,3.75,1.76],[8.8,.53,.22]);
+  B('#6a807a',[0,5.34,1.76],[8.8,.52,.22]);
+  for(const [x,width]of [[-4.075,.65],[-1.425,1.05],[1.425,1.05],[4.075,.65]])B('#6a807a',[x,4.57,1.76],[width,1.1,.22]);
   B(dark,[0,3.55,1.78],[8.95,.2,.2]);
   B(dark,[0,5.55,1.78],[8.95,.18,.2]);
   for(const x of [-4.25,-1.65,1.65,4.25])B('#304c48',[x,4.55,1.79],[.12,1.95,.15]);
   for(const x of [-2.85,0,2.85]){
-    B('#273d3a',[x,4.58,1.795],[1.8,1.28,.12]);
-    B(x===0?'#78827c':'#e2d0ad',[x,4.58,1.86],[1.64,1.13,.025],{map:surfaces.windowMap,emissiveMap:surfaces.windowMap,emissive:0xffdba2,emissiveIntensity:x===0?.08:.65,roughness:.7});
+    if(x!==0){B('#273d3a',[x,4.58,1.795],[1.8,1.28,.12]);B('#e2d0ad',[x,4.58,1.86],[1.64,1.13,.025],{map:surfaces.windowMap,emissiveMap:surfaces.windowMap,emissive:0xffdba2,emissiveIntensity:.65,roughness:.7});}
     for(const dx of [-.55,0,.55])B(dark,[x+dx,4.58,1.9],[.045,1.17,.04]);
     B(dark,[x,4.58,1.9],[1.7,.05,.04]);
-    for(let i=0;i<6;i++)B(i%2?'#a89f86':'#8e8875',[x+.31+i*.075,4.57,1.915],[.04,1.08,.025],{roughness:.96});
+    if(x!==0)for(let i=0;i<6;i++)B(i%2?'#a89f86':'#8e8875',[x+.31+i*.075,4.57,1.915],[.04,1.08,.025],{roughness:.96});
     B('#50645c',[x,3.87,1.97],[2,.16,.35]);
   }
   // Decorative corner trims and side lattice.
   for(const x of [-4.42,4.42])B('#2e4846',[x,4.5,-.73],[.12,2.17,4.97]);
   B('#38544f',[4.49,4.55,-.5],[.06,1.1,2.4]);
   for(let z=-1.6;z<.8;z+=.3)B('#779187',[4.535,4.55,z],[.02,1,.04]);
+  collectBuildingPart(root,buildingParts,'upper',section);section=new Set(root.children);
   // Weathered flat roof, parapets, railings and utility tank.
   B('#354246',[0,5.72,-.74],[9.2,.25,5.4],{roughness:.65});
   B('#6a807a',[0,5.94,-3.37],[9.1,.34,.14]);
@@ -88,6 +96,7 @@ export function buildStore(scene, r) {
   for(let z=-2.1;z<-1;z+=.15)B('#293737',[-2.1,6.41,z],[1.65,.03,.04]);
   for(const x of [-.1,3.32])B('#3d5a52',[x,6.58,-1.7],[.045,1.35,2.3],{metalness:.4,roughness:.48});
   for(let y=6.05;y<7.22;y+=.12)B('#607b6b',[1.61,y,-.55],[3.5,.055,.045],{metalness:.4,roughness:.5});
+  collectBuildingPart(root,buildingParts,'roof',section);section=new Set(root.children);
   // A continuous fluorescent lightbox, accurate band proportions and inset logo.
   B('#c8d0bd',[0,3.1,1.96],[9.18,.7,.4],{metalness:.28,roughness:.35});
   B('#ecefe0',[0,3.1,2.167],[9.03,.59,.015],{emissive:0xe2eacb,emissiveIntensity:1.25,roughness:.25});
@@ -112,17 +121,19 @@ export function buildStore(scene, r) {
     return r.own(new T.MeshStandardMaterial({map,emissiveMap:map,emissive:0xffffff,emissiveIntensity:.8,roughness:.3}));
   }
   B('#f3f1df',[0,3.1,2.197],[2.73,.615,.045],{emissive:0xe1e8c8,emissiveIntensity:1});
-  r.mesh(r.geometry('PlaneGeometry',1,1),logoMaterial(),root,[0,3.1,2.224],[2.66,.57,1]);
+  const mainLogo=r.mesh(r.geometry('PlaneGeometry',1,1),logoMaterial(),root,[0,3.1,2.224],[2.66,.57,1]);mainLogo.userData.salvageSign=true;
   // Double-faced projecting lightbox and visible mounting brackets.
   for(const y of [3.58,4.77])B('#435a50',[4.78,y,1.3],[.75,.055,.07],{metalness:.6,roughness:.32});
   B('#798f7e',[5.08,4.12,1.3],[.97,2.24,.24],{metalness:.6,roughness:.3});
   B('#e9e9d7',[5.08,4.12,1.43],[.9,2.16,.025],{emissive:0xf0e8c9,emissiveIntensity:1});
   for(const [z,rotation] of [[1.451,0],[1.169,Math.PI]])r.mesh(r.geometry('PlaneGeometry',1,1),logoMaterial(true),root,[5.08,4.12,z],[.87,2.11,1]).rotation.y=rotation;
+  collectBuildingPart(root,buildingParts,'sign',section);section=new Set(root.children);
   // Canopy with an illuminated underside. Slender supports frame the actors.
   B('#24332f',[0,2.79,2.23],[9.65,.09,1.28],{roughness:.24,metalness:.35});
   B('#49746a',[0,2.7,2.87],[9.72,.12,.08],{roughness:.3});
   B('#ced6bc',[0,2.69,2.55],[8.9,.025,.045],{emissive:0xffd69a,emissiveIntensity:.85});
   for(const x of [-4.63,4.63]){B('#314d47',[x,1.48,2.78],[.11,2.5,.11],{roughness:.45});B('#777e6d',[x,.33,2.78],[.26,.2,.26]);}
+  collectBuildingPart(root,buildingParts,'structure',section);section=new Set(root.children);
   // Reflected street and neon remain visible over the warm interior.
   const glass=makeThinGlass(r,surfaces.glassBump);
   const glassMeshes=[];
@@ -136,7 +147,10 @@ export function buildStore(scene, r) {
   // Illustrated window promotions are built from one shared atlas in the interior.
   const sideGlass=r.mesh(r.geometry('PlaneGeometry',1,1),glass,root,[4.43,1.65,-.72],[4.45,2.08,1]);sideGlass.rotation.y=Math.PI/2;glassMeshes.push(sideGlass);
   for(const x of [-2.85,0,2.85])glassMeshes.push(r.mesh(r.geometry('PlaneGeometry',1,1),glass,root,[x,4.58,1.95],[1.64,1.12,1]));
+  collectBuildingPart(root,buildingParts,'glass',section);section=new Set(root.children);
   const floorPlan=buildInterior(root,r,surfaces,glass,glassMeshes);
+  collectBuildingPart(root,buildingParts,'interior',section);section=new Set(root.children);
+  buildingParts.interior.add(upperFloorSlab);
   const productColors=['#cd7849','#b4bb64','#dde0be','#b74b46','#4f927c','#b8a4c0','#dba24c'];
   // Warm ceiling strips; practical light is restrained to three real lights.
   for(const x of [-2.3,2.2])B('#fbefc3',[x,3.17,-.6],[.07,.035,3.5],{emissive:0xffe2a3,emissiveIntensity:1.1});
@@ -144,6 +158,7 @@ export function buildStore(scene, r) {
   const doorway=new T.PointLight(0xffdfbc,7,5.5,2);doorway.position.set(2.5,2.65,-.8);root.add(doorway);
   // A single cached shadow map anchors the canopy, street furniture and trees.
   const spill=new T.SpotLight(0xffd4a0,13,10,Math.PI*.36,.65,2);spill.position.set(0,2.63,1.4);spill.target.position.set(0,.1,5.2);spill.castShadow=true;spill.shadow.mapSize.set(1024,1024);spill.shadow.camera.near=.2;spill.shadow.camera.far=14;spill.shadow.bias=-.0003;spill.shadow.normalBias=.025;spill.shadow.autoUpdate=false;spill.shadow.needsUpdate=true;root.add(spill,spill.target);
+  collectBuildingPart(root,buildingParts,'interior',section);section=new Set(root.children);
   // Small wall sconces, warm pools on plaster.
   for(const x of [-3.75,3.7]){
     B('#b6a37a',[x,4.8,1.94],[.16,.36,.12],{emissive:0xffcc84,emissiveIntensity:2});
@@ -152,6 +167,7 @@ export function buildStore(scene, r) {
   // Sidewall utility details, vent, condenser and downpipe.
   const pipe=r.cylinder(root,'#4b6f65',[4.64,2.83,-2.55],.055,5.3,{metalness:.3});
   B('#3d5b54',[4.65,.32,-2.36],[.11,.11,.4]);
+  collectBuildingPart(root,buildingParts,'upper',section);
   // A street bench has slatted seat and back, cast legs, armrests and real fasteners.
   const bench=new T.Group();bench.position.set(2.75,.25,2.65);root.add(bench);
   for(const z of [-.22,-.075,.075,.22])r.box(bench,'#9a7953',[0,.52,z],[2,.075,.125],{...surfaces.timber,roughness:.5});
@@ -199,7 +215,8 @@ export function buildStore(scene, r) {
     const geo=r.own(new T.TubeGeometry(curve,32,.012,3,false));r.mesh(geo,r.material('#172c32'),root);
   }
   for(const mesh of glassMeshes)mesh.layers.set(1);
-  // Merge the static set by material. Keep instanced goods, glass and lights separate.
+  const destruction=makeDestructibleStore(root,r,buildingParts,spill);
+  // Merge the static street set. Destructible parts have already been merged by milestone.
   root.updateMatrixWorld(true);
   const batches=new Map(), sources=[];
   root.traverse(mesh=>{
@@ -209,5 +226,5 @@ export function buildStore(scene, r) {
   });
   for(const mesh of sources)mesh.removeFromParent();
   for(const [material,geometries] of batches){const merged=mergeGeometries(geometries);if(merged){const mesh=new T.Mesh(r.own(merged),material);mesh.castShadow=true;mesh.receiveShadow=true;root.add(mesh);}for(const g of geometries)g.dispose();}
-  return {root,glass,glassMeshes,spill,floorPlan,wetMaterials:[...wetMaterials],walkObstacles:floorPlan.obstacles||floorPlan.racks,doors:automaticDoors,triggerDoor:()=>automaticDoors.triggerDoor(),update:(t,delta,actorPosition,companionPosition)=>automaticDoors.update(t,delta,actorPosition,companionPosition)};
+  return {root,glass,glassMeshes,spill,floorPlan,destruction,wetMaterials:[...wetMaterials],walkObstacles:floorPlan.obstacles||floorPlan.racks,doors:automaticDoors,triggerDoor:()=>automaticDoors.triggerDoor(),update:(t,delta,actorPosition,companionPosition)=>automaticDoors.update(t,delta,actorPosition,companionPosition)};
 }

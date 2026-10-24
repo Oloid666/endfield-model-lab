@@ -1,0 +1,658 @@
+{
+  "url": "http://127.0.0.1:4188/endfield-model-lab/",
+  "browser": "Desktop Chromium / SwiftShader",
+  "real_iphone_test": false,
+  "checks": [
+    {
+      "name": "Original model loads at preview path",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Repository path survives reload",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Final build dragon in flight character proxy bounds within frame",
+      "passed": true,
+      "detail": {
+        "points": {
+          "heroFoot": [
+            -0.6485619470547048,
+            0.020169348859080494,
+            0.9925382100368184
+          ],
+          "heroHead": [
+            -0.6718078858284864,
+            0.42212812314862846,
+            0.9922420771751924
+          ],
+          "heroLeft": [
+            -0.849333295065879,
+            0.22715199265171282,
+            0.9926200285264568
+          ],
+          "heroRight": [
+            -0.46032038387864005,
+            0.22030943267906036,
+            0.9921427846019373
+          ],
+          "dragonFoot": [
+            0.3244195733066446,
+            -0.04166523235053775,
+            0.993965091058144
+          ],
+          "dragonHead": [
+            0.3283930453518576,
+            0.09493385319466183,
+            0.9938813735704627
+          ],
+          "dragonLeft": [
+            0.2155995103650297,
+            0.029069600302579466,
+            0.9940215892393505
+          ],
+          "dragonRight": [
+            0.4403102145054135,
+            0.01990526966837434,
+            0.9938246053648263
+          ]
+        },
+        "panels": [
+          {
+            "selector": ".mission-status",
+            "x": 22,
+            "y": 83,
+            "w": 281,
+            "h": 53.5
+          },
+          {
+            "selector": ".mission-pause",
+            "x": 316,
+            "y": 85,
+            "w": 54,
+            "h": 46
+          }
+        ],
+        "hero": [
+          -1.25,
+          3.0300989711157955,
+          4.45
+        ],
+        "dragon": [
+          -0.1539977038828968,
+          2.338026168437493,
+          1.5938587067940424
+        ],
+        "phase": "finisher",
+        "phaseElapsed": 4.200000000000003,
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "Final build dragon in flight heads clear dialogue and HUD",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "Actual rendered scene v6-finale-shot.png",
+      "passed": true,
+      "detail": 39.99
+    },
+    {
+      "name": "Final build completes through the actual mission",
+      "passed": true,
+      "detail": {
+        "phase": "complete",
+        "node": null,
+        "nodeId": null,
+        "speaker": null,
+        "text": "",
+        "revealed": 0,
+        "branch": "A",
+        "choices": [],
+        "waitingChoice": false,
+        "progress": 100,
+        "energy": 0,
+        "charge": 100,
+        "meter": 0.07407407407407512,
+        "meterElapsed": 0.10000000000000142,
+        "meterPeriod": 2.7,
+        "phaseElapsed": 0.10000000000000142,
+        "time": 60.490899999999996,
+        "clock": 60.490899999999996,
+        "sourceTime": 60.490899999999996,
+        "paused": false,
+        "auto": false,
+        "target": "server",
+        "targetLabel": "最後機櫃",
+        "targets": [
+          {
+            "id": "server",
+            "label": "最後機櫃",
+            "position": [
+              0,
+              1.21,
+              1.06
+            ]
+          }
+        ],
+        "feedback": {
+          "result": "perfect",
+          "power": 0.9999999999999943,
+          "damage": 18,
+          "position": 0.49999999999999784,
+          "progress": 99,
+          "target": "server",
+          "finisher": true,
+          "finalAttempt": true,
+          "time": 48.390899999999995,
+          "number": 7
+        },
+        "shots": 7,
+        "hits": 7,
+        "canAttack": false,
+        "ended": true,
+        "busy": false,
+        "sequenceKind": null,
+        "endingCaption": "武陵城，又過了平安的一天。",
+        "revision": 116
+      }
+    },
+    {
+      "name": "Completion badge explicitly shows 100 percent and mission complete",
+      "passed": true,
+      "detail": "100% · 任務完成"
+    },
+    {
+      "name": "Completion progress reaches visible 100 percent",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Peace caption waits until the completion status clears",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Final build close ending character proxy bounds within frame",
+      "passed": true,
+      "detail": {
+        "points": {
+          "heroFoot": [
+            0.07896287964558069,
+            -0.23729392150324077,
+            0.9930174550825518
+          ],
+          "heroHead": [
+            0.08275532477614449,
+            0.21407555215577967,
+            0.9926436580683581
+          ],
+          "heroLeft": [
+            -0.1702738220761585,
+            0.004465335657770541,
+            0.9930158884874144
+          ],
+          "heroRight": [
+            0.34436539639066005,
+            -0.02501354629902285,
+            0.9926332491727051
+          ],
+          "dragonFoot": [
+            -0.2575644251957578,
+            -0.20956250982523283,
+            0.993263111055293
+          ],
+          "dragonHead": [
+            -0.2624884096726154,
+            -0.029366042954753625,
+            0.9931190185609786
+          ],
+          "dragonLeft": [
+            -0.40478276356022436,
+            -0.11237416952391815,
+            0.9932996452786544
+          ],
+          "dragonRight": [
+            -0.11094531277395235,
+            -0.13294525393147386,
+            0.9930843148346131
+          ]
+        },
+        "panels": [
+          {
+            "selector": ".mission-status",
+            "x": 22,
+            "y": 83,
+            "w": 281,
+            "h": 53.5
+          }
+        ],
+        "hero": [
+          -1.25,
+          0.32,
+          3.25
+        ],
+        "dragon": [
+          -2.0126610190058476,
+          0.325,
+          3.247224476945279
+        ],
+        "phase": "complete",
+        "phaseElapsed": 2,
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "Final build close ending heads clear dialogue and HUD",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "Actual rendered scene v6-complete.png",
+      "passed": true,
+      "detail": 47.62
+    },
+    {
+      "name": "Peace caption follows completion status",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Portrait peace caption clears walk and rain controls",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "Actual rendered scene v6-complete-peace.png",
+      "passed": true,
+      "detail": 48.76
+    },
+    {
+      "name": "Landscape peace caption clears walk and rain controls",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "Actual rendered scene v6-landscape-peace.png",
+      "passed": true,
+      "detail": 38.41
+    },
+    {
+      "name": "Final build wide ending character proxy bounds within frame",
+      "passed": true,
+      "detail": {
+        "points": {
+          "heroFoot": [
+            -0.5766633099553767,
+            -0.10574113736930904,
+            0.99827099051058
+          ],
+          "heroHead": [
+            -0.5845720393420102,
+            0.009318318605551866,
+            0.9982363016667972
+          ],
+          "heroLeft": [
+            -0.6444225879341824,
+            -0.04382916900923533,
+            0.998269063667681
+          ],
+          "heroRight": [
+            -0.5162013645500413,
+            -0.04985585512116885,
+            0.998237192342664
+          ],
+          "dragonFoot": [
+            -0.6640578940618581,
+            -0.10079170942986773,
+            0.998292704935408
+          ],
+          "dragonHead": [
+            -0.6678441624570622,
+            -0.052928754058123334,
+            0.9982784072299877
+          ],
+          "dragonLeft": [
+            -0.7045510881399337,
+            -0.0755632462838201,
+            0.9982953150316201
+          ],
+          "dragonRight": [
+            -0.626951583972961,
+            -0.07947551585228262,
+            0.9982761131621184
+          ]
+        },
+        "panels": [
+          {
+            "selector": ".mission-panel",
+            "x": 14,
+            "y": 582,
+            "w": 362,
+            "h": 174
+          }
+        ],
+        "hero": [
+          -1.25,
+          0.32,
+          3.25
+        ],
+        "dragon": [
+          -2.0126610190058476,
+          0.325,
+          3.247224476945279
+        ],
+        "phase": "complete",
+        "phaseElapsed": 17.999999999999993,
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "Final build wide ending heads clear dialogue and HUD",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "Actual rendered scene v6-complete-wide.png",
+      "passed": true,
+      "detail": 40.14
+    },
+    {
+      "name": "Final build landscape fits viewport",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Final build landscape character proxy bounds within frame",
+      "passed": true,
+      "detail": {
+        "points": {
+          "heroFoot": [
+            -0.2738078523939336,
+            -0.1929735963468122,
+            0.9968566160023944
+          ],
+          "heroHead": [
+            -0.2801533922870471,
+            0.06292476515600148,
+            0.996765220041186
+          ],
+          "heroLeft": [
+            -0.3017405227563488,
+            -0.05205461757136711,
+            0.9968672395020188
+          ],
+          "heroRight": [
+            -0.2516151955669997,
+            -0.07331865373974261,
+            0.9967511271560231
+          ],
+          "dragonFoot": [
+            -0.30743149476048276,
+            -0.17541595828990392,
+            0.9969338985301754
+          ],
+          "dragonHead": [
+            -0.3103444491254649,
+            -0.07062587931076363,
+            0.9968972636704998
+          ],
+          "dragonLeft": [
+            -0.3235169713060611,
+            -0.117666693248229,
+            0.996949818288725
+          ],
+          "dragonRight": [
+            -0.2939150889940836,
+            -0.13154624847930518,
+            0.9968818148180061
+          ]
+        },
+        "panels": [
+          {
+            "selector": ".mission-panel",
+            "x": 420,
+            "y": 161,
+            "w": 405,
+            "h": 156
+          }
+        ],
+        "hero": [
+          -1.25,
+          0.32,
+          3.25
+        ],
+        "dragon": [
+          -2.0126610190058476,
+          0.325,
+          3.247224476945279
+        ],
+        "phase": "complete",
+        "phaseElapsed": 19.999999999999993,
+        "width": 844,
+        "height": 390
+      }
+    },
+    {
+      "name": "Final build landscape heads clear dialogue and HUD",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "Actual rendered scene v6-landscape.png",
+      "passed": true,
+      "detail": 33.7
+    },
+    {
+      "name": "Final build replay restores shop and target",
+      "passed": true,
+      "detail": {
+        "m": {
+          "phase": "choice",
+          "node": null,
+          "nodeId": null,
+          "speaker": null,
+          "text": "",
+          "revealed": 0,
+          "branch": null,
+          "choices": [
+            {
+              "id": "A",
+              "label": "熱便當＋湯",
+              "hint": "先吃頓熱的。"
+            },
+            {
+              "id": "B",
+              "label": "飯糰＋茶葉蛋",
+              "hint": "簡單吃一點。"
+            },
+            {
+              "id": "C",
+              "label": "甜點＋熱飲",
+              "hint": "先救心情。"
+            }
+          ],
+          "waitingChoice": true,
+          "progress": 0,
+          "energy": 100,
+          "charge": 0,
+          "meter": 0.07407407407406986,
+          "meterElapsed": 0.09999999999999432,
+          "meterPeriod": 2.7,
+          "phaseElapsed": 0.09999999999999432,
+          "time": 80.49089999999998,
+          "clock": 80.49089999999998,
+          "sourceTime": 80.49089999999998,
+          "paused": false,
+          "auto": false,
+          "target": "glass",
+          "targetLabel": "櫥窗與入口",
+          "targets": [
+            {
+              "id": "glass",
+              "label": "櫥窗與入口",
+              "position": [
+                -2.5,
+                1.7,
+                1.9
+              ]
+            }
+          ],
+          "feedback": null,
+          "shots": 0,
+          "hits": 0,
+          "canAttack": false,
+          "ended": false,
+          "busy": true,
+          "sequenceKind": null,
+          "endingCaption": "武陵城，又過了平安的一天。",
+          "revision": 144
+        },
+        "d": {
+          "progress": 0,
+          "stage": 0,
+          "serverAlive": true,
+          "serverPosition": [
+            0,
+            4.38,
+            1.06
+          ],
+          "visibleIntact": 141,
+          "visibleDebris": 0,
+          "settled": true,
+          "milestones": [
+            {
+              "id": "glass",
+              "threshold": 8,
+              "active": false,
+              "visible": true
+            },
+            {
+              "id": "upper",
+              "threshold": 27,
+              "active": false,
+              "visible": true
+            },
+            {
+              "id": "sign",
+              "threshold": 44,
+              "active": false,
+              "visible": true
+            },
+            {
+              "id": "interior",
+              "threshold": 62,
+              "active": false,
+              "visible": true
+            },
+            {
+              "id": "roof",
+              "threshold": 80,
+              "active": false,
+              "visible": true
+            },
+            {
+              "id": "structure",
+              "threshold": 97,
+              "active": false,
+              "visible": true
+            }
+          ],
+          "server": {
+            "alive": true,
+            "lowered": 0,
+            "position": [
+              0,
+              4.38,
+              1.06
+            ],
+            "visibleLEDs": 7
+          },
+          "targets": [
+            {
+              "id": "glass",
+              "label": "櫥窗與入口",
+              "position": [
+                -2.5,
+                1.7,
+                1.9
+              ]
+            },
+            {
+              "id": "upper",
+              "label": "二樓外牆",
+              "position": [
+                -2.4,
+                4.5,
+                1.82
+              ]
+            },
+            {
+              "id": "sign",
+              "label": "招牌與雨棚",
+              "position": [
+                2.5,
+                3.15,
+                2.18
+              ]
+            },
+            {
+              "id": "interior",
+              "label": "機房下方樓板",
+              "position": [
+                0,
+                3.3,
+                0.1
+              ]
+            },
+            {
+              "id": "roof",
+              "label": "屋頂支撐",
+              "position": [
+                1.4,
+                5.8,
+                0.1
+              ]
+            },
+            {
+              "id": "structure",
+              "label": "最後承重結構",
+              "position": [
+                -3.7,
+                2.4,
+                -0.1
+              ]
+            },
+            {
+              "id": "server",
+              "label": "最後機櫃",
+              "position": [
+                0,
+                4.38,
+                1.06
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Final build single canvas and clean runtime",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "Final build framebuffer clean",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "passed": true,
+  "errors": []
+}

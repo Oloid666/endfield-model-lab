@@ -10,7 +10,7 @@ export function buildTrees(parent,r) {
   const leafGeo=r.own(new T.BufferGeometry());leafGeo.setAttribute('position',new T.Float32BufferAttribute(vertices,3));leafGeo.setIndex([0,1,8,0,8,2,1,3,8,2,8,4,3,5,8,4,8,6,5,7,8,6,8,7]);leafGeo.computeVertexNormals();
   const leafMaterial=r.own(new T.MeshStandardMaterial({color:'#82a570',roughness:.37,metalness:.02,side:T.DoubleSide}));
   const dummy=new T.Object3D(),color=new T.Color();
-  for(const [tx,tz] of [[-5.9,-.65],[6.05,-2.2]]){
+  for(const [tx,tz] of [[-5.9,-.65],[10.1,-4.8]]){
     const tree=new T.Group();tree.position.set(tx,.73,tz);parent.add(tree);
     r.box(parent,'#535d57',[tx,.44,tz],[1.05,.48,1.1],{roughness:.82});r.box(parent,'#1d2923',[tx,.69,tz],[.94,.03,.99]);
     const tips=[];

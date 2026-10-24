@@ -1,0 +1,493 @@
+{
+  "passed": true,
+  "kind": "Node actual scene geometry; Canvas pixels stubbed; not an iPhone or GPU test",
+  "checks": 10,
+  "results": [
+    {
+      "name": "Initial real shop and server visible",
+      "passed": true,
+      "detail": {
+        "progress": 0,
+        "stage": 0,
+        "serverAlive": true,
+        "serverPosition": [
+          0,
+          4.38,
+          1.06
+        ],
+        "visibleIntact": 141,
+        "visibleDebris": 0,
+        "settled": true,
+        "milestones": [
+          {
+            "id": "glass",
+            "threshold": 8,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "upper",
+            "threshold": 27,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "sign",
+            "threshold": 44,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "interior",
+            "threshold": 62,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "roof",
+            "threshold": 80,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "structure",
+            "threshold": 97,
+            "active": false,
+            "visible": true
+          }
+        ],
+        "server": {
+          "alive": true,
+          "lowered": 0,
+          "position": [
+            0,
+            4.38,
+            1.06
+          ],
+          "visibleLEDs": 17
+        }
+      }
+    },
+    {
+      "name": "First ordinary hit removes actual window geometry",
+      "passed": true,
+      "detail": {
+        "progress": 8,
+        "stage": 1,
+        "serverAlive": true,
+        "serverPosition": [
+          0,
+          4.38,
+          1.06
+        ],
+        "visibleIntact": 113,
+        "visibleDebris": 18,
+        "settled": true,
+        "milestones": [
+          {
+            "id": "glass",
+            "threshold": 8,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "upper",
+            "threshold": 27,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "sign",
+            "threshold": 44,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "interior",
+            "threshold": 62,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "roof",
+            "threshold": 80,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "structure",
+            "threshold": 97,
+            "active": false,
+            "visible": true
+          }
+        ],
+        "server": {
+          "alive": true,
+          "lowered": 0,
+          "position": [
+            0,
+            4.38,
+            1.06
+          ],
+          "visibleLEDs": 16
+        }
+      }
+    },
+    {
+      "name": "Partial damage removes real meshes and retains pooled rubble",
+      "passed": true,
+      "detail": {
+        "progress": 44,
+        "stage": 3,
+        "serverAlive": true,
+        "serverPosition": [
+          0,
+          4.38,
+          1.06
+        ],
+        "visibleIntact": 87,
+        "visibleDebris": 55,
+        "settled": true,
+        "milestones": [
+          {
+            "id": "glass",
+            "threshold": 8,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "upper",
+            "threshold": 27,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "sign",
+            "threshold": 44,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "interior",
+            "threshold": 62,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "roof",
+            "threshold": 80,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "structure",
+            "threshold": 97,
+            "active": false,
+            "visible": true
+          }
+        ],
+        "server": {
+          "alive": true,
+          "lowered": 0,
+          "position": [
+            0,
+            4.38,
+            1.06
+          ],
+          "visibleLEDs": 10
+        }
+      }
+    },
+    {
+      "name": "Entire shop removed and one server survives",
+      "passed": true,
+      "detail": {
+        "progress": 99,
+        "stage": 6,
+        "serverAlive": true,
+        "serverPosition": [
+          0,
+          1.21,
+          1.06
+        ],
+        "visibleIntact": 0,
+        "visibleDebris": 116,
+        "settled": true,
+        "milestones": [
+          {
+            "id": "glass",
+            "threshold": 8,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "upper",
+            "threshold": 27,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "sign",
+            "threshold": 44,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "interior",
+            "threshold": 62,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "roof",
+            "threshold": 80,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "structure",
+            "threshold": 97,
+            "active": true,
+            "visible": false
+          }
+        ],
+        "server": {
+          "alive": true,
+          "lowered": 1,
+          "position": [
+            0,
+            1.21,
+            1.06
+          ],
+          "visibleLEDs": 1
+        }
+      }
+    },
+    {
+      "name": "Last target follows surviving lowered rack",
+      "passed": true,
+      "detail": {
+        "id": "server",
+        "label": "最後機櫃",
+        "position": [
+          0,
+          4.38,
+          1.06
+        ]
+      }
+    },
+    {
+      "name": "Server destruction starts once",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Server LED and body off after final hit",
+      "passed": true,
+      "detail": {
+        "progress": 99,
+        "stage": 6,
+        "serverAlive": false,
+        "serverPosition": [
+          0,
+          1.21,
+          1.06
+        ],
+        "visibleIntact": 0,
+        "visibleDebris": 116,
+        "settled": true,
+        "milestones": [
+          {
+            "id": "glass",
+            "threshold": 8,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "upper",
+            "threshold": 27,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "sign",
+            "threshold": 44,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "interior",
+            "threshold": 62,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "roof",
+            "threshold": 80,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "structure",
+            "threshold": 97,
+            "active": true,
+            "visible": false
+          }
+        ],
+        "server": {
+          "alive": false,
+          "lowered": 1,
+          "position": [
+            0,
+            1.21,
+            1.06
+          ],
+          "visibleLEDs": 0
+        }
+      }
+    },
+    {
+      "name": "Replay restores intact geometry and room height",
+      "passed": true,
+      "detail": {
+        "progress": 0,
+        "stage": 0,
+        "serverAlive": true,
+        "serverPosition": [
+          0,
+          4.38,
+          1.06
+        ],
+        "visibleIntact": 141,
+        "visibleDebris": 0,
+        "settled": true,
+        "milestones": [
+          {
+            "id": "glass",
+            "threshold": 8,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "upper",
+            "threshold": 27,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "sign",
+            "threshold": 44,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "interior",
+            "threshold": 62,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "roof",
+            "threshold": 80,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "structure",
+            "threshold": 97,
+            "active": false,
+            "visible": true
+          }
+        ],
+        "server": {
+          "alive": true,
+          "lowered": 0,
+          "position": [
+            0,
+            4.38,
+            1.06
+          ],
+          "visibleLEDs": 17
+        }
+      }
+    },
+    {
+      "name": "Decreasing progress resets safely",
+      "passed": true,
+      "detail": {
+        "progress": 0,
+        "stage": 0,
+        "serverAlive": true,
+        "serverPosition": [
+          0,
+          4.38,
+          1.06
+        ],
+        "visibleIntact": 141,
+        "visibleDebris": 0,
+        "settled": true,
+        "milestones": [
+          {
+            "id": "glass",
+            "threshold": 8,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "upper",
+            "threshold": 27,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "sign",
+            "threshold": 44,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "interior",
+            "threshold": 62,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "roof",
+            "threshold": 80,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "structure",
+            "threshold": 97,
+            "active": false,
+            "visible": true
+          }
+        ],
+        "server": {
+          "alive": true,
+          "lowered": 0,
+          "position": [
+            0,
+            4.38,
+            1.06
+          ],
+          "visibleLEDs": 17
+        }
+      }
+    },
+    {
+      "name": "Both batch passes preserve destructible meshes",
+      "passed": true,
+      "detail": {
+        "dynamic": 196,
+        "batches": {
+          "meshesBefore": 291,
+          "meshesAfter": 246,
+          "consolidated": 50,
+          "sharedDraws": 5
+        }
+      }
+    }
+  ]
+}

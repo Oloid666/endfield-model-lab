@@ -1,0 +1,1587 @@
+{
+  "url": "http://127.0.0.1:4187/",
+  "browser": "Desktop Chromium / SwiftShader",
+  "viewport": [
+    390,
+    844
+  ],
+  "real_iphone_test": false,
+  "checks": [
+    {
+      "name": "Original actor and skeleton load",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Exactly one WebGL canvas",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Scene MSAA plus single-sample postprocessing",
+      "passed": true,
+      "detail": {
+        "msaa": 4,
+        "postSamples": 0,
+        "postDepth": false,
+        "fxaa": true,
+        "dpr": 1
+      }
+    },
+    {
+      "name": "Glass color and depth source ready",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Portrait fits viewport",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "V5 inventory retained",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pear garden exists",
+      "passed": true,
+      "detail": {
+        "quality": "balanced",
+        "trees": 3,
+        "blossoms": 1350,
+        "newLeaves": 420,
+        "fallingPetals": 24,
+        "protected": false,
+        "shield": 0,
+        "center": [
+          7.65,
+          0.29,
+          -0.65
+        ]
+      }
+    },
+    {
+      "name": "Rendered content v6-street.png",
+      "passed": true,
+      "detail": 57.23
+    },
+    {
+      "name": "Rendered content v6-pear.png",
+      "passed": true,
+      "detail": 40.79
+    },
+    {
+      "name": "Initial shaders and framebuffers clean",
+      "passed": true,
+      "detail": 0
+    },
+    {
+      "name": "Primary mission starts",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Three dinner choices A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Dinner waits indefinitely",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Rendered content v6-dinner-choice.png",
+      "passed": true,
+      "detail": 62.42
+    },
+    {
+      "name": "Actual meal prop A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Meal reaction A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Three dinner choices B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Actual meal prop B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Meal reaction B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Three dinner choices C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Actual meal prop C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Meal reaction C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Charge starts empty",
+      "passed": true,
+      "detail": {
+        "phase": "charge",
+        "node": {
+          "id": "charge_0",
+          "speaker": "mifoe",
+          "text": "儲能網接通，開始充電。",
+          "mood": "calm",
+          "gesture": "look",
+          "next": "charge_1",
+          "at": 0
+        },
+        "nodeId": "charge_0",
+        "speaker": "mifoe",
+        "text": "儲能網接通，開始充電。",
+        "revealed": 11,
+        "branch": "C",
+        "choices": [],
+        "waitingChoice": false,
+        "progress": 0,
+        "energy": 100,
+        "charge": 0.0033333333333492496,
+        "meter": 0.0007407407407442776,
+        "meterElapsed": 0.0010000000000047748,
+        "meterPeriod": 2.7,
+        "phaseElapsed": 0.0010000000000047748,
+        "time": 90.06400000000004,
+        "clock": 90.06400000000004,
+        "sourceTime": 90.06400000000004,
+        "paused": false,
+        "auto": false,
+        "target": "glass",
+        "targetLabel": "櫥窗與入口",
+        "targets": [
+          {
+            "id": "glass",
+            "label": "櫥窗與入口",
+            "position": [
+              -2.5,
+              1.7,
+              1.9
+            ]
+          }
+        ],
+        "feedback": null,
+        "shots": 0,
+        "hits": 0,
+        "canAttack": false,
+        "ended": false,
+        "busy": true,
+        "sequenceKind": null,
+        "endingCaption": "武陵城，又過了平安的一天。",
+        "revision": 68
+      }
+    },
+    {
+      "name": "Rendered content v6-charge.png",
+      "passed": true,
+      "detail": 66.11
+    },
+    {
+      "name": "Pause freezes charge time",
+      "passed": true,
+      "detail": {
+        "phase": "charge",
+        "node": {
+          "id": "charge_4",
+          "speaker": "dragon",
+          "text": "晚餐也算進去。",
+          "mood": "calm",
+          "gesture": "hold",
+          "next": "charge_5",
+          "at": 12
+        },
+        "nodeId": "charge_4",
+        "speaker": "dragon",
+        "text": "晚餐也算進去。",
+        "revealed": 7,
+        "branch": "C",
+        "choices": [],
+        "waitingChoice": false,
+        "progress": 0,
+        "energy": 100,
+        "charge": 46.67333333333337,
+        "meter": 0.37185185185185826,
+        "meterElapsed": 14.00200000000001,
+        "meterPeriod": 2.7,
+        "phaseElapsed": 14.00200000000001,
+        "time": 104.06500000000004,
+        "clock": 104.06500000000004,
+        "sourceTime": 110.06500000000004,
+        "paused": true,
+        "auto": false,
+        "target": "glass",
+        "targetLabel": "櫥窗與入口",
+        "targets": [
+          {
+            "id": "glass",
+            "label": "櫥窗與入口",
+            "position": [
+              -2.5,
+              1.7,
+              1.9
+            ]
+          }
+        ],
+        "feedback": null,
+        "shots": 0,
+        "hits": 0,
+        "canAttack": false,
+        "ended": false,
+        "busy": true,
+        "sequenceKind": null,
+        "endingCaption": "武陵城，又過了平安的一天。",
+        "revision": 77
+      }
+    },
+    {
+      "name": "Charge does not finish before thirty seconds",
+      "passed": true,
+      "detail": {
+        "phase": "charge",
+        "node": {
+          "id": "charge_9",
+          "speaker": "zhuang",
+          "text": "讓它今晚準時下班。",
+          "mood": "calm",
+          "gesture": "point",
+          "next": null,
+          "at": 27
+        },
+        "nodeId": "charge_9",
+        "speaker": "zhuang",
+        "text": "讓它今晚準時下班。",
+        "revealed": 9,
+        "branch": "C",
+        "choices": [],
+        "waitingChoice": false,
+        "progress": 0,
+        "energy": 100,
+        "charge": 99.96666666666665,
+        "meter": 0.21481481481480957,
+        "meterElapsed": 29.989999999999995,
+        "meterPeriod": 2.7,
+        "phaseElapsed": 29.989999999999995,
+        "time": 120.05300000000003,
+        "clock": 120.05300000000003,
+        "sourceTime": 126.05300000000003,
+        "paused": false,
+        "auto": false,
+        "target": "glass",
+        "targetLabel": "櫥窗與入口",
+        "targets": [
+          {
+            "id": "glass",
+            "label": "櫥窗與入口",
+            "position": [
+              -2.5,
+              1.7,
+              1.9
+            ]
+          }
+        ],
+        "feedback": null,
+        "shots": 0,
+        "hits": 0,
+        "canAttack": false,
+        "ended": false,
+        "busy": true,
+        "sequenceKind": null,
+        "endingCaption": "武陵城，又過了平安的一天。",
+        "revision": 88
+      }
+    },
+    {
+      "name": "Charge enters playable combat at thirty seconds",
+      "passed": true,
+      "detail": {
+        "phase": "combat",
+        "node": null,
+        "nodeId": null,
+        "speaker": null,
+        "text": "",
+        "revealed": 0,
+        "branch": "C",
+        "choices": [],
+        "waitingChoice": false,
+        "progress": 0,
+        "energy": 100,
+        "charge": 100,
+        "meter": 0.014814814814811866,
+        "meterElapsed": 0.01999999999999602,
+        "meterPeriod": 2.7,
+        "phaseElapsed": 0.01999999999999602,
+        "time": 120.08300000000003,
+        "clock": 120.08300000000003,
+        "sourceTime": 126.08300000000003,
+        "paused": false,
+        "auto": false,
+        "target": "glass",
+        "targetLabel": "櫥窗與入口",
+        "targets": [
+          {
+            "id": "glass",
+            "label": "櫥窗與入口",
+            "position": [
+              -2.5,
+              1.7,
+              1.9
+            ]
+          }
+        ],
+        "feedback": null,
+        "shots": 0,
+        "hits": 0,
+        "canAttack": true,
+        "ended": false,
+        "busy": true,
+        "sequenceKind": null,
+        "endingCaption": "武陵城，又過了平安的一天。",
+        "revision": 89
+      }
+    },
+    {
+      "name": "Charge dialogue continues throughout",
+      "passed": true,
+      "detail": [
+        "九成。目標鎖定。",
+        "你抱緊。",
+        "儲能網接通，開始充電。",
+        "填「光害改善」。",
+        "您指砲口，還是電弧？",
+        "晚餐也算進去。",
+        "避開梨花。",
+        "都避開。"
+      ]
+    },
+    {
+      "name": "Combat exposes meter and attack button",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Attack touch target at least 44px",
+      "passed": true,
+      "detail": {
+        "x": 216,
+        "y": 752,
+        "width": 142,
+        "height": 54
+      }
+    },
+    {
+      "name": "Building starts intact",
+      "passed": true,
+      "detail": {
+        "progress": 0,
+        "stage": 0,
+        "serverAlive": true,
+        "serverPosition": [
+          0,
+          4.38,
+          1.06
+        ],
+        "visibleIntact": 141,
+        "visibleDebris": 0,
+        "settled": true,
+        "milestones": [
+          {
+            "id": "glass",
+            "threshold": 8,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "upper",
+            "threshold": 27,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "sign",
+            "threshold": 44,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "interior",
+            "threshold": 62,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "roof",
+            "threshold": 80,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "structure",
+            "threshold": 97,
+            "active": false,
+            "visible": true
+          }
+        ],
+        "server": {
+          "alive": true,
+          "lowered": 0,
+          "position": [
+            0,
+            4.38,
+            1.06
+          ],
+          "visibleLEDs": 9
+        },
+        "targets": [
+          {
+            "id": "glass",
+            "label": "櫥窗與入口",
+            "position": [
+              -2.5,
+              1.7,
+              1.9
+            ]
+          },
+          {
+            "id": "upper",
+            "label": "二樓外牆",
+            "position": [
+              -2.4,
+              4.5,
+              1.82
+            ]
+          },
+          {
+            "id": "sign",
+            "label": "招牌與雨棚",
+            "position": [
+              2.5,
+              3.15,
+              2.18
+            ]
+          },
+          {
+            "id": "interior",
+            "label": "機房下方樓板",
+            "position": [
+              0,
+              3.3,
+              0.1
+            ]
+          },
+          {
+            "id": "roof",
+            "label": "屋頂支撐",
+            "position": [
+              1.4,
+              5.8,
+              0.1
+            ]
+          },
+          {
+            "id": "structure",
+            "label": "最後承重結構",
+            "position": [
+              -3.7,
+              2.4,
+              -0.1
+            ]
+          },
+          {
+            "id": "server",
+            "label": "最後機櫃",
+            "position": [
+              0,
+              4.38,
+              1.06
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "Edge MISS preserves progress and energy",
+      "passed": true,
+      "detail": {
+        "phase": "combat",
+        "node": null,
+        "nodeId": null,
+        "speaker": null,
+        "text": "",
+        "revealed": 0,
+        "branch": "C",
+        "choices": [],
+        "waitingChoice": false,
+        "progress": 0,
+        "energy": 100,
+        "charge": 100,
+        "meter": 0.00999999999999709,
+        "meterElapsed": 2.7134999999999962,
+        "meterPeriod": 2.7,
+        "phaseElapsed": 2.7134999999999962,
+        "time": 122.77650000000003,
+        "clock": 122.77650000000003,
+        "sourceTime": 128.77650000000003,
+        "paused": false,
+        "auto": false,
+        "target": "glass",
+        "targetLabel": "櫥窗與入口",
+        "targets": [
+          {
+            "id": "glass",
+            "label": "櫥窗與入口",
+            "position": [
+              -2.5,
+              1.7,
+              1.9
+            ]
+          }
+        ],
+        "feedback": {
+          "result": "miss",
+          "power": 0,
+          "damage": 0,
+          "position": 0.00999999999999709,
+          "progress": 0,
+          "target": "glass",
+          "finisher": false,
+          "finalAttempt": false,
+          "time": 122.77650000000003,
+          "number": 1
+        },
+        "shots": 1,
+        "hits": 0,
+        "canAttack": false,
+        "ended": false,
+        "busy": true,
+        "sequenceKind": null,
+        "endingCaption": "武陵城，又過了平安的一天。",
+        "revision": 91
+      }
+    },
+    {
+      "name": "Real touch on center causes damage",
+      "passed": true,
+      "detail": {
+        "phase": "combat",
+        "node": null,
+        "nodeId": null,
+        "speaker": null,
+        "text": "",
+        "revealed": 0,
+        "branch": "C",
+        "choices": [],
+        "waitingChoice": false,
+        "progress": 18,
+        "energy": 81.81818181818181,
+        "charge": 100,
+        "meter": 0.5370370370370473,
+        "meterElapsed": 6.125000000000014,
+        "meterPeriod": 2.7,
+        "phaseElapsed": 6.125000000000014,
+        "time": 126.18800000000005,
+        "clock": 126.18800000000005,
+        "sourceTime": 132.18800000000005,
+        "paused": false,
+        "auto": false,
+        "target": "upper",
+        "targetLabel": "二樓外牆",
+        "targets": [
+          {
+            "id": "upper",
+            "label": "二樓外牆",
+            "position": [
+              -2.4,
+              4.5,
+              1.82
+            ]
+          }
+        ],
+        "feedback": {
+          "result": "perfect",
+          "power": 0.9999999999999953,
+          "damage": 18,
+          "position": 0.5000000000000018,
+          "progress": 18,
+          "target": "glass",
+          "finisher": false,
+          "finalAttempt": false,
+          "time": 126.13800000000003,
+          "number": 2
+        },
+        "shots": 2,
+        "hits": 1,
+        "canAttack": false,
+        "ended": false,
+        "busy": true,
+        "sequenceKind": null,
+        "endingCaption": "武陵城，又過了平安的一天。",
+        "revision": 93
+      }
+    },
+    {
+      "name": "Hit removes real meshes and leaves debris",
+      "passed": true,
+      "detail": {
+        "progress": 18,
+        "stage": 1,
+        "serverAlive": true,
+        "serverPosition": [
+          0,
+          4.38,
+          1.06
+        ],
+        "visibleIntact": 113,
+        "visibleDebris": 18,
+        "settled": true,
+        "milestones": [
+          {
+            "id": "glass",
+            "threshold": 8,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "upper",
+            "threshold": 27,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "sign",
+            "threshold": 44,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "interior",
+            "threshold": 62,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "roof",
+            "threshold": 80,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "structure",
+            "threshold": 97,
+            "active": false,
+            "visible": true
+          }
+        ],
+        "server": {
+          "alive": true,
+          "lowered": 0,
+          "position": [
+            0,
+            4.38,
+            1.06
+          ],
+          "visibleLEDs": 15
+        },
+        "targets": [
+          {
+            "id": "glass",
+            "label": "櫥窗與入口",
+            "position": [
+              -2.5,
+              1.7,
+              1.9
+            ]
+          },
+          {
+            "id": "upper",
+            "label": "二樓外牆",
+            "position": [
+              -2.4,
+              4.5,
+              1.82
+            ]
+          },
+          {
+            "id": "sign",
+            "label": "招牌與雨棚",
+            "position": [
+              2.5,
+              3.15,
+              2.18
+            ]
+          },
+          {
+            "id": "interior",
+            "label": "機房下方樓板",
+            "position": [
+              0,
+              3.3,
+              0.1
+            ]
+          },
+          {
+            "id": "roof",
+            "label": "屋頂支撐",
+            "position": [
+              1.4,
+              5.8,
+              0.1
+            ]
+          },
+          {
+            "id": "structure",
+            "label": "最後承重結構",
+            "position": [
+              -3.7,
+              2.4,
+              -0.1
+            ]
+          },
+          {
+            "id": "server",
+            "label": "最後機櫃",
+            "position": [
+              0,
+              4.38,
+              1.06
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "Rendered content v6-combat.png",
+      "passed": true,
+      "detail": 63.34
+    },
+    {
+      "name": "Drag does not fire",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pinch and cancellation do not fire",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Combat reaches last-shot scene",
+      "passed": true,
+      "detail": {
+        "shots": 5,
+        "state": {
+          "phase": "last",
+          "node": {
+            "id": "last_0",
+            "speaker": "mifoe",
+            "text": "能量耗盡。伺服器還在運作。",
+            "mood": "calm",
+            "gesture": "look",
+            "next": "last_1"
+          },
+          "nodeId": "last_0",
+          "speaker": "mifoe",
+          "text": "能量耗盡。伺服器還在運作。",
+          "revealed": 1,
+          "branch": "C",
+          "choices": [],
+          "waitingChoice": false,
+          "progress": 99,
+          "energy": 0,
+          "charge": 100,
+          "meter": 0.03703703703704546,
+          "meterElapsed": 0.05000000000001137,
+          "meterPeriod": 2.7,
+          "phaseElapsed": 0.05000000000001137,
+          "time": 139.68800000000005,
+          "clock": 139.68800000000005,
+          "sourceTime": 145.68800000000005,
+          "paused": false,
+          "auto": false,
+          "target": "server",
+          "targetLabel": "最後機櫃",
+          "targets": [
+            {
+              "id": "server",
+              "label": "最後機櫃",
+              "position": [
+                0,
+                1.445447242939439,
+                1.06
+              ]
+            }
+          ],
+          "feedback": {
+            "result": "perfect",
+            "power": 0.9999999999999971,
+            "damage": 18,
+            "position": 0.5000000000000011,
+            "progress": 99,
+            "target": "structure",
+            "finisher": false,
+            "finalAttempt": false,
+            "time": 139.63800000000003,
+            "number": 7
+          },
+          "shots": 7,
+          "hits": 6,
+          "canAttack": false,
+          "ended": false,
+          "busy": true,
+          "sequenceKind": null,
+          "endingCaption": "武陵城，又過了平安的一天。",
+          "revision": 107
+        }
+      }
+    },
+    {
+      "name": "Demolition leaves real rubble and the live server",
+      "passed": true,
+      "detail": {
+        "progress": 99,
+        "stage": 6,
+        "serverAlive": true,
+        "serverPosition": [
+          0,
+          1.21,
+          1.06
+        ],
+        "visibleIntact": 0,
+        "visibleDebris": 116,
+        "settled": true,
+        "milestones": [
+          {
+            "id": "glass",
+            "threshold": 8,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "upper",
+            "threshold": 27,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "sign",
+            "threshold": 44,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "interior",
+            "threshold": 62,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "roof",
+            "threshold": 80,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "structure",
+            "threshold": 97,
+            "active": true,
+            "visible": false
+          }
+        ],
+        "server": {
+          "alive": true,
+          "lowered": 1,
+          "position": [
+            0,
+            1.21,
+            1.06
+          ],
+          "visibleLEDs": 1
+        },
+        "targets": [
+          {
+            "id": "glass",
+            "label": "櫥窗與入口",
+            "position": [
+              -2.5,
+              1.7,
+              1.9
+            ]
+          },
+          {
+            "id": "upper",
+            "label": "二樓外牆",
+            "position": [
+              -2.4,
+              4.5,
+              1.82
+            ]
+          },
+          {
+            "id": "sign",
+            "label": "招牌與雨棚",
+            "position": [
+              2.5,
+              3.15,
+              2.18
+            ]
+          },
+          {
+            "id": "interior",
+            "label": "機房下方樓板",
+            "position": [
+              0,
+              3.3,
+              0.1
+            ]
+          },
+          {
+            "id": "roof",
+            "label": "屋頂支撐",
+            "position": [
+              1.4,
+              5.8,
+              0.1
+            ]
+          },
+          {
+            "id": "structure",
+            "label": "最後承重結構",
+            "position": [
+              -3.7,
+              2.4,
+              -0.1
+            ]
+          },
+          {
+            "id": "server",
+            "label": "最後機櫃",
+            "position": [
+              0,
+              1.21,
+              1.06
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "Mission stops at 99 with empty main energy",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Rendered content v6-rubble.png",
+      "passed": true,
+      "detail": 37.92
+    },
+    {
+      "name": "Final MISS does not launch dragon",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Player launches dragon finisher",
+      "passed": true,
+      "detail": {
+        "phase": "finisher",
+        "node": null,
+        "nodeId": null,
+        "speaker": null,
+        "text": "",
+        "revealed": 0,
+        "branch": "C",
+        "choices": [],
+        "waitingChoice": false,
+        "progress": 99,
+        "energy": 0,
+        "charge": 100,
+        "meter": 0,
+        "meterElapsed": 0,
+        "meterPeriod": 2.7,
+        "phaseElapsed": 0,
+        "time": 148.96300000000002,
+        "clock": 148.96300000000002,
+        "sourceTime": 154.96300000000002,
+        "paused": false,
+        "auto": false,
+        "target": "server",
+        "targetLabel": "最後機櫃",
+        "targets": [
+          {
+            "id": "server",
+            "label": "最後機櫃",
+            "position": [
+              0,
+              1.21,
+              1.06
+            ]
+          }
+        ],
+        "feedback": {
+          "result": "perfect",
+          "power": 0.999999999999977,
+          "damage": 18,
+          "position": 0.4999999999999913,
+          "progress": 99,
+          "target": "server",
+          "finisher": true,
+          "finalAttempt": true,
+          "time": 148.96300000000002,
+          "number": 9
+        },
+        "shots": 9,
+        "hits": 7,
+        "canAttack": false,
+        "ended": false,
+        "busy": true,
+        "sequenceKind": null,
+        "endingCaption": "武陵城，又過了平安的一天。",
+        "revision": 136
+      }
+    },
+    {
+      "name": "Finisher does not finish early",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Rendered content v6-finale.png",
+      "passed": true,
+      "detail": 28.49
+    },
+    {
+      "name": "Nine-second flight not skipped",
+      "passed": true,
+      "detail": {
+        "phase": "finisher",
+        "node": null,
+        "nodeId": null,
+        "speaker": null,
+        "text": "",
+        "revealed": 0,
+        "branch": "C",
+        "choices": [],
+        "waitingChoice": false,
+        "progress": 99,
+        "energy": 0,
+        "charge": 100,
+        "meter": 0.5185185185185265,
+        "meterElapsed": 8.800000000000011,
+        "meterPeriod": 2.7,
+        "phaseElapsed": 8.800000000000011,
+        "time": 157.76300000000003,
+        "clock": 157.76300000000003,
+        "sourceTime": 163.76300000000003,
+        "paused": false,
+        "auto": false,
+        "target": "server",
+        "targetLabel": "最後機櫃",
+        "targets": [
+          {
+            "id": "server",
+            "label": "最後機櫃",
+            "position": [
+              0,
+              1.21,
+              1.06
+            ]
+          }
+        ],
+        "feedback": {
+          "result": "perfect",
+          "power": 0.999999999999977,
+          "damage": 18,
+          "position": 0.4999999999999913,
+          "progress": 99,
+          "target": "server",
+          "finisher": true,
+          "finalAttempt": true,
+          "time": 148.96300000000002,
+          "number": 9
+        },
+        "shots": 9,
+        "hits": 7,
+        "canAttack": false,
+        "ended": false,
+        "busy": true,
+        "sequenceKind": null,
+        "endingCaption": "武陵城，又過了平安的一天。",
+        "revision": 136
+      }
+    },
+    {
+      "name": "Landing follows dragon flight",
+      "passed": true,
+      "detail": {
+        "phase": "landing",
+        "node": {
+          "id": "landing_0",
+          "speaker": "mifoe",
+          "text": "伺服器停止運作。現場處置完畢。",
+          "mood": "calm",
+          "gesture": "nod",
+          "next": "landing_1"
+        },
+        "nodeId": "landing_0",
+        "speaker": "mifoe",
+        "text": "伺服器停止運作。現場處置完畢。",
+        "revealed": 15,
+        "branch": "C",
+        "choices": [],
+        "waitingChoice": false,
+        "progress": 99,
+        "energy": 0,
+        "charge": 100,
+        "meter": 0.03703703703704546,
+        "meterElapsed": 0.05000000000001137,
+        "meterPeriod": 2.7,
+        "phaseElapsed": 0.05000000000001137,
+        "time": 158.01300000000003,
+        "clock": 158.01300000000003,
+        "sourceTime": 164.01300000000003,
+        "paused": false,
+        "auto": false,
+        "target": "server",
+        "targetLabel": "最後機櫃",
+        "targets": [
+          {
+            "id": "server",
+            "label": "最後機櫃",
+            "position": [
+              0,
+              1.21,
+              1.06
+            ]
+          }
+        ],
+        "feedback": {
+          "result": "perfect",
+          "power": 0.999999999999977,
+          "damage": 18,
+          "position": 0.4999999999999913,
+          "progress": 99,
+          "target": "server",
+          "finisher": true,
+          "finalAttempt": true,
+          "time": 148.96300000000002,
+          "number": 9
+        },
+        "shots": 9,
+        "hits": 7,
+        "canAttack": false,
+        "ended": false,
+        "busy": true,
+        "sequenceKind": null,
+        "endingCaption": "武陵城，又過了平安的一天。",
+        "revision": 139
+      }
+    },
+    {
+      "name": "Completion waits for landing",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Final mission completes at 100",
+      "passed": true,
+      "detail": {
+        "phase": "complete",
+        "node": null,
+        "nodeId": null,
+        "speaker": null,
+        "text": "",
+        "revealed": 0,
+        "branch": "C",
+        "choices": [],
+        "waitingChoice": false,
+        "progress": 100,
+        "energy": 0,
+        "charge": 100,
+        "meter": 0.07407407407409092,
+        "meterElapsed": 0.10000000000002274,
+        "meterPeriod": 2.7,
+        "phaseElapsed": 0.10000000000002274,
+        "time": 161.06300000000005,
+        "clock": 161.06300000000005,
+        "sourceTime": 167.06300000000005,
+        "paused": false,
+        "auto": false,
+        "target": "server",
+        "targetLabel": "最後機櫃",
+        "targets": [
+          {
+            "id": "server",
+            "label": "最後機櫃",
+            "position": [
+              0,
+              1.21,
+              1.06
+            ]
+          }
+        ],
+        "feedback": {
+          "result": "perfect",
+          "power": 0.999999999999977,
+          "damage": 18,
+          "position": 0.4999999999999913,
+          "progress": 99,
+          "target": "server",
+          "finisher": true,
+          "finalAttempt": true,
+          "time": 148.96300000000002,
+          "number": 9
+        },
+        "shots": 9,
+        "hits": 7,
+        "canAttack": false,
+        "ended": true,
+        "busy": false,
+        "sequenceKind": null,
+        "endingCaption": "武陵城，又過了平安的一天。",
+        "revision": 142
+      }
+    },
+    {
+      "name": "Server really stops and stays destroyed",
+      "passed": true,
+      "detail": {
+        "progress": 99,
+        "stage": 6,
+        "serverAlive": false,
+        "serverPosition": [
+          0,
+          1.21,
+          1.06
+        ],
+        "visibleIntact": 0,
+        "visibleDebris": 116,
+        "settled": true,
+        "milestones": [
+          {
+            "id": "glass",
+            "threshold": 8,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "upper",
+            "threshold": 27,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "sign",
+            "threshold": 44,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "interior",
+            "threshold": 62,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "roof",
+            "threshold": 80,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "structure",
+            "threshold": 97,
+            "active": true,
+            "visible": false
+          }
+        ],
+        "server": {
+          "alive": false,
+          "lowered": 1,
+          "position": [
+            0,
+            1.21,
+            1.06
+          ],
+          "visibleLEDs": 0
+        },
+        "targets": [
+          {
+            "id": "glass",
+            "label": "櫥窗與入口",
+            "position": [
+              -2.5,
+              1.7,
+              1.9
+            ]
+          },
+          {
+            "id": "upper",
+            "label": "二樓外牆",
+            "position": [
+              -2.4,
+              4.5,
+              1.82
+            ]
+          },
+          {
+            "id": "sign",
+            "label": "招牌與雨棚",
+            "position": [
+              2.5,
+              3.15,
+              2.18
+            ]
+          },
+          {
+            "id": "interior",
+            "label": "機房下方樓板",
+            "position": [
+              0,
+              3.3,
+              0.1
+            ]
+          },
+          {
+            "id": "roof",
+            "label": "屋頂支撐",
+            "position": [
+              1.4,
+              5.8,
+              0.1
+            ]
+          },
+          {
+            "id": "structure",
+            "label": "最後承重結構",
+            "position": [
+              -3.7,
+              2.4,
+              -0.1
+            ]
+          },
+          {
+            "id": "server",
+            "label": "最後機櫃",
+            "position": [
+              0,
+              1.21,
+              1.06
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "Rendered content v6-complete.png",
+      "passed": true,
+      "detail": 40.08
+    },
+    {
+      "name": "Destruction and finisher shaders clean",
+      "passed": true,
+      "detail": 0
+    },
+    {
+      "name": "Ending stays alive for requested real duration",
+      "passed": true,
+      "detail": {
+        "seconds": 60.0,
+        "frames": 79,
+        "software_render_fps": 1.3166420027142391
+      }
+    },
+    {
+      "name": "Landscape fits viewport",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Rendered content v6-landscape.png",
+      "passed": true,
+      "detail": 15.28
+    },
+    {
+      "name": "Replay restores intact shop and server",
+      "passed": true,
+      "detail": {
+        "progress": 0,
+        "stage": 0,
+        "serverAlive": true,
+        "serverPosition": [
+          0,
+          4.38,
+          1.06
+        ],
+        "visibleIntact": 141,
+        "visibleDebris": 0,
+        "settled": true,
+        "milestones": [
+          {
+            "id": "glass",
+            "threshold": 8,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "upper",
+            "threshold": 27,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "sign",
+            "threshold": 44,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "interior",
+            "threshold": 62,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "roof",
+            "threshold": 80,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "structure",
+            "threshold": 97,
+            "active": false,
+            "visible": true
+          }
+        ],
+        "server": {
+          "alive": true,
+          "lowered": 0,
+          "position": [
+            0,
+            4.38,
+            1.06
+          ],
+          "visibleLEDs": 16
+        },
+        "targets": [
+          {
+            "id": "glass",
+            "label": "櫥窗與入口",
+            "position": [
+              -2.5,
+              1.7,
+              1.9
+            ]
+          },
+          {
+            "id": "upper",
+            "label": "二樓外牆",
+            "position": [
+              -2.4,
+              4.5,
+              1.82
+            ]
+          },
+          {
+            "id": "sign",
+            "label": "招牌與雨棚",
+            "position": [
+              2.5,
+              3.15,
+              2.18
+            ]
+          },
+          {
+            "id": "interior",
+            "label": "機房下方樓板",
+            "position": [
+              0,
+              3.3,
+              0.1
+            ]
+          },
+          {
+            "id": "roof",
+            "label": "屋頂支撐",
+            "position": [
+              1.4,
+              5.8,
+              0.1
+            ]
+          },
+          {
+            "id": "structure",
+            "label": "最後承重結構",
+            "position": [
+              -3.7,
+              2.4,
+              -0.1
+            ]
+          },
+          {
+            "id": "server",
+            "label": "最後機櫃",
+            "position": [
+              0,
+              4.38,
+              1.06
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "Replay resets progress and preserves single UI",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Context loss has recovery prompt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Context restore retains one canvas and glass",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Restored framebuffer clean",
+      "passed": true,
+      "detail": 0
+    },
+    {
+      "name": "No JavaScript or shader errors",
+      "passed": true,
+      "detail": []
+    }
+  ],
+  "ending_observation": {
+    "seconds": 60.0,
+    "frames": 79,
+    "software_render_fps": 1.3166420027142391
+  },
+  "passed": true,
+  "errors": []
+}

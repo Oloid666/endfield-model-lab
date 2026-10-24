@@ -1,6 +1,6 @@
 import * as T from 'three';
 
-export function createExploration(world,{mount,onHotspot,signal}){
+export function createExploration(world,{mount,onHotspot,onSceneTap,canWalk=()=>true,signal}){
   const controls=document.createElement('div');controls.className='exploration-controls';
   const toggle=document.createElement('button');toggle.className='walk-toggle';toggle.type='button';toggle.textContent='◇ 散步';toggle.setAttribute('aria-pressed','false');
   const rain=document.createElement('button');rain.className='rain-response';rain.textContent='聽雨';rain.type='button';rain.addEventListener('click',()=>onHotspot('rain'),{signal});
@@ -11,7 +11,7 @@ export function createExploration(world,{mount,onHotspot,signal}){
   let active=false,padPointer=null,joyX=0,joyY=0;
   const keys=new Set(),direction=new T.Vector3(),right=new T.Vector3(),forward=new T.Vector3(),up=new T.Vector3(0,1,0);
   const reset=()=>{joyX=joyY=0;keys.clear();padPointer=null;knob.style.transform='translate(-50%,-50%)';world.actors?.setMove(0,0,false);};
-  const setActive=value=>{active=value;toggle.setAttribute('aria-pressed',String(value));toggle.textContent=value?'◆ 停止散步':'◇ 散步';pad.hidden=!value;mount.classList.toggle('walking-mode',value);reset();world.setWalking(value);};
+  const setActive=value=>{active=Boolean(value&&canWalk());toggle.setAttribute('aria-pressed',String(active));toggle.textContent=active?'◆ 停止散步':'◇ 散步';pad.hidden=!active;mount.classList.toggle('walking-mode',active);reset();world.setWalking(active);};
   toggle.addEventListener('click',()=>setActive(!active),{signal});
   function padMove(event){if(event.pointerId!==padPointer)return;const b=pad.getBoundingClientRect();joyX=(event.clientX-b.left-b.width/2)/35;joyY=(event.clientY-b.top-b.height/2)/35;const len=Math.hypot(joyX,joyY);if(len>1){joyX/=len;joyY/=len;}knob.style.transform=`translate(calc(-50% + ${joyX*29}px),calc(-50% + ${joyY*29}px))`;}
   pad.addEventListener('pointerdown',e=>{if(padPointer!==null)return;padPointer=e.pointerId;pad.setPointerCapture(e.pointerId);padMove(e);},{signal});
@@ -27,6 +27,7 @@ export function createExploration(world,{mount,onHotspot,signal}){
   canvas.addEventListener('pointerup',e=>{
     const p=pointers.get(e.pointerId),valid=p&&!multi&&!p.moved&&performance.now()-p.time<350;pointers.delete(e.pointerId);if(!pointers.size)multi=false;if(!valid)return;
     const b=canvas.getBoundingClientRect();point.set((e.clientX-b.left)/b.width*2-1,-(e.clientY-b.top)/b.height*2+1);ray.setFromCamera(point,world.camera);
+    if(onSceneTap?.(ray))return;
     for(const hit of ray.intersectObjects([world.actors?.root,world.store.root,world.weather.root].filter(Boolean),true)){
       let ancestor=hit.object,visible=true;while(ancestor){if(!ancestor.visible){visible=false;break;}ancestor=ancestor.parent;}if(!visible||hit.object.material?.visible===false)continue;
       let node=hit.object,kind;while(node&&!kind){kind=node.userData.hotspot;node=node.parent;}

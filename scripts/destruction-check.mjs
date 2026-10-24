@@ -1,0 +1,33 @@
+/** Actual scene geometry checks; Canvas is stubbed, so this is not a GPU or screenshot test. */
+import * as T from 'three';
+import {Resources} from '../src/resources.js';
+import {buildStore} from '../src/store.js';
+import {optimizeStaticSet} from '../src/static-batches.js';
+import fs from 'node:fs';
+const ctx=new Proxy({measureText:s=>({width:s.length*12}),createLinearGradient:()=>({addColorStop(){}}),createRadialGradient:()=>({addColorStop(){}})},{get:(o,k)=>k in o?o[k]:(()=>{})});
+globalThis.document={createElement:()=>({width:256,height:256,getContext:()=>ctx})};
+const scene=new T.Scene(),r=new Resources(),store=buildStore(scene,r),d=store.destruction;
+const batches=optimizeStaticSet(store.root,r),checks=[];
+function check(name,passed,detail=null){checks.push({name,passed,detail});if(!passed)throw Error(name);}
+const initial=d.state;
+check('Initial real shop and server visible',initial.progress===0&&initial.visibleIntact>20&&initial.visibleDebris===0&&initial.serverAlive,initial);
+d.setProgress(8);for(let n=0;n<120;n++)d.update(n/60,1/60);
+check('First ordinary hit removes actual window geometry',d.state.visibleIntact<initial.visibleIntact&&d.state.visibleDebris>=18,d.state);
+d.setProgress(44);for(let n=120;n<270;n++)d.update(n/60,1/60);const partial=d.state;
+check('Partial damage removes real meshes and retains pooled rubble',partial.visibleIntact<initial.visibleIntact&&partial.visibleIntact>0&&partial.visibleDebris>=54&&partial.serverAlive,partial);
+d.setProgress(99);for(let n=270;n<550;n++)d.update(n/60,1/60);const final=d.state;
+check('Entire shop removed and one server survives',final.visibleIntact===0&&final.visibleDebris>=108&&final.serverAlive&&final.serverPosition[1]<1.25&&final.settled,final);
+check('Last target follows surviving lowered rack',d.targets.at(-1).position[1]===final.serverPosition[1],d.targets.at(-1));
+check('Server destruction starts once',d.destroyServer()&&!d.destroyServer());
+for(let n=550;n<630;n++)d.update(n/60,1/60);
+check('Server LED and body off after final hit',!d.state.serverAlive&&d.state.server.visibleLEDs===0&&!d.server.root.visible&&d.server.shattered.visible,d.state);
+d.reset();
+check('Replay restores intact geometry and room height',d.state.visibleIntact===initial.visibleIntact&&d.state.visibleDebris===0&&d.state.serverAlive&&d.state.serverPosition[1]===initial.serverPosition[1],d.state);
+d.setProgress(99);d.update(12,1/60);d.setProgress(0);
+check('Decreasing progress resets safely',d.state.stage===0&&d.state.visibleDebris===0&&d.state.visibleIntact===initial.visibleIntact,d.state);
+let dynamic=0,wrong=0;
+store.root.traverse(n=>{if(n.isMesh&&n.userData.dynamic)dynamic++;if(n.name?.startsWith('collapse-'))n.traverse(m=>{if(m.isMesh&&!m.userData.dynamic)wrong++;});});
+check('Both batch passes preserve destructible meshes',dynamic>0&&wrong===0,{dynamic,batches});
+const result={passed:true,kind:'Node actual scene geometry; Canvas pixels stubbed; not an iPhone or GPU test',checks:checks.length,results:checks};
+fs.writeFileSync('artifacts/v6-destruction-check.json',JSON.stringify(result,null,2)+'\n');
+console.log(JSON.stringify({passed:true,checks:checks.length,intactMeshes:initial.visibleIntact,ruins:final.visibleDebris,batches},null,2));r.dispose();
