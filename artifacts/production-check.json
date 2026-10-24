@@ -1,8 +1,8 @@
 {
-  "url": "https://oloid666.github.io/endfield-model-lab/?v=6",
-  "release": "lookdev-v6-pear-server-demolition",
-  "commit": "089624bfb0ae19a7479f381d707dd5d153608228",
-  "action": "https://github.com/Oloid666/endfield-model-lab/actions/runs/40074060226",
+  "url": "https://oloid666.github.io/endfield-model-lab/?v=7",
+  "release": "lookdev-v7-playground-and-cinematic",
+  "commit": "44775f9e29aed9b0b28785f2346e99b0b576f13c",
+  "action": "https://github.com/Oloid666/endfield-model-lab/actions/runs/40087273951",
   "tls_verification": true,
   "browser_public_url_test": false,
   "real_iphone_test": false,
@@ -14,15 +14,15 @@
       "matches_tested_build": true
     },
     {
-      "path": "/endfield-model-lab/assets/index-BbNkO8i1.js",
-      "bytes": 978207,
-      "sha256": "00a504d8e91d27767faeb33daa0390898a9c33f13e772fc060f81ecbdcb0f77a",
+      "path": "/endfield-model-lab/assets/index-Ufsno2o6.js",
+      "bytes": 1023327,
+      "sha256": "78827d368eed410e6b9cd3df6085fd55e4361affc841b0250d6d035e0450f8ee",
       "matches_tested_build": true
     },
     {
-      "path": "/endfield-model-lab/assets/index-DIZBAUTZ.css",
-      "bytes": 22036,
-      "sha256": "8758d58685d28816c537e04630924b0084b6a78386b1d121a3f753157360283e",
+      "path": "/endfield-model-lab/assets/index-DLSQOmJy.css",
+      "bytes": 35570,
+      "sha256": "e88b5a33025e57eb4852c4d040a7ea09069038d887c7f92dd4df193c910ba550",
       "matches_tested_build": true
     }
   ],
@@ -36,6 +36,9 @@
     "unlit-fresnel",
     "mission-attack",
     "pear-five-petal-blossoms",
-    "permanent-shop-rubble"
+    "permanent-shop-rubble",
+    "玩法試驗區",
+    "neighbor-collateral-wall",
+    "rubble-products-atlas-v7"
   ]
 }

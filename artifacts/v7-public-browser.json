@@ -1,0 +1,8 @@
+{
+  "url": "https://oloid666.github.io/endfield-model-lab/?v=7",
+  "browser": "Desktop Chromium / SwiftShader",
+  "tls_verification": true,
+  "real_iphone_test": false,
+  "passed": false,
+  "error": "Page.goto: net::ERR_CERT_AUTHORITY_INVALID at https://oloid666.github.io/endfield-model-lab/?v=7"
+}

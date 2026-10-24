@@ -49,4 +49,10 @@
 
 最終截圖：[首頁](../artifacts/v7-home-final.png)、[橫式首頁](../artifacts/v7-home-landscape.png)、[玩法列表](../artifacts/v7-playground.png)、[砲擊原型](../artifacts/v7-playground-cannon.png)、[通訊接入](../artifacts/v7-communication.png)、[正面蓄電](../artifacts/v7-charge-final.png)、[實際發砲](../artifacts/v7-cannon-blast.png)、[砲擊構圖](../artifacts/v7-combat-view-1.png)、[龍泡泡飛行](../artifacts/v7-dragon-flight-final.png)、[卡牆結尾](../artifacts/v7-ending-final.png)、[橫式結尾](../artifacts/v7-ending-landscape.png)。
 
-實際部署證據由主代理在發布完成後補入。
+## 已部署
+
+已發布：[開啟 V7](https://oloid666.github.io/endfield-model-lab/?v=7)。程式提交 `44775f9e29aed9b0b28785f2346e99b0b576f13c`，對應 [GitHub Actions](https://github.com/Oloid666/endfield-model-lab/actions/runs/40087273951) 的 build 與 deploy 均成功，分別耗時 15 秒與 8 秒。
+
+透過正常 TLS 下載公開 HTML、JS、CSS、favicon 及原始 GLB，並核對與本機受測 production build 的 SHA-256 一致。公開 JS 為 `index-Ufsno2o6.js`（1,023,327 bytes），CSS 為 `index-DLSQOmJy.css`（35,570 bytes）。新試驗區、鄰居牆洞與散落商品程式標記均存在。證據見 [公開資源核對](../artifacts/production-check.json)。
+
+公開網址的 Chromium 載入仍受到此環境代理憑證信任問題阻擋，實際錯誤為 `ERR_CERT_AUTHORITY_INVALID`。未停用 TLS 驗證；這次不宣稱公開網址的瀏覽器畫面檢查通過。完整互動與截圖使用本機同一份 production build，公開資源另已核對一致。證據見 [公開瀏覽器嘗試](../artifacts/v7-public-browser.json)。iPhone 真機測試仍未完成。
