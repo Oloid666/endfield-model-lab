@@ -155,7 +155,7 @@ a.setDragonProjectile(null);a.setCinematic({phase:'landing',elapsed:3,charge:1})
 check('Landing restores the original visual placement and foot pinning',pivot.position.length()<.00001&&a.status.footDrift<.006&&food.visible,{pivot:pivot.position.toArray(),drift:a.status.footDrift});
 check('Landing restores companion to ground follower',Math.abs(a.dragonPosition[1]-.325)<.001&&!a.status.cinematic.dragonProjectile);
 const fx=buildSiegeEffects(scene,resources),fxInput={phase:'charge',elapsed:18,charge:.6,hero:a.heroPosition,dragon:a.dragonPosition,target:[0,4.2,1.3]};
-fx.update(1,1/60,fxInput);check('Charge FX are active with no added scene lights',fx.state.active&&!scene.children.some(n=>n.isLight));
+fx.update(1,1/60,fxInput);check('Charge FX uses one reusable burst light',fx.state.active&&scene.children.filter(n=>n.isLight).length===1&&scene.getObjectByName('cannon-shared-burst-light')?.isPointLight);
 const allocationCount=resources.items.size;fx.fire({from:[-1,4,4],to:[0,4,1],power:1});
 for(let n=0;n<100;n++)fx.update(1+n/60,1/60,fxInput);
 check('FX pool allocates no new resources while animating',resources.items.size===allocationCount,{before:allocationCount,after:resources.items.size});
@@ -163,7 +163,7 @@ check('FX active particles stay within the selected quality cap',fx.state.partic
 fx.reset();fx.update(4,1/60,{phase:'combat',hero:a.heroPosition,target:[0,1.2,0]});fx.fire({from:[-1,4,4],to:[0,1,0],finisher:true});fx.update(5.4,1/60,{phase:'finisher',elapsed:3.4,hero:a.heroPosition,dragon:a.dragonPosition,target:[0,1,0]});
 check('Finisher beam awaits the explicit collision impact',fx.state.beams===1&&fx.state.pulses===0,fx.state);
 fx.impact([0,1,0],1.5);fx.update(5.5,1/60,{phase:'finisher',elapsed:4.9,hero:a.heroPosition,dragon:a.dragonPosition,target:[0,1,0]});check('Explicit finisher impact creates a pooled pulse',fx.state.pulses===1,fx.state);
-check('A final impact creates pooled opaque smoke without a new light or resource',fx.state.smoke===12&&resources.items.size===allocationCount&&!scene.children.some(n=>n.isLight),fx.state);
+check('A final impact respects its smoke budget and reuses the single burst light',fx.state.smoke>=4&&fx.state.smoke<=fx.state.qualityCaps.smoke&&resources.items.size===allocationCount&&scene.children.filter(n=>n.isLight).length===1&&scene.getObjectByName('cannon-shared-burst-light')?.isPointLight,fx.state);
 
 fx.quality('low');fx.update(5.6,1/60,{});check('Low FX quality caps the particle pool at thirty-six',fx.state.particleLimit===36&&fx.state.particles<=36,fx.state);
 fx.reset();check('FX reset clears every active effect',!fx.root.visible&&fx.state.beams===0&&fx.state.particles===0&&fx.state.pulses===0&&fx.state.smoke===0,fx.state);fx.dispose();
@@ -217,6 +217,6 @@ a.dispose();resources.dispose();
 check('World disposal releases every Xaihi skinning texture',disposedBoneTextures===xSkeletons.size&&[...xSkeletons].every(skeleton=>skeleton.boneTexture===null),{disposedBoneTextures,skeletons:xSkeletons.size});
 const finalHash=createHash('sha256').update(await fs.readFile(file)).digest('hex');check('Original GLB unchanged after tests',finalHash===expectedHash);
 const result={kind:'Node actual-GLB geometry, skeleton, controller, cinematic and pooled FX checks; in-memory image materials removed and Canvas painting stubbed; not a render, GPU benchmark or iPhone test',passed:checks.every(c=>c.passed),checks,trace};
-await fs.writeFile(new URL('../artifacts/v8-actor-check.json',import.meta.url),JSON.stringify(result,null,2)+'\n');
+await fs.writeFile(new URL('../artifacts/v9-actor-check.json',import.meta.url),JSON.stringify(result,null,2)+'\n');
 console.log(JSON.stringify({passed:result.passed,checks:checks.length,failed:checks.filter(c=>!c.passed),maxIdleFootError:maxIdle,maxWalkingFootError:maxWalk,secondaryJoints:a.status.clothJoints},null,2));
 if(!result.passed)process.exitCode=1;

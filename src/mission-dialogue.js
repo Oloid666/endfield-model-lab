@@ -115,7 +115,7 @@ export const connectionPrompts={
   password:{id:'login_password',speaker:'zhuang',text:'密碼，五二零一三一四。',mood:'calm',gesture:'point',event:'dictate-password',next:null},
   lever:{id:'connect_lever',speaker:'zhuang',text:'最後，把拉桿往右拉到底。',mood:'calm',gesture:'point',event:'pull-lever',next:null},
   verified:{id:'captcha_verified',speaker:'dragon',text:'原來武陵資安是國文題。',mood:'aside',gesture:'player',event:'captcha-pass',next:null},
-  heat:{id:'heat_ready',speaker:'dragon',text:'這次你來。長按送電，熟了就鬆手。\n錄影可以慢放，便當不能再黑了。',mood:'aside',gesture:'player',event:'heat-control',next:null},
+  heat:{id:'heat_ready',speaker:'dragon',text:'按住送電，綠格鬆手。\n連穩三次，別把店當烤箱。',mood:'aside',gesture:'player',event:'heat-control',next:null},
   returned:{id:'vcr_returned',speaker:'dragon',text:'回到現場。現在知道電去哪了。',mood:'aside',gesture:'look',event:'return-present',next:null},
 };
 export const captchaLines=lines('captcha',[
@@ -127,7 +127,7 @@ export const heatDemoLines=lines('heat_demo',[
   ['xaihi','全功率，試一次。','phone','calm','heat-attempt-one'],
   ['dragon','熟了。包裝也熟了。','look','aside'],
   ['xaihi','那就再短一點。','phone','calm','heat-attempt-two'],
-  ['dragon','微波爐：我有意見。','player','aside'],
+  ['xaihi','拆成三段，每段零點一秒。','phone'],
 ]).map((node,index)=>({...node,at:index*1.5}));
 export const finalAmmoLines=lines('ammo',[
   ['dragon','不對吧？我現在是彈藥？','shake','shock'],

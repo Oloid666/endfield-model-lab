@@ -1,0 +1,1144 @@
+{
+  "kind": "actual-director-with-mock-world-no-gpu",
+  "checks": [
+    {
+      "name": "Rapid touches preserve all fourteen ordered physical key targets",
+      "passed": true,
+      "detail": {
+        "count": 14
+      }
+    },
+    {
+      "name": "Rendered hops consume every rapid key once in the same order",
+      "passed": true,
+      "detail": {
+        "visited": 14
+      }
+    },
+    {
+      "name": "After the last hop Dragon remains at the final key",
+      "passed": true,
+      "detail": [
+        -0.1499999999999999,
+        0.545,
+        3.25
+      ]
+    },
+    {
+      "name": "Burst input queue has a fixed memory bound",
+      "passed": true,
+      "detail": 32
+    },
+    {
+      "name": "Replay clears all queued and active key animation",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Paused mission clock holds Dragon at the exact same hop pose",
+      "passed": true,
+      "detail": [
+        -1.0515777610818609,
+        0.8851945587595799,
+        2.997558226897079
+      ]
+    },
+    {
+      "name": "Paused scene systems receive zero simulation delta",
+      "passed": true,
+      "detail": [
+        {
+          "name": "destruction",
+          "t": 20.08,
+          "dt": 0
+        },
+        {
+          "name": "garden",
+          "t": 20.08,
+          "dt": 0
+        },
+        {
+          "name": "tianshi",
+          "t": 20.08,
+          "dt": 0,
+          "phase": "login"
+        },
+        {
+          "name": "microwave",
+          "t": 20.08,
+          "dt": 0,
+          "phase": "login"
+        },
+        {
+          "name": "xaihi",
+          "t": 20.08,
+          "dt": 0,
+          "phase": "login"
+        },
+        {
+          "name": "siege",
+          "t": 20.08,
+          "dt": 0,
+          "phase": "login"
+        }
+      ]
+    },
+    {
+      "name": "Lever entry clears any remaining typing animation",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Long login keeps the first lift at 1.2m in front of the store",
+      "passed": true,
+      "detail": {
+        "phase": "login",
+        "elapsed": 80,
+        "castingElapsed": 0.8,
+        "charge": 0,
+        "flight": 1,
+        "recoil": 0,
+        "distance": 0,
+        "height": 1.2
+      }
+    },
+    {
+      "name": "Long captcha keeps the first lift at 1.2m in front of the store",
+      "passed": true,
+      "detail": {
+        "phase": "captcha",
+        "elapsed": 80,
+        "castingElapsed": 0.8,
+        "charge": 0,
+        "flight": 1,
+        "recoil": 0,
+        "distance": 0,
+        "height": 1.2
+      }
+    },
+    {
+      "name": "Long lever keeps the first lift at 1.2m in front of the store",
+      "passed": true,
+      "detail": {
+        "phase": "lever",
+        "elapsed": 80,
+        "castingElapsed": 0.8,
+        "charge": 0,
+        "flight": 1,
+        "recoil": 0,
+        "distance": 0,
+        "height": 1.2
+      }
+    },
+    {
+      "name": "Charge begins at age 1.15 instead of jumping to fully charged flight",
+      "passed": true,
+      "detail": {
+        "phase": "charge",
+        "elapsed": 0,
+        "castingElapsed": 1.15,
+        "charge": 0,
+        "flight": 0,
+        "recoil": 0,
+        "distance": 12,
+        "height": 4
+      }
+    },
+    {
+      "name": "Slow ascent age follows charge elapsed time after login",
+      "passed": true,
+      "detail": {
+        "phase": "charge",
+        "elapsed": 5,
+        "castingElapsed": 6.15,
+        "charge": 0.16699999999999998,
+        "flight": 0.5555555555555556,
+        "recoil": 0,
+        "distance": 12,
+        "height": 4
+      }
+    },
+    {
+      "name": "Rewind clock moves backward and updates the saved destruction presentation",
+      "passed": true,
+      "detail": {
+        "begin": 1,
+        "visualTime": 85,
+        "rewind": [
+          0.2857142857142857,
+          0.42857142857142855
+        ]
+      }
+    },
+    {
+      "name": "Rewind preserves logical mission destruction at 99 percent",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "CCTV flashback hides present-day actors",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "CCTV heat-demo hides present-day actors",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "CCTV heat hides present-day actors",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "CCTV flashback-end hides present-day actors",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Return restores saved scene and reveals main actors",
+      "passed": true,
+      "detail": {
+        "restore": 1,
+        "cast": {
+          "phase": "charge",
+          "elapsed": 0,
+          "castingElapsed": 0,
+          "charge": 0,
+          "launchOverride": 0,
+          "distance": 12,
+          "height": 4
+        }
+      }
+    },
+    {
+      "name": "Return completes the flight interpolation",
+      "passed": true,
+      "detail": {
+        "phase": "charge",
+        "elapsed": 3,
+        "castingElapsed": 30,
+        "charge": 1,
+        "launchOverride": 1,
+        "distance": 12,
+        "height": 4
+      }
+    },
+    {
+      "name": "Ruin tour keeps the smile reserved for its final shot",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Final five seconds of tour enable the real smile pose",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Completion retains the final smile",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Walking releases the final portrait pose",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "portrait connection camera keeps actual board corners and hero head on-screen",
+      "passed": true,
+      "detail": {
+        "heroHead": [
+          0.03740249232632275,
+          0.636253598518987,
+          0.9897992305484545
+        ],
+        "boardLeftNear": [
+          -0.8650876786244187,
+          0.2027937639593858,
+          0.9915029244492772
+        ],
+        "boardLeftFar": [
+          -0.38005138682893314,
+          0.3583660044984505,
+          0.9927100132396525
+        ],
+        "boardRightNear": [
+          0.3107605324452133,
+          0.018650199001867696,
+          0.9900741500592593
+        ],
+        "boardRightFar": [
+          0.6821032306809147,
+          0.22319811677001802,
+          0.9916612423179872
+        ]
+      }
+    },
+    {
+      "name": "landscape connection camera keeps actual board corners and hero head on-screen",
+      "passed": true,
+      "detail": {
+        "heroHead": [
+          -0.40830288870440257,
+          0.8603576764561605,
+          0.988153105983769
+        ],
+        "boardLeftNear": [
+          -0.6859802029117653,
+          0.0643132145143601,
+          0.9897778374361609
+        ],
+        "boardLeftFar": [
+          -0.47372921652320005,
+          0.3465241896878013,
+          0.9916513195858475
+        ],
+        "boardRightNear": [
+          -0.26116479069546084,
+          -0.1602529761524713,
+          0.9882870352114106
+        ],
+        "boardRightFar": [
+          -0.10767910088396128,
+          0.19720547743543249,
+          0.9906600543033861
+        ]
+      }
+    },
+    {
+      "name": "portrait charge 1s chooses charge-lift-face",
+      "passed": true,
+      "detail": {
+        "label": "portrait",
+        "elapsed": 1,
+        "beat": "charge-lift-face",
+        "position": [
+          -1.1583182476927434,
+          6.399999988298255,
+          9.415268266049747
+        ],
+        "target": [
+          -1.2499999895520122,
+          5.799999951521339,
+          15.249999872534548
+        ],
+        "fov": 42.00065959022192
+      }
+    },
+    {
+      "name": "portrait charge-lift-face looks at the front of her actual face",
+      "passed": true,
+      "detail": {
+        "facing": 0.9767880899301246,
+        "projected": [
+          8.140511002662421e-9,
+          0.07976477878150275,
+          0.98339541933174
+        ]
+      }
+    },
+    {
+      "name": "portrait charge 6s chooses charge-pylon-one",
+      "passed": true,
+      "detail": {
+        "label": "portrait",
+        "elapsed": 6,
+        "beat": "charge-pylon-one",
+        "position": [
+          -16.599999870932404,
+          11.507999957305342,
+          -3.2999998937208272
+        ],
+        "target": [
+          -12.799999903460595,
+          9.60799996817125,
+          -9.599999792294007
+        ],
+        "fov": 38.000027618106856
+      }
+    },
+    {
+      "name": "portrait charge-pylon-one shows its actual green core",
+      "passed": true,
+      "detail": {
+        "projected": [
+          -1.5481405622598806e-7,
+          -0.16409627128540627,
+          0.9875287380032076
+        ],
+        "label": "portrait",
+        "elapsed": 6,
+        "beat": "charge-pylon-one",
+        "position": [
+          -16.599999870932404,
+          11.507999957305342,
+          -3.2999998937208272
+        ],
+        "target": [
+          -12.799999903460595,
+          9.60799996817125,
+          -9.599999792294007
+        ],
+        "fov": 38.000027618106856
+      }
+    },
+    {
+      "name": "portrait charge-pylon-one camera stays above and outside the shop",
+      "passed": true,
+      "detail": {
+        "label": "portrait",
+        "elapsed": 6,
+        "beat": "charge-pylon-one",
+        "position": [
+          -16.599999870932404,
+          11.507999957305342,
+          -3.2999998937208272
+        ],
+        "target": [
+          -12.799999903460595,
+          9.60799996817125,
+          -9.599999792294007
+        ],
+        "fov": 38.000027618106856
+      }
+    },
+    {
+      "name": "portrait charge 11s chooses charge-city-array",
+      "passed": true,
+      "detail": {
+        "label": "portrait",
+        "elapsed": 11,
+        "beat": "charge-city-array",
+        "position": [
+          1.7999998462056228,
+          17.19999995242404,
+          35.49999967569446
+        ],
+        "target": [
+          -1.0698739249068095e-7,
+          7.000000021798681,
+          -1.0000000718821531
+        ],
+        "fov": 73.99972437823874
+      }
+    },
+    {
+      "name": "portrait array shot includes all four connected pylon cores",
+      "passed": true,
+      "detail": [
+        [
+          -0.7661240171272687,
+          0.12086426743745837,
+          0.9983414211923028
+        ],
+        [
+          -0.2942389166263299,
+          0.21130800619111392,
+          0.9985770954870445
+        ],
+        [
+          0.4209238983993282,
+          0.18506618336438027,
+          0.9985179732676698
+        ],
+        [
+          0.913795422734747,
+          0.10798640226963012,
+          0.9982175030488559
+        ]
+      ]
+    },
+    {
+      "name": "portrait charge 16s chooses charge-caster-face",
+      "passed": true,
+      "detail": {
+        "label": "portrait",
+        "elapsed": 16,
+        "beat": "charge-caster-face",
+        "position": [
+          -0.8837614134613487,
+          6.400000090270612,
+          9.993730688693859
+        ],
+        "target": [
+          -1.2499999895520133,
+          5.800000010030069,
+          15.24999986417616
+        ],
+        "fov": 38.000275621759194
+      }
+    },
+    {
+      "name": "portrait charge-caster-face looks at the front of her actual face",
+      "passed": true,
+      "detail": {
+        "facing": 0.9869020665068401,
+        "projected": [
+          1.168159315841921e-9,
+          0.09832041397430327,
+          0.9815656751798939
+        ]
+      }
+    },
+    {
+      "name": "portrait charge 23s chooses charge-pylon-two",
+      "passed": true,
+      "detail": {
+        "label": "portrait",
+        "elapsed": 23,
+        "beat": "charge-pylon-two",
+        "position": [
+          17.79999984383383,
+          11.553999956920856,
+          -1.9999998997517208
+        ],
+        "target": [
+          13.599999875877907,
+          9.653999967786763,
+          -8.299999803159915
+        ],
+        "fov": 38.000275621759194
+      }
+    },
+    {
+      "name": "portrait charge-pylon-two shows its actual green core",
+      "passed": true,
+      "detail": {
+        "projected": [
+          1.6868789253215812e-7,
+          -0.16013079097894808,
+          0.9878642164187176
+        ],
+        "label": "portrait",
+        "elapsed": 23,
+        "beat": "charge-pylon-two",
+        "position": [
+          17.79999984383383,
+          11.553999956920856,
+          -1.9999998997517208
+        ],
+        "target": [
+          13.599999875877907,
+          9.653999967786763,
+          -8.299999803159915
+        ],
+        "fov": 38.000275621759194
+      }
+    },
+    {
+      "name": "portrait charge-pylon-two camera stays above and outside the shop",
+      "passed": true,
+      "detail": {
+        "label": "portrait",
+        "elapsed": 23,
+        "beat": "charge-pylon-two",
+        "position": [
+          17.79999984383383,
+          11.553999956920856,
+          -1.9999998997517208
+        ],
+        "target": [
+          13.599999875877907,
+          9.653999967786763,
+          -8.299999803159915
+        ],
+        "fov": 38.000275621759194
+      }
+    },
+    {
+      "name": "portrait charge 28s chooses charge-battle-wide",
+      "passed": true,
+      "detail": {
+        "label": "portrait",
+        "elapsed": 28,
+        "beat": "charge-battle-wide",
+        "position": [
+          0.7744001423066053,
+          11.703999998746243,
+          33.99999969909796
+        ],
+        "target": [
+          -0.6999998804750225,
+          3.987200047365325,
+          6.29599987800094
+        ],
+        "fov": 60.99932525279659
+      }
+    },
+    {
+      "name": "landscape charge 1s chooses charge-lift-face",
+      "passed": true,
+      "detail": {
+        "label": "landscape",
+        "elapsed": 1,
+        "beat": "charge-lift-face",
+        "position": [
+          -1.1583182476927434,
+          6.399999988298255,
+          9.415268266049747
+        ],
+        "target": [
+          -1.2499999895520122,
+          5.799999951521339,
+          15.249999872534548
+        ],
+        "fov": 35.00066529292057
+      }
+    },
+    {
+      "name": "landscape charge-lift-face looks at the front of her actual face",
+      "passed": true,
+      "detail": {
+        "facing": 0.9767880899301246,
+        "projected": [
+          2.1161662803531173e-9,
+          0.09711022638616099,
+          0.98339541933174
+        ]
+      }
+    },
+    {
+      "name": "landscape charge 6s chooses charge-pylon-one",
+      "passed": true,
+      "detail": {
+        "label": "landscape",
+        "elapsed": 6,
+        "beat": "charge-pylon-one",
+        "position": [
+          -16.599999870932404,
+          11.507999957305342,
+          -3.2999998937208272
+        ],
+        "target": [
+          -12.799999903460595,
+          9.60799996817125,
+          -9.599999792294007
+        ],
+        "fov": 32.000274272705894
+      }
+    },
+    {
+      "name": "landscape charge-pylon-one shows its actual green core",
+      "passed": true,
+      "detail": {
+        "projected": [
+          -3.9694153196014525e-8,
+          -0.19704732518117837,
+          0.9875287380032076
+        ],
+        "label": "landscape",
+        "elapsed": 6,
+        "beat": "charge-pylon-one",
+        "position": [
+          -16.599999870932404,
+          11.507999957305342,
+          -3.2999998937208272
+        ],
+        "target": [
+          -12.799999903460595,
+          9.60799996817125,
+          -9.599999792294007
+        ],
+        "fov": 32.000274272705894
+      }
+    },
+    {
+      "name": "landscape charge-pylon-one camera stays above and outside the shop",
+      "passed": true,
+      "detail": {
+        "label": "landscape",
+        "elapsed": 6,
+        "beat": "charge-pylon-one",
+        "position": [
+          -16.599999870932404,
+          11.507999957305342,
+          -3.2999998937208272
+        ],
+        "target": [
+          -12.799999903460595,
+          9.60799996817125,
+          -9.599999792294007
+        ],
+        "fov": 32.000274272705894
+      }
+    },
+    {
+      "name": "landscape charge 11s chooses charge-city-array",
+      "passed": true,
+      "detail": {
+        "label": "landscape",
+        "elapsed": 11,
+        "beat": "charge-city-array",
+        "position": [
+          10.999999769308433,
+          15.99999996245411,
+          30.99999971330722
+        ],
+        "target": [
+          -1.0698739249068095e-7,
+          7.000000021798681,
+          -1.0000000718821531
+        ],
+        "fov": 52.999969225092656
+      }
+    },
+    {
+      "name": "landscape array shot includes all four connected pylon cores",
+      "passed": true,
+      "detail": [
+        [
+          -0.18581953069654636,
+          0.21198268420470148,
+          0.9983458262291671
+        ],
+        [
+          -0.013525448510308704,
+          0.33404565680219656,
+          0.9985003557783152
+        ],
+        [
+          0.22572846159432666,
+          0.276320263364933,
+          0.9982823428479561
+        ],
+        [
+          0.38225518677825,
+          0.13193904374107937,
+          0.9977921176280397
+        ]
+      ]
+    },
+    {
+      "name": "landscape charge 16s chooses charge-caster-face",
+      "passed": true,
+      "detail": {
+        "label": "landscape",
+        "elapsed": 16,
+        "beat": "charge-caster-face",
+        "position": [
+          -0.8837613365641604,
+          6.400000080240544,
+          9.993730651081105
+        ],
+        "target": [
+          -1.2499999895520133,
+          5.800000010030069,
+          15.24999986417616
+        ],
+        "fov": 35.0005855484754
+      }
+    },
+    {
+      "name": "landscape charge-caster-face looks at the front of her actual face",
+      "passed": true,
+      "detail": {
+        "facing": 0.9869020687754504,
+        "projected": [
+          2.7238974434961366e-10,
+          0.10737147030667141,
+          0.9815656753302753
+        ]
+      }
+    },
+    {
+      "name": "landscape charge 23s chooses charge-pylon-two",
+      "passed": true,
+      "detail": {
+        "label": "landscape",
+        "elapsed": 23,
+        "beat": "charge-pylon-two",
+        "position": [
+          17.799999843833834,
+          11.553999956920856,
+          -1.9999998997517212
+        ],
+        "target": [
+          13.599999875877907,
+          9.653999967786763,
+          -8.299999803159915
+        ],
+        "fov": 32.00027427270821
+      }
+    },
+    {
+      "name": "landscape charge-pylon-two shows its actual green core",
+      "passed": true,
+      "detail": {
+        "projected": [
+          4.325169323905022e-8,
+          -0.192286915686124,
+          0.9878642164187177
+        ],
+        "label": "landscape",
+        "elapsed": 23,
+        "beat": "charge-pylon-two",
+        "position": [
+          17.799999843833834,
+          11.553999956920856,
+          -1.9999998997517212
+        ],
+        "target": [
+          13.599999875877907,
+          9.653999967786763,
+          -8.299999803159915
+        ],
+        "fov": 32.00027427270821
+      }
+    },
+    {
+      "name": "landscape charge-pylon-two camera stays above and outside the shop",
+      "passed": true,
+      "detail": {
+        "label": "landscape",
+        "elapsed": 23,
+        "beat": "charge-pylon-two",
+        "position": [
+          17.799999843833834,
+          11.553999956920856,
+          -1.9999998997517212
+        ],
+        "target": [
+          13.599999875877907,
+          9.653999967786763,
+          -8.299999803159915
+        ],
+        "fov": 32.00027427270821
+      }
+    },
+    {
+      "name": "landscape charge 28s chooses charge-battle-wide",
+      "passed": true,
+      "detail": {
+        "label": "landscape",
+        "elapsed": 28,
+        "beat": "charge-battle-wide",
+        "position": [
+          4.760000108993404,
+          11.352000001688396,
+          31.999999715814734
+        ],
+        "target": [
+          -0.6999998804750225,
+          3.987200047365325,
+          6.29599987800094
+        ],
+        "fov": 50.99996576382379
+      }
+    },
+    {
+      "name": "Manual orbit stops automatic shot control",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "One-button resume returns camera without resetting story or actor",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Resumed camera follows the current battle beat",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Shot and impact envelope drive visible position shake and roll",
+      "passed": true,
+      "detail": {
+        "roll": -0.012989920982147877,
+        "envelope": 1.1,
+        "offset": 0.2951061808855999
+      }
+    },
+    {
+      "name": "Paused shot clock keeps the same shaken camera pose",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Reduced motion removes shake and roll and limits the lens pulse",
+      "passed": true,
+      "detail": {
+        "roll": 0,
+        "envelope": 0.22,
+        "lensPulse": 0.24199999999999733
+      }
+    },
+    {
+      "name": "Resume outside the story returns to the street preset",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "VCR freeze holds both the real camera and visual clock",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "VCR reverse follows the shared eased progress",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "VCR ends on the doorway before switching to the past",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "projections": [
+    {
+      "label": "portrait",
+      "projected": {
+        "heroHead": [
+          0.03740249232632275,
+          0.636253598518987,
+          0.9897992305484545
+        ],
+        "boardLeftNear": [
+          -0.8650876786244187,
+          0.2027937639593858,
+          0.9915029244492772
+        ],
+        "boardLeftFar": [
+          -0.38005138682893314,
+          0.3583660044984505,
+          0.9927100132396525
+        ],
+        "boardRightNear": [
+          0.3107605324452133,
+          0.018650199001867696,
+          0.9900741500592593
+        ],
+        "boardRightFar": [
+          0.6821032306809147,
+          0.22319811677001802,
+          0.9916612423179872
+        ]
+      }
+    },
+    {
+      "label": "landscape",
+      "projected": {
+        "heroHead": [
+          -0.40830288870440257,
+          0.8603576764561605,
+          0.988153105983769
+        ],
+        "boardLeftNear": [
+          -0.6859802029117653,
+          0.0643132145143601,
+          0.9897778374361609
+        ],
+        "boardLeftFar": [
+          -0.47372921652320005,
+          0.3465241896878013,
+          0.9916513195858475
+        ],
+        "boardRightNear": [
+          -0.26116479069546084,
+          -0.1602529761524713,
+          0.9882870352114106
+        ],
+        "boardRightFar": [
+          -0.10767910088396128,
+          0.19720547743543249,
+          0.9906600543033861
+        ]
+      }
+    }
+  ],
+  "cameraShots": [
+    {
+      "label": "portrait",
+      "elapsed": 1,
+      "beat": "charge-lift-face",
+      "position": [
+        -1.1583182476927434,
+        6.399999988298255,
+        9.415268266049747
+      ],
+      "target": [
+        -1.2499999895520122,
+        5.799999951521339,
+        15.249999872534548
+      ],
+      "fov": 42.00065959022192
+    },
+    {
+      "label": "portrait",
+      "elapsed": 6,
+      "beat": "charge-pylon-one",
+      "position": [
+        -16.599999870932404,
+        11.507999957305342,
+        -3.2999998937208272
+      ],
+      "target": [
+        -12.799999903460595,
+        9.60799996817125,
+        -9.599999792294007
+      ],
+      "fov": 38.000027618106856
+    },
+    {
+      "label": "portrait",
+      "elapsed": 11,
+      "beat": "charge-city-array",
+      "position": [
+        1.7999998462056228,
+        17.19999995242404,
+        35.49999967569446
+      ],
+      "target": [
+        -1.0698739249068095e-7,
+        7.000000021798681,
+        -1.0000000718821531
+      ],
+      "fov": 73.99972437823874
+    },
+    {
+      "label": "portrait",
+      "elapsed": 16,
+      "beat": "charge-caster-face",
+      "position": [
+        -0.8837614134613487,
+        6.400000090270612,
+        9.993730688693859
+      ],
+      "target": [
+        -1.2499999895520133,
+        5.800000010030069,
+        15.24999986417616
+      ],
+      "fov": 38.000275621759194
+    },
+    {
+      "label": "portrait",
+      "elapsed": 23,
+      "beat": "charge-pylon-two",
+      "position": [
+        17.79999984383383,
+        11.553999956920856,
+        -1.9999998997517208
+      ],
+      "target": [
+        13.599999875877907,
+        9.653999967786763,
+        -8.299999803159915
+      ],
+      "fov": 38.000275621759194
+    },
+    {
+      "label": "portrait",
+      "elapsed": 28,
+      "beat": "charge-battle-wide",
+      "position": [
+        0.7744001423066053,
+        11.703999998746243,
+        33.99999969909796
+      ],
+      "target": [
+        -0.6999998804750225,
+        3.987200047365325,
+        6.29599987800094
+      ],
+      "fov": 60.99932525279659
+    },
+    {
+      "label": "landscape",
+      "elapsed": 1,
+      "beat": "charge-lift-face",
+      "position": [
+        -1.1583182476927434,
+        6.399999988298255,
+        9.415268266049747
+      ],
+      "target": [
+        -1.2499999895520122,
+        5.799999951521339,
+        15.249999872534548
+      ],
+      "fov": 35.00066529292057
+    },
+    {
+      "label": "landscape",
+      "elapsed": 6,
+      "beat": "charge-pylon-one",
+      "position": [
+        -16.599999870932404,
+        11.507999957305342,
+        -3.2999998937208272
+      ],
+      "target": [
+        -12.799999903460595,
+        9.60799996817125,
+        -9.599999792294007
+      ],
+      "fov": 32.000274272705894
+    },
+    {
+      "label": "landscape",
+      "elapsed": 11,
+      "beat": "charge-city-array",
+      "position": [
+        10.999999769308433,
+        15.99999996245411,
+        30.99999971330722
+      ],
+      "target": [
+        -1.0698739249068095e-7,
+        7.000000021798681,
+        -1.0000000718821531
+      ],
+      "fov": 52.999969225092656
+    },
+    {
+      "label": "landscape",
+      "elapsed": 16,
+      "beat": "charge-caster-face",
+      "position": [
+        -0.8837613365641604,
+        6.400000080240544,
+        9.993730651081105
+      ],
+      "target": [
+        -1.2499999895520133,
+        5.800000010030069,
+        15.24999986417616
+      ],
+      "fov": 35.0005855484754
+    },
+    {
+      "label": "landscape",
+      "elapsed": 23,
+      "beat": "charge-pylon-two",
+      "position": [
+        17.799999843833834,
+        11.553999956920856,
+        -1.9999998997517212
+      ],
+      "target": [
+        13.599999875877907,
+        9.653999967786763,
+        -8.299999803159915
+      ],
+      "fov": 32.00027427270821
+    },
+    {
+      "label": "landscape",
+      "elapsed": 28,
+      "beat": "charge-battle-wide",
+      "position": [
+        4.760000108993404,
+        11.352000001688396,
+        31.999999715814734
+      ],
+      "target": [
+        -0.6999998804750225,
+        3.987200047365325,
+        6.29599987800094
+      ],
+      "fov": 50.99996576382379
+    }
+  ]
+}

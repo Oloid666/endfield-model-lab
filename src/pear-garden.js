@@ -3,6 +3,7 @@ import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 
 // A separate planted corner: the shop can fall without removing the pear trees.
 export function buildPearGarden(scene,r){
+  const reducedMotion=typeof matchMedia==='function'&&matchMedia('(prefers-reduced-motion: reduce)').matches;
   const root=new T.Group();root.name='pear-garden';scene.add(root);
   const center=[7.65,.29,-.65],up=new T.Vector3(0,1,0),dummy=new T.Object3D(),direction=new T.Vector3(),color=new T.Color();
   const time={value:0};let seed=711430,quality='balanced',protectedTarget=false,shieldAmount=0;
@@ -113,11 +114,40 @@ export function buildPearGarden(scene,r){
     const tree=trees[i%3],angle=random()*Math.PI*2,rr=.25+random()*.8;dummy.position.set(tree.x+Math.cos(angle)*rr,.267+random()*.008,tree.z+Math.sin(angle)*rr);dummy.rotation.set(-Math.PI/2,0,random()*Math.PI*2);dummy.scale.setScalar(.04+random()*.025);dummy.updateMatrix();fallen.setMatrixAt(i,dummy.matrix);
   }
   fallen.instanceMatrix.needsUpdate=true;fallen.computeBoundingSphere();
-  const falling=r.own(new T.InstancedMesh(petalGeometry,windMaterial({color:'#f1e4df',roughness:.73,emissive:0xf1d9ce,emissiveIntensity:.045},true),30));falling.name='pear-falling-petals';falling.frustumCulled=false;root.add(falling);
-  for(let i=0;i<30;i++){
-    const tree=trees[i%3],angle=random()*Math.PI*2;dummy.position.set(tree.x+Math.cos(angle)*.8,tree.height*.8+.3+random()*.6,tree.z+Math.sin(angle)*.8);dummy.rotation.set(random()*Math.PI,random()*Math.PI,random()*Math.PI);dummy.scale.setScalar(.045+random()*.025);dummy.updateMatrix();falling.setMatrixAt(i,dummy.matrix);
+  // A fixed pool carries a few petals out of the planted corner. The canopy
+  // remains intact; impact gusts reuse the tail of the pool instead of shedding it.
+  const falling=r.own(new T.InstancedMesh(petalGeometry,r.own(new T.MeshStandardMaterial({color:'#f4e8e1',roughness:.68,side:T.DoubleSide,emissive:0xf1d9ce,emissiveIntensity:.12})),96));falling.name='pear-falling-petals';falling.frustumCulled=false;falling.instanceMatrix.setUsage(T.DynamicDrawUsage);root.add(falling);
+  const drifting=[];
+  for(let i=0;i<96;i++){
+    const tree=trees[i%3],angle=random()*Math.PI*2;
+    drifting.push({x:tree.x+Math.cos(angle)*.8,y:tree.height*.8+.3+random()*.5,z:tree.z+Math.sin(angle)*.8,seed:random(),size:.045+random()*.03,phase:random()});
   }
-  falling.instanceMatrix.needsUpdate=true;
+  let driftBudget=48,gustBudget=24,gustAt=-Infinity,gustStrength=0,lastImpactRevision=0,lastRecoil=0,activeGust=0,escapedPetals=0;
+  const petalBounds={minX:Infinity,maxX:-Infinity,minY:Infinity,maxY:-Infinity,minZ:Infinity,maxZ:-Infinity};
+  function updatePetals(t,options={}){
+    const revision=Number(options.impactRevision)||0,recoil=Number(options.recoil)||0,shock=Math.max(0,Math.min(1,Number(options.fxShock)||0));
+    if(revision!==lastImpactRevision&&revision>0||revision===0&&recoil>.3&&lastRecoil<=.3){gustAt=t;gustStrength=reducedMotion?.3:Math.max(.65,shock);}
+    lastImpactRevision=revision;lastRecoil=recoil;
+    const gustAge=Math.max(0,t-gustAt),gustLife=Math.min(1,gustAge/4);activeGust=gustLife<1?gustBudget:0;falling.count=driftBudget+activeGust;escapedPetals=0;
+    petalBounds.minX=petalBounds.minY=petalBounds.minZ=Infinity;petalBounds.maxX=petalBounds.maxY=petalBounds.maxZ=-Infinity;
+    for(let i=0;i<falling.count;i++){
+      const p=drifting[i];let size=p.size;
+      if(i<driftBudget){
+        const life=((t*(reducedMotion?.052:.078)+p.phase)%1+1)%1,sway=Math.sin(life*8+p.seed*9);
+        dummy.position.set(p.x-life*(1.8+p.seed*2.1)+sway*.24,Math.max(.29,p.y*(1-life)+.29*life),p.z+life*(1.6+p.seed*2.3)+Math.sin(life*5+p.seed*17)*.21);
+        dummy.rotation.set(p.seed*7+t*(reducedMotion?.3:1.3),life*6+p.seed*8,t*.45+p.seed*3);
+        size*=Math.min(1,life*12+.12)*Math.min(1,(1-life)*9+.1);
+      }else{
+        const spread=gustAge*gustStrength;
+        dummy.position.set(p.x-spread*(.9+p.seed*.9)+Math.sin(gustAge*2+p.seed*7)*.24,Math.max(.29,p.y+gustAge*.45-gustAge*gustAge*.3),p.z+spread*(.9+p.seed*1.4));
+        dummy.rotation.set(p.seed*8+gustAge*2.1,gustAge*3+p.seed*5,gustAge*1.4);size*=Math.sin(Math.PI*gustLife)*1.2;
+      }
+      dummy.scale.setScalar(size);dummy.updateMatrix();falling.setMatrixAt(i,dummy.matrix);
+      const pos=dummy.position;if(pos.x<5.9||pos.z>2)escapedPetals++;
+      petalBounds.minX=Math.min(petalBounds.minX,pos.x);petalBounds.maxX=Math.max(petalBounds.maxX,pos.x);petalBounds.minY=Math.min(petalBounds.minY,pos.y);petalBounds.maxY=Math.max(petalBounds.maxY,pos.y);petalBounds.minZ=Math.min(petalBounds.minZ,pos.z);petalBounds.maxZ=Math.max(petalBounds.maxZ,pos.z);
+    }
+    falling.instanceMatrix.needsUpdate=true;
+  }
 
   // One restrained uplight keeps white blossom readable without flattening it.
   const light=new T.PointLight(0xffd8b1,5.5,5.8,2);light.position.set(7.8,1.65,-.55);root.add(light);
@@ -126,12 +156,13 @@ export function buildPearGarden(scene,r){
   const ring=r.mesh(r.geometry('RingGeometry',2.37,2.395,80),ringMaterial,protection);ring.rotation.x=-Math.PI/2;
   const arcGeometry=r.geometry('TorusGeometry',2.49,.008,3,64,Math.PI*.63),arcs=r.own(new T.InstancedMesh(arcGeometry,ringMaterial,3));protection.add(arcs);
   for(let i=0;i<3;i++){dummy.position.set(0,.02,0);dummy.rotation.set(-Math.PI/2,0,i*Math.PI*2/3);dummy.scale.set(1,1,1);dummy.updateMatrix();arcs.setMatrixAt(i,dummy.matrix);}arcs.instanceMatrix.needsUpdate=true;arcs.computeBoundingSphere();
-  function setQuality(value){quality=['low','balanced','high'].includes(value)?value:'balanced';blossoms.count=quality==='low'?1400:quality==='high'?3600:2700;leaves.count=quality==='low'?240:420;falling.count=quality==='low'?12:quality==='high'?30:24;}
+  function setQuality(value){quality=['low','balanced','high'].includes(value)?value:'balanced';blossoms.count=quality==='low'?1400:quality==='high'?3600:2700;leaves.count=quality==='low'?240:420;driftBudget=quality==='low'?20:quality==='high'?64:48;gustBudget=quality==='low'?8:quality==='high'?32:24;if(reducedMotion){driftBudget=Math.ceil(driftBudget*.65);gustBudget=Math.ceil(gustBudget*.5);}falling.count=driftBudget;}
   setQuality('balanced');
+  updatePetals(0);
   return {root,center,wetMaterials:[stone],
-    update(t,delta=0,options){time.value=t;if(options?.protected!==undefined)protectedTarget=Boolean(options.protected);shieldAmount=T.MathUtils.damp(shieldAmount,protectedTarget?1:0,3,Math.max(0,Math.min(.1,delta)));protection.visible=shieldAmount>.003;ringMaterial.opacity=shieldAmount*(.16+Math.sin(t*1.7)*.025);protection.rotation.y=Math.sin(t*.22)*.04;},
+    update(t,delta=0,options){time.value=t;updatePetals(t,options);if(options?.protected!==undefined)protectedTarget=Boolean(options.protected);shieldAmount=T.MathUtils.damp(shieldAmount,protectedTarget?1:0,3,Math.max(0,Math.min(.1,delta)));protection.visible=shieldAmount>.003;ringMaterial.opacity=shieldAmount*(.16+Math.sin(t*1.7)*.025);protection.rotation.y=Math.sin(t*.22)*.04;},
     quality:setQuality,
-    reset(){protectedTarget=false;shieldAmount=0;ringMaterial.opacity=0;protection.visible=false;time.value=0;},
-    get state(){return {quality,trees:trees.length,blossoms:blossoms.count,newLeaves:leaves.count,fallingPetals:falling.count,protected:protectedTarget,shield:shieldAmount,center:[...center]};},
+    reset(){protectedTarget=false;shieldAmount=0;ringMaterial.opacity=0;protection.visible=false;time.value=0;gustAt=-Infinity;gustStrength=0;lastImpactRevision=0;lastRecoil=0;updatePetals(0);},
+    get state(){return {quality,reducedMotion,trees:trees.length,blossoms:blossoms.count,newLeaves:leaves.count,fallingPetals:falling.count,driftingPetals:driftBudget,gustPetals:activeGust,petalPool:96,escapedPetals,petalBounds:{...petalBounds},protected:protectedTarget,shield:shieldAmount,center:[...center]};},
   };
 }

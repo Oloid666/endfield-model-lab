@@ -1,0 +1,1632 @@
+{
+  "passed": true,
+  "checks": 325,
+  "kind": "V9 deterministic story/input/clock checks; not browser or iPhone performance",
+  "results": [
+    {
+      "name": "Data schema intro",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Data schema mealA",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Data schema mealB",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Data schema mealC",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Data schema briefing",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Data schema energy",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Data schema flashback",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Data schema flashback-end",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Data schema last",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Data schema landing",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Timed schema chargeLines",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Timed schema captchaLines",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Timed schema heatDemoLines",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Timed schema finalAmmoLines",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Three food choices only",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Ten charge lines cover thirty seconds",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "At least fourteen complete chatter groups",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Five hotspot types with three groups each",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Clear event requests machine room closeup",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Approved patrol line is present",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Fourth wall construction joke retained",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Concrete light pollution is lux",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Charge includes insurance joke",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Energy VCR cue replaces heat-loss joke",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Flashback contains short fictional PHP and game outage jokes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Persistent keep-warm explains present loss",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Live server dialogue follows VCR",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Dragon startled instead of dessert bargain",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pear survival is no-loss criterion",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Every ending line has three seconds",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Demo credentials and three increasing pulse speeds",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pulse windows get narrower while the visual target stays centred",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Meter linear triangle reaches both ends",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Original meter boundaries preserved",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Opening waits indefinitely despite auto",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Opening rejects every interactive game action",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Food choice never times out A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Unknown dinner rejected A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Correct dinner prop A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Briefing reaches fresh account keyboard A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Keyboard rejects invalid key shapes A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Wrong account stays editable A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Backspace removes exactly one character A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Clear removes only current field A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Typed account never auto-submits A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pause freezes keyboard clock and inputs A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Valid account advances only to password A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Password rejects letters A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Wrong password remains correctable A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Password dictation can be replayed A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Password opens mock captcha and clears error A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Captcha gives creature joke time A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Captcha final prompt waits for player A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Captcha never verifies itself A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Checkbox succeeds and exposes lever A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Lever rejects non-finite input A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Lever clamps negative input A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Partial lever waits indefinitely A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pause blocks lever and verify A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Full lever explicitly starts charge A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Action stream describes key, verification and grid A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Charge cannot be skipped or fired A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Charge still waits before thirty seconds A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pause freezes charge and casting A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Charge completes at thirty active seconds A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Target selection validates ids A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Non-combat inputs cannot escape combat A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Edge MISS consumes no energy A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Accuracy changes damage A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Single input cannot fire twice A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Sign cinematic hold cannot be shortened A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Hold waits until exact ending A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Hold unlocks without stopping clock A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Damage stops at99 for energy mystery A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Energy dialogue cannot auto-skip into VCR A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "VCR snapshot preserves progress, branch and attacks A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Rewind freezes its opening frame A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Rewind reports meaningful reverse progress A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pause freezes rewind and its duration A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Rewind reaches assembled doorway before CCTV A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Rewind opens CCTV dialogue A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "VCR prevents main combat and food input A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "First scripted failed heating stays in first cycle A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Second scripted failure is distinct A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Failed demonstrations cannot be skipped A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Six-second demonstrations open player heating A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Heating waits for a real press A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Early release is cold and retryable A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Retry keeps main history and demo damage A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Unreleased pulse burns automatically A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "First good pulse waits for the player to start the second A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Success never starts another pulse automatically A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pause cuts the current pulse but preserves completed energy A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pause rejects heat release or new press A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Cancelled pointer keeps the earlier successful pulse A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Cold retry preserves the previous pulse A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Second pulse advances to the faster narrower third A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Third pulse can still burn A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Burn retry replaces the meal and restarts the three pulses A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Three controlled pulses produce exactly0.3seconds A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Success cannot cook twice or retry A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Return transition lasts three seconds A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Return restores99and exact dinner/attack history A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Casting clock excludes all VCR time A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "VCR action hooks each occur once A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Aim phase retains shocked Dragon dialogue A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Finisher requires center timing A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Finisher starts exactly once A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Finisher retains all nine seconds A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Finisher reaches landing at nine seconds A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Readable landing line 1 A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Readable landing line 2 A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Readable landing line 3 A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "100waits for full dialogue A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Ending tour begins after landing at100 A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Ending montage cannot be cut by auto A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Tour reaches live ending after16seconds A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Ending quiet interval is eight to fourteen seconds A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "End hotspot starts one group A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Hotspot cooldown prevents flood A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Chatter begins after quiet A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Replay resets credentials, heat, hold and VCR A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Every important phase delivered A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Food choice never times out B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Unknown dinner rejected B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Correct dinner prop B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Briefing reaches fresh account keyboard B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Keyboard rejects invalid key shapes B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Wrong account stays editable B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Backspace removes exactly one character B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Clear removes only current field B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Typed account never auto-submits B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pause freezes keyboard clock and inputs B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Valid account advances only to password B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Password rejects letters B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Wrong password remains correctable B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Password dictation can be replayed B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Password opens mock captcha and clears error B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Captcha gives creature joke time B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Captcha final prompt waits for player B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Captcha never verifies itself B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Checkbox succeeds and exposes lever B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Lever rejects non-finite input B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Lever clamps negative input B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Partial lever waits indefinitely B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pause blocks lever and verify B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Full lever explicitly starts charge B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Action stream describes key, verification and grid B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Charge cannot be skipped or fired B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Charge still waits before thirty seconds B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pause freezes charge and casting B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Charge completes at thirty active seconds B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Target selection validates ids B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Non-combat inputs cannot escape combat B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Edge MISS consumes no energy B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Accuracy changes damage B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Single input cannot fire twice B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Sign cinematic hold cannot be shortened B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Hold waits until exact ending B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Hold unlocks without stopping clock B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Damage stops at99 for energy mystery B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Energy dialogue cannot auto-skip into VCR B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "VCR snapshot preserves progress, branch and attacks B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Rewind freezes its opening frame B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Rewind reports meaningful reverse progress B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pause freezes rewind and its duration B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Rewind reaches assembled doorway before CCTV B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Rewind opens CCTV dialogue B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "VCR prevents main combat and food input B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "First scripted failed heating stays in first cycle B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Second scripted failure is distinct B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Failed demonstrations cannot be skipped B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Six-second demonstrations open player heating B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Heating waits for a real press B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Early release is cold and retryable B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Retry keeps main history and demo damage B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Unreleased pulse burns automatically B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "First good pulse waits for the player to start the second B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Success never starts another pulse automatically B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pause cuts the current pulse but preserves completed energy B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pause rejects heat release or new press B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Cancelled pointer keeps the earlier successful pulse B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Cold retry preserves the previous pulse B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Second pulse advances to the faster narrower third B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Third pulse can still burn B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Burn retry replaces the meal and restarts the three pulses B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Three controlled pulses produce exactly0.3seconds B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Success cannot cook twice or retry B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Return transition lasts three seconds B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Return restores99and exact dinner/attack history B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Casting clock excludes all VCR time B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "VCR action hooks each occur once B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Aim phase retains shocked Dragon dialogue B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Finisher requires center timing B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Finisher starts exactly once B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Finisher retains all nine seconds B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Finisher reaches landing at nine seconds B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Readable landing line 1 B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Readable landing line 2 B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Readable landing line 3 B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "100waits for full dialogue B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Ending tour begins after landing at100 B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Ending montage cannot be cut by auto B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Tour reaches live ending after16seconds B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Ending quiet interval is eight to fourteen seconds B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "End hotspot starts one group B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Hotspot cooldown prevents flood B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Chatter begins after quiet B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Replay resets credentials, heat, hold and VCR B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Every important phase delivered B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Food choice never times out C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Unknown dinner rejected C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Correct dinner prop C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Briefing reaches fresh account keyboard C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Keyboard rejects invalid key shapes C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Wrong account stays editable C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Backspace removes exactly one character C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Clear removes only current field C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Typed account never auto-submits C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pause freezes keyboard clock and inputs C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Valid account advances only to password C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Password rejects letters C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Wrong password remains correctable C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Password dictation can be replayed C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Password opens mock captcha and clears error C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Captcha gives creature joke time C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Captcha final prompt waits for player C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Captcha never verifies itself C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Checkbox succeeds and exposes lever C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Lever rejects non-finite input C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Lever clamps negative input C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Partial lever waits indefinitely C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pause blocks lever and verify C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Full lever explicitly starts charge C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Action stream describes key, verification and grid C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Charge cannot be skipped or fired C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Charge still waits before thirty seconds C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pause freezes charge and casting C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Charge completes at thirty active seconds C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Target selection validates ids C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Non-combat inputs cannot escape combat C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Edge MISS consumes no energy C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Accuracy changes damage C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Single input cannot fire twice C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Sign cinematic hold cannot be shortened C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Hold waits until exact ending C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Hold unlocks without stopping clock C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Damage stops at99 for energy mystery C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Energy dialogue cannot auto-skip into VCR C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "VCR snapshot preserves progress, branch and attacks C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Rewind freezes its opening frame C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Rewind reports meaningful reverse progress C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pause freezes rewind and its duration C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Rewind reaches assembled doorway before CCTV C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Rewind opens CCTV dialogue C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "VCR prevents main combat and food input C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "First scripted failed heating stays in first cycle C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Second scripted failure is distinct C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Failed demonstrations cannot be skipped C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Six-second demonstrations open player heating C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Heating waits for a real press C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Early release is cold and retryable C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Retry keeps main history and demo damage C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Unreleased pulse burns automatically C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "First good pulse waits for the player to start the second C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Success never starts another pulse automatically C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pause cuts the current pulse but preserves completed energy C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pause rejects heat release or new press C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Cancelled pointer keeps the earlier successful pulse C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Cold retry preserves the previous pulse C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Second pulse advances to the faster narrower third C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Third pulse can still burn C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Burn retry replaces the meal and restarts the three pulses C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Three controlled pulses produce exactly0.3seconds C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Success cannot cook twice or retry C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Return transition lasts three seconds C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Return restores99and exact dinner/attack history C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Casting clock excludes all VCR time C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "VCR action hooks each occur once C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Aim phase retains shocked Dragon dialogue C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Finisher requires center timing C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Finisher starts exactly once C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Finisher retains all nine seconds C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Finisher reaches landing at nine seconds C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Readable landing line 1 C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Readable landing line 2 C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Readable landing line 3 C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "100waits for full dialogue C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Ending tour begins after landing at100 C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Ending montage cannot be cut by auto C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Tour reaches live ending after16seconds C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Ending quiet interval is eight to fourteen seconds C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "End hotspot starts one group C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Hotspot cooldown prevents flood C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Chatter begins after quiet C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Replay resets credentials, heat, hold and VCR C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Every important phase delivered C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Invalid output rejected",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Overload narrows and accelerates visible meter",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Overload damage and recoil are real metadata",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Shot resets input sweep",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Overload can miss where steady hits",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pause locks output mode",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Destruction increases tempo",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Delayed shot uses original event timestamp",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Paused meter does not move",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Meter resumes without a jump",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Late rendered frame can show safety cut",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Original release timestamp wins despite late render",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "A corrected early release keeps exactly one failure",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Inclusive pulse success boundary 0 successMin",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Inclusive pulse success boundary 0 successMax",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Inclusive pulse success boundary 1 successMin",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Inclusive pulse success boundary 1 successMax",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Inclusive pulse success boundary 2 successMin",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Inclusive pulse success boundary 2 successMax",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Outside pulse window fails 0 cold",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Outside pulse window fails 0 burnt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Outside pulse window fails 1 cold",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Outside pulse window fails 1 burnt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Outside pulse window fails 2 cold",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Outside pulse window fails 2 burnt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Original third release can correct a rendered burn to final success",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Source clock never reverses",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Late frame catches up final cinematics once",
+      "passed": true,
+      "detail": null
+    }
+  ]
+}

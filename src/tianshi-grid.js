@@ -8,11 +8,14 @@ const heights=[8.6,12.3,10.4,9.3];
 // Original-style segmented columns: structural grey, green xiranite, suspended gaps.
 // This is a small original street set, not an imported recreation of the official array.
 export function buildTianshiGrid(scene,r){
+  const reducedMotion=typeof matchMedia==='function'&&matchMedia('(prefers-reduced-motion: reduce)').matches;
   const root=new T.Group();root.name='wuling-tianshi-grid-v8';scene.add(root);
   const box=r.geometry('BoxGeometry',1,1,1),stone=r.material('#b7c0b6',{roughness:.77,metalness:.06}),edge=r.material('#3e514e',{roughness:.55,metalness:.4});
   const deep=r.material('#203a39',{roughness:.55,metalness:.4}),copper=r.material('#8e9b7f',{roughness:.4,metalness:.6});
   const pillars=[],dummy=new T.Object3D(),a=new T.Vector3(),b=new T.Vector3(),direction=new T.Vector3(),up=new T.Vector3(0,1,0),hero=new T.Vector3(-1.25,5,9);
   const glowMaterial=()=>r.own(new T.MeshStandardMaterial({color:0x5aaf88,emissive:0x48efb0,emissiveIntensity:.16,roughness:.27,metalness:.18}));
+  const glowCanvas=document.createElement('canvas');glowCanvas.width=glowCanvas.height=64;const ctx=glowCanvas.getContext('2d'),gradient=ctx.createRadialGradient(32,32,1,32,32,31);gradient.addColorStop(0,'rgba(255,255,255,.8)');gradient.addColorStop(.3,'rgba(255,255,255,.28)');gradient.addColorStop(1,'rgba(255,255,255,0)');ctx.fillStyle=gradient;ctx.fillRect(0,0,64,64);
+  const glowMap=r.own(new T.CanvasTexture(glowCanvas)),auraMaterial=r.own(new T.SpriteMaterial({map:glowMap,color:new T.Color(.2,1.5,.82),transparent:true,opacity:.54,depthWrite:false,blending:T.AdditiveBlending,toneMapped:false}));
   const addBox=(owner,mat,p,s)=>r.mesh(box,mat,owner,p,s);
   for(let n=0;n<sources.length;n++){
     const owner=new T.Group(),fixed=new T.Group(),crown=new T.Group();owner.name='tianshi-pillar-'+(n+1);owner.position.fromArray(sources[n]);owner.add(fixed,crown);root.add(owner);
@@ -40,6 +43,7 @@ export function buildTianshiGrid(scene,r){
     }
     // A central faceted spine is visible through the open structural cage.
     const core=r.mesh(r.geometry('OctahedronGeometry',.2,0),glow,owner,[0,h*.51,0],[.8,shaft*1.6,.8]);
+    const halo=new T.Sprite(auraMaterial);halo.name='tianshi-green-core-aura';halo.position.set(0,h*.75,0);halo.scale.set(0,0,1);owner.add(halo);
     crown.position.set(0,h,0);
     addBox(crown,edge,[0,0,0],[1.65,.15,1.65]);
     addBox(crown,stone,[0,.18,0],[1.39,.18,1.39]);
@@ -55,13 +59,17 @@ export function buildTianshiGrid(scene,r){
     emitters.instanceMatrix.needsUpdate=true;emitters.computeBoundingSphere();
     optimizeStaticSet(fixed,r);optimizeStaticSet(crown,r);
     owner.traverse(node=>{if(node.isMesh){node.userData.dynamic=true;node.castShadow=false;node.receiveShadow=false;}});
-    pillars.push({owner,crown,core,glow,h,strength:0,source:new T.Vector3(sources[n][0],sources[n][1]+h*.78,sources[n][2])});
+    pillars.push({owner,crown,core,halo,glow,h,strength:0,source:new T.Vector3(sources[n][0],sources[n][1]+h*.78,sources[n][2])});
   }
   const maxSegments=12,beamMaterial=r.own(new T.MeshBasicMaterial({color:new T.Color(.3,1.8,1.02),transparent:true,opacity:.63,depthWrite:false,blending:T.AdditiveBlending,toneMapped:false}));
   const beamGeo=r.geometry('CylinderGeometry',1,1,1,5,1,true),beams=r.own(new T.InstancedMesh(beamGeo,beamMaterial,pillars.length*maxSegments));
   beams.name='tianshi-charge-links';beams.instanceMatrix.setUsage(T.DynamicDrawUsage);beams.frustumCulled=false;beams.userData.dynamic=true;root.add(beams);
-  const motes=r.own(new T.InstancedMesh(r.geometry('OctahedronGeometry',1,0),beamMaterial,20));motes.instanceMatrix.setUsage(T.DynamicDrawUsage);motes.frustumCulled=false;motes.userData.dynamic=true;root.add(motes);
-  let quality='balanced',segmentCount=10,phase='ready',charge=0,activeCount=0;
+  const linkGlow=r.own(new T.InstancedMesh(beamGeo,r.own(new T.MeshBasicMaterial({color:new T.Color(.1,1.4,.7),transparent:true,opacity:.1,depthWrite:false,blending:T.AdditiveBlending,toneMapped:false})),pillars.length*maxSegments));linkGlow.name='tianshi-link-green-halo';linkGlow.instanceMatrix.setUsage(T.DynamicDrawUsage);linkGlow.frustumCulled=false;linkGlow.userData.dynamic=true;root.add(linkGlow);
+  const motes=r.own(new T.InstancedMesh(r.geometry('OctahedronGeometry',1,0),beamMaterial,32));motes.instanceMatrix.setUsage(T.DynamicDrawUsage);motes.frustumCulled=false;motes.userData.dynamic=true;root.add(motes);
+  const ringMaterial=r.own(new T.MeshBasicMaterial({color:new T.Color(.22,1.8,.85),transparent:true,opacity:.65,depthWrite:false,blending:T.AdditiveBlending,toneMapped:false}));
+  const rings=r.own(new T.InstancedMesh(r.geometry('TorusGeometry',.85,.018,4,48),ringMaterial,12));rings.name='tianshi-suspended-green-rings';rings.instanceMatrix.setUsage(T.DynamicDrawUsage);rings.frustumCulled=false;rings.userData.dynamic=true;root.add(rings);
+  const columns=r.own(new T.InstancedMesh(r.geometry('CylinderGeometry',.64,.24,1,12,1,true),r.own(new T.MeshBasicMaterial({color:new T.Color(.12,1.3,.64),transparent:true,opacity:.12,depthWrite:false,side:T.DoubleSide,blending:T.AdditiveBlending,toneMapped:false})),4));columns.name='tianshi-green-energy-columns';columns.instanceMatrix.setUsage(T.DynamicDrawUsage);columns.frustumCulled=false;columns.userData.dynamic=true;root.add(columns);
+  let quality='balanced',segmentCount=10,motesPerPylon=5,ringsPerPylon=3,phase='ready',charge=0,activeCount=0;
   const connected=[false,false,false,false];
   function path(pillar,p,clock,out){
     const s=pillar.source,side=s.x<0?-1:1;
@@ -80,12 +88,12 @@ export function buildTianshiGrid(scene,r){
     const tremor=Math.sin(p*29+clock*18+pillar.h)*.085*Math.sin(p*Math.PI);
     out.x+=tremor;out.z+=Math.cos(p*37-clock*13+pillar.h)*.075*Math.sin(p*Math.PI);return out;
   }
-  function hideInstances(){dummy.scale.setScalar(0);dummy.updateMatrix();for(let i=0;i<beams.count;i++)beams.setMatrixAt(i,dummy.matrix);for(let i=0;i<motes.count;i++)motes.setMatrixAt(i,dummy.matrix);beams.instanceMatrix.needsUpdate=true;motes.instanceMatrix.needsUpdate=true;}
+  function hideInstances(){dummy.scale.setScalar(0);dummy.updateMatrix();for(const mesh of [beams,linkGlow,motes,rings,columns]){for(let i=0;i<mesh.count;i++)mesh.setMatrixAt(i,dummy.matrix);mesh.instanceMatrix.needsUpdate=true;}}
   hideInstances();
   return {root,
-    focusTargets:pillars.map((p,i)=>({id:'tianshi-'+i,position:[p.source.x,p.source.y,p.source.z],base:[...sources[i]],height:p.h})),
-    reset(){phase='ready';charge=0;activeCount=0;connected.fill(false);for(const p of pillars){p.strength=0;p.glow.emissiveIntensity=.16;p.crown.position.y=p.h;}hideInstances();},
-    quality(value){quality=['low','balanced','high'].includes(value)?value:'balanced';segmentCount=quality==='low'?6:quality==='high'?12:10;},
+    focusTargets:pillars.map((p,i)=>({id:'tianshi-'+i,position:[p.source.x,p.source.y,p.source.z],base:[...sources[i]],height:p.h,detailTarget:[p.source.x,p.source.y+.35,p.source.z],detailEye:[p.source.x+(i<2?-3.8:4.2),p.source.y+2.7,p.source.z+6.3]})),
+    reset(){phase='ready';charge=0;activeCount=0;connected.fill(false);for(const p of pillars){p.strength=0;p.glow.emissiveIntensity=.16;p.crown.position.y=p.h;p.halo.scale.set(0,0,1);}hideInstances();},
+    quality(value){quality=['low','balanced','high'].includes(value)?value:'balanced';segmentCount=quality==='low'?6:quality==='high'?12:10;motesPerPylon=quality==='low'?2:quality==='high'?8:5;ringsPerPylon=quality==='low'?2:3;},
     update(t,delta,state={}){
       phase=state.phase||'ready';const clock=phase==='ready'?t:Number.isFinite(state.clock)?state.clock:t;
       charge=clamp((state.charge||0)/100);if(state.hero)hero.fromArray(state.hero);
@@ -96,24 +104,34 @@ export function buildTianshiGrid(scene,r){
         const p=pillars[i],wanted=casting?1:clamp((linking-i*.18)*2.6);
         p.strength=T.MathUtils.damp(p.strength,wanted,5,Math.min(.1,Math.max(0,delta)));
         if(Math.abs(p.strength-wanted)<.001)p.strength=wanted;connected[i]=p.strength>.6;if(connected[i])activeCount++;
-        p.glow.emissiveIntensity=.13+p.strength*(.7+.18*Math.sin(clock*4+i));
-        p.crown.position.y=p.h+Math.sin(clock*.7+i)*.035*p.strength;p.core.rotation.y=clock*.12;
+        const pulse=reducedMotion?1:1+Math.sin(clock*2.4+i)*.11;
+        p.glow.emissiveIntensity=.13+p.strength*(2.9+charge*1.4)*pulse;
+        p.crown.position.y=p.h+(reducedMotion?0:Math.sin(clock*.7+i)*.08)*p.strength;p.core.rotation.y=clock*(reducedMotion?.025:.12);
+        p.halo.scale.set((2.7+charge)*p.strength,(3.8+charge)*p.strength,1);
+        p.halo.visible=p.strength>.01;
+        dummy.position.set(sources[i][0],sources[i][1]+p.h*.51,sources[i][2]);dummy.rotation.set(0,0,0);dummy.scale.set(p.strength,p.h*.86,p.strength);dummy.updateMatrix();columns.setMatrixAt(i,dummy.matrix);
+        for(let ring=0;ring<3;ring++){
+          dummy.position.set(sources[i][0],sources[i][1]+p.h*(.49+ring*.185)+(reducedMotion?0:Math.sin(clock*.7+i+ring)*.1)*p.strength,sources[i][2]);
+          dummy.rotation.set(-Math.PI/2+(reducedMotion?0:Math.sin(clock*.3+i+ring)*.16),clock*(reducedMotion?.03:.12)*(ring%2?-1:1),i*.7);
+          const scale=ring<ringsPerPylon?p.strength*(.86+ring*.17):0;dummy.scale.setScalar(scale);dummy.updateMatrix();rings.setMatrixAt(i*3+ring,dummy.matrix);
+        }
         const visible=p.strength>.01&&(casting||phase==='lever')&&phase!=='landing'&&phase!=='tour';
         for(let segment=0;segment<maxSegments;segment++){
           const index=i*maxSegments+segment;
           if(visible&&segment<segmentCount){
             path(p,segment/segmentCount,clock,a);path(p,(segment+1)/segmentCount,clock,b);
             direction.copy(b).sub(a);const length=direction.length();direction.normalize();dummy.position.copy(a).add(b).multiplyScalar(.5);dummy.quaternion.setFromUnitVectors(up,direction);
-            const width=(.009+.006*Math.sin(clock*6+i)**2)*p.strength;dummy.scale.set(width,length,width);
+            const width=(.014+(reducedMotion?.003:.008*Math.sin(clock*4+i)**2))*p.strength;dummy.scale.set(width,length,width);
           }else dummy.scale.setScalar(0);
           dummy.updateMatrix();beams.setMatrixAt(index,dummy.matrix);
+          dummy.scale.x*=4.5;dummy.scale.z*=4.5;dummy.updateMatrix();linkGlow.setMatrixAt(index,dummy.matrix);
         }
-        for(let j=0;j<5;j++){
-          const index=i*5+j;if(visible){const progress=((clock*.29+j*.2+i*.11)%1+1)%1;path(p,progress,clock,dummy.position);dummy.rotation.set(clock+i,j,clock*.7);dummy.scale.setScalar(.04*p.strength*(.4+Math.sin(progress*Math.PI)));}else dummy.scale.setScalar(0);dummy.updateMatrix();motes.setMatrixAt(index,dummy.matrix);
+        for(let j=0;j<8;j++){
+          const index=i*8+j;if(visible&&j<motesPerPylon){const progress=((clock*(reducedMotion?.13:.29)+j/motesPerPylon+i*.11)%1+1)%1;path(p,progress,clock,dummy.position);dummy.rotation.set(clock+i,j,clock*.7);dummy.scale.setScalar(.07*p.strength*(.4+Math.sin(progress*Math.PI)));}else dummy.scale.setScalar(0);dummy.updateMatrix();motes.setMatrixAt(index,dummy.matrix);
         }
       }
-      beams.instanceMatrix.needsUpdate=true;motes.instanceMatrix.needsUpdate=true;beams.visible=motes.visible=(casting||phase==='lever')&&activeCount>0;
+      for(const mesh of [beams,linkGlow,motes,rings,columns])mesh.instanceMatrix.needsUpdate=true;beams.visible=linkGlow.visible=motes.visible=(casting||phase==='lever')&&activeCount>0;rings.visible=columns.visible=activeCount>0;
     },
-    get state(){return {phase,quality,charge,activePylons:activeCount,connected:[...connected],positions:sources.map(p=>[...p]),originalStyle:true,drawnLinks:beams.visible?activeCount:0};}
+    get state(){return {phase,quality,reducedMotion,charge,activePylons:activeCount,connected:[...connected],positions:sources.map(p=>[...p]),originalStyle:true,drawnLinks:beams.visible?activeCount:0,greenHalos:activeCount,energyRings:activeCount*ringsPerPylon,energyColumns:activeCount,moteBudget:motesPerPylon*4,emission:Math.max(...pillars.map(p=>p.glow.emissiveIntensity))};}
   };
 }

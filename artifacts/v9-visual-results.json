@@ -1,0 +1,2268 @@
+{
+  "url": "http://127.0.0.1:4206/endfield-model-lab/",
+  "browser": "Desktop Chromium / SwiftShader",
+  "real_iphone_test": false,
+  "checks": [
+    {
+      "name": "Opening has charred energized microwave",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Portrait Dragon stays above keyboard",
+      "passed": true,
+      "detail": {
+        "camera": [
+          3.39737986978653,
+          6.397707386063214,
+          11.509279627839376
+        ],
+        "cinematic": {
+          "phase": "login",
+          "recoil": 0,
+          "shotNumber": 0,
+          "serverImpacted": false,
+          "neighborImpacted": false,
+          "dragonStuck": false,
+          "stuckPosition": [
+            -8.03,
+            2.8,
+            -1.96
+          ],
+          "flightDistance": 12,
+          "lift": 4,
+          "cctv": false,
+          "visualTime": null,
+          "smile": 0,
+          "cameraBeat": "dragon-terminal",
+          "cameraRoll": 0,
+          "shakeEnvelope": 0,
+          "cameraFov": 59.97489041878753,
+          "reducedMotion": false,
+          "cameraFocus": [
+            -1.3,
+            -1,
+            3.35
+          ]
+        },
+        "hero": [
+          -1.25,
+          1.498984764911245,
+          3.25
+        ],
+        "dragon": [
+          -0.8435305851400936,
+          0.6255623694155278,
+          2.472014890540177
+        ],
+        "dragonScreen": {
+          "ndc": [
+            0.27340500519629574,
+            0.24405777612032675,
+            0.9937732847965416
+          ],
+          "x": 248.31397601327768,
+          "y": 319.00761847722214
+        },
+        "heroScreen": {
+          "ndc": [
+            0.03222497176149248,
+            0.33069274768263085,
+            0.993162780762902
+          ],
+          "x": 201.283869493491,
+          "y": 282.44766047792973
+        },
+        "canvas": {
+          "buffer": [
+            390,
+            844
+          ],
+          "rect": [
+            390,
+            844
+          ]
+        },
+        "connect": {
+          "left": 14,
+          "top": 423.8125,
+          "width": 362,
+          "height": 402.1875,
+          "bottom": 826
+        },
+        "heat": {
+          "left": 0,
+          "top": 0,
+          "width": 0,
+          "height": 0,
+          "bottom": 0
+        },
+        "drawCalls": 429,
+        "triangles": 344206,
+        "error": 0,
+        "contextLost": false,
+        "inner": [
+          390,
+          844
+        ],
+        "phase": "login"
+      }
+    },
+    {
+      "name": "Landscape login has a real rendered scene",
+      "passed": true,
+      "detail": {
+        "spread": 35.864626962365456,
+        "diagnostics": {
+          "camera": [
+            4.298168195054808,
+            5.5018218348717065,
+            10.003062978315473
+          ],
+          "cinematic": {
+            "phase": "login",
+            "recoil": 0,
+            "shotNumber": 0,
+            "serverImpacted": false,
+            "neighborImpacted": false,
+            "dragonStuck": false,
+            "stuckPosition": [
+              -8.03,
+              2.8,
+              -1.96
+            ],
+            "flightDistance": 12,
+            "lift": 4,
+            "cctv": false,
+            "visualTime": null,
+            "smile": 0,
+            "cameraBeat": "dragon-terminal",
+            "cameraRoll": 0,
+            "shakeEnvelope": 0,
+            "cameraFov": 43.03444936266365,
+            "reducedMotion": false,
+            "cameraFocus": [
+              1.8,
+              0.8,
+              3.35
+            ]
+          },
+          "hero": [
+            -1.25,
+            1.5448377780828355,
+            3.25
+          ],
+          "dragon": [
+            -0.75,
+            0.545,
+            2.41
+          ],
+          "dragonScreen": {
+            "ndc": [
+              -0.23677942566661916,
+              0.19267083922680578,
+              0.9929112582661106
+            ],
+            "x": 322.0790823686867,
+            "y": 157.42918635077288
+          },
+          "heroScreen": {
+            "ndc": [
+              -0.3629774863988812,
+              0.35394635023489074,
+              0.9919902550077454
+            ],
+            "x": 268.8235007396721,
+            "y": 125.9804617041963
+          },
+          "canvas": {
+            "buffer": [
+              844,
+              390
+            ],
+            "rect": [
+              844,
+              390
+            ]
+          },
+          "connect": {
+            "left": 417,
+            "top": 82,
+            "width": 410,
+            "height": 296,
+            "bottom": 378
+          },
+          "heat": {
+            "left": 0,
+            "top": 0,
+            "width": 0,
+            "height": 0,
+            "bottom": 0
+          },
+          "drawCalls": 652,
+          "triangles": 538022,
+          "error": 0,
+          "contextLost": false,
+          "inner": [
+            844,
+            390
+          ],
+          "phase": "login"
+        }
+      }
+    },
+    {
+      "name": "Manual touch temporarily owns the camera",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Camera reset restores this scene without changing story",
+      "passed": true,
+      "detail": {
+        "before": {
+          "phase": "charge",
+          "node": {
+            "id": "charge_2",
+            "speaker": "zhuang",
+            "text": "沒關係，它有保天災打雷險。",
+            "mood": "calm",
+            "gesture": "nod",
+            "event": null,
+            "next": "charge_3",
+            "at": 6
+          },
+          "nodeId": "charge_2",
+          "speaker": "zhuang",
+          "text": "沒關係，它有保天災打雷險。",
+          "revealed": 13,
+          "branch": "A",
+          "choices": [],
+          "waitingChoice": false,
+          "progress": 0,
+          "energy": 100,
+          "charge": 20.333333333333332,
+          "meter": 0.5185185185185179,
+          "meterElapsed": 6.1,
+          "meterPeriod": 2.7,
+          "meterSettings": {
+            "id": "steady",
+            "label": "穩壓",
+            "hint": "寬判定 · 低後座",
+            "multiplier": 1,
+            "speed": 1,
+            "width": 0.18,
+            "miss": 0.38,
+            "perfect": 0.06,
+            "recoil": 0.7,
+            "period": 2.7,
+            "stage": 0
+          },
+          "output": "steady",
+          "outputModes": [
+            {
+              "id": "steady",
+              "label": "穩壓",
+              "hint": "寬判定 · 低後座",
+              "multiplier": 1,
+              "speed": 1,
+              "width": 0.18,
+              "miss": 0.38,
+              "perfect": 0.06,
+              "recoil": 0.7
+            },
+            {
+              "id": "strong",
+              "label": "強攻",
+              "hint": "威力 +20% · 較快",
+              "multiplier": 1.2,
+              "speed": 1.2,
+              "width": 0.15,
+              "miss": 0.34,
+              "perfect": 0.05,
+              "recoil": 1.15
+            },
+            {
+              "id": "overload",
+              "label": "過載",
+              "hint": "威力 +50% · 窄判定",
+              "multiplier": 1.5,
+              "speed": 1.45,
+              "width": 0.12,
+              "miss": 0.29,
+              "perfect": 0.04,
+              "recoil": 1.8
+            }
+          ],
+          "landingDuration": 12,
+          "tourDuration": 16,
+          "chargeDuration": 30,
+          "rewindDuration": 7,
+          "returnDuration": 3,
+          "heatDemoDuration": 6,
+          "phaseElapsed": 6.1,
+          "time": 18.5,
+          "clock": 18.5,
+          "sourceTime": 18.5,
+          "paused": false,
+          "auto": false,
+          "castingElapsed": 18.4,
+          "connection": {
+            "field": "password",
+            "account": "endfield_power",
+            "password": "5201314",
+            "lastKey": "4",
+            "keyAt": 6.300000000000001,
+            "keyNumber": 23,
+            "error": "",
+            "verified": true,
+            "lever": 1,
+            "value": "5201314",
+            "expected": "5201314",
+            "captchaReady": false
+          },
+          "login": {
+            "field": "password",
+            "account": "endfield_power",
+            "password": "5201314",
+            "lastKey": "4",
+            "keyAt": 6.300000000000001,
+            "keyNumber": 23,
+            "error": "",
+            "verified": true,
+            "lever": 1,
+            "value": "5201314",
+            "expected": "5201314",
+            "captchaReady": false
+          },
+          "heat": {
+            "status": "ready",
+            "holding": false,
+            "elapsed": 0,
+            "electricalTime": 0,
+            "progress": 0,
+            "attempts": 0,
+            "target": 0.3,
+            "rate": 0.08,
+            "successMin": 0.075,
+            "successMax": 0.125,
+            "round": 0,
+            "completed": 0,
+            "pulseTarget": 0.1,
+            "pulseSpan": 0.2,
+            "pulseBurn": 0.145,
+            "pulseTime": 0,
+            "pulseProgress": 0,
+            "lastResult": "",
+            "lastPulseTime": 0,
+            "failures": 0,
+            "demoIndex": -1,
+            "demoProgress": 0
+          },
+          "vcr": false,
+          "rewindProgress": 0,
+          "rewindStage": null,
+          "returnProgress": 0,
+          "vcrElapsed": 0,
+          "replayStage": null,
+          "vcrSnapshot": null,
+          "target": "glass",
+          "targetLabel": "櫥窗與入口",
+          "targets": [
+            {
+              "id": "glass",
+              "label": "櫥窗與入口",
+              "position": [
+                -2.5,
+                1.7,
+                1.9
+              ]
+            }
+          ],
+          "feedback": null,
+          "shots": 0,
+          "hits": 0,
+          "attackHoldUntil": 0,
+          "combatHoldRemaining": 0,
+          "attackHeld": false,
+          "canAttack": false,
+          "ended": false,
+          "busy": true,
+          "sequenceKind": null,
+          "endingCaption": "武陵城，又過了平安的一天。",
+          "revision": 129
+        },
+        "after": {
+          "phase": "charge",
+          "node": {
+            "id": "charge_2",
+            "speaker": "zhuang",
+            "text": "沒關係，它有保天災打雷險。",
+            "mood": "calm",
+            "gesture": "nod",
+            "event": null,
+            "next": "charge_3",
+            "at": 6
+          },
+          "nodeId": "charge_2",
+          "speaker": "zhuang",
+          "text": "沒關係，它有保天災打雷險。",
+          "revealed": 13,
+          "branch": "A",
+          "choices": [],
+          "waitingChoice": false,
+          "progress": 0,
+          "energy": 100,
+          "charge": 25.66666666666667,
+          "meter": 0.29629629629629584,
+          "meterElapsed": 7.700000000000001,
+          "meterPeriod": 2.7,
+          "meterSettings": {
+            "id": "steady",
+            "label": "穩壓",
+            "hint": "寬判定 · 低後座",
+            "multiplier": 1,
+            "speed": 1,
+            "width": 0.18,
+            "miss": 0.38,
+            "perfect": 0.06,
+            "recoil": 0.7,
+            "period": 2.7,
+            "stage": 0
+          },
+          "output": "steady",
+          "outputModes": [
+            {
+              "id": "steady",
+              "label": "穩壓",
+              "hint": "寬判定 · 低後座",
+              "multiplier": 1,
+              "speed": 1,
+              "width": 0.18,
+              "miss": 0.38,
+              "perfect": 0.06,
+              "recoil": 0.7
+            },
+            {
+              "id": "strong",
+              "label": "強攻",
+              "hint": "威力 +20% · 較快",
+              "multiplier": 1.2,
+              "speed": 1.2,
+              "width": 0.15,
+              "miss": 0.34,
+              "perfect": 0.05,
+              "recoil": 1.15
+            },
+            {
+              "id": "overload",
+              "label": "過載",
+              "hint": "威力 +50% · 窄判定",
+              "multiplier": 1.5,
+              "speed": 1.45,
+              "width": 0.12,
+              "miss": 0.29,
+              "perfect": 0.04,
+              "recoil": 1.8
+            }
+          ],
+          "landingDuration": 12,
+          "tourDuration": 16,
+          "chargeDuration": 30,
+          "rewindDuration": 7,
+          "returnDuration": 3,
+          "heatDemoDuration": 6,
+          "phaseElapsed": 7.700000000000001,
+          "time": 20.1,
+          "clock": 20.1,
+          "sourceTime": 20.1,
+          "paused": false,
+          "auto": false,
+          "castingElapsed": 20,
+          "connection": {
+            "field": "password",
+            "account": "endfield_power",
+            "password": "5201314",
+            "lastKey": "4",
+            "keyAt": 6.300000000000001,
+            "keyNumber": 23,
+            "error": "",
+            "verified": true,
+            "lever": 1,
+            "value": "5201314",
+            "expected": "5201314",
+            "captchaReady": false
+          },
+          "login": {
+            "field": "password",
+            "account": "endfield_power",
+            "password": "5201314",
+            "lastKey": "4",
+            "keyAt": 6.300000000000001,
+            "keyNumber": 23,
+            "error": "",
+            "verified": true,
+            "lever": 1,
+            "value": "5201314",
+            "expected": "5201314",
+            "captchaReady": false
+          },
+          "heat": {
+            "status": "ready",
+            "holding": false,
+            "elapsed": 0,
+            "electricalTime": 0,
+            "progress": 0,
+            "attempts": 0,
+            "target": 0.3,
+            "rate": 0.08,
+            "successMin": 0.075,
+            "successMax": 0.125,
+            "round": 0,
+            "completed": 0,
+            "pulseTarget": 0.1,
+            "pulseSpan": 0.2,
+            "pulseBurn": 0.145,
+            "pulseTime": 0,
+            "pulseProgress": 0,
+            "lastResult": "",
+            "lastPulseTime": 0,
+            "failures": 0,
+            "demoIndex": -1,
+            "demoProgress": 0
+          },
+          "vcr": false,
+          "rewindProgress": 0,
+          "rewindStage": null,
+          "returnProgress": 0,
+          "vcrElapsed": 0,
+          "replayStage": null,
+          "vcrSnapshot": null,
+          "target": "glass",
+          "targetLabel": "櫥窗與入口",
+          "targets": [
+            {
+              "id": "glass",
+              "label": "櫥窗與入口",
+              "position": [
+                -2.5,
+                1.7,
+                1.9
+              ]
+            }
+          ],
+          "feedback": null,
+          "shots": 0,
+          "hits": 0,
+          "attackHoldUntil": 0,
+          "combatHoldRemaining": 0,
+          "attackHeld": false,
+          "canAttack": false,
+          "ended": false,
+          "busy": true,
+          "sequenceKind": null,
+          "endingCaption": "武陵城，又過了平安的一天。",
+          "revision": 129
+        }
+      }
+    },
+    {
+      "name": "Reviewed shot charge-pylon-one",
+      "passed": true,
+      "detail": {
+        "phase": "charge",
+        "recoil": 0,
+        "shotNumber": 0,
+        "serverImpacted": false,
+        "neighborImpacted": false,
+        "dragonStuck": false,
+        "stuckPosition": [
+          -8.03,
+          2.8,
+          -1.96
+        ],
+        "flightDistance": 12,
+        "lift": 4,
+        "cctv": false,
+        "visualTime": null,
+        "smile": 0,
+        "cameraBeat": "charge-pylon-one",
+        "cameraRoll": 0,
+        "shakeEnvelope": 0,
+        "cameraFov": 38.0003850950239,
+        "reducedMotion": false,
+        "cameraFocus": [
+          -12.8,
+          9.607999999999999,
+          -9.6
+        ]
+      }
+    },
+    {
+      "name": "Reviewed shot charge-city-array",
+      "passed": true,
+      "detail": {
+        "phase": "charge",
+        "recoil": 0,
+        "shotNumber": 0,
+        "serverImpacted": false,
+        "neighborImpacted": false,
+        "dragonStuck": false,
+        "stuckPosition": [
+          -8.03,
+          2.8,
+          -1.96
+        ],
+        "flightDistance": 12,
+        "lift": 4,
+        "cctv": false,
+        "visualTime": null,
+        "smile": 0,
+        "cameraBeat": "charge-city-array",
+        "cameraRoll": 0,
+        "shakeEnvelope": 0,
+        "cameraFov": 73.93061938392835,
+        "reducedMotion": false,
+        "cameraFocus": [
+          0,
+          7,
+          -1
+        ]
+      }
+    },
+    {
+      "name": "Reviewed shot charge-caster-face",
+      "passed": true,
+      "detail": {
+        "phase": "charge",
+        "recoil": 0,
+        "shotNumber": 0,
+        "serverImpacted": false,
+        "neighborImpacted": false,
+        "dragonStuck": false,
+        "stuckPosition": [
+          -8.03,
+          2.8,
+          -1.96
+        ],
+        "flightDistance": 12,
+        "lift": 4,
+        "cctv": false,
+        "visualTime": null,
+        "smile": 0,
+        "cameraBeat": "charge-caster-face",
+        "cameraRoll": 0,
+        "shakeEnvelope": 0,
+        "cameraFov": 38.00355572633212,
+        "reducedMotion": false,
+        "cameraFocus": [
+          -1.25,
+          5.811701078827667,
+          15.25
+        ]
+      }
+    },
+    {
+      "name": "Reviewed shot charge-pylon-two",
+      "passed": true,
+      "detail": {
+        "phase": "charge",
+        "recoil": 0,
+        "shotNumber": 0,
+        "serverImpacted": false,
+        "neighborImpacted": false,
+        "dragonStuck": false,
+        "stuckPosition": [
+          -8.03,
+          2.8,
+          -1.96
+        ],
+        "flightDistance": 12,
+        "lift": 4,
+        "cctv": false,
+        "visualTime": null,
+        "smile": 0,
+        "cameraBeat": "charge-pylon-two",
+        "cameraRoll": 0,
+        "shakeEnvelope": 0,
+        "cameraFov": 38.00038565153759,
+        "reducedMotion": false,
+        "cameraFocus": [
+          13.6,
+          9.654,
+          -8.3
+        ]
+      }
+    },
+    {
+      "name": "Reviewed shot charge-battle-wide",
+      "passed": true,
+      "detail": {
+        "phase": "charge",
+        "recoil": 0,
+        "shotNumber": 0,
+        "serverImpacted": false,
+        "neighborImpacted": false,
+        "dragonStuck": false,
+        "stuckPosition": [
+          -8.03,
+          2.8,
+          -1.96
+        ],
+        "flightDistance": 12,
+        "lift": 4,
+        "cctv": false,
+        "visualTime": null,
+        "smile": 0,
+        "cameraBeat": "charge-battle-wide",
+        "cameraRoll": 0,
+        "shakeEnvelope": 0,
+        "cameraFov": 60.99754469867035,
+        "reducedMotion": false,
+        "cameraFocus": [
+          -0.7,
+          3.9872,
+          6.296
+        ]
+      }
+    },
+    {
+      "name": "Normal impact has strong camera motion",
+      "passed": true,
+      "detail": {
+        "fx": {
+          "active": true,
+          "phase": "combat",
+          "beams": 1,
+          "particles": 35,
+          "pulses": 1,
+          "charge": 1,
+          "quality": "balanced",
+          "particleLimit": 72,
+          "smoke": 4,
+          "geometryAllocatedPerFrame": 0,
+          "muzzles": 1,
+          "rays": 8,
+          "shock": 0.7417663334704945,
+          "flash": 0.4988476475127851,
+          "maxImpactRadius": 0.3413481787139131,
+          "lightIntensity": 179.58515310460263,
+          "impactAge": 0.07727272727272805,
+          "fireAge": 0.25,
+          "shockOrigin": [
+            -2.5,
+            1.7,
+            1.95
+          ],
+          "impactRevision": 1,
+          "qualityCaps": {
+            "smoke": 8,
+            "rays": 8,
+            "layers": 3
+          },
+          "sharedLights": 1,
+          "reducedMotion": false
+        },
+        "camera": {
+          "phase": "combat",
+          "recoil": 0.18146818245212404,
+          "shotNumber": 1,
+          "serverImpacted": false,
+          "neighborImpacted": false,
+          "dragonStuck": false,
+          "stuckPosition": [
+            -8.03,
+            2.8,
+            -1.96
+          ],
+          "flightDistance": 12,
+          "lift": 4,
+          "cctv": false,
+          "visualTime": null,
+          "smile": 0,
+          "cameraBeat": "battle-wide-1",
+          "cameraRoll": -0.013267195059546561,
+          "shakeEnvelope": 0.7417663334704945,
+          "cameraFov": 64.11541759622855,
+          "reducedMotion": false,
+          "cameraFocus": [
+            -0.7,
+            3.6,
+            7
+          ]
+        }
+      }
+    },
+    {
+      "name": "Landscape oven stays left of its controls",
+      "passed": true,
+      "detail": {
+        "camera": [
+          3.600000000003769,
+          2.1500000000043693,
+          -0.350000000002884
+        ],
+        "oven": {
+          "x": 243.0485321105032,
+          "y": 187.04863756800498
+        },
+        "panel": {
+          "left": 467,
+          "top": 150.3125,
+          "width": 360,
+          "height": 227.6875
+        }
+      }
+    },
+    {
+      "name": "Three reviewed pulses complete the meal",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Microwave fault has a broad core and halo",
+      "passed": true,
+      "detail": {
+        "mode": "heating",
+        "phase": "heat",
+        "quality": "balanced",
+        "reducedMotion": false,
+        "charred": 1,
+        "arcActive": true,
+        "arcs": 4,
+        "arcSegments": 7,
+        "arcCoreRadius": 0.018661730904421255,
+        "arcHaloRadius": 0.06718223125591652,
+        "arcPulse": 0.9924962557688731,
+        "steam": 3,
+        "food": "cold",
+        "wreck": false,
+        "warming": false,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 76,
+          "meshesAfter": 48,
+          "sharedDraws": 2
+        },
+        "display": "0.30 s"
+      }
+    },
+    {
+      "name": "Finisher impact camera focuses the struck server",
+      "passed": true,
+      "detail": {
+        "camera": [
+          5.712311541020334,
+          7.491287296743428,
+          8.690107119578528
+        ],
+        "cinematic": {
+          "phase": "finisher",
+          "recoil": 5.051766951964581e-09,
+          "shotNumber": 6,
+          "serverImpacted": true,
+          "neighborImpacted": false,
+          "dragonStuck": false,
+          "stuckPosition": [
+            -8.03,
+            2.8,
+            -1.96
+          ],
+          "flightDistance": 12,
+          "lift": 4,
+          "cctv": false,
+          "visualTime": null,
+          "smile": 0,
+          "cameraBeat": "finisher-city-impact",
+          "cameraRoll": -0.0006286248389833883,
+          "shakeEnvelope": 0.09874698275519302,
+          "cameraFov": 68.37654987905023,
+          "reducedMotion": false,
+          "cameraFocus": [
+            0,
+            1.21,
+            1.06
+          ]
+        },
+        "hero": [
+          -1.25,
+          4.336097648361511,
+          15.250000003132095
+        ],
+        "dragon": [
+          -4.477355484751878,
+          2.686760410409733,
+          -0.6238871187983404
+        ],
+        "dragonScreen": {
+          "ndc": [
+            -0.5777815393590154,
+            0.36460916359404305,
+            0.9950729592626301
+          ],
+          "x": 82.33259982499199,
+          "y": 268.1349329633138
+        },
+        "heroScreen": {
+          "ndc": [
+            -35.12799612570553,
+            -5.493381066581379,
+            0.9079691252200746
+          ],
+          "x": -6654.959244512578,
+          "y": 2740.206810097342
+        },
+        "canvas": {
+          "buffer": [
+            390,
+            844
+          ],
+          "rect": [
+            390,
+            844
+          ]
+        },
+        "connect": {
+          "left": 0,
+          "top": 0,
+          "width": 0,
+          "height": 0,
+          "bottom": 0
+        },
+        "heat": {
+          "left": 0,
+          "top": 0,
+          "width": 0,
+          "height": 0,
+          "bottom": 0
+        },
+        "drawCalls": 383,
+        "triangles": 92622,
+        "error": 0,
+        "contextLost": false,
+        "inner": [
+          390,
+          844
+        ],
+        "phase": "finisher"
+      }
+    },
+    {
+      "name": "Reduced motion suppresses roll and limits camera impact",
+      "passed": true,
+      "detail": {
+        "fx": {
+          "active": true,
+          "phase": "combat",
+          "beams": 1,
+          "particles": 35,
+          "pulses": 1,
+          "charge": 1,
+          "quality": "balanced",
+          "particleLimit": 72,
+          "smoke": 4,
+          "geometryAllocatedPerFrame": 0,
+          "muzzles": 1,
+          "rays": 8,
+          "shock": 0.20501198574167656,
+          "flash": 0.1180916381852505,
+          "maxImpactRadius": 0.35154180390977935,
+          "lightIntensity": 42.51298974669018,
+          "impactAge": 0.0833333333333357,
+          "fireAge": 0.25,
+          "shockOrigin": [
+            -2.5,
+            1.7,
+            1.95
+          ],
+          "impactRevision": 1,
+          "qualityCaps": {
+            "smoke": 8,
+            "rays": 8,
+            "layers": 3
+          },
+          "sharedLights": 1,
+          "reducedMotion": true
+        },
+        "camera": {
+          "phase": "combat",
+          "recoil": 0.18146818245212404,
+          "shotNumber": 1,
+          "serverImpacted": false,
+          "neighborImpacted": false,
+          "dragonStuck": false,
+          "stuckPosition": [
+            -8.03,
+            2.8,
+            -1.96
+          ],
+          "flightDistance": 12,
+          "lift": 4,
+          "cctv": false,
+          "visualTime": null,
+          "smile": 0,
+          "cameraBeat": "battle-wide-1",
+          "cameraRoll": 0,
+          "shakeEnvelope": 0.20501198574167656,
+          "cameraFov": 61.22551217996829,
+          "reducedMotion": true,
+          "cameraFocus": [
+            -0.7,
+            3.6,
+            7
+          ]
+        }
+      }
+    },
+    {
+      "name": "Low quality applies explicit FX and petal caps",
+      "passed": true,
+      "detail": {
+        "fx": {
+          "active": true,
+          "phase": "combat",
+          "beams": 1,
+          "particles": 35,
+          "pulses": 1,
+          "charge": 1,
+          "quality": "low",
+          "particleLimit": 36,
+          "smoke": 4,
+          "geometryAllocatedPerFrame": 0,
+          "muzzles": 1,
+          "rays": 4,
+          "shock": 0.14405429848669857,
+          "flash": 0.04801247715518662,
+          "maxImpactRadius": 0.6187294704807823,
+          "lightIntensity": 17.28449177586718,
+          "impactAge": 0.18333333333333712,
+          "fireAge": 0.3500000000000014,
+          "shockOrigin": [
+            -2.5,
+            1.7,
+            1.95
+          ],
+          "impactRevision": 1,
+          "qualityCaps": {
+            "smoke": 4,
+            "rays": 4,
+            "layers": 2
+          },
+          "sharedLights": 1,
+          "reducedMotion": true
+        },
+        "garden": {
+          "quality": "low",
+          "reducedMotion": true,
+          "trees": 3,
+          "blossoms": 1400,
+          "newLeaves": 240,
+          "fallingPetals": 17,
+          "driftingPetals": 13,
+          "gustPetals": 4,
+          "petalPool": 96,
+          "escapedPetals": 7,
+          "petalBounds": {
+            "minX": 4.2429303997171885,
+            "maxX": 9.192001442424722,
+            "minY": 0.3395529753691676,
+            "maxY": 4.204145106168463,
+            "minZ": -2.5848689924262973,
+            "maxZ": 3.7931772514247353
+          },
+          "protected": true,
+          "shield": 0.9999999999999992,
+          "center": [
+            7.65,
+            0.29,
+            -0.65
+          ]
+        },
+        "oven": {
+          "mode": "charred",
+          "phase": "combat",
+          "quality": "low",
+          "reducedMotion": true,
+          "charred": 1,
+          "arcActive": true,
+          "arcs": 2,
+          "arcSegments": 5,
+          "arcCoreRadius": 0.0085,
+          "arcHaloRadius": 0.030600000000000002,
+          "arcPulse": 0.45,
+          "steam": 0,
+          "food": "cold",
+          "wreck": false,
+          "warming": true,
+          "position": [
+            3.45,
+            1.6,
+            1.43
+          ],
+          "counterVisible": true,
+          "batches": {
+            "meshesBefore": 76,
+            "meshesAfter": 48,
+            "sharedDraws": 2
+          },
+          "display": "極速保溫"
+        },
+        "grid": {
+          "phase": "combat",
+          "quality": "low",
+          "reducedMotion": true,
+          "charge": 1,
+          "activePylons": 4,
+          "connected": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "positions": [
+            [
+              -12.8,
+              2.1,
+              -9.6
+            ],
+            [
+              -6.1,
+              1.6,
+              -16.5
+            ],
+            [
+              6.7,
+              2.3,
+              -15.3
+            ],
+            [
+              13.6,
+              1.6,
+              -8.3
+            ]
+          ],
+          "originalStyle": true,
+          "drawnLinks": 4,
+          "greenHalos": 4,
+          "energyRings": 8,
+          "energyColumns": 4,
+          "moteBudget": 8,
+          "emission": 4.43
+        }
+      }
+    },
+    {
+      "name": "Both motion modes retain a single canvas",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "No JavaScript or shader errors",
+      "passed": true,
+      "detail": []
+    }
+  ],
+  "errors": [],
+  "assets": [
+    "http://127.0.0.1:4206/endfield-model-lab/assets/index-CwflIFf0.js",
+    "http://127.0.0.1:4206/endfield-model-lab/assets/index-Caycndcd.css"
+  ],
+  "warmup": {
+    "stage": "ready",
+    "pending": 0,
+    "parallel": false,
+    "completed": [
+      "scene"
+    ],
+    "durationMs": 75,
+    "programs": 95,
+    "error": null
+  },
+  "portrait_login": {
+    "camera": [
+      3.39737986978653,
+      6.397707386063214,
+      11.509279627839376
+    ],
+    "cinematic": {
+      "phase": "login",
+      "recoil": 0,
+      "shotNumber": 0,
+      "serverImpacted": false,
+      "neighborImpacted": false,
+      "dragonStuck": false,
+      "stuckPosition": [
+        -8.03,
+        2.8,
+        -1.96
+      ],
+      "flightDistance": 12,
+      "lift": 4,
+      "cctv": false,
+      "visualTime": null,
+      "smile": 0,
+      "cameraBeat": "dragon-terminal",
+      "cameraRoll": 0,
+      "shakeEnvelope": 0,
+      "cameraFov": 59.97489041878753,
+      "reducedMotion": false,
+      "cameraFocus": [
+        -1.3,
+        -1,
+        3.35
+      ]
+    },
+    "hero": [
+      -1.25,
+      1.498984764911245,
+      3.25
+    ],
+    "dragon": [
+      -0.8435305851400936,
+      0.6255623694155278,
+      2.472014890540177
+    ],
+    "dragonScreen": {
+      "ndc": [
+        0.27340500519629574,
+        0.24405777612032675,
+        0.9937732847965416
+      ],
+      "x": 248.31397601327768,
+      "y": 319.00761847722214
+    },
+    "heroScreen": {
+      "ndc": [
+        0.03222497176149248,
+        0.33069274768263085,
+        0.993162780762902
+      ],
+      "x": 201.283869493491,
+      "y": 282.44766047792973
+    },
+    "canvas": {
+      "buffer": [
+        390,
+        844
+      ],
+      "rect": [
+        390,
+        844
+      ]
+    },
+    "connect": {
+      "left": 14,
+      "top": 423.8125,
+      "width": 362,
+      "height": 402.1875,
+      "bottom": 826
+    },
+    "heat": {
+      "left": 0,
+      "top": 0,
+      "width": 0,
+      "height": 0,
+      "bottom": 0
+    },
+    "drawCalls": 429,
+    "triangles": 344206,
+    "error": 0,
+    "contextLost": false,
+    "inner": [
+      390,
+      844
+    ],
+    "phase": "login"
+  },
+  "charge_shots": [
+    {
+      "camera": [
+        -16.602971333827316,
+        11.508998239481521,
+        -3.3022725938298896
+      ],
+      "cinematic": {
+        "phase": "charge",
+        "recoil": 0,
+        "shotNumber": 0,
+        "serverImpacted": false,
+        "neighborImpacted": false,
+        "dragonStuck": false,
+        "stuckPosition": [
+          -8.03,
+          2.8,
+          -1.96
+        ],
+        "flightDistance": 12,
+        "lift": 4,
+        "cctv": false,
+        "visualTime": null,
+        "smile": 0,
+        "cameraBeat": "charge-pylon-one",
+        "cameraRoll": 0,
+        "shakeEnvelope": 0,
+        "cameraFov": 38.0003850950239,
+        "reducedMotion": false,
+        "cameraFocus": [
+          -12.8,
+          9.607999999999999,
+          -9.6
+        ]
+      },
+      "hero": [
+        -1.25,
+        3.4080049545397455,
+        11.424572594959056
+      ],
+      "dragon": [
+        -2.0126628993912794,
+        0.325,
+        3.2472010222923973
+      ],
+      "dragonScreen": {
+        "ndc": [
+          21.35286068270894,
+          -6.428971390441167,
+          0.9836726848030365
+        ],
+        "x": 4358.807833128243,
+        "y": 3135.0259267661727
+      },
+      "heroScreen": {
+        "ndc": [
+          -52.29903657180637,
+          10.492711909807786,
+          1.0328869421086129
+        ],
+        "x": -10003.312131502242,
+        "y": -4005.9244259388856
+      },
+      "canvas": {
+        "buffer": [
+          390,
+          844
+        ],
+        "rect": [
+          390,
+          844
+        ]
+      },
+      "connect": {
+        "left": 0,
+        "top": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "heat": {
+        "left": 0,
+        "top": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "drawCalls": 63,
+      "triangles": 18826,
+      "error": 0,
+      "contextLost": false,
+      "inner": [
+        390,
+        844
+      ],
+      "phase": "charge"
+    },
+    {
+      "camera": [
+        1.7645386901966682,
+        17.189030188603915,
+        35.42522303172517
+      ],
+      "cinematic": {
+        "phase": "charge",
+        "recoil": 0,
+        "shotNumber": 0,
+        "serverImpacted": false,
+        "neighborImpacted": false,
+        "dragonStuck": false,
+        "stuckPosition": [
+          -8.03,
+          2.8,
+          -1.96
+        ],
+        "flightDistance": 12,
+        "lift": 4,
+        "cctv": false,
+        "visualTime": null,
+        "smile": 0,
+        "cameraBeat": "charge-city-array",
+        "cameraRoll": 0,
+        "shakeEnvelope": 0,
+        "cameraFov": 73.93061938392835,
+        "reducedMotion": false,
+        "cameraFocus": [
+          0,
+          7,
+          -1
+        ]
+      },
+      "hero": [
+        -1.25,
+        4.229904232134837,
+        14.964790811988415
+      ],
+      "dragon": [
+        -2.0126628993912794,
+        0.325,
+        3.2472010222923973
+      ],
+      "dragonScreen": {
+        "ndc": [
+          -0.1769302131985281,
+          -0.2813575770652567,
+          0.9985565335834001
+        ],
+        "x": 160.49860842628703,
+        "y": 540.7328975215383
+      },
+      "heroScreen": {
+        "ndc": [
+          -0.24765103694707868,
+          -0.39606242925225993,
+          0.9973669189901065
+        ],
+        "x": 146.70804779531966,
+        "y": 589.1383451444536
+      },
+      "canvas": {
+        "buffer": [
+          390,
+          844
+        ],
+        "rect": [
+          390,
+          844
+        ]
+      },
+      "connect": {
+        "left": 0,
+        "top": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "heat": {
+        "left": 0,
+        "top": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "drawCalls": 768,
+      "triangles": 562784,
+      "error": 0,
+      "contextLost": false,
+      "inner": [
+        390,
+        844
+      ],
+      "phase": "charge"
+    },
+    {
+      "camera": [
+        -0.8918934471202193,
+        6.419135318405189,
+        9.995426486359012
+      ],
+      "cinematic": {
+        "phase": "charge",
+        "recoil": 0,
+        "shotNumber": 0,
+        "serverImpacted": false,
+        "neighborImpacted": false,
+        "dragonStuck": false,
+        "stuckPosition": [
+          -8.03,
+          2.8,
+          -1.96
+        ],
+        "flightDistance": 12,
+        "lift": 4,
+        "cctv": false,
+        "visualTime": null,
+        "smile": 0,
+        "cameraBeat": "charge-caster-face",
+        "cameraRoll": 0,
+        "shakeEnvelope": 0,
+        "cameraFov": 38.00355572633212,
+        "reducedMotion": false,
+        "cameraFocus": [
+          -1.25,
+          5.811701078827667,
+          15.25
+        ]
+      },
+      "hero": [
+        -1.25,
+        4.331701078827667,
+        15.25
+      ],
+      "dragon": [
+        -2.0126628993912794,
+        0.325,
+        3.2472010222923973
+      ],
+      "dragonScreen": {
+        "ndc": [
+          -1.6733452087500813,
+          3.3388345658992566,
+          1.0143134630744843
+        ],
+        "x": -131.30231570626586,
+        "y": -986.9881868094863
+      },
+      "heroScreen": {
+        "ndc": [
+          1.4562362190462975e-05,
+          -0.7840952984357805,
+          0.9861678313776443
+        ],
+        "x": 195.00283966062716,
+        "y": 752.8882159398994
+      },
+      "canvas": {
+        "buffer": [
+          390,
+          844
+        ],
+        "rect": [
+          390,
+          844
+        ]
+      },
+      "connect": {
+        "left": 0,
+        "top": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "heat": {
+        "left": 0,
+        "top": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "drawCalls": 71,
+      "triangles": 101002,
+      "error": 0,
+      "contextLost": false,
+      "inner": [
+        390,
+        844
+      ],
+      "phase": "charge"
+    },
+    {
+      "camera": [
+        17.763975784353143,
+        11.544071642713034,
+        -1.9768863214407313
+      ],
+      "cinematic": {
+        "phase": "charge",
+        "recoil": 0,
+        "shotNumber": 0,
+        "serverImpacted": false,
+        "neighborImpacted": false,
+        "dragonStuck": false,
+        "stuckPosition": [
+          -8.03,
+          2.8,
+          -1.96
+        ],
+        "flightDistance": 12,
+        "lift": 4,
+        "cctv": false,
+        "visualTime": null,
+        "smile": 0,
+        "cameraBeat": "charge-pylon-two",
+        "cameraRoll": 0,
+        "shakeEnvelope": 0,
+        "cameraFov": 38.00038565153759,
+        "reducedMotion": false,
+        "cameraFocus": [
+          13.6,
+          9.654,
+          -8.3
+        ]
+      },
+      "hero": [
+        -1.25,
+        4.339397601708416,
+        15.25
+      ],
+      "dragon": [
+        -2.0126628993912794,
+        0.325,
+        3.2472010222923973
+      ],
+      "dragonScreen": {
+        "ndc": [
+          -13.254783118149671,
+          -2.9321128139398587,
+          0.9920764371533416
+        ],
+        "x": -2389.682708039186,
+        "y": 1659.3516074826205
+      },
+      "heroScreen": {
+        "ndc": [
+          84.13573019546605,
+          12.109881317866124,
+          1.0430147512381047
+        ],
+        "x": 16601.46738811588,
+        "y": -4688.369916139504
+      },
+      "canvas": {
+        "buffer": [
+          390,
+          844
+        ],
+        "rect": [
+          390,
+          844
+        ]
+      },
+      "connect": {
+        "left": 0,
+        "top": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "heat": {
+        "left": 0,
+        "top": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "drawCalls": 60,
+      "triangles": 21066,
+      "error": 0,
+      "contextLost": false,
+      "inner": [
+        390,
+        844
+      ],
+      "phase": "charge"
+    },
+    {
+      "camera": [
+        0.9787126312525452,
+        11.888381943406962,
+        33.99687446278039
+      ],
+      "cinematic": {
+        "phase": "charge",
+        "recoil": 0,
+        "shotNumber": 0,
+        "serverImpacted": false,
+        "neighborImpacted": false,
+        "dragonStuck": false,
+        "stuckPosition": [
+          -8.03,
+          2.8,
+          -1.96
+        ],
+        "flightDistance": 12,
+        "lift": 4,
+        "cctv": false,
+        "visualTime": null,
+        "smile": 0,
+        "cameraBeat": "charge-battle-wide",
+        "cameraRoll": 0,
+        "shakeEnvelope": 0,
+        "cameraFov": 60.99754469867035,
+        "reducedMotion": false,
+        "cameraFocus": [
+          -0.7,
+          3.9872,
+          6.296
+        ]
+      },
+      "hero": [
+        -1.25,
+        4.308825891161278,
+        15.25
+      ],
+      "dragon": [
+        -2.0126628993912794,
+        0.325,
+        3.2472010222923973
+      ],
+      "dragonScreen": {
+        "ndc": [
+          -0.12747544812175912,
+          -0.14657572659879392,
+          0.9983637396816332
+        ],
+        "x": 170.14228761625697,
+        "y": 483.85495662469106
+      },
+      "heroScreen": {
+        "ndc": [
+          -0.19999023129735927,
+          -0.18773033605503017,
+          0.9968365399830093
+        ],
+        "x": 156.00190489701495,
+        "y": 501.2222018152227
+      },
+      "canvas": {
+        "buffer": [
+          390,
+          844
+        ],
+        "rect": [
+          390,
+          844
+        ]
+      },
+      "connect": {
+        "left": 0,
+        "top": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "heat": {
+        "left": 0,
+        "top": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "drawCalls": 775,
+      "triangles": 567678,
+      "error": 0,
+      "contextLost": false,
+      "inner": [
+        390,
+        844
+      ],
+      "phase": "charge"
+    }
+  ],
+  "programs_before_first_hit": 100,
+  "programs_after_first_hit": 104,
+  "normal_impact": {
+    "fx": {
+      "active": true,
+      "phase": "combat",
+      "beams": 1,
+      "particles": 35,
+      "pulses": 1,
+      "charge": 1,
+      "quality": "balanced",
+      "particleLimit": 72,
+      "smoke": 4,
+      "geometryAllocatedPerFrame": 0,
+      "muzzles": 1,
+      "rays": 8,
+      "shock": 0.7417663334704945,
+      "flash": 0.4988476475127851,
+      "maxImpactRadius": 0.3413481787139131,
+      "lightIntensity": 179.58515310460263,
+      "impactAge": 0.07727272727272805,
+      "fireAge": 0.25,
+      "shockOrigin": [
+        -2.5,
+        1.7,
+        1.95
+      ],
+      "impactRevision": 1,
+      "qualityCaps": {
+        "smoke": 8,
+        "rays": 8,
+        "layers": 3
+      },
+      "sharedLights": 1,
+      "reducedMotion": false
+    },
+    "camera": {
+      "phase": "combat",
+      "recoil": 0.18146818245212404,
+      "shotNumber": 1,
+      "serverImpacted": false,
+      "neighborImpacted": false,
+      "dragonStuck": false,
+      "stuckPosition": [
+        -8.03,
+        2.8,
+        -1.96
+      ],
+      "flightDistance": 12,
+      "lift": 4,
+      "cctv": false,
+      "visualTime": null,
+      "smile": 0,
+      "cameraBeat": "battle-wide-1",
+      "cameraRoll": -0.013267195059546561,
+      "shakeEnvelope": 0.7417663334704945,
+      "cameraFov": 64.11541759622855,
+      "reducedMotion": false,
+      "cameraFocus": [
+        -0.7,
+        3.6,
+        7
+      ]
+    }
+  },
+  "landscape_heat": {
+    "camera": [
+      3.600000000003769,
+      2.1500000000043693,
+      -0.350000000002884
+    ],
+    "oven": {
+      "x": 243.0485321105032,
+      "y": 187.04863756800498
+    },
+    "panel": {
+      "left": 467,
+      "top": 150.3125,
+      "width": 360,
+      "height": 227.6875
+    }
+  },
+  "heating_oven": {
+    "mode": "heating",
+    "phase": "heat",
+    "quality": "balanced",
+    "reducedMotion": false,
+    "charred": 1,
+    "arcActive": true,
+    "arcs": 4,
+    "arcSegments": 7,
+    "arcCoreRadius": 0.018661730904421255,
+    "arcHaloRadius": 0.06718223125591652,
+    "arcPulse": 0.9924962557688731,
+    "steam": 3,
+    "food": "cold",
+    "wreck": false,
+    "warming": false,
+    "position": [
+      3.45,
+      1.6,
+      1.43
+    ],
+    "counterVisible": true,
+    "batches": {
+      "meshesBefore": 76,
+      "meshesAfter": 48,
+      "sharedDraws": 2
+    },
+    "display": "0.30 s"
+  },
+  "final_impact_01": {
+    "camera": [
+      5.527363192132962,
+      7.878600072919394,
+      10.374966877881054
+    ],
+    "cinematic": {
+      "phase": "finisher",
+      "recoil": 1.2899041168392543e-07,
+      "shotNumber": 6,
+      "serverImpacted": true,
+      "neighborImpacted": false,
+      "dragonStuck": false,
+      "stuckPosition": [
+        -8.03,
+        2.8,
+        -1.96
+      ],
+      "flightDistance": 12,
+      "lift": 4,
+      "cctv": false,
+      "visualTime": null,
+      "smile": 0,
+      "cameraBeat": "finisher-city-impact",
+      "cameraRoll": 0.0005101867792776191,
+      "shakeEnvelope": 0.902425737633791,
+      "cameraFov": 71.39375516123255,
+      "reducedMotion": false,
+      "cameraFocus": [
+        0,
+        1.21,
+        1.06
+      ]
+    },
+    "hero": [
+      -1.25,
+      4.344457040147238,
+      15.250000079974056
+    ],
+    "dragon": [
+      -0.1352344105598533,
+      1.2685074297574968,
+      1.0091397360036418
+    ],
+    "dragonScreen": {
+      "ndc": [
+        0.06617634317005464,
+        0.017272200624370418,
+        0.9945388897494126
+      ],
+      "x": 207.90438691816064,
+      "y": 414.7111313365157
+    },
+    "heroScreen": {
+      "ndc": [
+        -16.95324395534651,
+        -3.040391620843835,
+        0.9467749431369271
+      ],
+      "x": -3110.88257129257,
+      "y": 1705.0452639960981
+    },
+    "canvas": {
+      "buffer": [
+        390,
+        844
+      ],
+      "rect": [
+        390,
+        844
+      ]
+    },
+    "connect": {
+      "left": 0,
+      "top": 0,
+      "width": 0,
+      "height": 0,
+      "bottom": 0
+    },
+    "heat": {
+      "left": 0,
+      "top": 0,
+      "width": 0,
+      "height": 0,
+      "bottom": 0
+    },
+    "drawCalls": 393,
+    "triangles": 97826,
+    "error": 0,
+    "contextLost": false,
+    "inner": [
+      390,
+      844
+    ],
+    "phase": "finisher"
+  },
+  "final_impact_07": {
+    "camera": [
+      5.712311541020334,
+      7.491287296743428,
+      8.690107119578528
+    ],
+    "cinematic": {
+      "phase": "finisher",
+      "recoil": 5.051766951964581e-09,
+      "shotNumber": 6,
+      "serverImpacted": true,
+      "neighborImpacted": false,
+      "dragonStuck": false,
+      "stuckPosition": [
+        -8.03,
+        2.8,
+        -1.96
+      ],
+      "flightDistance": 12,
+      "lift": 4,
+      "cctv": false,
+      "visualTime": null,
+      "smile": 0,
+      "cameraBeat": "finisher-city-impact",
+      "cameraRoll": -0.0006286248389833883,
+      "shakeEnvelope": 0.09874698275519302,
+      "cameraFov": 68.37654987905023,
+      "reducedMotion": false,
+      "cameraFocus": [
+        0,
+        1.21,
+        1.06
+      ]
+    },
+    "hero": [
+      -1.25,
+      4.336097648361511,
+      15.250000003132095
+    ],
+    "dragon": [
+      -4.477355484751878,
+      2.686760410409733,
+      -0.6238871187983404
+    ],
+    "dragonScreen": {
+      "ndc": [
+        -0.5777815393590154,
+        0.36460916359404305,
+        0.9950729592626301
+      ],
+      "x": 82.33259982499199,
+      "y": 268.1349329633138
+    },
+    "heroScreen": {
+      "ndc": [
+        -35.12799612570553,
+        -5.493381066581379,
+        0.9079691252200746
+      ],
+      "x": -6654.959244512578,
+      "y": 2740.206810097342
+    },
+    "canvas": {
+      "buffer": [
+        390,
+        844
+      ],
+      "rect": [
+        390,
+        844
+      ]
+    },
+    "connect": {
+      "left": 0,
+      "top": 0,
+      "width": 0,
+      "height": 0,
+      "bottom": 0
+    },
+    "heat": {
+      "left": 0,
+      "top": 0,
+      "width": 0,
+      "height": 0,
+      "bottom": 0
+    },
+    "drawCalls": 383,
+    "triangles": 92622,
+    "error": 0,
+    "contextLost": false,
+    "inner": [
+      390,
+      844
+    ],
+    "phase": "finisher"
+  },
+  "reduced_impact": {
+    "fx": {
+      "active": true,
+      "phase": "combat",
+      "beams": 1,
+      "particles": 35,
+      "pulses": 1,
+      "charge": 1,
+      "quality": "balanced",
+      "particleLimit": 72,
+      "smoke": 4,
+      "geometryAllocatedPerFrame": 0,
+      "muzzles": 1,
+      "rays": 8,
+      "shock": 0.20501198574167656,
+      "flash": 0.1180916381852505,
+      "maxImpactRadius": 0.35154180390977935,
+      "lightIntensity": 42.51298974669018,
+      "impactAge": 0.0833333333333357,
+      "fireAge": 0.25,
+      "shockOrigin": [
+        -2.5,
+        1.7,
+        1.95
+      ],
+      "impactRevision": 1,
+      "qualityCaps": {
+        "smoke": 8,
+        "rays": 8,
+        "layers": 3
+      },
+      "sharedLights": 1,
+      "reducedMotion": true
+    },
+    "camera": {
+      "phase": "combat",
+      "recoil": 0.18146818245212404,
+      "shotNumber": 1,
+      "serverImpacted": false,
+      "neighborImpacted": false,
+      "dragonStuck": false,
+      "stuckPosition": [
+        -8.03,
+        2.8,
+        -1.96
+      ],
+      "flightDistance": 12,
+      "lift": 4,
+      "cctv": false,
+      "visualTime": null,
+      "smile": 0,
+      "cameraBeat": "battle-wide-1",
+      "cameraRoll": 0,
+      "shakeEnvelope": 0.20501198574167656,
+      "cameraFov": 61.22551217996829,
+      "reducedMotion": true,
+      "cameraFocus": [
+        -0.7,
+        3.6,
+        7
+      ]
+    }
+  },
+  "low_quality": {
+    "fx": {
+      "active": true,
+      "phase": "combat",
+      "beams": 1,
+      "particles": 35,
+      "pulses": 1,
+      "charge": 1,
+      "quality": "low",
+      "particleLimit": 36,
+      "smoke": 4,
+      "geometryAllocatedPerFrame": 0,
+      "muzzles": 1,
+      "rays": 4,
+      "shock": 0.14405429848669857,
+      "flash": 0.04801247715518662,
+      "maxImpactRadius": 0.6187294704807823,
+      "lightIntensity": 17.28449177586718,
+      "impactAge": 0.18333333333333712,
+      "fireAge": 0.3500000000000014,
+      "shockOrigin": [
+        -2.5,
+        1.7,
+        1.95
+      ],
+      "impactRevision": 1,
+      "qualityCaps": {
+        "smoke": 4,
+        "rays": 4,
+        "layers": 2
+      },
+      "sharedLights": 1,
+      "reducedMotion": true
+    },
+    "garden": {
+      "quality": "low",
+      "reducedMotion": true,
+      "trees": 3,
+      "blossoms": 1400,
+      "newLeaves": 240,
+      "fallingPetals": 17,
+      "driftingPetals": 13,
+      "gustPetals": 4,
+      "petalPool": 96,
+      "escapedPetals": 7,
+      "petalBounds": {
+        "minX": 4.2429303997171885,
+        "maxX": 9.192001442424722,
+        "minY": 0.3395529753691676,
+        "maxY": 4.204145106168463,
+        "minZ": -2.5848689924262973,
+        "maxZ": 3.7931772514247353
+      },
+      "protected": true,
+      "shield": 0.9999999999999992,
+      "center": [
+        7.65,
+        0.29,
+        -0.65
+      ]
+    },
+    "oven": {
+      "mode": "charred",
+      "phase": "combat",
+      "quality": "low",
+      "reducedMotion": true,
+      "charred": 1,
+      "arcActive": true,
+      "arcs": 2,
+      "arcSegments": 5,
+      "arcCoreRadius": 0.0085,
+      "arcHaloRadius": 0.030600000000000002,
+      "arcPulse": 0.45,
+      "steam": 0,
+      "food": "cold",
+      "wreck": false,
+      "warming": true,
+      "position": [
+        3.45,
+        1.6,
+        1.43
+      ],
+      "counterVisible": true,
+      "batches": {
+        "meshesBefore": 76,
+        "meshesAfter": 48,
+        "sharedDraws": 2
+      },
+      "display": "極速保溫"
+    },
+    "grid": {
+      "phase": "combat",
+      "quality": "low",
+      "reducedMotion": true,
+      "charge": 1,
+      "activePylons": 4,
+      "connected": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "positions": [
+        [
+          -12.8,
+          2.1,
+          -9.6
+        ],
+        [
+          -6.1,
+          1.6,
+          -16.5
+        ],
+        [
+          6.7,
+          2.3,
+          -15.3
+        ],
+        [
+          13.6,
+          1.6,
+          -8.3
+        ]
+      ],
+      "originalStyle": true,
+      "drawnLinks": 4,
+      "greenHalos": 4,
+      "energyRings": 8,
+      "energyColumns": 4,
+      "moteBudget": 8,
+      "emission": 4.43
+    }
+  },
+  "passed": true,
+  "manual_review": {
+    "passed": true,
+    "notes": "Pylon, caster, microwave and server-impact screenshots reviewed; final server explosion no longer blocked by caster."
+  }
+}

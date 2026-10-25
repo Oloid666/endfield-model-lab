@@ -1,15 +1,16 @@
-/** Real V8 prop geometry and state checks. Canvas is stubbed; this is not a GPU test. */
+/** Real V9 prop geometry and state checks. Canvas is stubbed; this is not a GPU test. */
 import * as T from 'three';
 import fs from 'node:fs';
 import {Resources} from '../src/resources.js';
 import {buildTianshiGrid} from '../src/tianshi-grid.js';
 import {buildMicrowave} from '../src/microwave.js';
 import {buildConnectionStage} from '../src/connection-stage.js';
+import {buildPearGarden} from '../src/pear-garden.js';
 import {optimizeStaticSet} from '../src/static-batches.js';
 
 const ctx=new Proxy({measureText:s=>({width:s.length*12}),createLinearGradient:()=>({addColorStop(){}}),createRadialGradient:()=>({addColorStop(){}})},{get:(o,k)=>k in o?o[k]:(()=>{})});
 globalThis.document={createElement:()=>({width:256,height:256,getContext:()=>ctx})};
-const scene=new T.Scene(),r=new Resources(),grid=buildTianshiGrid(scene,r),oven=buildMicrowave(scene,r),board=buildConnectionStage(scene,r),checks=[];
+const scene=new T.Scene(),r=new Resources(),grid=buildTianshiGrid(scene,r),oven=buildMicrowave(scene,r),board=buildConnectionStage(scene,r),garden=buildPearGarden(scene,r),checks=[];
 function check(name,passed,detail=null){checks.push({name,passed:Boolean(passed),detail});if(!passed)throw Error(name);}
 const colorDistance=(a,b)=>Math.hypot(a.r-b.r,a.g-b.g,a.b-b.b);
 function advance(prop,state,seconds=2){for(let n=0;n<seconds*60;n++)prop.update(n/60,1/60,{clock:n/60,...state});}
@@ -21,13 +22,16 @@ advance(grid,{phase:'lever',connection:{lever:1}});
 check('Fully pulled lever connects four visible electrical links',grid.state.activePylons===4&&grid.state.drawnLinks===4,grid.state);
 advance(grid,{phase:'charge',charge:78,hero:[-1.25,4.32,15.25]});
 check('Charge keeps all four sources connected to the caster',grid.state.charge===.78&&grid.state.activePylons===4&&grid.state.drawnLinks===4,grid.state);
+check('Charged columns have twelve suspended rings, four energy columns and green core halos',grid.state.energyRings===12&&grid.state.energyColumns===4&&grid.state.greenHalos===4&&grid.state.emission>2.8&&grid.root.getObjectByName('tianshi-suspended-green-rings')?.isInstancedMesh&&grid.root.getObjectByName('tianshi-link-green-halo')?.isInstancedMesh,grid.state);
+check('Pillar camera points focus on the upper green core and stay outside the frame',grid.focusTargets.every(p=>p.detailTarget[1]>p.base[1]+p.height*.7&&p.detailEye[2]>p.position[2]+5&&Math.abs(p.detailEye[0]-p.position[0])>3),grid.focusTargets);
 const links=grid.root.getObjectByName('tianshi-charge-links'),matrix=new T.Matrix4(),center=new T.Vector3(),rotation=new T.Quaternion(),scale=new T.Vector3(),head=new T.Vector3(-1.25,5.94,15.25),axis=new T.Vector3(),near=new T.Vector3();let faceDistance=Infinity;
 for(let n=0;n<links.count;n++){
   links.getMatrixAt(n,matrix);matrix.decompose(center,rotation,scale);if(scale.y===0)continue;
   axis.set(0,scale.y/2,0).applyQuaternion(rotation);const line=new T.Line3(center.clone().sub(axis),center.clone().add(axis));line.closestPointToPoint(head,true,near);faceDistance=Math.min(faceDistance,near.distanceTo(head));
 }
 check('Every physical electrical segment stays outside the face close-up volume',faceDistance>.9,{faceDistance});
-grid.quality('low');check('Low quality retains the four-pylon design',grid.state.quality==='low'&&grid.focusTargets.length===4);
+grid.quality('low');check('Low quality retains the four-pylon design and reduces spark budget',grid.state.quality==='low'&&grid.focusTargets.length===4&&grid.state.moteBudget===8);grid.update(3,.016,{phase:'charge',charge:90});
+check('Low quality keeps broad glow with only two rings per active pillar',grid.state.energyRings===8&&grid.state.energyColumns===4,grid.state);
 advance(grid,{phase:'flashback'});
 check('Flashback turns off present-time electrical links',grid.state.activePylons===0&&grid.state.drawnLinks===0,grid.state);
 
@@ -75,6 +79,11 @@ oven.update(3.01,.016,{phase:'heat-demo',clock:3.01,progress:99,heat:{demoIndex:
 check('Second failed heating keeps the first attempt burn scars',firstBurn===1&&oven.state.charred>=.85,oven.state);
 oven.update(4,.016,{phase:'heat',clock:4,heat:{holding:true,progress:.7,status:'heating'}});
 check('Player power input creates four strong arcs and steam',oven.state.arcs===4&&oven.state.steam>0,oven.state);
+check('Microwave fault has a thick white core and a distinct green halo layer',oven.state.arcCoreRadius>=.015&&oven.state.arcHaloRadius>=oven.state.arcCoreRadius*3.5&&oven.root.getObjectByName('microwave-fault-halo')?.isInstancedMesh,oven.state);
+oven.quality('low');oven.update(4.1,.016,{phase:'heat',clock:4.1,heat:{holding:true,progress:.7,status:'heating'}});
+check('Low quality keeps the exaggerated fault but cuts arc segments',oven.state.arcSegments===5&&oven.state.arcs===4&&oven.state.arcCoreRadius>=.015,oven.state);
+oven.quality('high');oven.update(4.2,.016,{phase:'heat',clock:4.2,heat:{holding:true,progress:.7,status:'heating'}});
+check('High quality adds curve segments without creating extra arc pools',oven.state.arcSegments===9&&arcMeshes.count===36,oven.state);
 oven.update(5,.016,{phase:'heat',clock:5,heat:{status:'burnt',progress:1}});
 check('Burnt input darkens food and produces smoke',oven.state.food==='burnt'&&oven.state.steam===7,oven.state);
 oven.update(6,.016,{phase:'flashback-end',clock:6,progress:99,heat:{status:'won',progress:1}});
@@ -83,15 +92,26 @@ check('Batched shell returns to charred paint without swallowing animated descen
 advance(oven,{phase:'return',progress:99});
 check('Present wreck lowers oven, hides cabinet and hides the whole meal',oven.state.wreck&&!oven.state.counterVisible&&oven.state.position[1]<.6&&!oven.oven.getObjectByName('microwave-meal').visible,oven.state);
 
+garden.update(7,1/60,{protected:true});const petals=garden.root.getObjectByName('pear-falling-petals'),petalStart=new T.Matrix4(),petalEnd=new T.Matrix4();petals.getMatrixAt(0,petalStart);garden.update(8,1/60,{protected:true});petals.getMatrixAt(0,petalEnd);
+check('A small fixed petal pool drifts out of the courtyard without altering the flowering canopy',garden.state.petalPool===96&&garden.state.fallingPetals===48&&garden.state.escapedPetals>0&&garden.state.blossoms===2700&&!petalStart.equals(petalEnd),garden.state);
+garden.update(8.1,1/60,{protected:true,fxShock:1,impactRevision:1});garden.update(9.1,1/60,{protected:true,fxShock:.3,impactRevision:1});
+check('One cannon impact emits a bounded petal gust and keeps the pear trees intact',garden.state.gustPetals===24&&garden.state.fallingPetals===72&&garden.state.fallingPetals<=garden.state.petalPool&&garden.state.trees===3&&garden.state.blossoms===2700&&garden.state.petalBounds.minY>=.29,garden.state);
+const fixedPetals=petalEnd.clone();petals.getMatrixAt(0,fixedPetals);garden.update(9.1,0,{protected:true,fxShock:.3,impactRevision:1});petals.getMatrixAt(0,petalEnd);
+check('Pausing the story clock freezes drifting petal geometry',fixedPetals.equals(petalEnd));
+garden.update(13,1/60,{protected:true,impactRevision:1});check('Impact petal gust ends without removing the normal falling petals',garden.state.gustPetals===0&&garden.state.fallingPetals===48,garden.state);
+garden.quality('low');garden.update(14,1/60,{});check('Low quality reduces petal and canopy budgets',garden.state.fallingPetals===20&&garden.state.blossoms===1400,garden.state);
+garden.quality('high');garden.update(15,1/60,{fxShock:1,impactRevision:2});check('High quality caps both normal and gust petals at the fixed ninety-six-instance pool',garden.state.fallingPetals===96&&garden.state.gustPetals===32&&garden.state.blossoms===3600,garden.state);
+
 const itemCount=r.items.size,geometryCount=r.geometries.size,materialCount=r.materials.size;
 for(let n=0;n<600;n++){
   const state={phase:'charge',clock:n/60,charge:n/6,hero:[-1.25,4.32,15.25],connection:{lever:1}};
-  grid.update(n/60,1/60,state);oven.update(n/60,1/60,state);board.update(n/60,1/60,state);
+  grid.update(n/60,1/60,state);oven.update(n/60,1/60,state);board.update(n/60,1/60,state);garden.update(n/60,1/60,{protected:true,fxShock:n%60===0?1:0,impactRevision:Math.floor(n/60)+1});
 }
 check('Ten seconds of updates create no new tracked graphics resources',r.items.size===itemCount&&r.geometries.size===geometryCount&&r.materials.size===materialCount,{items:itemCount,geometryCount,materialCount});
-grid.reset();oven.reset();board.reset();
+grid.reset();oven.reset();board.reset();garden.reset();
 check('Replay resets pylons, restores charred oven height and hides terminal',grid.state.activePylons===0&&grid.state.drawnLinks===0&&oven.state.charred===1&&Math.abs(oven.state.position[1]-1.6)<.001&&!board.state.visible,{grid:grid.state,microwave:oven.state,board:board.state});
+check('Replay ends the impact gust and removes the pear protection glow',garden.state.gustPetals===0&&!garden.state.protected&&garden.state.shield===0,garden.state);
 let disposed=0;for(const item of r.items)item.addEventListener?.('dispose',()=>disposed++);const expectedDisposals=[...r.items].filter(item=>typeof item.dispose==='function').length;
 r.dispose();check('Every owned disposable graphics resource receives dispose',disposed===expectedDisposals&&r.items.size===0,{disposed,expectedDisposals});
-fs.writeFileSync('artifacts/v8-props-check.json',JSON.stringify({kind:'actual-geometry-with-stubbed-canvas',checks},null,2)+'\n');
-console.log(`V8 props: ${checks.length} checks passed.`);
+fs.writeFileSync('artifacts/v9-props-check.json',JSON.stringify({kind:'actual-geometry-with-stubbed-canvas',checks},null,2)+'\n');
+console.log(`V9 props: ${checks.length} checks passed.`);

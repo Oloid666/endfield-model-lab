@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {MissionMachine,meterPosition,judgeMeter,METER_PERIOD,outputModes,LANDING_DURATION,CHARGE_DURATION,REWIND_DURATION,HEAT_DEMO_DURATION,RETURN_DURATION,TOUR_DURATION,HEAT_RATE,HEAT_TARGET,HEAT_SUCCESS_MIN,HEAT_SUCCESS_MAX,CONNECTION_ACCOUNT,CONNECTION_PASSWORD} from '../src/mission-state.js';
+import {MissionMachine,meterPosition,judgeMeter,METER_PERIOD,outputModes,LANDING_DURATION,CHARGE_DURATION,REWIND_DURATION,HEAT_DEMO_DURATION,RETURN_DURATION,TOUR_DURATION,HEAT_TARGET,HEAT_PULSES,HEAT_PULSE_TARGET,HEAT_BURN,CONNECTION_ACCOUNT,CONNECTION_PASSWORD} from '../src/mission-state.js';
 import {sequences,chargeLines,chatterGroups,hotspots,dinnerChoices,connectionPrompts,captchaLines,heatDemoLines,finalAmmoLines} from '../src/mission-dialogue.js';
 
 const checks=[];
@@ -19,6 +19,8 @@ function attackAt(m,position=.5){
  step(m,targetElapsed-meterElapsed);return m.attack();
 }
 const toHeat=m=>{while(m.phase==='combat')attackAt(m);toPhase(m,'rewind');step(m,REWIND_DURATION);toPhase(m,'heat-demo');step(m,HEAT_DEMO_DURATION);assert.equal(m.phase,'heat');};
+const heatPulse=(m,electrical=HEAT_PULSE_TARGET)=>{assert.ok(m.heatStart());const rate=m.state.heat.rate;step(m,electrical/rate);return m.heatStop();};
+const finishHeat=m=>{let limit=3;while(m.phase==='heat'&&limit-->0){const e=heatPulse(m);assert.ok(['charged','won'].includes(e.result));}assert.equal(m.phase,'flashback-end');};
 
 for(const [key,items]of Object.entries(sequences))check('Data schema '+key,items.length>0&&items.every(v=>['id','speaker','text','mood','gesture','event','next'].every(k=>k in v)));
 for(const [key,items]of Object.entries({chargeLines,captchaLines,heatDemoLines,finalAmmoLines}))check('Timed schema '+key,items.every(v=>Number.isFinite(v.at)&&v.at>=0));
@@ -38,7 +40,8 @@ check('Live server dialogue follows VCR',sequences.last[0].text.includes('伺服
 check('Dragon startled instead of dessert bargain',sequences.last.some(v=>v.text.includes('三小'))&&!sequences.last.some(v=>v.text.includes('甜點')));
 check('Pear survival is no-loss criterion',sequences.landing.some(v=>v.text.includes('梨花呢'))&&sequences.landing.some(v=>v.text.includes('無損失')));
 check('Every ending line has three seconds',LANDING_DURATION===12&&LANDING_DURATION/sequences.landing.length===3&&TOUR_DURATION===16);
-check('Demo credentials and friendly heat timing stable',CONNECTION_ACCOUNT==='endfield_power'&&CONNECTION_PASSWORD==='5201314'&&near(HEAT_TARGET/HEAT_RATE,2.4));
+check('Demo credentials and three increasing pulse speeds',CONNECTION_ACCOUNT==='endfield_power'&&CONNECTION_PASSWORD==='5201314'&&HEAT_PULSES.length===3&&near(HEAT_TARGET,.3)&&HEAT_PULSES.every((v,i)=>near(HEAT_PULSE_TARGET/v.rate,[1.25,1,.8][i])));
+check('Pulse windows get narrower while the visual target stays centred',HEAT_PULSES.every((v,i)=>v.successMin<.1&&v.successMax>.1&&(i===0||v.successMax-v.successMin<HEAT_PULSES[i-1].successMax-HEAT_PULSES[i-1].successMin))&&HEAT_BURN>.125);
 check('Meter linear triangle reaches both ends',meterPosition(0)===0&&near(meterPosition(.675),.5)&&near(meterPosition(1.35),1)&&near(meterPosition(2.025),.5)&&meterPosition(2.7)===0);
 check('Original meter boundaries preserved',judgeMeter(.12).result==='miss'&&judgeMeter(.88).result==='miss'&&judgeMeter(.5).result==='perfect'&&judgeMeter(.35).result==='strong'&&judgeMeter(.2).result==='hit');
 
@@ -98,21 +101,32 @@ for(const branch of ['A','B','C']){
  step(m,300);check('Energy dialogue cannot auto-skip into VCR '+branch,m.phase==='energy'&&m.progress===99&&!m.attack());
  toPhase(m,'rewind');const castingFrozen=m.castingElapsed;
  check('VCR snapshot preserves progress, branch and attacks '+branch,m.state.vcr&&m.state.rewindProgress===0&&JSON.stringify(m.vcrSnapshot)===JSON.stringify(preserved));
- step(m,REWIND_DURATION/2);check('Rewind reports meaningful reverse progress '+branch,near(m.state.rewindProgress,.5)&&m.castingElapsed===castingFrozen&&!m.next()&&!m.skip());
+ step(m,.39);check('Rewind freezes its opening frame '+branch,m.state.rewindProgress===0&&m.state.rewindStage==='freeze');
+ step(m,3.01);check('Rewind reports meaningful reverse progress '+branch,near(m.state.rewindProgress,.5)&&m.state.rewindStage==='reverse'&&m.castingElapsed===castingFrozen&&!m.next()&&!m.skip());
  const reverseBefore=m.state;m.setPaused(true);step(m,100);check('Pause freezes rewind and its duration '+branch,m.state.rewindProgress===reverseBefore.rewindProgress&&m.state.vcrElapsed===reverseBefore.vcrElapsed);m.setPaused(false);
- step(m,REWIND_DURATION/2);check('Rewind opens CCTV dialogue '+branch,m.phase==='flashback'&&m.state.vcr&&m.node.speaker==='clerk'&&m.progress===99);
+ step(m,3);check('Rewind reaches assembled doorway before CCTV '+branch,m.phase==='rewind'&&near(m.state.rewindProgress,1)&&m.state.rewindStage==='settle');
+ step(m,.6);check('Rewind opens CCTV dialogue '+branch,m.phase==='flashback'&&m.state.vcr&&m.node.speaker==='clerk'&&m.progress===99);
  check('VCR prevents main combat and food input '+branch,!m.attack()&&!m.choose('A')&&!m.selectTarget('roof'));
  toPhase(m,'heat-demo');step(m,2.9);check('First scripted failed heating stays in first cycle '+branch,m.phase==='heat-demo'&&m.state.heat.demoIndex===0&&m.state.heat.demoProgress>.9);
  step(m,.2);check('Second scripted failure is distinct '+branch,m.state.heat.demoIndex===1&&m.node.event==='heat-attempt-two');
  check('Failed demonstrations cannot be skipped '+branch,!m.skip()&&!m.heatStart());
  step(m,2.9);check('Six-second demonstrations open player heating '+branch,m.phase==='heat'&&m.state.heat.status==='ready'&&m.state.heat.attempts===0);
  m.setAuto(true);step(m,50);check('Heating waits for a real press '+branch,m.phase==='heat'&&m.state.heat.status==='ready'&&m.state.heat.electricalTime===0);m.setAuto(false);
- m.heatStart();step(m,1);const cold=m.heatStop();check('Early release is cold and retryable '+branch,cold.result==='cold'&&m.phase==='heat'&&!m.heatStart()&&m.state.heat.attempts===1);
+ m.heatStart();step(m,.4);const cold=m.heatStop();check('Early release is cold and retryable '+branch,cold.result==='cold'&&m.phase==='heat'&&!m.heatStart()&&m.state.heat.attempts===1);
  check('Retry keeps main history and demo damage '+branch,m.heatRetry()&&m.state.heat.status==='ready'&&m.progress===99&&m.shots===preserved.shots&&m.branch===branch);
- m.heatStart();step(m,3.1);check('Unreleased heat burns automatically '+branch,m.phase==='heat'&&m.state.heat.status==='burnt'&&!m.state.heat.holding&&near(m.state.heat.electricalTime,.37));
- m.heatRetry();m.heatStart();step(m,.5);const heatBefore=m.state;m.setPaused(true);step(m,70);check('Pause freezes held cooking energy '+branch,near(m.state.heat.electricalTime,heatBefore.heat.electricalTime)&&m.state.heat.holding);
- check('Pause rejects heat release '+branch,!m.heatStop());check('Cancelled pointer safely cuts heating while paused '+branch,m.heatCancel()&&m.state.heat.status==='ready'&&m.state.heat.electricalTime===0);m.setPaused(false);
- m.heatStart();step(m,HEAT_TARGET/HEAT_RATE);const won=m.heatStop();check('Slowed0.3sec target succeeds at2.4realheld '+branch,won.result==='won'&&near(won.electricalTime,.3)&&m.phase==='flashback-end'&&m.progress===99);
+ m.heatStart();step(m,2);check('Unreleased pulse burns automatically '+branch,m.phase==='heat'&&m.state.heat.status==='burnt'&&!m.state.heat.holding&&near(m.state.heat.pulseTime,HEAT_BURN));
+ m.heatRetry();const first=heatPulse(m);
+ check('First good pulse waits for the player to start the second '+branch,first.result==='charged'&&m.phase==='heat'&&m.state.heat.status==='ready'&&m.state.heat.completed===1&&m.state.heat.round===1&&near(m.state.heat.electricalTime,.1)&&m.state.heat.lastResult==='charged');
+ const nextRate=m.state.heat.rate;step(m,40);check('Success never starts another pulse automatically '+branch,m.state.heat.completed===1&&!m.state.heat.holding&&m.state.heat.status==='ready');
+ m.heatStart();step(m,.3);m.setPaused(true);const pausedHeat=m.state;step(m,70);
+ check('Pause cuts the current pulse but preserves completed energy '+branch,m.state.heat.completed===1&&near(m.state.heat.electricalTime,.1)&&!m.state.heat.holding&&m.state.heat.status==='ready'&&m.time===pausedHeat.time);
+ check('Pause rejects heat release or new press '+branch,!m.heatStop()&&!m.heatStart());m.setPaused(false);
+ m.heatStart();step(m,.3);check('Cancelled pointer keeps the earlier successful pulse '+branch,m.heatCancel()&&m.state.heat.completed===1&&near(m.state.heat.electricalTime,.1)&&m.state.heat.status==='ready'&&!m.heatCancel());
+ m.heatStart();step(m,.2);m.heatStop();check('Cold retry preserves the previous pulse '+branch,m.state.heat.status==='cold'&&m.heatRetry()&&m.state.heat.completed===1&&m.state.heat.rate===nextRate);
+ const second=heatPulse(m);check('Second pulse advances to the faster narrower third '+branch,second.result==='charged'&&m.state.heat.completed===2&&m.state.heat.round===2&&near(m.state.heat.electricalTime,.2)&&m.state.heat.rate>nextRate);
+ m.heatStart();step(m,2);check('Third pulse can still burn '+branch,m.state.heat.status==='burnt'&&m.state.heat.completed===2);
+ check('Burn retry replaces the meal and restarts the three pulses '+branch,m.heatRetry()&&m.state.heat.completed===0&&m.state.heat.round===0&&m.state.heat.electricalTime===0&&m.state.heat.rate===HEAT_PULSES[0].rate);
+ heatPulse(m);heatPulse(m);const won=heatPulse(m);check('Three controlled pulses produce exactly0.3seconds '+branch,won.result==='won'&&near(won.electricalTime,.3)&&m.state.heat.completed===3&&near(m.state.heat.progress,1)&&m.phase==='flashback-end'&&m.progress===99);
  check('Success cannot cook twice or retry '+branch,!m.heatStart()&&!m.heatRetry()&&!m.heatStop());
  toPhase(m,'return');const vcrEnding=m.state;step(m,2.99);check('Return transition lasts three seconds '+branch,m.phase==='return'&&m.state.returnProgress>.99&&m.state.vcr&&m.progress===99);
  step(m,.01);check('Return restores99and exact dinner/attack history '+branch,m.phase==='last'&&!m.state.vcr&&m.progress===preserved.progress&&m.branch===preserved.branch&&m.shots===preserved.shots&&m.hits===preserved.hits&&m.output===preserved.output&&m.target===preserved.target&&m.state.energy===0);
@@ -132,7 +146,7 @@ for(const branch of ['A','B','C']){
  check('End hotspot starts one group '+branch,m.hotspot('dragon')&&m.state.sequenceKind==='hotspot'&&!m.hotspot('zhuang'));
  while(m.node)advance(m);check('Hotspot cooldown prevents flood '+branch,!m.hotspot('dragon'));
  step(m,m.quietUntil-m.time+.1);check('Chatter begins after quiet '+branch,m.phase==='complete'&&m.state.sequenceKind==='chat'&&!!m.node);
- m.replay();check('Replay resets credentials, heat, hold and VCR '+branch,m.phase==='choice'&&m.progress===0&&!m.branch&&!m.ended&&m.shots===0&&m.state.connection.account===''&&m.state.connection.password===''&&!m.state.connection.verified&&m.state.heat.status==='ready'&&m.heatAttempts===0&&!m.vcrSnapshot&&m.castingElapsed===0&&m.attackHoldUntil===0&&dinners.at(-1)===null);
+ m.replay();check('Replay resets credentials, heat, hold and VCR '+branch,m.phase==='choice'&&m.progress===0&&!m.branch&&!m.ended&&m.shots===0&&m.state.connection.account===''&&m.state.connection.password===''&&!m.state.connection.verified&&m.state.heat.status==='ready'&&m.heatAttempts===0&&m.state.heat.completed===0&&m.state.heat.failures===0&&!m.vcrSnapshot&&m.castingElapsed===0&&m.attackHoldUntil===0&&dinners.at(-1)===null);
  check('Every important phase delivered '+branch,['intro','choice','meal','briefing','login','captcha','lever','charge','combat','energy','rewind','flashback','heat-demo','heat','flashback-end','return','last','aim-final','finisher','landing','tour','complete'].every(v=>stages.includes(v)));
 }
 
@@ -149,15 +163,27 @@ check('Delayed shot uses original event timestamp',delayed.result==='perfect'&&n
 const pauseMeter=new MissionMachine();intoCombat(pauseMeter);step(pauseMeter,.45);const frozen=pauseMeter.state.meter;pauseMeter.setPaused(true);step(pauseMeter,50);
 check('Paused meter does not move',pauseMeter.state.meter===frozen&&!pauseMeter.attack());pauseMeter.setPaused(false);step(pauseMeter,.225);check('Meter resumes without a jump',near(pauseMeter.state.meter,.5));
 
-const delayedHeat=new MissionMachine();intoCombat(delayedHeat);toHeat(delayedHeat);delayedHeat.heatStart();const heatSource=delayedHeat.sourceTime;step(delayedHeat,3.3);
-check('Late rendered frame can show safety cut',delayedHeat.state.heat.status==='burnt');const correction=delayedHeat.heatStop(heatSource+2.4);
-check('Original release timestamp wins despite late render',correction.result==='won'&&delayedHeat.phase==='flashback-end'&&near(correction.electricalTime,.3));
-for(const electrical of [HEAT_SUCCESS_MIN,HEAT_SUCCESS_MAX]){
- const edge=new MissionMachine();intoCombat(edge);toHeat(edge);edge.heatStart();step(edge,electrical/HEAT_RATE);check('Inclusive heat success boundary '+electrical,edge.heatStop().result==='won');
+const delayedHeat=new MissionMachine();intoCombat(delayedHeat);toHeat(delayedHeat);delayedHeat.heatStart();const heatSource=delayedHeat.sourceTime;step(delayedHeat,2);
+check('Late rendered frame can show safety cut',delayedHeat.state.heat.status==='burnt');const correction=delayedHeat.heatStop(heatSource+1.25);
+check('Original release timestamp wins despite late render',correction.result==='charged'&&delayedHeat.phase==='heat'&&delayedHeat.state.heat.completed===1&&near(correction.pulseTime,.1)&&delayedHeat.state.heat.failures===0);
+const delayedCold=new MissionMachine();intoCombat(delayedCold);toHeat(delayedCold);delayedCold.heatStart();const coldSource=delayedCold.sourceTime;step(delayedCold,2);const correctedCold=delayedCold.heatStop(coldSource+.5);
+check('A corrected early release keeps exactly one failure',correctedCold.result==='cold'&&delayedCold.state.heat.failures===1&&delayedCold.state.heat.completed===0);
+for(let round=0;round<3;round++)for(const edgeName of ['successMin','successMax']){
+ const edge=new MissionMachine();intoCombat(edge);toHeat(edge);for(let n=0;n<round;n++)heatPulse(edge);
+ const value=HEAT_PULSES[round][edgeName],result=heatPulse(edge,value);
+ check('Inclusive pulse success boundary '+round+' '+edgeName,result.result===(round===2?'won':'charged'));
 }
+for(let round=0;round<3;round++)for(const [side,offset]of [['cold',-1],['burnt',1]]){
+ const edge=new MissionMachine();intoCombat(edge);toHeat(edge);for(let n=0;n<round;n++)heatPulse(edge);
+ const setting=HEAT_PULSES[round],value=setting[side==='cold'?'successMin':'successMax']+offset*.00001,result=heatPulse(edge,value);
+ check('Outside pulse window fails '+round+' '+side,result.result===side&&edge.phase==='heat'&&edge.state.heat.completed===round);
+}
+const delayedThird=new MissionMachine();intoCombat(delayedThird);toHeat(delayedThird);heatPulse(delayedThird);heatPulse(delayedThird);delayedThird.heatStart();const thirdSource=delayedThird.sourceTime;step(delayedThird,2);
+const correctedFinal=delayedThird.heatStop(thirdSource+.8);check('Original third release can correct a rendered burn to final success',correctedFinal.result==='won'&&delayedThird.phase==='flashback-end'&&near(correctedFinal.electricalTime,.3));
+
 const backward=new MissionMachine();backward.update(100);const bt=backward.time;backward.update(50);check('Source clock never reverses',backward.time===bt&&backward.sourceTime===100);
-const jumped=new MissionMachine();intoCombat(jumped);toHeat(jumped);jumped.heatStart();step(jumped,2.4);jumped.heatStop();toPhase(jumped,'return');step(jumped,3);toPhase(jumped,'aim-final');attackAt(jumped);step(jumped,60);
+const jumped=new MissionMachine();intoCombat(jumped);toHeat(jumped);finishHeat(jumped);toPhase(jumped,'return');step(jumped,3);toPhase(jumped,'aim-final');attackAt(jumped);step(jumped,60);
 check('Late frame catches up final cinematics once',jumped.phase==='complete'&&jumped.progress===100&&jumped.ended);
 
-const result={passed:true,checks:checks.length,kind:'V8 deterministic story/input/clock checks; not browser or iPhone performance',results:checks};
-fs.writeFileSync('artifacts/v8-mission-check.json',JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify({passed:true,checks:checks.length}));
+const result={passed:true,checks:checks.length,kind:'V9 deterministic story/input/clock checks; not browser or iPhone performance',results:checks};
+fs.writeFileSync('artifacts/v9-mission-check.json',JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify({passed:true,checks:checks.length}));

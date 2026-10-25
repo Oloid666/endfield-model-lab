@@ -29,6 +29,8 @@ jobs:
       - run: node scripts/cinematic-check.mjs
       - run: node scripts/props-check.mjs
       - run: node scripts/director-check.mjs
+      - run: node scripts/warmup-check.mjs
+      - run: node scripts/fx-check.mjs
       - run: npm run build
         env:
           VITE_BASE_PATH: /endfield-model-lab/

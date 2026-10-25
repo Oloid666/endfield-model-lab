@@ -1,0 +1,1696 @@
+{
+  "kind": "Node actual-GLB geometry, skeleton, controller, cinematic and pooled FX checks; in-memory image materials removed and Canvas painting stubbed; not a render, GPU benchmark or iPhone test",
+  "passed": true,
+  "checks": [
+    {
+      "name": "Original GLB hash and byte count",
+      "passed": true,
+      "detail": {
+        "sha256": "43c4d1063caf4f5d5f7405aae32cbd02ceb2de0ab043acc54e26dd7aa49ceb94",
+        "bytes": 7520868
+      }
+    },
+    {
+      "name": "All configured bone IDs exist",
+      "passed": true,
+      "detail": {
+        "skinJoints": 569,
+        "configuredBones": 17
+      }
+    },
+    {
+      "name": "Existing cloth/hair/sleeve joints selected",
+      "passed": true,
+      "detail": {
+        "secondaryJoints": 58
+      }
+    },
+    {
+      "name": "Idle foot targets remain within 6 mm",
+      "passed": true,
+      "detail": {
+        "maxFootTargetErrorMetres": 0.002501157265821064
+      }
+    },
+    {
+      "name": "Head and wrist react to different beats",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Cloth joint actually changes its pose",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Walking changes position and hips/knees",
+      "passed": true,
+      "detail": {
+        "distance": 1.578272373931928
+      }
+    },
+    {
+      "name": "Walking swing foot lifts at about 60.38 seconds",
+      "passed": true,
+      "detail": {
+        "time": 60.38333333333333,
+        "phase": 3.228042557804931,
+        "leftAnkleY": 0.4740672995821366,
+        "rightAnkleY": 0.5468739530537347,
+        "baselineAnkleY": 0.47406725295000507,
+        "pose": {
+          "head": [
+            -0.09835660687721022,
+            -0.0001103533408252688,
+            -0.00158395951271128,
+            0.995149993755399
+          ],
+          "wrist": [
+            0.23074866547535902,
+            0.43310660897787046,
+            0.8647804290326594,
+            0.10643544952009426
+          ],
+          "hip": [
+            -0.9967564660022203,
+            -0.00012323310252314312,
+            -0.0013027753986110029,
+            -0.08046635988238102
+          ],
+          "knee": [
+            0.17176164218471268,
+            -0.0030336736857145587,
+            -0.00011862159909686865,
+            0.985133859445818
+          ],
+          "armL": [
+            0.709218947788247,
+            -0.03407692580202944,
+            0.7008503605274563,
+            -0.06823556197417233
+          ],
+          "armR": [
+            0.6828468750430521,
+            -0.022473244896636917,
+            0.7301827801295426,
+            -0.006943125793353296
+          ],
+          "elbow": [
+            0.01811921347647607,
+            0.0384480260703767,
+            -0.01201415750317533,
+            0.9990241739335527
+          ],
+          "cloth": [
+            -0.000019374907274680847,
+            -0.00009893984718984761,
+            -0.0004550408687761414,
+            0.9999998913867254
+          ],
+          "smileCorners": [
+            [
+              0.01236860640347004,
+              -0.011013628914952278,
+              0.06653685122728348
+            ],
+            [
+              -0.012369390577077866,
+              -0.011013390496373177,
+              0.06653685867786407
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "name": "Walking ankle target error remains within 2 cm",
+      "passed": true,
+      "detail": {
+        "maxFootTargetErrorMetres": 0.014223980746992286,
+        "maxActualFootLiftMetres": 0.07475141327302726
+      }
+    },
+    {
+      "name": "Real shoulder bones have a small, asymmetric walking excursion",
+      "passed": true,
+      "detail": {
+        "leftPeakRadians": 0.05992569690830258,
+        "rightPeakRadians": 0.07412286290272639
+      }
+    },
+    {
+      "name": "Walking stops and repins at new location",
+      "passed": true,
+      "detail": {
+        "position": [
+          0.38999999821739734,
+          0.32,
+          2.48
+        ],
+        "maxFootTargetErrorMetres": 0.0014085386704170396
+      }
+    },
+    {
+      "name": "Only meal A visible",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Only meal B visible",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Only meal C visible",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Three meal branches contain different props",
+      "passed": true,
+      "detail": {
+        "A": 7,
+        "B": 3,
+        "C": 6
+      }
+    },
+    {
+      "name": "Replay clears meal props",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Phone follows a real wrist during gesture",
+      "passed": true,
+      "detail": {
+        "phonePosition": [
+          0.11740736237689609,
+          1.1343263488843816,
+          0.29837290311669895
+        ]
+      }
+    },
+    {
+      "name": "Teleport resets heading and walking input",
+      "passed": true,
+      "detail": {
+        "heading": 0.08,
+        "position": [
+          -1.25,
+          0.32,
+          2.48
+        ]
+      }
+    },
+    {
+      "name": "The food-holding shoulder stays protected while walking",
+      "passed": true,
+      "detail": {
+        "heldPeakRadians": 0.0035133314123808644,
+        "freePeakRadians": 0.05992569690830258
+      }
+    },
+    {
+      "name": "Doorway permits entry",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Closed frontage blocks walking through glass",
+      "passed": true,
+      "detail": {
+        "z": 2.076992208707884
+      }
+    },
+    {
+      "name": "Walking stays on raised awning surface",
+      "passed": true,
+      "detail": {
+        "maxZ": 3.388605749286983
+      }
+    },
+    {
+      "name": "A counter/rack rectangle blocks movement",
+      "passed": true,
+      "detail": {
+        "x": -0.7060537683113112
+      }
+    },
+    {
+      "name": "Companion follows turns through the actual doorway without collisions",
+      "passed": true,
+      "detail": {
+        "reached": true,
+        "minimumGap": 0.5586328467832656,
+        "maximumGap": 1.3712492842547657,
+        "collisions": 0,
+        "largestStep": 0.02086218600625726,
+        "doorX": -0.20702814714340503,
+        "settleTravel": 1.2428789269057332,
+        "modes": {
+          "hesitate": 10,
+          "follow": 74,
+          "catch-up": 53,
+          "single-file": 181,
+          "settle": 121,
+          "idle": 262
+        },
+        "final": {
+          "mode": "idle",
+          "distance": 0.7493468258742247,
+          "speed": 0,
+          "walk": 8.605675626447933e-19,
+          "phase": 93.234730960245,
+          "heading": 6.14947326737785,
+          "lookYaw": 0.003129538644585562,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -1.127357436062602,
+            0.325,
+            0.007656255389212097
+          ],
+          "target": [
+            -1.143964797599559,
+            0.325,
+            -0.01163941309176008
+          ],
+          "trailPoints": 93,
+          "glance": false
+        },
+        "owner": [
+          -1.2249311650534511,
+          0.32,
+          0.7506233023425719
+        ],
+        "snapshots": [
+          {
+            "owner": [
+              -0.24572761570739837,
+              0.32,
+              2.48
+            ],
+            "companion": {
+              "mode": "catch-up",
+              "distance": 1.2738361470594457,
+              "speed": 1.2255506116549015,
+              "walk": 0.9869195167924909,
+              "phase": 10.27703481657593,
+              "heading": 1.6199657611748393,
+              "lookYaw": -0.026249068393191743,
+              "lookPitch": -0.095,
+              "blocked": false,
+              "position": [
+                -1.5192291768507156,
+                0.325,
+                2.509194234375773
+              ],
+              "target": [
+                -0.9257276157073984,
+                0.325,
+                2.48
+              ],
+              "trailPoints": 25,
+              "glance": false
+            }
+          },
+          {
+            "owner": [
+              -0.19953318434583892,
+              0.32,
+              0.7924936193073994
+            ],
+            "companion": {
+              "mode": "single-file",
+              "distance": 1.030212374694602,
+              "speed": 0.7723118949183462,
+              "walk": 0.9952933930628577,
+              "phase": 47.72383380913201,
+              "heading": 3.066097838050733,
+              "lookYaw": 0.06695202725597982,
+              "lookPitch": -0.095,
+              "blocked": false,
+              "position": [
+                -0.20833396350286956,
+                0.325,
+                1.82266840217685
+              ],
+              "target": [
+                -0.19162411930027895,
+                0.325,
+                1.5124501781983477
+              ],
+              "trailPoints": 67,
+              "glance": false
+            }
+          },
+          {
+            "owner": [
+              -1.1632228613291637,
+              0.32,
+              0.7490797799412253
+            ],
+            "companion": {
+              "mode": "follow",
+              "distance": 0.8799139955736884,
+              "speed": 0.7884035520785705,
+              "walk": 0.99645413222236,
+              "phase": 67.1342734952246,
+              "heading": 3.692529083730412,
+              "lookYaw": 0.55,
+              "lookPitch": -0.095,
+              "blocked": false,
+              "position": [
+                -0.3014979155799859,
+                0.325,
+                0.9270650531523243
+              ],
+              "target": [
+                -0.48341877377746867,
+                0.325,
+                0.7328159359778004
+              ],
+              "trailPoints": 92,
+              "glance": false
+            }
+          }
+        ],
+        "paused": true,
+        "resetHeading": 0.08,
+        "resetDistance": 0.7600000000000002
+      }
+    },
+    {
+      "name": "Companion hesitates, catches up, uses single file, then settles",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Companion maintains space and moves continuously in world space",
+      "passed": true,
+      "detail": {
+        "minimumGap": 0.5586328467832656,
+        "maximumGap": 1.3712492842547657,
+        "largestStep": 0.02086218600625726
+      }
+    },
+    {
+      "name": "Companion keeps walking after owner stops, then stops its gait",
+      "passed": true,
+      "detail": {
+        "settleTravel": 1.2428789269057332,
+        "finalPhase": 93.234730960245
+      }
+    },
+    {
+      "name": "Companion freezes with a paused clock and resets on teleport",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Companion yields when the owner walks toward it",
+      "passed": true,
+      "detail": {
+        "reached": true,
+        "minimumGap": 0.5612175298979641,
+        "maximumGap": 0.9497452706075304,
+        "collisions": 0,
+        "largestStep": 0.01609218088183567,
+        "doorX": null,
+        "settleTravel": 1.2424817692053292,
+        "modes": {
+          "yield": 52,
+          "follow": 115,
+          "settle": 119,
+          "idle": 264
+        },
+        "final": {
+          "mode": "idle",
+          "distance": 0.7498342017643839,
+          "speed": 0,
+          "walk": 6.284733596593915e-19,
+          "phase": 56.56250262340898,
+          "heading": 3.2996706827526223,
+          "lookYaw": -0.3535735653003038,
+          "lookPitch": 0.025,
+          "blocked": false,
+          "position": [
+            -2.8972118747255364,
+            0.325,
+            3.2208324603775287
+          ],
+          "target": [
+            -2.9130505374368507,
+            0.325,
+            3.239999999995535
+          ],
+          "trailPoints": 44,
+          "glance": true
+        },
+        "owner": [
+          -3.013050537470788,
+          0.32,
+          2.48
+        ],
+        "snapshots": [
+          {
+            "owner": [
+              -2.9513229114007027,
+              0.32,
+              2.48
+            ],
+            "companion": {
+              "mode": "follow",
+              "distance": 0.948839689117735,
+              "speed": 0.6117740763248377,
+              "walk": 0.7939905864398248,
+              "phase": 30.470385470097096,
+              "heading": 4.500413861746785,
+              "lookYaw": 0.17062034805279616,
+              "lookPitch": -0.095,
+              "blocked": false,
+              "position": [
+                -2.0032944675630473,
+                0.325,
+                2.519227864073813
+              ],
+              "target": [
+                -2.2713229114007025,
+                0.325,
+                2.48
+              ],
+              "trailPoints": 42,
+              "glance": false
+            }
+          }
+        ],
+        "paused": true,
+        "resetHeading": 0.08,
+        "resetDistance": 0.7600000000000002
+      }
+    },
+    {
+      "name": "Companion routes around a shelf instead of cutting the corner",
+      "passed": true,
+      "detail": {
+        "reached": true,
+        "minimumGap": 0.5581228735206357,
+        "maximumGap": 0.9956816090456272,
+        "collisions": 0,
+        "largestStep": 0.016367976162231263,
+        "doorX": null,
+        "settleTravel": 1.2611925229205752,
+        "modes": {
+          "hesitate": 10,
+          "follow": 405,
+          "settle": 120,
+          "idle": 263
+        },
+        "final": {
+          "mode": "idle",
+          "distance": 0.7496460305857975,
+          "speed": 0,
+          "walk": 7.323039443193047e-19,
+          "phase": 109.96460740548314,
+          "heading": 4.573561861748594,
+          "lookYaw": 0.0030542130654531933,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            1.892334868296115,
+            0.325,
+            -0.41986189153451875
+          ],
+          "target": [
+            1.9113779079385953,
+            0.325,
+            -0.4360323985356522
+          ],
+          "trailPoints": 125,
+          "glance": false
+        },
+        "owner": [
+          1.1495878229032315,
+          0.32,
+          -0.5213310875162767
+        ],
+        "snapshots": [
+          {
+            "owner": [
+              -1.15,
+              0.32,
+              0.8596057073200994
+            ],
+            "companion": {
+              "mode": "follow",
+              "distance": 0.954108798492278,
+              "speed": 0.815396616261248,
+              "walk": 0.9996268310069364,
+              "phase": 16.416940066064438,
+              "heading": 0.5534060835410813,
+              "lookYaw": -0.42536254327440187,
+              "lookPitch": -0.095,
+              "blocked": false,
+              "position": [
+                -1.2718339162828605,
+                0.325,
+                -0.08669239381059565
+              ],
+              "target": [
+                -1.15,
+                0.325,
+                0.1796057073200994
+              ],
+              "trailPoints": 34,
+              "glance": false
+            }
+          },
+          {
+            "owner": [
+              1.1114932257167451,
+              0.32,
+              0.9003938873190435
+            ],
+            "companion": {
+              "mode": "follow",
+              "distance": 0.9956816090456272,
+              "speed": 0.8196567930106978,
+              "walk": 0.9999999907544517,
+              "phase": 58.74227493673158,
+              "heading": 1.5605095047673598,
+              "lookYaw": 0.015566498010763485,
+              "lookPitch": -0.095,
+              "blocked": false,
+              "position": [
+                0.11582549394059874,
+                0.325,
+                0.9056507391747438
+              ],
+              "target": [
+                0.43152879823051393,
+                0.325,
+                0.9073492703654241
+              ],
+              "trailPoints": 90,
+              "glance": false
+            }
+          },
+          {
+            "owner": [
+              1.150780356755057,
+              0.32,
+              -0.45961498507504445
+            ],
+            "companion": {
+              "mode": "follow",
+              "distance": 0.9516129636680076,
+              "speed": 0.7346247656736049,
+              "walk": 0.9998248295923132,
+              "phase": 83.47956442415102,
+              "heading": 2.77849060911548,
+              "lookYaw": 0.3000977608348778,
+              "lookPitch": -0.095,
+              "blocked": false,
+              "position": [
+                1.0908643218896477,
+                0.325,
+                0.49010987054736993
+              ],
+              "target": [
+                1.1639143753373642,
+                0.325,
+                0.22025816303627527
+              ],
+              "trailPoints": 124,
+              "glance": false
+            }
+          }
+        ],
+        "paused": true,
+        "resetHeading": 0.08,
+        "resetDistance": 0.76
+      }
+    },
+    {
+      "name": "Cinematic charge begins on the ground",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Only the hero lifts and clears the canopy",
+      "passed": true,
+      "detail": {
+        "hero": [
+          -1.25,
+          3.0449704172800702,
+          4.45
+        ],
+        "root": [
+          -1.25,
+          0.32,
+          3.25
+        ]
+      }
+    },
+    {
+      "name": "Companion remains on the ground during charging",
+      "passed": true,
+      "detail": {
+        "dragon": [
+          -2.007569296789991,
+          0.325,
+          3.310735167416571
+        ]
+      }
+    },
+    {
+      "name": "V7 casting clears the road by twelve metres without moving the walking root",
+      "passed": true,
+      "detail": {
+        "hero": [
+          -1.25,
+          4.344784658418678,
+          15.25
+        ],
+        "walkingRoot": [
+          -1.25,
+          0.32,
+          3.25
+        ]
+      }
+    },
+    {
+      "name": "Shot recoil displaces the original body and bends its real elbow",
+      "passed": true,
+      "detail": {
+        "bodyRetreat": 0.6199999999999992,
+        "elbowRadians": 0.3799979674771173
+      }
+    },
+    {
+      "name": "Food moves off the casting hero",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Actual companion follows explicit projectile world coordinates",
+      "passed": true,
+      "detail": {
+        "dragon": [
+          2,
+          5,
+          1
+        ]
+      }
+    },
+    {
+      "name": "Projectile companion releases its food",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Landing restores the original visual placement and foot pinning",
+      "passed": true,
+      "detail": {
+        "pivot": [
+          0,
+          0,
+          0
+        ],
+        "drift": 4.563357654127457e-14
+      }
+    },
+    {
+      "name": "Landing restores companion to ground follower",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Charge FX uses one reusable burst light",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "FX pool allocates no new resources while animating",
+      "passed": true,
+      "detail": {
+        "before": 138,
+        "after": 138
+      }
+    },
+    {
+      "name": "FX active particles stay within the selected quality cap",
+      "passed": true,
+      "detail": {
+        "active": true,
+        "phase": "charge",
+        "beams": 0,
+        "particles": 0,
+        "pulses": 0,
+        "charge": 0.6,
+        "quality": "balanced",
+        "particleLimit": 72,
+        "smoke": 4,
+        "geometryAllocatedPerFrame": 0,
+        "muzzles": 0,
+        "rays": 0,
+        "shock": 0.004134746032297267,
+        "flash": 0.0000015928272119405148,
+        "maxImpactRadius": 0,
+        "lightIntensity": 0,
+        "impactAge": 1.4833333333333332,
+        "fireAge": 1.65,
+        "shockOrigin": [
+          0,
+          4,
+          1.05
+        ],
+        "impactRevision": 1,
+        "qualityCaps": {
+          "smoke": 8,
+          "rays": 8,
+          "layers": 3
+        },
+        "sharedLights": 1,
+        "reducedMotion": false
+      }
+    },
+    {
+      "name": "Finisher beam awaits the explicit collision impact",
+      "passed": true,
+      "detail": {
+        "active": true,
+        "phase": "finisher",
+        "beams": 1,
+        "particles": 2,
+        "pulses": 0,
+        "charge": 0,
+        "quality": "balanced",
+        "particleLimit": 72,
+        "smoke": 0,
+        "geometryAllocatedPerFrame": 0,
+        "muzzles": 0,
+        "rays": 0,
+        "shock": 1.9956689258485556e-7,
+        "flash": 0,
+        "maxImpactRadius": 0,
+        "lightIntensity": 0,
+        "impactAge": null,
+        "fireAge": 1.4000000000000004,
+        "shockOrigin": [
+          0,
+          4,
+          1.05
+        ],
+        "impactRevision": 0,
+        "qualityCaps": {
+          "smoke": 8,
+          "rays": 8,
+          "layers": 3
+        },
+        "sharedLights": 1,
+        "reducedMotion": false
+      }
+    },
+    {
+      "name": "Explicit finisher impact creates a pooled pulse",
+      "passed": true,
+      "detail": {
+        "active": true,
+        "phase": "finisher",
+        "beams": 1,
+        "particles": 34,
+        "pulses": 1,
+        "charge": 0,
+        "quality": "balanced",
+        "particleLimit": 72,
+        "smoke": 8,
+        "geometryAllocatedPerFrame": 0,
+        "muzzles": 0,
+        "rays": 8,
+        "shock": 0.9525269927041953,
+        "flash": 0.40656965974060044,
+        "maxImpactRadius": 0.5408600014579377,
+        "lightIntensity": 264.27027883139027,
+        "impactAge": 0.09999999999999964,
+        "fireAge": 1.5,
+        "shockOrigin": [
+          0,
+          1,
+          0.05
+        ],
+        "impactRevision": 1,
+        "qualityCaps": {
+          "smoke": 8,
+          "rays": 8,
+          "layers": 3
+        },
+        "sharedLights": 1,
+        "reducedMotion": false
+      }
+    },
+    {
+      "name": "A final impact respects its smoke budget and reuses the single burst light",
+      "passed": true,
+      "detail": {
+        "active": true,
+        "phase": "finisher",
+        "beams": 1,
+        "particles": 34,
+        "pulses": 1,
+        "charge": 0,
+        "quality": "balanced",
+        "particleLimit": 72,
+        "smoke": 8,
+        "geometryAllocatedPerFrame": 0,
+        "muzzles": 0,
+        "rays": 8,
+        "shock": 0.9525269927041953,
+        "flash": 0.40656965974060044,
+        "maxImpactRadius": 0.5408600014579377,
+        "lightIntensity": 264.27027883139027,
+        "impactAge": 0.09999999999999964,
+        "fireAge": 1.5,
+        "shockOrigin": [
+          0,
+          1,
+          0.05
+        ],
+        "impactRevision": 1,
+        "qualityCaps": {
+          "smoke": 8,
+          "rays": 8,
+          "layers": 3
+        },
+        "sharedLights": 1,
+        "reducedMotion": false
+      }
+    },
+    {
+      "name": "Low FX quality caps the particle pool at thirty-six",
+      "passed": true,
+      "detail": {
+        "active": true,
+        "phase": "",
+        "beams": 1,
+        "particles": 9,
+        "pulses": 1,
+        "charge": 0,
+        "quality": "low",
+        "particleLimit": 36,
+        "smoke": 4,
+        "geometryAllocatedPerFrame": 0,
+        "muzzles": 0,
+        "rays": 4,
+        "shock": 0.6678093064765753,
+        "flash": 0.1652988882215876,
+        "maxImpactRadius": 0.896564914710596,
+        "lightIntensity": 107.44427734403193,
+        "impactAge": 0.1999999999999993,
+        "fireAge": 1.5999999999999996,
+        "shockOrigin": [
+          0,
+          1,
+          0.05
+        ],
+        "impactRevision": 1,
+        "qualityCaps": {
+          "smoke": 4,
+          "rays": 4,
+          "layers": 2
+        },
+        "sharedLights": 1,
+        "reducedMotion": false
+      }
+    },
+    {
+      "name": "FX reset clears every active effect",
+      "passed": true,
+      "detail": {
+        "active": false,
+        "phase": "",
+        "beams": 0,
+        "particles": 0,
+        "pulses": 0,
+        "charge": 0,
+        "quality": "low",
+        "particleLimit": 36,
+        "smoke": 0,
+        "geometryAllocatedPerFrame": 0,
+        "muzzles": 0,
+        "rays": 0,
+        "shock": 0,
+        "flash": 0,
+        "maxImpactRadius": 0,
+        "lightIntensity": 0,
+        "impactAge": null,
+        "fireAge": null,
+        "shockOrigin": [
+          0,
+          1,
+          0.05
+        ],
+        "impactRevision": 0,
+        "qualityCaps": {
+          "smoke": 4,
+          "rays": 4,
+          "layers": 2
+        },
+        "sharedLights": 1,
+        "reducedMotion": false
+      }
+    },
+    {
+      "name": "Login rapidly lifts the real hero 1.2 metres without lateral travel",
+      "passed": true,
+      "detail": {
+        "start": [
+          -1.25,
+          0.32,
+          3.25
+        ],
+        "quick": [
+          -1.25,
+          1.5160949361013258,
+          3.25
+        ]
+      }
+    },
+    {
+      "name": "Captcha preserves the connection hover instead of dropping the hero",
+      "passed": true,
+      "detail": {
+        "hero": [
+          -1.25,
+          1.507646511041518,
+          3.25
+        ]
+      }
+    },
+    {
+      "name": "Director override samples exact rewind lift and travel",
+      "passed": true,
+      "detail": {
+        "hero": [
+          -1.25,
+          1.9126562336203652,
+          8.05
+        ]
+      }
+    },
+    {
+      "name": "C smile moves weighted original face vertices by a restrained amount",
+      "passed": true,
+      "detail": {
+        "movedFaceVertices": 391,
+        "maxFaceShift": 0.0018815024113936702,
+        "maxBodyShift": 0
+      }
+    },
+    {
+      "name": "C smile has a slightly stronger left mouth corner",
+      "passed": true,
+      "detail": {
+        "neutralCorners": [
+          [
+            0.01236860640347004,
+            -0.011013628914952278,
+            0.06653685122728348
+          ],
+          [
+            -0.012369390577077866,
+            -0.011013390496373177,
+            0.06653685867786407
+          ]
+        ],
+        "smilingCorners": [
+          [
+            0.01261860640347004,
+            -0.009213628914952279,
+            0.06663685122728348
+          ],
+          [
+            -0.012519390577077866,
+            -0.009913390496373176,
+            0.06653685867786407
+          ]
+        ]
+      }
+    },
+    {
+      "name": "Replay clears smile and restores original face coordinates",
+      "passed": true,
+      "detail": {
+        "restoredError": 0
+      }
+    },
+    {
+      "name": "Keyboard override preserves an alert non-ammunition companion",
+      "passed": true,
+      "detail": {
+        "action": "key",
+        "expression": "normal",
+        "dragon": [
+          1,
+          0.7,
+          2
+        ]
+      }
+    },
+    {
+      "name": "Lever action gives the original dragon an exertion expression",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Ammunition shock uses the curved dragon face",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Uploaded Xaihi original hash and byte count",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Xaihi GPU skinning textures share the world resource lifecycle",
+      "passed": true,
+      "detail": {
+        "skeletons": 1
+      }
+    },
+    {
+      "name": "Xaihi is lazy-hidden outside the VCR",
+      "passed": true,
+      "detail": {
+        "loaded": true,
+        "phase": "",
+        "action": "waiting",
+        "visible": false,
+        "bones": 960,
+        "scale": 1.00924974058618,
+        "headYaw": 0,
+        "phoneVisible": false,
+        "mealVisible": false,
+        "position": [
+          1.95,
+          0.31,
+          0.85
+        ],
+        "pose": {
+          "head": [
+            -0.042372554540634155,
+            -4.697754450237061e-38,
+            -1.9923479396969887e-39,
+            0.9991018772125244
+          ],
+          "wrist": [
+            -0.0016879822360351682,
+            0.9999933242797852,
+            -0.003245206316933036,
+            0.000015805453585926443
+          ],
+          "arm": [
+            0.655576765537262,
+            0.26498907804489136,
+            0.6269729733467102,
+            -0.3269629180431366
+          ]
+        }
+      }
+    },
+    {
+      "name": "The original Xaihi appears with a wrist-mounted terminal",
+      "passed": true,
+      "detail": {
+        "loaded": true,
+        "phase": "flashback",
+        "action": "terminal",
+        "visible": true,
+        "bones": 960,
+        "scale": 1.00924974058618,
+        "headYaw": -0.22,
+        "phoneVisible": true,
+        "mealVisible": false,
+        "position": [
+          1.95,
+          0.31,
+          0.85
+        ],
+        "pose": {
+          "head": [
+            0.027261344490551218,
+            -0.10978205674539702,
+            -0.0013743234237221678,
+            0.9935808093840853
+          ],
+          "wrist": [
+            -0.0016877287760699623,
+            0.9998321503348327,
+            -0.018243991073509262,
+            0.00009500837431709268
+          ],
+          "arm": [
+            0.7155136743151703,
+            0.1506069042998915,
+            0.6696128591442211,
+            -0.13029327312451278
+          ]
+        }
+      }
+    },
+    {
+      "name": "CCTV operation animates actual Xaihi wrist and head bones",
+      "passed": true,
+      "detail": {
+        "head": [
+          0.027209915879930734,
+          -0.10979481476815595,
+          -0.000908896493832417,
+          0.9935813441600472
+        ],
+        "wrist": [
+          -0.0016868014995092332,
+          0.9993232113494656,
+          0.03674595674204318,
+          -0.00019537131898483666
+        ],
+        "arm": [
+          0.7155136743151703,
+          0.1506069042998915,
+          0.6696128591442211,
+          -0.13029327312451278
+        ]
+      }
+    },
+    {
+      "name": "Xaihi can hold her lunch after the successful heat",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Returning to main story hides Xaihi without a second renderer",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Xaihi reset clears VCR props and pose",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Xaihi dispose detaches its scene root and reports unloaded",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "The uploaded Xaihi GLB remains unchanged after runtime posing",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "World disposal releases every Xaihi skinning texture",
+      "passed": true,
+      "detail": {
+        "disposedBoneTextures": 1,
+        "skeletons": 1
+      }
+    },
+    {
+      "name": "Original GLB unchanged after tests",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "trace": [
+    {
+      "time": 0,
+      "action": "rest",
+      "footTargetError": 3.597058350194085e-14,
+      "pose": {
+        "head": [
+          -0.09853504699952646,
+          0.00010991827541780864,
+          0.0006418116960977406,
+          0.995133394978727
+        ],
+        "wrist": [
+          0.22893311083316803,
+          0.4324272871017456,
+          0.8651455640792847,
+          0.11008815467357635
+        ],
+        "hip": [
+          -0.99999999999999,
+          -9.313220764240577e-8,
+          -7.549789411458086e-8,
+          -7.549789300104852e-8
+        ],
+        "knee": [
+          5.675181302915991e-8,
+          0.000002226715423614733,
+          2.9080558835528917e-7,
+          0.9999999999974771
+        ],
+        "armL": [
+          0.708153017716781,
+          -0.044181661270327244,
+          0.7002442393004383,
+          -0.0789009642865704
+        ],
+        "armR": [
+          0.6827911049796388,
+          -0.012557741402222143,
+          0.730472884046061,
+          0.006926526826126265
+        ],
+        "elbow": [
+          0.016344087667754345,
+          0.026303555908676893,
+          -0.02097868991113525,
+          0.9993002977207699
+        ],
+        "cloth": [
+          0.0004860355284472933,
+          0.00003693797183104272,
+          -0.000025183292076951647,
+          0.999999880885487
+        ],
+        "smileCorners": [
+          [
+            0.01236860640347004,
+            -0.011013628914952278,
+            0.06653685122728348
+          ],
+          [
+            -0.012369390577077866,
+            -0.011013390496373177,
+            0.06653685867786407
+          ]
+        ]
+      }
+    },
+    {
+      "time": 8,
+      "action": "look-at-display",
+      "footTargetError": 0.002501157265821064,
+      "pose": {
+        "head": [
+          -0.09835883682380982,
+          -0.12363786177763812,
+          0.01616167426464078,
+          0.9873084988655018
+        ],
+        "wrist": [
+          0.22893311083316803,
+          0.4324272871017456,
+          0.8651455640792847,
+          0.11008815467357635
+        ],
+        "hip": [
+          -0.9999999982119133,
+          0.000027899506807421183,
+          -7.934619076835165e-7,
+          -0.00005288814722970758
+        ],
+        "knee": [
+          0.0018529780740303644,
+          0.0016352076873568484,
+          -0.020402237206359156,
+          0.9997887983394521
+        ],
+        "armL": [
+          0.708153017716781,
+          -0.044181661270327244,
+          0.7002442393004383,
+          -0.0789009642865704
+        ],
+        "armR": [
+          0.6826515374179464,
+          -0.016887037090951934,
+          0.7304719725129001,
+          0.010602129950862328
+        ],
+        "elbow": [
+          0.016344087667754345,
+          0.026303555908676893,
+          -0.02097868991113525,
+          0.9993002977207699
+        ],
+        "cloth": [
+          -0.000008792953237382522,
+          0.0001469405290381486,
+          0.0006914273776907149,
+          0.9999997501297094
+        ],
+        "smileCorners": [
+          [
+            0.01236860640347004,
+            -0.011013628914952278,
+            0.06653685122728348
+          ],
+          [
+            -0.012369390577077866,
+            -0.011013390496373177,
+            0.06653685867786407
+          ]
+        ]
+      }
+    },
+    {
+      "time": 19,
+      "action": "look-at-dragon",
+      "footTargetError": 0.002501157265821064,
+      "pose": {
+        "head": [
+          -0.011546240586579454,
+          -0.17330806141430427,
+          0.006161757529403476,
+          0.9847807300179305
+        ],
+        "wrist": [
+          0.22893311083316803,
+          0.4324272871017456,
+          0.8651455640792847,
+          0.11008815467357635
+        ],
+        "hip": [
+          -0.9999999982119133,
+          0.000027899506807421183,
+          -7.934619076835165e-7,
+          -0.00005288814722970758
+        ],
+        "knee": [
+          0.0018529780740303644,
+          0.0016352076873568484,
+          -0.020402237206359156,
+          0.9997887983394521
+        ],
+        "armL": [
+          0.708153017716781,
+          -0.044181661270327244,
+          0.7002442393004383,
+          -0.0789009642865704
+        ],
+        "armR": [
+          0.6827109729280206,
+          -0.015125907132516478,
+          0.7304751877353534,
+          0.009106903426826359
+        ],
+        "elbow": [
+          0.016344087667754345,
+          0.026303555908676893,
+          -0.02097868991113525,
+          0.9993002977207699
+        ],
+        "cloth": [
+          0.0005767586605039646,
+          0.00019372662712831339,
+          0.0006737075993005761,
+          0.9999995879687389
+        ],
+        "smileCorners": [
+          [
+            0.01236860640347004,
+            -0.011013628914952278,
+            0.06653685122728348
+          ],
+          [
+            -0.012369390577077866,
+            -0.011013390496373177,
+            0.06653685867786407
+          ]
+        ]
+      }
+    },
+    {
+      "time": 28,
+      "action": "adjust-sleeve",
+      "footTargetError": 0.002501157265821064,
+      "pose": {
+        "head": [
+          -0.09883835555804968,
+          0.0004857436033801087,
+          0.004439406725583044,
+          0.9950935074077328
+        ],
+        "wrist": [
+          0.25667785569452817,
+          0.39537526873888934,
+          0.8799664421781563,
+          0.0587699975961511
+        ],
+        "hip": [
+          -0.9999999982119133,
+          0.000027899506807421183,
+          -7.934619076835165e-7,
+          -0.00005288814722970758
+        ],
+        "knee": [
+          0.0018529780740303644,
+          0.0016352076873568484,
+          -0.020402237206359156,
+          0.9997887983394521
+        ],
+        "armL": [
+          0.7002725248366707,
+          -0.03806072134860901,
+          0.6936093428729073,
+          -0.164547637461192
+        ],
+        "armR": [
+          0.682079391636704,
+          -0.09514134209444189,
+          0.7250613543214212,
+          -0.0013656451060149108
+        ],
+        "elbow": [
+          0.09826386499898947,
+          0.15452662906179349,
+          0.059941149454470335,
+          0.9812609176096689
+        ],
+        "cloth": [
+          -0.000029463264451683664,
+          -7.158337659886352e-7,
+          0.000008728025332019946,
+          0.9999999995276803
+        ],
+        "smileCorners": [
+          [
+            0.01236860640347004,
+            -0.011013628914952278,
+            0.06653685122728348
+          ],
+          [
+            -0.012369390577077866,
+            -0.011013390496373177,
+            0.06653685867786407
+          ]
+        ]
+      }
+    },
+    {
+      "time": 37.6,
+      "action": "rain-response",
+      "footTargetError": 0.002501157265821064,
+      "pose": {
+        "head": [
+          -0.1301892777588497,
+          0.07377240863997586,
+          -0.014364395180741407,
+          0.9886364858351849
+        ],
+        "wrist": [
+          0.22893311083316803,
+          0.4324272871017456,
+          0.8651455640792847,
+          0.11008815467357635
+        ],
+        "hip": [
+          -0.9999999982119133,
+          0.000027899506807421183,
+          -7.934619076835165e-7,
+          -0.00005288814722970758
+        ],
+        "knee": [
+          0.0018529780740303644,
+          0.0016352076873568484,
+          -0.020402237206359156,
+          0.9997887983394521
+        ],
+        "armL": [
+          0.708153017716781,
+          -0.044181661270327244,
+          0.7002442393004383,
+          -0.0789009642865704
+        ],
+        "armR": [
+          0.6826443152915977,
+          -0.017093937897214573,
+          0.730471338673459,
+          0.010777793239175234
+        ],
+        "elbow": [
+          0.016344087667754345,
+          0.026303555908676893,
+          -0.02097868991113525,
+          0.9993002977207699
+        ],
+        "cloth": [
+          -0.00027417576482595635,
+          -0.0001417985608184294,
+          -0.0005510879990147044,
+          0.9999998005114655
+        ],
+        "smileCorners": [
+          [
+            0.01236860640347004,
+            -0.011013628914952278,
+            0.06653685122728348
+          ],
+          [
+            -0.012369390577077866,
+            -0.011013390496373177,
+            0.06653685867786407
+          ]
+        ]
+      }
+    },
+    {
+      "time": 46,
+      "action": "rest",
+      "footTargetError": 0.0006953176549016598,
+      "pose": {
+        "head": [
+          -0.09848870003284677,
+          0.00005264738836107095,
+          0.00006310825844845404,
+          0.9951381926671325
+        ],
+        "wrist": [
+          0.22893311083316803,
+          0.4324272871017456,
+          0.8651455640792847,
+          0.11008815467357635
+        ],
+        "hip": [
+          -0.9999999998639785,
+          0.0000022594749096538184,
+          -3.4215536414340676e-7,
+          -0.000016334626653030427
+        ],
+        "knee": [
+          0.00048146190995654466,
+          0.000424907789771432,
+          -0.005277971364596913,
+          0.9999858652331409
+        ],
+        "armL": [
+          0.708153017716781,
+          -0.044181661270327244,
+          0.7002442393004383,
+          -0.0789009642865704
+        ],
+        "armR": [
+          0.6826978822804111,
+          -0.015523240301338831,
+          0.7304748031538564,
+          0.009444243678756441
+        ],
+        "elbow": [
+          0.016344087667754345,
+          0.026303555908676893,
+          -0.02097868991113525,
+          0.9993002977207699
+        ],
+        "cloth": [
+          0.00020789201850406736,
+          -0.0000746979277188599,
+          -0.000434688693759349,
+          0.9999998811234942
+        ],
+        "smileCorners": [
+          [
+            0.01236860640347004,
+            -0.011013628914952278,
+            0.06653685122728348
+          ],
+          [
+            -0.012369390577077866,
+            -0.011013390496373177,
+            0.06653685867786407
+          ]
+        ]
+      }
+    },
+    {
+      "time": 55,
+      "action": "rest",
+      "footTargetError": 3.597058350194085e-14,
+      "pose": {
+        "head": [
+          -0.09877490892855638,
+          0.0004069797020357783,
+          0.0036435220634450285,
+          0.9951030749495339
+        ],
+        "wrist": [
+          0.22893311083316803,
+          0.4324272871017456,
+          0.8651455640792847,
+          0.11008815467357635
+        ],
+        "hip": [
+          -0.99999999999999,
+          -9.313220764240577e-8,
+          -7.549789411458086e-8,
+          -7.549789300104852e-8
+        ],
+        "knee": [
+          5.675181302915991e-8,
+          0.000002226715423614733,
+          2.9080558835528917e-7,
+          0.9999999999974771
+        ],
+        "armL": [
+          0.708153017716781,
+          -0.044181661270327244,
+          0.7002442393004383,
+          -0.0789009642865704
+        ],
+        "armR": [
+          0.6827784617686049,
+          -0.012980026469672473,
+          0.730473832676638,
+          0.007285044575273549
+        ],
+        "elbow": [
+          0.016344087667754345,
+          0.026303555908676893,
+          -0.02097868991113525,
+          0.9993002977207699
+        ],
+        "cloth": [
+          0.0008488670581593529,
+          0.00015669188022819438,
+          0.0003891406611489367,
+          0.9999995517209262
+        ],
+        "smileCorners": [
+          [
+            0.01236860640347004,
+            -0.011013628914952278,
+            0.06653685122728348
+          ],
+          [
+            -0.012369390577077866,
+            -0.011013390496373177,
+            0.06653685867786407
+          ]
+        ]
+      }
+    }
+  ]
+}

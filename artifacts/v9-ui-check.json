@@ -1,0 +1,331 @@
+{
+  "desktop_browser": true,
+  "real_iphone_test": false,
+  "checks": [
+    {
+      "name": "Heat fits 390x844",
+      "passed": true,
+      "detail": {
+        "x": 14,
+        "y": 535.703125,
+        "width": 362,
+        "height": 290.296875
+      }
+    },
+    {
+      "name": "Heat controls are touch sized 390",
+      "passed": true,
+      "detail": {
+        "hold": {
+          "x": 29,
+          "y": 761,
+          "width": 228,
+          "height": 52
+        },
+        "retry": {
+          "x": 265,
+          "y": 761,
+          "width": 96,
+          "height": 52
+        }
+      }
+    },
+    {
+      "name": "Camera separate from pause 390",
+      "passed": true,
+      "detail": {
+        "camera": {
+          "x": 22,
+          "y": 85,
+          "width": 81,
+          "height": 44
+        },
+        "pause": {
+          "x": 316,
+          "y": 85,
+          "width": 54,
+          "height": 46
+        }
+      }
+    },
+    {
+      "name": "Portrait panel leaves oven visible",
+      "passed": true,
+      "detail": {
+        "x": 14,
+        "y": 535.703125,
+        "width": 362,
+        "height": 290.296875
+      }
+    },
+    {
+      "name": "Heat fits 320x568",
+      "passed": true,
+      "detail": {
+        "x": 10,
+        "y": 271,
+        "width": 300,
+        "height": 279
+      }
+    },
+    {
+      "name": "Heat controls are touch sized 320",
+      "passed": true,
+      "detail": {
+        "hold": {
+          "x": 21,
+          "y": 485,
+          "width": 185,
+          "height": 52
+        },
+        "retry": {
+          "x": 212,
+          "y": 485,
+          "width": 87,
+          "height": 52
+        }
+      }
+    },
+    {
+      "name": "Camera separate from pause 320",
+      "passed": true,
+      "detail": {
+        "camera": {
+          "x": 22,
+          "y": 85,
+          "width": 81,
+          "height": 44
+        },
+        "pause": {
+          "x": 246,
+          "y": 85,
+          "width": 54,
+          "height": 46
+        }
+      }
+    },
+    {
+      "name": "Heat fits 844x390",
+      "passed": true,
+      "detail": {
+        "x": 467,
+        "y": 150.3125,
+        "width": 360,
+        "height": 227.6875
+      }
+    },
+    {
+      "name": "Heat controls are touch sized 844",
+      "passed": true,
+      "detail": {
+        "hold": {
+          "x": 479,
+          "y": 325,
+          "width": 238,
+          "height": 44
+        },
+        "retry": {
+          "x": 725,
+          "y": 325,
+          "width": 90,
+          "height": 44
+        }
+      }
+    },
+    {
+      "name": "Camera separate from pause 844",
+      "passed": true,
+      "detail": {
+        "camera": {
+          "x": 24,
+          "y": 205,
+          "width": 54,
+          "height": 44
+        },
+        "pause": {
+          "x": 24,
+          "y": 154,
+          "width": 54,
+          "height": 46
+        }
+      }
+    },
+    {
+      "name": "Reset callback leaves story intact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Cold release persists without ghost retry",
+      "passed": true,
+      "detail": {
+        "status": "cold",
+        "holding": false,
+        "elapsed": 0.8011000000014901,
+        "electricalTime": 0.0640880000001192,
+        "progress": 0.213626666667064,
+        "attempts": 1,
+        "target": 0.3,
+        "rate": 0.08,
+        "successMin": 0.075,
+        "successMax": 0.125,
+        "round": 0,
+        "completed": 0,
+        "pulseTarget": 0.1,
+        "pulseSpan": 0.2,
+        "pulseBurn": 0.145,
+        "pulseTime": 0.0640880000001192,
+        "pulseProgress": 0.32044000000059597,
+        "lastResult": "cold",
+        "lastPulseTime": 0.0640880000001192,
+        "failures": 1,
+        "demoIndex": -1,
+        "demoProgress": 0
+      }
+    },
+    {
+      "name": "Own retry starts ready",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Failure does not move panel",
+      "passed": true,
+      "detail": {
+        "before": {
+          "x": 14,
+          "y": 535.703125,
+          "width": 362,
+          "height": 290.296875
+        },
+        "after": {
+          "x": 14,
+          "y": 535.703125,
+          "width": 362,
+          "height": 290.296875
+        }
+      }
+    },
+    {
+      "name": "Pulse 1 succeeds",
+      "passed": true,
+      "detail": {
+        "status": "ready",
+        "holding": false,
+        "elapsed": 0,
+        "electricalTime": 0.1,
+        "progress": 0.33333333333333337,
+        "attempts": 2,
+        "target": 0.3,
+        "rate": 0.1,
+        "successMin": 0.082,
+        "successMax": 0.118,
+        "round": 1,
+        "completed": 1,
+        "pulseTarget": 0.1,
+        "pulseSpan": 0.2,
+        "pulseBurn": 0.145,
+        "pulseTime": 0,
+        "pulseProgress": 0,
+        "lastResult": "charged",
+        "lastPulseTime": 0.10011200000017884,
+        "failures": 1,
+        "demoIndex": -1,
+        "demoProgress": 0
+      }
+    },
+    {
+      "name": "Pulse 1 waits for next press",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pulse 2 succeeds",
+      "passed": true,
+      "detail": {
+        "status": "ready",
+        "holding": false,
+        "elapsed": 0,
+        "electricalTime": 0.2,
+        "progress": 0.6666666666666667,
+        "attempts": 3,
+        "target": 0.3,
+        "rate": 0.125,
+        "successMin": 0.087,
+        "successMax": 0.113,
+        "round": 2,
+        "completed": 2,
+        "pulseTarget": 0.1,
+        "pulseSpan": 0.2,
+        "pulseBurn": 0.145,
+        "pulseTime": 0,
+        "pulseProgress": 0,
+        "lastResult": "charged",
+        "lastPulseTime": 0.10010000000000004,
+        "failures": 1,
+        "demoIndex": -1,
+        "demoProgress": 0
+      }
+    },
+    {
+      "name": "Pulse 2 waits for next press",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pulse 3 succeeds",
+      "passed": true,
+      "detail": {
+        "status": "won",
+        "holding": false,
+        "elapsed": 0,
+        "electricalTime": 0.3,
+        "progress": 1,
+        "attempts": 4,
+        "target": 0.3,
+        "rate": 0.125,
+        "successMin": 0.087,
+        "successMax": 0.113,
+        "round": 2,
+        "completed": 3,
+        "pulseTarget": 0.1,
+        "pulseSpan": 0.2,
+        "pulseBurn": 0.145,
+        "pulseTime": 0.1,
+        "pulseProgress": 0.5,
+        "lastResult": "won",
+        "lastPulseTime": 0.10014999999990681,
+        "failures": 1,
+        "demoIndex": -1,
+        "demoProgress": 0
+      }
+    },
+    {
+      "name": "Third pulse returns to story",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Rewind art freezes with scene clock",
+      "passed": true,
+      "detail": {
+        "before": [
+          "rotate(-378.88deg)",
+          "scaleX(0.824593)",
+          "0.718741"
+        ],
+        "after": [
+          "rotate(-378.88deg)",
+          "scaleX(0.824593)",
+          "0.718741"
+        ]
+      }
+    },
+    {
+      "name": "No new independent render loop",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "passed": true
+}

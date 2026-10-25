@@ -32,8 +32,9 @@ async function ensureXaihi(){
   if(world?.xaihi)return world.xaihi;
   if(xaihiPromise)return xaihiPromise;
   world.xaihiLoading=true;world.xaihiError=null;
-  xaihiPromise=import('./xaihi.js').then(({loadXaihi})=>loadXaihi(world.scene,world.r,()=>{},abort.signal)).then(actor=>{
+  xaihiPromise=import('./xaihi.js').then(({loadXaihi})=>loadXaihi(world.scene,world.r,()=>{},abort.signal)).then(async actor=>{
     if(closed){actor.dispose();return null;}
+    await world.prepareShaders(actor.root,'xaihi');if(closed){actor.dispose();return null;}
     world.xaihi=actor;world.xaihiLoading=false;
     if(assetPaused){assetPaused=false;loading.classList.add('done');mission?.setPaused(false);}
     return actor;
@@ -51,7 +52,7 @@ async function init(){
       onZone:inside=>$('#app').classList.toggle('interior-view',inside),onFraming:close=>$('#app').classList.toggle('close-view',close),
       onManual:()=>{for(const b of buttons){b.classList.remove('active');if(b.dataset.view!=='reset')b.setAttribute('aria-pressed','false');}},
       onContextLost:()=>showError('畫面暫時中斷。可等待恢復，或重新載入。'),onContextRestored:()=>{error.hidden=true;world.start();}
-    });world.start();
+    });
     try{
       world.actors=await loadActors(world.scene,world.r,text=>message.textContent=text,abort.signal);
       if(closed){world.dispose();return;}
@@ -60,7 +61,9 @@ async function init(){
       if(e.name==='AbortError')return;$('#characters').checked=false;$('#characters').disabled=true;$('#characters').parentElement.title=e.message;
       console.warn(e);const note=document.createElement('p');note.className='control-tip';note.textContent='人物暫時沒有載入。請重新整理後再試。';$('#settings').append(note);
     }
-    mission=createMission({mount:$('#app'),
+    message.textContent='正在準備雨夜光影';await world.prepareShaders();if(closed)return;
+    world.tick(0,0,true);
+    mission=createMission({mount:$('#app'),onCameraReset:()=>world.resetStoryCamera(),
       onDinner:branch=>{
         if(!branch){exploration?.setActive(false);world.director.reset();mission?.setTargets(world.director.targets);world.actors?.setMove(0,0,false);world.actors?.setObstacles(world.store.floorPlan);world.actors?.teleport(-1.25,2.48);}
         world.actors?.setDinner(branch);
@@ -91,9 +94,9 @@ async function init(){
       }
     });
     world.onTick=(time,delta)=>{mission.update(time);world.missionState=mission.state;exploration.update(delta);};
-    loading.classList.add('done');
+    loading.classList.add('done');world.start();
     window.__rainy711={
-      get time(){return world.time;},get renders(){return world.renderCount;},get drawCalls(){return world.renderer.info.render.calls;},get triangles(){return world.renderer.info.render.triangles;},
+      get time(){return world.time;},get renders(){return world.renderCount;},get drawCalls(){return world.renderer.info.render.calls;},get triangles(){return world.renderer.info.render.triangles;},get warmup(){return world.shaderWarmup.state;},resetCamera:()=>world.resetStoryCamera(),
       get aa(){return {msaa:world.msaaSamples,postSamples:world.composer.renderTarget1.samples,postDepth:world.composer.renderTarget1.depthBuffer,fxaa:world.fxaa.enabled,dpr:world.renderer.getPixelRatio()};},
       get metrics(){let lights=0;world.scene.traverse(n=>{if(n.isLight&&n.visible)lights++;});return {batches:world.batchStats,lights,weather:world.weather.metrics,camera:world.walkCamera.state};},
       get walkCamera(){return world.walkCamera.state;},get glassReady(){const u=world.store.glass.uniforms;return !!(u.uDepth.value?.isDepthTexture&&u.uScene.value?.isTexture&&u.uEnvironment.value?.isCubeTexture);},

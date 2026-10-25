@@ -8,11 +8,19 @@ export const HEAT_DEMO_DURATION=6;
 export const RETURN_DURATION=3;
 export const TOUR_DURATION=16;
 export const LANDING_DURATION=sequences.landing.length*3;
-export const HEAT_RATE=.125;
 export const HEAT_TARGET=.3;
-export const HEAT_SUCCESS_MIN=.255;
-export const HEAT_SUCCESS_MAX=.345;
-export const HEAT_BURN=.37;
+export const HEAT_PULSE_TARGET=.1;
+export const HEAT_PULSE_SPAN=.2;
+export const HEAT_BURN=.145;
+export const HEAT_PULSES=Object.freeze([
+  Object.freeze({rate:.08,successMin:.075,successMax:.125}),
+  Object.freeze({rate:.10,successMin:.082,successMax:.118}),
+  Object.freeze({rate:.125,successMin:.087,successMax:.113}),
+]);
+// Kept as named exports for integrations; active timing comes from heatSettings.
+export const HEAT_RATE=HEAT_PULSES[2].rate;
+export const HEAT_SUCCESS_MIN=HEAT_PULSES[0].successMin;
+export const HEAT_SUCCESS_MAX=HEAT_PULSES[0].successMax;
 export const CONNECTION_ACCOUNT='endfield_power';
 export const CONNECTION_PASSWORD='5201314';
 export const outputModes=[
@@ -46,7 +54,7 @@ export class MissionMachine{
   }
   resetInteraction(){
     this.connection={field:'account',account:'',password:'',lastKey:'',keyAt:-Infinity,keyNumber:0,error:'',verified:false,lever:0};
-    this.heatStatus='ready';this.heatHolding=false;this.heatStarted=0;this.heatStored=0;this.heatAttempts=0;this.heatAutoBurn=false;
+    this.heatStatus='ready';this.heatHolding=false;this.heatStarted=0;this.heatStored=0;this.heatAttempts=0;this.heatAutoBurn=false;this.heatCompleted=0;this.heatLastResult='';this.heatLastPulseTime=0;this.heatFailures=0;
   }
   random(){this.randomState=(this.randomState*1664525+1013904223)>>>0;return this.randomState/4294967296;}
   emit(){this.revision++;this.hooks.onState?.(this.state);}
@@ -69,7 +77,7 @@ export class MissionMachine{
     }
     if(phase==='heat-demo')this.line(heatDemoLines[0],entered);
     if(phase==='heat'){
-      this.heatStatus='ready';this.heatHolding=false;this.heatStored=0;this.heatAutoBurn=false;
+      this.heatStatus='ready';this.heatHolding=false;this.heatStored=0;this.heatAutoBurn=false;this.heatAttempts=0;this.heatCompleted=0;this.heatLastResult='';this.heatLastPulseTime=0;this.heatFailures=0;
       this.line(connectionPrompts.heat,entered);
     }
     if(phase==='return')this.line(connectionPrompts.returned,entered);
@@ -148,34 +156,46 @@ export class MissionMachine{
   }
   logicalInput(sourceTime){return this.time+(Number.isFinite(sourceTime)?sourceTime-this.sourceTime:0);}
   syncInput(sourceTime){const time=this.logicalInput(sourceTime);if(Number.isFinite(sourceTime)&&sourceTime>this.sourceTime)this.update(sourceTime);return time;}
+  get heatSettings(){return HEAT_PULSES[Math.min(this.heatCompleted,HEAT_PULSES.length-1)];}
   heatStart(sourceTime){
     if(this.paused||this.phase!=='heat'||this.heatStatus!=='ready')return false;
     const time=this.syncInput(sourceTime);if(this.phase!=='heat'||time<this.entered)return false;
-    this.heatStatus='heating';this.heatHolding=true;this.heatStarted=time;this.heatStored=0;this.heatAutoBurn=false;this.heatAttempts++;
-    this.action('heat-start',true,{attempt:this.heatAttempts});this.emit();return true;
+    this.heatStatus='heating';this.heatHolding=true;this.heatStarted=time;this.heatStored=0;this.heatAutoBurn=false;this.heatAttempts++;this.heatLastResult='';
+    this.action('heat-start',true,{attempt:this.heatAttempts,round:this.heatCompleted});this.emit();return true;
   }
   heatStop(sourceTime){
     if(this.paused||this.phase!=='heat')return false;
     const time=this.syncInput(sourceTime);
     if(this.phase!=='heat'||time<this.heatStarted||(!this.heatHolding&&!this.heatAutoBurn))return false;
-    // An input can arrive after a slow 3D frame; judge its original timestamp, not that frame.
+    // Judge the original release even if a slow 3D frame already showed a safety cut.
+    const automaticBurn=this.heatAutoBurn,settings=this.heatSettings,round=this.heatCompleted;
     this.heatStored=Math.max(0,time-this.heatStarted);this.heatHolding=false;this.heatAutoBurn=false;
-    const electrical=this.heatStored*HEAT_RATE;
-    this.heatStatus=electrical<HEAT_SUCCESS_MIN-1e-9?'cold':electrical>HEAT_SUCCESS_MAX+1e-9?'burnt':'won';
-    this.action('heat-stop',this.heatStatus,{electricalTime:electrical,attempt:this.heatAttempts});this.emit();
-    if(this.heatStatus==='won')this.sequence('flashback-end',sequences['flashback-end']);
-    return {result:this.heatStatus,electricalTime:electrical,elapsed:this.heatStored};
+    const pulseTime=this.heatStored*settings.rate;
+    const result=pulseTime<settings.successMin-1e-9?'cold':pulseTime>settings.successMax+1e-9?'burnt':round===2?'won':'charged';
+    if(automaticBurn&&!['cold','burnt'].includes(result))this.heatFailures=Math.max(0,this.heatFailures-1);
+    if(!automaticBurn&&['cold','burnt'].includes(result))this.heatFailures++;
+    this.heatLastResult=result;this.heatLastPulseTime=pulseTime;
+    if(result==='charged'||result==='won'){
+      this.heatCompleted++;this.heatStatus=result==='won'?'won':'ready';this.heatStored=0;
+    }else this.heatStatus=result;
+    const electricalTime=clamp(this.heatCompleted*HEAT_PULSE_TARGET+(['cold','burnt'].includes(result)?pulseTime:0),0,HEAT_TARGET);
+    this.action('heat-stop',result,{electricalTime,pulseTime,round,completed:this.heatCompleted,attempt:this.heatAttempts});this.emit();
+    if(result==='won')this.sequence('flashback-end',sequences['flashback-end']);
+    return {result,electricalTime,pulseTime,round,completed:this.heatCompleted,elapsed:Math.max(0,time-this.heatStarted)};
   }
   heatRetry(){
     if(this.paused||this.phase!=='heat'||!['cold','burnt'].includes(this.heatStatus))return false;
-    this.heatStatus='ready';this.heatHolding=false;this.heatStored=0;this.heatAutoBurn=false;this.line(connectionPrompts.heat);this.action('heat-retry',true);return true;
+    const burnt=this.heatStatus==='burnt';if(burnt)this.heatCompleted=0;
+    this.heatStatus='ready';this.heatHolding=false;this.heatStored=0;this.heatAutoBurn=false;this.heatLastResult=burnt?'restart':'retry';
+    this.line(connectionPrompts.heat);this.action('heat-retry',true,{completed:this.heatCompleted,restart:burnt});return true;
   }
   heatCancel(){
     if(this.phase!=='heat'||!this.heatHolding)return false;
-    this.heatStatus='ready';this.heatHolding=false;this.heatStored=0;this.heatAutoBurn=false;this.action('heat-cancel',true);this.emit();return true;
+    this.heatStatus='ready';this.heatHolding=false;this.heatStored=0;this.heatAutoBurn=false;this.heatLastResult='cancelled';
+    this.action('heat-cancel',true,{completed:this.heatCompleted});this.emit();return true;
   }
   setAuto(value){this.auto=Boolean(value);this.emit();}
-  setPaused(value){this.paused=Boolean(value);this.emit();}
+  setPaused(value){if(value&&this.heatHolding)this.heatCancel();this.paused=Boolean(value);this.emit();}
   holdAttack(seconds){if(!Number.isFinite(seconds)||seconds<0)return false;this.attackHoldUntil=Math.max(this.attackHoldUntil,this.time+seconds);this.emit();return true;}
   setOutput(id){
     if(this.paused||this.phase!=='combat'||!outputModes.some(mode=>mode.id===id))return false;
@@ -250,8 +270,9 @@ export class MissionMachine{
     else if(this.phase==='heat-demo')this.timedLine(heatDemoLines,elapsed);
     else if(this.phase==='aim-final')this.timedLine(finalAmmoLines,elapsed);
     else if(this.phase==='landing')this.timedLine(sequences.landing,elapsed,3);
-    if(this.phase==='heat'&&this.heatHolding&&this.heatElapsed*HEAT_RATE>=HEAT_BURN){
-      this.heatStored=HEAT_BURN/HEAT_RATE;this.heatHolding=false;this.heatStatus='burnt';this.heatAutoBurn=true;this.action('heat-stop','burnt',{electricalTime:HEAT_BURN,attempt:this.heatAttempts,automatic:true});this.emit();
+    if(this.phase==='heat'&&this.heatHolding&&this.heatElapsed*this.heatSettings.rate>=HEAT_BURN){
+      this.heatStored=HEAT_BURN/this.heatSettings.rate;this.heatHolding=false;this.heatStatus='burnt';this.heatAutoBurn=true;this.heatLastResult='burnt';this.heatLastPulseTime=HEAT_BURN;this.heatFailures++;
+      this.action('heat-stop','burnt',{electricalTime:Math.min(HEAT_TARGET,this.heatCompleted*HEAT_PULSE_TARGET+HEAT_BURN),pulseTime:HEAT_BURN,round:this.heatCompleted,attempt:this.heatAttempts,automatic:true});this.emit();
     }
     if(this.phase==='complete'&&!this.node&&this.time>=this.quietUntil){this.nextChat();return;}
     if(this.node){
@@ -268,16 +289,18 @@ export class MissionMachine{
   get state(){
     const elapsed=Math.max(0,this.time-this.entered),meter=this.meterAt(),target=this.targets.find(v=>v.id===this.target),settings=this.meterSettings,c=this.connection;
     const connection={...c,value:c[c.field],expected:c.field==='account'?CONNECTION_ACCOUNT:CONNECTION_PASSWORD,captchaReady:this.phase==='captcha'&&elapsed>=6};
-    const electricalTime=clamp(this.heatElapsed*HEAT_RATE,0,HEAT_BURN),demo=this.phase==='heat-demo';
-    const heat={status:this.heatStatus,holding:this.heatHolding,elapsed:this.heatElapsed,electricalTime,progress:clamp(electricalTime/HEAT_TARGET),attempts:this.heatAttempts,target:HEAT_TARGET,rate:HEAT_RATE,successMin:HEAT_SUCCESS_MIN,successMax:HEAT_SUCCESS_MAX,demoIndex:demo?Math.min(1,Math.floor(elapsed/3)):-1,demoProgress:demo?(elapsed%3)/3:0};
-    const vcr=vcrPhases.has(this.phase),combatHoldRemaining=Math.max(0,this.attackHoldUntil-this.time);
+    const heatSettings=this.heatSettings,pulseTime=this.heatStatus==='won'?HEAT_PULSE_TARGET:clamp(this.heatElapsed*heatSettings.rate,0,HEAT_BURN),demo=this.phase==='heat-demo';
+    const electricalTime=clamp(this.heatCompleted*HEAT_PULSE_TARGET+(this.heatStatus==='won'?0:pulseTime),0,HEAT_TARGET);
+    const heat={status:this.heatStatus,holding:this.heatHolding,elapsed:this.heatElapsed,electricalTime,progress:clamp(electricalTime/HEAT_TARGET),attempts:this.heatAttempts,target:HEAT_TARGET,...heatSettings,round:Math.min(this.heatCompleted,2),completed:this.heatCompleted,pulseTarget:HEAT_PULSE_TARGET,pulseSpan:HEAT_PULSE_SPAN,pulseBurn:HEAT_BURN,pulseTime,pulseProgress:clamp(pulseTime/HEAT_PULSE_SPAN),lastResult:this.heatLastResult,lastPulseTime:this.heatLastPulseTime,failures:this.heatFailures,demoIndex:demo?Math.min(1,Math.floor(elapsed/3)):-1,demoProgress:demo?(elapsed%3)/3:0};
+    const vcr=vcrPhases.has(this.phase),combatHoldRemaining=Math.max(0,this.attackHoldUntil-this.time),reverse=clamp((elapsed-.4)/6);
+    const rewindProgress=this.phase==='rewind'?reverse*reverse*(3-2*reverse):0,rewindStage=this.phase!=='rewind'?null:elapsed<.4?'freeze':elapsed>=6.4?'settle':'reverse';
     return {phase:this.phase,node:this.node,nodeId:this.node?.id||null,speaker:this.node?.speaker||null,text:this.node?.text||'',revealed:this.revealed,
       branch:this.branch,choices:this.phase==='choice'?dinnerChoices:[],waitingChoice:this.phase==='choice',progress:this.progress,
       energy:Math.max(0,100-this.progress/99*100),charge:this.phase==='charge'?Math.min(100,elapsed/CHARGE_DURATION*100):preChargePhases.has(this.phase)?0:100,
       meter,meterElapsed:Math.max(0,this.time-this.meterEntered),meterPeriod:settings.period,meterSettings:settings,output:this.output,outputModes,
       landingDuration:LANDING_DURATION,tourDuration:TOUR_DURATION,chargeDuration:CHARGE_DURATION,rewindDuration:REWIND_DURATION,returnDuration:RETURN_DURATION,heatDemoDuration:HEAT_DEMO_DURATION,
       phaseElapsed:elapsed,time:this.time,clock:this.time,sourceTime:this.sourceTime,paused:this.paused,auto:this.auto,castingElapsed:this.castingElapsed,
-      connection,login:connection,heat,vcr,rewindProgress:this.phase==='rewind'?clamp(elapsed/REWIND_DURATION):0,returnProgress:this.phase==='return'?clamp(elapsed/RETURN_DURATION):0,vcrElapsed:vcr&&this.vcrStarted!==null?Math.max(0,this.time-this.vcrStarted):0,replayStage:vcr?this.phase:null,vcrSnapshot:this.vcrSnapshot?{...this.vcrSnapshot}:null,
+      connection,login:connection,heat,vcr,rewindProgress,rewindStage,returnProgress:this.phase==='return'?clamp(elapsed/RETURN_DURATION):0,vcrElapsed:vcr&&this.vcrStarted!==null?Math.max(0,this.time-this.vcrStarted):0,replayStage:vcr?this.phase:null,vcrSnapshot:this.vcrSnapshot?{...this.vcrSnapshot}:null,
       target:this.target,targetLabel:target?.label||'店面外牆',targets:this.targets,feedback:this.feedback,shots:this.shots,hits:this.hits,attackHoldUntil:this.attackHoldUntil,combatHoldRemaining,attackHeld:combatHoldRemaining>0,
       canAttack:['combat','aim-final'].includes(this.phase)&&!this.paused&&this.time-this.lastAttack>=.6&&combatHoldRemaining===0,
       ended:this.ended,busy:!!this.node||!['ready','complete'].includes(this.phase),sequenceKind:this.sequenceKind,endingCaption,revision:this.revision};

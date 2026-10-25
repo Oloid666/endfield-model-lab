@@ -1,0 +1,3748 @@
+{
+  "url": "http://127.0.0.1:4204/endfield-model-lab/",
+  "browser": "Desktop Chromium / SwiftShader",
+  "real_iphone_test": false,
+  "viewport": [
+    390,
+    844
+  ],
+  "deterministic_scene_clock": true,
+  "checks": [
+    {
+      "name": "Original Zhuang model and bones load",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "One WebGL canvas retained",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Shader preparation uses phase text instead of a fake percentage",
+      "passed": true,
+      "detail": [
+        "正在點亮街角",
+        "正在請莊芳宜下班",
+        "正在載入人物 28%",
+        "正在載入人物 29%",
+        "正在載入人物 39%",
+        "正在載入人物 41%",
+        "正在載入人物 56%",
+        "正在載入人物 58%",
+        "正在載入人物 84%",
+        "正在載入人物 100%",
+        "正在整理衣袖",
+        "正在準備雨夜光影"
+      ]
+    },
+    {
+      "name": "Known model download percentages stay within 0 to 100",
+      "passed": true,
+      "detail": [
+        "正在點亮街角",
+        "正在請莊芳宜下班",
+        "正在載入人物 28%",
+        "正在載入人物 29%",
+        "正在載入人物 39%",
+        "正在載入人物 41%",
+        "正在載入人物 56%",
+        "正在載入人物 58%",
+        "正在載入人物 84%",
+        "正在載入人物 100%",
+        "正在整理衣袖",
+        "正在準備雨夜光影"
+      ]
+    },
+    {
+      "name": "Initial scene shader preparation completed on one renderer",
+      "passed": true,
+      "detail": {
+        "stage": "ready",
+        "pending": 0,
+        "parallel": false,
+        "completed": [
+          "scene"
+        ],
+        "durationMs": 99,
+        "programs": 94,
+        "error": null
+      }
+    },
+    {
+      "name": "Portrait page fits viewport",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Rejected experiment area removed",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Opening is unlimited model inspection",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Opening does not start itself",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Opening oven is already charred and energized",
+      "passed": true,
+      "detail": {
+        "oven": {
+          "mode": "charred",
+          "phase": "ready",
+          "quality": "balanced",
+          "reducedMotion": false,
+          "charred": 1,
+          "arcActive": false,
+          "arcs": 0,
+          "arcSegments": 7,
+          "arcCoreRadius": 0,
+          "arcHaloRadius": 0,
+          "arcPulse": 0,
+          "steam": 0,
+          "food": "cold",
+          "wreck": false,
+          "warming": true,
+          "position": [
+            3.45,
+            1.6,
+            1.43
+          ],
+          "counterVisible": true,
+          "batches": {
+            "meshesBefore": 76,
+            "meshesAfter": 48,
+            "sharedDraws": 2
+          },
+          "display": "極速保溫"
+        },
+        "arc_samples": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          2,
+          2,
+          0,
+          2,
+          2,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "Pear petal geometry drifts outside its planted corner",
+      "passed": true,
+      "detail": {
+        "before": {
+          "quality": "balanced",
+          "reducedMotion": false,
+          "trees": 3,
+          "blossoms": 2700,
+          "newLeaves": 420,
+          "fallingPetals": 48,
+          "driftingPetals": 48,
+          "gustPetals": 0,
+          "petalPool": 96,
+          "escapedPetals": 24,
+          "petalBounds": {
+            "minX": 4.410150535900044,
+            "maxX": 8.283381991605387,
+            "minY": 0.3516399755153444,
+            "maxY": 4.229349342771729,
+            "minZ": -2.097750815175385,
+            "maxZ": 3.9231707776812614
+          },
+          "protected": false,
+          "shield": 0,
+          "center": [
+            7.65,
+            0.29,
+            -0.65
+          ]
+        },
+        "after": {
+          "quality": "balanced",
+          "reducedMotion": false,
+          "trees": 3,
+          "blossoms": 2700,
+          "newLeaves": 420,
+          "fallingPetals": 48,
+          "driftingPetals": 48,
+          "gustPetals": 0,
+          "petalPool": 96,
+          "escapedPetals": 24,
+          "petalBounds": {
+            "minX": 4.212991355504904,
+            "maxX": 8.102390591141669,
+            "minY": 0.2913448709173951,
+            "maxY": 4.190887644137621,
+            "minZ": -2.8533570313465484,
+            "maxZ": 4.09970983653103
+          },
+          "protected": false,
+          "shield": 0,
+          "center": [
+            7.65,
+            0.29,
+            -0.65
+          ]
+        }
+      }
+    },
+    {
+      "name": "Actual rendered image v9-pear-drift.png",
+      "passed": true,
+      "detail": {
+        "spread": 49.69,
+        "pooledSmoke": 0
+      }
+    },
+    {
+      "name": "Actual rendered image v9-opening-microwave.png",
+      "passed": true,
+      "detail": {
+        "spread": 70.69,
+        "pooledSmoke": 0
+      }
+    },
+    {
+      "name": "Opening framebuffer clean",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Three dinner choices A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Dinner choices never auto-select",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Meal model changes A",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Three dinner choices B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Meal model changes B",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Three dinner choices C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Meal model changes C",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Actual rendered image v9-server-closeup.png",
+      "passed": true,
+      "detail": {
+        "spread": 31.67,
+        "pooledSmoke": 0
+      }
+    },
+    {
+      "name": "Approved illustrated Mifu portrait replaces SVG placeholder",
+      "passed": true,
+      "detail": "url(\"http://127.0.0.1:4204/endfield-model-lab/images/mifu-portrait-a-source.png\")"
+    },
+    {
+      "name": "Actual rendered image v9-communication.png",
+      "passed": true,
+      "detail": {
+        "spread": 92.18,
+        "pooledSmoke": 0
+      }
+    },
+    {
+      "name": "Approved patrol line is present",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Quote keeps dramatic typography",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Zhuang response keeps angry emphasis",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Dragon breaks fourth wall about production cost",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Login waits for account input",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Physical keyboard is visible",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Keyboard keys are touch sized",
+      "passed": true,
+      "detail": [
+        {
+          "text": "a",
+          "w": 44,
+          "h": 44,
+          "x": 29,
+          "y": 553
+        },
+        {
+          "text": "b",
+          "w": 44,
+          "h": 44,
+          "x": 77,
+          "y": 553
+        },
+        {
+          "text": "c",
+          "w": 44,
+          "h": 44,
+          "x": 125,
+          "y": 553
+        },
+        {
+          "text": "d",
+          "w": 44,
+          "h": 44,
+          "x": 173,
+          "y": 553
+        },
+        {
+          "text": "e",
+          "w": 44,
+          "h": 44,
+          "x": 221,
+          "y": 553
+        },
+        {
+          "text": "f",
+          "w": 44,
+          "h": 44,
+          "x": 269,
+          "y": 553
+        },
+        {
+          "text": "g",
+          "w": 44,
+          "h": 44,
+          "x": 317,
+          "y": 553
+        },
+        {
+          "text": "h",
+          "w": 44,
+          "h": 44,
+          "x": 29,
+          "y": 601
+        },
+        {
+          "text": "i",
+          "w": 44,
+          "h": 44,
+          "x": 77,
+          "y": 601
+        },
+        {
+          "text": "j",
+          "w": 44,
+          "h": 44,
+          "x": 125,
+          "y": 601
+        },
+        {
+          "text": "k",
+          "w": 44,
+          "h": 44,
+          "x": 173,
+          "y": 601
+        },
+        {
+          "text": "l",
+          "w": 44,
+          "h": 44,
+          "x": 221,
+          "y": 601
+        },
+        {
+          "text": "m",
+          "w": 44,
+          "h": 44,
+          "x": 269,
+          "y": 601
+        },
+        {
+          "text": "n",
+          "w": 44,
+          "h": 44,
+          "x": 317,
+          "y": 601
+        },
+        {
+          "text": "o",
+          "w": 44,
+          "h": 44,
+          "x": 29,
+          "y": 649
+        },
+        {
+          "text": "p",
+          "w": 44,
+          "h": 44,
+          "x": 77,
+          "y": 649
+        },
+        {
+          "text": "q",
+          "w": 44,
+          "h": 44,
+          "x": 125,
+          "y": 649
+        },
+        {
+          "text": "r",
+          "w": 44,
+          "h": 44,
+          "x": 173,
+          "y": 649
+        },
+        {
+          "text": "s",
+          "w": 44,
+          "h": 44,
+          "x": 221,
+          "y": 649
+        },
+        {
+          "text": "t",
+          "w": 44,
+          "h": 44,
+          "x": 269,
+          "y": 649
+        },
+        {
+          "text": "u",
+          "w": 44,
+          "h": 44,
+          "x": 317,
+          "y": 649
+        },
+        {
+          "text": "v",
+          "w": 44,
+          "h": 44,
+          "x": 29,
+          "y": 697
+        },
+        {
+          "text": "w",
+          "w": 44,
+          "h": 44,
+          "x": 77,
+          "y": 697
+        },
+        {
+          "text": "x",
+          "w": 44,
+          "h": 44,
+          "x": 125,
+          "y": 697
+        },
+        {
+          "text": "y",
+          "w": 44,
+          "h": 44,
+          "x": 173,
+          "y": 697
+        },
+        {
+          "text": "z",
+          "w": 44,
+          "h": 44,
+          "x": 221,
+          "y": 697
+        },
+        {
+          "text": "_",
+          "w": 44,
+          "h": 44,
+          "x": 269,
+          "y": 697
+        },
+        {
+          "text": "⌫",
+          "w": 44,
+          "h": 44,
+          "x": 317,
+          "y": 697
+        }
+      ]
+    },
+    {
+      "name": "Login remains inside portrait viewport",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Landscape keyboard retains touch sized keys",
+      "passed": true,
+      "detail": [
+        {
+          "text": "a",
+          "w": 44.5,
+          "h": 44,
+          "x": 430,
+          "y": 193.796875
+        },
+        {
+          "text": "b",
+          "w": 44.5,
+          "h": 44,
+          "x": 478.5,
+          "y": 193.796875
+        },
+        {
+          "text": "c",
+          "w": 44.5,
+          "h": 44,
+          "x": 527,
+          "y": 193.796875
+        },
+        {
+          "text": "d",
+          "w": 44.5,
+          "h": 44,
+          "x": 575.5,
+          "y": 193.796875
+        },
+        {
+          "text": "e",
+          "w": 44.5,
+          "h": 44,
+          "x": 624,
+          "y": 193.796875
+        },
+        {
+          "text": "f",
+          "w": 44.5,
+          "h": 44,
+          "x": 672.5,
+          "y": 193.796875
+        },
+        {
+          "text": "g",
+          "w": 44.5,
+          "h": 44,
+          "x": 721,
+          "y": 193.796875
+        },
+        {
+          "text": "h",
+          "w": 44.5,
+          "h": 44,
+          "x": 769.5,
+          "y": 193.796875
+        },
+        {
+          "text": "i",
+          "w": 44.5,
+          "h": 44,
+          "x": 430,
+          "y": 241.796875
+        },
+        {
+          "text": "j",
+          "w": 44.5,
+          "h": 44,
+          "x": 478.5,
+          "y": 241.796875
+        },
+        {
+          "text": "k",
+          "w": 44.5,
+          "h": 44,
+          "x": 527,
+          "y": 241.796875
+        },
+        {
+          "text": "l",
+          "w": 44.5,
+          "h": 44,
+          "x": 575.5,
+          "y": 241.796875
+        },
+        {
+          "text": "m",
+          "w": 44.5,
+          "h": 44,
+          "x": 624,
+          "y": 241.796875
+        },
+        {
+          "text": "n",
+          "w": 44.5,
+          "h": 44,
+          "x": 672.5,
+          "y": 241.796875
+        },
+        {
+          "text": "o",
+          "w": 44.5,
+          "h": 44,
+          "x": 721,
+          "y": 241.796875
+        },
+        {
+          "text": "p",
+          "w": 44.5,
+          "h": 44,
+          "x": 769.5,
+          "y": 241.796875
+        },
+        {
+          "text": "q",
+          "w": 44.5,
+          "h": 44,
+          "x": 430,
+          "y": 289.796875
+        },
+        {
+          "text": "r",
+          "w": 44.5,
+          "h": 44,
+          "x": 478.5,
+          "y": 289.796875
+        },
+        {
+          "text": "s",
+          "w": 44.5,
+          "h": 44,
+          "x": 527,
+          "y": 289.796875
+        },
+        {
+          "text": "t",
+          "w": 44.5,
+          "h": 44,
+          "x": 575.5,
+          "y": 289.796875
+        },
+        {
+          "text": "u",
+          "w": 44.5,
+          "h": 44,
+          "x": 624,
+          "y": 289.796875
+        },
+        {
+          "text": "v",
+          "w": 44.5,
+          "h": 44,
+          "x": 672.5,
+          "y": 289.796875
+        },
+        {
+          "text": "w",
+          "w": 44.5,
+          "h": 44,
+          "x": 721,
+          "y": 289.796875
+        },
+        {
+          "text": "x",
+          "w": 44.5,
+          "h": 44,
+          "x": 769.5,
+          "y": 289.796875
+        },
+        {
+          "text": "y",
+          "w": 44.5,
+          "h": 44,
+          "x": 430,
+          "y": 337.796875
+        },
+        {
+          "text": "z",
+          "w": 44.5,
+          "h": 44,
+          "x": 478.5,
+          "y": 337.796875
+        },
+        {
+          "text": "_",
+          "w": 44.5,
+          "h": 44,
+          "x": 527,
+          "y": 337.796875
+        },
+        {
+          "text": "⌫",
+          "w": 44.5,
+          "h": 44,
+          "x": 575.5,
+          "y": 337.796875
+        }
+      ]
+    },
+    {
+      "name": "Landscape login remains inside viewport",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Landscape keyboard has a bounded local scroll panel",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Actual rendered image v9-login-landscape.png",
+      "passed": true,
+      "detail": {
+        "spread": 87.02,
+        "pooledSmoke": 0
+      }
+    },
+    {
+      "name": "Login has no countdown",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Incorrect account gets recoverable feedback",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Backspace corrects input",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Replay prompt does not submit account",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Key press drives a physical key and Dragon hop",
+      "passed": true,
+      "detail": {
+        "board": {
+          "visible": true,
+          "phase": "login",
+          "field": "account",
+          "lastKey": "e",
+          "keyNumber": 3,
+          "pressed": true,
+          "lever": 0,
+          "keys": 29,
+          "position": [
+            -1.65,
+            0.335,
+            3.25
+          ],
+          "keyTop": 0.545,
+          "leverPosition": [
+            -2.83,
+            0.7050000000000001,
+            3.27
+          ],
+          "physical": true
+        },
+        "before": [
+          -2.0126628993912794,
+          0.325,
+          3.2472010222923973
+        ],
+        "after": [
+          -2.2630257553638304,
+          0.8451020024299711,
+          3.6398885155449285
+        ]
+      }
+    },
+    {
+      "name": "Actual rendered image v9-login-keyboard.png",
+      "passed": true,
+      "detail": {
+        "spread": 80.73,
+        "pooledSmoke": 0
+      }
+    },
+    {
+      "name": "Full dictated account enters keyboard",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Account advances to password",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Password waits without auto-fill",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Correct local credentials reach CAPTCHA",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "CAPTCHA joke gets reading time",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Actual rendered image v9-captcha.png",
+      "passed": true,
+      "detail": {
+        "spread": 55.2,
+        "pooledSmoke": 0
+      }
+    },
+    {
+      "name": "CAPTCHA remains a local user decision",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "CAPTCHA does not auto-complete",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Checkbox advances to lever",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Canceled lever drag does not connect grid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Actual rendered image v9-lever.png",
+      "passed": true,
+      "detail": {
+        "spread": 53.15,
+        "pooledSmoke": 0
+      }
+    },
+    {
+      "name": "Real right drag starts charging",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Multiple real pylons activate",
+      "passed": true,
+      "detail": {
+        "phase": "charge",
+        "quality": "balanced",
+        "reducedMotion": false,
+        "charge": 0.08366666666666638,
+        "activePylons": 4,
+        "connected": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "positions": [
+          [
+            -12.8,
+            2.1,
+            -9.6
+          ],
+          [
+            -6.1,
+            1.6,
+            -16.5
+          ],
+          [
+            6.7,
+            2.3,
+            -15.3
+          ],
+          [
+            13.6,
+            1.6,
+            -8.3
+          ]
+        ],
+        "originalStyle": true,
+        "drawnLinks": 4,
+        "greenHalos": 4,
+        "energyRings": 12,
+        "energyColumns": 4,
+        "moteBudget": 20,
+        "emission": 3.250179231556742
+      }
+    },
+    {
+      "name": "Pylons have four visible green energy columns",
+      "passed": true,
+      "detail": {
+        "phase": "charge",
+        "quality": "balanced",
+        "reducedMotion": false,
+        "charge": 0.08366666666666638,
+        "activePylons": 4,
+        "connected": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "positions": [
+          [
+            -12.8,
+            2.1,
+            -9.6
+          ],
+          [
+            -6.1,
+            1.6,
+            -16.5
+          ],
+          [
+            6.7,
+            2.3,
+            -15.3
+          ],
+          [
+            13.6,
+            1.6,
+            -8.3
+          ]
+        ],
+        "originalStyle": true,
+        "drawnLinks": 4,
+        "greenHalos": 4,
+        "energyRings": 12,
+        "energyColumns": 4,
+        "moteBudget": 20,
+        "emission": 3.250179231556742
+      }
+    },
+    {
+      "name": "Actual rendered image v9-pylons.png",
+      "passed": true,
+      "detail": {
+        "spread": 63.18,
+        "pooledSmoke": 0
+      }
+    },
+    {
+      "name": "Pause freezes charging clock",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Charge camera beat charge-pylon-one",
+      "passed": true,
+      "detail": {
+        "phase": "charge",
+        "recoil": 0,
+        "shotNumber": 0,
+        "serverImpacted": false,
+        "neighborImpacted": false,
+        "dragonStuck": false,
+        "stuckPosition": [
+          -8.03,
+          2.8,
+          -1.96
+        ],
+        "flightDistance": 12,
+        "lift": 4,
+        "cctv": false,
+        "visualTime": null,
+        "smile": 0,
+        "cameraBeat": "charge-pylon-one",
+        "cameraRoll": 0,
+        "shakeEnvelope": 0,
+        "cameraFov": 38.0082629618151,
+        "reducedMotion": false,
+        "cameraFocus": [
+          -12.8,
+          9.607999999999999,
+          -9.6
+        ]
+      }
+    },
+    {
+      "name": "Actual rendered image v9-pylon-closeup.png",
+      "passed": true,
+      "detail": {
+        "spread": 48.88,
+        "pooledSmoke": 0
+      }
+    },
+    {
+      "name": "Charge camera beat charge-city-array",
+      "passed": true,
+      "detail": {
+        "phase": "charge",
+        "recoil": 0,
+        "shotNumber": 0,
+        "serverImpacted": false,
+        "neighborImpacted": false,
+        "dragonStuck": false,
+        "stuckPosition": [
+          -8.03,
+          2.8,
+          -1.96
+        ],
+        "flightDistance": 12,
+        "lift": 4,
+        "cctv": false,
+        "visualTime": null,
+        "smile": 0,
+        "cameraBeat": "charge-city-array",
+        "cameraRoll": 0,
+        "shakeEnvelope": 0,
+        "cameraFov": 73.93061938333089,
+        "reducedMotion": false,
+        "cameraFocus": [
+          0,
+          7,
+          -1
+        ]
+      }
+    },
+    {
+      "name": "Actual rendered image v9-pylon-array.png",
+      "passed": true,
+      "detail": {
+        "spread": 45.39,
+        "pooledSmoke": 0
+      }
+    },
+    {
+      "name": "Charge camera beat charge-caster-face",
+      "passed": true,
+      "detail": {
+        "phase": "charge",
+        "recoil": 0,
+        "shotNumber": 0,
+        "serverImpacted": false,
+        "neighborImpacted": false,
+        "dragonStuck": false,
+        "stuckPosition": [
+          -8.03,
+          2.8,
+          -1.96
+        ],
+        "flightDistance": 12,
+        "lift": 4,
+        "cctv": false,
+        "visualTime": null,
+        "smile": 0,
+        "cameraBeat": "charge-caster-face",
+        "cameraRoll": 0,
+        "shakeEnvelope": 0,
+        "cameraFov": 38.003465790338524,
+        "reducedMotion": false,
+        "cameraFocus": [
+          -1.25,
+          5.775895703979444,
+          15.25
+        ]
+      }
+    },
+    {
+      "name": "Actual rendered image v9-charge-face.png",
+      "passed": true,
+      "detail": {
+        "spread": 63.28,
+        "pooledSmoke": 0
+      }
+    },
+    {
+      "name": "Charge camera beat charge-pylon-two",
+      "passed": true,
+      "detail": {
+        "phase": "charge",
+        "recoil": 0,
+        "shotNumber": 0,
+        "serverImpacted": false,
+        "neighborImpacted": false,
+        "dragonStuck": false,
+        "stuckPosition": [
+          -8.03,
+          2.8,
+          -1.96
+        ],
+        "flightDistance": 12,
+        "lift": 4,
+        "cctv": false,
+        "visualTime": null,
+        "smile": 0,
+        "cameraBeat": "charge-pylon-two",
+        "cameraRoll": 0,
+        "shakeEnvelope": 0,
+        "cameraFov": 38.00035686681471,
+        "reducedMotion": false,
+        "cameraFocus": [
+          13.6,
+          9.654,
+          -8.3
+        ]
+      }
+    },
+    {
+      "name": "Actual rendered image v9-second-pylon.png",
+      "passed": true,
+      "detail": {
+        "spread": 46.82,
+        "pooledSmoke": 0
+      }
+    },
+    {
+      "name": "Charge camera beat charge-battle-wide",
+      "passed": true,
+      "detail": {
+        "phase": "charge",
+        "recoil": 0,
+        "shotNumber": 0,
+        "serverImpacted": false,
+        "neighborImpacted": false,
+        "dragonStuck": false,
+        "stuckPosition": [
+          -8.03,
+          2.8,
+          -1.96
+        ],
+        "flightDistance": 12,
+        "lift": 4,
+        "cctv": false,
+        "visualTime": null,
+        "smile": 0,
+        "cameraBeat": "charge-battle-wide",
+        "cameraRoll": 0,
+        "shakeEnvelope": 0,
+        "cameraFov": 60.99754469867035,
+        "reducedMotion": false,
+        "cameraFocus": [
+          -0.7,
+          3.9872,
+          6.296
+        ]
+      }
+    },
+    {
+      "name": "Actual rendered image v9-charge-wide.png",
+      "passed": true,
+      "detail": {
+        "spread": 61.81,
+        "pooledSmoke": 0
+      }
+    },
+    {
+      "name": "Charge uses airborne actual model",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Charge retains full thirty effective seconds",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Charge reaches cannon gameplay",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Three cannon output modes retained",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Output changes actual timing risk",
+      "passed": true,
+      "detail": [
+        2.7,
+        2.2500000000000004,
+        1.8620689655172415
+      ]
+    },
+    {
+      "name": "Edge MISS causes no damage",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Real center touch damages and recoils",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Actual rendered image v9-cannon-muzzle.png",
+      "passed": true,
+      "detail": {
+        "spread": 63.82,
+        "pooledSmoke": 0
+      }
+    },
+    {
+      "name": "A cannon hit creates a broad pooled shockwave",
+      "passed": true,
+      "detail": {
+        "active": true,
+        "phase": "combat",
+        "beams": 1,
+        "particles": 35,
+        "pulses": 1,
+        "charge": 1,
+        "quality": "balanced",
+        "particleLimit": 72,
+        "smoke": 4,
+        "geometryAllocatedPerFrame": 0,
+        "muzzles": 1,
+        "rays": 8,
+        "shock": 0.7417663334705188,
+        "flash": 0.4988476475128515,
+        "maxImpactRadius": 0.34134817871389184,
+        "lightIntensity": 179.58515310462653,
+        "impactAge": 0.07727272727271384,
+        "fireAge": 0.25,
+        "shockOrigin": [
+          -2.5,
+          1.7,
+          1.95
+        ],
+        "impactRevision": 1,
+        "qualityCaps": {
+          "smoke": 8,
+          "rays": 8,
+          "layers": 3
+        },
+        "sharedLights": 1,
+        "reducedMotion": false
+      }
+    },
+    {
+      "name": "A cannon hit creates visible camera impact",
+      "passed": true,
+      "detail": {
+        "phase": "combat",
+        "recoil": 0.18146818245212404,
+        "shotNumber": 2,
+        "serverImpacted": false,
+        "neighborImpacted": false,
+        "dragonStuck": false,
+        "stuckPosition": [
+          -8.03,
+          2.8,
+          -1.96
+        ],
+        "flightDistance": 12,
+        "lift": 4,
+        "cctv": false,
+        "visualTime": null,
+        "smile": 0,
+        "cameraBeat": "battle-wide-2",
+        "cameraRoll": -0.013175587550621475,
+        "shakeEnvelope": 0.7417663334705188,
+        "cameraFov": 64.11541852152517,
+        "reducedMotion": false,
+        "cameraFocus": [
+          -0.7,
+          3.6,
+          7
+        ]
+      }
+    },
+    {
+      "name": "Actual rendered image v9-cannon-impact.png",
+      "passed": true,
+      "detail": {
+        "spread": 67.43,
+        "pooledSmoke": 4
+      }
+    },
+    {
+      "name": "Actual rendered image v9-cannon-cloud.png",
+      "passed": true,
+      "detail": {
+        "spread": 64.2,
+        "pooledSmoke": 4
+      }
+    },
+    {
+      "name": "Impact wave expands across six metres",
+      "passed": true,
+      "detail": {
+        "active": true,
+        "phase": "combat",
+        "beams": 0,
+        "particles": 0,
+        "pulses": 1,
+        "charge": 1,
+        "quality": "balanced",
+        "particleLimit": 72,
+        "smoke": 4,
+        "geometryAllocatedPerFrame": 0,
+        "muzzles": 0,
+        "rays": 0,
+        "shock": 0.017251319549406337,
+        "flash": 5.1421481466095855e-05,
+        "maxImpactRadius": 6.891817694079341,
+        "lightIntensity": 0,
+        "impactAge": 1.097272727272724,
+        "fireAge": 1.2700000000000102,
+        "shockOrigin": [
+          -2.5,
+          1.7,
+          1.95
+        ],
+        "impactRevision": 1,
+        "qualityCaps": {
+          "smoke": 8,
+          "rays": 8,
+          "layers": 3
+        },
+        "sharedLights": 1,
+        "reducedMotion": false
+      }
+    },
+    {
+      "name": "Cannon gust lifts only a budgeted portion of pear petals",
+      "passed": true,
+      "detail": {
+        "quality": "balanced",
+        "reducedMotion": false,
+        "trees": 3,
+        "blossoms": 2700,
+        "newLeaves": 420,
+        "fallingPetals": 72,
+        "driftingPetals": 48,
+        "gustPetals": 24,
+        "petalPool": 96,
+        "escapedPetals": 24,
+        "petalBounds": {
+          "minX": 3.758264831704898,
+          "maxX": 9.14307350973741,
+          "minY": 0.3189281490296651,
+          "maxY": 4.527084004705735,
+          "minZ": -2.120822433822931,
+          "maxZ": 3.7610373303194775
+        },
+        "protected": true,
+        "shield": 0.9999999999999994,
+        "center": [
+          7.65,
+          0.29,
+          -0.65
+        ]
+      }
+    },
+    {
+      "name": "Actual rendered image v9-cannon-wide-wave.png",
+      "passed": true,
+      "detail": {
+        "spread": 60.68,
+        "pooledSmoke": 4
+      }
+    },
+    {
+      "name": "First hit removes actual glass",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Orbit and canceled pinch do not shoot",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "One tap restores camera without resetting mission",
+      "passed": true,
+      "detail": {
+        "before": {
+          "phase": "combat",
+          "node": null,
+          "nodeId": null,
+          "speaker": null,
+          "text": "",
+          "revealed": 0,
+          "branch": "C",
+          "choices": [],
+          "waitingChoice": false,
+          "progress": 18,
+          "energy": 81.81818181818181,
+          "charge": 100,
+          "meter": 0.814814814814798,
+          "meterElapsed": 1.6000000000000227,
+          "meterPeriod": 2.7,
+          "meterSettings": {
+            "id": "steady",
+            "label": "穩壓",
+            "hint": "寬判定 · 低後座",
+            "multiplier": 1,
+            "speed": 1,
+            "width": 0.18,
+            "miss": 0.38,
+            "perfect": 0.06,
+            "recoil": 0.7,
+            "period": 2.7,
+            "stage": 0
+          },
+          "output": "steady",
+          "outputModes": [
+            {
+              "id": "steady",
+              "label": "穩壓",
+              "hint": "寬判定 · 低後座",
+              "multiplier": 1,
+              "speed": 1,
+              "width": 0.18,
+              "miss": 0.38,
+              "perfect": 0.06,
+              "recoil": 0.7
+            },
+            {
+              "id": "strong",
+              "label": "強攻",
+              "hint": "威力 +20% · 較快",
+              "multiplier": 1.2,
+              "speed": 1.2,
+              "width": 0.15,
+              "miss": 0.34,
+              "perfect": 0.05,
+              "recoil": 1.15
+            },
+            {
+              "id": "overload",
+              "label": "過載",
+              "hint": "威力 +50% · 窄判定",
+              "multiplier": 1.5,
+              "speed": 1.45,
+              "width": 0.12,
+              "miss": 0.29,
+              "perfect": 0.04,
+              "recoil": 1.8
+            }
+          ],
+          "landingDuration": 12,
+          "tourDuration": 16,
+          "chargeDuration": 30,
+          "rewindDuration": 7,
+          "returnDuration": 3,
+          "heatDemoDuration": 6,
+          "phaseElapsed": 7.708500000000043,
+          "time": 230.10750000000033,
+          "clock": 230.10750000000033,
+          "sourceTime": 236.10750000000033,
+          "paused": false,
+          "auto": false,
+          "castingElapsed": 145.14950000000027,
+          "connection": {
+            "field": "password",
+            "account": "endfield_power",
+            "password": "5201314",
+            "lastKey": "4",
+            "keyAt": 166.0990000000003,
+            "keyNumber": 23,
+            "error": "",
+            "verified": true,
+            "lever": 1,
+            "value": "5201314",
+            "expected": "5201314",
+            "captchaReady": false
+          },
+          "login": {
+            "field": "password",
+            "account": "endfield_power",
+            "password": "5201314",
+            "lastKey": "4",
+            "keyAt": 166.0990000000003,
+            "keyNumber": 23,
+            "error": "",
+            "verified": true,
+            "lever": 1,
+            "value": "5201314",
+            "expected": "5201314",
+            "captchaReady": false
+          },
+          "heat": {
+            "status": "ready",
+            "holding": false,
+            "elapsed": 0,
+            "electricalTime": 0,
+            "progress": 0,
+            "attempts": 0,
+            "target": 0.3,
+            "rate": 0.08,
+            "successMin": 0.075,
+            "successMax": 0.125,
+            "round": 0,
+            "completed": 0,
+            "pulseTarget": 0.1,
+            "pulseSpan": 0.2,
+            "pulseBurn": 0.145,
+            "pulseTime": 0,
+            "pulseProgress": 0,
+            "lastResult": "",
+            "lastPulseTime": 0,
+            "failures": 0,
+            "demoIndex": -1,
+            "demoProgress": 0
+          },
+          "vcr": false,
+          "rewindProgress": 0,
+          "rewindStage": null,
+          "returnProgress": 0,
+          "vcrElapsed": 0,
+          "replayStage": null,
+          "vcrSnapshot": null,
+          "target": "upper",
+          "targetLabel": "二樓外牆",
+          "targets": [
+            {
+              "id": "upper",
+              "label": "二樓外牆",
+              "position": [
+                -2.4,
+                4.5,
+                1.82
+              ]
+            }
+          ],
+          "feedback": {
+            "result": "perfect",
+            "power": 0.9999999999999996,
+            "damage": 18,
+            "position": 0.49999999999999983,
+            "progress": 18,
+            "target": "glass",
+            "finisher": false,
+            "finalAttempt": false,
+            "time": 228.5075000000003,
+            "number": 2,
+            "mode": "steady",
+            "recoil": 0.7
+          },
+          "shots": 2,
+          "hits": 1,
+          "attackHoldUntil": 0,
+          "combatHoldRemaining": 0,
+          "attackHeld": false,
+          "canAttack": true,
+          "ended": false,
+          "busy": true,
+          "sequenceKind": null,
+          "endingCaption": "武陵城，又過了平安的一天。",
+          "revision": 227
+        },
+        "after": {
+          "phase": "combat",
+          "node": null,
+          "nodeId": null,
+          "speaker": null,
+          "text": "",
+          "revealed": 0,
+          "branch": "C",
+          "choices": [],
+          "waitingChoice": false,
+          "progress": 18,
+          "energy": 81.81818181818181,
+          "charge": 100,
+          "meter": 0.0740740740740573,
+          "meterElapsed": 2.6000000000000227,
+          "meterPeriod": 2.7,
+          "meterSettings": {
+            "id": "steady",
+            "label": "穩壓",
+            "hint": "寬判定 · 低後座",
+            "multiplier": 1,
+            "speed": 1,
+            "width": 0.18,
+            "miss": 0.38,
+            "perfect": 0.06,
+            "recoil": 0.7,
+            "period": 2.7,
+            "stage": 0
+          },
+          "output": "steady",
+          "outputModes": [
+            {
+              "id": "steady",
+              "label": "穩壓",
+              "hint": "寬判定 · 低後座",
+              "multiplier": 1,
+              "speed": 1,
+              "width": 0.18,
+              "miss": 0.38,
+              "perfect": 0.06,
+              "recoil": 0.7
+            },
+            {
+              "id": "strong",
+              "label": "強攻",
+              "hint": "威力 +20% · 較快",
+              "multiplier": 1.2,
+              "speed": 1.2,
+              "width": 0.15,
+              "miss": 0.34,
+              "perfect": 0.05,
+              "recoil": 1.15
+            },
+            {
+              "id": "overload",
+              "label": "過載",
+              "hint": "威力 +50% · 窄判定",
+              "multiplier": 1.5,
+              "speed": 1.45,
+              "width": 0.12,
+              "miss": 0.29,
+              "perfect": 0.04,
+              "recoil": 1.8
+            }
+          ],
+          "landingDuration": 12,
+          "tourDuration": 16,
+          "chargeDuration": 30,
+          "rewindDuration": 7,
+          "returnDuration": 3,
+          "heatDemoDuration": 6,
+          "phaseElapsed": 8.708500000000043,
+          "time": 231.10750000000033,
+          "clock": 231.10750000000033,
+          "sourceTime": 237.10750000000033,
+          "paused": false,
+          "auto": false,
+          "castingElapsed": 146.14950000000027,
+          "connection": {
+            "field": "password",
+            "account": "endfield_power",
+            "password": "5201314",
+            "lastKey": "4",
+            "keyAt": 166.0990000000003,
+            "keyNumber": 23,
+            "error": "",
+            "verified": true,
+            "lever": 1,
+            "value": "5201314",
+            "expected": "5201314",
+            "captchaReady": false
+          },
+          "login": {
+            "field": "password",
+            "account": "endfield_power",
+            "password": "5201314",
+            "lastKey": "4",
+            "keyAt": 166.0990000000003,
+            "keyNumber": 23,
+            "error": "",
+            "verified": true,
+            "lever": 1,
+            "value": "5201314",
+            "expected": "5201314",
+            "captchaReady": false
+          },
+          "heat": {
+            "status": "ready",
+            "holding": false,
+            "elapsed": 0,
+            "electricalTime": 0,
+            "progress": 0,
+            "attempts": 0,
+            "target": 0.3,
+            "rate": 0.08,
+            "successMin": 0.075,
+            "successMax": 0.125,
+            "round": 0,
+            "completed": 0,
+            "pulseTarget": 0.1,
+            "pulseSpan": 0.2,
+            "pulseBurn": 0.145,
+            "pulseTime": 0,
+            "pulseProgress": 0,
+            "lastResult": "",
+            "lastPulseTime": 0,
+            "failures": 0,
+            "demoIndex": -1,
+            "demoProgress": 0
+          },
+          "vcr": false,
+          "rewindProgress": 0,
+          "rewindStage": null,
+          "returnProgress": 0,
+          "vcrElapsed": 0,
+          "replayStage": null,
+          "vcrSnapshot": null,
+          "target": "upper",
+          "targetLabel": "二樓外牆",
+          "targets": [
+            {
+              "id": "upper",
+              "label": "二樓外牆",
+              "position": [
+                -2.4,
+                4.5,
+                1.82
+              ]
+            }
+          ],
+          "feedback": {
+            "result": "perfect",
+            "power": 0.9999999999999996,
+            "damage": 18,
+            "position": 0.49999999999999983,
+            "progress": 18,
+            "target": "glass",
+            "finisher": false,
+            "finalAttempt": false,
+            "time": 228.5075000000003,
+            "number": 2,
+            "mode": "steady",
+            "recoil": 0.7
+          },
+          "shots": 2,
+          "hits": 1,
+          "attackHoldUntil": 0,
+          "combatHoldRemaining": 0,
+          "attackHeld": false,
+          "canAttack": true,
+          "ended": false,
+          "busy": true,
+          "sequenceKind": null,
+          "endingCaption": "武陵城，又過了平安的一天。",
+          "revision": 227
+        }
+      }
+    },
+    {
+      "name": "Camera reset remains touch sized",
+      "passed": true,
+      "detail": [
+        {
+          "text": "↺ 鏡頭",
+          "w": 54,
+          "h": 44,
+          "x": 316,
+          "y": 139
+        }
+      ]
+    },
+    {
+      "name": "Original sign is torn free and airborne",
+      "passed": true,
+      "detail": {
+        "started": true,
+        "active": true,
+        "elapsed": 0.6999999999999886,
+        "duration": 4.2,
+        "position": [
+          0.38518518518517775,
+          3.8259259259259117,
+          3.2654814814814612
+        ],
+        "target": [
+          2.18,
+          0.45,
+          3.47
+        ],
+        "landed": false,
+        "impactRevision": 0,
+        "cablesAttached": true,
+        "originalMesh": true,
+        "visible": true
+      }
+    },
+    {
+      "name": "Sign camera moment holds further cannon input",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Actual rendered image v9-sign-airborne.png",
+      "passed": true,
+      "detail": {
+        "spread": 80.84,
+        "pooledSmoke": 4
+      }
+    },
+    {
+      "name": "Actual rendered image v9-sign-fall.png",
+      "passed": true,
+      "detail": {
+        "spread": 81.62,
+        "pooledSmoke": 4
+      }
+    },
+    {
+      "name": "Sign lands and remains in rubble",
+      "passed": true,
+      "detail": {
+        "started": true,
+        "active": false,
+        "elapsed": 4.500000000000028,
+        "duration": 4.2,
+        "position": [
+          2.18,
+          0.45,
+          3.47
+        ],
+        "target": [
+          2.18,
+          0.45,
+          3.47
+        ],
+        "landed": true,
+        "impactRevision": 1,
+        "cablesAttached": false,
+        "originalMesh": true,
+        "visible": true
+      }
+    },
+    {
+      "name": "Actual rendered image v9-sign-landed.png",
+      "passed": true,
+      "detail": {
+        "spread": 58.56,
+        "pooledSmoke": 4
+      }
+    },
+    {
+      "name": "Cannon depletion enters new energy dialogue",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Store demolished but server survives",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Actual rendered image v9-energy-vcr.png",
+      "passed": true,
+      "detail": {
+        "spread": 41.18,
+        "pooledSmoke": 4
+      }
+    },
+    {
+      "name": "Rewind preserves logical mission damage",
+      "passed": true,
+      "detail": {
+        "m": {
+          "phase": "rewind",
+          "node": null,
+          "nodeId": null,
+          "speaker": null,
+          "text": "",
+          "revealed": 0,
+          "branch": "C",
+          "choices": [],
+          "waitingChoice": false,
+          "progress": 99,
+          "energy": 0,
+          "charge": 100,
+          "meter": 0.07311111111113444,
+          "meterElapsed": 2.0009999999999764,
+          "meterPeriod": 2.076923076923077,
+          "meterSettings": {
+            "id": "steady",
+            "label": "穩壓",
+            "hint": "寬判定 · 低後座",
+            "multiplier": 1,
+            "speed": 1,
+            "width": 0.18,
+            "miss": 0.38,
+            "perfect": 0.06,
+            "recoil": 0.7,
+            "period": 2.076923076923077,
+            "stage": 3
+          },
+          "output": "steady",
+          "outputModes": [
+            {
+              "id": "steady",
+              "label": "穩壓",
+              "hint": "寬判定 · 低後座",
+              "multiplier": 1,
+              "speed": 1,
+              "width": 0.18,
+              "miss": 0.38,
+              "perfect": 0.06,
+              "recoil": 0.7
+            },
+            {
+              "id": "strong",
+              "label": "強攻",
+              "hint": "威力 +20% · 較快",
+              "multiplier": 1.2,
+              "speed": 1.2,
+              "width": 0.15,
+              "miss": 0.34,
+              "perfect": 0.05,
+              "recoil": 1.15
+            },
+            {
+              "id": "overload",
+              "label": "過載",
+              "hint": "威力 +50% · 窄判定",
+              "multiplier": 1.5,
+              "speed": 1.45,
+              "width": 0.12,
+              "miss": 0.29,
+              "perfect": 0.04,
+              "recoil": 1.8
+            }
+          ],
+          "landingDuration": 12,
+          "tourDuration": 16,
+          "chargeDuration": 30,
+          "rewindDuration": 7,
+          "returnDuration": 3,
+          "heatDemoDuration": 6,
+          "phaseElapsed": 2.0009999999999764,
+          "time": 264.00383566433595,
+          "clock": 264.00383566433595,
+          "sourceTime": 270.00383566433595,
+          "paused": false,
+          "auto": false,
+          "castingElapsed": 177.04483566433592,
+          "connection": {
+            "field": "password",
+            "account": "endfield_power",
+            "password": "5201314",
+            "lastKey": "4",
+            "keyAt": 166.0990000000003,
+            "keyNumber": 23,
+            "error": "",
+            "verified": true,
+            "lever": 1,
+            "value": "5201314",
+            "expected": "5201314",
+            "captchaReady": false
+          },
+          "login": {
+            "field": "password",
+            "account": "endfield_power",
+            "password": "5201314",
+            "lastKey": "4",
+            "keyAt": 166.0990000000003,
+            "keyNumber": 23,
+            "error": "",
+            "verified": true,
+            "lever": 1,
+            "value": "5201314",
+            "expected": "5201314",
+            "captchaReady": false
+          },
+          "heat": {
+            "status": "ready",
+            "holding": false,
+            "elapsed": 0,
+            "electricalTime": 0,
+            "progress": 0,
+            "attempts": 0,
+            "target": 0.3,
+            "rate": 0.08,
+            "successMin": 0.075,
+            "successMax": 0.125,
+            "round": 0,
+            "completed": 0,
+            "pulseTarget": 0.1,
+            "pulseSpan": 0.2,
+            "pulseBurn": 0.145,
+            "pulseTime": 0,
+            "pulseProgress": 0,
+            "lastResult": "",
+            "lastPulseTime": 0,
+            "failures": 0,
+            "demoIndex": -1,
+            "demoProgress": 0
+          },
+          "vcr": true,
+          "rewindProgress": 0.17560300184258798,
+          "rewindStage": "reverse",
+          "returnProgress": 0,
+          "vcrElapsed": 2.0009999999999764,
+          "replayStage": "rewind",
+          "vcrSnapshot": {
+            "progress": 99,
+            "branch": "C",
+            "shots": 7,
+            "hits": 6,
+            "output": "steady",
+            "target": "server"
+          },
+          "target": "server",
+          "targetLabel": "最後機櫃",
+          "targets": [
+            {
+              "id": "server",
+              "label": "最後機櫃",
+              "position": [
+                0,
+                1.21,
+                1.06
+              ]
+            }
+          ],
+          "feedback": {
+            "result": "perfect",
+            "power": 0.999999999999945,
+            "damage": 18,
+            "position": 0.5000000000000209,
+            "progress": 99,
+            "target": "structure",
+            "finisher": false,
+            "finalAttempt": false,
+            "time": 258.921835664336,
+            "number": 7,
+            "mode": "steady",
+            "recoil": 0.7
+          },
+          "shots": 7,
+          "hits": 6,
+          "attackHoldUntil": 252.85068181818212,
+          "combatHoldRemaining": 0,
+          "attackHeld": false,
+          "canAttack": false,
+          "ended": false,
+          "busy": true,
+          "sequenceKind": null,
+          "endingCaption": "武陵城，又過了平安的一天。",
+          "revision": 273
+        },
+        "d": {
+          "progress": 99,
+          "stage": 6,
+          "serverAlive": true,
+          "serverPosition": [
+            0,
+            1.21,
+            1.06
+          ],
+          "visibleIntact": 23,
+          "visibleDebris": 188,
+          "settled": true,
+          "milestones": [
+            {
+              "id": "glass",
+              "threshold": 8,
+              "active": true,
+              "visible": false
+            },
+            {
+              "id": "upper",
+              "threshold": 27,
+              "active": true,
+              "visible": false
+            },
+            {
+              "id": "sign",
+              "threshold": 44,
+              "active": true,
+              "visible": false
+            },
+            {
+              "id": "interior",
+              "threshold": 62,
+              "active": true,
+              "visible": false
+            },
+            {
+              "id": "roof",
+              "threshold": 80,
+              "active": true,
+              "visible": true
+            },
+            {
+              "id": "structure",
+              "threshold": 97,
+              "active": true,
+              "visible": true
+            }
+          ],
+          "server": {
+            "alive": true,
+            "lowered": 1,
+            "position": [
+              0,
+              1.21,
+              1.06
+            ],
+            "visibleLEDs": 31,
+            "rackUnits": 24,
+            "networkPorts": 16,
+            "style": "19-inch rackmount blades, patch switches and UPS"
+          },
+          "products": {
+            "visible": 48,
+            "settled": 48,
+            "families": 4,
+            "labels": [
+              "牧場鮮乳",
+              "無糖綠茶",
+              "黑咖啡",
+              "鮮蔬便當",
+              "鮪魚飯糰",
+              "蛋沙拉三明治",
+              "雞蛋布丁",
+              "紅燒湯麵"
+            ]
+          },
+          "neighbor": {
+            "hit": false,
+            "holeVisible": false,
+            "position": [
+              -8.03,
+              3.15,
+              -2.23
+            ],
+            "normal": [
+              0,
+              0,
+              1
+            ],
+            "fragments": 0,
+            "settled": false,
+            "hollow": true,
+            "collateralHoles": 0,
+            "fractureBranches": 0,
+            "balconyTilt": 0,
+            "brokenWindows": 0
+          },
+          "sign": {
+            "started": true,
+            "active": false,
+            "elapsed": 13.552153846153857,
+            "duration": 4.2,
+            "position": [
+              2.18,
+              0.45,
+              3.47
+            ],
+            "target": [
+              2.18,
+              0.45,
+              3.47
+            ],
+            "landed": true,
+            "impactRevision": 1,
+            "cablesAttached": false,
+            "originalMesh": true,
+            "visible": true
+          },
+          "presentation": "rewind",
+          "rewindProgress": 0.17560300184258798,
+          "thirdFloor": true,
+          "targets": [
+            {
+              "id": "glass",
+              "label": "櫥窗與入口",
+              "position": [
+                -2.5,
+                1.7,
+                1.9
+              ]
+            },
+            {
+              "id": "upper",
+              "label": "二樓外牆",
+              "position": [
+                -2.4,
+                4.5,
+                1.82
+              ]
+            },
+            {
+              "id": "sign",
+              "label": "招牌與雨棚",
+              "position": [
+                2.5,
+                3.15,
+                2.18
+              ]
+            },
+            {
+              "id": "interior",
+              "label": "機房下方樓板",
+              "position": [
+                0,
+                3.3,
+                0.1
+              ]
+            },
+            {
+              "id": "roof",
+              "label": "屋頂支撐",
+              "position": [
+                1.4,
+                5.8,
+                0.1
+              ]
+            },
+            {
+              "id": "structure",
+              "label": "最後承重結構",
+              "position": [
+                -3.7,
+                2.4,
+                -0.1
+              ]
+            },
+            {
+              "id": "server",
+              "label": "最後機櫃",
+              "position": [
+                0,
+                1.21,
+                1.06
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Rewind has visible VCR controls",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Rewind shows two tape reels and a frame timeline",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Rewind pauses its scene and timeline",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Paused tape art freezes with the story clock",
+      "passed": true,
+      "detail": {
+        "before": [
+          "0.17560300184258798",
+          "rotate(-379.302deg)",
+          "21:44:29"
+        ],
+        "after": [
+          "0.17560300184258798",
+          "rotate(-379.302deg)",
+          "21:44:29"
+        ]
+      }
+    },
+    {
+      "name": "Actual rendered image v9-rewind-paused.png",
+      "passed": true,
+      "detail": {
+        "spread": 37.75,
+        "pooledSmoke": 0
+      }
+    },
+    {
+      "name": "Actual rendered image v9-rewind.png",
+      "passed": true,
+      "detail": {
+        "spread": 37.75,
+        "pooledSmoke": 0
+      }
+    },
+    {
+      "name": "Seven-second rewind reaches flashback",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Lazy Xaihi shaders also prepare before VCR",
+      "passed": true,
+      "detail": {
+        "stage": "ready",
+        "pending": 0,
+        "parallel": false,
+        "completed": [
+          "scene",
+          "xaihi"
+        ],
+        "durationMs": 11,
+        "programs": 152,
+        "error": null
+      }
+    },
+    {
+      "name": "Uploaded Xaihi is loaded and rendered in VCR",
+      "passed": true,
+      "detail": {
+        "loaded": true,
+        "phase": "flashback",
+        "action": "terminal",
+        "visible": true,
+        "bones": 960,
+        "scale": 1.00924974058618,
+        "headYaw": -0.22,
+        "phoneVisible": true,
+        "mealVisible": false,
+        "position": [
+          1.95,
+          0.31,
+          0.85
+        ],
+        "pose": {
+          "head": [
+            0.02724112554333187,
+            -0.10978707556041377,
+            -0.0011913363140841054,
+            0.9935810456448433
+          ],
+          "wrist": [
+            -0.0016877287760699623,
+            0.9998321503348327,
+            -0.018243991073509262,
+            9.500837431709268e-05
+          ],
+          "arm": [
+            0.7155136743151703,
+            0.1506069042998915,
+            0.6696128591442211,
+            -0.13029327312451278
+          ]
+        }
+      }
+    },
+    {
+      "name": "Flashback presents intact shop without resetting damage",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Actual rendered image v9-xaihi-cctv.png",
+      "passed": true,
+      "detail": {
+        "spread": 64.32,
+        "pooledSmoke": 0
+      }
+    },
+    {
+      "name": "Xaihi actual skeleton changes during performance",
+      "passed": true,
+      "detail": {
+        "before": {
+          "head": [
+            0.02724112554333187,
+            -0.10978707556041377,
+            -0.0011913363140841054,
+            0.9935810456448433
+          ],
+          "wrist": [
+            -0.0016877287760699623,
+            0.9998321503348327,
+            -0.018243991073509262,
+            9.500837431709268e-05
+          ],
+          "arm": [
+            0.7155136743151703,
+            0.1506069042998915,
+            0.6696128591442211,
+            -0.13029327312451278
+          ]
+        },
+        "after": {
+          "head": [
+            0.027705572236715464,
+            -0.10967079045501267,
+            -0.0053968105180746285,
+            0.9935671028431496
+          ],
+          "wrist": [
+            -0.0016877287760699623,
+            0.9998321503348327,
+            -0.018243991073509262,
+            9.500837431709268e-05
+          ],
+          "arm": [
+            0.7155136743151703,
+            0.1506069042998915,
+            0.6696128591442211,
+            -0.13029327312451278
+          ]
+        }
+      }
+    },
+    {
+      "name": "Actual rendered image v9-heat-demo.png",
+      "passed": true,
+      "detail": {
+        "spread": 63.1,
+        "pooledSmoke": 0
+      }
+    },
+    {
+      "name": "Two scripted failures lead to player heating",
+      "passed": true,
+      "detail": [
+        0,
+        1
+      ]
+    },
+    {
+      "name": "Heating control is touch sized",
+      "passed": true,
+      "detail": [
+        {
+          "text": "按住送電",
+          "w": 228,
+          "h": 52,
+          "x": 29,
+          "y": 761
+        }
+      ]
+    },
+    {
+      "name": "Heating shows a three-pulse progress guide",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Heating has a visible release window",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Heating starts with three independent pulses",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Too-short heating actually fails",
+      "passed": true,
+      "detail": {
+        "status": "cold",
+        "holding": false,
+        "elapsed": 0.35000000000002274,
+        "electricalTime": 0.02800000000000182,
+        "progress": 0.0933333333333394,
+        "attempts": 1,
+        "target": 0.3,
+        "rate": 0.08,
+        "successMin": 0.075,
+        "successMax": 0.125,
+        "round": 0,
+        "completed": 0,
+        "pulseTarget": 0.1,
+        "pulseSpan": 0.2,
+        "pulseBurn": 0.145,
+        "pulseTime": 0.02800000000000182,
+        "pulseProgress": 0.1400000000000091,
+        "lastResult": "cold",
+        "lastPulseTime": 0.02800000000000182,
+        "failures": 1,
+        "demoIndex": -1,
+        "demoProgress": 0
+      }
+    },
+    {
+      "name": "Cold failure retries locally",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Excess heating burns the meal",
+      "passed": true,
+      "detail": {
+        "status": "burnt",
+        "holding": false,
+        "elapsed": 2,
+        "electricalTime": 0.145,
+        "progress": 0.48333333333333334,
+        "attempts": 2,
+        "target": 0.3,
+        "rate": 0.08,
+        "successMin": 0.075,
+        "successMax": 0.125,
+        "round": 0,
+        "completed": 0,
+        "pulseTarget": 0.1,
+        "pulseSpan": 0.2,
+        "pulseBurn": 0.145,
+        "pulseTime": 0.145,
+        "pulseProgress": 0.7249999999999999,
+        "lastResult": "burnt",
+        "lastPulseTime": 0.16,
+        "failures": 2,
+        "demoIndex": -1,
+        "demoProgress": 0
+      }
+    },
+    {
+      "name": "Burn retry resets calibration",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Canceled heat gesture is safe",
+      "passed": true,
+      "detail": {
+        "status": "ready",
+        "holding": false,
+        "elapsed": 0,
+        "electricalTime": 0,
+        "progress": 0,
+        "attempts": 3,
+        "target": 0.3,
+        "rate": 0.08,
+        "successMin": 0.075,
+        "successMax": 0.125,
+        "round": 0,
+        "completed": 0,
+        "pulseTarget": 0.1,
+        "pulseSpan": 0.2,
+        "pulseBurn": 0.145,
+        "pulseTime": 0,
+        "pulseProgress": 0,
+        "lastResult": "cancelled",
+        "lastPulseTime": 0.16,
+        "failures": 2,
+        "demoIndex": -1,
+        "demoProgress": 0
+      }
+    },
+    {
+      "name": "Pause safely cuts heating and freezes its clock",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Resume offers a fresh heating attempt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "First pulse succeeds and waits for another press",
+      "passed": true,
+      "detail": {
+        "status": "ready",
+        "holding": false,
+        "elapsed": 0,
+        "electricalTime": 0.1,
+        "progress": 0.33333333333333337,
+        "attempts": 5,
+        "target": 0.3,
+        "rate": 0.1,
+        "successMin": 0.082,
+        "successMax": 0.118,
+        "round": 1,
+        "completed": 1,
+        "pulseTarget": 0.1,
+        "pulseSpan": 0.2,
+        "pulseBurn": 0.145,
+        "pulseTime": 0,
+        "pulseProgress": 0,
+        "lastResult": "charged",
+        "lastPulseTime": 0.1,
+        "failures": 2,
+        "demoIndex": -1,
+        "demoProgress": 0
+      }
+    },
+    {
+      "name": "Successful pulse never auto-completes next one",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Short second pulse preserves prior success",
+      "passed": true,
+      "detail": {
+        "status": "cold",
+        "holding": false,
+        "elapsed": 0.30000000000001137,
+        "electricalTime": 0.13000000000000114,
+        "progress": 0.4333333333333372,
+        "attempts": 6,
+        "target": 0.3,
+        "rate": 0.1,
+        "successMin": 0.082,
+        "successMax": 0.118,
+        "round": 1,
+        "completed": 1,
+        "pulseTarget": 0.1,
+        "pulseSpan": 0.2,
+        "pulseBurn": 0.145,
+        "pulseTime": 0.030000000000001137,
+        "pulseProgress": 0.15000000000000568,
+        "lastResult": "cold",
+        "lastPulseTime": 0.030000000000001137,
+        "failures": 3,
+        "demoIndex": -1,
+        "demoProgress": 0
+      }
+    },
+    {
+      "name": "Cold retry preserves pulse number",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Overheat can fail after a successful pulse",
+      "passed": true,
+      "detail": {
+        "status": "burnt",
+        "holding": false,
+        "elapsed": 1.6000000000000227,
+        "electricalTime": 0.245,
+        "progress": 0.8166666666666667,
+        "attempts": 7,
+        "target": 0.3,
+        "rate": 0.1,
+        "successMin": 0.082,
+        "successMax": 0.118,
+        "round": 1,
+        "completed": 1,
+        "pulseTarget": 0.1,
+        "pulseSpan": 0.2,
+        "pulseBurn": 0.145,
+        "pulseTime": 0.145,
+        "pulseProgress": 0.7249999999999999,
+        "lastResult": "burnt",
+        "lastPulseTime": 0.16000000000000228,
+        "failures": 4,
+        "demoIndex": -1,
+        "demoProgress": 0
+      }
+    },
+    {
+      "name": "Overheat retry starts a new meal",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Second pulse has a narrower calibrated window",
+      "passed": true,
+      "detail": {
+        "status": "ready",
+        "holding": false,
+        "elapsed": 0,
+        "electricalTime": 0.2,
+        "progress": 0.6666666666666667,
+        "attempts": 9,
+        "target": 0.3,
+        "rate": 0.125,
+        "successMin": 0.087,
+        "successMax": 0.113,
+        "round": 2,
+        "completed": 2,
+        "pulseTarget": 0.1,
+        "pulseSpan": 0.2,
+        "pulseBurn": 0.145,
+        "pulseTime": 0,
+        "pulseProgress": 0,
+        "lastResult": "charged",
+        "lastPulseTime": 0.1,
+        "failures": 4,
+        "demoIndex": -1,
+        "demoProgress": 0
+      }
+    },
+    {
+      "name": "Pause retains completed pulses",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Actual rendered image v9-player-heat.png",
+      "passed": true,
+      "detail": {
+        "spread": 74.81,
+        "pooledSmoke": 0
+      }
+    },
+    {
+      "name": "Third pulse completes total 0.3 seconds and advances story",
+      "passed": true,
+      "detail": {
+        "status": "won",
+        "holding": false,
+        "elapsed": 0,
+        "electricalTime": 0.3,
+        "progress": 1,
+        "attempts": 11,
+        "target": 0.3,
+        "rate": 0.125,
+        "successMin": 0.087,
+        "successMax": 0.113,
+        "round": 2,
+        "completed": 3,
+        "pulseTarget": 0.1,
+        "pulseSpan": 0.2,
+        "pulseBurn": 0.145,
+        "pulseTime": 0.1,
+        "pulseProgress": 0.5,
+        "lastResult": "won",
+        "lastPulseTime": 0.10000000000000142,
+        "failures": 4,
+        "demoIndex": -1,
+        "demoProgress": 0
+      }
+    },
+    {
+      "name": "Actual rendered image v9-warming-reveal.png",
+      "passed": true,
+      "detail": {
+        "spread": 66.33,
+        "pooledSmoke": 0
+      }
+    },
+    {
+      "name": "Forgotten warming mode remains visibly active",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "VCR returns to final dialogue",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "VCR restores original progress meal energy and shot count",
+      "passed": true,
+      "detail": {
+        "before": {
+          "phase": "energy",
+          "node": {
+            "id": "energy_0",
+            "speaker": "mifoe",
+            "text": "頭，能量用完了。戰損報告：\n店體解體，三樓去向不明。",
+            "mood": "calm",
+            "gesture": "look",
+            "event": null,
+            "next": "energy_1"
+          },
+          "nodeId": "energy_0",
+          "speaker": "mifoe",
+          "text": "頭，能量用完了。戰損報告：\n店體解體，三樓去向不明。",
+          "revealed": 26,
+          "branch": "C",
+          "choices": [],
+          "waitingChoice": false,
+          "progress": 99,
+          "energy": 0,
+          "charge": 100,
+          "meter": 0.9659259259259103,
+          "meterElapsed": 3.079999999999984,
+          "meterPeriod": 2.076923076923077,
+          "meterSettings": {
+            "id": "steady",
+            "label": "穩壓",
+            "hint": "寬判定 · 低後座",
+            "multiplier": 1,
+            "speed": 1,
+            "width": 0.18,
+            "miss": 0.38,
+            "perfect": 0.06,
+            "recoil": 0.7,
+            "period": 2.076923076923077,
+            "stage": 3
+          },
+          "output": "steady",
+          "outputModes": [
+            {
+              "id": "steady",
+              "label": "穩壓",
+              "hint": "寬判定 · 低後座",
+              "multiplier": 1,
+              "speed": 1,
+              "width": 0.18,
+              "miss": 0.38,
+              "perfect": 0.06,
+              "recoil": 0.7
+            },
+            {
+              "id": "strong",
+              "label": "強攻",
+              "hint": "威力 +20% · 較快",
+              "multiplier": 1.2,
+              "speed": 1.2,
+              "width": 0.15,
+              "miss": 0.34,
+              "perfect": 0.05,
+              "recoil": 1.15
+            },
+            {
+              "id": "overload",
+              "label": "過載",
+              "hint": "威力 +50% · 窄判定",
+              "multiplier": 1.5,
+              "speed": 1.45,
+              "width": 0.12,
+              "miss": 0.29,
+              "perfect": 0.04,
+              "recoil": 1.8
+            }
+          ],
+          "landingDuration": 12,
+          "tourDuration": 16,
+          "chargeDuration": 30,
+          "rewindDuration": 7,
+          "returnDuration": 3,
+          "heatDemoDuration": 6,
+          "phaseElapsed": 3.079999999999984,
+          "time": 262.001835664336,
+          "clock": 262.001835664336,
+          "sourceTime": 268.001835664336,
+          "paused": false,
+          "auto": false,
+          "castingElapsed": 177.04383566433594,
+          "connection": {
+            "field": "password",
+            "account": "endfield_power",
+            "password": "5201314",
+            "lastKey": "4",
+            "keyAt": 166.0990000000003,
+            "keyNumber": 23,
+            "error": "",
+            "verified": true,
+            "lever": 1,
+            "value": "5201314",
+            "expected": "5201314",
+            "captchaReady": false
+          },
+          "login": {
+            "field": "password",
+            "account": "endfield_power",
+            "password": "5201314",
+            "lastKey": "4",
+            "keyAt": 166.0990000000003,
+            "keyNumber": 23,
+            "error": "",
+            "verified": true,
+            "lever": 1,
+            "value": "5201314",
+            "expected": "5201314",
+            "captchaReady": false
+          },
+          "heat": {
+            "status": "ready",
+            "holding": false,
+            "elapsed": 0,
+            "electricalTime": 0,
+            "progress": 0,
+            "attempts": 0,
+            "target": 0.3,
+            "rate": 0.08,
+            "successMin": 0.075,
+            "successMax": 0.125,
+            "round": 0,
+            "completed": 0,
+            "pulseTarget": 0.1,
+            "pulseSpan": 0.2,
+            "pulseBurn": 0.145,
+            "pulseTime": 0,
+            "pulseProgress": 0,
+            "lastResult": "",
+            "lastPulseTime": 0,
+            "failures": 0,
+            "demoIndex": -1,
+            "demoProgress": 0
+          },
+          "vcr": false,
+          "rewindProgress": 0,
+          "rewindStage": null,
+          "returnProgress": 0,
+          "vcrElapsed": 0,
+          "replayStage": null,
+          "vcrSnapshot": null,
+          "target": "server",
+          "targetLabel": "最後機櫃",
+          "targets": [
+            {
+              "id": "server",
+              "label": "最後機櫃",
+              "position": [
+                0,
+                1.21,
+                1.06
+              ]
+            }
+          ],
+          "feedback": {
+            "result": "perfect",
+            "power": 0.999999999999945,
+            "damage": 18,
+            "position": 0.5000000000000209,
+            "progress": 99,
+            "target": "structure",
+            "finisher": false,
+            "finalAttempt": false,
+            "time": 258.921835664336,
+            "number": 7,
+            "mode": "steady",
+            "recoil": 0.7
+          },
+          "shots": 7,
+          "hits": 6,
+          "attackHoldUntil": 252.85068181818212,
+          "combatHoldRemaining": 0,
+          "attackHeld": false,
+          "canAttack": false,
+          "ended": false,
+          "busy": true,
+          "sequenceKind": null,
+          "endingCaption": "武陵城，又過了平安的一天。",
+          "revision": 266
+        },
+        "after": {
+          "phase": "last",
+          "node": {
+            "id": "last_0",
+            "speaker": "dragon",
+            "text": "伺服器呢？",
+            "mood": "calm",
+            "gesture": "look",
+            "event": null,
+            "next": "last_1"
+          },
+          "nodeId": "last_0",
+          "speaker": "dragon",
+          "text": "伺服器呢？",
+          "revealed": 3,
+          "branch": "C",
+          "choices": [],
+          "waitingChoice": false,
+          "progress": 99,
+          "energy": 0,
+          "charge": 100,
+          "meter": 0.09629629629631818,
+          "meterElapsed": 0.10000000000002274,
+          "meterPeriod": 2.076923076923077,
+          "meterSettings": {
+            "id": "steady",
+            "label": "穩壓",
+            "hint": "寬判定 · 低後座",
+            "multiplier": 1,
+            "speed": 1,
+            "width": 0.18,
+            "miss": 0.38,
+            "perfect": 0.06,
+            "recoil": 0.7,
+            "period": 2.076923076923077,
+            "stage": 3
+          },
+          "output": "steady",
+          "outputModes": [
+            {
+              "id": "steady",
+              "label": "穩壓",
+              "hint": "寬判定 · 低後座",
+              "multiplier": 1,
+              "speed": 1,
+              "width": 0.18,
+              "miss": 0.38,
+              "perfect": 0.06,
+              "recoil": 0.7
+            },
+            {
+              "id": "strong",
+              "label": "強攻",
+              "hint": "威力 +20% · 較快",
+              "multiplier": 1.2,
+              "speed": 1.2,
+              "width": 0.15,
+              "miss": 0.34,
+              "perfect": 0.05,
+              "recoil": 1.15
+            },
+            {
+              "id": "overload",
+              "label": "過載",
+              "hint": "威力 +50% · 窄判定",
+              "multiplier": 1.5,
+              "speed": 1.45,
+              "width": 0.12,
+              "miss": 0.29,
+              "perfect": 0.04,
+              "recoil": 1.8
+            }
+          ],
+          "landingDuration": 12,
+          "tourDuration": 16,
+          "chargeDuration": 30,
+          "rewindDuration": 7,
+          "returnDuration": 3,
+          "heatDemoDuration": 6,
+          "phaseElapsed": 0.10000000000002274,
+          "time": 295.6768356643357,
+          "clock": 295.6768356643357,
+          "sourceTime": 310.6768356643357,
+          "paused": false,
+          "auto": false,
+          "castingElapsed": 177.14483566433594,
+          "connection": {
+            "field": "password",
+            "account": "endfield_power",
+            "password": "5201314",
+            "lastKey": "4",
+            "keyAt": 166.0990000000003,
+            "keyNumber": 23,
+            "error": "",
+            "verified": true,
+            "lever": 1,
+            "value": "5201314",
+            "expected": "5201314",
+            "captchaReady": false
+          },
+          "login": {
+            "field": "password",
+            "account": "endfield_power",
+            "password": "5201314",
+            "lastKey": "4",
+            "keyAt": 166.0990000000003,
+            "keyNumber": 23,
+            "error": "",
+            "verified": true,
+            "lever": 1,
+            "value": "5201314",
+            "expected": "5201314",
+            "captchaReady": false
+          },
+          "heat": {
+            "status": "won",
+            "holding": false,
+            "elapsed": 0,
+            "electricalTime": 0.3,
+            "progress": 1,
+            "attempts": 11,
+            "target": 0.3,
+            "rate": 0.125,
+            "successMin": 0.087,
+            "successMax": 0.113,
+            "round": 2,
+            "completed": 3,
+            "pulseTarget": 0.1,
+            "pulseSpan": 0.2,
+            "pulseBurn": 0.145,
+            "pulseTime": 0.1,
+            "pulseProgress": 0.5,
+            "lastResult": "won",
+            "lastPulseTime": 0.10000000000000142,
+            "failures": 4,
+            "demoIndex": -1,
+            "demoProgress": 0
+          },
+          "vcr": false,
+          "rewindProgress": 0,
+          "rewindStage": null,
+          "returnProgress": 0,
+          "vcrElapsed": 0,
+          "replayStage": null,
+          "vcrSnapshot": {
+            "progress": 99,
+            "branch": "C",
+            "shots": 7,
+            "hits": 6,
+            "output": "steady",
+            "target": "server"
+          },
+          "target": "server",
+          "targetLabel": "最後機櫃",
+          "targets": [
+            {
+              "id": "server",
+              "label": "最後機櫃",
+              "position": [
+                0,
+                1.21,
+                1.06
+              ]
+            }
+          ],
+          "feedback": {
+            "result": "perfect",
+            "power": 0.999999999999945,
+            "damage": 18,
+            "position": 0.5000000000000209,
+            "progress": 99,
+            "target": "structure",
+            "finisher": false,
+            "finalAttempt": false,
+            "time": 258.921835664336,
+            "number": 7,
+            "mode": "steady",
+            "recoil": 0.7
+          },
+          "shots": 7,
+          "hits": 6,
+          "attackHoldUntil": 252.85068181818212,
+          "combatHoldRemaining": 0,
+          "attackHeld": false,
+          "canAttack": false,
+          "ended": false,
+          "busy": true,
+          "sequenceKind": null,
+          "endingCaption": "武陵城，又過了平安的一天。",
+          "revision": 407
+        }
+      }
+    },
+    {
+      "name": "VCR restores real rubble and surviving server",
+      "passed": true,
+      "detail": {
+        "progress": 99,
+        "stage": 6,
+        "serverAlive": true,
+        "serverPosition": [
+          0,
+          1.21,
+          1.06
+        ],
+        "visibleIntact": 0,
+        "visibleDebris": 188,
+        "settled": true,
+        "milestones": [
+          {
+            "id": "glass",
+            "threshold": 8,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "upper",
+            "threshold": 27,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "sign",
+            "threshold": 44,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "interior",
+            "threshold": 62,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "roof",
+            "threshold": 80,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "structure",
+            "threshold": 97,
+            "active": true,
+            "visible": false
+          }
+        ],
+        "server": {
+          "alive": true,
+          "lowered": 1,
+          "position": [
+            0,
+            1.21,
+            1.06
+          ],
+          "visibleLEDs": 31,
+          "rackUnits": 24,
+          "networkPorts": 16,
+          "style": "19-inch rackmount blades, patch switches and UPS"
+        },
+        "products": {
+          "visible": 48,
+          "settled": 48,
+          "families": 4,
+          "labels": [
+            "牧場鮮乳",
+            "無糖綠茶",
+            "黑咖啡",
+            "鮮蔬便當",
+            "鮪魚飯糰",
+            "蛋沙拉三明治",
+            "雞蛋布丁",
+            "紅燒湯麵"
+          ]
+        },
+        "neighbor": {
+          "hit": false,
+          "holeVisible": false,
+          "position": [
+            -8.03,
+            3.15,
+            -2.23
+          ],
+          "normal": [
+            0,
+            0,
+            1
+          ],
+          "fragments": 0,
+          "settled": false,
+          "hollow": true,
+          "collateralHoles": 0,
+          "fractureBranches": 0,
+          "balconyTilt": -0.0,
+          "brokenWindows": 0
+        },
+        "sign": {
+          "started": true,
+          "active": false,
+          "elapsed": 16.653153846153856,
+          "duration": 4.2,
+          "position": [
+            2.18,
+            0.45,
+            3.47
+          ],
+          "target": [
+            2.18,
+            0.45,
+            3.47
+          ],
+          "landed": true,
+          "impactRevision": 1,
+          "cablesAttached": false,
+          "originalMesh": true,
+          "visible": true
+        },
+        "presentation": "present",
+        "rewindProgress": 0,
+        "thirdFloor": true,
+        "targets": [
+          {
+            "id": "glass",
+            "label": "櫥窗與入口",
+            "position": [
+              -2.5,
+              1.7,
+              1.9
+            ]
+          },
+          {
+            "id": "upper",
+            "label": "二樓外牆",
+            "position": [
+              -2.4,
+              4.5,
+              1.82
+            ]
+          },
+          {
+            "id": "sign",
+            "label": "招牌與雨棚",
+            "position": [
+              2.5,
+              3.15,
+              2.18
+            ]
+          },
+          {
+            "id": "interior",
+            "label": "機房下方樓板",
+            "position": [
+              0,
+              3.3,
+              0.1
+            ]
+          },
+          {
+            "id": "roof",
+            "label": "屋頂支撐",
+            "position": [
+              1.4,
+              5.8,
+              0.1
+            ]
+          },
+          {
+            "id": "structure",
+            "label": "最後承重結構",
+            "position": [
+              -3.7,
+              2.4,
+              -0.1
+            ]
+          },
+          {
+            "id": "server",
+            "label": "最後機櫃",
+            "position": [
+              0,
+              1.21,
+              1.06
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "Xaihi leaves present-day scene",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Actual rendered image v9-returned-ruins.png",
+      "passed": true,
+      "detail": {
+        "spread": 45.25,
+        "pooledSmoke": 0
+      }
+    },
+    {
+      "name": "Final MISS waits for player",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Actual rendered image v9-final-shot-ui.png",
+      "passed": true,
+      "detail": {
+        "spread": 45.6,
+        "pooledSmoke": 0
+      }
+    },
+    {
+      "name": "Player triggers dragon finisher",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Actual rendered image v9-dragon-flight.png",
+      "passed": true,
+      "detail": {
+        "spread": 49.72,
+        "pooledSmoke": 0
+      }
+    },
+    {
+      "name": "Actual rendered image v9-finisher-first-flash.png",
+      "passed": true,
+      "detail": {
+        "spread": 74.45,
+        "pooledSmoke": 8
+      }
+    },
+    {
+      "name": "Actual rendered image v9-finisher-broad-impact.png",
+      "passed": true,
+      "detail": {
+        "spread": 66.5,
+        "pooledSmoke": 8
+      }
+    },
+    {
+      "name": "Final shot destroys server and neighbor",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Actual rendered image v9-neighbor-impact.png",
+      "passed": true,
+      "detail": {
+        "spread": 61.8,
+        "pooledSmoke": 8
+      }
+    },
+    {
+      "name": "Nine-second flight reaches landing",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Landing enters continuous ending tour",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Actual rendered image v9-tour-dragon.png",
+      "passed": true,
+      "detail": {
+        "spread": 33.24,
+        "pooledSmoke": 0
+      }
+    },
+    {
+      "name": "Actual rendered image v9-tour-ruins.png",
+      "passed": true,
+      "detail": {
+        "spread": 42.46,
+        "pooledSmoke": 0
+      }
+    },
+    {
+      "name": "Ending uses actual facial smile pose",
+      "passed": true,
+      "detail": [
+        [
+          0.012618282897943672,
+          -0.009215958154742116,
+          0.06663672182507294
+        ],
+        [
+          -0.012519196473762045,
+          -0.00991481392068919,
+          0.06653685867786407
+        ]
+      ]
+    },
+    {
+      "name": "Actual rendered image v9-tour-smile.png",
+      "passed": true,
+      "detail": {
+        "spread": 63.32,
+        "pooledSmoke": 0
+      }
+    },
+    {
+      "name": "Tour completes mission at 100 percent",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Dragon remains stuck after mission",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Completed framebuffer clean",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Ending stays alive for real observation",
+      "passed": true,
+      "detail": {
+        "seconds": 60.03,
+        "frames": 61,
+        "software_render_fps": 1.0160825891853913
+      }
+    },
+    {
+      "name": "Landscape page fits viewport",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Actual rendered image v9-landscape.png",
+      "passed": true,
+      "detail": {
+        "spread": 30.48,
+        "pooledSmoke": 0
+      }
+    },
+    {
+      "name": "Replay repairs shop server sign neighbor",
+      "passed": true,
+      "detail": {
+        "progress": 0,
+        "stage": 0,
+        "serverAlive": true,
+        "serverPosition": [
+          0,
+          4.38,
+          1.06
+        ],
+        "visibleIntact": 140,
+        "visibleDebris": 0,
+        "settled": true,
+        "milestones": [
+          {
+            "id": "glass",
+            "threshold": 8,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "upper",
+            "threshold": 27,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "sign",
+            "threshold": 44,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "interior",
+            "threshold": 62,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "roof",
+            "threshold": 80,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "structure",
+            "threshold": 97,
+            "active": false,
+            "visible": true
+          }
+        ],
+        "server": {
+          "alive": true,
+          "lowered": 0,
+          "position": [
+            0,
+            4.38,
+            1.06
+          ],
+          "visibleLEDs": 31,
+          "rackUnits": 24,
+          "networkPorts": 16,
+          "style": "19-inch rackmount blades, patch switches and UPS"
+        },
+        "products": {
+          "visible": 0,
+          "settled": 0,
+          "families": 4,
+          "labels": [
+            "牧場鮮乳",
+            "無糖綠茶",
+            "黑咖啡",
+            "鮮蔬便當",
+            "鮪魚飯糰",
+            "蛋沙拉三明治",
+            "雞蛋布丁",
+            "紅燒湯麵"
+          ]
+        },
+        "neighbor": {
+          "hit": false,
+          "holeVisible": false,
+          "position": [
+            -8.03,
+            3.15,
+            -2.23
+          ],
+          "normal": [
+            0,
+            0,
+            1
+          ],
+          "fragments": 0,
+          "settled": false,
+          "hollow": true,
+          "collateralHoles": 0,
+          "fractureBranches": 0,
+          "balconyTilt": 0,
+          "brokenWindows": 0
+        },
+        "sign": {
+          "started": false,
+          "active": false,
+          "elapsed": 0,
+          "duration": 4.2,
+          "position": [
+            0,
+            3.1,
+            2.224
+          ],
+          "target": [
+            2.18,
+            0.45,
+            3.47
+          ],
+          "landed": false,
+          "impactRevision": 0,
+          "cablesAttached": false,
+          "originalMesh": true,
+          "visible": true
+        },
+        "presentation": "present",
+        "rewindProgress": 0,
+        "thirdFloor": true,
+        "targets": [
+          {
+            "id": "glass",
+            "label": "櫥窗與入口",
+            "position": [
+              -2.5,
+              1.7,
+              1.9
+            ]
+          },
+          {
+            "id": "upper",
+            "label": "二樓外牆",
+            "position": [
+              -2.4,
+              4.5,
+              1.82
+            ]
+          },
+          {
+            "id": "sign",
+            "label": "招牌與雨棚",
+            "position": [
+              2.5,
+              3.15,
+              2.18
+            ]
+          },
+          {
+            "id": "interior",
+            "label": "機房下方樓板",
+            "position": [
+              0,
+              3.3,
+              0.1
+            ]
+          },
+          {
+            "id": "roof",
+            "label": "屋頂支撐",
+            "position": [
+              1.4,
+              5.8,
+              0.1
+            ]
+          },
+          {
+            "id": "structure",
+            "label": "最後承重結構",
+            "position": [
+              -3.7,
+              2.4,
+              -0.1
+            ]
+          },
+          {
+            "id": "server",
+            "label": "最後機櫃",
+            "position": [
+              0,
+              4.38,
+              1.06
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "Replay keeps one UI and renderer",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Replay resets credentials",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Context loss presents recovery prompt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Restored context framebuffer clean",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Context restore retains one prepared renderer",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "No JavaScript or shader errors",
+      "passed": true,
+      "detail": []
+    }
+  ],
+  "assets": [
+    "http://127.0.0.1:4204/endfield-model-lab/assets/index-AehwXX8I.js",
+    "http://127.0.0.1:4204/endfield-model-lab/assets/index-Caycndcd.css"
+  ],
+  "loading_stages": [
+    "正在點亮街角",
+    "正在請莊芳宜下班",
+    "正在載入人物 28%",
+    "正在載入人物 29%",
+    "正在載入人物 39%",
+    "正在載入人物 41%",
+    "正在載入人物 56%",
+    "正在載入人物 58%",
+    "正在載入人物 84%",
+    "正在載入人物 100%",
+    "正在整理衣袖",
+    "正在準備雨夜光影"
+  ],
+  "initial_warmup": {
+    "stage": "ready",
+    "pending": 0,
+    "parallel": false,
+    "completed": [
+      "scene"
+    ],
+    "durationMs": 99,
+    "programs": 94,
+    "error": null
+  },
+  "charge_camera_beats": [
+    "charge-pylon-one",
+    "charge-city-array",
+    "charge-caster-face",
+    "charge-pylon-two",
+    "charge-battle-wide"
+  ],
+  "programs_before_first_hit": 99,
+  "programs_after_first_hit": 103,
+  "xaihi_warmup": {
+    "stage": "ready",
+    "pending": 0,
+    "parallel": false,
+    "completed": [
+      "scene",
+      "xaihi"
+    ],
+    "durationMs": 11,
+    "programs": 152,
+    "error": null
+  },
+  "ending_observation": {
+    "seconds": 60.03,
+    "frames": 61,
+    "software_render_fps": 1.0160825891853913
+  },
+  "passed": true,
+  "errors": []
+}

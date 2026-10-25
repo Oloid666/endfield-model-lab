@@ -1,0 +1,65 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "Scene and late actor are queued on the existing renderer",
+      "passed": true
+    },
+    {
+      "name": "Both preparations resolve",
+      "passed": true
+    },
+    {
+      "name": "GPU preparation is serialized",
+      "passed": true
+    },
+    {
+      "name": "Actor inherits exact live scene and camera",
+      "passed": true
+    },
+    {
+      "name": "Completed labels and programs are inspectable",
+      "passed": true
+    },
+    {
+      "name": "Parallel extension is recorded once",
+      "passed": true
+    },
+    {
+      "name": "A lost context does not issue compilation",
+      "passed": true
+    },
+    {
+      "name": "Context loss has an explicit stage",
+      "passed": true
+    },
+    {
+      "name": "Restoration invalidates prior readiness",
+      "passed": true
+    },
+    {
+      "name": "Restored context can prepare again",
+      "passed": true
+    },
+    {
+      "name": "Queued work from a previous context is skipped",
+      "passed": true
+    },
+    {
+      "name": "Disposed worlds do not submit GPU work",
+      "passed": true
+    },
+    {
+      "name": "Compilation errors are visible to the loader",
+      "passed": true
+    },
+    {
+      "name": "A rejected preparation does not poison the next queue",
+      "passed": true
+    },
+    {
+      "name": "Synchronous fallback reuses the same renderer",
+      "passed": true
+    }
+  ]
+}

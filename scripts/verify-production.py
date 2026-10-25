@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 from urllib.parse import urljoin, urlparse
 
-URL = 'https://oloid666.github.io/endfield-model-lab/?v=8'
+URL = 'https://oloid666.github.io/endfield-model-lab/?v=9'
 PREFIX = '/endfield-model-lab/'
 DIST = Path('dist')
 MODELS = {
@@ -65,9 +65,12 @@ markers = [
     'neighbor-collateral-wall', 'wuling-tianshi-grid-v8',
     'charred-microwave-v8', 'dragon-login-terminal-v8',
     'xaihi-vcr-actor', 'endfield_power', 'VCR · 時間倒帶',
+    'cannon-layered-bursts-v9', 'cannon-shared-burst-light',
+    'tianshi-green-energy-columns', 'microwave-fault-halo',
+    'mission-camera-reset', '正在準備雨夜光影', '拆成三段',
 ]
 for marker in markers:
-    assert marker in javascript, ('Missing V8 build marker', marker)
+    assert marker in javascript, ('Missing V9 build marker', marker)
 assert '玩法試驗區' not in javascript, 'Removed playground is still included in public JavaScript'
 models = {}
 for relative, (size, expected_hash) in MODELS.items():
@@ -76,7 +79,7 @@ for relative, (size, expected_hash) in MODELS.items():
     models[relative] = record
 result = {
     'url': URL,
-    'release': 'lookdev-v8-tianshi-login-xaihi-vcr',
+    'release': 'lookdev-v9-cannon-radiance-cameras-heat-pulses',
     'commit': sys.argv[1],
     'action': sys.argv[2],
     'tls_verification': True,

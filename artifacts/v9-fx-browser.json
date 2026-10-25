@@ -1,0 +1,188 @@
+{
+  "passed": true,
+  "scope": "Actual V9 FX shader preview in desktop Chromium/SwiftShader; simplified set, not the full app or an iPhone benchmark",
+  "errors": [],
+  "glError": 0,
+  "frames": [
+    {
+      "name": "muzzle",
+      "state": {
+        "active": true,
+        "phase": "combat",
+        "beams": 1,
+        "particles": 5,
+        "pulses": 0,
+        "charge": 0,
+        "quality": "balanced",
+        "particleLimit": 72,
+        "smoke": 0,
+        "geometryAllocatedPerFrame": 0,
+        "muzzles": 1,
+        "rays": 0,
+        "shock": 0.04845516431871734,
+        "flash": 0,
+        "maxImpactRadius": 0,
+        "lightIntensity": 5.052128655072043,
+        "impactAge": null,
+        "fireAge": 0.15999999999999992,
+        "shockOrigin": [
+          0,
+          0,
+          0
+        ],
+        "impactRevision": 0,
+        "qualityCaps": {
+          "smoke": 8,
+          "rays": 8,
+          "layers": 3
+        },
+        "sharedLights": 1,
+        "reducedMotion": false
+      }
+    },
+    {
+      "name": "impact",
+      "state": {
+        "active": true,
+        "phase": "combat",
+        "beams": 1,
+        "particles": 35,
+        "pulses": 1,
+        "charge": 0,
+        "quality": "balanced",
+        "particleLimit": 72,
+        "smoke": 4,
+        "geometryAllocatedPerFrame": 0,
+        "muzzles": 1,
+        "rays": 8,
+        "shock": 0.7842085601517378,
+        "flash": 0.28365402649977006,
+        "maxImpactRadius": 0.625058326540654,
+        "lightIntensity": 102.11544953991722,
+        "impactAge": 0.14000000000000012,
+        "fireAge": 0.30000000000000004,
+        "shockOrigin": [
+          0,
+          3,
+          1.45
+        ],
+        "impactRevision": 1,
+        "qualityCaps": {
+          "smoke": 8,
+          "rays": 8,
+          "layers": 3
+        },
+        "sharedLights": 1,
+        "reducedMotion": false
+      }
+    },
+    {
+      "name": "wave",
+      "state": {
+        "active": true,
+        "phase": "combat",
+        "beams": 0,
+        "particles": 30,
+        "pulses": 1,
+        "charge": 0,
+        "quality": "balanced",
+        "particleLimit": 72,
+        "smoke": 4,
+        "geometryAllocatedPerFrame": 0,
+        "muzzles": 0,
+        "rays": 8,
+        "shock": 0.06992173174595932,
+        "flash": 0.0008168949921050283,
+        "maxImpactRadius": 6.088635344048547,
+        "lightIntensity": 0,
+        "impactAge": 0.79,
+        "fireAge": 0.95,
+        "shockOrigin": [
+          0,
+          3,
+          1.45
+        ],
+        "impactRevision": 1,
+        "qualityCaps": {
+          "smoke": 8,
+          "rays": 8,
+          "layers": 3
+        },
+        "sharedLights": 1,
+        "reducedMotion": false
+      }
+    },
+    {
+      "name": "finisher",
+      "state": {
+        "active": true,
+        "phase": "combat",
+        "beams": 0,
+        "particles": 30,
+        "pulses": 1,
+        "charge": 0,
+        "quality": "balanced",
+        "particleLimit": 72,
+        "smoke": 8,
+        "geometryAllocatedPerFrame": 0,
+        "muzzles": 0,
+        "rays": 8,
+        "shock": 0.3834568517250607,
+        "flash": 0.04285212686704032,
+        "maxImpactRadius": 2.2248744897215302,
+        "lightIntensity": 27.853882463576205,
+        "impactAge": 0.34999999999999964,
+        "fireAge": null,
+        "shockOrigin": [
+          0,
+          2,
+          1.45
+        ],
+        "impactRevision": 1,
+        "qualityCaps": {
+          "smoke": 8,
+          "rays": 8,
+          "layers": 3
+        },
+        "sharedLights": 1,
+        "reducedMotion": false
+      }
+    },
+    {
+      "name": "final-wave",
+      "state": {
+        "active": true,
+        "phase": "combat",
+        "beams": 0,
+        "particles": 23,
+        "pulses": 1,
+        "charge": 0,
+        "quality": "balanced",
+        "particleLimit": 72,
+        "smoke": 8,
+        "geometryAllocatedPerFrame": 0,
+        "muzzles": 0,
+        "rays": 0,
+        "shock": 0.01651431392765217,
+        "flash": 2.0399503411171922e-05,
+        "maxImpactRadius": 13.791816755357926,
+        "lightIntensity": 0,
+        "impactAge": 1.2000000000000002,
+        "fireAge": null,
+        "shockOrigin": [
+          0,
+          2,
+          1.45
+        ],
+        "impactRevision": 1,
+        "qualityCaps": {
+          "smoke": 8,
+          "rays": 8,
+          "layers": 3
+        },
+        "sharedLights": 1,
+        "reducedMotion": false
+      }
+    }
+  ]
+}

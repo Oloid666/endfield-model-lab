@@ -7,6 +7,13 @@ const cinematicPhases=new Set(['briefing','login','captcha','lever','charge','co
 const smooth=x=>{const p=Math.max(0,Math.min(1,x));return p*p*(3-2*p);};
 const lerp=(a,b,p,out)=>{for(let i=0;i<3;i++)out[i]=a[i]+(b[i]-a[i])*p;return out;};
 function arc(a,b,p,height,out){lerp(a,b,p,out);out[1]+=Math.sin(Math.PI*p)*height;return out;}
+function faceFrame(feet,heading,distance=5.6,side=1.1,height=2.12,look=1.46){
+  const sx=Math.sin(heading),sz=Math.cos(heading);
+  return {position:[feet[0]+sx*distance+sz*side,feet[1]+height,Math.max(2.35,feet[2]+sz*distance-sx*side)],target:[feet[0],feet[1]+look,feet[2]]};
+}
+export function chargeCameraBeat(elapsed){
+  return elapsed<4?'charge-lift-face':elapsed<9?'charge-pylon-one':elapsed<14?'charge-city-array':elapsed<21?'charge-caster-face':elapsed<25?'charge-pylon-two':'charge-battle-wide';
+}
 
 // Coordinates actors, a single camera and pooled effects from the mission clock.
 export class MissionDirector{
@@ -16,6 +23,8 @@ export class MissionDirector{
     this.keyFrom=[-2,.33,3.25];this.keyTo=[-2,.33,3.25];this.keyQueue=[];this.keyHop=null;this.lastKeyNumber=-1;this.signImpactRevision=0;this.rewindStarted=0;this.visualTime=null;this.lastEventNode=null;
     this.lastShotAt=-Infinity;this.shotNumber=0;this.recoil=0;this.recoilAmplitude=1;this.reducedMotion=typeof matchMedia==='function'&&matchMedia('(prefers-reduced-motion: reduce)').matches;
     this.cameraPosition=new T.Vector3();this.cameraTarget=new T.Vector3();this.point=new T.Vector3();
+    this.baseCameraPosition=new T.Vector3();this.baseCameraTarget=new T.Vector3();this.rewindCameraPosition=new T.Vector3();this.rewindCameraTarget=new T.Vector3();
+    this.cameraOwned=false;this.cameraBeat='street';this.cameraRoll=0;this.shakeEnvelope=0;this.baseFov=world.camera?.fov||50;this.rewindFov=this.baseFov;
     const material=world.r.own(new T.MeshBasicMaterial({color:0xf3cf88,transparent:true,opacity:.8,depthWrite:false,side:T.DoubleSide,toneMapped:false}));
     this.marker=world.r.mesh(world.r.geometry('TorusGeometry',.36,.012,6,48),material,world.scene);this.marker.visible=false;
   }
@@ -23,7 +32,7 @@ export class MissionDirector{
     this.world.actors?.setCinematic(null);this.world.actors?.setDragonProjectile(null);
     this.world.store.destruction.reset();this.world.siege.reset();this.world.garden.reset();this.world.tianshi?.reset();this.world.microwave?.reset();this.world.connectionStage?.reset();this.world.xaihi?.reset();
     this.keyQueue.length=0;this.keyHop=null;this.lastKeyNumber=-1;this.signImpactRevision=0;this.visualTime=null;this.lastEventNode=null;this.world.glassPass&&(this.world.glassPass.drawGlass=true);this.world.actors?.setSmile?.(0);
-    this.finalBegun=false;this.launched=false;this.impacted=false;this.neighborImpacted=false;this.stuckReleased=false;this.marker.visible=false;this.lastShotAt=-Infinity;this.shotNumber=0;this.recoil=0;
+    this.finalBegun=false;this.launched=false;this.impacted=false;this.neighborImpacted=false;this.stuckReleased=false;this.marker.visible=false;this.lastShotAt=-Infinity;this.shotNumber=0;this.recoil=0;this.cameraOwned=false;this.cameraRoll=0;this.shakeEnvelope=0;this.cameraBeat='street';
     for(const mesh of this.world.shopFixtures)mesh.visible=true;
     this.world.weather.invalidateReflection();this.world.store.spill.shadow.needsUpdate=true;
   }
@@ -38,7 +47,10 @@ export class MissionDirector{
       this.world.actors?.teleport(-1.25,3.25);this.world.currentView=null;this.world.transition=null;
     }
     if(phase==='lever'){this.keyQueue.length=0;this.keyHop=null;}
-    if(phase==='rewind'){this.rewindStarted=this.world.time;this.world.store.destruction.beginRewind();this.world.manualUntil=this.world.time;this.world.siege.reset();}
+    if(phase==='rewind'){
+      this.rewindStarted=this.world.time;this.rewindCameraPosition.copy(this.world.camera.position);this.rewindCameraTarget.copy(this.world.controls.target);this.rewindFov=this.world.camera.fov;
+      this.world.store.destruction.beginRewind();this.world.manualUntil=this.world.time;this.world.siege.reset();this.cameraOwned=false;
+    }
     if(cctvPhases.has(phase))this.world.store.destruction.showFlashback();
     if(phase==='return')this.world.store.destruction.restorePresent();
     if(phase==='finisher'){
@@ -55,6 +67,12 @@ export class MissionDirector{
     this.world.controls.enabled=!lockedPhases.has(phase);
     if(cinematicPhases.has(phase))this.world.transition=null;
     this.world.weather.invalidateReflection();
+  }
+  resumeCamera(){
+    const w=this.world;w.setWalking?.(false);w.actors?.setMove(0,0,false);w.manualUntil=w.time;w.transition=null;w.currentView=null;
+    this.cameraOwned=false;this.cameraRoll=0;this.shakeEnvelope=0;
+    if(!this.state||!cinematicPhases.has(this.state.phase)){w.setView('street');return false;}
+    return true;
   }
   action(event){
     if(event.type==='key'){
@@ -74,7 +92,7 @@ export class MissionDirector{
     this.world.store.destruction.neighbor?.impact();this.world.siege.impact(this.wall,1.45);
     this.world.weather.invalidateReflection();
   }
-  get status(){return {phase:this.phase,recoil:this.recoil,shotNumber:this.shotNumber,serverImpacted:this.impacted,neighborImpacted:this.neighborImpacted,dragonStuck:this.neighborImpacted&&!this.stuckReleased,stuckPosition:[...this.wall],flightDistance:12,lift:4,cctv:cctvPhases.has(this.phase),visualTime:this.visualTime,smile:this.world.actors?.status?.smile||0};}
+  get status(){return {phase:this.phase,recoil:this.recoil,shotNumber:this.shotNumber,serverImpacted:this.impacted,neighborImpacted:this.neighborImpacted,dragonStuck:this.neighborImpacted&&!this.stuckReleased,stuckPosition:[...this.wall],flightDistance:12,lift:4,cctv:cctvPhases.has(this.phase),visualTime:this.visualTime,smile:this.world.actors?.status?.smile||0,cameraBeat:this.cameraBeat,cameraRoll:this.cameraRoll,shakeEnvelope:this.shakeEnvelope,cameraFov:this.world.camera.fov,reducedMotion:this.reducedMotion,cameraFocus:this.cameraTarget.toArray()};}
   get targets(){
     const d=this.world.store.destruction,s=d.state;
     if(s.progress>=99)return d.targets.filter(v=>v.id==='server');
@@ -97,7 +115,8 @@ export class MissionDirector{
     this.recoil=age>=0?Math.exp(-age*5.4)*Math.sin(Math.min(1,age/.11)*Math.PI/2)*this.recoilAmplitude:0;
     if(phase==='complete'&&this.world.walkCamera.enabled)this.stuckReleased=true;
     const cctv=cctvPhases.has(phase);actor.root.visible=this.world.charactersEnabled&&!cctv;
-    this.visualTime=phase==='rewind'?this.rewindStarted-e*5:null;
+    this.cameraRoll=0;
+    this.visualTime=phase==='rewind'?this.rewindStarted-state.rewindProgress*35:null;
     if(phase==='rewind')this.world.store.destruction.updateRewind(state.rewindProgress);
     let cast=flying.has(phase)?{phase,elapsed:e,castingElapsed:state.castingElapsed,charge:state.charge/100,flight:Math.min(1,e/9),recoil:this.recoil,distance:12,height:4}:null;
     if(['login','captcha','lever'].includes(phase))cast={...cast,castingElapsed:Math.min(state.castingElapsed,.8),distance:0,height:1.2};
@@ -155,9 +174,10 @@ export class MissionDirector{
     this.world.glassPass.drawGlass=!cctvPhases.has(s?.phase);
     const sign=this.world.store.destruction.signFlight?.state;
     if(sign&&sign.impactRevision>this.signImpactRevision){this.signImpactRevision=sign.impactRevision;this.world.siege.impact(sign.position,.95);this.world.weather.invalidateReflection();}
-    this.world.garden.update(clock,s?.paused?0:delta,{protected:!!s&&flying.has(s.phase)});
+    const fx=this.world.siege.state||{};
+    this.world.garden.update(clock,s?.paused?0:delta,{protected:!!s&&flying.has(s.phase),fxShock:fx.shock||0,impactRevision:fx.impactRevision||0,recoil:this.recoil});
     const feet=this.world.actors?.heroPosition||[-1.25,.32,2.48],dragon=this.world.actors?.dragonPosition||[-2,.325,2.6];
-    const propState={...(s||{phase:'ready'}),hero:feet,dragon};
+    const propState={...(s||{phase:'ready'}),hero:feet,dragon,fxShock:fx.shock||0,impactRevision:fx.impactRevision||0};
     if(s?.phase==='rewind'){propState.charge=(1-s.rewindProgress)*100;propState.progress=0;}
     this.world.tianshi.update(clock,s?.paused?0:delta,propState);this.world.microwave.update(clock,s?.paused?0:delta,propState);this.world.connectionStage.update(clock,s?.paused?0:delta,propState);
     this.world.xaihi?.update(clock,s?.paused?0:delta,propState);
@@ -169,59 +189,89 @@ export class MissionDirector{
     if(active)this.updateCamera(delta,feet);
   }
   updateCamera(delta,feet){
-    const w=this.world,s=this.state;if(!cinematicPhases.has(s.phase)||w.walkCamera.enabled||w.time<w.manualUntil)return;
-    const portrait=w.camera.aspect<.85,e=s.phaseElapsed;let position,target,fov=portrait?48:42;
+    const w=this.world,s=this.state;
+    this.cameraRoll=0;this.shakeEnvelope=0;
+    if(!s||!cinematicPhases.has(s.phase)||w.walkCamera.enabled||w.time<w.manualUntil){this.cameraOwned=false;this.cameraBeat=w.time<w.manualUntil?'manual':'street';return;}
+    if(!this.cameraOwned){this.baseCameraPosition.copy(w.camera.position);this.baseCameraTarget.copy(w.controls.target);this.baseFov=w.camera.fov;this.cameraOwned=true;}
+    const portrait=w.camera.aspect<.85,e=s.phaseElapsed,heading=w.actors?.status?.cinematic?.heading??2.91;
+    let position,target,fov=portrait?48:42,beat=s.phase;
     const sign=w.store.destruction.signFlight?.state;
     if(s.phase==='briefing'){
-      if(s.node?.event==='server-closeup'||s.nodeId?.startsWith('briefing_')&&Number(s.nodeId.split('_').at(-1))<4){position=[3.5,5.8,8.4];target=[0,4.53,1.3];fov=portrait?37:32;}
-      else{position=portrait?[7.7,6.5,18.2]:[8.8,6.3,16];target=[.3,3,1];fov=37;}
+      if(s.node?.event==='server-closeup'||s.nodeId?.startsWith('briefing_')&&Number(s.nodeId.split('_').at(-1))<4){position=[3.5,5.8,8.4];target=[0,4.53,1.3];fov=portrait?37:32;beat='server-window';}
+      else{position=portrait?[7.7,6.5,18.2]:[8.8,6.3,16];target=[.3,3,1];fov=37;beat='briefing-street';}
     }else if(['login','captcha','lever'].includes(s.phase)){
-      position=portrait?[3.4,6.4,11.5]:[4.3,5.5,10];target=portrait?[-1.3,-1,3.35]:[1.8,.8,3.35];fov=portrait?60:43;
+      position=portrait?[3.4,6.4,11.5]:[4.3,5.5,10];target=portrait?[-1.3,-1,3.35]:[1.8,.8,3.35];fov=portrait?60:43;beat='dragon-terminal';
     }else if(s.phase==='rewind'){
-      const p=s.rewindProgress;position=[2+(10*(1-p)),5+4*(1-p),12+20*(1-p)];target=[-1,1.1+2*(1-p),2.2+5*(1-p)];fov=portrait?55:46;
+      const p=s.rewindProgress;
+      if(s.rewindStage==='freeze'||e<.4){position=this.rewindCameraPosition.toArray();target=this.rewindCameraTarget.toArray();fov=this.rewindFov;beat='rewind-freeze';}
+      else if(p<.26){const q=smooth(p/.26);position=[this.rewindCameraPosition.x+(9-this.rewindCameraPosition.x)*q,this.rewindCameraPosition.y+(10-this.rewindCameraPosition.y)*q,this.rewindCameraPosition.z+(32-this.rewindCameraPosition.z)*q];target=[this.rewindCameraTarget.x+(-.8-this.rewindCameraTarget.x)*q,this.rewindCameraTarget.y+(2.7-this.rewindCameraTarget.y)*q,this.rewindCameraTarget.z+(1-this.rewindCameraTarget.z)*q];fov=portrait?57:48;beat='rewind-pullback';}
+      else{const q=smooth((p-.26)/.74);position=[9-3.1*q,10-6.7*q,32-20.4*q];target=[-.8-.45*q,2.7-1.35*q,1+2.25*q];fov=portrait?52:44;beat=p>.995?'rewind-doorway':'rewind-street';}
     }else if(cctvPhases.has(s.phase)){
-      const close=['heat-demo','heat'].includes(s.phase)||s.node?.event==='microwave-closeup'||s.node?.event==='warm-setting'||s.node?.event==='charred-microwave';
-      // CCTV is inside the front glazing and below the canopy. Exterior eyes
-      // would shoot through the sign, posters and lintel before reaching her.
-      position=close?[3.6,2.15,-.35]:[3.9,2.5,-.6];target=close?[portrait?3.45:2.4,1.35,1.35]:[portrait?1.95:.9,1.35,.85];fov=portrait?(close?75:58):(close?62:48);
+      const close=['heat-demo','heat'].includes(s.phase)||['microwave-closeup','warm-setting','charred-microwave','heated-meal'].includes(s.node?.event);
+      // Keep CCTV inside the frontage. These eyes retain the verified clear
+      // sightlines to Xaihi and to the inward-facing microwave door.
+      position=close?[3.6,2.15,-.35]:[3.9,2.5,-.6];target=close?[portrait?3.45:2.4,1.35,1.35]:[portrait?1.95:.9,1.35,.85];fov=portrait?(close?75:58):(close?62:48);beat=close?'cctv-microwave':'cctv-xaihi';
     }else if(s.phase==='return'){
-      const p=smooth(e/3);position=[-.2+(9.2*p),4.3+4.7*p,5.2+26.8*p];target=[2.35-3.15*p,1.45+.95*p,.7+.2*p];fov=portrait?56:47;
+      const p=smooth(e/3);position=[3.6+5.4*p,2.15+6.85*p,-.35+32.35*p];target=[3.45-4.25*p,1.35+1.05*p,1.35-.45*p];fov=portrait?56:47;beat='return-present';
     }else if(s.phase==='combat'&&sign?.active){
       const point=sign.position,fall=sign.elapsed/sign.duration;
-      position=[point[0]+(fall<.62?3.9:2.6),Math.max(1.35,point[1]+1.5),point[2]+6.2];target=[point[0],Math.max(.42,point[1]),point[2]];fov=portrait?44:38;
+      position=[point[0]+(fall<.62?3.9:2.6),Math.max(1.35,point[1]+1.5),point[2]+6.2];target=[point[0],Math.max(.42,point[1]),point[2]];fov=portrait?44:38;beat='falling-sign';
     }else if(s.phase==='tour'){
-      if(e<4){position=[this.wall[0]-2.4,this.wall[1]+1.1,this.wall[2]+5.1];target=[this.wall[0],this.wall[1]+.45,this.wall[2]+.1];fov=portrait?39:34;}
-      else if(e<11){const p=(e-4)/7,a=.55+p*1.2;position=[Math.cos(a)*12,4.2-p*1.5,Math.sin(a)*13+2];target=[.4,1.0,.65];fov=portrait?51:43;}
-      else{position=[feet[0]+.35,feet[1]+1.87,feet[2]+3.15];target=[feet[0],feet[1]+1.66,feet[2]];fov=portrait?32:28;}
+      if(e<4){position=[this.wall[0]-2.4,this.wall[1]+1.1,this.wall[2]+5.1];target=[this.wall[0],this.wall[1]+.45,this.wall[2]+.1];fov=portrait?39:34;beat='tour-dragon';}
+      else if(e<11){const p=(e-4)/7,a=.55+p*1.2;position=[Math.cos(a)*12,4.2-p*1.5,Math.sin(a)*13+2];target=[.4,1.0,.65];fov=portrait?51:43;beat='tour-ruins';}
+      else{position=[feet[0]+.35,feet[1]+1.87,feet[2]+3.15];target=[feet[0],feet[1]+1.66,feet[2]];fov=portrait?32:28;beat='tour-smile';}
     }else if(s.phase==='complete'&&e<8){
-      position=[feet[0]+.35,feet[1]+1.87,feet[2]+3.15];target=[feet[0],feet[1]+1.66,feet[2]];fov=portrait?32:28;
+      position=[feet[0]+.35,feet[1]+1.87,feet[2]+3.15];target=[feet[0],feet[1]+1.66,feet[2]];fov=portrait?32:28;beat='final-smile';
     }else if(s.phase==='charge'){
-      const wide=smooth((e-22)/8),front=smooth((e-9)/4),orbit=this.reducedMotion?0:Math.sin(e*.16)*.3;
-      // Once she clears the canopy, move to the store side: her casting face points -Z.
-      // Clamp the eye in front of the glass so the early orbit never passes through the facade.
-      const closeX=feet[0]+5.4-front*1.9+orbit,closeZ=Math.max(2.55,feet[2]+4-front*9);
-      position=[closeX+(9-closeX)*wide,feet[1]+2.3+wide*3.3,closeZ+(31-closeZ)*wide];
-      target=[feet[0]+wide*.8,feet[1]+1.25-wide*1.75,feet[2]-wide*7];fov=portrait?48+wide*7:43+wide*7;
+      beat=chargeCameraBeat(e);
+      if(beat==='charge-lift-face'||beat==='charge-caster-face'){
+        const front=faceFrame(feet,heading,beat==='charge-lift-face'?5.7:5.2,beat==='charge-lift-face'?1.25:.85,2.08,1.48);
+        position=front.position;target=front.target;fov=portrait?(beat==='charge-lift-face'?42:38):35;
+      }else if(beat==='charge-pylon-one'||beat==='charge-pylon-two'){
+        const index=beat==='charge-pylon-one'?0:3,pylon=w.tianshi.focusTargets?.[index],point=pylon?.detailTarget||pylon?.position||(index===0?[-12.8,8.81,-9.6]:[13.6,8.85,-8.3]),side=index===0?-1:1;
+        position=pylon?.detailEye||[point[0]+side*4,point[1]+2.8,point[2]+6.8];target=[point[0],point[1]+.45,point[2]];fov=portrait?38:32;
+      }else if(beat==='charge-city-array'){
+        position=portrait?[1.8,17.2,35.5]:[11,16,31];target=w.tianshi.arrayTarget||[0,7,-1];fov=portrait?74:53;
+      }else{
+        const p=smooth((e-25)/5);position=portrait?[2.2-2.2*p,13-2*p,34]:[8-5*p,12-p,32];target=[-.7,4.7-1.1*p,5+2*p];fov=portrait?61:51;
+      }
+    }else if(s.phase==='energy'&&s.speaker==='zhuang'||s.phase==='last'&&/^last_[345]$/.test(s.nodeId||'')){
+      const front=faceFrame(feet,heading,5.2,1.05,2.05,1.48);position=front.position;target=front.target;fov=portrait?39:34;beat='caster-dialogue-face';
+    }else if(s.phase==='last'&&/^last_[678]$/.test(s.nodeId||'')||s.phase==='aim-final'&&e<3){
+      const dragon=w.actors?.dragonPosition||[-2,.54,3.25];position=[dragon[0]+1.65,dragon[1]+1.48,dragon[2]+4.5];target=[dragon[0],dragon[1]+.42,dragon[2]];fov=portrait?42:35;beat='dragon-ammo-reaction';
+    }else if(s.phase==='aim-final'&&e<6){
+      const front=faceFrame(feet,heading,5.1,1.05,2.0,1.48);position=front.position;target=front.target;fov=portrait?39:34;beat='last-round-face';
     }else if(['combat','energy','last','aim-final'].includes(s.phase)){
       const view=this.shotNumber%3;
-      // Small lateral changes retain the far caster and the entire target facade on a portrait screen.
-      position=portrait?(view===0?[-2,9,34]:view===1?[2,9,34]:[0,11,34]):(view===0?[8,9,31]:view===1?[-8,9,31]:[3,11,32]);
-      target=[-.7,3.6,7];fov=portrait?58:50;
-      if(this.recoil>.05&&!this.reducedMotion){position[0]+=Math.sin(s.clock*63)*this.recoil*.11;position[1]+=Math.sin(s.clock*47)*this.recoil*.07;}
+      position=portrait?(view===0?[-2,9.2,34]:view===1?[3.8,10.2,34]:[-3.8,11.3,34]):(view===0?[8,9,31]:view===1?[-8,9.5,31]:[3,11,32]);
+      target=[-.7,3.6,7];fov=portrait?61:51;beat=s.phase==='combat'?'battle-wide-'+view:'battle-report';
     }else if(s.phase==='finisher'){
-      if(e<2){position=[feet[0]+3.6,feet[1]+2.4,feet[2]+6.8];target=[feet[0],feet[1]+.95,feet[2]-.1];fov=50;}
-      else if(e<4.9){position=portrait?[0,8,31]:[5,9,29];target=[-1,3.2,7.5];fov=portrait?58:51;}
-      else if(e<6.4){position=[-2,6,12];target=[-3.6,2.6,-.4];fov=54;}
-      else{position=[this.wall[0]-2.6,this.wall[1]+1.2,this.wall[2]+5.8];target=[this.wall[0],this.wall[1]+.45,this.wall[2]];fov=44;}
+      if(e<2){const front=faceFrame(feet,heading,6,1.8,2.25,1.1);position=front.position;target=front.target;fov=portrait?47:42;beat='finisher-load-face';}
+      else if(e<4.35){position=portrait?[0,9.6,33]:[5,10,31];target=[-1,3.2,7.5];fov=portrait?63:54;beat='finisher-flight';}
+      else if(e<6.2){
+        // Arrive before the 4.9s impact. From this side the caster and halo
+        // stay outside the frustum, and the server blast remains the subject.
+        position=[5.8,7.5,8.5];target=this.end;fov=portrait?68:60;beat=e<4.9?'finisher-impact-approach':'finisher-city-impact';
+      }else{position=[this.wall[0]-2.6,this.wall[1]+1.2,this.wall[2]+5.8];target=[this.wall[0],this.wall[1]+.45,this.wall[2]];fov=44;beat=e<6.8?'finisher-neighbor-impact':'finisher-stuck';}
     }else if(s.phase==='landing'){
-      position=[this.wall[0]-2.4,this.wall[1]+1.1,this.wall[2]+5.1];target=[this.wall[0],this.wall[1]+.45,this.wall[2]+.1];fov=portrait?39:34;
+      position=[this.wall[0]-2.4,this.wall[1]+1.1,this.wall[2]+5.1];target=[this.wall[0],this.wall[1]+.45,this.wall[2]+.1];fov=portrait?39:34;beat='landing-dragon';
     }else{
-      position=portrait?[9,9,32]:[11,8,24];target=[-.8,2.4,.9];fov=portrait?56:47;
+      position=portrait?[9,9,32]:[11,8,24];target=[-.8,2.4,.9];fov=portrait?56:47;beat='street-after-hours';
     }
-    this.cameraPosition.fromArray(position);this.cameraTarget.fromArray(target);
-    const blend=1-Math.exp(-Math.min(.1,Math.max(0,delta))*(s.phase==='finisher'?3.6:2.5));
-    w.camera.position.lerp(this.cameraPosition,blend);w.controls.target.lerp(this.cameraTarget,blend);
-    const next=T.MathUtils.lerp(w.camera.fov,fov,blend);if(Math.abs(next-w.camera.fov)>.001){w.camera.fov=next;w.camera.updateProjectionMatrix();}
+    this.cameraBeat=beat;this.cameraPosition.fromArray(position);this.cameraTarget.fromArray(target);
+    const blend=1-Math.exp(-Math.min(.1,Math.max(0,s.paused?0:delta))*(s.phase==='finisher'?3.9:3.1));
+    this.baseCameraPosition.lerp(this.cameraPosition,blend);this.baseCameraTarget.lerp(this.cameraTarget,blend);this.baseFov=T.MathUtils.lerp(this.baseFov,fov,blend);
+    w.camera.position.copy(this.baseCameraPosition);w.controls.target.copy(this.baseCameraTarget);
+    const battle=['combat','energy','finisher','landing'].includes(s.phase),age=s.clock-this.lastShotAt,kick=age>=0?Math.exp(-age*5.2)*this.recoilAmplitude:0,shock=Number(w.siege.state?.shock)||0;
+    const envelope=battle?Math.min(1.35,Math.max(kick*.78,shock)):0;this.shakeEnvelope=this.reducedMotion?Math.min(.22,envelope):envelope;
+    if(!this.reducedMotion&&envelope>.001){
+      const strength=(s.phase==='finisher'?.44:.3)*envelope;
+      w.camera.position.x+=Math.sin(s.clock*49+this.shotNumber)*strength;w.camera.position.y+=Math.sin(s.clock*37+1.1)*strength*.58;w.camera.position.z+=Math.sin(s.clock*57+.4)*strength*.3;
+      w.controls.target.x-=Math.sin(s.clock*49+this.shotNumber)*strength*.16;w.controls.target.y+=Math.sin(s.clock*43)*strength*.1;
+      this.cameraRoll=Math.sin(s.clock*31+.3)*envelope*(s.phase==='finisher'?.028:.019);
+    }
+    const next=this.baseFov+this.shakeEnvelope*(this.reducedMotion?1.1:4.2);
+    if(Math.abs(next-w.camera.fov)>.001){w.camera.fov=next;w.camera.updateProjectionMatrix();}
     w.currentView=null;
   }
   pick(ray){

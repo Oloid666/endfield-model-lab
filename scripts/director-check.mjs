@@ -2,13 +2,13 @@
 import * as T from 'three';
 import fs from 'node:fs';
 import {Resources} from '../src/resources.js';
-import {MissionDirector} from '../src/mission-director.js';
+import {MissionDirector,chargeCameraBeat} from '../src/mission-director.js';
 import {buildConnectionStage} from '../src/connection-stage.js';
 
 const ctx=new Proxy({measureText:s=>({width:s.length*12})},{get:(o,k)=>k in o?o[k]:(()=>{})});
 globalThis.document={createElement:()=>({width:256,height:256,getContext:()=>ctx})};
 const checks=[];
-function check(name,passed,detail=null){checks.push({name,passed,detail});if(!passed)throw Error(name);}
+function check(name,passed,detail=null){checks.push({name,passed,detail});if(!passed)throw Error(`${name}: ${JSON.stringify(detail)}`);}
 function makeWorld(aspect=390/844){
   const r=new Resources(),scene=new T.Scene(),calls={rewind:[],updates:[],begin:0,past:0,restore:0,reflection:0};
   const actors={root:new T.Group(),heroPosition:[-1.25,1.52,3.25],dragonPosition:[-2,.54,3.25],status:{smile:0},cast:null,action:null,
@@ -24,6 +24,7 @@ function makeWorld(aspect=390/844){
     garden:prop('garden'),tianshi:prop('tianshi'),microwave:prop('microwave'),siege:{...prop('siege'),fire(){},impact(){}},xaihi:prop('xaihi'),
     weather:{invalidateReflection(){calls.reflection++;}},setView(name){this.currentView=name;},setWalking(value){this.walkCamera.enabled=value;}};
   world.connectionStage=buildConnectionStage(scene,r);world.camera.position.set(4,5,10);
+  world.tianshi.focusTargets=[[-12.8,8.808,-9.6],[-6.1,11.194,-16.5],[6.7,10.412,-15.3],[13.6,8.854,-8.3]].map((position,i)=>({position,detailTarget:[position[0],position[1]+.35,position[2]],detailEye:[position[0]+(i<2?-3.8:4.2),position[1]+2.7,position[2]+6.3]}));
   return world;
 }
 function state(phase,overrides={}){return {phase,phaseElapsed:0,clock:10,castingElapsed:0,charge:0,progress:99,paused:false,rewindProgress:0,vcr:false,node:null,connection:{field:'account',keyNumber:0,keyAt:-Infinity,lastKey:'',lever:0},...overrides};}
@@ -87,6 +88,52 @@ for(const [label,aspect]of [['portrait',390/844],['landscape',844/390]]){
   check(`${label} connection camera keeps actual board corners and hero head on-screen`,Object.values(projected).every(p=>Math.abs(p[0])<1&&Math.abs(p[1])<1&&p[2]>-1&&p[2]<1),projected);
   cw.r.dispose();
 }
-w.r.dispose();
-fs.writeFileSync('artifacts/v8-director-check.json',JSON.stringify({kind:'actual-director-with-mock-world-no-gpu',checks,projections},null,2)+'\n');
-console.log(`V8 director: ${checks.length} checks passed.`);
+// The camera is a shot sequence, with a real front view and clear city subjects.
+const shotSamples=[[1,'charge-lift-face'],[6,'charge-pylon-one'],[11,'charge-city-array'],[16,'charge-caster-face'],[23,'charge-pylon-two'],[28,'charge-battle-wide']];
+const cameraShots=[];
+for(const [label,aspect]of [['portrait',390/844],['landscape',844/390]]){
+  const cw=makeWorld(aspect),cd=new MissionDirector(cw);cw.actors.heroPosition=[-1.25,4.32,15.25];cw.actors.status.cinematic={heading:2.91};
+  for(const [elapsed,beat]of shotSamples){
+    cd.state=state('charge',{phaseElapsed:elapsed,clock:30+elapsed,charge:elapsed/30*100});
+    for(let n=0;n<180;n++){cd.updateCamera(1/30,cw.actors.heroPosition);cw.camera.lookAt(cw.controls.target);cw.camera.updateMatrixWorld(true);}
+    const detail={label,elapsed,beat:cd.status.cameraBeat,position:cw.camera.position.toArray(),target:cw.controls.target.toArray(),fov:cw.camera.fov};cameraShots.push(detail);
+    check(`${label} charge ${elapsed}s chooses ${beat}`,chargeCameraBeat(elapsed)===beat&&cd.status.cameraBeat===beat,detail);
+    if(beat==='charge-pylon-one'||beat==='charge-pylon-two'){
+      const point=cw.tianshi.focusTargets[beat==='charge-pylon-one'?0:3].detailTarget,p=new T.Vector3(...point).project(cw.camera);
+      check(`${label} ${beat} shows its actual green core`,Math.abs(p.x)<.9&&Math.abs(p.y)<.6&&p.z>-1&&p.z<1,{projected:p.toArray(),...detail});
+      check(`${label} ${beat} camera stays above and outside the shop`,Math.abs(cw.camera.position.x)>10&&cw.camera.position.y>9,detail);
+    }
+    if(beat==='charge-lift-face'||beat==='charge-caster-face'){
+      const face=new T.Vector3(-1.25,5.98,15.25),projected=face.clone().project(cw.camera),normal=new T.Vector3(Math.sin(2.91),0,Math.cos(2.91)),toward=cw.camera.position.clone().sub(face).setY(0).normalize();
+      check(`${label} ${beat} looks at the front of her actual face`,normal.dot(toward)>.8&&Math.abs(projected.x)<.5&&Math.abs(projected.y)<.6,{facing:normal.dot(toward),projected:projected.toArray()});
+    }
+    if(beat==='charge-city-array'){
+      const points=cw.tianshi.focusTargets.map(p=>new T.Vector3(...p.position).project(cw.camera).toArray());
+      check(`${label} array shot includes all four connected pylon cores`,points.every(p=>Math.abs(p[0])<.98&&Math.abs(p[1])<.95&&p[2]>-1&&p[2]<1),points);
+    }
+  }
+  cw.r.dispose();
+}
+const rw=makeWorld(),rd=new MissionDirector(rw);rd.state=state('combat',{clock:40,phaseElapsed:3});
+const originalState=JSON.stringify(rd.state),originalHero=[...rw.actors.heroPosition];rw.manualUntil=200;
+rd.updateCamera(.016,rw.actors.heroPosition);check('Manual orbit stops automatic shot control',rd.status.cameraBeat==='manual'&&!rd.cameraOwned&&rd.cameraRoll===0);
+const resumed=rd.resumeCamera();check('One-button resume returns camera without resetting story or actor',resumed&&rw.manualUntil===rw.time&&JSON.stringify(rd.state)===originalState&&JSON.stringify(rw.actors.heroPosition)===JSON.stringify(originalHero));
+rd.updateCamera(.016,rw.actors.heroPosition);check('Resumed camera follows the current battle beat',rd.status.cameraBeat==='battle-wide-0'&&rd.cameraOwned);
+rd.lastShotAt=40;rd.recoilAmplitude=1.8;rd.shotNumber=1;rw.siege.state={shock:1.1};rd.state=state('combat',{clock:40.1,phaseElapsed:3.1});rd.reducedMotion=false;
+rd.updateCamera(.016,rw.actors.heroPosition);
+check('Shot and impact envelope drive visible position shake and roll',rd.shakeEnvelope>1&&Math.abs(rd.cameraRoll)>.001&&rw.camera.position.distanceTo(rd.baseCameraPosition)>.04,{roll:rd.cameraRoll,envelope:rd.shakeEnvelope,offset:rw.camera.position.distanceTo(rd.baseCameraPosition)});
+const frozenCamera=rw.camera.position.clone();rd.state.paused=true;rd.updateCamera(.5,rw.actors.heroPosition);
+check('Paused shot clock keeps the same shaken camera pose',rw.camera.position.distanceTo(frozenCamera)<1e-10);
+rd.reducedMotion=true;rd.state.paused=false;rd.updateCamera(.016,rw.actors.heroPosition);
+check('Reduced motion removes shake and roll and limits the lens pulse',rd.cameraRoll===0&&rd.shakeEnvelope<=.22&&rw.camera.position.distanceTo(rd.baseCameraPosition)<1e-10&&rw.camera.fov-rd.baseFov<.25,{roll:rd.cameraRoll,envelope:rd.shakeEnvelope,lensPulse:rw.camera.fov-rd.baseFov});
+rd.state=state('ready');check('Resume outside the story returns to the street preset',rd.resumeCamera()===false&&rw.currentView==='street');
+rd.state=state('energy',{clock:60});rw.camera.position.set(2,7,20);rw.controls.target.set(0,3,1);rw.time=300;rd.stage('rewind',state('rewind',{vcr:true}));
+rd.beforeActors(state('rewind',{phaseElapsed:.2,clock:60.2,rewindProgress:0,rewindStage:'freeze',vcr:true}));rd.updateCamera(.016,rw.actors.heroPosition);
+check('VCR freeze holds both the real camera and visual clock',rd.cameraBeat==='rewind-freeze'&&rd.visualTime===300&&rw.camera.position.distanceTo(new T.Vector3(2,7,20))<1e-10);
+rd.beforeActors(state('rewind',{phaseElapsed:3.4,clock:63.4,rewindProgress:.5,rewindStage:'reverse',vcr:true}));rd.updateCamera(.016,rw.actors.heroPosition);
+check('VCR reverse follows the shared eased progress',rd.visualTime===282.5&&rd.cameraBeat==='rewind-street');
+rd.beforeActors(state('rewind',{phaseElapsed:6.7,clock:66.7,rewindProgress:1,rewindStage:'settle',vcr:true}));rd.updateCamera(.016,rw.actors.heroPosition);
+check('VCR ends on the doorway before switching to the past',rd.cameraBeat==='rewind-doorway'&&Math.abs(rd.cameraPosition.z-11.6)<1e-9&&rd.cameraTarget.z===3.25);
+rw.r.dispose();w.r.dispose();
+fs.writeFileSync('artifacts/v9-director-check.json',JSON.stringify({kind:'actual-director-with-mock-world-no-gpu',checks,projections,cameraShots},null,2)+'\n');
+console.log(`V9 director: ${checks.length} checks passed.`);
