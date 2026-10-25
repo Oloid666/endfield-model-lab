@@ -1,6 +1,6 @@
 # V9 · 電光、運鏡與三段加熱
 
-本輪已完成實作，正核對最終畫面與發布資源。此文件區分桌面測試與 iPhone 真機結果。
+本輪已完成實作、最終畫面檢查與公開資源核對。此文件區分桌面測試與 iPhone 真機結果。
 
 ## 本輪變更
 
@@ -38,7 +38,14 @@
 
 ## 發布狀態
 
-V9 尚未填入部署結果；正式發布後再核對公開 HTML、JavaScript、CSS、圖片及兩份原始 GLB。
+已於 2026-10-25 發布 [V9 正式網站](https://oloid666.github.io/endfield-model-lab/?v=9)。
+
+- [程式版本 e986dad](https://github.com/Oloid666/endfield-model-lab/commit/e986dad22d9e3aa37fc55e60542c92cd55e53a78)
+- [GitHub Actions Build 與 Pages 部署成功](https://github.com/Oloid666/endfield-model-lab/actions/runs/40191857761)
+
+公開 HTML、主程式、延後載入模組、CSS、圖片與兩份 GLB 均已透過正常 TLS 下載，SHA-256 與受測 production build 完全一致。兩份原始 GLB 保持不變。證據：[`production-check.json`](../artifacts/production-check.json)。
+
+本環境 Chromium 直接開啟公開網址仍遇到代理憑證信任錯誤 `ERR_CERT_AUTHORITY_INVALID`；沒有停用 TLS。公開資源核對與本機同版 WebGL 實測已完成，但未宣稱公開網址瀏覽器截圖或 iPhone 真機驗證。證據：[`v9-public-browser-check.json`](../artifacts/v9-public-browser-check.json)。
 
 ## 實際畫面
 

@@ -1,28 +1,28 @@
 {
-  "url": "https://oloid666.github.io/endfield-model-lab/?v=8",
-  "release": "lookdev-v8-tianshi-login-xaihi-vcr",
-  "commit": "27b9243a11bc14b42f49e38b05bcbca46ae9bbc3",
-  "action": "https://github.com/Oloid666/endfield-model-lab/actions/runs/40156122443",
+  "url": "https://oloid666.github.io/endfield-model-lab/?v=9",
+  "release": "lookdev-v9-cannon-radiance-cameras-heat-pulses",
+  "commit": "e986dad22d9e3aa37fc55e60542c92cd55e53a78",
+  "action": "https://github.com/Oloid666/endfield-model-lab/actions/runs/40191857761",
   "tls_verification": true,
   "browser_public_url_test": false,
   "real_iphone_test": false,
   "assets": [
     {
-      "path": "/endfield-model-lab/assets/index-BQqMN2aU.js",
-      "bytes": 1062386,
-      "sha256": "ccda915f6a0cf3b09969612eddfc820443c2701dde026225458493ad0cd04fe5",
+      "path": "/endfield-model-lab/assets/index-Caycndcd.css",
+      "bytes": 53844,
+      "sha256": "cd84574bb10550b802b16b3bef24073e46321043d9e6ee2be30b05f128ff5b2e",
       "matches_tested_build": true
     },
     {
-      "path": "/endfield-model-lab/assets/index-C7krTZd_.css",
-      "bytes": 44445,
-      "sha256": "4d7a583136a1f1dfe660bddd8906d986e4d9088b9504644c09b51af398b44672",
+      "path": "/endfield-model-lab/assets/index-CwflIFf0.js",
+      "bytes": 1088723,
+      "sha256": "a526506ec645a76ff74364aecf765613e1007f6cb7c723a1552554f062b2259f",
       "matches_tested_build": true
     },
     {
-      "path": "/endfield-model-lab/assets/xaihi-B73Fy-1b.js",
+      "path": "/endfield-model-lab/assets/xaihi-DL3F_WiF.js",
       "bytes": 6023,
-      "sha256": "64de78a466e8fbfcd20282d7ee150e91435b1e4e6030b83af255b1fd6a560d3f",
+      "sha256": "2355f6d981b8da71b59ef957bfaa579c7451f58cf0dbb7340b4f2012bb8c4b0f",
       "matches_tested_build": true
     },
     {
@@ -70,7 +70,14 @@
     "dragon-login-terminal-v8",
     "xaihi-vcr-actor",
     "endfield_power",
-    "VCR · 時間倒帶"
+    "VCR · 時間倒帶",
+    "cannon-layered-bursts-v9",
+    "cannon-shared-burst-light",
+    "tianshi-green-energy-columns",
+    "microwave-fault-halo",
+    "mission-camera-reset",
+    "正在準備雨夜光影",
+    "拆成三段"
   ],
   "removed_playground_marker_absent": true
 }
