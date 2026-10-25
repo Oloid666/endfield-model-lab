@@ -1,3 +1,4 @@
+import {buildInvestigationProps} from './investigation-props.js';
 import * as T from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
@@ -25,7 +26,7 @@ import { ShaderWarmup } from './shader-warmup.js';
 
 export class World {
   constructor(container,{onContextLost,onContextRestored,onManual,onFraming=()=>{},onZone=()=>{}}) {
-    this.onFraming=onFraming;this.r=new Resources();this.container=container;this.quality='balanced';this.time=0;this.disposed=false;this.renderCount=0;this.charactersEnabled=true;
+    this.onFraming=onFraming;this.r=new Resources();this.container=container;this.quality='balanced';this.time=0;this.disposed=false;this.renderCount=0;this.charactersEnabled=true;this.autoCamera=true;
     this.scene=new T.Scene();this.scene.background=new T.Color('#080f1d');this.scene.fog=new T.FogExp2('#101a2c',.009);
     this.camera=new T.PerspectiveCamera(37,1,.04,100);this.onTick=()=>{};this.manualUntil=0;
     this.renderer=new T.WebGLRenderer({antialias:true,alpha:false,powerPreference:'high-performance'});
@@ -41,7 +42,7 @@ export class World {
     this.controls=new OrbitControls(this.camera,this.renderer.domElement);Object.assign(this.controls,{enableDamping:true,dampingFactor:.065,minDistance:.75,maxDistance:44,maxPolarAngle:Math.PI*.49,minPolarAngle:.15,zoomSpeed:.8,panSpeed:.65,rotateSpeed:.5});
     this.controls.touches.ONE=T.TOUCH.ROTATE;this.controls.touches.TWO=T.TOUCH.DOLLY_PAN;
     this.onManualView=onManual;this.walkCamera=new WalkCamera(this.camera,this.controls,onZone);
-    this.manual=()=>{this.transition=null;this.currentView=null;this.manualUntil=this.time+14;onManual();};this.controls.addEventListener('start',this.manual);
+    this.manual=()=>{this.transition=null;this.currentView=null;this.manualUntil=Infinity;this.autoCamera=false;onManual();};this.controls.addEventListener('start',this.manual);
     this.scene.add(new T.HemisphereLight(0x8aa9d9,0x1c2831,.36));
     const moon=new T.DirectionalLight(0x91b8d4,.65);moon.position.set(-5,10,5);this.scene.add(moon);
     const rim=new T.DirectionalLight(0x8dc9d1,.6);rim.position.set(4,4,-2);this.scene.add(rim);
@@ -57,7 +58,7 @@ export class World {
     this.scene.environment=makeNightEnvironment(this.renderer,this.r);this.scene.environmentIntensity=.48;
     this.store=buildStore(this.scene,this.r);this.batchStats=optimizeStaticSet(this.store.root,this.r);
     this.garden=buildPearGarden(this.scene,this.r);this.siege=buildSiegeEffects(this.scene,this.r);
-    this.tianshi=buildTianshiGrid(this.scene,this.r);this.microwave=buildMicrowave(this.scene,this.r);this.connectionStage=buildConnectionStage(this.scene,this.r);
+    this.tianshi=buildTianshiGrid(this.scene,this.r);this.microwave=buildMicrowave(this.scene,this.r);this.connectionStage=buildConnectionStage(this.scene,this.r);this.investigationProps=buildInvestigationProps(this.scene,this.r);
     this.weather=buildWeather(this.scene,this.r);this.wet=applyWetPavement([...(this.store.wetMaterials||[]),...(this.garden.wetMaterials||[])],this.weather.reflection,this.r);
     this.director=new MissionDirector(this);this.refreshGlassProbe();this.shaderWarmup=new ShaderWarmup(this.renderer,this.scene,this.camera);
     const target=new T.WebGLRenderTarget(1,1,{type:T.HalfFloatType,depthBuffer:true});target.depthTexture=new T.DepthTexture(1,1,T.UnsignedIntType);
@@ -102,10 +103,17 @@ export class World {
   setWalking(value){const was=this.walkCamera.enabled;this.walkCamera.setEnabled(value,this.actors?.position);if(was&&!value)this.manualUntil=this.time+14;if(value){this.manualUntil=this.time;this.transition=null;this.currentView=null;this.onManualView();this.weather.invalidateReflection();}}
   prepareShaders(object=this.scene,label='scene'){return this.shaderWarmup.prepare(object,label);}
   resetStoryCamera(){
-    this.setWalking(false);
+    this.setWalking(false);this.autoCamera=true;
     if(this.missionState&&this.missionState.phase!=='ready')this.director.resumeCamera();
     else{this.manualUntil=this.time;this.setView('reset');}
     this.weather.invalidateReflection();
+  }
+  toggleAutoCamera(){this.autoCamera=!this.autoCamera;if(this.autoCamera)this.resetStoryCamera();else this.manualUntil=Infinity;return this.autoCamera;}
+  capturePhoto(){
+    this.composer.render();
+    const points=[['floor',[-3.05,1.08,2.1]],['server',[0,4.6,1.4]]].map(([id,p])=>{const q=this.projectPoint(p);return {id,x:(q[0]+1)/2,y:(1-q[1])/2,z:q[2]};});
+    if(points.some(p=>p.z>1||p.z< -1||p.x<.06||p.x>.94||p.y<.08||p.y>.85))throw Error('再退遠一點，讓一樓貨單與二樓窗戶一起入鏡。');
+    return {src:this.renderer.domElement.toDataURL('image/jpeg',.86),width:this.renderer.domElement.width,height:this.renderer.domElement.height,points};
   }
   projectPoint(point){const p=new T.Vector3().fromArray(point).project(this.camera);return p.toArray();}
   tick(t,delta=.016,render=true){
@@ -114,7 +122,7 @@ export class World {
     if(this.actors){
       const p=this.actors.position;this.walkCamera.update(p,delta,this.time<this.manualUntil);
       if(this.walkCamera.automatic&&this.currentView){this.currentView=null;this.onManualView();}
-      const cctv=['flashback','heat-demo','heat','flashback-end'].includes(this.missionState?.phase);
+      const cctv=['flashback','hack','credentials','heat-demo','heat','flashback-end'].includes(this.missionState?.phase);
       const h=cctv?[1.95,.31,.85]:this.actors.heroPosition||p.toArray();
       const cast=this.actors.status.cinematic,yaw=cctv?0:cast?.phase?cast.heading:0,c=Math.cos(yaw),s=Math.sin(yaw);
       this.portrait.key.position.set(h[0]-2.35*c+4.22*s,h[1]+3.38,h[2]+2.35*s+4.22*c);this.portrait.key.target.position.set(h[0]-.35,h[1]+.98,h[2]);

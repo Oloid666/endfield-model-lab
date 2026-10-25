@@ -1,0 +1,1292 @@
+{
+  "kind": "actual-geometry-with-stubbed-canvas",
+  "checks": [
+    {
+      "name": "Four original-style columns have separate roofs and foundations",
+      "passed": true,
+      "detail": {
+        "phase": "ready",
+        "quality": "balanced",
+        "reducedMotion": false,
+        "charge": 0,
+        "activePylons": 0,
+        "connected": [
+          false,
+          false,
+          false,
+          false
+        ],
+        "positions": [
+          [
+            -12.8,
+            2.1,
+            -9.6
+          ],
+          [
+            -6.1,
+            1.6,
+            -16.5
+          ],
+          [
+            6.7,
+            2.3,
+            -15.3
+          ],
+          [
+            13.6,
+            1.6,
+            -8.3
+          ]
+        ],
+        "originalStyle": true,
+        "drawnLinks": 0,
+        "greenHalos": 0,
+        "energyRings": 0,
+        "energyColumns": 0,
+        "moteBudget": 20,
+        "emission": 0.16
+      }
+    },
+    {
+      "name": "Partly pulled lever lights only the first pylons",
+      "passed": true,
+      "detail": {
+        "phase": "lever",
+        "quality": "balanced",
+        "reducedMotion": false,
+        "charge": 0,
+        "activePylons": 1,
+        "connected": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "positions": [
+          [
+            -12.8,
+            2.1,
+            -9.6
+          ],
+          [
+            -6.1,
+            1.6,
+            -16.5
+          ],
+          [
+            6.7,
+            2.3,
+            -15.3
+          ],
+          [
+            13.6,
+            1.6,
+            -8.3
+          ]
+        ],
+        "originalStyle": true,
+        "drawnLinks": 1,
+        "greenHalos": 1,
+        "energyRings": 3,
+        "energyColumns": 1,
+        "moteBudget": 20,
+        "emission": 2.7113614877725576
+      }
+    },
+    {
+      "name": "Fully pulled lever connects four visible electrical links",
+      "passed": true,
+      "detail": {
+        "phase": "lever",
+        "quality": "balanced",
+        "reducedMotion": false,
+        "charge": 0,
+        "activePylons": 4,
+        "connected": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "positions": [
+          [
+            -12.8,
+            2.1,
+            -9.6
+          ],
+          [
+            -6.1,
+            1.6,
+            -16.5
+          ],
+          [
+            6.7,
+            2.3,
+            -15.3
+          ],
+          [
+            13.6,
+            1.6,
+            -8.3
+          ]
+        ],
+        "originalStyle": true,
+        "drawnLinks": 4,
+        "greenHalos": 4,
+        "energyRings": 12,
+        "energyColumns": 4,
+        "moteBudget": 20,
+        "emission": 3.3475922452992934
+      }
+    },
+    {
+      "name": "Charge keeps all four sources connected to the caster",
+      "passed": true,
+      "detail": {
+        "phase": "charge",
+        "quality": "balanced",
+        "reducedMotion": false,
+        "charge": 0.78,
+        "activePylons": 4,
+        "connected": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "positions": [
+          [
+            -12.8,
+            2.1,
+            -9.6
+          ],
+          [
+            -6.1,
+            1.6,
+            -16.5
+          ],
+          [
+            6.7,
+            2.3,
+            -15.3
+          ],
+          [
+            13.6,
+            1.6,
+            -8.3
+          ]
+        ],
+        "originalStyle": true,
+        "drawnLinks": 4,
+        "greenHalos": 4,
+        "energyRings": 12,
+        "energyColumns": 4,
+        "moteBudget": 20,
+        "emission": 4.55918215283958
+      }
+    },
+    {
+      "name": "Charged columns have twelve suspended rings, four energy columns and green core halos",
+      "passed": true,
+      "detail": {
+        "phase": "charge",
+        "quality": "balanced",
+        "reducedMotion": false,
+        "charge": 0.78,
+        "activePylons": 4,
+        "connected": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "positions": [
+          [
+            -12.8,
+            2.1,
+            -9.6
+          ],
+          [
+            -6.1,
+            1.6,
+            -16.5
+          ],
+          [
+            6.7,
+            2.3,
+            -15.3
+          ],
+          [
+            13.6,
+            1.6,
+            -8.3
+          ]
+        ],
+        "originalStyle": true,
+        "drawnLinks": 4,
+        "greenHalos": 4,
+        "energyRings": 12,
+        "energyColumns": 4,
+        "moteBudget": 20,
+        "emission": 4.55918215283958
+      }
+    },
+    {
+      "name": "Pillar camera points focus on the upper green core and stay outside the frame",
+      "passed": true,
+      "detail": [
+        {
+          "id": "tianshi-0",
+          "position": [
+            -12.8,
+            8.808,
+            -9.6
+          ],
+          "base": [
+            -12.8,
+            2.1,
+            -9.6
+          ],
+          "height": 8.6,
+          "detailTarget": [
+            -12.8,
+            9.158,
+            -9.6
+          ],
+          "detailEye": [
+            -16.6,
+            11.508,
+            -3.3
+          ]
+        },
+        {
+          "id": "tianshi-1",
+          "position": [
+            -6.1,
+            11.194,
+            -16.5
+          ],
+          "base": [
+            -6.1,
+            1.6,
+            -16.5
+          ],
+          "height": 12.3,
+          "detailTarget": [
+            -6.1,
+            11.544,
+            -16.5
+          ],
+          "detailEye": [
+            -9.899999999999999,
+            13.894000000000002,
+            -10.2
+          ]
+        },
+        {
+          "id": "tianshi-2",
+          "position": [
+            6.7,
+            10.411999999999999,
+            -15.3
+          ],
+          "base": [
+            6.7,
+            2.3,
+            -15.3
+          ],
+          "height": 10.4,
+          "detailTarget": [
+            6.7,
+            10.761999999999999,
+            -15.3
+          ],
+          "detailEye": [
+            10.9,
+            13.111999999999998,
+            -9
+          ]
+        },
+        {
+          "id": "tianshi-3",
+          "position": [
+            13.6,
+            8.854000000000001,
+            -8.3
+          ],
+          "base": [
+            13.6,
+            1.6,
+            -8.3
+          ],
+          "height": 9.3,
+          "detailTarget": [
+            13.6,
+            9.204,
+            -8.3
+          ],
+          "detailEye": [
+            17.8,
+            11.554000000000002,
+            -2.000000000000001
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Every physical electrical segment stays outside the face close-up volume",
+      "passed": true,
+      "detail": {
+        "faceDistance": 2.63692989031825
+      }
+    },
+    {
+      "name": "Low quality retains the four-pylon design and reduces spark budget",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Low quality keeps broad glow with only two rings per active pillar",
+      "passed": true,
+      "detail": {
+        "phase": "charge",
+        "quality": "low",
+        "reducedMotion": false,
+        "charge": 0.9,
+        "activePylons": 4,
+        "connected": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "positions": [
+          [
+            -12.8,
+            2.1,
+            -9.6
+          ],
+          [
+            -6.1,
+            1.6,
+            -16.5
+          ],
+          [
+            6.7,
+            2.3,
+            -15.3
+          ],
+          [
+            13.6,
+            1.6,
+            -8.3
+          ]
+        ],
+        "originalStyle": true,
+        "drawnLinks": 4,
+        "greenHalos": 4,
+        "energyRings": 8,
+        "energyColumns": 4,
+        "moteBudget": 8,
+        "emission": 4.720478302736664
+      }
+    },
+    {
+      "name": "Flashback turns off present-time electrical links",
+      "passed": true,
+      "detail": {
+        "phase": "flashback",
+        "quality": "low",
+        "reducedMotion": false,
+        "charge": 0,
+        "activePylons": 0,
+        "connected": [
+          false,
+          false,
+          false,
+          false
+        ],
+        "positions": [
+          [
+            -12.8,
+            2.1,
+            -9.6
+          ],
+          [
+            -6.1,
+            1.6,
+            -16.5
+          ],
+          [
+            6.7,
+            2.3,
+            -15.3
+          ],
+          [
+            13.6,
+            1.6,
+            -8.3
+          ]
+        ],
+        "originalStyle": true,
+        "drawnLinks": 0,
+        "greenHalos": 0,
+        "energyRings": 0,
+        "energyColumns": 0,
+        "moteBudget": 8,
+        "emission": 0.13
+      }
+    },
+    {
+      "name": "Account keyboard exposes 29 physical keys and a pressed key",
+      "passed": true,
+      "detail": {
+        "visible": true,
+        "phase": "login",
+        "field": "account",
+        "lastKey": "e",
+        "keyNumber": 1,
+        "pressed": true,
+        "lever": 0,
+        "keys": 29,
+        "position": [
+          -1.65,
+          0.335,
+          3.25
+        ],
+        "keyTop": 0.545,
+        "leverPosition": [
+          -2.83,
+          0.7050000000000001,
+          3.27
+        ],
+        "physical": true
+      }
+    },
+    {
+      "name": "Letter and backspace foot targets are distinct real key locations",
+      "passed": true,
+      "detail": {
+        "e": [
+          -0.75,
+          0.545,
+          2.41
+        ],
+        "back": [
+          -1.35,
+          0.545,
+          4.09
+        ]
+      }
+    },
+    {
+      "name": "Password changes to a 12-key numeric pad",
+      "passed": true,
+      "detail": {
+        "visible": true,
+        "phase": "login",
+        "field": "password",
+        "lastKey": "5",
+        "keyNumber": 2,
+        "pressed": true,
+        "lever": 0,
+        "keys": 12,
+        "position": [
+          -1.65,
+          0.335,
+          3.25
+        ],
+        "keyTop": 0.545,
+        "leverPosition": [
+          -2.83,
+          0.7050000000000001,
+          3.27
+        ],
+        "physical": true
+      }
+    },
+    {
+      "name": "Uppercase verification target lands on the checkbox",
+      "passed": true,
+      "detail": [
+        -2.435,
+        0.545,
+        3.25
+      ]
+    },
+    {
+      "name": "Lever has a separate visible moving handle after static batching",
+      "passed": true,
+      "detail": {
+        "children": 3
+      }
+    },
+    {
+      "name": "Handle survives the scene batch and physically travels 2.36 metres",
+      "passed": true,
+      "detail": {
+        "start": [
+          -2.83,
+          0.585,
+          3.27
+        ],
+        "end": [
+          -0.47,
+          0.585,
+          3.27
+        ]
+      }
+    },
+    {
+      "name": "Companion pull target follows the handle",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Opening microwave is charred and in extreme warming mode",
+      "passed": true,
+      "detail": {
+        "mode": "charred",
+        "phase": "ready",
+        "quality": "balanced",
+        "reducedMotion": false,
+        "charred": 1,
+        "arcActive": true,
+        "arcs": 2,
+        "arcSegments": 7,
+        "arcCoreRadius": 0.010700000000000001,
+        "arcHaloRadius": 0.038520000000000006,
+        "arcPulse": 0.9,
+        "steam": 0,
+        "food": "cold",
+        "wreck": false,
+        "warming": true,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 76,
+          "meshesAfter": 48,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      }
+    },
+    {
+      "name": "Fixed oven housing uses fewer draw meshes after its build-time batches",
+      "passed": true,
+      "detail": {
+        "meshesBefore": 76,
+        "meshesAfter": 48,
+        "sharedDraws": 2
+      }
+    },
+    {
+      "name": "Microwave door faces the shop aisle and keeps its original world centre",
+      "passed": true,
+      "detail": {
+        "doorDirection": [
+          1.2246467991473532e-16,
+          0,
+          -1
+        ],
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ]
+      }
+    },
+    {
+      "name": "Street-facing back retains 24 physical vents and six scorch marks after batching",
+      "passed": true,
+      "detail": {
+        "ventHits": 24,
+        "scars": 6
+      }
+    },
+    {
+      "name": "Opening charred oven emits intermittent electrical arcs",
+      "passed": true,
+      "detail": {
+        "mode": "charred",
+        "phase": "ready",
+        "quality": "balanced",
+        "reducedMotion": false,
+        "charred": 1,
+        "arcActive": true,
+        "arcs": 2,
+        "arcSegments": 7,
+        "arcCoreRadius": 0.010700000000000001,
+        "arcHaloRadius": 0.038520000000000006,
+        "arcPulse": 0.9,
+        "steam": 0,
+        "food": "cold",
+        "wreck": false,
+        "warming": true,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 76,
+          "meshesAfter": 48,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      }
+    },
+    {
+      "name": "Idle faults remain visible from both street rear and interior door",
+      "passed": true,
+      "detail": {
+        "rearArc": true,
+        "frontArc": true
+      }
+    },
+    {
+      "name": "Earlier CCTV shows the same clean oven above its intact cabinet",
+      "passed": true,
+      "detail": {
+        "mode": "clean",
+        "phase": "flashback",
+        "quality": "balanced",
+        "reducedMotion": false,
+        "charred": 0,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 7,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "wreck": false,
+        "warming": false,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 76,
+          "meshesAfter": 48,
+          "sharedDraws": 2
+        },
+        "display": "03:00"
+      }
+    },
+    {
+      "name": "Batched shell keeps its live clean colour and independent display/soot visibility",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Second failed heating keeps the first attempt burn scars",
+      "passed": true,
+      "detail": {
+        "mode": "burning",
+        "phase": "heat-demo",
+        "quality": "balanced",
+        "reducedMotion": false,
+        "charred": 0.86,
+        "arcActive": true,
+        "arcs": 4,
+        "arcSegments": 7,
+        "arcCoreRadius": 0.01727646766814868,
+        "arcHaloRadius": 0.062195283605335244,
+        "arcPulse": 0.7208760133624861,
+        "steam": 0,
+        "food": "cold",
+        "wreck": false,
+        "warming": false,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 76,
+          "meshesAfter": 48,
+          "sharedDraws": 2
+        },
+        "display": "ERR"
+      }
+    },
+    {
+      "name": "Player power input creates four strong arcs and steam",
+      "passed": true,
+      "detail": {
+        "mode": "heating",
+        "phase": "heat",
+        "quality": "balanced",
+        "reducedMotion": false,
+        "charred": 0,
+        "arcActive": true,
+        "arcs": 4,
+        "arcSegments": 7,
+        "arcCoreRadius": 0.018503879318014085,
+        "arcHaloRadius": 0.0666139655448507,
+        "arcPulse": 0.9615449643164868,
+        "steam": 3,
+        "food": "cold",
+        "wreck": false,
+        "warming": false,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 76,
+          "meshesAfter": 48,
+          "sharedDraws": 2
+        },
+        "display": "0.30 s"
+      }
+    },
+    {
+      "name": "Microwave fault has a thick white core and a distinct green halo layer",
+      "passed": true,
+      "detail": {
+        "mode": "heating",
+        "phase": "heat",
+        "quality": "balanced",
+        "reducedMotion": false,
+        "charred": 0,
+        "arcActive": true,
+        "arcs": 4,
+        "arcSegments": 7,
+        "arcCoreRadius": 0.018503879318014085,
+        "arcHaloRadius": 0.0666139655448507,
+        "arcPulse": 0.9615449643164868,
+        "steam": 3,
+        "food": "cold",
+        "wreck": false,
+        "warming": false,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 76,
+          "meshesAfter": 48,
+          "sharedDraws": 2
+        },
+        "display": "0.30 s"
+      }
+    },
+    {
+      "name": "Low quality keeps the exaggerated fault but cuts arc segments",
+      "passed": true,
+      "detail": {
+        "mode": "heating",
+        "phase": "heat",
+        "quality": "low",
+        "reducedMotion": false,
+        "charred": 0,
+        "arcActive": true,
+        "arcs": 4,
+        "arcSegments": 5,
+        "arcCoreRadius": 0.017824267600306382,
+        "arcHaloRadius": 0.06416736336110297,
+        "arcPulse": 0.8282877647659568,
+        "steam": 3,
+        "food": "cold",
+        "wreck": false,
+        "warming": false,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 76,
+          "meshesAfter": 48,
+          "sharedDraws": 2
+        },
+        "display": "0.30 s"
+      }
+    },
+    {
+      "name": "High quality adds curve segments without creating extra arc pools",
+      "passed": true,
+      "detail": {
+        "mode": "heating",
+        "phase": "heat",
+        "quality": "high",
+        "reducedMotion": false,
+        "charred": 0,
+        "arcActive": true,
+        "arcs": 4,
+        "arcSegments": 9,
+        "arcCoreRadius": 0.01730437624803436,
+        "arcHaloRadius": 0.0622957544929237,
+        "arcPulse": 0.7263482839283054,
+        "steam": 3,
+        "food": "cold",
+        "wreck": false,
+        "warming": false,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 76,
+          "meshesAfter": 48,
+          "sharedDraws": 2
+        },
+        "display": "0.30 s"
+      }
+    },
+    {
+      "name": "Burnt input darkens food and produces smoke",
+      "passed": true,
+      "detail": {
+        "mode": "heating",
+        "phase": "heat",
+        "quality": "high",
+        "reducedMotion": false,
+        "charred": 0,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 9,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 7,
+        "food": "burnt",
+        "wreck": false,
+        "warming": false,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 76,
+          "meshesAfter": 48,
+          "sharedDraws": 2
+        },
+        "display": "0.30 s"
+      }
+    },
+    {
+      "name": "Successful meal leaves fast-warming mode and power diversion on",
+      "passed": true,
+      "detail": {
+        "mode": "warm",
+        "phase": "flashback-end",
+        "quality": "high",
+        "reducedMotion": false,
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 9,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 3,
+        "food": "hot",
+        "wreck": false,
+        "warming": true,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 76,
+          "meshesAfter": 48,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      }
+    },
+    {
+      "name": "Batched shell returns to charred paint without swallowing animated descendants",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Present wreck lowers oven, hides cabinet and hides the whole meal",
+      "passed": true,
+      "detail": {
+        "mode": "charred",
+        "phase": "return",
+        "quality": "high",
+        "reducedMotion": false,
+        "charred": 1,
+        "arcActive": true,
+        "arcs": 2,
+        "arcSegments": 9,
+        "arcCoreRadius": 0.010700000000000001,
+        "arcHaloRadius": 0.038520000000000006,
+        "arcPulse": 0.9,
+        "steam": 0,
+        "food": "cold",
+        "wreck": true,
+        "warming": true,
+        "position": [
+          3.45,
+          0.5549999999999999,
+          1.43
+        ],
+        "counterVisible": false,
+        "batches": {
+          "meshesBefore": 76,
+          "meshesAfter": 48,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      }
+    },
+    {
+      "name": "A small fixed petal pool drifts out of the courtyard without altering the flowering canopy",
+      "passed": true,
+      "detail": {
+        "quality": "balanced",
+        "reducedMotion": false,
+        "trees": 3,
+        "blossoms": 2700,
+        "newLeaves": 420,
+        "fallingPetals": 48,
+        "driftingPetals": 48,
+        "gustPetals": 0,
+        "petalPool": 96,
+        "escapedPetals": 24,
+        "petalBounds": {
+          "minX": 4.332281849506277,
+          "maxX": 8.203228114104803,
+          "minY": 0.32017296412460805,
+          "maxY": 4.329773058001475,
+          "minZ": -2.924170177889631,
+          "maxZ": 3.990677142519277
+        },
+        "protected": true,
+        "shield": 0.09516258196404041,
+        "center": [
+          7.65,
+          0.29,
+          -0.65
+        ]
+      }
+    },
+    {
+      "name": "One cannon impact emits a bounded petal gust and keeps the pear trees intact",
+      "passed": true,
+      "detail": {
+        "quality": "balanced",
+        "reducedMotion": false,
+        "trees": 3,
+        "blossoms": 2700,
+        "newLeaves": 420,
+        "fallingPetals": 72,
+        "driftingPetals": 48,
+        "gustPetals": 24,
+        "petalPool": 96,
+        "escapedPetals": 31,
+        "petalBounds": {
+          "minX": 4.119088531979304,
+          "maxX": 8.69391144347081,
+          "minY": 0.45908650518998617,
+          "maxY": 4.538359789829702,
+          "minZ": -2.734940788898352,
+          "maxZ": 3.5079576257102834
+        },
+        "protected": true,
+        "shield": 0.18126924692201812,
+        "center": [
+          7.65,
+          0.29,
+          -0.65
+        ]
+      }
+    },
+    {
+      "name": "Pausing the story clock freezes drifting petal geometry",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Impact petal gust ends without removing the normal falling petals",
+      "passed": true,
+      "detail": {
+        "quality": "balanced",
+        "reducedMotion": false,
+        "trees": 3,
+        "blossoms": 2700,
+        "newLeaves": 420,
+        "fallingPetals": 48,
+        "driftingPetals": 48,
+        "gustPetals": 0,
+        "petalPool": 96,
+        "escapedPetals": 19,
+        "petalBounds": {
+          "minX": 3.845166925437499,
+          "maxX": 8.798819218865397,
+          "minY": 0.38989584270734146,
+          "maxY": 4.119369163897959,
+          "minZ": -2.038165219686039,
+          "maxZ": 4.133370010507292
+        },
+        "protected": true,
+        "shield": 0.22119921692859512,
+        "center": [
+          7.65,
+          0.29,
+          -0.65
+        ]
+      }
+    },
+    {
+      "name": "Low quality reduces petal and canopy budgets",
+      "passed": true,
+      "detail": {
+        "quality": "low",
+        "reducedMotion": false,
+        "trees": 3,
+        "blossoms": 1400,
+        "newLeaves": 240,
+        "fallingPetals": 20,
+        "driftingPetals": 20,
+        "gustPetals": 0,
+        "petalPool": 96,
+        "escapedPetals": 8,
+        "petalBounds": {
+          "minX": 4.4134973541982285,
+          "maxX": 9.391853256082314,
+          "minY": 0.5607233563733386,
+          "maxY": 4.323912121769488,
+          "minZ": -2.7281289772778528,
+          "maxZ": 4.465205066658071
+        },
+        "protected": true,
+        "shield": 0.2591817793182821,
+        "center": [
+          7.65,
+          0.29,
+          -0.65
+        ]
+      }
+    },
+    {
+      "name": "High quality caps both normal and gust petals at the fixed ninety-six-instance pool",
+      "passed": true,
+      "detail": {
+        "quality": "high",
+        "reducedMotion": false,
+        "trees": 3,
+        "blossoms": 3600,
+        "newLeaves": 420,
+        "fallingPetals": 96,
+        "driftingPetals": 64,
+        "gustPetals": 32,
+        "petalPool": 96,
+        "escapedPetals": 26,
+        "petalBounds": {
+          "minX": 3.4007682068431024,
+          "maxX": 9.416401120077133,
+          "minY": 0.2931590382416743,
+          "maxY": 4.306906666117721,
+          "minZ": -2.818375177648984,
+          "maxZ": 4.766369864418614
+        },
+        "protected": true,
+        "shield": 0.29531191028128656,
+        "center": [
+          7.65,
+          0.29,
+          -0.65
+        ]
+      }
+    },
+    {
+      "name": "Opening has physical CCTV and three purple food marks",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Earlier recording starts without food stains",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "First failed meal creates a fixed pixel burst",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Repeated failures cap the food pool",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Replay restores original evidence stains",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Ten seconds of updates create no new tracked graphics resources",
+      "passed": true,
+      "detail": {
+        "items": 220,
+        "geometryCount": 25,
+        "materialCount": 38
+      }
+    },
+    {
+      "name": "Replay resets pylons, restores charred oven height and hides terminal",
+      "passed": true,
+      "detail": {
+        "grid": {
+          "phase": "ready",
+          "quality": "low",
+          "reducedMotion": false,
+          "charge": 0,
+          "activePylons": 0,
+          "connected": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "positions": [
+            [
+              -12.8,
+              2.1,
+              -9.6
+            ],
+            [
+              -6.1,
+              1.6,
+              -16.5
+            ],
+            [
+              6.7,
+              2.3,
+              -15.3
+            ],
+            [
+              13.6,
+              1.6,
+              -8.3
+            ]
+          ],
+          "originalStyle": true,
+          "drawnLinks": 0,
+          "greenHalos": 0,
+          "energyRings": 0,
+          "energyColumns": 0,
+          "moteBudget": 8,
+          "emission": 0.16
+        },
+        "microwave": {
+          "mode": "charred",
+          "phase": "ready",
+          "quality": "high",
+          "reducedMotion": false,
+          "charred": 1,
+          "arcActive": true,
+          "arcs": 2,
+          "arcSegments": 9,
+          "arcCoreRadius": 0.010700000000000001,
+          "arcHaloRadius": 0.038520000000000006,
+          "arcPulse": 0.9,
+          "steam": 0,
+          "food": "cold",
+          "wreck": false,
+          "warming": true,
+          "position": [
+            3.45,
+            1.6,
+            1.43
+          ],
+          "counterVisible": true,
+          "batches": {
+            "meshesBefore": 76,
+            "meshesAfter": 48,
+            "sharedDraws": 2
+          },
+          "display": "極速保溫"
+        },
+        "board": {
+          "visible": false,
+          "phase": "ready",
+          "field": "account",
+          "lastKey": "",
+          "keyNumber": 0,
+          "pressed": false,
+          "lever": 0,
+          "keys": 29,
+          "position": [
+            -1.65,
+            0.335,
+            3.25
+          ],
+          "keyTop": 0.545,
+          "leverPosition": [
+            -2.83,
+            0.7050000000000001,
+            3.27
+          ],
+          "physical": true
+        }
+      }
+    },
+    {
+      "name": "Replay ends the impact gust and removes the pear protection glow",
+      "passed": true,
+      "detail": {
+        "quality": "high",
+        "reducedMotion": false,
+        "trees": 3,
+        "blossoms": 3600,
+        "newLeaves": 420,
+        "fallingPetals": 64,
+        "driftingPetals": 64,
+        "gustPetals": 0,
+        "petalPool": 96,
+        "escapedPetals": 26,
+        "petalBounds": {
+          "minX": 3.3837990850311264,
+          "maxX": 8.855075535056944,
+          "minY": 0.30341808285690847,
+          "maxY": 4.071696050546033,
+          "minZ": -2.051312320373425,
+          "maxZ": 4.0708883798604205
+        },
+        "protected": false,
+        "shield": 0,
+        "center": [
+          7.65,
+          0.29,
+          -0.65
+        ]
+      }
+    },
+    {
+      "name": "Every owned disposable graphics resource receives dispose",
+      "passed": true,
+      "detail": {
+        "disposed": 220,
+        "expectedDisposals": 220
+      }
+    }
+  ]
+}

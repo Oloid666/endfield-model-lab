@@ -126,14 +126,14 @@ const frozenCamera=rw.camera.position.clone();rd.state.paused=true;rd.updateCame
 check('Paused shot clock keeps the same shaken camera pose',rw.camera.position.distanceTo(frozenCamera)<1e-10);
 rd.reducedMotion=true;rd.state.paused=false;rd.updateCamera(.016,rw.actors.heroPosition);
 check('Reduced motion removes shake and roll and limits the lens pulse',rd.cameraRoll===0&&rd.shakeEnvelope<=.22&&rw.camera.position.distanceTo(rd.baseCameraPosition)<1e-10&&rw.camera.fov-rd.baseFov<.25,{roll:rd.cameraRoll,envelope:rd.shakeEnvelope,lensPulse:rw.camera.fov-rd.baseFov});
-rd.state=state('ready');check('Resume outside the story returns to the street preset',rd.resumeCamera()===false&&rw.currentView==='street');
+rd.state=state('ready');check('Resume at entry enables the opening cast shot',rd.resumeCamera()===true);
 rd.state=state('energy',{clock:60});rw.camera.position.set(2,7,20);rw.controls.target.set(0,3,1);rw.time=300;rd.stage('rewind',state('rewind',{vcr:true}));
 rd.beforeActors(state('rewind',{phaseElapsed:.2,clock:60.2,rewindProgress:0,rewindStage:'freeze',vcr:true}));rd.updateCamera(.016,rw.actors.heroPosition);
-check('VCR freeze holds both the real camera and visual clock',rd.cameraBeat==='rewind-freeze'&&rd.visualTime===300&&rw.camera.position.distanceTo(new T.Vector3(2,7,20))<1e-10);
+check('VCR first approaches the physical CCTV while preserving visual clock',rd.cameraBeat==='rewind-cctv-source'&&rd.visualTime===300);
 rd.beforeActors(state('rewind',{phaseElapsed:3.4,clock:63.4,rewindProgress:.5,rewindStage:'reverse',vcr:true}));rd.updateCamera(.016,rw.actors.heroPosition);
 check('VCR reverse follows the shared eased progress',rd.visualTime===282.5&&rd.cameraBeat==='rewind-street');
 rd.beforeActors(state('rewind',{phaseElapsed:6.7,clock:66.7,rewindProgress:1,rewindStage:'settle',vcr:true}));rd.updateCamera(.016,rw.actors.heroPosition);
 check('VCR ends on the doorway before switching to the past',rd.cameraBeat==='rewind-doorway'&&Math.abs(rd.cameraPosition.z-11.6)<1e-9&&rd.cameraTarget.z===3.25);
 rw.r.dispose();w.r.dispose();
-fs.writeFileSync('artifacts/v9-director-check.json',JSON.stringify({kind:'actual-director-with-mock-world-no-gpu',checks,projections,cameraShots},null,2)+'\n');
-console.log(`V9 director: ${checks.length} checks passed.`);
+fs.writeFileSync('artifacts/v10-director-check.json',JSON.stringify({kind:'actual-director-with-mock-world-no-gpu',checks,projections,cameraShots},null,2)+'\n');
+console.log(`V10 director: ${checks.length} checks passed.`);

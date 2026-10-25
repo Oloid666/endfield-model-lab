@@ -1,0 +1,49 @@
+import * as T from 'three';
+// One fixed pool for pixelated food; no postprocessing pass or per-frame allocation.
+export function buildInvestigationProps(scene,r){
+ const root=new T.Group();root.name='investigation-details';scene.add(root);
+ const box=(owner,c,p,s,o={})=>r.box(owner,c,p,s,o),label=(owner,text,p,s,options={})=>r.mesh(r.geometry('PlaneGeometry',1,1),r.label(text,{width:1024,height:256,font:'bold 60px sans-serif',...options}),owner,p,s);
+ const camera=new T.Group();camera.name='store-cctv';camera.position.set(3.87,2.53,3.0);root.add(camera);
+ box(camera,'#687a77',[0,.12,-.14],[.08,.32,.1],{metalness:.6});box(camera,'#c4ccbd',[0,0,0],[.23,.19,.42],{metalness:.3});box(camera,'#24363c',[0,-.01,.219],[.16,.12,.025]);
+ const lens=r.mesh(r.geometry('CylinderGeometry',.048,.048,.04,16),r.material('#152c33',{metalness:.8,roughness:.16}),camera,[0,-.01,.245]);lens.rotation.x=Math.PI/2;
+ const led=r.mesh(r.geometry('SphereGeometry',.014,8,6),r.material('#e67965',{emissive:0xc43622,emissiveIntensity:1}),camera,[.075,.04,.24]);camera.rotation.y=-.7;
+ const cable=new T.CatmullRomCurve3([new T.Vector3(0,.16,-.17),new T.Vector3(.2,.28,-.2),new T.Vector3(.4,.25,-.19)]);r.mesh(r.own(new T.TubeGeometry(cable,8,.012,4,false)),r.material('#24393d'),camera);
+ const cargo=new T.Group();cargo.position.set(-3.4,.32,1.87);root.add(cargo);
+ for(let i=0;i<2;i++){box(cargo,'#6c7565',[i*.43,i*.1+.26,0],[.4,.5,.43],{metalness:.3});box(cargo,'#b2a272',[i*.43,i*.1+.27,.22],[.07,.46,.012]);}
+ label(cargo,'土產 / 店到店',[-.02,.32,.227],[.35,.12,1],{font:'bold 56px sans-serif'});
+ const sheet=label(cargo,'息壤 10,000 噸',[.48,.76,.23],[.73,.2,1]);sheet.name='smuggling-manifest';
+ label(cargo,'經辦／核准：莊芳宜',[.48,.59,.232],[.73,.12,1],{font:'bold 46px sans-serif'});
+ const paperGroup=new T.Group();root.add(paperGroup);
+ const posters=[['加熱限三分鐘',[-2.8,1.5,2.04]],['集點換好禮 · 請勿使用重置券',[2.35,2.12,2.04]],['徵晚班 · 需能正常下班',[3.4,1.72,2.04]]];
+ for(const [text,pos]of posters){label(paperGroup,text,pos,[.8,.34,1],{bg:'#d6cfb2',color:'#315148',font:'bold 48px sans-serif'});box(paperGroup,'#a9b29e',[pos[0],pos[1]+.17,pos[2]+.006],[.2,.028,.008]);}
+ // A small collection corner visible through the upstairs window.
+ const room=new T.Group();room.position.set(1.4,3.56,.66);root.add(room);
+ box(room,'#695c50',[0,.45,0],[.8,.05,.48]);for(const x of [-.32,.32])box(room,'#344745',[x,.22,0],[.045,.44,.045]);
+ for(let i=0;i<3;i++){r.mesh(r.geometry('CylinderGeometry',.07,.06,.12,10),r.material(['#b88e57','#a55462','#668b83'][i]),room,[-.25+i*.23,.54,.03]);box(room,'#536b66',[-.24+i*.2,.79,-.18],[.13,.3,.12]);}
+ label(room,'禁止碰我老婆',[0,1.02,.1],[.78,.18,1],{bg:'#2b3545',color:'#d0bbc9',font:'bold 58px sans-serif'});
+ const pixels=r.own(new T.InstancedMesh(r.geometry('BoxGeometry',1,1,1),r.own(new T.MeshBasicMaterial({color:0xffffff})),96));pixels.frustumCulled=false;pixels.name='purple-food-mosaic';root.add(pixels);
+ const dummy=new T.Object3D(),color=new T.Color(),spots=[new T.Vector3(3.2,1.85,1.06),new T.Vector3(3.83,1.55,1.06),new T.Vector3(3.1,1.1,1.94),new T.Vector3(3.8,.34,.3),new T.Vector3(2.55,.34,1.4),new T.Vector3(3.9,1.65,1.93)];
+ for(let i=0;i<96;i++){pixels.setColorAt(i,color.setHSL(.75+(i%4)*.018,.4,.23+(i%5)*.075));pixels.setMatrixAt(i,dummy.matrix);}pixels.instanceColor.needsUpdate=true;
+ const launch=new T.Vector3(3.45,1.67,1.1);
+ let burstAt=-100,burstCount=0,lastFailures=0,wasPast=false,active=0;
+ function update(t,delta,state={}){
+   const past=['flashback','hack','credentials','heat'].includes(state.phase),failures=state.heat?.failures||0;
+   if(state.phase==='ready'){lastFailures=0;burstCount=0;burstAt=-100;}
+   if(past&&failures>lastFailures){burstCount=Math.min(3,burstCount+1);burstAt=t;}
+   if(past)lastFailures=failures;
+   const stains=past?(state.phase==='heat'?Math.min(6,burstCount*3):0):Math.max(3,Math.min(6,burstCount*3));
+   active=stains*16;
+   for(let i=0;i<96;i++){
+     const spot=spots[Math.floor(i/16)],j=i%16,age=t-burstAt,flight=state.phase==='heat'&&age<1.1&&i>=Math.max(0,(stains-2)*16),p=Math.max(0,Math.min(1,age/1.1));
+     dummy.position.set(spot.x+(j%4-1.5)*.065,spot.y+(Math.floor(j/4)-1.5)*.065,spot.z+.01*(i%3));
+     if(!past&&(state.progress||0)>=62)dummy.position.y-=1.045;
+     if(flight){dummy.position.lerpVectors(launch,dummy.position,p);dummy.position.y+=Math.sin(p*Math.PI)*.75;}
+     dummy.scale.set(i<active?.065:0,i<active?.065:0,i<active?.045:0);dummy.rotation.set(0,0,(i%3-1)*.1);dummy.updateMatrix();pixels.setMatrixAt(i,dummy.matrix);
+   }
+   pixels.instanceMatrix.needsUpdate=true;led.material.emissiveIntensity=.5+Math.sin(t*2)**2*.5;
+   camera.visible=paperGroup.visible=(state.progress||0)<62||past;
+   room.visible=!past&&(state.progress||0)<62;cargo.visible=(state.progress||0)<62||past;
+   wasPast=past;
+ }
+ return {root,camera,cargo,update,reset(){burstCount=0;lastFailures=0;burstAt=-100;},get state(){return {pixels:active,bursts:burstCount,cctv:true,manifest:true};}};
+}

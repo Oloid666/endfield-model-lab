@@ -1,0 +1,34 @@
+{
+  "real_iphone_test": false,
+  "checks": [
+    {
+      "name": "Failed actor does not silently start story",
+      "passed": true
+    },
+    {
+      "name": "Visible error identifies model failure",
+      "passed": true
+    },
+    {
+      "name": "Loaded street retains one canvas",
+      "passed": true
+    },
+    {
+      "name": "Retry actually fetches model again",
+      "passed": true
+    },
+    {
+      "name": "Successful retry restores both performers",
+      "passed": true
+    },
+    {
+      "name": "Remembered unchecked checkbox does not hide opening cast",
+      "passed": true
+    },
+    {
+      "name": "Retry preserves one renderer and one mission",
+      "passed": true
+    }
+  ],
+  "passed": true
+}

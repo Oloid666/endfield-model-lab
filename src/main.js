@@ -1,3 +1,4 @@
+import {createLoading} from './loading.js';
 import './style.css';
 import { World } from './world.js';
 import { loadActors } from './actors.js';
@@ -6,6 +7,7 @@ import { createMission } from './mission.js';
 import { createExploration } from './exploration.js';
 
 const $=s=>document.querySelector(s),loading=$('#loading'),message=$('#loading-message'),error=$('#error');
+const loader=createLoading();
 const audio=new RainAudio(),abort=new AbortController();let world,mission,exploration,closed=false,menuPaused=false,xaihiPromise=null,assetPaused=false;
 const listen=(element,type,fn)=>element.addEventListener(type,fn,{signal:abort.signal});
 function showError(text){$('#error-message').textContent=text;error.hidden=false;loading.hidden=true;}
@@ -25,45 +27,56 @@ listen(document,'visibilitychange',()=>{if(document.hidden)audio.disable();else 
 const buttons=[...document.querySelectorAll('[data-view]')];
 listen($('.view-dock'),'click',e=>{
   const button=e.target.closest('[data-view]');if(!button)return;const view=button.dataset.view;
-  world?.setView(view);if(world)world.manualUntil=world.time+14;
+  world?.setView(view);if(world){world.manualUntil=Infinity;world.autoCamera=false;if(view==='reset')world.resetStoryCamera();}
   for(const b of buttons){const active=b.dataset.view===(view==='reset'?'street':view);b.classList.toggle('active',active);if(b.dataset.view!=='reset')b.setAttribute('aria-pressed',String(active));}
 });
 async function ensureXaihi(){
   if(world?.xaihi)return world.xaihi;
   if(xaihiPromise)return xaihiPromise;
   world.xaihiLoading=true;world.xaihiError=null;
-  xaihiPromise=import('./xaihi.js').then(({loadXaihi})=>loadXaihi(world.scene,world.r,()=>{},abort.signal)).then(async actor=>{
+  xaihiPromise=import('./xaihi.js').then(({loadXaihi})=>loadXaihi(world.scene,world.r,text=>{if(assetPaused)loader.stage(text);},abort.signal)).then(async actor=>{
     if(closed){actor.dispose();return null;}
     await world.prepareShaders(actor.root,'xaihi');if(closed){actor.dispose();return null;}
     world.xaihi=actor;world.xaihiLoading=false;
-    if(assetPaused){assetPaused=false;loading.classList.add('done');mission?.setPaused(false);}
+    if(assetPaused){assetPaused=false;loader.hide();mission?.setPaused(false);}
     return actor;
   }).catch(e=>{
     world.xaihiLoading=false;xaihiPromise=null;if(e.name==='AbortError')return null;
     world.xaihiError='賽希暫時沒有載入。請重新載入再試。';
-    if(world.missionState?.vcr)showError(world.xaihiError);
+    if(assetPaused)loader.fail(world.xaihiError,()=>{loader.show('重新讀取店內影像',{compact:true});ensureXaihi();});
     return null;
   });
   return xaihiPromise;
 }
 async function init(){
   try{
+    loader.show('正在建立雨夜街角');
+    await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
     world=new World($('#scene'),{
       onZone:inside=>$('#app').classList.toggle('interior-view',inside),onFraming:close=>$('#app').classList.toggle('close-view',close),
       onManual:()=>{for(const b of buttons){b.classList.remove('active');if(b.dataset.view!=='reset')b.setAttribute('aria-pressed','false');}},
       onContextLost:()=>showError('畫面暫時中斷。可等待恢復，或重新載入。'),onContextRestored:()=>{error.hidden=true;world.start();}
     });
-    try{
-      world.actors=await loadActors(world.scene,world.r,text=>message.textContent=text,abort.signal);
-      if(closed){world.dispose();return;}
-      world.actors.root.visible=$('#characters').checked;world.actors.setRain($('#rain').checked);world.actors.setObstacles(world.store.floorPlan);world.time=0;world.previous=undefined;
-    }catch(e){
-      if(e.name==='AbortError')return;$('#characters').checked=false;$('#characters').disabled=true;$('#characters').parentElement.title=e.message;
-      console.warn(e);const note=document.createElement('p');note.className='control-tip';note.textContent='人物暫時沒有載入。請重新整理後再試。';$('#settings').append(note);
+    world.setView('awning',true);world.tick(0,0,true);world.start();
+    loader.show('街景就緒，正在請莊芳宜下班',{compact:true});
+    while(!world.actors&&!closed){
+      try{
+        const actor=await loadActors(world.scene,world.r,text=>loader.stage(text),abort.signal);
+        if(closed){actor.dispose();return;}
+        world.actors=actor;world.charactersEnabled=true;$('#characters').checked=true;$('#characters').disabled=false;
+        actor.root.visible=true;actor.setRain($('#rain').checked);actor.setObstacles(world.store.floorPlan);
+      }catch(e){
+        if(e.name==='AbortError'||closed)return;
+        console.error('人物初始化失敗',e);
+        world.scene.getObjectByName('dinner-actors')?.removeFromParent();
+        await new Promise(resolve=>loader.fail(`人物暫時沒有到場：${e.message}`,resolve));
+        loader.show('重新請莊芳宜下班',{compact:true});
+      }
     }
-    message.textContent='正在準備雨夜光影';await world.prepareShaders();if(closed)return;
-    world.tick(0,0,true);
-    mission=createMission({mount:$('#app'),onCameraReset:()=>world.resetStoryCamera(),
+    if(closed)return;
+    loader.stage('正在準備人物光影');await world.prepareShaders(world.actors.root,'actors');
+    if(closed)return;world.time=0;world.previous=undefined;world.tick(0,0,true);
+    mission=createMission({mount:$('#app'),onCameraReset:()=>world.resetStoryCamera(),capturePhoto:()=>world.capturePhoto(),onCameraAuto:()=>world.toggleAutoCamera(),getCameraAuto:()=>world.autoCamera,
       onDinner:branch=>{
         if(!branch){exploration?.setActive(false);world.director.reset();mission?.setTargets(world.director.targets);world.actors?.setMove(0,0,false);world.actors?.setObstacles(world.store.floorPlan);world.actors?.teleport(-1.25,2.48);}
         world.actors?.setDinner(branch);
@@ -72,10 +85,10 @@ async function init(){
       onStage:(phase,state)=>{
         if(!['ready','complete'].includes(phase))exploration?.setActive(false);
         world.director.stage(phase,state);
-        if(phase==='login')ensureXaihi();
-        if(phase==='rewind'&&!world.xaihi){
+        if(phase==='intro')ensureXaihi();
+        if(['rewind','flashback'].includes(phase)&&!world.xaihi){
           assetPaused=!state.paused;
-          if(assetPaused){mission?.setPaused(true);message.textContent='正在讀取較早的店內影像';loading.hidden=false;loading.classList.remove('done');}
+          if(assetPaused){mission?.setPaused(true);loader.show('正在下載較早的店內影像',{compact:true});}
           ensureXaihi();
         }
         if(phase==='complete')world.actors?.setObstacles({obstacles:[],entrance:{minX:-4,maxX:4,z:1.8}});
@@ -94,7 +107,7 @@ async function init(){
       }
     });
     world.onTick=(time,delta)=>{mission.update(time);world.missionState=mission.state;exploration.update(delta);};
-    loading.classList.add('done');world.start();
+    loader.hide();world.start();
     window.__rainy711={
       get time(){return world.time;},get renders(){return world.renderCount;},get drawCalls(){return world.renderer.info.render.calls;},get triangles(){return world.renderer.info.render.triangles;},get warmup(){return world.shaderWarmup.state;},resetCamera:()=>world.resetStoryCamera(),
       get aa(){return {msaa:world.msaaSamples,postSamples:world.composer.renderTarget1.samples,postDepth:world.composer.renderTarget1.depthBuffer,fxaa:world.fxaa.enabled,dpr:world.renderer.getPixelRatio()};},
@@ -104,8 +117,9 @@ async function init(){
       get mission(){return mission.state;},get story(){return mission.state;},get destruction(){return {...world.store.destruction.state,targets:world.store.destruction.targets};},get garden(){return world.garden.state;},get effects(){return world.siege.state;},
       get cinematic(){return world.director.status;},get tianshi(){return world.tianshi.state;},get microwave(){return world.microwave.state;},get connectionStage(){return world.connectionStage.state;},get xaihi(){return world.xaihi?.state||{loaded:false,loading:world.xaihiLoading,error:world.xaihiError};},
       get position(){return world.actors?.position.toArray();},get heroPosition(){return world.actors?.heroPosition;},get dragonPosition(){return world.actors?.dragonPosition;},get walking(){return exploration.active;},get minimumZoom(){return world.controls.minDistance;},projectPoint:point=>world.projectPoint(point),
+      takePhoto:()=>mission.takePhoto(),investigate:id=>mission.investigate(id),acceptCall:()=>mission.acceptCall(),hackRotate:index=>mission.hackRotate(index),keyChunk:value=>mission.keyChunk(value),get photo(){return mission.photo;},get investigationProps(){return world.investigationProps.state;},toggleAutoCamera:()=>world.toggleAutoCamera(),
       missionStart:()=>mission.start(),missionNext:()=>mission.next(),missionChoose:id=>mission.choose(id),missionReplay:()=>mission.replay(),missionAttack:t=>mission.attack(t),missionSelectTarget:id=>mission.selectTarget(id),missionOutput:id=>mission.setOutput(id),missionPause:value=>mission.setPaused(value),
-      missionKey:value=>mission.key(value),missionSubmit:()=>mission.submitLogin(),missionVerify:()=>mission.verify(),missionLever:value=>mission.setLever(value),missionHeatStart:()=>mission.heatStart(world.time),missionHeatStop:()=>mission.heatStop(world.time),missionHeatRetry:()=>mission.heatRetry(),missionHeatCancel:()=>mission.heatCancel(),
+      missionKey:value=>mission.key(value),missionSubmit:()=>mission.submitLogin(),missionVerify:()=>mission.verify(),missionLever:value=>mission.setLever(value),missionHeatStart:time=>mission.heatStart(time??world.time),missionHeatStop:time=>mission.heatStop(time??world.time),missionHeatRetry:()=>mission.heatRetry(),missionHeatCancel:()=>mission.heatCancel(),
       storyNext:()=>mission.next(),storyChoose:id=>mission.choose(id),storyStart:()=>mission.start(),storyReplay:()=>mission.replay(),hotspot:kind=>mission.hotspot(kind),
       teleport(x,z){world.actors?.teleport(x,z);},move(x,z,delta){world.actors?.setMove(x,z,true);world.actors?.update(world.time,delta);},tick(t,delta=.016,render=true){world.tick(t,delta,render);},
       inspectLayout(){world.inspectLayout();},pauseForCapture(){world.stop();},resume(){world.start();},frameView:name=>world.setView(name,true),samplePose:t=>world.tick(t),
@@ -113,7 +127,7 @@ async function init(){
     };
   }catch(e){world?.dispose();showError('無法啟動 3D 畫面。請使用支援 WebGL 2 的 Safari，然後重新載入。');console.error(e);}
 }
-function dispose(){closed=true;abort.abort();exploration?.dispose();mission?.dispose();audio.dispose();world?.dispose();}
+function dispose(){closed=true;loader.dispose();abort.abort();exploration?.dispose();mission?.dispose();audio.dispose();world?.dispose();}
 listen(window,'pagehide',event=>{if(!event.persisted)dispose();else world?.stop();});listen(window,'pageshow',event=>{if(event.persisted)world?.start();});
 if(import.meta.hot)import.meta.hot.dispose(dispose);
 init();

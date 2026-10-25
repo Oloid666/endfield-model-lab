@@ -1,0 +1,134 @@
+{
+  "url": "http://127.0.0.1:4210/endfield-model-lab/",
+  "real_iphone_test": false,
+  "renderer": "Chromium / SwiftShader",
+  "checks": [
+    {
+      "name": "Both actors visible at entry",
+      "passed": true
+    },
+    {
+      "name": "One renderer",
+      "passed": true
+    },
+    {
+      "name": "Manual mode remains after 30 seconds",
+      "passed": true
+    },
+    {
+      "name": "Explicit camera resume",
+      "passed": true
+    },
+    {
+      "name": "Dialogue can reveal text",
+      "passed": true
+    },
+    {
+      "name": "Dialogue now shows advance symbol",
+      "passed": true
+    },
+    {
+      "name": "Opening goes to photo",
+      "passed": true
+    },
+    {
+      "name": "Real canvas photo captured",
+      "passed": true
+    },
+    {
+      "name": "Floor clue starts cargo investigation",
+      "passed": true
+    },
+    {
+      "name": "Communication waits for accept",
+      "passed": true
+    },
+    {
+      "name": "Communication still waiting",
+      "passed": true
+    },
+    {
+      "name": "Five chunk login ready",
+      "passed": true
+    },
+    {
+      "name": "Five taps reach captcha",
+      "passed": true
+    },
+    {
+      "name": "Charge still thirty seconds",
+      "passed": true
+    },
+    {
+      "name": "Normal combat reaches 99 percent",
+      "passed": true
+    },
+    {
+      "name": "VCR camera approaches physical CCTV",
+      "passed": true
+    },
+    {
+      "name": "Hacker puzzle precedes password reveal",
+      "passed": true
+    },
+    {
+      "name": "Puzzle reveals credentials",
+      "passed": true
+    },
+    {
+      "name": "New heating phase",
+      "passed": true
+    },
+    {
+      "name": "First attempt explicitly fails",
+      "passed": true
+    },
+    {
+      "name": "Food pixels actually spawn",
+      "passed": true
+    },
+    {
+      "name": "Real failure increases assistance",
+      "passed": true
+    },
+    {
+      "name": "All rhythm stages completed",
+      "passed": true
+    },
+    {
+      "name": "VCR returns to exact destruction",
+      "passed": true
+    },
+    {
+      "name": "Final completion",
+      "passed": true
+    },
+    {
+      "name": "Ending survives sixty real seconds",
+      "passed": true
+    },
+    {
+      "name": "Replay chooses different investigation",
+      "passed": true
+    },
+    {
+      "name": "Replay has one UI and renderer",
+      "passed": true
+    },
+    {
+      "name": "Landscape UI stays in viewport",
+      "passed": true
+    },
+    {
+      "name": "No JavaScript errors",
+      "passed": true
+    }
+  ],
+  "local_ready_seconds": 41.83,
+  "ending_observation_seconds": 60.06,
+  "passed": true,
+  "errors": [],
+  "assets": [
+    "http://127.0.0.1:4210/endfield-model-lab/assets/index-PmsBhbHP.js"
+  ]
+}

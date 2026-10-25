@@ -3,7 +3,7 @@ import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import {optimizeStaticSet} from './static-batches.js';
 
 const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,Number(v)||0));
-const pastPhases=new Set(['flashback','heat-demo','heat','flashback-end']);
+const pastPhases=new Set(['flashback','hack','credentials','heat-demo','heat','flashback-end']);
 
 // One persistent, hollow appliance. Its clean history and charred present share geometry.
 export function buildMicrowave(scene,r,{position=[3.45,.31,1.43]}={}){
@@ -111,7 +111,7 @@ export function buildMicrowave(scene,r,{position=[3.45,.31,1.43]}={}){
   const currentPosition=[...position];
   function modeFor(state){
     if(forced)return forced;if(state.microwaveMode)return state.microwaveMode;
-    const phase=state.phase||'ready';if(phase==='flashback')return 'clean';if(phase==='heat-demo')return 'burning';if(phase==='heat')return 'heating';if(phase==='flashback-end')return 'warm';if(phase==='rewind'&&state.rewindProgress>.72)return 'clean';return 'charred';
+    const phase=state.phase||'ready';if(['flashback','hack','credentials'].includes(phase))return 'clean';if(phase==='heat-demo')return 'burning';if(phase==='heat')return 'heating';if(phase==='flashback-end')return 'warm';if(phase==='rewind'&&state.rewindProgress>.72)return 'clean';return 'charred';
   }
   function arcPoint(index,p,t,out){const s=arcStart[index],e=arcEnd[index],jitter=Math.sin(p*31+t*29+index*7)*.082*Math.sin(p*Math.PI),side=s[2]<-.3&&e[2]<-.3?-1:1;out.set(s[0]+(e[0]-s[0])*p+jitter,s[1]+(e[1]-s[1])*p+Math.cos(p*27-t*23)*.07*Math.sin(p*Math.PI),s[2]+(e[2]-s[2])*p+Math.sin(p*Math.PI)*.15*side);return out;}
   function update(t,delta,state={}){
@@ -120,13 +120,13 @@ export function buildMicrowave(scene,r,{position=[3.45,.31,1.43]}={}){
     wreck=(state.progress||0)>=62&&!past;cabinet.visible=!wreck;
     const wantedY=wreck?.245:1.29;oven.position.y=T.MathUtils.damp(oven.position.y,wantedY,7,Math.min(.1,Math.max(0,delta)));if(Math.abs(oven.position.y-wantedY)<.001)oven.position.y=wantedY;
     oven.rotation.z=T.MathUtils.damp(oven.rotation.z,wreck?-.11:0,6,Math.min(.1,Math.max(0,delta)));
-    charred=mode==='clean'?0:mode==='burning'?clamp((heat.demoIndex||0)*.86+(heat.demoProgress||0)*1.4):1;
+    charred=mode==='clean'?0:mode==='heating'?((heat.failures||0)>0?1:0):mode==='burning'?clamp((heat.demoIndex||0)*.86+(heat.demoProgress||0)*1.4):1;
     soot.visible=charred>.18;bodyMaterial.color.copy(cleanColor).lerp(burntColor,charred);bodyMaterial.roughness=.36+charred*.58;trimMaterial.color.copy(cleanTrim).lerp(burntTrim,charred);
     foodState=mode==='burning'&&(heat.demoProgress||0)>.5||heat.status==='burnt'?'burnt':heat.status==='won'?'hot':'cold';
     const hot=clamp(heat.progress||0);riceMaterial.color.copy(riceCold).lerp(riceHot,hot);mealMaterial.color.copy(meatHot);if(foodState==='burnt'){riceMaterial.color.copy(riceBurnt);mealMaterial.color.copy(meatBurnt);}
     warming=['warm','charred'].includes(mode);const labelMode=mode==='charred'?'warm':mode;for(const [key,label]of Object.entries(labels))label.visible=key===labelMode;
     const visibleFood=past||!wreck;foodGroup.visible=visibleFood;
-    const strong=mode==='burning'||mode==='heating'&&heat.holding,cycle=((clock*.55)%1+1)%1;
+    const strong=mode==='burning'||mode==='heating'&&(heat.powered||heat.holding),cycle=((clock*.55)%1+1)%1;
     const faultBurst=cycle<.1||cycle>.18&&cycle<.29;
     arcPulse=reducedMotion?(strong?.75:.45):strong?.72+.28*Math.sin(clock*5.2)**2:faultBurst?.9:0;
     arcActive=arcPulse>0&&mode!=='clean';activeArcs=arcActive?(strong?4:2):0;arcs.visible=faultHalo.visible=arcActive;
@@ -138,7 +138,7 @@ export function buildMicrowave(scene,r,{position=[3.45,.31,1.43]}={}){
       dummy.scale.x*=3.6;dummy.scale.z*=3.6;dummy.updateMatrix();faultHalo.setMatrixAt(arc*maxArcSegments+segment,dummy.matrix);
     }
     arcs.instanceMatrix.needsUpdate=true;faultHalo.instanceMatrix.needsUpdate=true;warningLight.visible=mode!=='clean'&&(strong||arcActive);spill.material.opacity=arcActive?(strong?.2:.1):.018;spill.visible=!wreck;
-    const smoking=mode==='burning'&&(heat.demoProgress||0)>.42||heat.status==='burnt',steaming=smoking||mode==='heating'&&heat.holding&&hot>.4||heat.status==='won';steam=0;
+    const smoking=mode==='burning'&&(heat.demoProgress||0)>.42||heat.status==='burnt',steaming=smoking||mode==='heating'&&(heat.powered||heat.holding)&&hot>.4||heat.status==='won';steam=0;
     for(let i=0;i<clouds.length;i++){
       const item=clouds[i],life=((clock*(smoking?.7:.48)+i*.137)%1+1)%1;item.sprite.visible=steaming&&(smoking||i<3);if(!item.sprite.visible)continue;steam++;
       item.sprite.position.set(-.25+Math.sin(i*2.1+clock*.3)*.17,.26+life*(smoking?1.1:.66),.16+Math.cos(i*1.7)*.12);item.sprite.scale.setScalar((.09+life*.5)*(smoking?1.3:.72));item.material.color.setHex(smoking?0x677772:0xc0d2c7);item.material.opacity=Math.sin(life*Math.PI)*(smoking?.55:.23);

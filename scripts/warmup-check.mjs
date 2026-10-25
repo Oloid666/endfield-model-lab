@@ -39,5 +39,5 @@ let fallbackCalls=0;
 const fallback=new ShaderWarmup({info:{programs:[]},getContext:()=>({getExtension:()=>null,isContextLost:()=>false}),compile(object,eye,environment){fallbackCalls++;assert.equal(object,scene);assert.equal(eye,camera);assert.equal(environment,scene);}},scene,camera);
 check('Synchronous fallback reuses the same renderer',await fallback.prepare()&&fallbackCalls===1&&!fallback.state.parallel);fallback.dispose();
 
-await fs.writeFile(new URL('../artifacts/v9-warmup-check.json',import.meta.url),JSON.stringify({passed:true,checks},null,2)+'\n');
+await fs.writeFile(new URL('../artifacts/v10-warmup-check.json',import.meta.url),JSON.stringify({passed:true,checks},null,2)+'\n');
 console.log(`Shader warmup: ${checks.length} checks passed.`);

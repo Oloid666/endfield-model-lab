@@ -1,0 +1,4 @@
+<!doctype html><html lang="zh-Hant"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0;background:#0a1922;color:#eee}#app{height:100dvh;position:relative}[hidden]{display:none!important}</style><main id="app"></main><script type="module">
+import {MissionMachine} from '../../src/mission-state.js';import {createInvestigationUI} from '../../src/investigation-ui.js';
+let ui;const m=new MissionMachine({onState:s=>ui?.update(s)});ui=createInvestigationUI({mount:document.querySelector('#app'),machine:m,capture:()=>null,onAuto:()=>{},getAuto:()=>true});m.phaseTo('heat');const started=performance.now();function frame(){m.update((performance.now()-started)/1000);ui.update(m.state);requestAnimationFrame(frame)}requestAnimationFrame(frame);window.h={m,ui};
+</script></html>

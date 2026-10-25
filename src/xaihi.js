@@ -1,16 +1,16 @@
+import {downloadModel} from './model-download.js';
 import * as T from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 
-const visiblePhases=new Set(['flashback','heat-demo','heat','flashback-end']);
+const visiblePhases=new Set(['flashback','hack','credentials','heat-demo','heat','flashback-end']);
 const clamp=v=>T.MathUtils.clamp(Number(v)||0,0,1);
 const ids={spine:45,neck:46,head:47,eyeL:74,eyeR:55,armL:219,elbowL:221,wristL:223,armR:291,elbowR:293,wristR:295};
 
 // The original GLB remains untouched. Only the placement group and runtime rig move.
 export async function loadXaihi(scene,r,onStage=()=>{},signal){
   onStage('正在讀取較早的店內影像');
-  const response=await fetch(`${import.meta.env.BASE_URL}models/xaihi.glb`,{signal});
-  if(!response.ok)throw Error(`賽希模型載入失敗（${response.status}）。可重新讀取影像。`);
-  const buffer=await response.arrayBuffer();
+  const buffer=await downloadModel(`${import.meta.env.BASE_URL}models/xaihi.glb`,onStage,signal,'賽希');
+  onStage('正在解析賽希與回放素材');
   if(signal?.aborted)throw new DOMException('已取消載入','AbortError');
   const gltf=await new GLTFLoader().parseAsync(buffer,`${import.meta.env.BASE_URL}models/`);
   if(signal?.aborted){disposeImported(gltf.scene);throw new DOMException('已取消載入','AbortError');}
@@ -29,7 +29,7 @@ export function buildXaihi(scene,r,gltf){
   const bounds=new T.Box3().setFromObject(gltf.scene,true),size=bounds.getSize(new T.Vector3()),center=bounds.getCenter(new T.Vector3());
   if(bounds.isEmpty()||!Number.isFinite(size.y)||size.y<=0){root.removeFromParent();disposeImported(gltf.scene);throw Error('賽希模型沒有可用的外形資料。');}
   const scale=1.8/size.y;visual.scale.setScalar(scale);visual.position.set(-center.x*scale,-bounds.min.y*scale,-center.z*scale);
-  const imported=new Set();gltf.scene.traverse(n=>{if(n.isMesh){imported.add(n.geometry);if(n.isSkinnedMesh)imported.add(n.skeleton);for(const m of Array.isArray(n.material)?n.material:[n.material]){imported.add(m);for(const value of Object.values(m))if(value?.isTexture){value.anisotropy=4;imported.add(value);}}}});
+  const imported=new Set();gltf.scene.traverse(n=>{if(n.isMesh){n.frustumCulled=false;imported.add(n.geometry);if(n.isSkinnedMesh)imported.add(n.skeleton);for(const m of Array.isArray(n.material)?n.material:[n.material]){imported.add(m);for(const value of Object.values(m))if(value?.isTexture){value.anisotropy=4;imported.add(value);}}}});
   for(const item of imported)r.own(item);
   root.updateMatrixWorld(true);
   const bones=[];gltf.scene.traverse(n=>{if(n.isBone)bones.push(n);});

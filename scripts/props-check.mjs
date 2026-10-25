@@ -1,6 +1,7 @@
 /** Real V9 prop geometry and state checks. Canvas is stubbed; this is not a GPU test. */
 import * as T from 'three';
 import fs from 'node:fs';
+import {buildInvestigationProps} from '../src/investigation-props.js';
 import {Resources} from '../src/resources.js';
 import {buildTianshiGrid} from '../src/tianshi-grid.js';
 import {buildMicrowave} from '../src/microwave.js';
@@ -102,10 +103,18 @@ garden.update(13,1/60,{protected:true,impactRevision:1});check('Impact petal gus
 garden.quality('low');garden.update(14,1/60,{});check('Low quality reduces petal and canopy budgets',garden.state.fallingPetals===20&&garden.state.blossoms===1400,garden.state);
 garden.quality('high');garden.update(15,1/60,{fxShock:1,impactRevision:2});check('High quality caps both normal and gust petals at the fixed ninety-six-instance pool',garden.state.fallingPetals===96&&garden.state.gustPetals===32&&garden.state.blossoms===3600,garden.state);
 
+const details=buildInvestigationProps(scene,r);
+details.update(0,0,{phase:'ready'});
+check('Opening has physical CCTV and three purple food marks',details.state.cctv&&details.state.pixels===48&&details.root.getObjectByName('store-cctv'));
+details.update(1,0,{phase:'flashback'});check('Earlier recording starts without food stains',details.state.pixels===0);
+details.update(2,.016,{phase:'heat',heat:{failures:1}});check('First failed meal creates a fixed pixel burst',details.state.bursts===1&&details.state.pixels===48);
+for(let n=2;n<9;n++)details.update(n,.016,{phase:'heat',heat:{failures:n}});
+check('Repeated failures cap the food pool',details.state.pixels===96&&details.state.bursts===3);
+details.reset();details.update(0,0,{phase:'ready'});check('Replay restores original evidence stains',details.state.bursts===0&&details.state.pixels===48);
 const itemCount=r.items.size,geometryCount=r.geometries.size,materialCount=r.materials.size;
 for(let n=0;n<600;n++){
   const state={phase:'charge',clock:n/60,charge:n/6,hero:[-1.25,4.32,15.25],connection:{lever:1}};
-  grid.update(n/60,1/60,state);oven.update(n/60,1/60,state);board.update(n/60,1/60,state);garden.update(n/60,1/60,{protected:true,fxShock:n%60===0?1:0,impactRevision:Math.floor(n/60)+1});
+  grid.update(n/60,1/60,state);oven.update(n/60,1/60,state);board.update(n/60,1/60,state);details.update(n/60,1/60,{phase:'heat',heat:{failures:2}});garden.update(n/60,1/60,{protected:true,fxShock:n%60===0?1:0,impactRevision:Math.floor(n/60)+1});
 }
 check('Ten seconds of updates create no new tracked graphics resources',r.items.size===itemCount&&r.geometries.size===geometryCount&&r.materials.size===materialCount,{items:itemCount,geometryCount,materialCount});
 grid.reset();oven.reset();board.reset();garden.reset();
@@ -113,5 +122,5 @@ check('Replay resets pylons, restores charred oven height and hides terminal',gr
 check('Replay ends the impact gust and removes the pear protection glow',garden.state.gustPetals===0&&!garden.state.protected&&garden.state.shield===0,garden.state);
 let disposed=0;for(const item of r.items)item.addEventListener?.('dispose',()=>disposed++);const expectedDisposals=[...r.items].filter(item=>typeof item.dispose==='function').length;
 r.dispose();check('Every owned disposable graphics resource receives dispose',disposed===expectedDisposals&&r.items.size===0,{disposed,expectedDisposals});
-fs.writeFileSync('artifacts/v9-props-check.json',JSON.stringify({kind:'actual-geometry-with-stubbed-canvas',checks},null,2)+'\n');
-console.log(`V9 props: ${checks.length} checks passed.`);
+fs.writeFileSync('artifacts/v10-props-check.json',JSON.stringify({kind:'actual-geometry-with-stubbed-canvas',checks},null,2)+'\n');
+console.log(`V10 props: ${checks.length} checks passed.`);

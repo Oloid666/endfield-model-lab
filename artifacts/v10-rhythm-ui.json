@@ -1,0 +1,30 @@
+{
+  "passed": true,
+  "real_iphone_test": false,
+  "checks": [
+    {
+      "name": "Real pointer first attempt fails as story",
+      "passed": true
+    },
+    {
+      "name": "Real pointer round 1 succeeds",
+      "passed": true
+    },
+    {
+      "name": "Real pointer round 2 succeeds",
+      "passed": true
+    },
+    {
+      "name": "Real pointer round 3 succeeds",
+      "passed": true
+    },
+    {
+      "name": "Real pointer game reaches aftermath",
+      "passed": true
+    },
+    {
+      "name": "No UI errors",
+      "passed": true
+    }
+  ]
+}

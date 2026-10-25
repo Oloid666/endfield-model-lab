@@ -1,3 +1,4 @@
+import {downloadModel} from './model-download.js';
 import * as T from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { config } from './config.js';
@@ -5,12 +6,7 @@ import { buildPerformance } from './performance.js';
 
 export async function loadActors(scene,r,onStage,signal) {
   onStage('正在請莊芳宜下班');
-  const response=await fetch(`${import.meta.env.BASE_URL}models/zhuang-fangyi.glb`,{signal});
-  if(!response.ok)throw new Error(`人物載入失敗（${response.status}）。請重新載入。`);
-  const total=Number(response.headers.get('Content-Length'));
-  const reader=response.body?.getReader();let buffer;
-  if(reader){const chunks=[];let count=0;while(true){const {done,value}=await reader.read();if(done)break;chunks.push(value);count+=value.byteLength;if(total>0)onStage(`正在載入人物 ${Math.min(100,Math.max(0,Math.round(count/total*100)))}%`);}const all=new Uint8Array(count);let offset=0;for(const c of chunks){all.set(c,offset);offset+=c.length;}buffer=all.buffer;}
-  else buffer=await response.arrayBuffer();
+  const buffer=await downloadModel(`${import.meta.env.BASE_URL}models/zhuang-fangyi.glb`,onStage,signal,'莊芳宜');
   onStage('正在整理衣袖');
   const gltf=await new GLTFLoader().parseAsync(buffer,`${import.meta.env.BASE_URL}models/`);
   const root=new T.Group();root.name='dinner-actors';
@@ -22,7 +18,7 @@ export async function loadActors(scene,r,onStage,signal) {
   // Only the outer placement group scales. Imported nodes, materials and GLB stay intact.
   const scale=1.94/size.y;actor.scale.setScalar(scale);actor.position.set(-center.x*scale,-bounds.min.y*scale,-center.z*scale);pivot.rotation.y=.08;
   root.position.set(-1.25,.32,2.48);
-  gltf.scene.traverse(n=>{if(n.isMesh){n.userData.hotspot='zhuang';r.own(n.geometry);if(n.isSkinnedMesh)r.own(n.skeleton);for(const m of Array.isArray(n.material)?n.material:[n.material]){r.own(m);for(const value of Object.values(m))if(value?.isTexture){value.anisotropy=8;r.own(value);}}}});
+  gltf.scene.traverse(n=>{if(n.isMesh){n.frustumCulled=false;n.userData.hotspot='zhuang';r.own(n.geometry);if(n.isSkinnedMesh)r.own(n.skeleton);for(const m of Array.isArray(n.material)?n.material:[n.material]){r.own(m);for(const value of Object.values(m))if(value?.isTexture){value.anisotropy=8;r.own(value);}}}});
   const bones=[];gltf.scene.traverse(n=>{if(n.isBone)bones.push(n);});const byId=id=>bones.find(n=>gltf.parser.associations.get(n)?.nodes===id);
   root.updateMatrixWorld(true);
   const poses={};for(const [name,id] of Object.entries(config.zhuangNodes)){

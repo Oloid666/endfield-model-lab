@@ -163,3 +163,8 @@ details a { display: inline-block; padding: 3px 0; color: #ddc18b; text-underlin
   .walk-hint { top: 103px; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; } }
+#loading {background:radial-gradient(ellipse at 50% 35%,#29464abf,#0d1b25e8 75%);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
+#loading-joke {max-width:310px;padding:0 20px;text-align:center;line-height:1.9;font-size:13px!important;letter-spacing:.03em!important;color:#d1cbb3!important}
+#asset-retry {margin:22px;min-height:48px;padding:12px 26px;border-radius:10px;border:1px solid #dbc58d;background:#d5bf86;color:#182e31}
+#loading.compact {inset:auto 14px calc(25% + env(safe-area-inset-bottom));padding:18px;border:1px solid #94b39f77;border-radius:16px;background:#12282eea;pointer-events:auto}
+#loading.compact .loading-mark {display:none}#loading.compact p {margin:4px 0 10px}
