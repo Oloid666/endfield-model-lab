@@ -2,6 +2,7 @@ import * as T from 'three';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import {optimizeStaticSet} from './static-batches.js';
 import {buildServerRoom} from './server-room.js';
+import {buildSignFlight} from './sign-flight.js';
 
 // Collect direct children produced by one construction section without touching the street.
 export function collectBuildingPart(root,parts,id,before){
@@ -27,7 +28,7 @@ function mergePart(group,r){
 }
 
 export function makeDestructibleStore(root,r,parts,spill){
-  let signMaterial=null;parts.sign?.traverse(n=>{if(n.userData.salvageSign)signMaterial=n.material;});
+  const signFlight=buildSignFlight(root,r,parts.sign);
   // A modest third-floor equipment room gives the last roof hit a clear silhouette.
   if(parts.roof){
     const room=new T.Group();room.name='third-floor-equipment-room';parts.roof.add(room);
@@ -36,7 +37,7 @@ export function makeDestructibleStore(root,r,parts,spill){
     r.mesh(r.geometry('PlaneGeometry',1,1),r.label('3F · 設備管理',{width:512,height:128,font:'bold 36px sans-serif',bg:'#304941',color:'#d6d9bd'}),room,[-2.4,6.12,.945],[1.65,.2,1]);
   }
   const definitions=[['glass',8,1.05],['upper',27,1.4],['sign',44,1.25],['interior',62,1.1],['roof',80,1.7],['structure',97,1.35]];
-  const stages=[];let progress=0,time=0;
+  const stages=[],identity=new T.Quaternion();let progress=0,time=0,inputTime=0,timeOffset=0,presentation=null;
   // Each milestone retains the real original meshes until its fall animation finishes.
   for(let i=0;i<definitions.length;i++){
     const [id,threshold,duration]=definitions[i],group=parts[id];if(!group)continue;
@@ -68,8 +69,6 @@ export function makeDestructibleStore(root,r,parts,spill){
     mesh.rotation.set(.4+(i%3)*.24,i*.7,(-1)**i*(.8+i*.07));mesh.visible=false;mesh.userData.dynamic=true;beams.push(mesh);
   }
   const foundation=r.box(rubble,'#303d39',[0,.325,-.71],[8.45,.05,4.62],{roughness:.95});foundation.userData.dynamic=true;
-  let fallenSign=null;
-  if(signMaterial){const material=r.own(signMaterial.clone());material.emissiveIntensity=.015;fallenSign=r.mesh(r.geometry('PlaneGeometry',1,1),material,rubble,[2.18,.72,1.27],[2.66,.57,1]);fallenSign.rotation.set(-Math.PI/2,0,-.18);fallenSign.visible=false;fallenSign.userData.dynamic=true;}
   const products=buildScatteredProducts(rubble,r,random);
   const neighbor=buildNeighborImpact(root,r);
   const server=buildServerRoom(root,r);
@@ -82,22 +81,57 @@ export function makeDestructibleStore(root,r,parts,spill){
     {id:'structure',label:'最後承重結構',position:[-3.7,2.4,-.1]},
     {id:'server',label:'最後機櫃',position:server.position}
   ];
+  // A VCR presentation changes geometry poses only. Its logical damage and server state stay intact.
+  function capturePresentation(){
+    const seen=new Set(),nodes=[],materials=new Map();
+    for(const owner of [...stages.map(s=>s.pivot),rubble,server.root,server.shattered,neighbor.root,signFlight.root,signFlight.cablesRoot,signFlight.sparks,signFlight.dust,signFlight.splash])owner.traverse(n=>{
+      if(seen.has(n))return;seen.add(n);nodes.push({node:n,visible:n.visible,position:n.position.clone(),quaternion:n.quaternion.clone(),scale:n.scale.clone(),count:n.isInstancedMesh?n.count:null,instances:n.isInstancedMesh?n.instanceMatrix.array.slice():null});
+      if(n.material){for(const material of Array.isArray(n.material)?n.material:[n.material])if(!materials.has(material))materials.set(material,{emissiveIntensity:material.emissiveIntensity,opacity:material.opacity});}
+    });
+    return {mode:'rewind',progress:0,sourceTime:inputTime,nodes,materials,serverY:server.root.position.y};
+  }
+  function beginRewind(){if(presentation)return false;presentation=capturePresentation();return true;}
+  function updateRewind(value){
+    if(!presentation)beginRewind();const p=T.MathUtils.clamp(Number(value)||0,0,1);presentation.mode='rewind';presentation.progress=p;
+    for(const stage of stages){
+      if(!stage.active)continue;const q=T.MathUtils.smoothstep(p,(5-stage.index)*.12,(5-stage.index)*.12+.3),snapshot=presentation.nodes.find(n=>n.node===stage.pivot);
+      if(q<=0){stage.pivot.visible=snapshot.visible;continue;}
+      stage.pivot.visible=true;stage.pivot.position.lerpVectors(snapshot.position,stage.origin,q);stage.pivot.quaternion.copy(snapshot.quaternion).slerp(identity,q);
+    }
+    const q=T.MathUtils.smootherstep(p,0,1),vanish=1-T.MathUtils.smoothstep(p,.65,1);
+    for(let i=0;i<chunks.count;i++){const item=records[i];dummy.position.lerpVectors(item.end,item.start,q);dummy.position.y+=Math.sin(q*Math.PI)*item.hop;dummy.scale.copy(item.scale).multiplyScalar(vanish);dummy.rotation.set(item.rotation.x*(1-q),item.rotation.y*(1-q),item.rotation.z*(1-q));dummy.updateMatrix();chunks.setMatrixAt(i,dummy.matrix);}
+    chunks.instanceMatrix.needsUpdate=true;rubble.visible=p<.99;products.presentRewind(p);
+    server.root.position.y=T.MathUtils.lerp(presentation.serverY,3.51,q);server.root.visible=true;server.shattered.visible=false;
+    signFlight.presentRewind(p);if(p>=1)for(const stage of stages)for(const light of stage.lights)light.node.visible=light.visible;
+  }
+  function showFlashback(){
+    if(!presentation)beginRewind();updateRewind(1);presentation.mode='flashback';rubble.visible=false;signFlight.showHome();neighbor.showIntactVisual();
+    for(const stage of stages){stage.pivot.visible=true;stage.pivot.position.copy(stage.origin);stage.pivot.rotation.set(0,0,0);for(const light of stage.lights)light.node.visible=light.visible;}
+  }
+  function restorePresent(){
+    if(!presentation)return false;const stored=presentation;
+    for(const item of stored.nodes){const n=item.node;n.visible=item.visible;n.position.copy(item.position);n.quaternion.copy(item.quaternion);n.scale.copy(item.scale);if(item.instances){n.count=item.count;n.instanceMatrix.array.set(item.instances);n.instanceMatrix.needsUpdate=true;}}
+    for(const [material,values]of stored.materials){if(values.emissiveIntensity!==undefined)material.emissiveIntensity=values.emissiveIntensity;material.opacity=values.opacity;}
+    timeOffset+=Math.max(0,inputTime-stored.sourceTime);presentation=null;if(spill?.shadow)spill.shadow.needsUpdate=true;return true;
+  }
   function reset(){
+    presentation=null;timeOffset=0;time=inputTime;
     progress=0;chunks.count=0;rubble.visible=false;for(const record of records)record.settled=false;
-    for(const mesh of beams)mesh.visible=false;if(fallenSign)fallenSign.visible=false;
+    for(const mesh of beams)mesh.visible=false;
     for(const stage of stages){stage.active=false;stage.settled=false;stage.pivot.visible=true;stage.pivot.position.copy(stage.origin);stage.pivot.rotation.set(0,0,0);for(const light of stage.lights)light.node.visible=light.visible;}
-    server.reset();products.reset();neighbor.reset();if(spill?.shadow)spill.shadow.needsUpdate=true;
+    server.reset();products.reset();neighbor.reset();signFlight.reset();if(spill?.shadow)spill.shadow.needsUpdate=true;
   }
   function setProgress(value){
     const next=T.MathUtils.clamp(Number.isFinite(value)?value:0,0,99);if(next<progress)reset();progress=next;
     for(const stage of stages)if(!stage.active&&progress>=stage.threshold){stage.active=true;stage.start=time;rubble.visible=true;for(const light of stage.lights)light.node.visible=false;chunks.count=Math.max(chunks.count,(stage.index+1)*debrisPerStage);if(spill?.shadow)spill.shadow.needsUpdate=true;}
+    if(progress>=44)signFlight.start(time);
     server.setProgress(progress);products.setProgress(progress,time);
   }
   reset();
-  return {targets,server,neighbor,root:rubble,setProgress,reset,
+  return {targets,server,neighbor,signFlight,root:rubble,setProgress,reset,beginRewind,updateRewind,showFlashback,restorePresent,
     destroyServer:()=>server.destroy(),
     update(t,delta=0){
-      time=t;let changed=false;
+      inputTime=t;if(presentation)return;time=t-timeOffset;t=time;let changed=false;
       for(const stage of stages){
         if(!stage.active)continue;
         const p=T.MathUtils.clamp((t-stage.start)/stage.duration,0,1),ease=p*p*(3-2*p);
@@ -105,7 +139,7 @@ export function makeDestructibleStore(root,r,parts,spill){
           stage.pivot.position.y=stage.origin.y-ease*Math.max(.5,stage.origin.y-.35)+(stage.id==='roof'?Math.sin(p*Math.PI)*2.2:Math.sin(p*Math.PI)*.35);
           stage.pivot.position.x=stage.origin.x+(stage.id==='roof'?Math.sin(p*Math.PI)*1.9:Math.sin(p*Math.PI)*.35*(stage.index%2?1:-1));
           stage.pivot.rotation.set((stage.index%2?1:-1)*ease*.17,ease*(stage.id==='roof'?.5:.045),ease*(stage.id==='roof'?-.62:stage.index%2?-.12:.12));
-          if(p>=1){stage.pivot.visible=false;stage.settled=true;if(stage.id==='roof'||stage.id==='structure')for(const beam of beams)beam.visible=true;if(stage.id==='sign'&&fallenSign)fallenSign.visible=true;}
+          if(p>=1){stage.pivot.visible=false;stage.settled=true;if(stage.id==='roof'||stage.id==='structure')for(const beam of beams)beam.visible=true;}
         }
         for(let i=stage.index*debrisPerStage;i<(stage.index+1)*debrisPerStage;i++){
           const record=records[i];if(record.settled)continue;
@@ -115,9 +149,9 @@ export function makeDestructibleStore(root,r,parts,spill){
         }
       }
       if(changed)chunks.instanceMatrix.needsUpdate=true;
-      server.update(t,delta);products.update(t);neighbor.update(t);
+      server.update(t,delta);products.update(t);neighbor.update(t);signFlight.update(t);
     },
-    get state(){return {progress,stage:stages.filter(s=>s.active).length,serverAlive:server.state.alive,serverPosition:[...server.position],visibleIntact:stages.reduce((sum,s)=>sum+(s.pivot.visible?s.count:0),0),visibleDebris:rubble.visible?chunks.count+beams.filter(m=>m.visible).length+(fallenSign?.visible?1:0):0,settled:stages.every(s=>!s.active||s.settled),milestones:stages.map(s=>({id:s.id,threshold:s.threshold,active:s.active,visible:s.pivot.visible})),server:server.state,products:products.state,neighbor:neighbor.state,thirdFloor:!!parts.roof};}
+    get state(){return {progress,stage:stages.filter(s=>s.active).length,serverAlive:server.state.alive,serverPosition:[...server.position],visibleIntact:stages.reduce((sum,s)=>sum+(s.pivot.visible?s.count:0),0),visibleDebris:rubble.visible?chunks.count+beams.filter(m=>m.visible).length+(signFlight.landed?1:0):0,settled:stages.every(s=>!s.active||s.settled),milestones:stages.map(s=>({id:s.id,threshold:s.threshold,active:s.active,visible:s.pivot.visible})),server:server.state,products:products.state,neighbor:neighbor.state,sign:signFlight.state,presentation:presentation?.mode||'present',rewindProgress:presentation?.progress||0,thirdFloor:!!parts.roof};}
   };
 }
 
@@ -162,6 +196,7 @@ function buildScatteredProducts(parent,r,random){
       for(const item of records)if(!item.active&&progress>=[44,62,80][item.stage-2]){item.active=true;item.at=t;item.mesh.count=Math.max(item.mesh.count,item.index+1);count++;}
     },
     update(t){let changed=false;for(const item of records){if(!item.active||item.settled)continue;const p=T.MathUtils.clamp((t-item.at)/1.8,0,1),ease=1-(1-p)**2;dummy.position.lerpVectors(item.start,item.end,ease);dummy.position.y+=Math.sin(p*Math.PI)*item.hop;dummy.rotation.set(item.rotation.x*p,item.rotation.y*p,item.rotation.z*p);dummy.scale.fromArray(item.scale);dummy.updateMatrix();item.mesh.setMatrixAt(item.index,dummy.matrix);changed=true;if(p>=1){item.settled=true;settled++;}}if(changed)for(const mesh of pools)mesh.instanceMatrix.needsUpdate=true;},
+    presentRewind(value){const p=T.MathUtils.smootherstep(value,0,1),scale=1-T.MathUtils.smoothstep(p,.6,1);for(const item of records){if(!item.active)continue;dummy.position.lerpVectors(item.end,item.start,p);dummy.position.y+=Math.sin(p*Math.PI)*item.hop;dummy.rotation.set(item.rotation.x*(1-p),item.rotation.y*(1-p),item.rotation.z*(1-p));dummy.scale.fromArray(item.scale).multiplyScalar(scale);dummy.updateMatrix();item.mesh.setMatrixAt(item.index,dummy.matrix);}for(const mesh of pools)mesh.instanceMatrix.needsUpdate=true;},
     get state(){return {visible:count,settled,families:4,labels:names};}
   };
 }
@@ -173,8 +208,11 @@ function buildNeighborImpact(parent,r){
   const wall=body?.material||r.material('#78828a',{roughness:.8});if(body)body.removeFromParent();
   const plaster=r.material('#b1b3a2',{roughness:.91}),dark=r.material('#172e31',{roughness:.96}),brick=r.material('#7c6754',{roughness:.9});
   const intact=new T.Group();intact.name='neighbor-intact-wall-plug';root.add(intact);
+  const collateral=new T.Group();collateral.name='neighbor-collateral-window-panels';root.add(collateral);
   // Existing window trim breaks with the removable central wall plug.
   for(const child of [...parent.children])if(child.isMesh&&Math.abs(child.position.x-point[0])<1.05&&Math.abs(child.position.y-point[1])<1.2&&child.position.z>-2.67&&child.position.z<-2.1)intact.attach(child);
+  for(const child of [...parent.children])if(child.isMesh&&child.position.x>-9.8&&child.position.x<-6.2&&child.position.y>1.5&&child.position.y<6&&child.position.z>-2.67&&child.position.z<-2.1){child.userData.neighborWindow=true;collateral.attach(child);}
+  const windowCount=collateral.children.filter(n=>n.userData.neighborWindow).length;
   for(const [p,s]of [[[-9.89,3.4,-5],[.22,7,5]],[[-6.11,3.4,-5],[.22,7,5]],[[-8,3.4,-7.4],[4,7,.2]],[[-8,-.02,-5],[4,.18,5]],[[-8,6.79,-5],[4,.22,5]]])r.mesh(r.geometry('BoxGeometry',1,1,1),wall,root,p,s);
   // Dark interior wall and a small warm room light made from emissive surfaces, no new light.
   r.mesh(r.geometry('BoxGeometry',1,1,1),dark,root,[-8,3.35,-5.1],[3.5,6.3,.12]);
@@ -184,25 +222,59 @@ function buildNeighborImpact(parent,r){
   for(let i=0;i<14;i++){const a=-i*Math.PI*2/14,rad=i%3===0?.72:i%2?.61:.67;outline.push([cx+Math.cos(a)*rad,cy+Math.sin(a)*rad]);}
   const shape=new T.Shape();shape.moveTo(-2,-3.5);shape.lineTo(2,-3.5);shape.lineTo(2,3.5);shape.lineTo(-2,3.5);shape.closePath();
   const hole=new T.Path();outline.forEach(([x,y],i)=>i?hole.lineTo(x,y):hole.moveTo(x,y));hole.closePath();shape.holes.push(hole);
+  const collateralOutlines=[[[.55,1.1],[.7,1.03],[1.62,1.15],[1.57,2.25],[.62,2.31],[.5,1.8]],[[-1.65,-2.15],[-.75,-2.12],[-.68,-1.35],[-.81,-1.12],[-1.72,-1.19]]];
+  for(const vertices of collateralOutlines){
+    const cut=new T.Path();vertices.forEach(([x,y],i)=>i?cut.lineTo(x,y):cut.moveTo(x,y));cut.closePath();shape.holes.push(cut);
+    const fill=new T.Shape();vertices.forEach(([x,y],i)=>i?fill.lineTo(x,y):fill.moveTo(x,y));fill.closePath();r.mesh(r.own(new T.ExtrudeGeometry(fill,{depth:.25,bevelEnabled:false,steps:1})),wall,collateral,[-8,3.4,-2.75]);
+  }
   const geo=r.own(new T.ExtrudeGeometry(shape,{depth:.25,bevelEnabled:false,steps:1,curveSegments:1}));r.mesh(geo,wall,root,[-8,3.4,-2.75]);
   const plug=new T.Shape();outline.forEach(([x,y],i)=>i?plug.lineTo(x,y):plug.moveTo(x,y));plug.closePath();r.mesh(r.own(new T.ExtrudeGeometry(plug,{depth:.25,bevelEnabled:false,steps:1})),wall,intact,[-8,3.4,-2.75]);
   const broken=new T.Group();broken.name='neighbor-broken-rim';broken.visible=false;root.add(broken);
   for(let i=0;i<14;i++){
     const [x,y]=outline[i],rim=r.mesh(r.geometry('BoxGeometry',1,1,1),i%3?plaster:brick,broken,[-8+x*1.035,3.4+y*1.035,-2.465],[.25,.13,.14]);rim.rotation.z=Math.atan2(y-cy,x-cx)+Math.PI/2;
   }
-  const rubble=r.own(new T.InstancedMesh(r.geometry('BoxGeometry',1,1,1),plaster,22));rubble.count=0;rubble.name='neighbor-wall-fragments';rubble.instanceMatrix.setUsage(T.DynamicDrawUsage);rubble.frustumCulled=false;root.add(rubble);
+  // Floor-spanning fissures radiate away from the hole and leave its centre clear for Dragon.
+  const crackVertices=[];
+  for(let ray=0;ray<9;ray++){
+    const a=ray*Math.PI*2/9,steps=5,length=ray%2?2.35:3.55;let x0=cx+Math.cos(a)*.78,y0=cy+Math.sin(a)*.78;
+    for(let step=1;step<=steps;step++){
+      const distance=.78+(length-.78)*step/steps,jitter=Math.sin(ray*9+step*2.7)*.16,x1=T.MathUtils.clamp(cx+Math.cos(a)*distance+Math.sin(a)*jitter,-1.96,1.96),y1=T.MathUtils.clamp(cy+Math.sin(a)*distance+Math.cos(a)*jitter,-3.42,3.42),w=.018+(1-step/steps)*.027;
+      crackVertices.push(-8+x0-w,3.4+y0,-2.485,-8+x0+w,3.4+y0,-2.485,-8+x1+w,3.4+y1,-2.485,-8+x0-w,3.4+y0,-2.485,-8+x1+w,3.4+y1,-2.485,-8+x1-w,3.4+y1,-2.485);x0=x1;y0=y1;
+    }
+  }
+  const cracksGeo=r.own(new T.BufferGeometry());cracksGeo.setAttribute('position',new T.Float32BufferAttribute(crackVertices,3));cracksGeo.computeVertexNormals();
+  const cracks=new T.Mesh(cracksGeo,r.own(new T.MeshBasicMaterial({color:0x25332e,side:T.DoubleSide})));cracks.name='neighbor-floor-spanning-cracks';broken.add(cracks);
+  const balcony=new T.Group();balcony.name='neighbor-buckled-balcony';balcony.position.set(-6.88,4.38,-2.3);root.add(balcony);
+  r.box(balcony,'#929e8d',[0,0,0],[1.28,.13,.63],{roughness:.85});
+  for(const x of [-.53,0,.53])r.box(balcony,'#3b5149',[x,.29,.25],[.035,.57,.035],{metalness:.5,roughness:.45});
+  r.box(balcony,'#3b5149',[0,.57,.25],[1.17,.035,.035],{metalness:.5,roughness:.45});
+  const slab=r.box(broken,'#a1a392',[-8.95,1.47,-2.2],[1.1,.12,.65],{roughness:.86});slab.rotation.set(.23,.08,-.32);
+  for(let i=0;i<6;i++){const bar=r.box(broken,'#536155',[-8.78+i*.105,1.55,-2.05],[.023,.023,.7],{roughness:.55,metalness:.6});bar.rotation.y=(i-2)*.11;}
+  const rubble=r.own(new T.InstancedMesh(r.geometry('BoxGeometry',1,1,1),plaster,54));rubble.count=0;rubble.name='neighbor-wall-fragments';rubble.instanceMatrix.setUsage(T.DynamicDrawUsage);rubble.frustumCulled=false;root.add(rubble);
   const dummy=new T.Object3D(),fragments=[];let seed=2811,time=0,at=-Infinity,hit=false,settled=false;
   const random=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;};
-  for(let i=0;i<22;i++)fragments.push({end:new T.Vector3(-8.03+(random()-.5)*3,.2+random()*.16,-1.7+random()*2),scale:new T.Vector3(.12+random()*.27,.07+random()*.15,.09+random()*.22),rotation:new T.Vector3(random()*3,random()*4,random()*3),hop:.3+random()*.6});
+  for(let i=0;i<54;i++)fragments.push({end:new T.Vector3(-8.03+(random()-.5)*3.9,.2+random()*.16,-1.7+random()*2.7),scale:new T.Vector3(.12+random()*.37,.07+random()*.19,.09+random()*.25),rotation:new T.Vector3(random()*3,random()*4,random()*3),hop:.4+random()*.95});
+  mergePart(collateral,r);const loosePanels=[];
+  for(const mesh of [...collateral.children]){
+    const center=new T.Box3().setFromObject(mesh).getCenter(new T.Vector3()),pivot=new T.Group();pivot.position.copy(center);collateral.add(pivot);pivot.updateMatrixWorld(true);pivot.attach(mesh);mesh.userData.dynamic=true;loosePanels.push({mesh:pivot,position:pivot.position.clone(),rotation:pivot.rotation.clone()});
+  }
+  balcony.traverse(n=>n.userData.dynamic=true);
   for(const owner of [broken,intact]){optimizeStaticSet(owner,r);owner.traverse(n=>{if(n.isMesh)n.userData.dynamic=true;});}
   optimizeStaticSet(root,r);
   // The external static pass must preserve plug visibility and the true hole.
   root.traverse(n=>{if(n.isMesh){n.userData.dynamic=true;n.castShadow=true;n.receiveShadow=true;}});
-  function reset(){hit=false;settled=false;at=-Infinity;intact.visible=true;broken.visible=false;rubble.count=0;}
+  function showIntactVisual(){intact.visible=true;broken.visible=false;rubble.count=0;collateral.visible=true;for(const item of loosePanels){item.mesh.visible=true;item.mesh.position.copy(item.position);item.mesh.rotation.copy(item.rotation);}balcony.position.set(-6.88,4.38,-2.3);balcony.rotation.set(0,0,0);}
+  function reset(){hit=false;settled=false;at=-Infinity;showIntactVisual();}
   reset();
-  return {root,position:point,normal,
+  return {root,position:point,normal,showIntactVisual,
     impact(){if(hit)return false;hit=true;at=time;intact.visible=false;broken.visible=true;rubble.count=fragments.length;return true;},reset,
-    update(t){time=t;if(!hit||settled)return;const p=T.MathUtils.clamp((t-at)/1.6,0,1),ease=1-(1-p)**2;for(let i=0;i<fragments.length;i++){const item=fragments[i];dummy.position.set(point[0],point[1],point[2]);dummy.position.lerp(item.end,ease);dummy.position.y+=Math.sin(p*Math.PI)*item.hop;dummy.scale.copy(item.scale);dummy.rotation.set(item.rotation.x*p,item.rotation.y*p,item.rotation.z*p);dummy.updateMatrix();rubble.setMatrixAt(i,dummy.matrix);}rubble.instanceMatrix.needsUpdate=true;if(p>=1)settled=true;},
-    get state(){return {hit,holeVisible:hit&&!intact.visible,position:[...point],normal:[...normal],fragments:rubble.count,settled,hollow:!!body};}
+    update(t){
+      time=t;if(!hit||settled)return;const p=T.MathUtils.clamp((t-at)/1.9,0,1),ease=1-(1-p)**2;
+      for(let i=0;i<fragments.length;i++){const item=fragments[i];dummy.position.set(point[0]+(i%3-1)*.4,point[1]+(i%4-1)*.7,point[2]);dummy.position.lerp(item.end,ease);dummy.position.y+=Math.sin(p*Math.PI)*item.hop;dummy.scale.copy(item.scale);dummy.rotation.set(item.rotation.x*p,item.rotation.y*p,item.rotation.z*p);dummy.updateMatrix();rubble.setMatrixAt(i,dummy.matrix);}rubble.instanceMatrix.needsUpdate=true;
+      for(let i=0;i<loosePanels.length;i++){const item=loosePanels[i],q=T.MathUtils.smoothstep(p,0,.65);item.mesh.position.copy(item.position);item.mesh.position.y-=q*(1.2+i%3*.25);item.mesh.position.z+=q*(.5+i%2*.25);item.mesh.rotation.set(item.rotation.x+q*.7,item.rotation.y+q*(i%2?.3:-.4),item.rotation.z+q*(i%2?-.35:.28));item.mesh.visible=p<.65;}
+      balcony.rotation.set(ease*.34,0,-ease*.24);balcony.position.y=4.38-ease*.22;
+      if(p>=1){settled=true;collateral.visible=false;}
+    },
+    get state(){return {hit,holeVisible:hit&&!intact.visible,position:[...point],normal:[...normal],fragments:rubble.count,settled,hollow:!!body,collateralHoles:hit?2:0,fractureBranches:hit?9:0,balconyTilt:balcony.rotation.z,brokenWindows:hit?windowCount:0};}
   };
 }

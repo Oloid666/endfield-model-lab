@@ -1,0 +1,372 @@
+{
+  "kind": "actual-director-with-mock-world-no-gpu",
+  "checks": [
+    {
+      "name": "Rapid touches preserve all fourteen ordered physical key targets",
+      "passed": true,
+      "detail": {
+        "count": 14
+      }
+    },
+    {
+      "name": "Rendered hops consume every rapid key once in the same order",
+      "passed": true,
+      "detail": {
+        "visited": 14
+      }
+    },
+    {
+      "name": "After the last hop Dragon remains at the final key",
+      "passed": true,
+      "detail": [
+        -0.1499999999999999,
+        0.545,
+        3.25
+      ]
+    },
+    {
+      "name": "Burst input queue has a fixed memory bound",
+      "passed": true,
+      "detail": 32
+    },
+    {
+      "name": "Replay clears all queued and active key animation",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Paused mission clock holds Dragon at the exact same hop pose",
+      "passed": true,
+      "detail": [
+        -1.0515777610818609,
+        0.8851945587595799,
+        2.997558226897079
+      ]
+    },
+    {
+      "name": "Paused scene systems receive zero simulation delta",
+      "passed": true,
+      "detail": [
+        {
+          "name": "destruction",
+          "t": 20.08,
+          "dt": 0
+        },
+        {
+          "name": "garden",
+          "t": 20.08,
+          "dt": 0
+        },
+        {
+          "name": "tianshi",
+          "t": 20.08,
+          "dt": 0,
+          "phase": "login"
+        },
+        {
+          "name": "microwave",
+          "t": 20.08,
+          "dt": 0,
+          "phase": "login"
+        },
+        {
+          "name": "xaihi",
+          "t": 20.08,
+          "dt": 0,
+          "phase": "login"
+        },
+        {
+          "name": "siege",
+          "t": 20.08,
+          "dt": 0,
+          "phase": "login"
+        }
+      ]
+    },
+    {
+      "name": "Lever entry clears any remaining typing animation",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Long login keeps the first lift at 1.2m in front of the store",
+      "passed": true,
+      "detail": {
+        "phase": "login",
+        "elapsed": 80,
+        "castingElapsed": 0.8,
+        "charge": 0,
+        "flight": 1,
+        "recoil": 0,
+        "distance": 0,
+        "height": 1.2
+      }
+    },
+    {
+      "name": "Long captcha keeps the first lift at 1.2m in front of the store",
+      "passed": true,
+      "detail": {
+        "phase": "captcha",
+        "elapsed": 80,
+        "castingElapsed": 0.8,
+        "charge": 0,
+        "flight": 1,
+        "recoil": 0,
+        "distance": 0,
+        "height": 1.2
+      }
+    },
+    {
+      "name": "Long lever keeps the first lift at 1.2m in front of the store",
+      "passed": true,
+      "detail": {
+        "phase": "lever",
+        "elapsed": 80,
+        "castingElapsed": 0.8,
+        "charge": 0,
+        "flight": 1,
+        "recoil": 0,
+        "distance": 0,
+        "height": 1.2
+      }
+    },
+    {
+      "name": "Charge begins at age 1.15 instead of jumping to fully charged flight",
+      "passed": true,
+      "detail": {
+        "phase": "charge",
+        "elapsed": 0,
+        "castingElapsed": 1.15,
+        "charge": 0,
+        "flight": 0,
+        "recoil": 0,
+        "distance": 12,
+        "height": 4
+      }
+    },
+    {
+      "name": "Slow ascent age follows charge elapsed time after login",
+      "passed": true,
+      "detail": {
+        "phase": "charge",
+        "elapsed": 5,
+        "castingElapsed": 6.15,
+        "charge": 0.16699999999999998,
+        "flight": 0.5555555555555556,
+        "recoil": 0,
+        "distance": 12,
+        "height": 4
+      }
+    },
+    {
+      "name": "Rewind clock moves backward and updates the saved destruction presentation",
+      "passed": true,
+      "detail": {
+        "begin": 1,
+        "visualTime": 85,
+        "rewind": [
+          0.2857142857142857,
+          0.42857142857142855
+        ]
+      }
+    },
+    {
+      "name": "Rewind preserves logical mission destruction at 99 percent",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "CCTV flashback hides present-day actors",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "CCTV heat-demo hides present-day actors",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "CCTV heat hides present-day actors",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "CCTV flashback-end hides present-day actors",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Return restores saved scene and reveals main actors",
+      "passed": true,
+      "detail": {
+        "restore": 1,
+        "cast": {
+          "phase": "charge",
+          "elapsed": 0,
+          "castingElapsed": 0,
+          "charge": 0,
+          "launchOverride": 0,
+          "distance": 12,
+          "height": 4
+        }
+      }
+    },
+    {
+      "name": "Return completes the flight interpolation",
+      "passed": true,
+      "detail": {
+        "phase": "charge",
+        "elapsed": 3,
+        "castingElapsed": 30,
+        "charge": 1,
+        "launchOverride": 1,
+        "distance": 12,
+        "height": 4
+      }
+    },
+    {
+      "name": "Ruin tour keeps the smile reserved for its final shot",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Final five seconds of tour enable the real smile pose",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Completion retains the final smile",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Walking releases the final portrait pose",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "portrait connection camera keeps actual board corners and hero head on-screen",
+      "passed": true,
+      "detail": {
+        "heroHead": [
+          0.03741047994774548,
+          0.6363950926917564,
+          0.9897992302500616
+        ],
+        "boardLeftNear": [
+          -0.8652804794780871,
+          0.20283878974640177,
+          0.991502924042328
+        ],
+        "boardLeftFar": [
+          -0.3801362336940488,
+          0.35844564921948874,
+          0.9927100130181262
+        ],
+        "boardRightNear": [
+          0.310829398719983,
+          0.018654265099636688,
+          0.9900741495656337
+        ],
+        "boardRightFar": [
+          0.6822547328143359,
+          0.22324770052104723,
+          0.991661242070772
+        ]
+      }
+    },
+    {
+      "name": "landscape connection camera keeps actual board corners and hero head on-screen",
+      "passed": true,
+      "detail": {
+        "heroHead": [
+          -0.4081762298847607,
+          0.860090716941458,
+          0.9881531061114225
+        ],
+        "boardLeftNear": [
+          -0.6857674366015926,
+          0.06429314849573711,
+          0.9897778373778328
+        ],
+        "boardLeftFar": [
+          -0.47358227427262106,
+          0.3464165901303895,
+          0.9916513196039202
+        ],
+        "boardRightNear": [
+          -0.2610837761598176,
+          -0.1602033986867673,
+          0.988287035023631
+        ],
+        "boardRightFar": [
+          -0.10764568646034513,
+          0.19714418792054825,
+          0.9906600542529619
+        ]
+      }
+    }
+  ],
+  "projections": [
+    {
+      "label": "portrait",
+      "projected": {
+        "heroHead": [
+          0.03741047994774548,
+          0.6363950926917564,
+          0.9897992302500616
+        ],
+        "boardLeftNear": [
+          -0.8652804794780871,
+          0.20283878974640177,
+          0.991502924042328
+        ],
+        "boardLeftFar": [
+          -0.3801362336940488,
+          0.35844564921948874,
+          0.9927100130181262
+        ],
+        "boardRightNear": [
+          0.310829398719983,
+          0.018654265099636688,
+          0.9900741495656337
+        ],
+        "boardRightFar": [
+          0.6822547328143359,
+          0.22324770052104723,
+          0.991661242070772
+        ]
+      }
+    },
+    {
+      "label": "landscape",
+      "projected": {
+        "heroHead": [
+          -0.4081762298847607,
+          0.860090716941458,
+          0.9881531061114225
+        ],
+        "boardLeftNear": [
+          -0.6857674366015926,
+          0.06429314849573711,
+          0.9897778373778328
+        ],
+        "boardLeftFar": [
+          -0.47358227427262106,
+          0.3464165901303895,
+          0.9916513196039202
+        ],
+        "boardRightNear": [
+          -0.2610837761598176,
+          -0.1602033986867673,
+          0.988287035023631
+        ],
+        "boardRightFar": [
+          -0.10764568646034513,
+          0.19714418792054825,
+          0.9906600542529619
+        ]
+      }
+    }
+  ]
+}

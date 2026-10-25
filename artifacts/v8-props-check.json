@@ -1,0 +1,693 @@
+{
+  "kind": "actual-geometry-with-stubbed-canvas",
+  "checks": [
+    {
+      "name": "Four original-style columns have separate roofs and foundations",
+      "passed": true,
+      "detail": {
+        "phase": "ready",
+        "quality": "balanced",
+        "charge": 0,
+        "activePylons": 0,
+        "connected": [
+          false,
+          false,
+          false,
+          false
+        ],
+        "positions": [
+          [
+            -12.8,
+            2.1,
+            -9.6
+          ],
+          [
+            -6.1,
+            1.6,
+            -16.5
+          ],
+          [
+            6.7,
+            2.3,
+            -15.3
+          ],
+          [
+            13.6,
+            1.6,
+            -8.3
+          ]
+        ],
+        "originalStyle": true,
+        "drawnLinks": 0
+      }
+    },
+    {
+      "name": "Partly pulled lever lights only the first pylons",
+      "passed": true,
+      "detail": {
+        "phase": "lever",
+        "quality": "balanced",
+        "charge": 0,
+        "activePylons": 1,
+        "connected": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "positions": [
+          [
+            -12.8,
+            2.1,
+            -9.6
+          ],
+          [
+            -6.1,
+            1.6,
+            -16.5
+          ],
+          [
+            6.7,
+            2.3,
+            -15.3
+          ],
+          [
+            13.6,
+            1.6,
+            -8.3
+          ]
+        ],
+        "originalStyle": true,
+        "drawnLinks": 1
+      }
+    },
+    {
+      "name": "Fully pulled lever connects four visible electrical links",
+      "passed": true,
+      "detail": {
+        "phase": "lever",
+        "quality": "balanced",
+        "charge": 0,
+        "activePylons": 4,
+        "connected": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "positions": [
+          [
+            -12.8,
+            2.1,
+            -9.6
+          ],
+          [
+            -6.1,
+            1.6,
+            -16.5
+          ],
+          [
+            6.7,
+            2.3,
+            -15.3
+          ],
+          [
+            13.6,
+            1.6,
+            -8.3
+          ]
+        ],
+        "originalStyle": true,
+        "drawnLinks": 4
+      }
+    },
+    {
+      "name": "Charge keeps all four sources connected to the caster",
+      "passed": true,
+      "detail": {
+        "phase": "charge",
+        "quality": "balanced",
+        "charge": 0.78,
+        "activePylons": 4,
+        "connected": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "positions": [
+          [
+            -12.8,
+            2.1,
+            -9.6
+          ],
+          [
+            -6.1,
+            1.6,
+            -16.5
+          ],
+          [
+            6.7,
+            2.3,
+            -15.3
+          ],
+          [
+            13.6,
+            1.6,
+            -8.3
+          ]
+        ],
+        "originalStyle": true,
+        "drawnLinks": 4
+      }
+    },
+    {
+      "name": "Every physical electrical segment stays outside the face close-up volume",
+      "passed": true,
+      "detail": {
+        "faceDistance": 2.636929891062612
+      }
+    },
+    {
+      "name": "Low quality retains the four-pylon design",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Flashback turns off present-time electrical links",
+      "passed": true,
+      "detail": {
+        "phase": "flashback",
+        "quality": "low",
+        "charge": 0,
+        "activePylons": 0,
+        "connected": [
+          false,
+          false,
+          false,
+          false
+        ],
+        "positions": [
+          [
+            -12.8,
+            2.1,
+            -9.6
+          ],
+          [
+            -6.1,
+            1.6,
+            -16.5
+          ],
+          [
+            6.7,
+            2.3,
+            -15.3
+          ],
+          [
+            13.6,
+            1.6,
+            -8.3
+          ]
+        ],
+        "originalStyle": true,
+        "drawnLinks": 0
+      }
+    },
+    {
+      "name": "Account keyboard exposes 29 physical keys and a pressed key",
+      "passed": true,
+      "detail": {
+        "visible": true,
+        "phase": "login",
+        "field": "account",
+        "lastKey": "e",
+        "keyNumber": 1,
+        "pressed": true,
+        "lever": 0,
+        "keys": 29,
+        "position": [
+          -1.65,
+          0.335,
+          3.25
+        ],
+        "keyTop": 0.545,
+        "leverPosition": [
+          -2.83,
+          0.7050000000000001,
+          3.27
+        ],
+        "physical": true
+      }
+    },
+    {
+      "name": "Letter and backspace foot targets are distinct real key locations",
+      "passed": true,
+      "detail": {
+        "e": [
+          -0.75,
+          0.545,
+          2.41
+        ],
+        "back": [
+          -1.35,
+          0.545,
+          4.09
+        ]
+      }
+    },
+    {
+      "name": "Password changes to a 12-key numeric pad",
+      "passed": true,
+      "detail": {
+        "visible": true,
+        "phase": "login",
+        "field": "password",
+        "lastKey": "5",
+        "keyNumber": 2,
+        "pressed": true,
+        "lever": 0,
+        "keys": 12,
+        "position": [
+          -1.65,
+          0.335,
+          3.25
+        ],
+        "keyTop": 0.545,
+        "leverPosition": [
+          -2.83,
+          0.7050000000000001,
+          3.27
+        ],
+        "physical": true
+      }
+    },
+    {
+      "name": "Uppercase verification target lands on the checkbox",
+      "passed": true,
+      "detail": [
+        -2.435,
+        0.545,
+        3.25
+      ]
+    },
+    {
+      "name": "Lever has a separate visible moving handle after static batching",
+      "passed": true,
+      "detail": {
+        "children": 3
+      }
+    },
+    {
+      "name": "Handle survives the scene batch and physically travels 2.36 metres",
+      "passed": true,
+      "detail": {
+        "start": [
+          -2.83,
+          0.585,
+          3.27
+        ],
+        "end": [
+          -0.47,
+          0.585,
+          3.27
+        ]
+      }
+    },
+    {
+      "name": "Companion pull target follows the handle",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Opening microwave is charred and in extreme warming mode",
+      "passed": true,
+      "detail": {
+        "mode": "charred",
+        "phase": "ready",
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "steam": 0,
+        "food": "cold",
+        "wreck": false,
+        "warming": true,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 75,
+          "meshesAfter": 47,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      }
+    },
+    {
+      "name": "Fixed oven housing uses fewer draw meshes after its build-time batches",
+      "passed": true,
+      "detail": {
+        "meshesBefore": 75,
+        "meshesAfter": 47,
+        "sharedDraws": 2
+      }
+    },
+    {
+      "name": "Microwave door faces the shop aisle and keeps its original world centre",
+      "passed": true,
+      "detail": {
+        "doorDirection": [
+          1.2246467991473532e-16,
+          0,
+          -1
+        ],
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ]
+      }
+    },
+    {
+      "name": "Street-facing back retains 24 physical vents and six scorch marks after batching",
+      "passed": true,
+      "detail": {
+        "ventHits": 24,
+        "scars": 6
+      }
+    },
+    {
+      "name": "Opening charred oven emits intermittent electrical arcs",
+      "passed": true,
+      "detail": {
+        "mode": "charred",
+        "phase": "ready",
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "steam": 0,
+        "food": "cold",
+        "wreck": false,
+        "warming": true,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 75,
+          "meshesAfter": 47,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      }
+    },
+    {
+      "name": "Idle faults remain visible from both street rear and interior door",
+      "passed": true,
+      "detail": {
+        "rearArc": true,
+        "frontArc": true
+      }
+    },
+    {
+      "name": "Earlier CCTV shows the same clean oven above its intact cabinet",
+      "passed": true,
+      "detail": {
+        "mode": "clean",
+        "phase": "flashback",
+        "charred": 0,
+        "arcActive": false,
+        "arcs": 0,
+        "steam": 0,
+        "food": "cold",
+        "wreck": false,
+        "warming": false,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 75,
+          "meshesAfter": 47,
+          "sharedDraws": 2
+        },
+        "display": "03:00"
+      }
+    },
+    {
+      "name": "Batched shell keeps its live clean colour and independent display/soot visibility",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Second failed heating keeps the first attempt burn scars",
+      "passed": true,
+      "detail": {
+        "mode": "burning",
+        "phase": "heat-demo",
+        "charred": 0.86,
+        "arcActive": true,
+        "arcs": 4,
+        "steam": 0,
+        "food": "cold",
+        "wreck": false,
+        "warming": false,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 75,
+          "meshesAfter": 47,
+          "sharedDraws": 2
+        },
+        "display": "ERR"
+      }
+    },
+    {
+      "name": "Player power input creates four strong arcs and steam",
+      "passed": true,
+      "detail": {
+        "mode": "heating",
+        "phase": "heat",
+        "charred": 1,
+        "arcActive": true,
+        "arcs": 4,
+        "steam": 3,
+        "food": "cold",
+        "wreck": false,
+        "warming": false,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 75,
+          "meshesAfter": 47,
+          "sharedDraws": 2
+        },
+        "display": "0.30 s"
+      }
+    },
+    {
+      "name": "Burnt input darkens food and produces smoke",
+      "passed": true,
+      "detail": {
+        "mode": "heating",
+        "phase": "heat",
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "steam": 7,
+        "food": "burnt",
+        "wreck": false,
+        "warming": false,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 75,
+          "meshesAfter": 47,
+          "sharedDraws": 2
+        },
+        "display": "0.30 s"
+      }
+    },
+    {
+      "name": "Successful meal leaves fast-warming mode and power diversion on",
+      "passed": true,
+      "detail": {
+        "mode": "warm",
+        "phase": "flashback-end",
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "steam": 3,
+        "food": "hot",
+        "wreck": false,
+        "warming": true,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 75,
+          "meshesAfter": 47,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      }
+    },
+    {
+      "name": "Batched shell returns to charred paint without swallowing animated descendants",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Present wreck lowers oven, hides cabinet and hides the whole meal",
+      "passed": true,
+      "detail": {
+        "mode": "charred",
+        "phase": "return",
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "steam": 0,
+        "food": "cold",
+        "wreck": true,
+        "warming": true,
+        "position": [
+          3.45,
+          0.5549999999999999,
+          1.43
+        ],
+        "counterVisible": false,
+        "batches": {
+          "meshesBefore": 75,
+          "meshesAfter": 47,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      }
+    },
+    {
+      "name": "Ten seconds of updates create no new tracked graphics resources",
+      "passed": true,
+      "detail": {
+        "items": 146,
+        "geometryCount": 15,
+        "materialCount": 19
+      }
+    },
+    {
+      "name": "Replay resets pylons, restores charred oven height and hides terminal",
+      "passed": true,
+      "detail": {
+        "grid": {
+          "phase": "ready",
+          "quality": "low",
+          "charge": 0,
+          "activePylons": 0,
+          "connected": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "positions": [
+            [
+              -12.8,
+              2.1,
+              -9.6
+            ],
+            [
+              -6.1,
+              1.6,
+              -16.5
+            ],
+            [
+              6.7,
+              2.3,
+              -15.3
+            ],
+            [
+              13.6,
+              1.6,
+              -8.3
+            ]
+          ],
+          "originalStyle": true,
+          "drawnLinks": 0
+        },
+        "microwave": {
+          "mode": "charred",
+          "phase": "ready",
+          "charred": 1,
+          "arcActive": false,
+          "arcs": 0,
+          "steam": 0,
+          "food": "cold",
+          "wreck": false,
+          "warming": true,
+          "position": [
+            3.45,
+            1.6,
+            1.43
+          ],
+          "counterVisible": true,
+          "batches": {
+            "meshesBefore": 75,
+            "meshesAfter": 47,
+            "sharedDraws": 2
+          },
+          "display": "極速保溫"
+        },
+        "board": {
+          "visible": false,
+          "phase": "ready",
+          "field": "account",
+          "lastKey": "",
+          "keyNumber": 0,
+          "pressed": false,
+          "lever": 0,
+          "keys": 29,
+          "position": [
+            -1.65,
+            0.335,
+            3.25
+          ],
+          "keyTop": 0.545,
+          "leverPosition": [
+            -2.83,
+            0.7050000000000001,
+            3.27
+          ],
+          "physical": true
+        }
+      }
+    },
+    {
+      "name": "Every owned disposable graphics resource receives dispose",
+      "passed": true,
+      "detail": {
+        "disposed": 146,
+        "expectedDisposals": 146
+      }
+    }
+  ]
+}

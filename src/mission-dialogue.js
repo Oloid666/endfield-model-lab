@@ -1,5 +1,5 @@
 // Original fan fiction. These lines and the demolition episode are not official lore.
-export const speakers={zhuang:'莊芳宜',dragon:'龍泡泡',mifoe:'弭弗'};
+export const speakers={zhuang:'莊芳宜',dragon:'龍泡泡',mifoe:'弭弗',xaihi:'賽希',clerk:'店員',system:'天師樁終端'};
 
 export const dinnerChoices=[
   {id:'A',label:'熱便當＋湯',hint:'先吃頓熱的。'},
@@ -7,8 +7,8 @@ export const dinnerChoices=[
   {id:'C',label:'甜點＋熱飲',hint:'先救心情。'},
 ];
 
-const lines=(prefix,items)=>items.map(([speaker,text,gesture='look',mood='calm'],index)=>({
-  id:`${prefix}_${index}`,speaker,text,mood,gesture,next:index+1<items.length?`${prefix}_${index+1}`:null,
+const lines=(prefix,items)=>items.map(([speaker,text,gesture='look',mood='calm',event=null],index)=>({
+  id:`${prefix}_${index}`,speaker,text,mood,gesture,event,next:index+1<items.length?`${prefix}_${index+1}`:null,
 }));
 
 export const sequences={
@@ -31,7 +31,7 @@ export const sequences={
     ['dragon','明白，這叫分工。','happy'],
   ]),
   briefing:lines('briefing',[
-    ['dragon','二樓那間房，是不是一直在眨眼？','point'],
+    ['dragon','二樓那間房，是不是一直在眨眼？','point','calm','server-closeup'],
     ['zhuang','不是燈壞了。是有人拿整條街散熱。','goods'],
     ['dragon','你看三秒就知道？','look'],
     ['zhuang','加班十年，認得這種不讓人睡的光。','exhale'],
@@ -39,7 +39,7 @@ export const sequences={
     ['mifoe','大量散布盜版同人掃描檔的伺服器，\n就在梨花樹旁的便利店二樓。','point'],
     ['zhuang','那有我的嗎？','phone'],
     ['mifoe','查起來沒有。','look'],
-    ['zhuang','真沒品味。沒有的就提交\n電信警察審判流程。','shake'],
+    ['zhuang','真沒品味。移交巡衛隊，\n立案查辦。','shake'],
     ['mifoe','這流程要好幾年，\n提弗媽媽的人氣又要往前了……','look'],
     ['mifoe','這麼不急的嗎？','look'],
     ['mifoe','對了頭，主嫌自介寫：','look'],
@@ -49,18 +49,44 @@ export const sequences={
     ['mifoe','窗面照度 10.5 lux，本案限值 10 lux。\n超標 0.5 lux。','look'],
     ['zhuang','那就對了。光害超標。\n影響我旁邊的梨花。','point'],
     ['mifoe','人員已撤離，證據已備份。','nod'],
-    ['zhuang','直接物理移除。弭弗，幫我接上全城的\n天師樁息壤超電容儲能模組。','point'],
-    ['zhuang','開始充電，三十秒後準備砲擊。','point'],
+    ['zhuang','直接物理移除。','point','calm','physical-removal'],
+    ['dragon','什麼？這間可是\nChatGPT 6.0 Astra 蓋的 711。','look','aside'],
+    ['dragon','燒了十張重置券的算力，\n結果蓋出來當靶？','shake','aside'],
+    ['zhuang','弭弗，接上全城的天師樁\n息壤超電容儲能模組。','point'],
+    ['zhuang','我在忙。龍泡泡，幫我連線。','point','calm','connection-board'],
+  ]),
+  energy:lines('energy',[
+    ['mifoe','頭，能量用完了。戰損報告：\n店體解體，三樓去向不明。','look'],
+    ['zhuang','能量怎麼可能用這麼快？','shake'],
+    ['zhuang','我們電隊這麼多人，\n電都去哪了？','look'],
+    ['dragon','消失的電跑到哪裡去了呢？\n讓我們看一段 VCR。','player','aside','vcr-cue'],
+  ]),
+  flashback:lines('flashback',[
+    ['clerk','加熱要等三分鐘。','look','calm','cctv-counter'],
+    ['xaihi','三分鐘……有點久。','look'],
+    ['xaihi','接一下武陵電網。\n只是借一點電。','phone','calm','xaihi-terminal'],
+    ['dragon','哇操，賽希用的是這幾天\n最新的 PHP 漏洞。','player','aside'],
+    ['dragon','賽馬娘一停服，她就研究這個。','look','aside'],
+    ['dragon','難得出門，\n順便拿武陵電網測試。','player','aside'],
+    ['xaihi','三分鐘，改成零點三秒。','point','calm','microwave-closeup'],
+  ]),
+  'flashback-end':lines('flashback_end',[
+    ['system','加熱完成：0.3 秒。','hold','calm','heated-meal'],
+    ['xaihi','這樣就不用等了。','receive'],
+    ['system','極速保溫：持續運轉。\n儲能網分流：已保留。','look','calm','warm-setting'],
+    ['dragon','她忘了關。\n我們剛充的電，正在替便當保溫。','player','aside'],
+    ['dragon','難怪微波爐這麼黑。','look','aside','charred-microwave'],
   ]),
   last:lines('last',[
-    ['mifoe','頭，能量用完了。砲擊如何？','look'],
-    ['mifoe','戰損分析：三樓失聯，店體解體。\n散熱改善百分之百。','look'],
-    ['dragon','所以，我們只是幫它拆了機房？','look'],
-    ['mifoe','伺服器還在上傳。怎麼辦？','look'],
+    ['dragon','伺服器呢？','look'],
+    ['mifoe','運作正常，還在上傳。','look'],
+    ['dragon','所以，最該壞的沒壞。','shake'],
     ['zhuang','今晚勢在必得。\n還剩最後一發子彈。','point'],
     ['dragon','哪裡？','look'],
     ['zhuang','就是你。','dragon'],
     ['dragon','……三小？','shake','shock'],
+    ['dragon','不對吧？等一下，\n哪裡搞錯了。','shake','shock'],
+    ['zhuang','方向沒錯。','nod'],
   ]),
   landing:lines('landing',[
     ['mifoe','伺服器粉碎。鄰居家也多了一個洞。','nod'],
@@ -80,8 +106,34 @@ export const chargeLines=lines('charge',[
   ['zhuang','局部雷雨。','nod'],
   ['mifoe','範圍是整棟。','look'],
   ['zhuang','武陵的局部。避開梨花。','point'],
-  ['mifoe','九成。蓄電天師，準備就緒。','look'],
+  ['dragon','連線我拉的，驗證我過的。\n砲擊可別再叫我了。','player','aside'],
 ]).map((line,index)=>({...line,at:index*3}));
+
+// Terminal instructions share the same story clock and dialogue schema.
+export const connectionPrompts={
+  account:{id:'login_account',speaker:'zhuang',text:'帳號：endfield，底線，power。',mood:'calm',gesture:'point',event:'dictate-account',next:null},
+  password:{id:'login_password',speaker:'zhuang',text:'密碼，五二零一三一四。',mood:'calm',gesture:'point',event:'dictate-password',next:null},
+  lever:{id:'connect_lever',speaker:'zhuang',text:'最後，把拉桿往右拉到底。',mood:'calm',gesture:'point',event:'pull-lever',next:null},
+  verified:{id:'captcha_verified',speaker:'dragon',text:'原來武陵資安是國文題。',mood:'aside',gesture:'player',event:'captcha-pass',next:null},
+  heat:{id:'heat_ready',speaker:'dragon',text:'這次你來。長按送電，熟了就鬆手。\n錄影可以慢放，便當不能再黑了。',mood:'aside',gesture:'player',event:'heat-control',next:null},
+  returned:{id:'vcr_returned',speaker:'dragon',text:'回到現場。現在知道電去哪了。',mood:'aside',gesture:'look',event:'return-present',next:null},
+};
+export const captchaLines=lines('captcha',[
+  ['zhuang','勾「我不是機器人」。','point'],
+  ['dragon','我連人都不是，這題怎麼算？','look','aside'],
+  ['zhuang','它問的是機器人。勾。','nod'],
+]).map((node,index)=>({...node,at:index*3}));
+export const heatDemoLines=lines('heat_demo',[
+  ['xaihi','全功率，試一次。','phone','calm','heat-attempt-one'],
+  ['dragon','熟了。包裝也熟了。','look','aside'],
+  ['xaihi','那就再短一點。','phone','calm','heat-attempt-two'],
+  ['dragon','微波爐：我有意見。','player','aside'],
+]).map((node,index)=>({...node,at:index*1.5}));
+export const finalAmmoLines=lines('ammo',[
+  ['dragon','不對吧？我現在是彈藥？','shake','shock'],
+  ['dragon','等一下，哪裡搞錯了。','look','shock'],
+  ['dragon','我說的不是方向——','shake','shock'],
+]).map((node,index)=>({...node,at:index*3}));
 
 export const chatterGroups=[
   lines('chat_0',[['zhuang','手機好像亮了。','phone'],['dragon','這次真的是手機。','look'],['zhuang','……先吃完。','hold']]),

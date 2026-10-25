@@ -18,10 +18,13 @@ import { WalkCamera } from './walk-camera.js';
 import { buildPearGarden } from './pear-garden.js';
 import { buildSiegeEffects } from './siege-effects.js';
 import { MissionDirector } from './mission-director.js';
+import { buildTianshiGrid } from './tianshi-grid.js';
+import { buildMicrowave } from './microwave.js';
+import { buildConnectionStage } from './connection-stage.js';
 
 export class World {
   constructor(container,{onContextLost,onContextRestored,onManual,onFraming=()=>{},onZone=()=>{}}) {
-    this.onFraming=onFraming;this.r=new Resources();this.container=container;this.quality='balanced';this.time=0;this.disposed=false;this.renderCount=0;
+    this.onFraming=onFraming;this.r=new Resources();this.container=container;this.quality='balanced';this.time=0;this.disposed=false;this.renderCount=0;this.charactersEnabled=true;
     this.scene=new T.Scene();this.scene.background=new T.Color('#080f1d');this.scene.fog=new T.FogExp2('#101a2c',.009);
     this.camera=new T.PerspectiveCamera(37,1,.04,100);this.onTick=()=>{};this.manualUntil=0;
     this.renderer=new T.WebGLRenderer({antialias:true,alpha:false,powerPreference:'high-performance'});
@@ -48,6 +51,7 @@ export class World {
     this.scene.environment=makeNightEnvironment(this.renderer,this.r);this.scene.environmentIntensity=.48;
     this.store=buildStore(this.scene,this.r);this.batchStats=optimizeStaticSet(this.store.root,this.r);
     this.garden=buildPearGarden(this.scene,this.r);this.siege=buildSiegeEffects(this.scene,this.r);
+    this.tianshi=buildTianshiGrid(this.scene,this.r);this.microwave=buildMicrowave(this.scene,this.r);this.connectionStage=buildConnectionStage(this.scene,this.r);
     this.weather=buildWeather(this.scene,this.r);this.wet=applyWetPavement([...(this.store.wetMaterials||[]),...(this.garden.wetMaterials||[])],this.weather.reflection,this.r);
     this.director=new MissionDirector(this);this.refreshGlassProbe();
     const target=new T.WebGLRenderTarget(1,1,{type:T.HalfFloatType,depthBuffer:true});target.depthTexture=new T.DepthTexture(1,1,T.UnsignedIntType);
@@ -88,25 +92,27 @@ export class World {
     else this.transition={start:this.time,position:this.camera.position.clone(),target:this.controls.target.clone(),endPosition:position,endTarget:target};
     this.controls.update();const close=this.camera.position.distanceTo(this.controls.target)<(this.camera.aspect<.85?14:11);if(close!==this.closeFraming){this.closeFraming=close;this.onFraming(close);}
   }
-  setQuality(value){if(!config.dpr[value])return;this.quality=value;this.renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,config.dpr[value]));this.composer.setPixelRatio(this.renderer.getPixelRatio());this.msaaSamples=Math.min(this.supportedSamples,value==='low'?2:4);for(const target of [this.opaqueTarget])if(target.samples!==this.msaaSamples){target.samples=this.msaaSamples;target.dispose();}this.bloom.enabled=value!=='low';this.weather.quality(value);this.garden.quality(value);this.siege.quality(value);this.store.glass.uniforms.uRefraction.value=value==='low'?.0012:value==='high'?.005:.003;const size=value==='low'?512:1024;this.store.spill.shadow.mapSize.set(size,size);this.store.spill.shadow.map?.dispose();this.store.spill.shadow.map=null;this.store.spill.shadow.needsUpdate=true;this.resize();}
+  setQuality(value){if(!config.dpr[value])return;this.quality=value;this.renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,config.dpr[value]));this.composer.setPixelRatio(this.renderer.getPixelRatio());this.msaaSamples=Math.min(this.supportedSamples,value==='low'?2:4);for(const target of [this.opaqueTarget])if(target.samples!==this.msaaSamples){target.samples=this.msaaSamples;target.dispose();}this.bloom.enabled=value!=='low';this.weather.quality(value);this.garden.quality(value);this.siege.quality(value);this.tianshi.quality?.(value);this.microwave.quality?.(value);this.store.glass.uniforms.uRefraction.value=value==='low'?.0012:value==='high'?.005:.003;const size=value==='low'?512:1024;this.store.spill.shadow.mapSize.set(size,size);this.store.spill.shadow.map?.dispose();this.store.spill.shadow.map=null;this.store.spill.shadow.needsUpdate=true;this.resize();}
   setWalking(value){const was=this.walkCamera.enabled;this.walkCamera.setEnabled(value,this.actors?.position);if(was&&!value)this.manualUntil=this.time+14;if(value){this.manualUntil=this.time;this.transition=null;this.currentView=null;this.onManualView();this.weather.invalidateReflection();}}
   projectPoint(point){const p=new T.Vector3().fromArray(point).project(this.camera);return p.toArray();}
   tick(t,delta=.016,render=true){
-    this.time=t;this.onTick(t,delta);if(this.presentationSuspended)return;
+    this.time=t;this.onTick(t,delta);
     this.director.beforeActors(this.missionState);this.actors?.update(t,delta);this.director.afterActors(t,delta);
     if(this.actors){
       const p=this.actors.position;this.walkCamera.update(p,delta,this.time<this.manualUntil);
       if(this.walkCamera.automatic&&this.currentView){this.currentView=null;this.onManualView();}
-      const h=this.actors.heroPosition||p.toArray();
-      const cast=this.actors.status.cinematic,yaw=cast?.phase?cast.heading:0,c=Math.cos(yaw),s=Math.sin(yaw);
+      const cctv=['flashback','heat-demo','heat','flashback-end'].includes(this.missionState?.phase);
+      const h=cctv?[1.95,.31,.85]:this.actors.heroPosition||p.toArray();
+      const cast=this.actors.status.cinematic,yaw=cctv?0:cast?.phase?cast.heading:0,c=Math.cos(yaw),s=Math.sin(yaw);
       this.portrait.key.position.set(h[0]-2.35*c+4.22*s,h[1]+3.38,h[2]+2.35*s+4.22*c);this.portrait.key.target.position.set(h[0]-.35,h[1]+.98,h[2]);
       this.portrait.fill.position.set(h[0]+3.25*c+2.92*s,h[1]+2.48,h[2]-3.25*s+2.92*c);this.portrait.fill.target.position.set(h[0]-.15,h[1]+.93,h[2]);
     }
     this.store.update(t,delta,this.actors?.position,this.actors?.status.companion?.position);
     this.controls.update();const close=this.camera.position.distanceTo(this.controls.target)<(this.camera.aspect<.85?14:11);
     if(close!==this.closeFraming){this.closeFraming=close;this.onFraming(close);}
-    const damage=this.store.destruction.state.progress;this.weather.setShelter(damage<80,damage<44);
-    this.store.glass.uniforms.uTime.value=t;this.wet.update(t);this.weather.update(t);
+    const presentation=this.missionState?.vcr,damage=presentation?0:this.store.destruction.state.progress;this.weather.setShelter(damage<80,damage<44);
+    const visualTime=this.director.visualTime??t;
+    this.store.glass.uniforms.uTime.value=visualTime;this.wet.update(visualTime);this.weather.update(visualTime);
     if(render){this.renderer.info.reset();this.composer.render();this.renderCount++;}
   }
   start(){this.stop();this.running=true;this.onClockState?.(!document.hidden);this.renderer.setAnimationLoop(now=>{
@@ -117,5 +123,5 @@ export class World {
     this.tick(this.time,Math.min(delta,.08));
   });}
   stop(){this.renderer.setAnimationLoop(null);this.previous=undefined;this.running=false;this.onClockState?.(false);}
-  dispose(){if(this.disposed)return;this.disposed=true;this.stop();this.observer.disconnect();document.removeEventListener('visibilitychange',this.visibility);this.controls.removeEventListener('start',this.manual);this.controls.dispose();this.renderer.domElement.removeEventListener('webglcontextlost',this.contextLost);this.renderer.domElement.removeEventListener('webglcontextrestored',this.contextRestored);this.actors?.dispose();this.siege.dispose();this.garden.root.removeFromParent();this.store.spill.shadow.dispose();this.weather.dispose();for(const pass of this.composer.passes)pass.dispose?.();this.composer.dispose();this.r.dispose();this.renderer.dispose();this.renderer.domElement.remove();}
+  dispose(){if(this.disposed)return;this.disposed=true;this.stop();this.observer.disconnect();document.removeEventListener('visibilitychange',this.visibility);this.controls.removeEventListener('start',this.manual);this.controls.dispose();this.renderer.domElement.removeEventListener('webglcontextlost',this.contextLost);this.renderer.domElement.removeEventListener('webglcontextrestored',this.contextRestored);this.actors?.dispose();this.xaihi?.dispose();this.siege.dispose();this.garden.root.removeFromParent();this.tianshi.root.removeFromParent();this.microwave.root.removeFromParent();this.connectionStage.root.removeFromParent();this.store.spill.shadow.dispose();this.weather.dispose();for(const pass of this.composer.passes)pass.dispose?.();this.composer.dispose();this.r.dispose();this.renderer.dispose();this.renderer.domElement.remove();}
 }

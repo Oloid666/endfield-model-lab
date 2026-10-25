@@ -3,114 +3,135 @@ import {MissionMachine,METER_PERIOD} from './mission-state.js';
 import {speakers,endingCaption} from './mission-dialogue.js';
 
 const E=(tag,className,text)=>{const e=document.createElement(tag);e.className=className;if(text!==undefined)e.textContent=text;return e;};
-const runningPhases=new Set(['charge','combat','last','aim-final','finisher','landing']);
-const manualPhases=new Set(['intro','meal','briefing','last','complete']);
-const phaseTitles={intro:'01 · 先吃晚餐',choice:'01 · 今晚，吃什麼',meal:'01 · 買好晚餐',briefing:'02 · 梨花旁的燈',charge:'03 · 儲能接通',combat:'04 · 光害改善',last:'05 · 最後一發', 'aim-final':'05 · 龍泡泡，準備',finisher:'05 · 最後一擊',landing:'任務完成',complete:'武陵 · 聽雨'};
+const setText=(node,text)=>{const value=String(text??'');if(node.textContent!==value)node.textContent=value;};
+const runningPhases=new Set(['login','captcha','lever','charge','combat','energy','rewind','flashback','heat-demo','heat','flashback-end','return','last','aim-final','finisher','landing','tour']);
+const manualPhases=new Set(['intro','meal','briefing','energy','flashback','flashback-end','last','complete']);
+const connectionPhases=new Set(['login','captcha','lever']);
+const vcrPhases=new Set(['rewind','flashback','heat-demo','heat','flashback-end','return']);
+const phaseTitles={intro:'01 · 先吃晚餐',choice:'01 · 今晚，吃什麼',meal:'01 · 買好晚餐',briefing:'02 · 梨花旁的燈',login:'03 · 請幫我連線',captcha:'03 · 驗證身分',lever:'03 · 接通儲能網',charge:'03 · 儲能接通',combat:'04 · 光害改善',energy:'04 · 電去哪裡了',rewind:'VCR · 倒帶中',flashback:'VCR · 三分鐘前', 'heat-demo':'VCR · 加熱試驗',heat:'VCR · 極速加熱', 'flashback-end':'VCR · 沒關掉的設定',return:'回到現場',last:'05 · 最後一發','aim-final':'05 · 龍泡泡，準備',finisher:'05 · 最後一擊',landing:'任務完成',tour:'武陵 · 現場紀錄',complete:'武陵 · 聽雨'};
 
-export function createMission({mount=document.querySelector('#app'),onDinner,onGesture,onStage,onAttack,onState}={}){
+
+export function createMission({mount=document.querySelector('#app'),onDinner,onGesture,onStage,onAttack,onState,onAction}={}){
   if(!mount)throw Error('Mission mount is required.');
-  const events=new AbortController(),listen=(target,type,fn)=>target.addEventListener(type,fn,{signal:events.signal});
+  const events=new AbortController(),listen=(target,type,fn,options={})=>target.addEventListener(type,fn,{...options,signal:events.signal});
   const root=E('section','mission-shell');root.setAttribute('aria-label','莊的晚餐與光害改善任務');
   const inspection=E('p','mission-inspection');inspection.append(E('span','','先看看她。故事會等你。'),E('span','','拖曳旋轉，雙指放大。準備好再開始。'));
   const launch=E('button','mission-launch');launch.type='button';launch.append(E('span','mission-kicker','一場雨，一頓飯。'),E('span','mission-launch-title','去買晚餐'),E('span','mission-launch-arrow','↗'));
   const panel=E('div','mission-panel');panel.hidden=true;
-  const comm=E('div','mission-comm');comm.hidden=true;comm.setAttribute('aria-label','弭弗的通訊。原創示意像。');
-  const portrait=E('div','mission-comm-portrait');portrait.setAttribute('aria-hidden','true');
-  // Original transmission-study portrait, drawn here. It is not official character art.
-  portrait.innerHTML='<svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill="#102c38" d="M0 0h80v80H0z"/><path stroke="#8bc4cd" stroke-opacity=".25" d="M0 17h80M0 34h80M0 51h80M0 68h80M17 0v80M34 0v80M51 0v80M68 0v80"/><path fill="#b9c9c5" d="m17 80 5-18 11-6h14l12 6 5 18z"/><path fill="#31525c" d="m15 80 8-17 12-4 5 12 6-12 13 5 7 16z"/><path fill="#dfd8c4" d="M28 28c1-16 25-18 26 1v13c-1 12-8 18-13 18-8 0-14-9-14-19z"/><path fill="#26424c" d="M23 42C17 25 25 9 40 9c16-1 25 11 19 31l-8-17-9 10-5-7-9 14-2 7z"/><path stroke="#3d666e" stroke-width="2.5" d="m29 39 8-1m8 0 7 1"/><path stroke="#b58f79" stroke-linecap="round" d="m37 49 7 1"/><path stroke="#a7d8d5" stroke-width="3" d="M22 28v16m36-16v16l-8 6"/><circle cx="49" cy="50" r="2" fill="#c6dfd4"/><path stroke="#e3cd8b" d="M5 15V5h10m50 0h10v10M5 65v10h10m50 0h10V65"/></svg>';
-  const commInfo=E('div','mission-comm-info');commInfo.append(E('span','mission-comm-kicker','INCOMING · 巡衛通訊'),E('strong','','弭弗'),E('span','mission-comm-caption','通訊示意像 · 非官方立繪'));
-  const signal=E('span','mission-comm-signal','▂▃▅▇');signal.setAttribute('aria-hidden','true');comm.append(portrait,commInfo,signal);
+  const comm=E('div','mission-comm');comm.hidden=true;comm.setAttribute('aria-label','弭弗的巡衛通訊');
+  const portrait=E('div','mission-comm-portrait');portrait.setAttribute('role','img');portrait.setAttribute('aria-label','弭弗二創通訊肖像');portrait.style.backgroundImage=`url("${import.meta.env.BASE_URL}images/mifu-portrait-a-source.png")`;const portraitImage=E('img','mission-comm-art');portraitImage.src=`${import.meta.env.BASE_URL}images/mifu-portrait-a-source.png`;portraitImage.alt='';portraitImage.decoding='async';portrait.append(portraitImage);
+  const commInfo=E('div','mission-comm-info');commInfo.append(E('span','mission-comm-kicker','WULING GUARD · 巡衛通訊'),E('strong','','弭弗'),E('span','mission-comm-caption','武陵巡衛隊長 · 通訊已接通'));
+  const signal=E('span','mission-comm-signal');signal.setAttribute('aria-hidden','true');for(let i=0;i<13;i++){const b=E('i','');b.style.setProperty('--wave-height',`${5+(i*7%17)}px`);signal.append(b);}comm.append(portrait,commInfo,signal);
   const bar=E('div','mission-bar'),name=E('span','mission-name'),chapter=E('span','mission-chapter');bar.append(name,chapter);
   const line=E('button','mission-line');line.type='button';line.setAttribute('aria-label','顯示完整台詞或下一句');
   const text=E('span','mission-text'),next=E('span','mission-next','⌄');line.append(text,next);
   const choices=E('div','mission-choices');choices.setAttribute('aria-label','請選擇晚餐');
   const controls=E('div','mission-controls'),auto=E('button','mission-auto','自動'),skip=E('button','mission-skip','略過本段'),hint=E('span','mission-read-hint','點台詞繼續');auto.type=skip.type='button';controls.append(auto,skip,hint);panel.append(comm,bar,line,choices,controls);
-  const status=E('div','mission-status'),statusTitle=E('span','mission-status-title','儲能接通'),value=E('strong','mission-progress-value','0%'),statusTrack=E('div','mission-status-track'),statusFill=E('i','mission-status-fill');statusTrack.append(statusFill);status.append(statusTitle,value,statusTrack);
+  const status=E('div','mission-status'),statusTitle=E('span','mission-status-title'),value=E('strong','mission-progress-value','0%'),statusTrack=E('div','mission-status-track'),statusFill=E('i','mission-status-fill');statusTrack.append(statusFill);status.append(statusTitle,value,statusTrack);
   const pause=E('button','mission-pause','暫停');pause.type='button';pause.setAttribute('aria-label','暫停故事與任務');
-  const combat=E('div','mission-combat'),target=E('span','mission-target','點建築選目標'),feedback=E('span','mission-feedback','按中中央，威力更強');
+  const combat=E('div','mission-combat'),target=E('span','mission-target'),feedback=E('span','mission-feedback');
   const meter=E('div','mission-meter');meter.setAttribute('role','meter');meter.setAttribute('aria-label','砲擊力度，中央最強');meter.setAttribute('aria-valuemin','0');meter.setAttribute('aria-valuemax','100');
   const sweet=E('i','mission-sweet'),perfect=E('i','mission-perfect'),pointer=E('i','mission-pointer');meter.append(sweet,perfect,pointer);
   const attack=E('button','mission-attack','砲擊');attack.type='button';
   const legend=E('div','mission-meter-legend');legend.append(E('span','','MISS'),E('span','','中央重擊'),E('span','','MISS'));
-  const energy=E('span','mission-energy','主砲能量 100%');combat.append(target,feedback,meter,legend,energy,attack);
+  const energy=E('span','mission-energy');combat.append(target,feedback,meter,legend,energy,attack);
   const outputs=E('div','mission-outputs');outputs.setAttribute('aria-label','選擇砲擊出力');
-  for(const mode of [{id:'steady',label:'穩壓',hint:'寬判定'},{id:'strong',label:'強攻',hint:'威力 +20%'},{id:'overload',label:'過載',hint:'威力 +50%'}]){
-    const button=E('button','mission-output');button.type='button';button.dataset.output=mode.id;button.append(E('span','',mode.label),E('small','',mode.hint));outputs.append(button);
-  }
-  const finalSeal=E('div','mission-final-seal');finalSeal.append(E('span','','天師敕令'),E('strong','','龍泡泡 · 終末彈'),E('span','','對準金色區域，按下發射'));
-  combat.prepend(finalSeal,outputs);
+  for(const mode of [{id:'steady',label:'穩壓',hint:'寬判定'},{id:'strong',label:'強攻',hint:'威力 +20%'},{id:'overload',label:'過載',hint:'威力 +50%'}]){const b=E('button','mission-output');b.type='button';b.dataset.output=mode.id;b.append(E('span','',mode.label),E('small','',mode.hint));outputs.append(b);}
+  const finalSeal=E('div','mission-final-seal'),finalPortrait=E('div','mission-dragon-portrait');finalPortrait.setAttribute('role','img');finalPortrait.setAttribute('aria-label','龍泡泡錯愕的表情');finalPortrait.style.backgroundImage=`url("${import.meta.env.BASE_URL}images/dragon-reactions.png")`;
+  const finalWords=E('div','mission-final-words'),finalQuote=E('p','mission-final-quote');finalWords.append(E('span','mission-final-label','龍泡泡 · 終末彈'),finalQuote);finalSeal.append(finalPortrait,finalWords);combat.prepend(finalSeal,outputs);
   const completed=E('div','mission-completed'),completeText=E('span','mission-complete-text','100% · 任務完成'),replay=E('button','mission-replay','重新選餐');replay.type='button';completed.append(completeText,replay);
   const caption=E('p','mission-caption',endingCaption);caption.setAttribute('aria-hidden','true');
-  root.append(inspection,launch,panel,status,pause,combat,completed,caption);mount.append(root);
-  let disposed=false,lastChoices='',lastPhase='',lastFeedback=-1,lastNode='',pointerPeriod=METER_PERIOD,clockRunning=true,sourceAnchor=0,performanceAnchor=performance.now();
-  const pointerAnimation=pointer.animate?pointer.animate([{transform:'translateX(0%)'},{transform:'translateX(100%)'},{transform:'translateX(0%)'}],{duration:METER_PERIOD*1000,iterations:Infinity,easing:'linear'}):null;
-  pointerAnimation?.pause();
-  const machine=new MissionMachine({onDinner,onGesture,onStage,onAttack,onState});
+
+  const connection=E('section','mission-connect');connection.hidden=true;connection.setAttribute('aria-label','天師樁儲能網接入');
+  const connectionHeading=E('div','mission-connect-heading');connectionHeading.append(E('span','','武陵儲能網'),E('span','mission-connect-step'));
+  const connectionQuote=E('p','mission-connect-quote');connectionQuote.setAttribute('aria-live','polite');
+  const login=E('div','mission-login'),loginLabel=E('span','mission-login-label'),loginValue=E('div','mission-login-value'),loginExpected=E('span','mission-login-expected');loginValue.setAttribute('aria-live','polite');
+  const loginPrompt=E('div','mission-login-prompt'),promptReplay=E('button','mission-prompt-replay','↻ 重聽');promptReplay.type='button';promptReplay.setAttribute('aria-label','重聽帳號或密碼');loginPrompt.append(loginLabel,promptReplay);
+  const keys=E('div','mission-keyboard');keys.setAttribute('role','group');keys.setAttribute('aria-label','點按鍵帽，龍泡泡會跟著踩下');
+  const loginSubmit=E('button','mission-login-submit','確認帳號');loginSubmit.type='button';
+  const loginError=E('p','mission-login-error');loginError.setAttribute('role','status');loginError.setAttribute('aria-live','polite');login.append(loginPrompt,loginValue,loginExpected,keys,loginError,loginSubmit);
+  const captcha=E('div','mission-captcha'),captchaCheck=E('button','mission-captcha-check');captchaCheck.type='button';captchaCheck.setAttribute('role','checkbox');captchaCheck.setAttribute('aria-checked','false');captchaCheck.append(E('i','mission-captcha-box'),E('span','','我不是機器人'));
+  const captchaBrand=E('div','mission-captcha-brand');captchaBrand.append(E('span','','⟳'),E('small','','reCAPTCHA'));captcha.append(captchaCheck,captchaBrand);
+  const lever=E('div','mission-lever'),leverTrack=E('div','mission-lever-track'),leverThumb=E('button','mission-lever-thumb','→'),leverLabel=E('span','mission-lever-label','向右拉，接通天師樁');leverThumb.type='button';leverThumb.setAttribute('role','slider');leverThumb.setAttribute('aria-label','向右拉動接入拉桿');leverThumb.setAttribute('aria-valuemin','0');leverThumb.setAttribute('aria-valuemax','100');leverTrack.append(leverLabel,leverThumb);lever.append(leverTrack,E('p','mission-lever-tip','龍泡泡已就位。拉到底，讓全城供電。'));
+  connection.append(connectionHeading,connectionQuote,login,captcha,lever);
+
+  const heat=E('section','mission-heat');heat.hidden=true;heat.setAttribute('aria-label','賽希的極速加熱');
+  const heatHeading=E('div','mission-connect-heading');heatHeading.append(E('span','','極速加熱'),E('span','','VCR · 0.125× 慢放'));
+  const heatReadout=E('div','mission-heat-readout'),heatTime=E('strong','','0.00'),heatUnit=E('span','','秒');heatReadout.append(heatTime,heatUnit);
+  const heatCondition=E('span','mission-heat-condition','等待送電'),heatHint=E('p','mission-heat-hint','按住送電，看到便當冒蒸氣時放開。');
+  const heatHold=E('button','mission-heat-hold','按住送電'),heatRetry=E('button','mission-heat-retry','再試一次');heatHold.type=heatRetry.type='button';heatHold.setAttribute('aria-label','按住送電，放開斷電');heatHold.setAttribute('aria-pressed','false');heat.append(heatHeading,heatReadout,heatCondition,heatHint,heatHold,heatRetry);
+  const vcr=E('div','mission-vcr');vcr.hidden=true;vcr.setAttribute('aria-hidden','true');const vcrLabel=E('span','mission-vcr-label'),vcrTime=E('span','mission-vcr-timecode'),vcrSymbol=E('strong','mission-vcr-symbol');vcr.append(vcrLabel,vcrTime,vcrSymbol);
+  root.append(inspection,launch,panel,status,pause,combat,completed,caption,connection,heat,vcr);mount.append(root);
+  let disposed=false,lastChoices='',lastPhase='',lastFeedback=-1,lastNode='',keyLayout='',pointerPeriod=METER_PERIOD,clockRunning=true,sourceAnchor=0,performanceAnchor=performance.now(),leverPointer=null,heatPointer=null,heatRetryArmed=false,wasAttackHeld=false;
+  const pointerAnimation=pointer.animate?pointer.animate([{transform:'translateX(0%)'},{transform:'translateX(100%)'},{transform:'translateX(0%)'}],{duration:METER_PERIOD*1000,iterations:Infinity,easing:'linear'}):null;pointerAnimation?.pause();
+  const machine=new MissionMachine({onDinner,onGesture,onStage,onAttack,onState,onAction});
+  const cancelSpeech=()=>{if('speechSynthesis'in window)window.speechSynthesis.cancel();};
+  function resetAnchor(){sourceAnchor=machine.sourceTime;performanceAnchor=performance.now();}
   function syncPointer(s,force=false){
-    if(pointerAnimation){
-      if(pointerPeriod!==s.meterPeriod){pointerPeriod=s.meterPeriod;pointerAnimation.effect.updateTiming({duration:pointerPeriod*1000});force=true;}
-      const wanted=(s.meterElapsed%s.meterPeriod)*1000;
-      if(force||!clockRunning||s.paused||document.hidden||Math.abs((Number(pointerAnimation.currentTime)||0)-wanted)>120)pointerAnimation.currentTime=wanted;
-      if(clockRunning&&!s.paused&&!document.hidden&&['combat','aim-final'].includes(s.phase))pointerAnimation.play();else pointerAnimation.pause();
-    }else pointer.style.transform=`translateX(${s.meter*100}%)`;
+    if(pointerAnimation){if(pointerPeriod!==s.meterPeriod){pointerPeriod=s.meterPeriod;pointerAnimation.effect.updateTiming({duration:pointerPeriod*1000});force=true;}const wanted=(s.meterElapsed%s.meterPeriod)*1000;if(force||!clockRunning||s.paused||document.hidden||Math.abs((Number(pointerAnimation.currentTime)||0)-wanted)>120)pointerAnimation.currentTime=wanted;if(clockRunning&&!s.paused&&!document.hidden&&['combat','aim-final'].includes(s.phase))pointerAnimation.play();else pointerAnimation.pause();}
+    else pointer.style.transform=`translateX(${s.meter*100}%)`;
+  }
+  function buildKeys(field){
+    if(keyLayout===field)return;keyLayout=field;keys.replaceChildren();keys.dataset.layout=field;
+    const values=field==='password'?['1','2','3','4','5','6','7','8','9','backspace','0','submit']:[...'abcdefghijklmnopqrstuvwxyz','_','backspace'];
+    for(const value of values){const b=E('button','mission-key',value==='backspace'?'⌫':value==='submit'?'確認':value);b.type='button';b.dataset.key=value;if(value==='backspace')b.setAttribute('aria-label','刪除上一個字元');keys.append(b);}
   }
   function render(force=false){
-    if(disposed)return;const s=machine.state,active=!['ready','complete'].includes(s.phase),isCombat=['combat','aim-final'].includes(s.phase),isCharge=s.phase==='charge';
-    root.dataset.phase=s.phase;root.dataset.paused=String(s.paused);mount.dataset.missionPhase=s.phase;
-    mount.classList.toggle('mission-ready',s.phase==='ready');mount.classList.toggle('mission-active',active);mount.classList.toggle('mission-running',runningPhases.has(s.phase));mount.classList.toggle('mission-complete',s.phase==='complete');
-    launch.hidden=inspection.hidden=s.phase!=='ready';panel.hidden=!s.node&&s.phase!=='choice';
-    comm.hidden=s.speaker!=='mifoe';panel.dataset.mood=s.node?.mood||'calm';
-    if(lastNode!==s.nodeId){panel.classList.remove('is-angry','is-evidence');if(s.node?.mood==='anger')panel.classList.add('is-angry');if(s.node?.mood==='evidence')panel.classList.add('is-evidence');lastNode=s.nodeId;}
-    panel.classList.toggle('has-choices',s.phase==='choice');panel.classList.toggle('is-timed',['charge','landing'].includes(s.phase));
-    name.textContent=s.phase==='choice'?'莊芳宜':speakers[s.speaker]||'通訊';name.dataset.speaker=s.speaker||'';chapter.textContent=phaseTitles[s.phase]||'';
-    text.textContent=s.phase==='choice'?'晚餐，你幫我挑。':s.text.slice(0,s.revealed);
-    const manual=manualPhases.has(s.phase)&&!!s.node;line.disabled=!manual||s.paused;next.hidden=!manual;
-    controls.hidden=!manual;auto.textContent=s.auto?'自動：開':'自動';auto.setAttribute('aria-pressed',String(s.auto));auto.disabled=s.paused;skip.disabled=s.paused;
-    hint.textContent=s.paused?'已暫停':'點台詞繼續';
-    const choiceSignature=s.choices.map(v=>v.id).join(',');
-    if(choiceSignature!==lastChoices){choices.replaceChildren();for(const item of s.choices){const b=E('button','mission-choice');b.type='button';b.dataset.choice=item.id;b.append(E('span','mission-choice-label',item.label),E('span','mission-choice-hint',item.hint));choices.append(b);}lastChoices=choiceSignature;}
-    for(const b of choices.children)b.disabled=s.paused;
-    status.hidden=!runningPhases.has(s.phase)&&!(s.phase==='complete'&&s.phaseElapsed<2.8);statusTitle.textContent=s.phase==='complete'?'任務完成':isCharge?'全城儲能接通':s.phase==='last'||s.phase==='aim-final'?'摧毀最後機櫃':s.phase==='finisher'?'龍泡泡 · 最後一擊':s.phase==='landing'?'目標停止運作':'任務進度';
-    const shown=isCharge?s.charge:s.progress;value.textContent=`${Math.floor(shown)}%`;statusFill.style.transform=`scaleX(${shown/100})`;
-    pause.hidden=['ready','complete'].includes(s.phase);pause.textContent=s.paused?'繼續':'暫停';pause.setAttribute('aria-pressed',String(s.paused));
-    combat.hidden=!isCombat;target.textContent=s.phase==='aim-final'?'最後目標 · 伺服器':`目標 · ${s.targetLabel}`;
-    outputs.hidden=s.phase!=='combat';finalSeal.hidden=s.phase!=='aim-final';combat.classList.toggle('is-final',s.phase==='aim-final');
-    for(const button of outputs.children){button.setAttribute('aria-pressed',String(button.dataset.output===s.output));button.disabled=s.paused;button.title=s.outputModes.find(mode=>mode.id===button.dataset.output)?.hint||'';}
-    energy.textContent=s.phase==='aim-final'?'主砲耗盡 · 此發不退':`能量 ${Math.ceil(s.energy)}% · ${s.meterSettings.label} · 節奏 ${s.meterSettings.stage+1}`;
-    sweet.style.left=`${50-s.meterSettings.width*100}%`;sweet.style.width=`${s.meterSettings.width*200}%`;
-    perfect.style.left=`${50-s.meterSettings.perfect*100}%`;perfect.style.width=`${s.meterSettings.perfect*200}%`;
-    const edge=(.5-s.meterSettings.miss)*100;meter.style.background=`linear-gradient(90deg,#62747388 0% ${edge}%,#9f956755 ${edge}% ${100-edge}%,#62747388 ${100-edge}%)`;
-    attack.textContent=s.phase==='aim-final'?'發射龍泡泡':'砲擊';attack.disabled=!s.canAttack;
-    meter.setAttribute('aria-valuenow',String(Math.round(s.meter*100)));
-    if(s.feedback&&s.feedback.number!==lastFeedback){lastFeedback=s.feedback.number;const labels={miss:'MISS · 重新聚焦',hit:'命中',strong:'強擊',perfect:'完美重擊'};feedback.textContent=labels[s.feedback.result];feedback.dataset.result=s.feedback.result;}
-    else if(lastPhase!==s.phase){feedback.textContent=s.phase==='aim-final'?'按中金色中央，發射龍泡泡':'按中中央，威力更強';delete feedback.dataset.result;}
-    completed.hidden=s.phase!=='complete'||!!s.node;caption.classList.toggle('visible',s.phase==='complete'&&s.phaseElapsed>=3&&s.phaseElapsed<10);
-    syncPointer(s,force||lastPhase!==s.phase);lastPhase=s.phase;
+    if(disposed)return;const s=machine.state,active=!['ready','complete'].includes(s.phase),isCombat=['combat','aim-final'].includes(s.phase),isCharge=s.phase==='charge',isConnection=connectionPhases.has(s.phase),isVcr=s.vcr??vcrPhases.has(s.phase),c=s.connection||s.login||{},h=s.heat||{};
+    root.dataset.phase=s.phase;root.dataset.paused=String(s.paused);root.dataset.clockRunning=String(clockRunning&&!document.hidden);mount.dataset.missionPhase=s.phase;
+    mount.classList.toggle('mission-ready',s.phase==='ready');mount.classList.toggle('mission-active',active);mount.classList.toggle('mission-running',runningPhases.has(s.phase));mount.classList.toggle('mission-complete',s.phase==='complete');mount.classList.toggle('mission-vcr-active',isVcr);
+    launch.hidden=inspection.hidden=s.phase!=='ready';panel.hidden=(!s.node&&s.phase!=='choice')||isConnection||s.phase==='heat'||s.phase==='aim-final';
+    comm.hidden=s.speaker!=='mifoe';panel.classList.toggle('has-comm',s.speaker==='mifoe');panel.dataset.mood=s.node?.mood||'calm';
+    if(lastNode!==s.nodeId){panel.classList.toggle('is-angry',s.node?.mood==='anger');panel.classList.toggle('is-evidence',s.node?.mood==='evidence');lastNode=s.nodeId;}
+    panel.classList.toggle('has-choices',s.phase==='choice');panel.classList.toggle('is-timed',['charge','landing','heat-demo','return'].includes(s.phase));
+    setText(name,s.phase==='choice'?'莊芳宜':speakers[s.speaker]||'通訊');name.dataset.speaker=s.speaker||'';setText(chapter,phaseTitles[s.phase]||'');setText(text,s.phase==='choice'?'晚餐，你幫我挑。':s.text.slice(0,s.revealed));
+    const manual=manualPhases.has(s.phase)&&!!s.node;line.disabled=!manual||s.paused;next.hidden=!manual;controls.hidden=!manual;setText(auto,s.auto?'自動：開':'自動');auto.setAttribute('aria-pressed',String(s.auto));auto.disabled=skip.disabled=s.paused;setText(hint,s.paused?'已暫停':'點台詞繼續');
+    const choiceSignature=s.choices.map(v=>v.id).join(',');if(choiceSignature!==lastChoices){choices.replaceChildren();for(const item of s.choices){const b=E('button','mission-choice');b.type='button';b.dataset.choice=item.id;b.append(E('span','mission-choice-label',item.label),E('span','mission-choice-hint',item.hint));choices.append(b);}lastChoices=choiceSignature;}for(const b of choices.children)b.disabled=s.paused;
+    status.hidden=isVcr||isConnection||s.phase==='tour'||(!runningPhases.has(s.phase)&&!(s.phase==='complete'&&s.phaseElapsed<2.8));
+    setText(statusTitle,s.phase==='complete'?'任務完成':isCharge?'全城儲能接通':s.phase==='last'||s.phase==='aim-final'?'摧毀最後機櫃':s.phase==='finisher'?'龍泡泡 · 最後一擊':s.phase==='landing'?'目標停止運作':'任務進度');
+    const shown=isCharge?s.charge:s.progress;setText(value,`${Math.floor(shown)}%`);statusFill.style.transform=`scaleX(${shown/100})`;pause.hidden=['ready','complete'].includes(s.phase);setText(pause,s.paused?'繼續':'暫停');pause.setAttribute('aria-pressed',String(s.paused));
+    combat.hidden=!isCombat;setText(target,s.phase==='aim-final'?'最後目標 · 伺服器':`目標 · ${s.targetLabel}`);outputs.hidden=s.phase!=='combat';finalSeal.hidden=s.phase!=='aim-final';combat.classList.toggle('is-final',s.phase==='aim-final');
+    if(s.phase==='aim-final'){const index=Math.min(2,Math.floor(s.phaseElapsed/3));setText(finalQuote,s.text||['不對吧？我現在是彈藥？','等一下，哪裡搞錯了。','我說的不是方向——'][index]);finalPortrait.dataset.expression=['shock','doubt','panic'][index];finalPortrait.setAttribute('aria-label',['龍泡泡錯愕','龍泡泡懷疑人生','龍泡泡慌張'][index]);}
+    for(const b of outputs.children){b.setAttribute('aria-pressed',String(b.dataset.output===s.output));b.disabled=s.paused;b.title=s.outputModes.find(mode=>mode.id===b.dataset.output)?.hint||'';}
+    setText(energy,s.phase==='aim-final'?'主砲耗盡 · 此發不退':`能量 ${Math.ceil(s.energy)}% · ${s.meterSettings.label} · 節奏 ${s.meterSettings.stage+1}`);
+    sweet.style.left=`${50-s.meterSettings.width*100}%`;sweet.style.width=`${s.meterSettings.width*200}%`;perfect.style.left=`${50-s.meterSettings.perfect*100}%`;perfect.style.width=`${s.meterSettings.perfect*200}%`;const edge=(.5-s.meterSettings.miss)*100;meter.style.background=`linear-gradient(90deg,#62747388 0% ${edge}%,#9f956755 ${edge}% ${100-edge}%,#62747388 ${100-edge}%)`;
+    setText(attack,s.phase==='aim-final'?'發射龍泡泡':'砲擊');attack.disabled=!s.canAttack;meter.setAttribute('aria-valuenow',String(Math.round(s.meter*100)));
+    if(s.feedback&&s.feedback.number!==lastFeedback){lastFeedback=s.feedback.number;setText(feedback,{miss:'MISS · 重新聚焦',hit:'命中',strong:'強擊',perfect:'完美重擊'}[s.feedback.result]);feedback.dataset.result=s.feedback.result;}else if(lastPhase!==s.phase){setText(feedback,s.phase==='aim-final'?'對準中央，按下發射':'按中中央，威力更強');delete feedback.dataset.result;}
+    if(s.combatHoldRemaining>0)setText(feedback,'招牌正在落下……');else if(wasAttackHeld)setText(feedback,'招牌已落地。繼續砲擊。');wasAttackHeld=s.combatHoldRemaining>0;
+    completed.hidden=s.phase!=='complete'||!!s.node;caption.classList.toggle('visible',s.phase==='tour'&&s.phaseElapsed<4);
+    connection.hidden=!isConnection;connectionQuote.hidden=s.phase==='login';login.hidden=s.phase!=='login';captcha.hidden=s.phase!=='captcha';lever.hidden=s.phase!=='lever';setText(connectionHeading.lastElementChild,s.phase==='login'?(c.field==='password'?'02 / 密碼':'01 / 帳號'):s.phase==='captcha'?'03 / 身分驗證':'04 / 接通');
+    if(isConnection){setText(connectionQuote,s.text||(s.phase==='login'?'莊芳宜：「我在忙。幫我連線。」':s.phase==='captcha'?'莊芳宜：「勾『我不是機器人』。」':'莊芳宜：「拉到底。」'));connectionQuote.dataset.speaker=s.speaker||'zhuang';}
+    if(s.phase==='login'){const field=c.field||'account';buildKeys(field);setText(loginLabel,field==='password'?'莊：密碼 5201314。':'莊：帳號 endfield_power。');setText(loginValue,c.value||'＿');loginValue.classList.toggle('is-empty',!c.value);setText(loginExpected,field==='password'?'5201314':'endfield_power');setText(loginSubmit,field==='password'?'登入儲能網':'確認帳號');setText(loginError,c.error||'點鍵帽，龍泡泡會替你踩下。');loginError.classList.toggle('is-error',!!c.error);for(const b of keys.children)b.disabled=s.paused;loginSubmit.disabled=promptReplay.disabled=s.paused;}
+    captchaCheck.disabled=s.paused||!c.captchaReady;captchaCheck.setAttribute('aria-checked',String(!!c.verified));captcha.classList.toggle('is-ready',!!c.captchaReady);leverThumb.disabled=s.paused;leverThumb.setAttribute('aria-valuenow',String(Math.round((c.lever||0)*100)));leverTrack.style.setProperty('--lever',String(c.lever||0));
+    heat.hidden=s.phase!=='heat';if(s.phase==='heat'){const status=h.status||'ready',t=Number(h.electricalTime)||0;heat.dataset.status=status;setText(heatTime,t.toFixed(2));setText(heatCondition,status==='ready'?'等待送電':status==='heating'?(t<.255?'還沒熱透':t<=.345?'可以斷電了':'太熱了'):{cold:'還沒熱透',burnt:'燒焦了',won:'加熱完成'}[status]);setText(heatHint,status==='cold'?'這次太早。再給便當一點時間。':status==='burnt'?'爐子已經夠黑了。這次早一點斷電。':status==='won'?'0.3 秒。三分鐘可以拿來等別的事了。':'按住送電，看便當冒蒸氣時放開。');setText(heatHold,h.holding?'放開斷電':'按住送電');heatHold.setAttribute('aria-pressed',String(!!h.holding));heatHold.disabled=s.paused||['cold','burnt','won'].includes(status);heatRetry.hidden=!['cold','burnt'].includes(status);heatRetry.disabled=s.paused;}
+    vcr.hidden=!isVcr;if(isVcr){const rew=s.phase==='rewind',returning=s.phase==='return';vcr.dataset.mode=rew?'rewind':returning?'return':'play';setText(vcrLabel,rew?'VCR · 時間倒帶':returning?'現場接回':'CAM 02 · 店內監控');setText(vcrSymbol,rew?'◀◀ REW':returning?'▶ RETURN':'● REC');const elapsed=Math.max(0,Number(s.vcrElapsed)||0),seconds=rew?Math.max(0,178-Math.floor((s.rewindProgress||0)*178)):Math.floor(elapsed);setText(vcrTime,`21:${String(42+Math.floor(seconds/60)).padStart(2,'0')}:${String(seconds%60).padStart(2,'0')}`);}
+    if(lastPhase!==s.phase&&lastPhase==='login'||s.paused||document.hidden)cancelSpeech();syncPointer(s,force||lastPhase!==s.phase);lastPhase=s.phase;
   }
-  function inputSource(event){
-    if(!clockRunning||machine.paused||document.hidden)return machine.sourceTime;
-    let stamp=Number(event?.timeStamp);if(!Number.isFinite(stamp))stamp=performance.now();if(stamp>1e12)stamp-=performance.timeOrigin;
-    if(Math.abs(stamp-performance.now())>60000)stamp=performance.now();
-    return sourceAnchor+(stamp-performanceAnchor)/1000;
-  }
+  function inputSource(event){if(!clockRunning||machine.paused||document.hidden)return machine.sourceTime;let stamp=Number(event?.timeStamp);if(!Number.isFinite(stamp))stamp=performance.now();if(stamp>1e12)stamp-=performance.timeOrigin;if(Math.abs(stamp-performance.now())>60000)stamp=performance.now();return sourceAnchor+(stamp-performanceAnchor)/1000;}
   function fire(event){if(event?.isPrimary===false||event?.button>0)return;event?.preventDefault();const result=machine.attack(inputSource(event));render();return result;}
-  listen(launch,'click',()=>{machine.start();render(true);});listen(line,'click',()=>{machine.next();render();});
-  listen(choices,'click',event=>{const button=event.target.closest('[data-choice]');if(button){machine.choose(button.dataset.choice);render(true);}});
-  listen(auto,'click',()=>{machine.setAuto(!machine.auto);render();});listen(skip,'click',()=>{machine.skip();render(true);});
-  listen(outputs,'click',event=>{const button=event.target.closest('[data-output]');if(button){machine.setOutput(button.dataset.output);render(true);}});
-  listen(pause,'click',()=>{machine.setPaused(!machine.paused);sourceAnchor=machine.sourceTime;performanceAnchor=performance.now();render(true);});
-  listen(replay,'click',()=>{machine.replay();lastFeedback=-1;render(true);});listen(attack,'pointerdown',fire);
-  // VoiceOver activates controls with a synthesized click; physical pointers use pointerdown.
-  listen(attack,'click',event=>{if(event.detail===0)fire(event);});
-  listen(document,'keydown',event=>{if(event.code!=='Space'||event.repeat||event.target.closest('input,select,textarea,[contenteditable=true]')||(event.target!==attack&&event.target.closest('button,a,summary'))||!['combat','aim-final'].includes(machine.phase))return;fire(event);});
-  listen(document,'visibilitychange',()=>{sourceAnchor=machine.sourceTime;performanceAnchor=performance.now();render(true);});
-  render(true);
-  const api={machine,get state(){return machine.state;},start(){machine.start();render(true);return true;},replay(){machine.replay();lastFeedback=-1;render(true);return true;},next(){const result=machine.next();render();return result;},choose(id){const result=machine.choose(id);render(true);return result;},
-    attack(time){const result=machine.attack(time);render();return result;},selectTarget(id){const result=machine.selectTarget(id);render();return result;},setTargets(targets){machine.setTargets(targets);render();},setOutput(id){const result=machine.setOutput(id);render(true);return result;},
-    setPaused(value){machine.setPaused(value);sourceAnchor=machine.sourceTime;performanceAnchor=performance.now();render(true);},setAuto(value){machine.setAuto(value);render();},
-    hotspot(kind){const result=machine.hotspot(kind);render();return result;},update(time){machine.update(time);sourceAnchor=machine.sourceTime;performanceAnchor=performance.now();render();},
-    setClockRunning(value){clockRunning=Boolean(value);sourceAnchor=machine.sourceTime;performanceAnchor=performance.now();render(true);},
-    dispose(){if(disposed)return;disposed=true;events.abort();pointerAnimation?.cancel();root.remove();for(const c of ['mission-ready','mission-active','mission-running','mission-complete'])mount.classList.remove(c);delete mount.dataset.missionPhase;},
+  function act(method,...args){const result=machine[method](...args);render();return result;}
+  function replayPrompt(){const result=machine.replayPrompt();if('speechSynthesis'in window&&'SpeechSynthesisUtterance'in window){cancelSpeech();const utterance=new SpeechSynthesisUtterance(machine.state.connection.field==='password'?'密碼，五，二，零，一，三，一，四。':'帳號，endfield，底線，power。');utterance.lang='zh-TW';utterance.rate=.88;window.speechSynthesis.speak(utterance);}render();return result;}
+  listen(launch,'click',()=>{machine.start();render(true);});listen(line,'click',()=>act('next'));listen(choices,'click',event=>{const b=event.target.closest('[data-choice]');if(b){machine.choose(b.dataset.choice);render(true);}});
+  listen(auto,'click',()=>{machine.setAuto(!machine.auto);render();});listen(skip,'click',()=>{machine.skip();render(true);});listen(outputs,'click',event=>{const b=event.target.closest('[data-output]');if(b){machine.setOutput(b.dataset.output);render(true);}});
+  listen(pause,'click',()=>{machine.setPaused(!machine.paused);resetAnchor();render(true);});listen(replay,'click',()=>{cancelSpeech();machine.replay();lastFeedback=-1;render(true);});listen(attack,'pointerdown',fire);listen(attack,'click',event=>{if(event.detail===0)fire(event);});
+  listen(keys,'click',event=>{const b=event.target.closest('[data-key]');if(!b)return;if(b.dataset.key==='submit')act('submitLogin');else act('key',b.dataset.key);});listen(loginSubmit,'click',()=>act('submitLogin'));listen(promptReplay,'click',replayPrompt);listen(captchaCheck,'click',()=>act('verify'));
+  function moveLever(event){if(event.pointerId!==leverPointer)return;const box=leverTrack.getBoundingClientRect(),thumbWidth=leverThumb.getBoundingClientRect().width;act('setLever',Math.max(0,Math.min(1,(event.clientX-box.left-thumbWidth/2)/Math.max(1,box.width-thumbWidth))));}
+  listen(leverTrack,'pointerdown',event=>{if(machine.paused||event.isPrimary===false||event.button>0)return;event.preventDefault();leverPointer=event.pointerId;leverTrack.setPointerCapture(event.pointerId);moveLever(event);});listen(leverTrack,'pointermove',moveLever);
+  listen(leverTrack,'pointerup',event=>{if(event.pointerId!==leverPointer)return;moveLever(event);leverPointer=null;if(leverTrack.hasPointerCapture(event.pointerId))leverTrack.releasePointerCapture(event.pointerId);});
+  listen(leverTrack,'pointercancel',event=>{if(event.pointerId!==leverPointer)return;leverPointer=null;if(machine.phase==='lever')act('setLever',0);});listen(leverThumb,'keydown',event=>{if(!['ArrowRight','ArrowLeft','Home','End','Enter',' '].includes(event.key))return;event.preventDefault();const current=machine.state.connection.lever;act('setLever',event.key==='Home'?0:['End','Enter',' '].includes(event.key)?1:Math.max(0,Math.min(1,current+(event.key==='ArrowRight'?.1:-.1))));});
+  function heatBegin(event){if(event?.isPrimary===false||event?.button>0||heatHold.disabled)return;event?.preventDefault();if(event?.pointerId!==undefined){heatPointer=event.pointerId;heatHold.setPointerCapture(event.pointerId);}act('heatStart',inputSource(event));}
+  function heatEnd(event){if(event?.pointerId!==undefined&&event.pointerId!==heatPointer)return;event?.preventDefault();heatPointer=null;act('heatStop',inputSource(event));}
+  function cancelHeat(){heatPointer=null;if(machine.phase==='heat'&&machine.state.heat?.holding)act('heatCancel');}
+  listen(heatHold,'pointerdown',heatBegin);listen(heatHold,'pointerup',heatEnd);listen(heatHold,'pointercancel',cancelHeat);listen(heatHold,'lostpointercapture',()=>{if(heatPointer!==null)cancelHeat();});
+  listen(heatHold,'click',event=>{if(event.detail===0&&!heatHold.disabled){if(machine.state.heat.holding)heatEnd(event);else heatBegin(event);}});listen(heatHold,'keydown',event=>{if(['Space','Enter'].includes(event.code)&&!event.repeat)heatBegin(event);});listen(heatHold,'keyup',event=>{if(['Space','Enter'].includes(event.code))heatEnd(event);});listen(heatRetry,'pointerdown',event=>{heatRetryArmed=event.isPrimary!==false&&!(event.button>0);});listen(heatRetry,'pointercancel',()=>{heatRetryArmed=false;});listen(heatRetry,'click',event=>{if(event.detail!==0&&!heatRetryArmed)return;heatRetryArmed=false;act('heatRetry');});
+  listen(document,'keydown',event=>{
+    if(machine.phase==='login'&&!machine.paused&&!event.ctrlKey&&!event.metaKey&&!event.altKey&&!event.target.closest('input,select,textarea,[contenteditable=true]')){const field=machine.state.connection.field;if(event.key==='Enter'){event.preventDefault();act('submitLogin');}else if(event.key==='Backspace'){event.preventDefault();act('key','backspace');}else if((field==='password'?/^[0-9]$/:/^[a-z_]$/i).test(event.key)){event.preventDefault();act('key',event.key.toLowerCase());}return;}
+    if(event.code!=='Space'||event.repeat||event.target.closest('input,select,textarea,[contenteditable=true]')||(event.target!==attack&&event.target.closest('button,a,summary'))||!['combat','aim-final'].includes(machine.phase))return;fire(event);
+  });
+  listen(window,'blur',cancelHeat);listen(document,'visibilitychange',()=>{if(document.hidden){cancelHeat();cancelSpeech();}resetAnchor();render(true);});render(true);
+  return {machine,get state(){return machine.state;},start(){machine.start();render(true);return true;},replay(){cancelSpeech();machine.replay();lastFeedback=-1;render(true);return true;},next:()=>act('next'),choose(id){const result=machine.choose(id);render(true);return result;},attack:time=>act('attack',time),selectTarget:id=>act('selectTarget',id),setTargets(targets){machine.setTargets(targets);render();},setOutput(id){const result=machine.setOutput(id);render(true);return result;},
+    holdAttack:seconds=>act('holdAttack',seconds),key:value=>act('key',value),submitLogin:()=>act('submitLogin'),replayPrompt,verify:()=>act('verify'),setLever:value=>act('setLever',value),heatStart:time=>act('heatStart',time),heatStop:time=>act('heatStop',time),heatRetry:()=>act('heatRetry'),heatCancel:cancelHeat,
+    setPaused(value){if(value){cancelHeat();cancelSpeech();}machine.setPaused(value);resetAnchor();render(true);},setAuto(value){machine.setAuto(value);render();},hotspot:kind=>act('hotspot',kind),update(time){machine.update(time);resetAnchor();render();},setClockRunning(value){clockRunning=Boolean(value);if(!clockRunning)cancelSpeech();resetAnchor();render(true);},
+    dispose(){if(disposed)return;disposed=true;cancelSpeech();events.abort();pointerAnimation?.cancel();root.remove();for(const c of ['mission-ready','mission-active','mission-running','mission-complete','mission-vcr-active'])mount.classList.remove(c);delete mount.dataset.missionPhase;},
   };
-  return api;
 }

@@ -4,10 +4,9 @@ import { loadActors } from './actors.js';
 import { RainAudio } from './audio.js';
 import { createMission } from './mission.js';
 import { createExploration } from './exploration.js';
-import { createPlayground } from './playground.js';
 
 const $=s=>document.querySelector(s),loading=$('#loading'),message=$('#loading-message'),error=$('#error');
-const audio=new RainAudio(),abort=new AbortController();let world,mission,exploration,playground,closed=false,menuPaused=false,playgroundPaused=false;
+const audio=new RainAudio(),abort=new AbortController();let world,mission,exploration,closed=false,menuPaused=false,xaihiPromise=null,assetPaused=false;
 const listen=(element,type,fn)=>element.addEventListener(type,fn,{signal:abort.signal});
 function showError(text){$('#error-message').textContent=text;error.hidden=false;loading.hidden=true;}
 function menu(open){
@@ -17,9 +16,9 @@ function menu(open){
   else if(!open&&menuPaused){menuPaused=false;mission?.setPaused(false);}
 }
 listen($('#menu-toggle'),'click',()=>menu($('#settings').hidden));listen($('#menu-close'),'click',()=>menu(false));
-listen(document,'keydown',e=>{if(e.key==='Escape'&&!playground?.state.open)menu(false);});listen($('#retry'),'click',()=>location.reload());
+listen(document,'keydown',e=>{if(e.key==='Escape')menu(false);});listen($('#retry'),'click',()=>location.reload());
 listen($('#rain'),'change',e=>{if(world){world.weather.root.visible=e.target.checked;world.actors?.setRain(e.target.checked);world.store.glass.uniforms.uRain.value=e.target.checked?1:0;world.wet.setRain(e.target.checked);}});
-listen($('#characters'),'change',e=>{if(world?.actors)world.actors.root.visible=e.target.checked;});
+listen($('#characters'),'change',e=>{if(world){world.charactersEnabled=e.target.checked;if(world.actors)world.actors.root.visible=e.target.checked;if(world.xaihi)world.xaihi.root.visible=e.target.checked&&world.missionState?.vcr;}});
 listen($('#quality'),'change',e=>world?.setQuality(e.target.value));
 listen($('#sound'),'change',async e=>{try{if(e.target.checked)await audio.enable();else await audio.disable();}catch{e.target.checked=false;message.textContent='雨聲無法開啟。';}});
 listen(document,'visibilitychange',()=>{if(document.hidden)audio.disable();else if($('#sound').checked)audio.enable().catch(()=>{$('#sound').checked=false;});});
@@ -29,6 +28,23 @@ listen($('.view-dock'),'click',e=>{
   world?.setView(view);if(world)world.manualUntil=world.time+14;
   for(const b of buttons){const active=b.dataset.view===(view==='reset'?'street':view);b.classList.toggle('active',active);if(b.dataset.view!=='reset')b.setAttribute('aria-pressed',String(active));}
 });
+async function ensureXaihi(){
+  if(world?.xaihi)return world.xaihi;
+  if(xaihiPromise)return xaihiPromise;
+  world.xaihiLoading=true;world.xaihiError=null;
+  xaihiPromise=import('./xaihi.js').then(({loadXaihi})=>loadXaihi(world.scene,world.r,()=>{},abort.signal)).then(actor=>{
+    if(closed){actor.dispose();return null;}
+    world.xaihi=actor;world.xaihiLoading=false;
+    if(assetPaused){assetPaused=false;loading.classList.add('done');mission?.setPaused(false);}
+    return actor;
+  }).catch(e=>{
+    world.xaihiLoading=false;xaihiPromise=null;if(e.name==='AbortError')return null;
+    world.xaihiError='賽希暫時沒有載入。請重新載入再試。';
+    if(world.missionState?.vcr)showError(world.xaihiError);
+    return null;
+  });
+  return xaihiPromise;
+}
 async function init(){
   try{
     world=new World($('#scene'),{
@@ -53,32 +69,28 @@ async function init(){
       onStage:(phase,state)=>{
         if(!['ready','complete'].includes(phase))exploration?.setActive(false);
         world.director.stage(phase,state);
+        if(phase==='login')ensureXaihi();
+        if(phase==='rewind'&&!world.xaihi){
+          assetPaused=!state.paused;
+          if(assetPaused){mission?.setPaused(true);message.textContent='正在讀取較早的店內影像';loading.hidden=false;loading.classList.remove('done');}
+          ensureXaihi();
+        }
         if(phase==='complete')world.actors?.setObstacles({obstacles:[],entrance:{minX:-4,maxX:4,z:1.8}});
         if(phase==='last'||phase==='aim-final')mission?.setTargets(world.director.targets);
       },
-      onAttack:event=>{world.director.attack(event);mission?.setTargets(world.director.targets);},
+      onAction:event=>world.director.action?.(event),
+      onAttack:event=>{const hadSign=world.store.destruction.state.progress>=44;world.director.attack(event);if(!hadSign&&event.progress>=44&&!event.finisher)mission?.holdAttack(4.4);mission?.setTargets(world.director.targets);},
       onState:state=>{world.missionState=state;$('#app').dataset.storyPhase=state.phase;}
     });
     mission.setTargets(world.director.targets);world.onClockState=value=>mission.setClockRunning(value);mission.setClockRunning(world.running&&!document.hidden);
     exploration=createExploration(world,{mount:$('#app'),signal:abort.signal,
-      canWalk:()=>!playground?.state.open&&['ready','complete'].includes(mission.state.phase),onHotspot:kind=>mission.hotspot(kind),
+      canWalk:()=>['ready','complete'].includes(mission.state.phase),onHotspot:kind=>mission.hotspot(kind),
       onSceneTap:ray=>{
         if(!['combat','aim-final'].includes(mission.state.phase))return false;
         const target=world.director.pick(ray);if(target!==null)mission.selectTarget(target);return true;
       }
     });
-    playground=createPlayground({mount:$('#app'),
-      onOpen:()=>{
-        menu(false);exploration.setActive(false);playgroundPaused=!mission.state.paused;
-        if(playgroundPaused)mission.setPaused(true);
-        world.presentationSuspended=true;world.controls.enabled=false;
-      },
-      onClose:()=>{
-        world.presentationSuspended=false;world.controls.enabled=!['finisher','landing'].includes(mission.state.phase);
-        if(playgroundPaused)mission.setPaused(false);playgroundPaused=false;
-      }
-    });
-    world.onTick=(time,delta)=>{mission.update(time);world.missionState=mission.state;playground.update(time,delta);exploration.update(delta);};
+    world.onTick=(time,delta)=>{mission.update(time);world.missionState=mission.state;exploration.update(delta);};
     loading.classList.add('done');
     window.__rainy711={
       get time(){return world.time;},get renders(){return world.renderCount;},get drawCalls(){return world.renderer.info.render.calls;},get triangles(){return world.renderer.info.render.triangles;},
@@ -87,10 +99,10 @@ async function init(){
       get walkCamera(){return world.walkCamera.state;},get glassReady(){const u=world.store.glass.uniforms;return !!(u.uDepth.value?.isDepthTexture&&u.uScene.value?.isTexture&&u.uEnvironment.value?.isCubeTexture);},
       get poseData(){return world.actors?.poseData;},get idle(){return world.actors?.status;},get floorPlan(){return world.store.floorPlan;},get doors(){return {open:world.store.doors.open};},
       get mission(){return mission.state;},get story(){return mission.state;},get destruction(){return {...world.store.destruction.state,targets:world.store.destruction.targets};},get garden(){return world.garden.state;},get effects(){return world.siege.state;},
-      get cinematic(){return world.director.status;},get playground(){return playground.state;},
-      playgroundOpen:id=>playground.open(id),playgroundClose:()=>playground.close(),playgroundAction:(name,value)=>playground.action?.(name,value),
+      get cinematic(){return world.director.status;},get tianshi(){return world.tianshi.state;},get microwave(){return world.microwave.state;},get connectionStage(){return world.connectionStage.state;},get xaihi(){return world.xaihi?.state||{loaded:false,loading:world.xaihiLoading,error:world.xaihiError};},
       get position(){return world.actors?.position.toArray();},get heroPosition(){return world.actors?.heroPosition;},get dragonPosition(){return world.actors?.dragonPosition;},get walking(){return exploration.active;},get minimumZoom(){return world.controls.minDistance;},projectPoint:point=>world.projectPoint(point),
       missionStart:()=>mission.start(),missionNext:()=>mission.next(),missionChoose:id=>mission.choose(id),missionReplay:()=>mission.replay(),missionAttack:t=>mission.attack(t),missionSelectTarget:id=>mission.selectTarget(id),missionOutput:id=>mission.setOutput(id),missionPause:value=>mission.setPaused(value),
+      missionKey:value=>mission.key(value),missionSubmit:()=>mission.submitLogin(),missionVerify:()=>mission.verify(),missionLever:value=>mission.setLever(value),missionHeatStart:()=>mission.heatStart(world.time),missionHeatStop:()=>mission.heatStop(world.time),missionHeatRetry:()=>mission.heatRetry(),missionHeatCancel:()=>mission.heatCancel(),
       storyNext:()=>mission.next(),storyChoose:id=>mission.choose(id),storyStart:()=>mission.start(),storyReplay:()=>mission.replay(),hotspot:kind=>mission.hotspot(kind),
       teleport(x,z){world.actors?.teleport(x,z);},move(x,z,delta){world.actors?.setMove(x,z,true);world.actors?.update(world.time,delta);},tick(t,delta=.016,render=true){world.tick(t,delta,render);},
       inspectLayout(){world.inspectLayout();},pauseForCapture(){world.stop();},resume(){world.start();},frameView:name=>world.setView(name,true),samplePose:t=>world.tick(t),
@@ -98,7 +110,7 @@ async function init(){
     };
   }catch(e){world?.dispose();showError('無法啟動 3D 畫面。請使用支援 WebGL 2 的 Safari，然後重新載入。');console.error(e);}
 }
-function dispose(){closed=true;abort.abort();playground?.dispose();exploration?.dispose();mission?.dispose();audio.dispose();world?.dispose();}
+function dispose(){closed=true;abort.abort();exploration?.dispose();mission?.dispose();audio.dispose();world?.dispose();}
 listen(window,'pagehide',event=>{if(!event.persisted)dispose();else world?.stop();});listen(window,'pageshow',event=>{if(event.persisted)world?.start();});
 if(import.meta.hot)import.meta.hot.dispose(dispose);
 init();

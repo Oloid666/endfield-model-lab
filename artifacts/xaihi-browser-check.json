@@ -1,0 +1,20 @@
+{
+  "browser": "Desktop Chromium / SwiftShader",
+  "url": "http://127.0.0.1:4192/",
+  "real_iphone_test": false,
+  "errors": [],
+  "rawSize": [
+    1.1652861517411761,
+    1.7835030593662042,
+    1.14025958309336
+  ],
+  "scale": 1.0653191706187455,
+  "animations": 0,
+  "error": 0,
+  "stats": {
+    "calls": 9,
+    "triangles": 58193
+  },
+  "canvases": 1,
+  "passed": true
+}

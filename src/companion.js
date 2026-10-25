@@ -23,12 +23,15 @@ export function buildDragon(r) {
     c.lineWidth=8;c.strokeStyle='#344d42';c.lineCap='round';
     for(const x of [70,186]){
       if(blink||mood==='happy'){c.beginPath();c.moveTo(x-25,137);c.quadraticCurveTo(x,145,x+25,137);c.stroke();}
-      else{const g=c.createLinearGradient(0,75,0,178);g.addColorStop(0,'#408572');g.addColorStop(1,'#c1c777');c.fillStyle=g;c.beginPath();c.roundRect(x-27,88,54,80,20);c.fill();c.stroke();c.beginPath();c.moveTo(x-29,88);c.lineTo(x+29,88);c.stroke();c.fillStyle='#e7efc6';c.beginPath();c.ellipse(x-6,108,7,10,0,0,Math.PI*2);c.fill();}
+      else{const shock=mood==='shock',doubt=mood==='doubt',g=c.createLinearGradient(0,75,0,178);g.addColorStop(0,'#408572');g.addColorStop(1,'#c1c777');c.fillStyle=g;c.beginPath();c.roundRect(x-(shock?29:27),shock?81:doubt&&x===70?111:88,shock?58:54,shock?88:doubt&&x===70?55:80,20);c.fill();c.stroke();c.beginPath();c.moveTo(x-29,shock?72:doubt&&x===70?102:88);c.lineTo(x+29,shock?66:doubt&&x===70?111:88);c.stroke();c.fillStyle='#e7efc6';c.beginPath();c.ellipse(x-6,shock?105:108,shock?6:7,shock?8:10,0,0,Math.PI*2);c.fill();}
     }
-    c.lineWidth=5;c.beginPath();c.moveTo(108,188);c.quadraticCurveTo(116,202,128,191);c.quadraticCurveTo(141,202,150,187);c.stroke();
+    c.lineWidth=5;c.beginPath();
+    if(mood==='shock'){c.ellipse(128,195,12,17,0,0,Math.PI*2);c.fillStyle='#344d42';c.fill();}
+    else if(mood==='doubt'){c.moveTo(108,194);c.quadraticCurveTo(128,187,150,191);c.stroke();}
+    else{c.moveTo(108,188);c.quadraticCurveTo(116,202,128,191);c.quadraticCurveTo(141,202,150,187);c.stroke();}
     const map=r.own(new T.CanvasTexture(canvas));map.colorSpace=T.SRGBColorSpace;return map;
   }
-  const maps=[face(false),face(true),face(false,'happy')];
+  const maps=[face(false),face(true),face(false,'happy'),face(false,'shock'),face(false,'doubt')];
   const material=r.own(new T.MeshBasicMaterial({map:maps[0],transparent:true,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-1}));
   const vertices=[],uv=[],index=[];
   for(let row=0;row<=6;row++)for(let col=0;col<=12;col++){
@@ -38,9 +41,12 @@ export function buildDragon(r) {
   }
   const geo=r.own(new T.BufferGeometry());geo.setAttribute('position',new T.Float32BufferAttribute(vertices,3));geo.setAttribute('uv',new T.Float32BufferAttribute(uv,2));geo.setIndex(index);geo.computeVertexNormals();r.mesh(geo,material,body);
   root.traverse(n=>n.userData.hotspot='dragon');
-  return {root,foodMount,update(t,s={}){
+  const state={mood:'normal',action:''};
+  return {root,foodMount,get state(){return {...state};},update(t,s={}){
     const blink=Math.max(0,1-Math.abs((t+.7)%4.3-.15)/.11);
-    material.map=maps[blink>.3?1:(s.nod||0)>.15?2:0];
+    const action=s.action?.kind||'',effort=T.MathUtils.clamp(Number(s.action?.amount)||0,0,1),shocked=action==='shock'||!!s.projectile;
+    state.mood=shocked?'shock':action==='lever'?'doubt':blink>.3?'blink':(s.nod||0)>.15?'happy':'normal';state.action=action;
+    material.map=maps[shocked?3:action==='lever'?4:blink>.3?1:(s.nod||0)>.15?2:0];
     const gesture=s.gestureAmount||0,happy=s.gesture==='happy'?gesture:0,wave=s.gesture==='wave'?gesture:0,point=s.gesture==='point'?gesture:0,roll=s.gesture==='roll'?gesture:0,nod=s.gesture==='nod'?gesture:0;
     const curiosity=Math.max(s.curious||0,s.glance?.35:0),startle=Math.max(s.startle||0,s.gesture==='rain'?gesture*.7:0),attention=s.dragon||0,walk=s.walk||0;
     const catchUp=s.followerMode==='catch-up'?1:0,hesitate=s.followerMode==='hesitate'?1:0,phase=s.walkPhase||0;
@@ -49,10 +55,22 @@ export function buildDragon(r) {
     body.scale.set(1+startle*.035,1-startle*.075,1+startle*.035);
     root.position.y=.005;
     arms[0].rotation.z=-curiosity*.3+startle*.45-(s.holding?.28:0)+walk*Math.sin(phase-.3)*.075;arms[1].rotation.z=attention*.22-startle*.45+(s.holding?.28:0)+wave*Math.sin(t*9)*.45+point*.8-walk*Math.sin(phase-.5)*.09;
+    arms[0].position.set(-.53,.43,.07);arms[1].position.set(.53,.43,.07);
     for(let i=0;i<feet.length;i++){const stride=Math.sin((s.walkPhase||0)+i*Math.PI);feet[i].position.z=.12+walk*stride*.11;feet[i].position.y=.14+walk*Math.max(0,stride)*.06;feet[i].rotation.x=walk*stride*.22;}
     for(let i=0;i<ears.length;i++){const side=i?1:-1;ears[i].rotation.z=side*(-.28-startle*.18-catchUp*.09+curiosity*.1)+Math.sin(t*.65+i)*.009;ears[i].rotation.x=hesitate*.08+(s.lookYaw||0)*side*.08;}
     tail.rotation.z=Math.sin(t*(catchUp?3.2:1.1))*(.016+curiosity*.07+catchUp*.07)+curiosity*.09;
     tail.rotation.x=-1.1+walk*.09+hesitate*.06;tuft.rotation.z=-.18+(s.lookYaw||0)*.1;
+    if(action==='key'){
+      body.rotation.x=-.08;body.position.y=-Math.sin(effort*Math.PI)*.035;
+      body.scale.set(1+effort*.05,1-effort*.08,1+effort*.04);
+      arms[0].rotation.z=-.25;arms[1].rotation.z=.32;
+      feet[0].rotation.x=-.16-effort*.25;feet[1].rotation.x=-.10;
+    }else if(action==='lever'){
+      body.rotation.x=-.16-effort*.16;body.rotation.z=-.08*Math.sin(effort*Math.PI);
+      arms[0].position.set(-.32,.7,.36);arms[1].position.set(.32,.7,.36);
+      arms[0].rotation.z=-.85;arms[1].rotation.z=.85;
+      feet[0].position.z=.22;feet[1].position.z=-.02;tail.rotation.x=-.88;
+    }
     if(s.projectile){
       body.rotation.set(0,0,0);body.position.y=0;body.scale.set(1,.94,1);
       arms[0].rotation.z=-1.08;arms[1].rotation.z=1.08;

@@ -13,6 +13,7 @@ import { makeLocomotion } from '../src/locomotion.js';
 import { makeFollower } from '../src/follower.js';
 import { config } from '../src/config.js';
 import {buildSiegeEffects} from '../src/siege-effects.js';
+import {buildXaihi} from '../src/xaihi.js';
 
 const checks=[];
 function check(name,passed,detail=null){checks.push({name,passed,detail});}
@@ -167,9 +168,55 @@ check('A final impact creates pooled opaque smoke without a new light or resourc
 fx.quality('low');fx.update(5.6,1/60,{});check('Low FX quality caps the particle pool at thirty-six',fx.state.particleLimit===36&&fx.state.particles<=36,fx.state);
 fx.reset();check('FX reset clears every active effect',!fx.root.visible&&fx.state.beams===0&&fx.state.particles===0&&fx.state.pulses===0&&fx.state.smoke===0,fx.state);fx.dispose();
 
+// V8 connection float starts quickly, pauses and can be sampled backward.
+a.setCinematic(null);a.teleport(-1.25,3.25);a.setDinner(null);
+a.setCinematic({phase:'login',elapsed:0,castingElapsed:0,distance:0,height:1.2});a.update(200,0);const floatStart=[...a.heroPosition];
+a.setCinematic({phase:'login',elapsed:.8,castingElapsed:.8,distance:0,height:1.2});a.update(200.8,0);const quickFloat=[...a.heroPosition];
+check('Login rapidly lifts the real hero 1.2 metres without lateral travel',Math.abs(quickFloat[1]-floatStart[1]-1.2)<.03&&Math.abs(quickFloat[2]-floatStart[2])<.001,{start:floatStart,quick:quickFloat});
+a.setCinematic({phase:'captcha',elapsed:0,castingElapsed:5,distance:0,height:1.2});a.update(201,0);
+check('Captcha preserves the connection hover instead of dropping the hero',Math.abs(a.heroPosition[1]-quickFloat[1])<.06&&Math.abs(a.heroPosition[2]-quickFloat[2])<.001,{hero:a.heroPosition});
+a.setCinematic({phase:'charge',elapsed:0,castingElapsed:30,launchOverride:.4,distance:12,height:4});a.update(202,0);
+check('Director override samples exact rewind lift and travel',Math.abs(a.heroPosition[1]-(.32+1.6))<.03&&Math.abs(a.heroPosition[2]-(3.25+4.8))<.001,{hero:a.heroPosition});
+a.setCinematic(null);a.setSmile(0);a.update(203,0);
+const skinMeshes=[];root.traverse(n=>{if(n.isSkinnedMesh)skinMeshes.push(n);});
+function skinSnapshot(){root.updateMatrixWorld(true);for(const mesh of skinMeshes)mesh.skeleton.update();const list=[];for(const mesh of skinMeshes){const points=new Float32Array(mesh.geometry.attributes.position.count*3);for(let i=0;i<mesh.geometry.attributes.position.count;i++){mesh.getVertexPosition(i,footPoint);mesh.localToWorld(footPoint);points.set(footPoint.toArray(),i*3);}list.push(points);}return list;}
+const footPoint=vector(),neutralFace=skinSnapshot(),neutralCorners=a.poseData.smileCorners;
+a.setSmile(1);a.update(203,0);const smilingFace=skinSnapshot(),smilingCorners=a.poseData.smileCorners;
+let maxFaceShift=0,maxBodyShift=0,movedFaceVertices=0;
+for(let mesh=0;mesh<neutralFace.length;mesh++)for(let i=0;i<neutralFace[mesh].length;i+=3){const before=neutralFace[mesh],after=smilingFace[mesh],distance=Math.hypot(after[i]-before[i],after[i+1]-before[i+1],after[i+2]-before[i+2]);if(before[i+1]>1.7){maxFaceShift=Math.max(maxFaceShift,distance);if(distance>.00005)movedFaceVertices++;}else if(before[i+1]<1.55)maxBodyShift=Math.max(maxBodyShift,distance);}
+check('C smile moves weighted original face vertices by a restrained amount',a.status.smile===1&&movedFaceVertices>10&&maxFaceShift>.0002&&maxFaceShift<.006&&maxBodyShift<.00001,{movedFaceVertices,maxFaceShift,maxBodyShift});
+check('C smile has a slightly stronger left mouth corner',smilingCorners[0][1]-neutralCorners[0][1]>smilingCorners[1][1]-neutralCorners[1][1]&&smilingCorners[1][1]>neutralCorners[1][1],{neutralCorners,smilingCorners});
+a.setDinner(null);a.update(203,0);const resetFace=skinSnapshot();let restoredError=0;for(let m=0;m<neutralFace.length;m++)for(let i=0;i<neutralFace[m].length;i++)restoredError=Math.max(restoredError,Math.abs(neutralFace[m][i]-resetFace[m][i]));
+check('Replay clears smile and restores original face coordinates',a.status.smile===0&&restoredError<.000001,{restoredError});
+a.setCompanionAction({kind:'key',amount:.7});a.setDragonProjectile([1,.7,2],0);a.update(204,0);
+check('Keyboard override preserves an alert non-ammunition companion',a.status.companionAction==='key'&&a.status.companionExpression!=='shock'&&a.dragonPosition.every((v,i)=>Math.abs(v-[1,.7,2][i])<.00001),{action:a.status.companionAction,expression:a.status.companionExpression,dragon:a.dragonPosition});
+a.setCompanionAction({kind:'lever',amount:.7});a.update(204.2,0);check('Lever action gives the original dragon an exertion expression',a.status.companionExpression==='doubt');
+a.setCompanionAction({kind:'shock',amount:1});a.update(204.3,0);check('Ammunition shock uses the curved dragon face',a.status.companionExpression==='shock');a.setCompanionAction(null);a.setDragonProjectile(null);
+
+// The uploaded Xaihi is parsed as a real rig, with materials removed only in memory.
+const xaihiFile=new URL('../source-assets/xaihi-original.glb',import.meta.url),xaihiBytes=await fs.readFile(xaihiFile),xaihiHash=createHash('sha256').update(xaihiBytes).digest('hex');
+check('Uploaded Xaihi original hash and byte count',xaihiBytes.length===8029820&&xaihiHash==='f953e5890ed0b208d02e59581b3ddee60650cd2646cf94a4324f1e15e5404a68');
+const xjsonLength=xaihiBytes.readUInt32LE(12),xjson=JSON.parse(xaihiBytes.subarray(20,20+xjsonLength)),xbinLength=xaihiBytes.readUInt32LE(20+xjsonLength),xbin=xaihiBytes.subarray(28+xjsonLength,28+xjsonLength+xbinLength);
+xjson.buffers[0].uri=`data:application/octet-stream;base64,${xbin.toString('base64')}`;xjson.materials=xjson.materials.map(()=>({}));delete xjson.images;delete xjson.textures;delete xjson.samplers;
+const xgltf=await new GLTFLoader().parseAsync(JSON.stringify(xjson),''),xaihi=buildXaihi(scene,resources,xgltf);
+const xSkeletons=new Set();xgltf.scene.traverse(n=>{if(n.isSkinnedMesh)xSkeletons.add(n.skeleton);});
+let disposedBoneTextures=0;for(const skeleton of xSkeletons){skeleton.computeBoneTexture();skeleton.boneTexture.addEventListener('dispose',()=>disposedBoneTextures++);}
+check('Xaihi GPU skinning textures share the world resource lifecycle',[...xSkeletons].every(skeleton=>resources.items.has(skeleton)),{skeletons:xSkeletons.size});
+check('Xaihi is lazy-hidden outside the VCR',xaihi.loaded&&!xaihi.root.visible&&xaihi.state.bones===960,xaihi.state);
+xaihi.update(1,0,{phase:'flashback',node:{gesture:'phone'}});const xPose1=xaihi.state.pose;
+check('The original Xaihi appears with a wrist-mounted terminal',xaihi.root.visible&&xaihi.state.action==='terminal'&&xaihi.state.phoneVisible&&!xaihi.state.mealVisible,xaihi.state);
+xaihi.update(1.31,0,{phase:'heat',node:{gesture:'phone'}});
+check('CCTV operation animates actual Xaihi wrist and head bones',xaihi.state.action==='microwave'&&JSON.stringify(xPose1.wrist)!==JSON.stringify(xaihi.state.pose.wrist)&&JSON.stringify(xPose1.head)!==JSON.stringify(xaihi.state.pose.head),xaihi.state.pose);
+xaihi.update(2,0,{phase:'flashback-end'});check('Xaihi can hold her lunch after the successful heat',xaihi.state.mealVisible&&!xaihi.state.phoneVisible&&xaihi.state.action==='receive-lunch');
+xaihi.update(3,0,{phase:'combat'});check('Returning to main story hides Xaihi without a second renderer',!xaihi.root.visible);
+xaihi.reset();check('Xaihi reset clears VCR props and pose',!xaihi.state.visible&&!xaihi.state.phoneVisible&&!xaihi.state.mealVisible&&xaihi.state.action==='waiting');
+xaihi.dispose();check('Xaihi dispose detaches its scene root and reports unloaded',!xaihi.root.parent&&!xaihi.loaded&&!xaihi.state.loaded);
+check('The uploaded Xaihi GLB remains unchanged after runtime posing',createHash('sha256').update(await fs.readFile(xaihiFile)).digest('hex')===xaihiHash);
+
 a.dispose();resources.dispose();
+check('World disposal releases every Xaihi skinning texture',disposedBoneTextures===xSkeletons.size&&[...xSkeletons].every(skeleton=>skeleton.boneTexture===null),{disposedBoneTextures,skeletons:xSkeletons.size});
 const finalHash=createHash('sha256').update(await fs.readFile(file)).digest('hex');check('Original GLB unchanged after tests',finalHash===expectedHash);
 const result={kind:'Node actual-GLB geometry, skeleton, controller, cinematic and pooled FX checks; in-memory image materials removed and Canvas painting stubbed; not a render, GPU benchmark or iPhone test',passed:checks.every(c=>c.passed),checks,trace};
-await fs.writeFile(new URL('../artifacts/v7-cinematic-check.json',import.meta.url),JSON.stringify(result,null,2)+'\n');
+await fs.writeFile(new URL('../artifacts/v8-actor-check.json',import.meta.url),JSON.stringify(result,null,2)+'\n');
 console.log(JSON.stringify({passed:result.passed,checks:checks.length,failed:checks.filter(c=>!c.passed),maxIdleFootError:maxIdle,maxWalkingFootError:maxWalk,secondaryJoints:a.status.clothJoints},null,2));
 if(!result.passed)process.exitCode=1;

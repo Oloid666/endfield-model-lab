@@ -1,0 +1,560 @@
+{
+  "kind": "GLB original-file JSON/BIN, image decode and geometry audit; no WebGL or iPhone performance claim",
+  "source_file": "/tmp/codex-remote-attachments/01a16978-eb4c-72e4-88c7-9554195910a0/C9FF9237-0405-4524-AA08-EBF55AF66425/1-xaihi__arknights_endfield.glb",
+  "bytes": 8029820,
+  "sha256": "f953e5890ed0b208d02e59581b3ddee60650cd2646cf94a4324f1e15e5404a68",
+  "header_valid": true,
+  "asset": {
+    "extras": {
+      "author": "Abcxyz51 (https://sketchfab.com/Abcxyz51)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/xaihi-arknights-endfield-a3e990b410eb46e7a5e0ab0f4bd71df1",
+      "title": "Xaihi / Arknights Endfield"
+    },
+    "generator": "Sketchfab-0.3.0",
+    "version": "2.0"
+  },
+  "nodes": 974,
+  "mesh_count": 7,
+  "material_count": 7,
+  "texture_count": 7,
+  "image_count": 7,
+  "vertices_total": 54281,
+  "triangles_total": 57953,
+  "skin_count": 1,
+  "skin_joint_counts": [
+    960
+  ],
+  "weighted_joint_count": 701,
+  "weighted_joint_indices_in_range": true,
+  "bad_weight_sum_vertices": 0,
+  "skinned_vertices": 54281,
+  "animation_clip_count": 0,
+  "morph_target_count": 0,
+  "extensions_used": [],
+  "extensions_required": [],
+  "external_resources": [],
+  "mesh_detail": [
+    {
+      "mesh": 0,
+      "primitive": 0,
+      "name": "0",
+      "vertices": 2150,
+      "triangles": 3326,
+      "mode": 4,
+      "material": 0,
+      "min": [
+        -0.11019299179315567,
+        1.4262887239456177,
+        -0.03087599016726017
+      ],
+      "max": [
+        0.11019299179315567,
+        1.632929801940918,
+        0.0911019816994667
+      ],
+      "indices_valid": true,
+      "positions_finite": true,
+      "skinned_vertices": 2150
+    },
+    {
+      "mesh": 1,
+      "primitive": 0,
+      "name": "1",
+      "vertices": 210,
+      "triangles": 324,
+      "mode": 4,
+      "material": 1,
+      "min": [
+        -0.0506570003926754,
+        1.4928367137908936,
+        0.05166199058294296
+      ],
+      "max": [
+        0.04903800040483475,
+        1.5159077644348145,
+        0.05905499309301376
+      ],
+      "indices_valid": true,
+      "positions_finite": true,
+      "skinned_vertices": 210
+    },
+    {
+      "mesh": 2,
+      "primitive": 0,
+      "name": "2",
+      "vertices": 4826,
+      "triangles": 5702,
+      "mode": 4,
+      "material": 2,
+      "min": [
+        -0.12027598917484283,
+        1.1870076656341553,
+        -0.12553396821022034
+      ],
+      "max": [
+        0.12355700135231018,
+        1.6518887281417847,
+        0.15591996908187866
+      ],
+      "indices_valid": true,
+      "positions_finite": true,
+      "skinned_vertices": 4826
+    },
+    {
+      "mesh": 3,
+      "primitive": 0,
+      "name": "3",
+      "vertices": 2106,
+      "triangles": 3412,
+      "mode": 4,
+      "material": 3,
+      "min": [
+        -0.4818929135799408,
+        0.9537209868431091,
+        -0.07032797485589981
+      ],
+      "max": [
+        0.5620248913764954,
+        1.501269817352295,
+        0.10800197720527649
+      ],
+      "indices_valid": true,
+      "positions_finite": true,
+      "skinned_vertices": 2106
+    },
+    {
+      "mesh": 4,
+      "primitive": 0,
+      "name": "4",
+      "vertices": 1238,
+      "triangles": 2088,
+      "mode": 4,
+      "material": 4,
+      "min": [
+        -0.2826511263847351,
+        0.11393149942159653,
+        -0.0838373675942421
+      ],
+      "max": [
+        0.2826511263847351,
+        1.30903160572052,
+        0.12295297533273697
+      ],
+      "indices_valid": true,
+      "positions_finite": true,
+      "skinned_vertices": 1238
+    },
+    {
+      "mesh": 5,
+      "primitive": 0,
+      "name": "5",
+      "vertices": 42315,
+      "triangles": 41909,
+      "mode": 4,
+      "material": 5,
+      "min": [
+        -0.5826429128646851,
+        -0.003162139095366001,
+        -0.8204787969589233
+      ],
+      "max": [
+        0.5826427936553955,
+        1.780280590057373,
+        0.31978094577789307
+      ],
+      "indices_valid": true,
+      "positions_finite": true,
+      "skinned_vertices": 42315
+    },
+    {
+      "mesh": 6,
+      "primitive": 0,
+      "name": "6",
+      "vertices": 1436,
+      "triangles": 1192,
+      "mode": 4,
+      "material": 6,
+      "min": [
+        0.407321572303772,
+        1.0700948238372803,
+        -0.053632982075214386
+      ],
+      "max": [
+        0.4365171790122986,
+        1.0984158515930176,
+        -0.019596993923187256
+      ],
+      "indices_valid": true,
+      "positions_finite": true,
+      "skinned_vertices": 1436
+    }
+  ],
+  "images": [
+    {
+      "image": 0,
+      "codec": "PNG",
+      "mimeType": "image/png",
+      "width": 1024,
+      "height": 1024,
+      "mode": "RGB",
+      "embedded_bytes": 304990,
+      "sha256": "57ba76d98a708558b5a548f99d43ff827e774e8a013392ac0e3d643d7beb9d72"
+    },
+    {
+      "image": 1,
+      "codec": "PNG",
+      "mimeType": "image/png",
+      "width": 512,
+      "height": 512,
+      "mode": "RGB",
+      "embedded_bytes": 207661,
+      "sha256": "814a821ce0628bbd0679bf1a31b673060c689a9e568be2da931849c3c8033251"
+    },
+    {
+      "image": 2,
+      "codec": "PNG",
+      "mimeType": "image/png",
+      "width": 1024,
+      "height": 1024,
+      "mode": "RGB",
+      "embedded_bytes": 320597,
+      "sha256": "a77b20bf9e3aa46f5ba19c1e7db3eaa061d0d56a9d4dcbfe985cb08b3d2baa5d"
+    },
+    {
+      "image": 3,
+      "codec": "PNG",
+      "mimeType": "image/png",
+      "width": 1024,
+      "height": 1024,
+      "mode": "RGB",
+      "embedded_bytes": 250856,
+      "sha256": "dd1b3055f80584942757288fc228b9476c3a5b1a2e34d06a4b5fd16f11c0d8ec"
+    },
+    {
+      "image": 4,
+      "codec": "PNG",
+      "mimeType": "image/png",
+      "width": 1024,
+      "height": 1024,
+      "mode": "RGB",
+      "embedded_bytes": 1046952,
+      "sha256": "52e9b090c040fea9d8ee052f8616248a9979685278364859a40bf2595fbad79f"
+    },
+    {
+      "image": 5,
+      "codec": "PNG",
+      "mimeType": "image/png",
+      "width": 1024,
+      "height": 1024,
+      "mode": "RGB",
+      "embedded_bytes": 1046952,
+      "sha256": "52e9b090c040fea9d8ee052f8616248a9979685278364859a40bf2595fbad79f"
+    },
+    {
+      "image": 6,
+      "codec": "PNG",
+      "mimeType": "image/png",
+      "width": 1024,
+      "height": 1024,
+      "mode": "RGB",
+      "embedded_bytes": 780171,
+      "sha256": "3e652bdc6bc4eed1b9bcd2810630e131756567c16a66e65932a2f665ea3f2713"
+    }
+  ],
+  "materials": [
+    {
+      "index": 0,
+      "name": ".001",
+      "doubleSided": true,
+      "alphaMode": "OPAQUE",
+      "pbr": {
+        "baseColorTexture": {
+          "index": 0
+        },
+        "metallicFactor": 0
+      },
+      "normalTexture": null,
+      "emissiveTexture": null
+    },
+    {
+      "index": 1,
+      "name": "HL.001",
+      "doubleSided": true,
+      "alphaMode": "OPAQUE",
+      "pbr": {
+        "baseColorTexture": {
+          "index": 1
+        },
+        "metallicFactor": 0,
+        "roughnessFactor": 0.7234442732068918
+      },
+      "normalTexture": null,
+      "emissiveTexture": null
+    },
+    {
+      "index": 2,
+      "name": ".001_2",
+      "doubleSided": true,
+      "alphaMode": "OPAQUE",
+      "pbr": {
+        "baseColorTexture": {
+          "index": 2
+        },
+        "metallicFactor": 0,
+        "roughnessFactor": 0.47339108936580887
+      },
+      "normalTexture": null,
+      "emissiveTexture": null
+    },
+    {
+      "index": 3,
+      "name": ".001_0",
+      "doubleSided": true,
+      "alphaMode": "OPAQUE",
+      "pbr": {
+        "baseColorTexture": {
+          "index": 3
+        },
+        "metallicFactor": 0,
+        "roughnessFactor": 0.46731807964292027
+      },
+      "normalTexture": null,
+      "emissiveTexture": null
+    },
+    {
+      "index": 4,
+      "name": "Cloth1.001",
+      "doubleSided": true,
+      "alphaMode": "OPAQUE",
+      "pbr": {
+        "baseColorTexture": {
+          "index": 4
+        },
+        "metallicFactor": 0,
+        "roughnessFactor": 0.46731807964292027
+      },
+      "normalTexture": null,
+      "emissiveTexture": null
+    },
+    {
+      "index": 5,
+      "name": "Cloth1Alpha.001",
+      "doubleSided": true,
+      "alphaMode": "OPAQUE",
+      "pbr": {
+        "baseColorTexture": {
+          "index": 5
+        },
+        "metallicFactor": 0,
+        "roughnessFactor": 0.46731807964292027
+      },
+      "normalTexture": null,
+      "emissiveTexture": null
+    },
+    {
+      "index": 6,
+      "name": "Cloth4.001",
+      "doubleSided": true,
+      "alphaMode": "OPAQUE",
+      "pbr": {
+        "baseColorTexture": {
+          "index": 6
+        },
+        "metallicFactor": 0,
+        "roughnessFactor": 0.4612450699200317
+      },
+      "normalTexture": null,
+      "emissiveTexture": null
+    }
+  ],
+  "facial_bone_candidates": [
+    {
+      "node": 52,
+      "name": "faceMdJawDnJoint_052",
+      "parent": 47,
+      "translation": [
+        -2.938735877055719e-39,
+        -0.04238998517394066,
+        0.06523799151182175
+      ]
+    },
+    {
+      "node": 53,
+      "name": "faceLfCheekOtJoint_053",
+      "parent": 47,
+      "translation": [
+        0.044794000685214996,
+        -0.016984937712550163,
+        0.04897100105881691
+      ]
+    },
+    {
+      "node": 54,
+      "name": "faceLfCheekOtDnJoint_054",
+      "parent": 47,
+      "translation": [
+        0.021698998287320137,
+        -0.03320300206542015,
+        0.05596200004220009
+      ]
+    },
+    {
+      "node": 57,
+      "name": "faceRtPupilJoint_057",
+      "parent": 56,
+      "translation": [
+        0,
+        1.2122835357786244e-07,
+        3.725290298461914e-09
+      ]
+    },
+    {
+      "node": 58,
+      "name": "faceRtHighlightJoint_058",
+      "parent": 56,
+      "translation": [
+        -0.010146994143724442,
+        -0.003281114622950554,
+        -0.0010749995708465576
+      ]
+    },
+    {
+      "node": 59,
+      "name": "faceRtHighlightJoint_b_059",
+      "parent": 56,
+      "translation": [
+        0.007246000692248344,
+        -0.007480142172425985,
+        0.0022890008985996246
+      ]
+    },
+    {
+      "node": 76,
+      "name": "faceLfPupilJoint_069",
+      "parent": 75,
+      "translation": [
+        0,
+        1.2122835357786244e-07,
+        3.725290298461914e-09
+      ]
+    },
+    {
+      "node": 77,
+      "name": "faceLfHighlightJoint_070",
+      "parent": 75,
+      "translation": [
+        -0.009963998571038246,
+        -0.003280041506513953,
+        0.0041770003736019135
+      ]
+    },
+    {
+      "node": 78,
+      "name": "faceLfHighlightJoint_b_071",
+      "parent": 75,
+      "translation": [
+        0.007058996707201004,
+        -0.007480142638087273,
+        -0.0015189945697784424
+      ]
+    },
+    {
+      "node": 174,
+      "name": "jawJoint_0168",
+      "parent": 47,
+      "translation": [
+        1.4693679385278594e-39,
+        0.005519986152648926,
+        0.00903299916535616
+      ]
+    },
+    {
+      "node": 175,
+      "name": "head_up_jnt_0169",
+      "parent": 47,
+      "translation": [
+        5.877471754111438e-39,
+        0.07053899765014648,
+        0.037617992609739304
+      ]
+    },
+    {
+      "node": 176,
+      "name": "head_mid_jnt_0170",
+      "parent": 47,
+      "translation": [
+        0,
+        0.04072713851928711,
+        0.037617992609739304
+      ]
+    },
+    {
+      "node": 177,
+      "name": "faceRtCheekOtJoint_0171",
+      "parent": 47,
+      "translation": [
+        -0.04479299858212471,
+        -0.016984937712550163,
+        0.04897100105881691
+      ]
+    },
+    {
+      "node": 178,
+      "name": "faceRtCheekOtDnJoint_0172",
+      "parent": 47,
+      "translation": [
+        -0.02169799990952015,
+        -0.03320300206542015,
+        0.05596200004220009
+      ]
+    }
+  ],
+  "raw_rgba8_full_mip_texture_estimate_bytes": 34952533,
+  "texture_estimate_note": "Conservative RGBA8 full mip-chain estimate, not measured runtime GPU allocation; actual loader pixel format / sharing may differ.",
+  "three_loader_parse": {
+    "passed": true,
+    "kind": "Actual Three.js GLTFLoader geometry/skeleton parse; image materials removed only from in-memory test copy. Source untouched. Not an appearance/GPU test.",
+    "meshes": 7,
+    "skinnedMeshes": 7,
+    "bones": 960,
+    "animations": 0,
+    "bounds": {
+      "min": [
+        -0.5826438874736727,
+        -0.003222482238186744,
+        -0.8204788537224847
+      ],
+      "max": [
+        0.5826422642675033,
+        1.7802805771280175,
+        0.3197807293708752
+      ],
+      "size": [
+        1.1652861517411761,
+        1.7835030593662042,
+        1.14025958309336
+      ]
+    },
+    "finiteBounds": true
+  },
+  "identical_embedded_image_groups": [
+    [
+      4,
+      5
+    ]
+  ],
+  "suitability": {
+    "existing_skinned_asset": true,
+    "recommended_use": "Limited fixed-camera VCR performance: idle, gaze, small upper-limb and head poses, terminal and lunch props. Validate deformations before committing shots.",
+    "animation_work_required": "No ready-made clips or Morph targets. Runtime bone poses and secondary motion are still required.",
+    "preservation": "Original source untouched; retain embedded author, source and CC BY 4.0 attribution.",
+    "unverified": [
+      "Full material appearance in WebGL",
+      "Hands receiving food / phone grip deformation",
+      "Facial expression range",
+      "Real iPhone Safari frame rate and memory"
+    ],
+    "runtime_texture_optimization_candidate": "Embedded images 4 and 5 have identical byte hashes; texture sharing may reduce residency if compatible samplers/UV usage are confirmed at runtime. Source GLB need not be changed."
+  }
+}

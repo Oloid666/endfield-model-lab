@@ -1,13 +1,29 @@
-import {sequences,dinnerChoices,chargeLines,chatterGroups,hotspots,endingCaption} from './mission-dialogue.js';
+import {sequences,dinnerChoices,chargeLines,chatterGroups,hotspots,endingCaption,connectionPrompts,captchaLines,heatDemoLines,finalAmmoLines} from './mission-dialogue.js';
 
 export const METER_TRAVEL=1.35;
 export const METER_PERIOD=METER_TRAVEL*2;
+export const CHARGE_DURATION=30;
+export const REWIND_DURATION=7;
+export const HEAT_DEMO_DURATION=6;
+export const RETURN_DURATION=3;
+export const TOUR_DURATION=16;
 export const LANDING_DURATION=sequences.landing.length*3;
+export const HEAT_RATE=.125;
+export const HEAT_TARGET=.3;
+export const HEAT_SUCCESS_MIN=.255;
+export const HEAT_SUCCESS_MAX=.345;
+export const HEAT_BURN=.37;
+export const CONNECTION_ACCOUNT='endfield_power';
+export const CONNECTION_PASSWORD='5201314';
 export const outputModes=[
   {id:'steady',label:'穩壓',hint:'寬判定 · 低後座',multiplier:1,speed:1,width:.18,miss:.38,perfect:.06,recoil:.7},
   {id:'strong',label:'強攻',hint:'威力 +20% · 較快',multiplier:1.2,speed:1.2,width:.15,miss:.34,perfect:.05,recoil:1.15},
   {id:'overload',label:'過載',hint:'威力 +50% · 窄判定',multiplier:1.5,speed:1.45,width:.12,miss:.29,perfect:.04,recoil:1.8},
 ];
+const manualPhases=new Set(['intro','meal','briefing','energy','flashback','flashback-end','last','complete']);
+const vcrPhases=new Set(['rewind','flashback','heat-demo','heat','flashback-end','return']);
+const preChargePhases=new Set(['ready','intro','choice','meal','briefing','login','captcha','lever']);
+const clamp=(value,min=0,max=1)=>Math.max(min,Math.min(max,value));
 export function meterPosition(elapsed,period=METER_PERIOD){const p=((elapsed%period)+period)%period/(period/2);return p<=1?p:2-p;}
 export function judgeMeter(position,final=false,settings=outputModes[0]){
   const distance=Math.abs(position-.5);
@@ -16,7 +32,7 @@ export function judgeMeter(position,final=false,settings=outputModes[0]){
   return {result,power,damage:Math.round((result==='perfect'?18:result==='strong'?13:8)*settings.multiplier)};
 }
 
-// One scene clock owns text, charge, shots and the final animation. No timers or RAF.
+// One monotonic scene source clock owns dialogue, input, VCR and cinematics. No timers or RAF.
 export class MissionMachine{
   constructor(hooks={}){
     this.hooks=hooks;this.time=0;this.sourceTime=0;this.phase='ready';this.entered=0;this.nodeEntered=0;
@@ -24,15 +40,42 @@ export class MissionMachine{
     this.revealed=0;this.revision=0;this.shots=0;this.hits=0;this.lastAttack=-Infinity;this.feedback=null;
     this.targets=[];this.target=null;this.ended=false;this.quietUntil=Infinity;this.chatDeck=[];this.lastChat=-1;
     this.chatCounts={};this.cooldowns={};this.lastHotspot=-Infinity;this.randomState=71130;this.sequenceKind=null;
-    this.output='steady';this.meterEntered=0;
+    this.output='steady';this.meterEntered=0;this.attackHoldUntil=0;
+    this.castingEntered=null;this.castingPaused=0;this.castingFrozen=0;this.vcrStarted=null;this.vcrSnapshot=null;
+    this.resetInteraction();
+  }
+  resetInteraction(){
+    this.connection={field:'account',account:'',password:'',lastKey:'',keyAt:-Infinity,keyNumber:0,error:'',verified:false,lever:0};
+    this.heatStatus='ready';this.heatHolding=false;this.heatStarted=0;this.heatStored=0;this.heatAttempts=0;this.heatAutoBurn=false;
   }
   random(){this.randomState=(this.randomState*1664525+1013904223)>>>0;return this.randomState/4294967296;}
   emit(){this.revision++;this.hooks.onState?.(this.state);}
+  action(type,value,extra={}){this.hooks.onAction?.({type,value,time:this.time,...extra});}
   phaseTo(phase,entered=this.time){
     this.phase=phase;this.entered=entered;this.lines=[];this.index=0;this.node=null;this.revealed=0;this.sequenceKind=null;
     this.meterEntered=entered;
+    if(phase==='login'){
+      if(this.castingEntered===null)this.castingEntered=entered;
+      this.line(connectionPrompts.account,entered);
+    }
+    if(phase==='captcha')this.line(captchaLines[0],entered);
+    if(phase==='lever')this.line(connectionPrompts.verified,entered);
     if(phase==='charge')this.line(chargeLines[0],entered);
+    if(phase==='rewind'){
+      this.castingFrozen=this.castingElapsed;
+      this.vcrStarted=entered;
+      this.vcrSnapshot={progress:this.progress,branch:this.branch,shots:this.shots,hits:this.hits,output:this.output,target:this.target};
+      this.action('vcr-freeze',true,{snapshot:{...this.vcrSnapshot}});
+    }
+    if(phase==='heat-demo')this.line(heatDemoLines[0],entered);
+    if(phase==='heat'){
+      this.heatStatus='ready';this.heatHolding=false;this.heatStored=0;this.heatAutoBurn=false;
+      this.line(connectionPrompts.heat,entered);
+    }
+    if(phase==='return')this.line(connectionPrompts.returned,entered);
+    if(phase==='aim-final')this.line(finalAmmoLines[0],entered);
     if(phase==='landing')this.line(sequences.landing[0],entered);
+    if(phase==='tour')this.progress=100;
     if(phase==='complete'){this.progress=100;this.ended=true;this.quietUntil=this.time+8+this.random()*6;}
     this.hooks.onStage?.(phase,this.state);this.emit();
   }
@@ -40,7 +83,7 @@ export class MissionMachine{
   sequence(phase,lines){this.phaseTo(phase);this.lines=lines;this.index=0;this.line(lines[0]);}
   start(){
     this.branch=null;this.progress=0;this.ended=false;this.paused=false;this.shots=0;this.hits=0;this.lastAttack=-Infinity;this.feedback=null;
-    this.output='steady';
+    this.output='steady';this.attackHoldUntil=0;this.castingEntered=null;this.castingPaused=0;this.castingFrozen=0;this.vcrStarted=null;this.vcrSnapshot=null;this.resetInteraction();
     this.chatDeck=[];this.lastChat=-1;this.chatCounts={};this.cooldowns={};this.lastHotspot=-Infinity;this.quietUntil=Infinity;this.target=this.targets[0]?.id??null;
     this.hooks.onDinner?.(null);this.sequence('intro',sequences.intro);return true;
   }
@@ -54,22 +97,86 @@ export class MissionMachine{
   finishSequence(){
     if(this.phase==='intro')this.phaseTo('choice');
     else if(this.phase==='meal')this.sequence('briefing',sequences.briefing);
-    else if(this.phase==='briefing')this.phaseTo('charge');
+    else if(this.phase==='briefing')this.phaseTo('login');
+    else if(this.phase==='energy')this.phaseTo('rewind');
+    else if(this.phase==='flashback')this.phaseTo('heat-demo');
+    else if(this.phase==='flashback-end')this.phaseTo('return');
     else if(this.phase==='last')this.phaseTo('aim-final');
     else if(this.phase==='complete'){this.node=null;this.lines=[];this.sequenceKind=null;this.quietUntil=this.time+8+this.random()*6;this.emit();}
   }
   next(){
-    if(this.paused||!this.node||!['intro','meal','briefing','last','complete'].includes(this.phase))return false;
+    if(this.paused||!this.node||!manualPhases.has(this.phase))return false;
     if(this.revealed<this.node.text.length){this.revealed=this.node.text.length;this.emit();return true;}
     if(++this.index<this.lines.length)this.line(this.lines[this.index]);else this.finishSequence();return true;
   }
-  skip(){if(this.paused||!['intro','meal','briefing','last','complete'].includes(this.phase))return false;this.finishSequence();return true;}
+  skip(){if(this.paused||!manualPhases.has(this.phase))return false;this.finishSequence();return true;}
   choose(id){
     if(this.phase!=='choice'||this.paused||!dinnerChoices.some(v=>v.id===id))return false;
     this.branch=id;this.hooks.onDinner?.(id);this.sequence('meal',sequences['meal'+id]);return true;
   }
+  key(value){
+    if(this.paused||this.phase!=='login'||typeof value!=='string')return false;
+    const c=this.connection,field=c.field;let next=c[field];
+    if(['backspace','Backspace','⌫'].includes(value))next=next.slice(0,-1);
+    else if(['clear','Clear'].includes(value))next='';
+    else{
+      if(value.length!==1||(field==='password'?!/^[0-9]$/.test(value):!/^[a-z_]$/.test(value))||next.length>=(field==='password'?16:32))return false;
+      next+=value;
+    }
+    c[field]=next;c.error='';c.lastKey=value;c.keyAt=this.time;c.keyNumber++;
+    this.action('key',value,{field,keyNumber:c.keyNumber});this.emit();return true;
+  }
+  submitLogin(){
+    if(this.paused||this.phase!=='login')return false;
+    const c=this.connection,expected=c.field==='account'?CONNECTION_ACCOUNT:CONNECTION_PASSWORD;
+    if(c[c.field]!==expected){c.error=c.field==='account'?'帳號不對。可重聽提示，再修改。':'密碼不對。可退格修改。';this.action('login-error',c.field);this.emit();return false;}
+    c.error='';
+    if(c.field==='account'){c.field='password';this.line(connectionPrompts.password);this.action('login-account',true);this.emit();}
+    else {this.action('login-complete',true);this.phaseTo('captcha');}
+    return true;
+  }
+  replayPrompt(){if(this.paused||this.phase!=='login')return false;this.line(connectionPrompts[this.connection.field]);this.action('dictation',this.connection.field);return true;}
+  verify(){
+    if(this.paused||this.phase!=='captcha'||this.time-this.entered<6)return false;
+    this.connection.verified=true;this.connection.error='';this.action('verify',true);this.phaseTo('lever');return true;
+  }
+  setLever(value){
+    if(this.paused||this.phase!=='lever'||!Number.isFinite(value))return false;
+    this.connection.lever=clamp(value);this.action('lever',this.connection.lever);this.emit();
+    if(this.connection.lever>=.98){this.connection.lever=1;this.action('grid-connect',true);this.phaseTo('charge');}
+    return true;
+  }
+  logicalInput(sourceTime){return this.time+(Number.isFinite(sourceTime)?sourceTime-this.sourceTime:0);}
+  syncInput(sourceTime){const time=this.logicalInput(sourceTime);if(Number.isFinite(sourceTime)&&sourceTime>this.sourceTime)this.update(sourceTime);return time;}
+  heatStart(sourceTime){
+    if(this.paused||this.phase!=='heat'||this.heatStatus!=='ready')return false;
+    const time=this.syncInput(sourceTime);if(this.phase!=='heat'||time<this.entered)return false;
+    this.heatStatus='heating';this.heatHolding=true;this.heatStarted=time;this.heatStored=0;this.heatAutoBurn=false;this.heatAttempts++;
+    this.action('heat-start',true,{attempt:this.heatAttempts});this.emit();return true;
+  }
+  heatStop(sourceTime){
+    if(this.paused||this.phase!=='heat')return false;
+    const time=this.syncInput(sourceTime);
+    if(this.phase!=='heat'||time<this.heatStarted||(!this.heatHolding&&!this.heatAutoBurn))return false;
+    // An input can arrive after a slow 3D frame; judge its original timestamp, not that frame.
+    this.heatStored=Math.max(0,time-this.heatStarted);this.heatHolding=false;this.heatAutoBurn=false;
+    const electrical=this.heatStored*HEAT_RATE;
+    this.heatStatus=electrical<HEAT_SUCCESS_MIN-1e-9?'cold':electrical>HEAT_SUCCESS_MAX+1e-9?'burnt':'won';
+    this.action('heat-stop',this.heatStatus,{electricalTime:electrical,attempt:this.heatAttempts});this.emit();
+    if(this.heatStatus==='won')this.sequence('flashback-end',sequences['flashback-end']);
+    return {result:this.heatStatus,electricalTime:electrical,elapsed:this.heatStored};
+  }
+  heatRetry(){
+    if(this.paused||this.phase!=='heat'||!['cold','burnt'].includes(this.heatStatus))return false;
+    this.heatStatus='ready';this.heatHolding=false;this.heatStored=0;this.heatAutoBurn=false;this.line(connectionPrompts.heat);this.action('heat-retry',true);return true;
+  }
+  heatCancel(){
+    if(this.phase!=='heat'||!this.heatHolding)return false;
+    this.heatStatus='ready';this.heatHolding=false;this.heatStored=0;this.heatAutoBurn=false;this.action('heat-cancel',true);this.emit();return true;
+  }
   setAuto(value){this.auto=Boolean(value);this.emit();}
   setPaused(value){this.paused=Boolean(value);this.emit();}
+  holdAttack(seconds){if(!Number.isFinite(seconds)||seconds<0)return false;this.attackHoldUntil=Math.max(this.attackHoldUntil,this.time+seconds);this.emit();return true;}
   setOutput(id){
     if(this.paused||this.phase!=='combat'||!outputModes.some(mode=>mode.id===id))return false;
     if(this.output===id)return true;
@@ -83,19 +190,17 @@ export class MissionMachine{
   meterAt(sourceTime=this.sourceTime){const advance=this.paused?0:(Number.isFinite(sourceTime)?sourceTime-this.sourceTime:0);return meterPosition(Math.max(0,this.time+advance-this.meterEntered),this.meterSettings.period);}
   attack(sourceTime){
     if(this.paused||!['combat','aim-final'].includes(this.phase))return false;
-    const inputTime=Number.isFinite(sourceTime)?this.time+sourceTime-this.sourceTime:this.time;
+    const inputTime=this.logicalInput(sourceTime);
     if(Number.isFinite(sourceTime)&&sourceTime>this.sourceTime)this.update(sourceTime);
-    if(inputTime<this.meterEntered)return false;
-    if(this.time-this.lastAttack<.6)return false;
+    if(inputTime<this.meterEntered||this.time<this.attackHoldUntil||this.time-this.lastAttack<.6)return false;
     const final=this.phase==='aim-final',settings=this.meterSettings,position=meterPosition(inputTime-this.meterEntered,settings.period),judgement=judgeMeter(position,final,settings);
     this.shots++;this.lastAttack=this.time;
     if(judgement.result!=='miss'){this.hits++;if(!final)this.progress=Math.min(99,this.progress+judgement.damage);}
     const event={...judgement,position,progress:this.progress,target:final?'server':this.target,finisher:final&&judgement.result!=='miss',finalAttempt:final,time:this.time,number:this.shots,mode:settings.id,recoil:settings.recoil};
-    this.feedback=event;
-    this.meterEntered=this.time;
+    this.feedback=event;this.meterEntered=this.time;
     if(event.finisher)this.phaseTo('finisher');
     this.emit();this.hooks.onAttack?.(event);
-    if(!final&&this.progress>=99)this.sequence('last',sequences.last);
+    if(!final&&this.progress>=99)this.sequence('energy',sequences.energy);
     return event;
   }
   runChat(lines,kind){this.lines=lines;this.index=0;this.sequenceKind=kind;this.line(lines[0]);}
@@ -112,40 +217,69 @@ export class MissionMachine{
     const count=this.chatCounts[kind]||0;this.chatCounts[kind]=count+1;this.cooldowns[kind]=this.time;this.lastHotspot=this.time;
     this.runChat(hotspots[kind][count%hotspots[kind].length],'hotspot');return true;
   }
+  timedLine(nodes,elapsed,step=0){
+    let index=0;for(let i=1;i<nodes.length;i++)if((nodes[i].at??i*step)<=elapsed)index=i;
+    if(this.node!==nodes[index])this.line(nodes[index],this.entered+(nodes[index].at??index*step));
+  }
+  restorePresent(){
+    if(this.vcrSnapshot){const s=this.vcrSnapshot;this.progress=s.progress;this.branch=s.branch;this.shots=s.shots;this.hits=s.hits;this.output=s.output;this.target=s.target;}
+    if(this.vcrStarted!==null)this.castingPaused+=this.time-this.vcrStarted;
+    this.vcrStarted=null;this.action('vcr-return',true,{snapshot:this.vcrSnapshot?{...this.vcrSnapshot}:null});
+    this.sequence('last',sequences.last);
+  }
   update(sourceTime){
     if(!Number.isFinite(sourceTime))return;
     const delta=Math.max(0,sourceTime-this.sourceTime);this.sourceTime=Math.max(this.sourceTime,sourceTime);
     if(this.paused)return;this.time+=delta;
-    if(this.phase==='charge'){
-      const elapsed=this.time-this.entered;
-      if(elapsed>=30){this.phaseTo('combat',this.entered+30);return;}
-      let index=0;for(let i=1;i<chargeLines.length;i++)if(chargeLines[i].at<=elapsed)index=i;
-      if(this.node!==chargeLines[index])this.line(chargeLines[index],this.entered+chargeLines[index].at);
+    // Catch up continuous cinematics after a late frame, but stop on every manual or input gate.
+    for(let guard=0;guard<10;guard++){
+      const elapsed=this.time-this.entered,phase=this.phase;let changed=false;
+      if(phase==='charge'&&elapsed>=CHARGE_DURATION){this.phaseTo('combat',this.entered+CHARGE_DURATION);changed=true;}
+      else if(phase==='rewind'&&elapsed>=REWIND_DURATION){this.sequence('flashback',sequences.flashback);changed=true;}
+      else if(phase==='heat-demo'&&elapsed>=HEAT_DEMO_DURATION){this.phaseTo('heat',this.entered+HEAT_DEMO_DURATION);changed=true;}
+      else if(phase==='return'&&elapsed>=RETURN_DURATION){this.restorePresent();changed=true;}
+      else if(phase==='finisher'&&elapsed>=9){this.phaseTo('landing',this.entered+9);changed=true;}
+      else if(phase==='landing'&&elapsed>=LANDING_DURATION){this.phaseTo('tour',this.entered+LANDING_DURATION);changed=true;}
+      else if(phase==='tour'&&elapsed>=TOUR_DURATION){this.phaseTo('complete',this.entered+TOUR_DURATION);changed=true;}
+      if(!changed)break;
     }
-    if(this.phase==='finisher'&&this.time-this.entered>=9)this.phaseTo('landing',this.entered+9);
-    if(this.phase==='landing'){
-      const elapsed=this.time-this.entered;
-      if(elapsed>=LANDING_DURATION){this.phaseTo('complete',this.entered+LANDING_DURATION);return;}
-      const step=3,index=Math.min(sequences.landing.length-1,Math.floor(elapsed/step));if(this.node!==sequences.landing[index])this.line(sequences.landing[index],this.entered+index*step);
+    const elapsed=Math.max(0,this.time-this.entered);
+    if(this.phase==='charge')this.timedLine(chargeLines,elapsed);
+    else if(this.phase==='captcha')this.timedLine(captchaLines,elapsed);
+    else if(this.phase==='lever'&&elapsed>=3&&this.node!==connectionPrompts.lever)this.line(connectionPrompts.lever,this.entered+3);
+    else if(this.phase==='heat-demo')this.timedLine(heatDemoLines,elapsed);
+    else if(this.phase==='aim-final')this.timedLine(finalAmmoLines,elapsed);
+    else if(this.phase==='landing')this.timedLine(sequences.landing,elapsed,3);
+    if(this.phase==='heat'&&this.heatHolding&&this.heatElapsed*HEAT_RATE>=HEAT_BURN){
+      this.heatStored=HEAT_BURN/HEAT_RATE;this.heatHolding=false;this.heatStatus='burnt';this.heatAutoBurn=true;this.action('heat-stop','burnt',{electricalTime:HEAT_BURN,attempt:this.heatAttempts,automatic:true});this.emit();
     }
     if(this.phase==='complete'&&!this.node&&this.time>=this.quietUntil){this.nextChat();return;}
     if(this.node){
-      const textLength=this.node.text.length,elapsed=this.time-this.nodeEntered;
-      const revealed=['charge','landing'].includes(this.phase)?textLength:Math.min(textLength,Math.floor(elapsed*30));
+      const textLength=this.node.text.length,nodeElapsed=this.time-this.nodeEntered;
+      const revealed=['charge','captcha','lever','heat-demo','heat','return','aim-final','landing'].includes(this.phase)?textLength:Math.min(textLength,Math.floor(nodeElapsed*30));
       if(revealed>this.revealed){this.revealed=revealed;this.emit();}
-      if((this.auto||this.phase==='complete')&&['intro','meal','briefing','last','complete'].includes(this.phase)&&elapsed>=Math.max(3.3,textLength/30+1.7)){
+      if((this.auto||this.phase==='complete')&&manualPhases.has(this.phase)&&nodeElapsed>=Math.max(3.3,textLength/30+1.7)){
         this.revealed=textLength;this.next();
       }
     }
   }
+  get castingElapsed(){return this.castingEntered===null?0:this.vcrStarted!==null?this.castingFrozen:Math.max(0,this.time-this.castingEntered-this.castingPaused);}
+  get heatElapsed(){return this.heatHolding?Math.max(0,this.time-this.heatStarted):this.heatStored;}
   get state(){
-    const elapsed=Math.max(0,this.time-this.entered),meter=this.meterAt(),target=this.targets.find(v=>v.id===this.target),settings=this.meterSettings;
+    const elapsed=Math.max(0,this.time-this.entered),meter=this.meterAt(),target=this.targets.find(v=>v.id===this.target),settings=this.meterSettings,c=this.connection;
+    const connection={...c,value:c[c.field],expected:c.field==='account'?CONNECTION_ACCOUNT:CONNECTION_PASSWORD,captchaReady:this.phase==='captcha'&&elapsed>=6};
+    const electricalTime=clamp(this.heatElapsed*HEAT_RATE,0,HEAT_BURN),demo=this.phase==='heat-demo';
+    const heat={status:this.heatStatus,holding:this.heatHolding,elapsed:this.heatElapsed,electricalTime,progress:clamp(electricalTime/HEAT_TARGET),attempts:this.heatAttempts,target:HEAT_TARGET,rate:HEAT_RATE,successMin:HEAT_SUCCESS_MIN,successMax:HEAT_SUCCESS_MAX,demoIndex:demo?Math.min(1,Math.floor(elapsed/3)):-1,demoProgress:demo?(elapsed%3)/3:0};
+    const vcr=vcrPhases.has(this.phase),combatHoldRemaining=Math.max(0,this.attackHoldUntil-this.time);
     return {phase:this.phase,node:this.node,nodeId:this.node?.id||null,speaker:this.node?.speaker||null,text:this.node?.text||'',revealed:this.revealed,
       branch:this.branch,choices:this.phase==='choice'?dinnerChoices:[],waitingChoice:this.phase==='choice',progress:this.progress,
-      energy:Math.max(0,100-this.progress/99*100),charge:this.phase==='charge'?Math.min(100,elapsed/30*100):['ready','intro','choice','meal','briefing'].includes(this.phase)?0:100,
-      meter,meterElapsed:Math.max(0,this.time-this.meterEntered),meterPeriod:settings.period,meterSettings:settings,output:this.output,outputModes,landingDuration:LANDING_DURATION,phaseElapsed:elapsed,time:this.time,clock:this.time,sourceTime:this.sourceTime,paused:this.paused,auto:this.auto,
-      target:this.target,targetLabel:target?.label||'店面外牆',targets:this.targets,feedback:this.feedback,shots:this.shots,hits:this.hits,
-      canAttack:['combat','aim-final'].includes(this.phase)&&!this.paused&&this.time-this.lastAttack>=.6,
+      energy:Math.max(0,100-this.progress/99*100),charge:this.phase==='charge'?Math.min(100,elapsed/CHARGE_DURATION*100):preChargePhases.has(this.phase)?0:100,
+      meter,meterElapsed:Math.max(0,this.time-this.meterEntered),meterPeriod:settings.period,meterSettings:settings,output:this.output,outputModes,
+      landingDuration:LANDING_DURATION,tourDuration:TOUR_DURATION,chargeDuration:CHARGE_DURATION,rewindDuration:REWIND_DURATION,returnDuration:RETURN_DURATION,heatDemoDuration:HEAT_DEMO_DURATION,
+      phaseElapsed:elapsed,time:this.time,clock:this.time,sourceTime:this.sourceTime,paused:this.paused,auto:this.auto,castingElapsed:this.castingElapsed,
+      connection,login:connection,heat,vcr,rewindProgress:this.phase==='rewind'?clamp(elapsed/REWIND_DURATION):0,returnProgress:this.phase==='return'?clamp(elapsed/RETURN_DURATION):0,vcrElapsed:vcr&&this.vcrStarted!==null?Math.max(0,this.time-this.vcrStarted):0,replayStage:vcr?this.phase:null,vcrSnapshot:this.vcrSnapshot?{...this.vcrSnapshot}:null,
+      target:this.target,targetLabel:target?.label||'店面外牆',targets:this.targets,feedback:this.feedback,shots:this.shots,hits:this.hits,attackHoldUntil:this.attackHoldUntil,combatHoldRemaining,attackHeld:combatHoldRemaining>0,
+      canAttack:['combat','aim-final'].includes(this.phase)&&!this.paused&&this.time-this.lastAttack>=.6&&combatHoldRemaining===0,
       ended:this.ended,busy:!!this.node||!['ready','complete'].includes(this.phase),sequenceKind:this.sequenceKind,endingCaption,revision:this.revision};
   }
 }

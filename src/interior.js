@@ -105,13 +105,7 @@ export function buildInterior(root,r,surfaces,glass,glassMeshes) {
     box('#2a4439',[xx,.83,-2.064],[.015,.74,.018]);
     box('#a7b3a2',[xx+.15,1.08,-2.05],[.16,.022,.025],metal);
   }
-  // Microwave: vent slots, dark door, control column and a lit timer.
-  box('#c2c9bb',[2.63,1.58,-2.48],[.77,.55,.61],{roughness:.36,metalness:.2});
-  box('#243b35',[2.54,1.59,-2.164],[.49,.34,.024]);
-  box('#728071',[2.78,1.59,-2.14],[.022,.27,.018],metal);
-  label('00:45',[2.926,1.72,-2.16],[.13,.07,1],{bg:'#21392e',color:'#b3d195',font:'bold 44px Arial'});
-  for(const yy of [1.46,1.54])r.cylinder(root,'#96a792',[2.91,yy,-2.135],.025,.025,metal).rotation.x=Math.PI/2;
-  for(let k=0;k<6;k++)box('#66756a',[2.39+k*.075,1.876,-2.49],[.025,.008,.28]);
+  // Heating now has a separate window-side appliance, shared by the opening and the VCR.
   // Espresso unit: a dedicated back-bar machine, with hoppers, brew head and tray.
   box('#2d3d36',[3.58,1.59,-2.49],[.56,.59,.53],{roughness:.32,metalness:.3});
   box('#b2b9aa',[3.58,1.52,-2.205],[.49,.29,.04],metal);
@@ -132,7 +126,7 @@ export function buildInterior(root,r,surfaces,glass,glassMeshes) {
   for(let k=0;k<4;k++)r.mesh(cupGeo,r.material('#e8dfc7'),root,[3.98,1.34+k*.025,-2.39]);
   r.cylinder(root,'#d8d2bd',[3.98,1.345,-2.67],.065,.08);
   label('現煮咖啡',[3.58,2.2,-2.19],[.62,.18,1],{bg:'#d0c1a2',color:'#3b523f',font:'bold 48px sans-serif'});
-  label('加熱服務',[2.63,2.08,-2.19],[.73,.14,1],{font:'36px sans-serif'});
+  label('餐具・調味',[2.63,2.08,-2.19],[.73,.14,1],{font:'36px sans-serif'});
   const shadowCanvas=document.createElement('canvas');shadowCanvas.width=shadowCanvas.height=128;const sc=shadowCanvas.getContext('2d'),gradient=sc.createRadialGradient(64,64,15,64,64,63);gradient.addColorStop(0,'rgba(9,17,14,.55)');gradient.addColorStop(1,'rgba(9,17,14,0)');sc.fillStyle=gradient;sc.fillRect(0,0,128,128);
   const shadowMap=r.own(new T.CanvasTexture(shadowCanvas)),shadowMat=r.own(new T.MeshBasicMaterial({map:shadowMap,transparent:true,depthWrite:false}));
   for(const rack of [...racks,{x:2.85,z:.2,w:.9,d:2.1}]){const sh=r.mesh(r.geometry('PlaneGeometry',1,1),shadowMat,root,[rack.x,.315,rack.z],[rack.w+.4,rack.d+.4,1]);sh.rotation.x=-Math.PI/2;}

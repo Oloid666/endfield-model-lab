@@ -1,0 +1,884 @@
+{
+  "url": "http://127.0.0.1:4194/endfield-model-lab/",
+  "browser": "Desktop Chromium / SwiftShader",
+  "real_iphone_test": false,
+  "checks": [
+    {
+      "name": "Opening keeps charred warming microwave",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Portrait Dragon hop stays above keyboard panel",
+      "passed": true,
+      "detail": {
+        "camera": [
+          3.4175731171853987,
+          6.400408677143846,
+          11.52738136863771
+        ],
+        "hero": [
+          -1.25,
+          1.5030200271950958,
+          3.25
+        ],
+        "dragon": [
+          -0.8435305851400936,
+          0.6255623694155278,
+          2.472014890540177
+        ],
+        "dragonScreen": {
+          "ndc": [
+            0.2708000871040166,
+            0.24220558757088523,
+            0.9937888626644485
+          ],
+          "x": 247.80601698528324,
+          "y": 319.7892420450864
+        },
+        "heroScreen": {
+          "ndc": [
+            0.029591157316733646,
+            0.3294692477958733,
+            0.9931800490177829
+          ],
+          "x": 200.77027567676305,
+          "y": 282.9639774301415
+        },
+        "canvas": {
+          "buffer": [
+            390,
+            844
+          ],
+          "drawing": [
+            390,
+            844
+          ],
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 844,
+            "top": 0,
+            "bottom": 844
+          }
+        },
+        "scene": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 844,
+          "top": 0,
+          "bottom": 844
+        },
+        "panel": {
+          "x": 14,
+          "y": 423.8125,
+          "width": 362,
+          "height": 402.1875,
+          "top": 423.8125,
+          "bottom": 826
+        },
+        "drawCalls": 425,
+        "triangles": 342862,
+        "error": 0,
+        "contextLost": false,
+        "inner": [
+          390,
+          844
+        ],
+        "phase": "login"
+      }
+    },
+    {
+      "name": "Landscape scene renders first",
+      "passed": true,
+      "detail": {
+        "camera": [
+          4.294054254433023,
+          5.506066905944112,
+          10.010291414709272
+        ],
+        "hero": [
+          -1.25,
+          1.5271071895460058,
+          3.25
+        ],
+        "dragon": [
+          -0.75,
+          0.545,
+          2.41
+        ],
+        "dragonScreen": {
+          "ndc": [
+            -0.2343376856405322,
+            0.1936603281192256,
+            0.9929175273628663
+          ],
+          "x": 323.1094966596954,
+          "y": 157.236236016751
+        },
+        "heroScreen": {
+          "ndc": [
+            -0.35961653780856917,
+            0.35007644358935086,
+            0.9920079019831857
+          ],
+          "x": 270.2418210447838,
+          "y": 126.73509350007659
+        },
+        "canvas": {
+          "buffer": [
+            844,
+            390
+          ],
+          "drawing": [
+            844,
+            390
+          ],
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 844,
+            "height": 390,
+            "top": 0,
+            "bottom": 390
+          }
+        },
+        "scene": {
+          "x": 0,
+          "y": 0,
+          "width": 844,
+          "height": 390,
+          "top": 0,
+          "bottom": 390
+        },
+        "panel": {
+          "x": 417,
+          "y": 82,
+          "width": 410,
+          "height": 296,
+          "top": 82,
+          "bottom": 378
+        },
+        "drawCalls": 654,
+        "triangles": 537990,
+        "error": 0,
+        "contextLost": false,
+        "inner": [
+          844,
+          390
+        ],
+        "phase": "login",
+        "scene_spread": 35.79268022041591
+      }
+    },
+    {
+      "name": "Landscape scene renders second",
+      "passed": true,
+      "detail": {
+        "camera": [
+          4.296393723018781,
+          5.503679764464698,
+          10.006242058552992
+        ],
+        "hero": [
+          -1.25,
+          1.5182081195055208,
+          3.25
+        ],
+        "dragon": [
+          -0.75,
+          0.545,
+          2.41
+        ],
+        "dragonScreen": {
+          "ndc": [
+            -0.23571121072741286,
+            0.19309994385521145,
+            0.9929140234210017
+          ],
+          "x": 322.52986907303176,
+          "y": 157.34551094823377
+        },
+        "heroScreen": {
+          "ndc": [
+            -0.3610921038605644,
+            0.3474614581761921,
+            0.9920080874693555
+          ],
+          "x": 269.61913217084185,
+          "y": 127.24501565564253
+        },
+        "canvas": {
+          "buffer": [
+            844,
+            390
+          ],
+          "drawing": [
+            844,
+            390
+          ],
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 844,
+            "height": 390,
+            "top": 0,
+            "bottom": 390
+          }
+        },
+        "scene": {
+          "x": 0,
+          "y": 0,
+          "width": 844,
+          "height": 390,
+          "top": 0,
+          "bottom": 390
+        },
+        "panel": {
+          "x": 417,
+          "y": 82,
+          "width": 410,
+          "height": 296,
+          "top": 82,
+          "bottom": 378
+        },
+        "drawCalls": 654,
+        "triangles": 537990,
+        "error": 0,
+        "contextLost": false,
+        "inner": [
+          844,
+          390
+        ],
+        "phase": "login",
+        "scene_spread": 35.7258154041538
+      }
+    },
+    {
+      "name": "Landscape scene renders native",
+      "passed": true,
+      "detail": {
+        "camera": [
+          4.297168162106947,
+          5.502889544120688,
+          10.004901591872475
+        ],
+        "hero": [
+          -1.25,
+          1.51974910617324,
+          3.25
+        ],
+        "dragon": [
+          -0.75,
+          0.545,
+          2.41
+        ],
+        "dragonScreen": {
+          "ndc": [
+            -0.23616693439217948,
+            0.19291346349185196,
+            0.9929128614483528
+          ],
+          "x": 322.33755368650026,
+          "y": 157.38187461908888
+        },
+        "heroScreen": {
+          "ndc": [
+            -0.36167990375531,
+            0.34773038714613996,
+            0.9920057529350229
+          ],
+          "x": 269.3710806152592,
+          "y": 127.19257450650272
+        },
+        "canvas": {
+          "buffer": [
+            844,
+            390
+          ],
+          "drawing": [
+            844,
+            390
+          ],
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 844,
+            "height": 390,
+            "top": 0,
+            "bottom": 390
+          }
+        },
+        "scene": {
+          "x": 0,
+          "y": 0,
+          "width": 844,
+          "height": 390,
+          "top": 0,
+          "bottom": 390
+        },
+        "panel": {
+          "x": 417,
+          "y": 82,
+          "width": 410,
+          "height": 296,
+          "top": 82,
+          "bottom": 378
+        },
+        "drawCalls": 654,
+        "triangles": 537990,
+        "error": 0,
+        "contextLost": false,
+        "inner": [
+          844,
+          390
+        ],
+        "phase": "login",
+        "scene_spread": 35.75671376246884
+      }
+    },
+    {
+      "name": "CCTV uses uploaded Xaihi",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Landscape microwave stays left of interaction panel",
+      "passed": true,
+      "detail": {
+        "camera": [
+          3.6000000004814954,
+          2.1500000005619784,
+          -0.35000000040055834
+        ],
+        "ovenScreen": {
+          "x": 244.03453014844158,
+          "y": 186.79289016695552,
+          "z": 0.9519338742169885
+        },
+        "panel": {
+          "left": 467,
+          "top": 161.90625,
+          "width": 360,
+          "height": 216.09375
+        }
+      }
+    },
+    {
+      "name": "Reviewed microwave interaction reaches success",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "No page errors",
+      "passed": true,
+      "detail": []
+    }
+  ],
+  "errors": [],
+  "assets": [
+    "http://127.0.0.1:4194/endfield-model-lab/assets/index-BQqMN2aU.js",
+    "http://127.0.0.1:4194/endfield-model-lab/assets/index-C7krTZd_.css"
+  ],
+  "opening_oven": {
+    "mode": "charred",
+    "phase": "ready",
+    "charred": 1,
+    "arcActive": false,
+    "arcs": 0,
+    "steam": 0,
+    "food": "cold",
+    "wreck": false,
+    "warming": true,
+    "position": [
+      3.45,
+      1.6,
+      1.43
+    ],
+    "counterVisible": true,
+    "batches": {
+      "meshesBefore": 75,
+      "meshesAfter": 47,
+      "sharedDraws": 2
+    },
+    "display": "極速保溫"
+  },
+  "portrait_login": {
+    "camera": [
+      3.4175731171853987,
+      6.400408677143846,
+      11.52738136863771
+    ],
+    "hero": [
+      -1.25,
+      1.5030200271950958,
+      3.25
+    ],
+    "dragon": [
+      -0.8435305851400936,
+      0.6255623694155278,
+      2.472014890540177
+    ],
+    "dragonScreen": {
+      "ndc": [
+        0.2708000871040166,
+        0.24220558757088523,
+        0.9937888626644485
+      ],
+      "x": 247.80601698528324,
+      "y": 319.7892420450864
+    },
+    "heroScreen": {
+      "ndc": [
+        0.029591157316733646,
+        0.3294692477958733,
+        0.9931800490177829
+      ],
+      "x": 200.77027567676305,
+      "y": 282.9639774301415
+    },
+    "canvas": {
+      "buffer": [
+        390,
+        844
+      ],
+      "drawing": [
+        390,
+        844
+      ],
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844,
+        "top": 0,
+        "bottom": 844
+      }
+    },
+    "scene": {
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 844,
+      "top": 0,
+      "bottom": 844
+    },
+    "panel": {
+      "x": 14,
+      "y": 423.8125,
+      "width": 362,
+      "height": 402.1875,
+      "top": 423.8125,
+      "bottom": 826
+    },
+    "drawCalls": 425,
+    "triangles": 342862,
+    "error": 0,
+    "contextLost": false,
+    "inner": [
+      390,
+      844
+    ],
+    "phase": "login"
+  },
+  "landscape_first": {
+    "camera": [
+      4.294054254433023,
+      5.506066905944112,
+      10.010291414709272
+    ],
+    "hero": [
+      -1.25,
+      1.5271071895460058,
+      3.25
+    ],
+    "dragon": [
+      -0.75,
+      0.545,
+      2.41
+    ],
+    "dragonScreen": {
+      "ndc": [
+        -0.2343376856405322,
+        0.1936603281192256,
+        0.9929175273628663
+      ],
+      "x": 323.1094966596954,
+      "y": 157.236236016751
+    },
+    "heroScreen": {
+      "ndc": [
+        -0.35961653780856917,
+        0.35007644358935086,
+        0.9920079019831857
+      ],
+      "x": 270.2418210447838,
+      "y": 126.73509350007659
+    },
+    "canvas": {
+      "buffer": [
+        844,
+        390
+      ],
+      "drawing": [
+        844,
+        390
+      ],
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 844,
+        "height": 390,
+        "top": 0,
+        "bottom": 390
+      }
+    },
+    "scene": {
+      "x": 0,
+      "y": 0,
+      "width": 844,
+      "height": 390,
+      "top": 0,
+      "bottom": 390
+    },
+    "panel": {
+      "x": 417,
+      "y": 82,
+      "width": 410,
+      "height": 296,
+      "top": 82,
+      "bottom": 378
+    },
+    "drawCalls": 654,
+    "triangles": 537990,
+    "error": 0,
+    "contextLost": false,
+    "inner": [
+      844,
+      390
+    ],
+    "phase": "login",
+    "scene_spread": 35.79268022041591
+  },
+  "landscape_second": {
+    "camera": [
+      4.296393723018781,
+      5.503679764464698,
+      10.006242058552992
+    ],
+    "hero": [
+      -1.25,
+      1.5182081195055208,
+      3.25
+    ],
+    "dragon": [
+      -0.75,
+      0.545,
+      2.41
+    ],
+    "dragonScreen": {
+      "ndc": [
+        -0.23571121072741286,
+        0.19309994385521145,
+        0.9929140234210017
+      ],
+      "x": 322.52986907303176,
+      "y": 157.34551094823377
+    },
+    "heroScreen": {
+      "ndc": [
+        -0.3610921038605644,
+        0.3474614581761921,
+        0.9920080874693555
+      ],
+      "x": 269.61913217084185,
+      "y": 127.24501565564253
+    },
+    "canvas": {
+      "buffer": [
+        844,
+        390
+      ],
+      "drawing": [
+        844,
+        390
+      ],
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 844,
+        "height": 390,
+        "top": 0,
+        "bottom": 390
+      }
+    },
+    "scene": {
+      "x": 0,
+      "y": 0,
+      "width": 844,
+      "height": 390,
+      "top": 0,
+      "bottom": 390
+    },
+    "panel": {
+      "x": 417,
+      "y": 82,
+      "width": 410,
+      "height": 296,
+      "top": 82,
+      "bottom": 378
+    },
+    "drawCalls": 654,
+    "triangles": 537990,
+    "error": 0,
+    "contextLost": false,
+    "inner": [
+      844,
+      390
+    ],
+    "phase": "login",
+    "scene_spread": 35.7258154041538
+  },
+  "landscape_native": {
+    "camera": [
+      4.297168162106947,
+      5.502889544120688,
+      10.004901591872475
+    ],
+    "hero": [
+      -1.25,
+      1.51974910617324,
+      3.25
+    ],
+    "dragon": [
+      -0.75,
+      0.545,
+      2.41
+    ],
+    "dragonScreen": {
+      "ndc": [
+        -0.23616693439217948,
+        0.19291346349185196,
+        0.9929128614483528
+      ],
+      "x": 322.33755368650026,
+      "y": 157.38187461908888
+    },
+    "heroScreen": {
+      "ndc": [
+        -0.36167990375531,
+        0.34773038714613996,
+        0.9920057529350229
+      ],
+      "x": 269.3710806152592,
+      "y": 127.19257450650272
+    },
+    "canvas": {
+      "buffer": [
+        844,
+        390
+      ],
+      "drawing": [
+        844,
+        390
+      ],
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 844,
+        "height": 390,
+        "top": 0,
+        "bottom": 390
+      }
+    },
+    "scene": {
+      "x": 0,
+      "y": 0,
+      "width": 844,
+      "height": 390,
+      "top": 0,
+      "bottom": 390
+    },
+    "panel": {
+      "x": 417,
+      "y": 82,
+      "width": 410,
+      "height": 296,
+      "top": 82,
+      "bottom": 378
+    },
+    "drawCalls": 654,
+    "triangles": 537990,
+    "error": 0,
+    "contextLost": false,
+    "inner": [
+      844,
+      390
+    ],
+    "phase": "login",
+    "scene_spread": 35.75671376246884
+  },
+  "cctv_wide": {
+    "xaihi": {
+      "loaded": true,
+      "phase": "flashback",
+      "action": "terminal",
+      "visible": true,
+      "bones": 960,
+      "scale": 1.00924974058618,
+      "headYaw": -0.22,
+      "phoneVisible": true,
+      "mealVisible": false,
+      "position": [
+        1.95,
+        0.31,
+        0.85
+      ],
+      "pose": {
+        "head": [
+          0.027022649564290672,
+          -0.10984105439143772,
+          0.0007854016999858213,
+          0.9935814494809982
+        ],
+        "wrist": [
+          -0.0016877287760699623,
+          0.9998321503348327,
+          -0.018243991073509262,
+          9.500837431709268e-05
+        ],
+        "arm": [
+          0.7155136743151703,
+          0.1506069042998915,
+          0.6696128591442211,
+          -0.13029327312451278
+        ]
+      }
+    },
+    "camera": [
+      3.8933731511995244,
+      2.5137580289312003,
+      -0.5307065188067683
+    ],
+    "oven": {
+      "mode": "clean",
+      "phase": "flashback",
+      "charred": 0,
+      "arcActive": false,
+      "arcs": 0,
+      "steam": 0,
+      "food": "cold",
+      "wreck": false,
+      "warming": false,
+      "position": [
+        3.45,
+        1.6,
+        1.43
+      ],
+      "counterVisible": true,
+      "batches": {
+        "meshesBefore": 75,
+        "meshesAfter": 47,
+        "sharedDraws": 2
+      },
+      "display": "03:00"
+    }
+  },
+  "cctv_close": {
+    "xaihi": {
+      "loaded": true,
+      "phase": "heat",
+      "action": "microwave",
+      "visible": true,
+      "bones": 960,
+      "scale": 1.00924974058618,
+      "headYaw": -0.22,
+      "phoneVisible": true,
+      "mealVisible": false,
+      "position": [
+        1.95,
+        0.31,
+        0.85
+      ],
+      "pose": {
+        "head": [
+          0.027882337308874953,
+          -0.10962598381775544,
+          -0.006998540231240046,
+          0.9935571114942031
+        ],
+        "wrist": [
+          -0.029489380622121166,
+          0.9982652147889448,
+          0.03652217158469967,
+          -0.035540089502373716
+        ],
+        "arm": [
+          0.7155136743151703,
+          0.1506069042998915,
+          0.6696128591442211,
+          -0.13029327312451278
+        ]
+      }
+    },
+    "camera": [
+      3.600000071460452,
+      2.1500000834050232,
+      -0.35000005944800994
+    ],
+    "oven": {
+      "mode": "heating",
+      "phase": "heat",
+      "charred": 1,
+      "arcActive": false,
+      "arcs": 0,
+      "steam": 0,
+      "food": "cold",
+      "wreck": false,
+      "warming": false,
+      "position": [
+        3.45,
+        1.6,
+        1.43
+      ],
+      "counterVisible": true,
+      "batches": {
+        "meshesBefore": 75,
+        "meshesAfter": 47,
+        "sharedDraws": 2
+      },
+      "display": "0.30 s"
+    }
+  },
+  "landscape_heat": {
+    "camera": [
+      3.6000000004814954,
+      2.1500000005619784,
+      -0.35000000040055834
+    ],
+    "ovenScreen": {
+      "x": 244.03453014844158,
+      "y": 186.79289016695552,
+      "z": 0.9519338742169885
+    },
+    "panel": {
+      "left": 467,
+      "top": 161.90625,
+      "width": 360,
+      "height": 216.09375
+    }
+  },
+  "passed": true,
+  "manual_review": {
+    "passed": true,
+    "reviewed_build": "index-BQqMN2aU.js",
+    "portrait_login": "Dragon hop center y=319.79 remains above connection panel top y=423.81. Physical keys are visible.",
+    "landscape_login": "Scene, character and 3D keys render clearly left of the keyboard UI after actual drawing-buffer resize.",
+    "cctv_wide": "Xaihi face, upper body and handheld terminal are visible from the interior camera.",
+    "cctv_close": "Inside-facing microwave door, food tray, charred surfaces, steam and electrical arcs are visible without foreground posters.",
+    "landscape_heat": "Microwave center x=244.03 remains left of interaction panel x=467, with both inside viewport.",
+    "opening": "Original outside storefront inspection view retained; microwave remains charred and warming."
+  }
+}

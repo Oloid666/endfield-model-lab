@@ -22,7 +22,7 @@ export async function loadActors(scene,r,onStage,signal) {
   // Only the outer placement group scales. Imported nodes, materials and GLB stay intact.
   const scale=1.94/size.y;actor.scale.setScalar(scale);actor.position.set(-center.x*scale,-bounds.min.y*scale,-center.z*scale);pivot.rotation.y=.08;
   root.position.set(-1.25,.32,2.48);
-  gltf.scene.traverse(n=>{if(n.isMesh){n.userData.hotspot='zhuang';r.own(n.geometry);for(const m of Array.isArray(n.material)?n.material:[n.material]){r.own(m);for(const value of Object.values(m))if(value?.isTexture){value.anisotropy=8;r.own(value);}}}});
+  gltf.scene.traverse(n=>{if(n.isMesh){n.userData.hotspot='zhuang';r.own(n.geometry);if(n.isSkinnedMesh)r.own(n.skeleton);for(const m of Array.isArray(n.material)?n.material:[n.material]){r.own(m);for(const value of Object.values(m))if(value?.isTexture){value.anisotropy=8;r.own(value);}}}});
   const bones=[];gltf.scene.traverse(n=>{if(n.isBone)bones.push(n);});const byId=id=>bones.find(n=>gltf.parser.associations.get(n)?.nodes===id);
   root.updateMatrixWorld(true);
   const poses={};for(const [name,id] of Object.entries(config.zhuangNodes)){

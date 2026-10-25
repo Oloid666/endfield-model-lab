@@ -1,0 +1,1877 @@
+{
+  "passed": true,
+  "kind": "Node actual scene geometry; Canvas pixels stubbed; not an iPhone or GPU test",
+  "checks": 36,
+  "results": [
+    {
+      "name": "Original textured 711 logo is a detached physical lightbox",
+      "passed": true,
+      "detail": {
+        "started": false,
+        "active": false,
+        "elapsed": 0,
+        "duration": 4.2,
+        "position": [
+          0,
+          3.1,
+          2.224
+        ],
+        "target": [
+          2.18,
+          0.45,
+          3.47
+        ],
+        "landed": false,
+        "impactRevision": 0,
+        "cablesAttached": false,
+        "originalMesh": true,
+        "visible": true
+      }
+    },
+    {
+      "name": "Neighbor shell replaces former solid box",
+      "passed": true,
+      "detail": {
+        "hit": false,
+        "holeVisible": false,
+        "position": [
+          -8.03,
+          3.15,
+          -2.23
+        ],
+        "normal": [
+          0,
+          0,
+          1
+        ],
+        "fragments": 0,
+        "settled": false,
+        "hollow": true,
+        "collateralHoles": 0,
+        "fractureBranches": 0,
+        "balconyTilt": 0,
+        "brokenWindows": 0
+      }
+    },
+    {
+      "name": "Server uses 24 rectangular blade units and 16 switch ports",
+      "passed": true,
+      "detail": {
+        "alive": true,
+        "lowered": 0,
+        "position": [
+          0,
+          4.38,
+          1.06
+        ],
+        "visibleLEDs": 31,
+        "rackUnits": 24,
+        "networkPorts": 16,
+        "style": "19-inch rackmount blades, patch switches and UPS"
+      }
+    },
+    {
+      "name": "Third equipment floor is part of the destructible roof",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Initial real shop and server visible",
+      "passed": true,
+      "detail": {
+        "progress": 0,
+        "stage": 0,
+        "serverAlive": true,
+        "serverPosition": [
+          0,
+          4.38,
+          1.06
+        ],
+        "visibleIntact": 140,
+        "visibleDebris": 0,
+        "settled": true,
+        "milestones": [
+          {
+            "id": "glass",
+            "threshold": 8,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "upper",
+            "threshold": 27,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "sign",
+            "threshold": 44,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "interior",
+            "threshold": 62,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "roof",
+            "threshold": 80,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "structure",
+            "threshold": 97,
+            "active": false,
+            "visible": true
+          }
+        ],
+        "server": {
+          "alive": true,
+          "lowered": 0,
+          "position": [
+            0,
+            4.38,
+            1.06
+          ],
+          "visibleLEDs": 31,
+          "rackUnits": 24,
+          "networkPorts": 16,
+          "style": "19-inch rackmount blades, patch switches and UPS"
+        },
+        "products": {
+          "visible": 0,
+          "settled": 0,
+          "families": 4,
+          "labels": [
+            "牧場鮮乳",
+            "無糖綠茶",
+            "黑咖啡",
+            "鮮蔬便當",
+            "鮪魚飯糰",
+            "蛋沙拉三明治",
+            "雞蛋布丁",
+            "紅燒湯麵"
+          ]
+        },
+        "neighbor": {
+          "hit": false,
+          "holeVisible": false,
+          "position": [
+            -8.03,
+            3.15,
+            -2.23
+          ],
+          "normal": [
+            0,
+            0,
+            1
+          ],
+          "fragments": 0,
+          "settled": false,
+          "hollow": true,
+          "collateralHoles": 0,
+          "fractureBranches": 0,
+          "balconyTilt": 0,
+          "brokenWindows": 0
+        },
+        "sign": {
+          "started": false,
+          "active": false,
+          "elapsed": 0,
+          "duration": 4.2,
+          "position": [
+            0,
+            3.1,
+            2.224
+          ],
+          "target": [
+            2.18,
+            0.45,
+            3.47
+          ],
+          "landed": false,
+          "impactRevision": 0,
+          "cablesAttached": false,
+          "originalMesh": true,
+          "visible": true
+        },
+        "presentation": "present",
+        "rewindProgress": 0,
+        "thirdFloor": true
+      }
+    },
+    {
+      "name": "First ordinary hit removes actual window geometry",
+      "passed": true,
+      "detail": {
+        "progress": 8,
+        "stage": 1,
+        "serverAlive": true,
+        "serverPosition": [
+          0,
+          4.38,
+          1.06
+        ],
+        "visibleIntact": 112,
+        "visibleDebris": 30,
+        "settled": true,
+        "milestones": [
+          {
+            "id": "glass",
+            "threshold": 8,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "upper",
+            "threshold": 27,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "sign",
+            "threshold": 44,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "interior",
+            "threshold": 62,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "roof",
+            "threshold": 80,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "structure",
+            "threshold": 97,
+            "active": false,
+            "visible": true
+          }
+        ],
+        "server": {
+          "alive": true,
+          "lowered": 0,
+          "position": [
+            0,
+            4.38,
+            1.06
+          ],
+          "visibleLEDs": 31,
+          "rackUnits": 24,
+          "networkPorts": 16,
+          "style": "19-inch rackmount blades, patch switches and UPS"
+        },
+        "products": {
+          "visible": 0,
+          "settled": 0,
+          "families": 4,
+          "labels": [
+            "牧場鮮乳",
+            "無糖綠茶",
+            "黑咖啡",
+            "鮮蔬便當",
+            "鮪魚飯糰",
+            "蛋沙拉三明治",
+            "雞蛋布丁",
+            "紅燒湯麵"
+          ]
+        },
+        "neighbor": {
+          "hit": false,
+          "holeVisible": false,
+          "position": [
+            -8.03,
+            3.15,
+            -2.23
+          ],
+          "normal": [
+            0,
+            0,
+            1
+          ],
+          "fragments": 0,
+          "settled": false,
+          "hollow": true,
+          "collateralHoles": 0,
+          "fractureBranches": 0,
+          "balconyTilt": 0,
+          "brokenWindows": 0
+        },
+        "sign": {
+          "started": false,
+          "active": false,
+          "elapsed": 0,
+          "duration": 4.2,
+          "position": [
+            0,
+            3.1,
+            2.224
+          ],
+          "target": [
+            2.18,
+            0.45,
+            3.47
+          ],
+          "landed": false,
+          "impactRevision": 0,
+          "cablesAttached": false,
+          "originalMesh": true,
+          "visible": true
+        },
+        "presentation": "present",
+        "rewindProgress": 0,
+        "thirdFloor": true
+      }
+    },
+    {
+      "name": "Sign lifts outward while still attached to power cables",
+      "passed": true,
+      "detail": {
+        "started": true,
+        "active": true,
+        "elapsed": 0.7166666666666668,
+        "duration": 4.2,
+        "position": [
+          0.39605530160329866,
+          3.846411914560063,
+          3.2948726039504574
+        ],
+        "target": [
+          2.18,
+          0.45,
+          3.47
+        ],
+        "landed": false,
+        "impactRevision": 0,
+        "cablesAttached": true,
+        "originalMesh": true,
+        "visible": true
+      }
+    },
+    {
+      "name": "Sign cables snap and original panel tumbles before impact",
+      "passed": true,
+      "detail": {
+        "started": true,
+        "active": true,
+        "elapsed": 2.0166666666666666,
+        "duration": 4.2,
+        "position": [
+          1.1618666666666666,
+          3.4074799518036754,
+          3.5681333333333334
+        ],
+        "target": [
+          2.18,
+          0.45,
+          3.47
+        ],
+        "landed": false,
+        "impactRevision": 0,
+        "cablesAttached": false,
+        "originalMesh": true,
+        "visible": true
+      }
+    },
+    {
+      "name": "Partial damage removes real meshes and retains pooled rubble",
+      "passed": true,
+      "detail": {
+        "progress": 44,
+        "stage": 3,
+        "serverAlive": true,
+        "serverPosition": [
+          0,
+          4.38,
+          1.06
+        ],
+        "visibleIntact": 88,
+        "visibleDebris": 90,
+        "settled": true,
+        "milestones": [
+          {
+            "id": "glass",
+            "threshold": 8,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "upper",
+            "threshold": 27,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "sign",
+            "threshold": 44,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "interior",
+            "threshold": 62,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "roof",
+            "threshold": 80,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "structure",
+            "threshold": 97,
+            "active": false,
+            "visible": true
+          }
+        ],
+        "server": {
+          "alive": true,
+          "lowered": 0,
+          "position": [
+            0,
+            4.38,
+            1.06
+          ],
+          "visibleLEDs": 31,
+          "rackUnits": 24,
+          "networkPorts": 16,
+          "style": "19-inch rackmount blades, patch switches and UPS"
+        },
+        "products": {
+          "visible": 16,
+          "settled": 16,
+          "families": 4,
+          "labels": [
+            "牧場鮮乳",
+            "無糖綠茶",
+            "黑咖啡",
+            "鮮蔬便當",
+            "鮪魚飯糰",
+            "蛋沙拉三明治",
+            "雞蛋布丁",
+            "紅燒湯麵"
+          ]
+        },
+        "neighbor": {
+          "hit": false,
+          "holeVisible": false,
+          "position": [
+            -8.03,
+            3.15,
+            -2.23
+          ],
+          "normal": [
+            0,
+            0,
+            1
+          ],
+          "fragments": 0,
+          "settled": false,
+          "hollow": true,
+          "collateralHoles": 0,
+          "fractureBranches": 0,
+          "balconyTilt": 0,
+          "brokenWindows": 0
+        },
+        "sign": {
+          "started": true,
+          "active": true,
+          "elapsed": 2.5,
+          "duration": 4.2,
+          "position": [
+            1.4828000000000001,
+            2.7300948656803325,
+            3.5372
+          ],
+          "target": [
+            2.18,
+            0.45,
+            3.47
+          ],
+          "landed": false,
+          "impactRevision": 0,
+          "cablesAttached": false,
+          "originalMesh": true,
+          "visible": true
+        },
+        "presentation": "present",
+        "rewindProgress": 0,
+        "thirdFloor": true
+      }
+    },
+    {
+      "name": "Sign ground impact emits pooled dust and a wet splash once",
+      "passed": true,
+      "detail": {
+        "started": true,
+        "active": true,
+        "elapsed": 3.5666666666666664,
+        "duration": 4.2,
+        "position": [
+          2.0533333333333337,
+          0.4719529305422041,
+          3.47
+        ],
+        "target": [
+          2.18,
+          0.45,
+          3.47
+        ],
+        "landed": true,
+        "impactRevision": 1,
+        "cablesAttached": false,
+        "originalMesh": true,
+        "visible": true,
+        "dust": 10,
+        "splash": true
+      }
+    },
+    {
+      "name": "Original lightbox stays on the ground after its complete fall",
+      "passed": true,
+      "detail": {
+        "started": true,
+        "active": false,
+        "elapsed": 7.166666666666667,
+        "duration": 4.2,
+        "position": [
+          2.18,
+          0.45,
+          3.47
+        ],
+        "target": [
+          2.18,
+          0.45,
+          3.47
+        ],
+        "landed": true,
+        "impactRevision": 1,
+        "cablesAttached": false,
+        "originalMesh": true,
+        "visible": true
+      }
+    },
+    {
+      "name": "Entire shop removed and one server survives",
+      "passed": true,
+      "detail": {
+        "progress": 99,
+        "stage": 6,
+        "serverAlive": true,
+        "serverPosition": [
+          0,
+          1.21,
+          1.06
+        ],
+        "visibleIntact": 0,
+        "visibleDebris": 188,
+        "settled": true,
+        "milestones": [
+          {
+            "id": "glass",
+            "threshold": 8,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "upper",
+            "threshold": 27,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "sign",
+            "threshold": 44,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "interior",
+            "threshold": 62,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "roof",
+            "threshold": 80,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "structure",
+            "threshold": 97,
+            "active": true,
+            "visible": false
+          }
+        ],
+        "server": {
+          "alive": true,
+          "lowered": 1,
+          "position": [
+            0,
+            1.21,
+            1.06
+          ],
+          "visibleLEDs": 31,
+          "rackUnits": 24,
+          "networkPorts": 16,
+          "style": "19-inch rackmount blades, patch switches and UPS"
+        },
+        "products": {
+          "visible": 48,
+          "settled": 48,
+          "families": 4,
+          "labels": [
+            "牧場鮮乳",
+            "無糖綠茶",
+            "黑咖啡",
+            "鮮蔬便當",
+            "鮪魚飯糰",
+            "蛋沙拉三明治",
+            "雞蛋布丁",
+            "紅燒湯麵"
+          ]
+        },
+        "neighbor": {
+          "hit": false,
+          "holeVisible": false,
+          "position": [
+            -8.03,
+            3.15,
+            -2.23
+          ],
+          "normal": [
+            0,
+            0,
+            1
+          ],
+          "fragments": 0,
+          "settled": false,
+          "hollow": true,
+          "collateralHoles": 0,
+          "fractureBranches": 0,
+          "balconyTilt": 0,
+          "brokenWindows": 0
+        },
+        "sign": {
+          "started": true,
+          "active": false,
+          "elapsed": 7.166666666666667,
+          "duration": 4.2,
+          "position": [
+            2.18,
+            0.45,
+            3.47
+          ],
+          "target": [
+            2.18,
+            0.45,
+            3.47
+          ],
+          "landed": true,
+          "impactRevision": 1,
+          "cablesAttached": false,
+          "originalMesh": true,
+          "visible": true
+        },
+        "presentation": "present",
+        "rewindProgress": 0,
+        "thirdFloor": true
+      }
+    },
+    {
+      "name": "Forty-eight branded items settle in four shared product draws",
+      "passed": true,
+      "detail": {
+        "visible": 48,
+        "settled": 48,
+        "families": 4,
+        "labels": [
+          "牧場鮮乳",
+          "無糖綠茶",
+          "黑咖啡",
+          "鮮蔬便當",
+          "鮪魚飯糰",
+          "蛋沙拉三明治",
+          "雞蛋布丁",
+          "紅燒湯麵"
+        ]
+      }
+    },
+    {
+      "name": "Debris bursts persist as 180 fragments plus structural ruins",
+      "passed": true,
+      "detail": 188
+    },
+    {
+      "name": "Last target follows surviving lowered rack",
+      "passed": true,
+      "detail": {
+        "id": "server",
+        "label": "最後機櫃",
+        "position": [
+          0,
+          4.38,
+          1.06
+        ]
+      }
+    },
+    {
+      "name": "Server destruction starts once",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Server LED and body off after final hit",
+      "passed": true,
+      "detail": {
+        "progress": 99,
+        "stage": 6,
+        "serverAlive": false,
+        "serverPosition": [
+          0,
+          1.21,
+          1.06
+        ],
+        "visibleIntact": 0,
+        "visibleDebris": 188,
+        "settled": true,
+        "milestones": [
+          {
+            "id": "glass",
+            "threshold": 8,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "upper",
+            "threshold": 27,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "sign",
+            "threshold": 44,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "interior",
+            "threshold": 62,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "roof",
+            "threshold": 80,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "structure",
+            "threshold": 97,
+            "active": true,
+            "visible": false
+          }
+        ],
+        "server": {
+          "alive": false,
+          "lowered": 1,
+          "position": [
+            0,
+            1.21,
+            1.06
+          ],
+          "visibleLEDs": 0,
+          "rackUnits": 24,
+          "networkPorts": 16,
+          "style": "19-inch rackmount blades, patch switches and UPS"
+        },
+        "products": {
+          "visible": 48,
+          "settled": 48,
+          "families": 4,
+          "labels": [
+            "牧場鮮乳",
+            "無糖綠茶",
+            "黑咖啡",
+            "鮮蔬便當",
+            "鮪魚飯糰",
+            "蛋沙拉三明治",
+            "雞蛋布丁",
+            "紅燒湯麵"
+          ]
+        },
+        "neighbor": {
+          "hit": false,
+          "holeVisible": false,
+          "position": [
+            -8.03,
+            3.15,
+            -2.23
+          ],
+          "normal": [
+            0,
+            0,
+            1
+          ],
+          "fragments": 0,
+          "settled": false,
+          "hollow": true,
+          "collateralHoles": 0,
+          "fractureBranches": 0,
+          "balconyTilt": 0,
+          "brokenWindows": 0
+        },
+        "sign": {
+          "started": true,
+          "active": false,
+          "elapsed": 8.5,
+          "duration": 4.2,
+          "position": [
+            2.18,
+            0.45,
+            3.47
+          ],
+          "target": [
+            2.18,
+            0.45,
+            3.47
+          ],
+          "landed": true,
+          "impactRevision": 1,
+          "cablesAttached": false,
+          "originalMesh": true,
+          "visible": true
+        },
+        "presentation": "present",
+        "rewindProgress": 0,
+        "thirdFloor": true
+      }
+    },
+    {
+      "name": "Neighbor impact removes true wall plug exactly once",
+      "passed": true,
+      "detail": {
+        "hit": true,
+        "holeVisible": true,
+        "position": [
+          -8.03,
+          3.15,
+          -2.23
+        ],
+        "normal": [
+          0,
+          0,
+          1
+        ],
+        "fragments": 54,
+        "settled": false,
+        "hollow": true,
+        "collateralHoles": 2,
+        "fractureBranches": 9,
+        "balconyTilt": 0,
+        "brokenWindows": 36
+      }
+    },
+    {
+      "name": "Ray enters the room through a real hole",
+      "passed": true,
+      "detail": {
+        "closedDistance": 3.3524999618530273,
+        "openedDistance": 6.04
+      }
+    },
+    {
+      "name": "Whole neighbor facade breaks beyond the Dragon hole",
+      "passed": true,
+      "detail": {
+        "hit": true,
+        "holeVisible": true,
+        "position": [
+          -8.03,
+          3.15,
+          -2.23
+        ],
+        "normal": [
+          0,
+          0,
+          1
+        ],
+        "fragments": 54,
+        "settled": true,
+        "hollow": true,
+        "collateralHoles": 2,
+        "fractureBranches": 9,
+        "balconyTilt": -0.24,
+        "brokenWindows": 36
+      }
+    },
+    {
+      "name": "Neighbor fragments land and stay visible",
+      "passed": true,
+      "detail": {
+        "hit": true,
+        "holeVisible": true,
+        "position": [
+          -8.03,
+          3.15,
+          -2.23
+        ],
+        "normal": [
+          0,
+          0,
+          1
+        ],
+        "fragments": 54,
+        "settled": true,
+        "hollow": true,
+        "collateralHoles": 2,
+        "fractureBranches": 9,
+        "balconyTilt": -0.24,
+        "brokenWindows": 36
+      }
+    },
+    {
+      "name": "Replay repairs collateral wall and hides spilled goods",
+      "passed": true,
+      "detail": {
+        "hit": false,
+        "holeVisible": false,
+        "position": [
+          -8.03,
+          3.15,
+          -2.23
+        ],
+        "normal": [
+          0,
+          0,
+          1
+        ],
+        "fragments": 0,
+        "settled": false,
+        "hollow": true,
+        "collateralHoles": 0,
+        "fractureBranches": 0,
+        "balconyTilt": 0,
+        "brokenWindows": 0
+      }
+    },
+    {
+      "name": "Replay restores intact geometry and room height",
+      "passed": true,
+      "detail": {
+        "progress": 0,
+        "stage": 0,
+        "serverAlive": true,
+        "serverPosition": [
+          0,
+          4.38,
+          1.06
+        ],
+        "visibleIntact": 140,
+        "visibleDebris": 0,
+        "settled": true,
+        "milestones": [
+          {
+            "id": "glass",
+            "threshold": 8,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "upper",
+            "threshold": 27,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "sign",
+            "threshold": 44,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "interior",
+            "threshold": 62,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "roof",
+            "threshold": 80,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "structure",
+            "threshold": 97,
+            "active": false,
+            "visible": true
+          }
+        ],
+        "server": {
+          "alive": true,
+          "lowered": 0,
+          "position": [
+            0,
+            4.38,
+            1.06
+          ],
+          "visibleLEDs": 31,
+          "rackUnits": 24,
+          "networkPorts": 16,
+          "style": "19-inch rackmount blades, patch switches and UPS"
+        },
+        "products": {
+          "visible": 0,
+          "settled": 0,
+          "families": 4,
+          "labels": [
+            "牧場鮮乳",
+            "無糖綠茶",
+            "黑咖啡",
+            "鮮蔬便當",
+            "鮪魚飯糰",
+            "蛋沙拉三明治",
+            "雞蛋布丁",
+            "紅燒湯麵"
+          ]
+        },
+        "neighbor": {
+          "hit": false,
+          "holeVisible": false,
+          "position": [
+            -8.03,
+            3.15,
+            -2.23
+          ],
+          "normal": [
+            0,
+            0,
+            1
+          ],
+          "fragments": 0,
+          "settled": false,
+          "hollow": true,
+          "collateralHoles": 0,
+          "fractureBranches": 0,
+          "balconyTilt": 0,
+          "brokenWindows": 0
+        },
+        "sign": {
+          "started": false,
+          "active": false,
+          "elapsed": 0,
+          "duration": 4.2,
+          "position": [
+            0,
+            3.1,
+            2.224
+          ],
+          "target": [
+            2.18,
+            0.45,
+            3.47
+          ],
+          "landed": false,
+          "impactRevision": 0,
+          "cablesAttached": false,
+          "originalMesh": true,
+          "visible": true
+        },
+        "presentation": "present",
+        "rewindProgress": 0,
+        "thirdFloor": true
+      }
+    },
+    {
+      "name": "Decreasing progress resets safely",
+      "passed": true,
+      "detail": {
+        "progress": 0,
+        "stage": 0,
+        "serverAlive": true,
+        "serverPosition": [
+          0,
+          4.38,
+          1.06
+        ],
+        "visibleIntact": 140,
+        "visibleDebris": 0,
+        "settled": true,
+        "milestones": [
+          {
+            "id": "glass",
+            "threshold": 8,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "upper",
+            "threshold": 27,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "sign",
+            "threshold": 44,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "interior",
+            "threshold": 62,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "roof",
+            "threshold": 80,
+            "active": false,
+            "visible": true
+          },
+          {
+            "id": "structure",
+            "threshold": 97,
+            "active": false,
+            "visible": true
+          }
+        ],
+        "server": {
+          "alive": true,
+          "lowered": 0,
+          "position": [
+            0,
+            4.38,
+            1.06
+          ],
+          "visibleLEDs": 31,
+          "rackUnits": 24,
+          "networkPorts": 16,
+          "style": "19-inch rackmount blades, patch switches and UPS"
+        },
+        "products": {
+          "visible": 0,
+          "settled": 0,
+          "families": 4,
+          "labels": [
+            "牧場鮮乳",
+            "無糖綠茶",
+            "黑咖啡",
+            "鮮蔬便當",
+            "鮪魚飯糰",
+            "蛋沙拉三明治",
+            "雞蛋布丁",
+            "紅燒湯麵"
+          ]
+        },
+        "neighbor": {
+          "hit": false,
+          "holeVisible": false,
+          "position": [
+            -8.03,
+            3.15,
+            -2.23
+          ],
+          "normal": [
+            0,
+            0,
+            1
+          ],
+          "fragments": 0,
+          "settled": false,
+          "hollow": true,
+          "collateralHoles": 0,
+          "fractureBranches": 0,
+          "balconyTilt": 0,
+          "brokenWindows": 0
+        },
+        "sign": {
+          "started": false,
+          "active": false,
+          "elapsed": 0,
+          "duration": 4.2,
+          "position": [
+            0,
+            3.1,
+            2.224
+          ],
+          "target": [
+            2.18,
+            0.45,
+            3.47
+          ],
+          "landed": false,
+          "impactRevision": 0,
+          "cablesAttached": false,
+          "originalMesh": true,
+          "visible": true
+        },
+        "presentation": "present",
+        "rewindProgress": 0,
+        "thirdFloor": true
+      }
+    },
+    {
+      "name": "Both batch passes preserve destructible meshes",
+      "passed": true,
+      "detail": {
+        "dynamic": 223,
+        "batches": {
+          "meshesBefore": 318,
+          "meshesAfter": 273,
+          "consolidated": 50,
+          "sharedDraws": 5
+        }
+      }
+    },
+    {
+      "name": "VCR captures the present state once",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Visual reverse reconstructs real shop without resetting mission damage",
+      "passed": true,
+      "detail": {
+        "progress": 99,
+        "stage": 6,
+        "serverAlive": true,
+        "serverPosition": [
+          0,
+          4.1168351767431055,
+          1.06
+        ],
+        "visibleIntact": 112,
+        "visibleDebris": 188,
+        "settled": true,
+        "milestones": [
+          {
+            "id": "glass",
+            "threshold": 8,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "upper",
+            "threshold": 27,
+            "active": true,
+            "visible": true
+          },
+          {
+            "id": "sign",
+            "threshold": 44,
+            "active": true,
+            "visible": true
+          },
+          {
+            "id": "interior",
+            "threshold": 62,
+            "active": true,
+            "visible": true
+          },
+          {
+            "id": "roof",
+            "threshold": 80,
+            "active": true,
+            "visible": true
+          },
+          {
+            "id": "structure",
+            "threshold": 97,
+            "active": true,
+            "visible": true
+          }
+        ],
+        "server": {
+          "alive": true,
+          "lowered": 0.08301729440280561,
+          "position": [
+            0,
+            4.1168351767431055,
+            1.06
+          ],
+          "visibleLEDs": 31,
+          "rackUnits": 24,
+          "networkPorts": 16,
+          "style": "19-inch rackmount blades, patch switches and UPS"
+        },
+        "products": {
+          "visible": 48,
+          "settled": 48,
+          "families": 4,
+          "labels": [
+            "牧場鮮乳",
+            "無糖綠茶",
+            "黑咖啡",
+            "鮮蔬便當",
+            "鮪魚飯糰",
+            "蛋沙拉三明治",
+            "雞蛋布丁",
+            "紅燒湯麵"
+          ]
+        },
+        "neighbor": {
+          "hit": false,
+          "holeVisible": false,
+          "position": [
+            -8.03,
+            3.15,
+            -2.23
+          ],
+          "normal": [
+            0,
+            0,
+            1
+          ],
+          "fragments": 0,
+          "settled": false,
+          "hollow": true,
+          "collateralHoles": 0,
+          "fractureBranches": 0,
+          "balconyTilt": 0,
+          "brokenWindows": 0
+        },
+        "sign": {
+          "started": true,
+          "active": false,
+          "elapsed": 19,
+          "duration": 4.2,
+          "position": [
+            2.18,
+            0.45,
+            3.47
+          ],
+          "target": [
+            2.18,
+            0.45,
+            3.47
+          ],
+          "landed": true,
+          "impactRevision": 1,
+          "cablesAttached": false,
+          "originalMesh": true,
+          "visible": true
+        },
+        "presentation": "rewind",
+        "rewindProgress": 0.5,
+        "thirdFloor": true
+      }
+    },
+    {
+      "name": "Reverse debris moves back through the air",
+      "passed": true,
+      "detail": {
+        "before": [
+          1.5524208545684814,
+          0.550006091594696,
+          -3.3192496299743652
+        ],
+        "during": [
+          2.4361178874969482,
+          4.388129234313965,
+          -1.1362711191177368
+        ]
+      }
+    },
+    {
+      "name": "Flashback shows intact building while logical server target stays unchanged",
+      "passed": true,
+      "detail": {
+        "progress": 99,
+        "stage": 6,
+        "serverAlive": true,
+        "serverPosition": [
+          0,
+          4.1168351767431055,
+          1.06
+        ],
+        "visibleIntact": 140,
+        "visibleDebris": 0,
+        "settled": true,
+        "milestones": [
+          {
+            "id": "glass",
+            "threshold": 8,
+            "active": true,
+            "visible": true
+          },
+          {
+            "id": "upper",
+            "threshold": 27,
+            "active": true,
+            "visible": true
+          },
+          {
+            "id": "sign",
+            "threshold": 44,
+            "active": true,
+            "visible": true
+          },
+          {
+            "id": "interior",
+            "threshold": 62,
+            "active": true,
+            "visible": true
+          },
+          {
+            "id": "roof",
+            "threshold": 80,
+            "active": true,
+            "visible": true
+          },
+          {
+            "id": "structure",
+            "threshold": 97,
+            "active": true,
+            "visible": true
+          }
+        ],
+        "server": {
+          "alive": true,
+          "lowered": 0.08301729440280561,
+          "position": [
+            0,
+            4.1168351767431055,
+            1.06
+          ],
+          "visibleLEDs": 31,
+          "rackUnits": 24,
+          "networkPorts": 16,
+          "style": "19-inch rackmount blades, patch switches and UPS"
+        },
+        "products": {
+          "visible": 48,
+          "settled": 48,
+          "families": 4,
+          "labels": [
+            "牧場鮮乳",
+            "無糖綠茶",
+            "黑咖啡",
+            "鮮蔬便當",
+            "鮪魚飯糰",
+            "蛋沙拉三明治",
+            "雞蛋布丁",
+            "紅燒湯麵"
+          ]
+        },
+        "neighbor": {
+          "hit": false,
+          "holeVisible": false,
+          "position": [
+            -8.03,
+            3.15,
+            -2.23
+          ],
+          "normal": [
+            0,
+            0,
+            1
+          ],
+          "fragments": 0,
+          "settled": false,
+          "hollow": true,
+          "collateralHoles": 0,
+          "fractureBranches": 0,
+          "balconyTilt": 0,
+          "brokenWindows": 0
+        },
+        "sign": {
+          "started": true,
+          "active": false,
+          "elapsed": 19,
+          "duration": 4.2,
+          "position": [
+            0,
+            3.1,
+            2.224
+          ],
+          "target": [
+            2.18,
+            0.45,
+            3.47
+          ],
+          "landed": true,
+          "impactRevision": 1,
+          "cablesAttached": false,
+          "originalMesh": true,
+          "visible": true
+        },
+        "presentation": "flashback",
+        "rewindProgress": 1,
+        "thirdFloor": true
+      }
+    },
+    {
+      "name": "Returning restores original destroyed geometry and material state",
+      "passed": true,
+      "detail": {
+        "progress": 99,
+        "stage": 6,
+        "serverAlive": true,
+        "serverPosition": [
+          0,
+          4.1168351767431055,
+          1.06
+        ],
+        "visibleIntact": 0,
+        "visibleDebris": 188,
+        "settled": true,
+        "milestones": [
+          {
+            "id": "glass",
+            "threshold": 8,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "upper",
+            "threshold": 27,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "sign",
+            "threshold": 44,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "interior",
+            "threshold": 62,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "roof",
+            "threshold": 80,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "structure",
+            "threshold": 97,
+            "active": true,
+            "visible": false
+          }
+        ],
+        "server": {
+          "alive": true,
+          "lowered": 0.08301729440280561,
+          "position": [
+            0,
+            4.1168351767431055,
+            1.06
+          ],
+          "visibleLEDs": 31,
+          "rackUnits": 24,
+          "networkPorts": 16,
+          "style": "19-inch rackmount blades, patch switches and UPS"
+        },
+        "products": {
+          "visible": 48,
+          "settled": 48,
+          "families": 4,
+          "labels": [
+            "牧場鮮乳",
+            "無糖綠茶",
+            "黑咖啡",
+            "鮮蔬便當",
+            "鮪魚飯糰",
+            "蛋沙拉三明治",
+            "雞蛋布丁",
+            "紅燒湯麵"
+          ]
+        },
+        "neighbor": {
+          "hit": false,
+          "holeVisible": false,
+          "position": [
+            -8.03,
+            3.15,
+            -2.23
+          ],
+          "normal": [
+            0,
+            0,
+            1
+          ],
+          "fragments": 0,
+          "settled": false,
+          "hollow": true,
+          "collateralHoles": 0,
+          "fractureBranches": 0,
+          "balconyTilt": 0,
+          "brokenWindows": 0
+        },
+        "sign": {
+          "started": true,
+          "active": false,
+          "elapsed": 19,
+          "duration": 4.2,
+          "position": [
+            2.18,
+            0.45,
+            3.47
+          ],
+          "target": [
+            2.18,
+            0.45,
+            3.47
+          ],
+          "landed": true,
+          "impactRevision": 1,
+          "cablesAttached": false,
+          "originalMesh": true,
+          "visible": true
+        },
+        "presentation": "present",
+        "rewindProgress": 0,
+        "thirdFloor": true
+      }
+    },
+    {
+      "name": "Returning preserves exact pooled rubble matrices and sign position",
+      "passed": true,
+      "detail": {
+        "started": true,
+        "active": false,
+        "elapsed": 19,
+        "duration": 4.2,
+        "position": [
+          2.18,
+          0.45,
+          3.47
+        ],
+        "target": [
+          2.18,
+          0.45,
+          3.47
+        ],
+        "landed": true,
+        "impactRevision": 1,
+        "cablesAttached": false,
+        "originalMesh": true,
+        "visible": true
+      }
+    },
+    {
+      "name": "Returned scene resumes without a new collapse or hit",
+      "passed": true,
+      "detail": {
+        "progress": 99,
+        "stage": 6,
+        "serverAlive": true,
+        "serverPosition": [
+          0,
+          3.4513198726973617,
+          1.06
+        ],
+        "visibleIntact": 0,
+        "visibleDebris": 188,
+        "settled": true,
+        "milestones": [
+          {
+            "id": "glass",
+            "threshold": 8,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "upper",
+            "threshold": 27,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "sign",
+            "threshold": 44,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "interior",
+            "threshold": 62,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "roof",
+            "threshold": 80,
+            "active": true,
+            "visible": false
+          },
+          {
+            "id": "structure",
+            "threshold": 97,
+            "active": true,
+            "visible": false
+          }
+        ],
+        "server": {
+          "alive": true,
+          "lowered": 0.29295903069483853,
+          "position": [
+            0,
+            3.4513198726973617,
+            1.06
+          ],
+          "visibleLEDs": 31,
+          "rackUnits": 24,
+          "networkPorts": 16,
+          "style": "19-inch rackmount blades, patch switches and UPS"
+        },
+        "products": {
+          "visible": 48,
+          "settled": 48,
+          "families": 4,
+          "labels": [
+            "牧場鮮乳",
+            "無糖綠茶",
+            "黑咖啡",
+            "鮮蔬便當",
+            "鮪魚飯糰",
+            "蛋沙拉三明治",
+            "雞蛋布丁",
+            "紅燒湯麵"
+          ]
+        },
+        "neighbor": {
+          "hit": false,
+          "holeVisible": false,
+          "position": [
+            -8.03,
+            3.15,
+            -2.23
+          ],
+          "normal": [
+            0,
+            0,
+            1
+          ],
+          "fragments": 0,
+          "settled": false,
+          "hollow": true,
+          "collateralHoles": 0,
+          "fractureBranches": 0,
+          "balconyTilt": 0,
+          "brokenWindows": 0
+        },
+        "sign": {
+          "started": true,
+          "active": false,
+          "elapsed": 19.1,
+          "duration": 4.2,
+          "position": [
+            2.18,
+            0.45,
+            3.47
+          ],
+          "target": [
+            2.18,
+            0.45,
+            3.47
+          ],
+          "landed": true,
+          "impactRevision": 1,
+          "cablesAttached": false,
+          "originalMesh": true,
+          "visible": true
+        },
+        "presentation": "present",
+        "rewindProgress": 0,
+        "thirdFloor": true
+      }
+    },
+    {
+      "name": "Replay also clears sign flight and presentation",
+      "passed": true,
+      "detail": {
+        "started": false,
+        "active": false,
+        "elapsed": 0,
+        "duration": 4.2,
+        "position": [
+          0,
+          3.1,
+          2.224
+        ],
+        "target": [
+          2.18,
+          0.45,
+          3.47
+        ],
+        "landed": false,
+        "impactRevision": 0,
+        "cablesAttached": false,
+        "originalMesh": true,
+        "visible": true
+      }
+    },
+    {
+      "name": "Standard garden has twice the V6 blossom count",
+      "passed": true,
+      "detail": {
+        "quality": "balanced",
+        "trees": 3,
+        "blossoms": 2700,
+        "newLeaves": 420,
+        "fallingPetals": 24,
+        "protected": false,
+        "shield": 0,
+        "center": [
+          7.65,
+          0.29,
+          -0.65
+        ]
+      }
+    },
+    {
+      "name": "Low quality keeps flowers in one shared draw",
+      "passed": true,
+      "detail": {
+        "quality": "low",
+        "trees": 3,
+        "blossoms": 1400,
+        "newLeaves": 240,
+        "fallingPetals": 12,
+        "protected": false,
+        "shield": 0,
+        "center": [
+          7.65,
+          0.29,
+          -0.65
+        ]
+      }
+    },
+    {
+      "name": "High quality retains full flowering canopy",
+      "passed": true,
+      "detail": {
+        "quality": "high",
+        "trees": 3,
+        "blossoms": 3600,
+        "newLeaves": 420,
+        "fallingPetals": 30,
+        "protected": false,
+        "shield": 0,
+        "center": [
+          7.65,
+          0.29,
+          -0.65
+        ]
+      }
+    }
+  ]
+}
