@@ -55,4 +55,11 @@ PHP 概念核對：[PHP 官方比較運算子文件](https://www.php.net/manual/
 
 ## 發布狀態
 
-正式發布與公開資源雜湊核對待完成後填入。iPhone Safari 仍待真機確認，尤其使用者原先的初始人物消失與實際載入時間。
+已於 2026-10-25 發布 [V10 網站](https://oloid666.github.io/endfield-model-lab/?v=10)。
+
+- [程式版本 d2d29ea](https://github.com/Oloid666/endfield-model-lab/commit/d2d29ea8c2a645b695cda9fba85514ab60355f54)
+- [GitHub Actions Build 與 Pages 部署成功](https://github.com/Oloid666/endfield-model-lab/actions/runs/40200075090)
+- 公開 HTML、全部輸出 JS／CSS、圖片及兩份模型，均以正常 TLS 下載，SHA-256 與本機受測 production build 相符。證據：[公開資源核對](../artifacts/production-check.json)。
+- 最終 `index-PmsBhbHP.js` 桌面整合 30 項通過，無 JavaScript 錯誤，結尾實際觀察 60.06 秒。故障重試 7 項及獨立節拍 UI 6 項通過。
+
+公開資源核對不等於公開網址的瀏覽器或真機實測。iPhone Safari 仍待真機確認，尤其使用者原先的初始人物消失與實際載入時間；未宣稱根因已在該裝置重現或穩定 30 FPS。

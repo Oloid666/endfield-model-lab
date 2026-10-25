@@ -1,28 +1,28 @@
 {
-  "url": "https://oloid666.github.io/endfield-model-lab/?v=9",
-  "release": "lookdev-v9-cannon-radiance-cameras-heat-pulses",
-  "commit": "e986dad22d9e3aa37fc55e60542c92cd55e53a78",
-  "action": "https://github.com/Oloid666/endfield-model-lab/actions/runs/40191857761",
+  "url": "https://oloid666.github.io/endfield-model-lab/?v=10",
+  "release": "lookdev-v10-photo-investigation-hacker-rhythm",
+  "commit": "d2d29ea8c2a645b695cda9fba85514ab60355f54",
+  "action": "https://github.com/Oloid666/endfield-model-lab/actions/runs/40200075090",
   "tls_verification": true,
   "browser_public_url_test": false,
   "real_iphone_test": false,
   "assets": [
     {
-      "path": "/endfield-model-lab/assets/index-Caycndcd.css",
-      "bytes": 53844,
-      "sha256": "cd84574bb10550b802b16b3bef24073e46321043d9e6ee2be30b05f128ff5b2e",
+      "path": "/endfield-model-lab/assets/index-CwTAfxj0.css",
+      "bytes": 59613,
+      "sha256": "2e2a81f70d2b1e30ec04daacbfc5a1f2da46a746986f824ee34de19ef933c718",
       "matches_tested_build": true
     },
     {
-      "path": "/endfield-model-lab/assets/index-CwflIFf0.js",
-      "bytes": 1088723,
-      "sha256": "a526506ec645a76ff74364aecf765613e1007f6cb7c723a1552554f062b2259f",
+      "path": "/endfield-model-lab/assets/index-PmsBhbHP.js",
+      "bytes": 1104645,
+      "sha256": "c6ce6a559e293945201121060f5e35f5abdccf92518d493145b4397a49ad377a",
       "matches_tested_build": true
     },
     {
-      "path": "/endfield-model-lab/assets/xaihi-DL3F_WiF.js",
-      "bytes": 6023,
-      "sha256": "2355f6d981b8da71b59ef957bfaa579c7451f58cf0dbb7340b4f2012bb8c4b0f",
+      "path": "/endfield-model-lab/assets/xaihi-C5XyZxyB.js",
+      "bytes": 5991,
+      "sha256": "709ad4e39c6adc1b8aa66bce51cba991570baa0e04fbf4d5641f6e35a3eb8caf",
       "matches_tested_build": true
     },
     {
@@ -76,8 +76,14 @@
     "tianshi-green-energy-columns",
     "microwave-fault-halo",
     "mission-camera-reset",
-    "正在準備雨夜光影",
-    "拆成三段"
+    "正在準備人物光影",
+    "photo-framing",
+    "purple-food-mosaic",
+    "store-cctv",
+    "管理密碼：0000",
+    "電網突波！設備失控",
+    "息壤 10,000 噸",
+    "photo-shutter"
   ],
   "removed_playground_marker_absent": true
 }
