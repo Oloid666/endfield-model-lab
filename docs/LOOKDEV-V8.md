@@ -61,4 +61,16 @@ CCTV 的遮擋已修正。微波爐朝向店內，鏡頭位於店內：賽希的
 
 ## 發布狀態
 
-尚未填入 V8 部署結果。部署成功、公開資源與受測 build 核對後再補記錄。
+已於 2026-10-25 發布。
+
+- [正式網站 · V8](https://oloid666.github.io/endfield-model-lab/?v=8)
+- [程式版本 27b9243](https://github.com/Oloid666/endfield-model-lab/commit/27b9243a11bc14b42f49e38b05bcbca46ae9bbc3)
+- [GitHub Actions：Build 與 Pages 部署成功](https://github.com/Oloid666/endfield-model-lab/actions/runs/40156122443)
+
+已透過正常 TLS 下載公開 HTML、主程式、賽希延後載入模組、CSS、肖像及兩份 GLB；全部與本機受測 production build 的內容及 SHA-256 一致。莊與賽希的原始模型雜湊均保持不變。舊試驗區的程式字串已從公開 bundle 移除。證據見 [`production-check.json`](../artifacts/production-check.json)。
+
+主程式為 `index-BQqMN2aU.js`，1,062,386 bytes；CSS 為 `index-C7krTZd_.css`，44,445 bytes；賽希模組為 `xaihi-B73Fy-1b.js`，6,023 bytes。Vite 仍提示主 chunk 超過 500 kB，沒有隱藏警告。
+
+本環境 Chromium 直接開啟公開網址仍遇到代理憑證信任錯誤 `ERR_CERT_AUTHORITY_INVALID`，沒有停用 TLS 驗證。公開資源核對與本機同版 WebGL 測試已完成，但未宣稱取得公開網址的瀏覽器截圖。此限制記於 [`v8-public-browser-check.json`](../artifacts/v8-public-browser-check.json)。
+
+iPhone Safari 真機效能、Safe Area 與工具列收合仍待實機確認，未宣稱達成手機 30 FPS。
