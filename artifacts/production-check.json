@@ -1,28 +1,28 @@
 {
-  "url": "https://oloid666.github.io/endfield-model-lab/?v=11",
-  "release": "lookdev-v11-counter-camera-receipt-takeoff",
-  "commit": "8636f33544db3e5c6c22df86b46e1caec5221c19",
-  "action": "https://github.com/Oloid666/endfield-model-lab/actions/runs/40213334238",
+  "url": "https://oloid666.github.io/endfield-model-lab/?v=12",
+  "release": "lookdev-v12-companion-camera-storyboards",
+  "commit": "a56c9bf54125778f0755f12808ee340db42eb0dc",
+  "action": "https://github.com/Oloid666/endfield-model-lab/actions/runs/40243639681",
   "tls_verification": true,
   "browser_public_url_test": false,
   "real_iphone_test": false,
   "assets": [
     {
-      "path": "/endfield-model-lab/assets/index-CbRnhtz7.js",
-      "bytes": 1114673,
-      "sha256": "82aa6fb000a83d846afcee9fa30cc759dc708ac0ca163b5f586a37af776c7ff4",
+      "path": "/endfield-model-lab/assets/index-DY0UWGNl.css",
+      "bytes": 66422,
+      "sha256": "51f79af93eb573ae73288b72ef6dba82546067dcdb49b3a8431fbab5b9047822",
       "matches_tested_build": true
     },
     {
-      "path": "/endfield-model-lab/assets/index-qFKD1lFz.css",
-      "bytes": 64364,
-      "sha256": "5bc6554666fced52a7cfd1ac35e74031f337471d5ad296a50394d4e1a44ed17d",
+      "path": "/endfield-model-lab/assets/index-Dx5DEkRI.js",
+      "bytes": 1120025,
+      "sha256": "839a5a0f7822de14bffe7dd6060311c5b8488dcf672f72705bacc3d215ae5926",
       "matches_tested_build": true
     },
     {
-      "path": "/endfield-model-lab/assets/xaihi-Cv6we-To.js",
+      "path": "/endfield-model-lab/assets/xaihi-Dq0dLMN3.js",
       "bytes": 5991,
-      "sha256": "6d42f3b58f6fb5d64351e669f9efcd6aa48f4568281256e2a812c567dff57e32",
+      "sha256": "0d544abac3dccf474a70026e33391471d63483bd72beaf3d9d81262601146a57",
       "matches_tested_build": true
     },
     {
@@ -51,8 +51,14 @@
     },
     {
       "path": "/endfield-model-lab/images/receipt.svg",
-      "bytes": 1300,
-      "sha256": "785a76a4f386ce66eefaf510660d98daa970ba24d0b4e727ce0155a5e0690375",
+      "bytes": 1286,
+      "sha256": "d47df83b00a3865affc03d7c56adac1e89b37f004fb9d9e2ae83cf57b573c28b",
+      "matches_tested_build": true
+    },
+    {
+      "path": "/endfield-model-lab/images/zhuang-portrait.jpg",
+      "bytes": 47895,
+      "sha256": "7a767bfe274a2da71b1a7cd0b0a124bb3ffd8d8b2093b2cce10f44b39ae2fcbe",
       "matches_tested_build": true
     }
   ],
@@ -90,6 +96,12 @@
     "mission-camera-reset",
     "正在準備人物光影",
     "photo-framing",
+    "dragon-takeaway-bag",
+    "photo-return",
+    "terminal-deploy",
+    "charge-feet",
+    "tour-ground-sign",
+    "tour-pear",
     "purple-food-mosaic",
     "store-cctv",
     "管理密碼：0000",

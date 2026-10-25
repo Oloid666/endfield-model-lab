@@ -27,3 +27,11 @@ Node狀態58項、鏡頭70項，以及原有骨架69項、破壞36項、場景�
 模型沒有原生動畫，走路與抓取沿用程序骨架姿勢；相機和餐袋為程序幾何。龍泡泡第一人稱取景用OrbitControls旋轉／縮放／平移，沒有另加飛行搖桿。最終彈道保留誇張弧線，鄰屋在店後方，未宣稱真實彈道物理。高解析度快門可能在手機產生短暫停頓，需iPhone實測。主程式仍有Vite大於500KB的提示。
 
 最後通訊對比與頭像載入複查見 `artifacts/v12-final-visual.json`。
+
+## 發布證據
+
+- 網址：https://oloid666.github.io/endfield-model-lab/?v=12
+- 程式提交：`a56c9bf54125778f0755f12808ee340db42eb0dc`
+- [Actions建置與部署成功](https://github.com/Oloid666/endfield-model-lab/actions/runs/40243639681)
+- 公開HTML、全部JS/CSS、圖片及兩個原始GLB均以正常TLS取回並核對雜湊；紀錄：`artifacts/production-check.json`。
+- 最終畫面複查載入的JS為 `index-Dx5DEkRI.js`，與公開部署一致。全流程38項是在最後通訊對比／廢墟分鏡微調前測試；微調後另以70項鏡頭測試及實際瀏覽器頭像／對比／照片畫面複查，未將它冒充第二輪完整流程。

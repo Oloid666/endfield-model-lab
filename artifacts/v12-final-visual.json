@@ -1,0 +1,11 @@
+{
+  "speaker": "zhuang",
+  "portraitLoaded": true,
+  "nameColor": "rgb(231, 223, 191)",
+  "assets": [
+    "http://127.0.0.1:4215/endfield-model-lab/assets/index-Dx5DEkRI.js"
+  ],
+  "passed": true,
+  "real_iphone_test": false,
+  "errors": []
+}
