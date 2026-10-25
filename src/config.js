@@ -3,6 +3,7 @@ export const config = {
   reflection: { low: 192, balanced: 384, high: 512 },
   rainCount: { low: 650, balanced: 1400, high: 2200 },
   views: {
+    interior:{position:[0,2.8,5.0],target:[2,1.3,.7],mobilePosition:[0,2.8,5.0],mobileTarget:[2,1.3,.7]},
     pear:{position:[13.8,5.4,8.4],target:[7.5,2,-.55],mobilePosition:[14.7,6.2,10.4],mobileTarget:[7.55,1.9,-.55]},
     investigate:{position:[8.8,6.3,16],target:[.3,3,1],mobilePosition:[7.7,6.5,18.2],mobileTarget:[.3,3,1]},
     plan: {position:[0,30,4.1],target:[0,0,4],mobilePosition:[0,38,4.1],mobileTarget:[0,0,4]},

@@ -11,15 +11,15 @@ function rhythmWin(r,origin){
  for(const note of notes){check('Beat down accepted',r.down(origin+note.at));if(note.type==='hold')check('Hold release accepted',r.up(origin+note.end));}
  r.update(origin+notes.at(-1).end+1);
 }
-for(const route of ['floor','server']){
+for(const route of ['floor']){
  const events=[],m=new MissionMachine({onAction:e=>events.push(e)});m.setTargets([{id:'structure',label:'店體',position:[0,3,1]}]);
- step(m,900);check('Opening waits',m.phase==='ready');m.start();finish(m);check('Dinner no longer blocks story',m.phase==='photo'&&m.branch==='A');
- m.setAuto(true);step(m,500);check('Photo never auto submits',m.phase==='photo');m.setPaused(true);check('Paused shutter rejected',!m.takePhoto());m.setPaused(false);m.takePhoto();
- check('Review requires player choice',m.phase==='investigate'&&!m.investigate('bad'));step(m,50);check('Investigation waits',m.phase==='investigate');
- m.setAuto(false);m.investigate(route);check('Route produces distinct scene',m.phase===(route==='floor'?'cargo':'observation'));
+ step(m,900);check('Opening waits',m.phase==='ready');m.start();finish(m);step(m,7);finish(m);check('Dinner no longer blocks story',m.phase==='photo'&&m.branch==='A');
+ m.setAuto(true);step(m,500);check('Photo never auto submits',m.phase==='photo');m.setPaused(true);check('Paused shutter rejected',!m.takePhoto());m.setPaused(false);m.takePhoto();finish(m);
+ check('Review waits for send',m.phase==='photo-review');step(m,50);check('Review never auto sends',m.phase==='photo-review');
+ m.setAuto(false);m.sendPhoto();check('Route produces distinct scene',m.phase===(route==='floor'?'cargo':'observation'));
  if(route==='floor')finish(m);finish(m);check('Incoming call waits',m.phase==='comm-request');step(m,50);check('Call never self accepts',m.phase==='comm-request');m.acceptCall();finish(m);check('Briefing reaches login',m.phase==='login');
  for(const chunk of ['endfield','_','power'])check('Account chunk accepted',m.keyChunk(chunk));check('Account auto confirms only after full value',m.connection.field==='password');
- for(const chunk of ['520','1314'])check('Password chunk accepted',m.keyChunk(chunk));check('Captcha follows login',m.phase==='captcha');check('Captcha waits for lines',!m.verify());step(m,6);m.verify();check('Lever waits',m.phase==='lever');
+ for(const chunk of ['520','1314'])check('Password chunk accepted',m.keyChunk(chunk));check('Verification dialogue precedes input',m.phase==='verify-talk');check('No premature verification',!m.verify());finish(m);m.verify();finish(m);check('Lever waits',m.phase==='lever');
  check('Partial lever does not start charge',m.setLever(.5)&&m.phase==='lever');m.setLever(1);check('Charge starts',m.phase==='charge');step(m,CHARGE_DURATION);check('Combat starts',m.phase==='combat');
  for(let i=0;i<30&&m.phase==='combat';i++){step(m,1);const period=m.state.meterPeriod;const wanted=m.meterEntered+period/4;const next=wanted>m.time?wanted:wanted+Math.ceil((m.time-wanted)/period)*period;step(m,next-m.time);m.attack(m.sourceTime);}
  check('Combat reaches exhaustion',m.phase==='energy'&&m.progress===99);finish(m);check('VCR snapshot saved',m.phase==='rewind'&&m.vcrSnapshot.progress===99);const frozen=m.time;m.setPaused(true);step(m,100);check('Pause freezes VCR',m.time===frozen);m.setPaused(false);step(m,REWIND_DURATION);check('Flashback starts',m.phase==='flashback');finish(m);check('Hack gates progression',m.phase==='hack');
@@ -36,8 +36,8 @@ for(const route of ['floor','server']){
 }
 const r=new RhythmHeat();r.start(0);r.cancel();r.start(4);r.update(7);check('Cancel does not bypass forced surge',r.status==='burnt'&&r.failures===1);r.retry();const initialWindow=r.window;r.start(10);r.update(20);check('Real missed notes fail',r.status==='burnt'&&r.failures===2);r.retry();check('Failure widens timing and slows BPM',r.window>initialWindow);rhythmWin(r,30);check('Completed round retained',r.round===1);r.start(40);r.cancel();check('Cancel retains successful round',r.round===1&&r.status==='ready');
 check('Meter still differentiates edge and centre',judgeMeter(0).result==='miss'&&judgeMeter(.5).result==='perfect');
-check('Insurance pays off smuggling premise',chargeLines.some(v=>v.text.includes('萬噸息壤'))&&chargeLines.some(v=>v.text.includes('我辦的')));
+check('Insurance pays off smuggling premise',chargeLines.some(v=>v.text.includes('都保了'))&&chargeLines.some(v=>v.text.includes('事故時間空白')));
 check('CCTV hacker voice before explanation',sequences.flashback.findIndex(l=>l.mood==='thought')<sequences.flashback.findIndex(l=>l.speaker==='dragon'));
 check('Every line has stable data fields',[...Object.values(sequences).flat(),...chatterGroups.flat(),...Object.values(hotspots).flat(2)].every(l=>['id','speaker','text','mood','gesture','next'].every(k=>k in l)));
 check('At least fourteen aftermath groups',chatterGroups.length>=14);
-await fs.writeFile(new URL('../artifacts/v10-mission-check.json',import.meta.url),JSON.stringify({passed:true,count:checks.length,checks},null,2)+'\n');console.log(`V10 mission: ${checks.length} checks passed.`);
+await fs.writeFile(new URL('../artifacts/v11-mission-check.json',import.meta.url),JSON.stringify({passed:true,count:checks.length,checks},null,2)+'\n');console.log(`V11 mission: ${checks.length} checks passed.`);

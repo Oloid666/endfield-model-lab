@@ -1,0 +1,30 @@
+{
+  "passed": true,
+  "real_iphone_test": false,
+  "checks": [
+    {
+      "name": "Actual click changes traffic signal",
+      "passed": true
+    },
+    {
+      "name": "Actual click switches room light off",
+      "passed": true
+    },
+    {
+      "name": "Actual click switches room light on",
+      "passed": true
+    },
+    {
+      "name": "Actual click opens the door",
+      "passed": true
+    },
+    {
+      "name": "Actual click closes the door",
+      "passed": true
+    },
+    {
+      "name": "Drag does not trigger signal switch",
+      "passed": true
+    }
+  ]
+}

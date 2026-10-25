@@ -1,0 +1,377 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "Fragment colours are allocated before shader preparation",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "One stable, unshadowed burst light exists before any attack",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Idle burst light has no output while retaining its visible shader variant",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Original particle cap stays at 72 in balanced quality",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Fire produces a pooled muzzle cone and a visible beam",
+      "passed": true,
+      "detail": {
+        "active": true,
+        "phase": "combat",
+        "beams": 1,
+        "particles": 5,
+        "pulses": 0,
+        "charge": 0,
+        "quality": "balanced",
+        "particleLimit": 72,
+        "smoke": 0,
+        "geometryAllocatedPerFrame": 0,
+        "muzzles": 1,
+        "rays": 0,
+        "shock": 0.08829106588114607,
+        "flash": 0,
+        "maxImpactRadius": 0,
+        "lightIntensity": 14.876899939942765,
+        "impactAge": null,
+        "fireAge": 0.10000000000000009,
+        "shockOrigin": [
+          0,
+          0,
+          0
+        ],
+        "impactRevision": 0,
+        "qualityCaps": {
+          "smoke": 8,
+          "rays": 8,
+          "layers": 3
+        },
+        "sharedLights": 1,
+        "reducedMotion": false
+      }
+    },
+    {
+      "name": "First fire reuses the prepared colour attribute",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Shot kick starts before impact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Ordinary beam creates one timed impact",
+      "passed": true,
+      "detail": {
+        "active": true,
+        "phase": "combat",
+        "beams": 1,
+        "particles": 35,
+        "pulses": 1,
+        "charge": 0,
+        "quality": "balanced",
+        "particleLimit": 72,
+        "smoke": 4,
+        "geometryAllocatedPerFrame": 0,
+        "muzzles": 1,
+        "rays": 8,
+        "shock": 0.48895552459981007,
+        "flash": 0.16529888822158662,
+        "maxImpactRadius": 0.6801930173438844,
+        "lightIntensity": 59.50759975977118,
+        "impactAge": 0.19999999999999996,
+        "fireAge": 0.30000000000000004,
+        "shockOrigin": [
+          0,
+          3,
+          1.45
+        ],
+        "impactRevision": 1,
+        "qualityCaps": {
+          "smoke": 8,
+          "rays": 8,
+          "layers": 3
+        },
+        "sharedLights": 1,
+        "reducedMotion": false
+      }
+    },
+    {
+      "name": "Impact provides bounded camera envelopes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Shared light illuminates the impact without allocating another light",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Street shockwave extends beyond five metres",
+      "passed": true,
+      "detail": {
+        "radius": 6.266921460494486
+      }
+    },
+    {
+      "name": "Shockwave lies on the wet street even when the impact is upstairs",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Finisher waits for explicit Dragon collision",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Final blast has layered smoke within the balanced cap",
+      "passed": true,
+      "detail": {
+        "active": true,
+        "phase": "finisher",
+        "beams": 1,
+        "particles": 30,
+        "pulses": 1,
+        "charge": 0,
+        "quality": "balanced",
+        "particleLimit": 72,
+        "smoke": 8,
+        "geometryAllocatedPerFrame": 0,
+        "muzzles": 0,
+        "rays": 8,
+        "shock": 0.9525269927041953,
+        "flash": 0.40656965974060044,
+        "maxImpactRadius": 0.6670606684647898,
+        "lightIntensity": 264.27027883139027,
+        "impactAge": 0.09999999999999964,
+        "fireAge": 1.5,
+        "shockOrigin": [
+          0,
+          2,
+          1.45
+        ],
+        "impactRevision": 1,
+        "qualityCaps": {
+          "smoke": 8,
+          "rays": 8,
+          "layers": 3
+        },
+        "sharedLights": 1,
+        "reducedMotion": false
+      }
+    },
+    {
+      "name": "Final blast covers at least twelve metres",
+      "passed": true,
+      "detail": {
+        "radius": 15.152633492491617
+      }
+    },
+    {
+      "name": "low quality has explicit particle/smoke/streak caps",
+      "passed": true,
+      "detail": {
+        "active": true,
+        "phase": "combat",
+        "beams": 0,
+        "particles": 14,
+        "pulses": 1,
+        "charge": 0,
+        "quality": "low",
+        "particleLimit": 36,
+        "smoke": 4,
+        "geometryAllocatedPerFrame": 0,
+        "muzzles": 0,
+        "rays": 4,
+        "shock": 0.9525269192876383,
+        "flash": 0.40656965974060044,
+        "maxImpactRadius": 0.6670606684647898,
+        "lightIntensity": 264.27027883139027,
+        "impactAge": 0.09999999999999964,
+        "fireAge": null,
+        "shockOrigin": [
+          0,
+          2,
+          1.05
+        ],
+        "impactRevision": 1,
+        "qualityCaps": {
+          "smoke": 4,
+          "rays": 4,
+          "layers": 2
+        },
+        "sharedLights": 1,
+        "reducedMotion": false
+      }
+    },
+    {
+      "name": "balanced quality has explicit particle/smoke/streak caps",
+      "passed": true,
+      "detail": {
+        "active": true,
+        "phase": "combat",
+        "beams": 0,
+        "particles": 30,
+        "pulses": 1,
+        "charge": 0,
+        "quality": "balanced",
+        "particleLimit": 72,
+        "smoke": 8,
+        "geometryAllocatedPerFrame": 0,
+        "muzzles": 0,
+        "rays": 8,
+        "shock": 0.9525269192876383,
+        "flash": 0.40656965974060044,
+        "maxImpactRadius": 0.6670606684647898,
+        "lightIntensity": 264.27027883139027,
+        "impactAge": 0.09999999999999964,
+        "fireAge": null,
+        "shockOrigin": [
+          0,
+          2,
+          1.05
+        ],
+        "impactRevision": 1,
+        "qualityCaps": {
+          "smoke": 8,
+          "rays": 8,
+          "layers": 3
+        },
+        "sharedLights": 1,
+        "reducedMotion": false
+      }
+    },
+    {
+      "name": "high quality has explicit particle/smoke/streak caps",
+      "passed": true,
+      "detail": {
+        "active": true,
+        "phase": "combat",
+        "beams": 0,
+        "particles": 42,
+        "pulses": 1,
+        "charge": 0,
+        "quality": "high",
+        "particleLimit": 96,
+        "smoke": 12,
+        "geometryAllocatedPerFrame": 0,
+        "muzzles": 0,
+        "rays": 12,
+        "shock": 0.9525269192876383,
+        "flash": 0.40656965974060044,
+        "maxImpactRadius": 0.6670606684647898,
+        "lightIntensity": 264.27027883139027,
+        "impactAge": 0.09999999999999964,
+        "fireAge": null,
+        "shockOrigin": [
+          0,
+          2,
+          1.05
+        ],
+        "impactRevision": 1,
+        "qualityCaps": {
+          "smoke": 12,
+          "rays": 12,
+          "layers": 3
+        },
+        "sharedLights": 1,
+        "reducedMotion": false
+      }
+    },
+    {
+      "name": "Repeated overlapping bursts keep all resources fixed",
+      "passed": true,
+      "detail": {
+        "before": {
+          "resources": 92,
+          "objects": 130
+        },
+        "after": {
+          "resources": 92,
+          "objects": 130
+        }
+      }
+    },
+    {
+      "name": "Overlapping bursts stay within four impact pools",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pooled instance transforms stay finite",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Reset clears all bursts, smoke and light output",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Disposal removes the shared light and FX hierarchy",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "World-owned FX resources dispose normally",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Reduced motion constrains shake and flash",
+      "passed": true,
+      "detail": {
+        "active": true,
+        "phase": "combat",
+        "beams": 0,
+        "particles": 30,
+        "pulses": 1,
+        "charge": 0,
+        "quality": "balanced",
+        "particleLimit": 72,
+        "smoke": 8,
+        "geometryAllocatedPerFrame": 0,
+        "muzzles": 0,
+        "rays": 8,
+        "shock": 0.28,
+        "flash": 0.12168806398999292,
+        "maxImpactRadius": 0.6124491647470478,
+        "lightIntensity": 79.0972415934954,
+        "impactAge": 0.08,
+        "fireAge": null,
+        "shockOrigin": [
+          0,
+          2,
+          1.05
+        ],
+        "impactRevision": 1,
+        "qualityCaps": {
+          "smoke": 8,
+          "rays": 8,
+          "layers": 3
+        },
+        "sharedLights": 1,
+        "reducedMotion": true
+      }
+    }
+  ],
+  "resourceBudget": {
+    "resources": 92,
+    "objects": 130
+  },
+  "references": [
+    "https://threejs.org/docs/pages/InstancedMesh.html",
+    "https://threejs.org/examples/webgl_points_dynamic.html",
+    "https://threejs.org/examples/webgl_postprocessing_unreal_bloom.html"
+  ],
+  "scope": "Geometry and deterministic pool checks, without GPU appearance or iPhone performance claims"
+}

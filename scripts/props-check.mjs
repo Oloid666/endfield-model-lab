@@ -104,6 +104,7 @@ garden.quality('low');garden.update(14,1/60,{});check('Low quality reduces petal
 garden.quality('high');garden.update(15,1/60,{fxShock:1,impactRevision:2});check('High quality caps both normal and gust petals at the fixed ninety-six-instance pool',garden.state.fallingPetals===96&&garden.state.gustPetals===32&&garden.state.blossoms===3600,garden.state);
 
 const details=buildInvestigationProps(scene,r);
+details.breakServer([0,1,.7]);check('Finisher creates a visible server crater',details.state.crater===true);details.reset();check('Replay clears the server crater',details.state.crater===false);
 details.update(0,0,{phase:'ready'});
 check('Opening has physical CCTV and three purple food marks',details.state.cctv&&details.state.pixels===48&&details.root.getObjectByName('store-cctv'));
 details.update(1,0,{phase:'flashback'});check('Earlier recording starts without food stains',details.state.pixels===0);
@@ -122,5 +123,5 @@ check('Replay resets pylons, restores charred oven height and hides terminal',gr
 check('Replay ends the impact gust and removes the pear protection glow',garden.state.gustPetals===0&&!garden.state.protected&&garden.state.shield===0,garden.state);
 let disposed=0;for(const item of r.items)item.addEventListener?.('dispose',()=>disposed++);const expectedDisposals=[...r.items].filter(item=>typeof item.dispose==='function').length;
 r.dispose();check('Every owned disposable graphics resource receives dispose',disposed===expectedDisposals&&r.items.size===0,{disposed,expectedDisposals});
-fs.writeFileSync('artifacts/v10-props-check.json',JSON.stringify({kind:'actual-geometry-with-stubbed-canvas',checks},null,2)+'\n');
-console.log(`V10 props: ${checks.length} checks passed.`);
+fs.writeFileSync('artifacts/v11-props-check.json',JSON.stringify({kind:'actual-geometry-with-stubbed-canvas',checks},null,2)+'\n');
+console.log(`V11 props: ${checks.length} checks passed.`);

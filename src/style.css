@@ -168,3 +168,5 @@ details a { display: inline-block; padding: 3px 0; color: #ddc18b; text-underlin
 #asset-retry {margin:22px;min-height:48px;padding:12px 26px;border-radius:10px;border:1px solid #dbc58d;background:#d5bf86;color:#182e31}
 #loading.compact {inset:auto 14px calc(25% + env(safe-area-inset-bottom));padding:18px;border:1px solid #94b39f77;border-radius:16px;background:#12282eea;pointer-events:auto}
 #loading.compact .loading-mark {display:none}#loading.compact p {margin:4px 0 10px}
+#loading.compact{bottom:calc(16px + env(safe-area-inset-bottom))}.device-note{font-size:10px;color:#a5b8af;letter-spacing:.12em;margin-bottom:12px}
+#loading.done{pointer-events:none!important;visibility:hidden}

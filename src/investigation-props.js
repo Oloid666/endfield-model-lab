@@ -14,8 +14,8 @@ export function buildInvestigationProps(scene,r){
  const sheet=label(cargo,'息壤 10,000 噸',[.48,.76,.23],[.73,.2,1]);sheet.name='smuggling-manifest';
  label(cargo,'經辦／核准：莊芳宜',[.48,.59,.232],[.73,.12,1],{font:'bold 46px sans-serif'});
  const paperGroup=new T.Group();root.add(paperGroup);
- const posters=[['加熱限三分鐘',[-2.8,1.5,2.04]],['集點換好禮 · 請勿使用重置券',[2.35,2.12,2.04]],['徵晚班 · 需能正常下班',[3.4,1.72,2.04]]];
- for(const [text,pos]of posters){label(paperGroup,text,pos,[.8,.34,1],{bg:'#d6cfb2',color:'#315148',font:'bold 48px sans-serif'});box(paperGroup,'#a9b29e',[pos[0],pos[1]+.17,pos[2]+.006],[.2,.028,.008]);}
+ const posters=[['小蔥傲嬌讚！ 嘴上說不用，第二件還是拿了。',[-2.8,1.5,2.04]],['武陵補給祭・集點開跑 消費一筆蓋一格。萬噸仍算一筆。',[2.35,2.12,2.04]],['黎諾說：沒有洗腦。 魔族佬黑：不注重食品衛生',[3.4,1.72,2.04]]];
+ for(const [text,pos]of posters){label(paperGroup,text.split(' ')[0],pos,[.86,.29,1],{bg:'#d6cfb2',color:'#315148',font:'bold 54px sans-serif'});label(paperGroup,text.split(' ').slice(1).join(' '),[pos[0],pos[1]-.2,pos[2]],[.86,.13,1],{bg:'#d6cfb2',color:'#315148',font:'bold 34px sans-serif'});box(paperGroup,'#a9b29e',[pos[0],pos[1]+.17,pos[2]+.006],[.2,.028,.008]);}
  // A small collection corner visible through the upstairs window.
  const room=new T.Group();room.position.set(1.4,3.56,.66);root.add(room);
  box(room,'#695c50',[0,.45,0],[.8,.05,.48]);for(const x of [-.32,.32])box(room,'#344745',[x,.22,0],[.045,.44,.045]);
@@ -25,6 +25,9 @@ export function buildInvestigationProps(scene,r){
  const dummy=new T.Object3D(),color=new T.Color(),spots=[new T.Vector3(3.2,1.85,1.06),new T.Vector3(3.83,1.55,1.06),new T.Vector3(3.1,1.1,1.94),new T.Vector3(3.8,.34,.3),new T.Vector3(2.55,.34,1.4),new T.Vector3(3.9,1.65,1.93)];
  for(let i=0;i<96;i++){pixels.setColorAt(i,color.setHSL(.75+(i%4)*.018,.4,.23+(i%5)*.075));pixels.setMatrixAt(i,dummy.matrix);}pixels.instanceColor.needsUpdate=true;
  const launch=new T.Vector3(3.45,1.67,1.1);
+ const crater=new T.Group();crater.name='server-impact-crater';root.add(crater);crater.visible=false;
+ const dark=r.own(new T.MeshBasicMaterial({color:0x030c13})),hole=r.mesh(r.geometry('CircleGeometry',1.08,32),dark,crater,[0,.012,0]);hole.rotation.x=-Math.PI/2;
+ for(let i=0;i<18;i++){const a=i/18*Math.PI*2,m=r.box(crater,i%2?'#506462':'#7c8275',[Math.cos(a)*1.05,.055,Math.sin(a)*1.05],[.34,.13,.24],{roughness:.96});m.rotation.set((i%3)*.13,a,i%2*.18);}
  let burstAt=-100,burstCount=0,lastFailures=0,wasPast=false,active=0;
  function update(t,delta,state={}){
    const past=['flashback','hack','credentials','heat'].includes(state.phase),failures=state.heat?.failures||0;
@@ -45,5 +48,5 @@ export function buildInvestigationProps(scene,r){
    room.visible=!past&&(state.progress||0)<62;cargo.visible=(state.progress||0)<62||past;
    wasPast=past;
  }
- return {root,camera,cargo,update,reset(){burstCount=0;lastFailures=0;burstAt=-100;},get state(){return {pixels:active,bursts:burstCount,cctv:true,manifest:true};}};
+ return {root,camera,cargo,update,breakServer(point){crater.position.set(point[0],.323,point[2]);crater.visible=true;},reset(){crater.visible=false;burstCount=0;lastFailures=0;burstAt=-100;},get state(){return {crater:crater.visible,pixels:active,bursts:burstCount,cctv:true,manifest:true};}};
 }

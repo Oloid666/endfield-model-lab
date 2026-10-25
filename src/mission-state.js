@@ -7,7 +7,7 @@ export const CHARGE_DURATION=30;
 export const REWIND_DURATION=7;
 export const HEAT_DEMO_DURATION=6;
 export const RETURN_DURATION=3;
-export const TOUR_DURATION=16;
+export const TOUR_DURATION=20;
 export const LANDING_DURATION=sequences.landing.length*3;
 export const HEAT_TARGET=.3;
 export const CONNECTION_ACCOUNT='endfield_power';
@@ -17,7 +17,7 @@ export const outputModes=[
   {id:'strong',label:'強攻',hint:'威力 +20% · 較快',multiplier:1.2,speed:1.2,width:.15,miss:.34,perfect:.05,recoil:1.15},
   {id:'overload',label:'過載',hint:'威力 +50% · 窄判定',multiplier:1.5,speed:1.45,width:.12,miss:.29,perfect:.04,recoil:1.8},
 ];
-const manualPhases=new Set(['intro','meal','cargo','observation','credentials','briefing','energy','flashback','flashback-end','last','complete']);
+const manualPhases=new Set(['intro','meal','cargo','photo-talk','photo-check','observation','credentials','verify-talk','verified-talk','briefing','energy','flashback','flashback-end','last','complete']);
 const vcrPhases=new Set(['rewind','flashback','hack','credentials','heat-demo','heat','flashback-end','return']);
 const preChargePhases=new Set(['ready','intro','choice','meal','briefing','login','captcha','lever']);
 const clamp=(value,min=0,max=1)=>Math.max(min,Math.min(max,value));
@@ -53,12 +53,11 @@ export class MissionMachine{
     this.phase=phase;this.entered=entered;this.lines=[];this.index=0;this.node=null;this.revealed=0;this.sequenceKind=null;
     this.meterEntered=entered;
     if(phase==='login'){
-      if(this.castingEntered===null)this.castingEntered=entered;
       this.line(connectionPrompts.account,entered);
     }
-    if(phase==='captcha')this.line(captchaLines[0],entered);
+    if(phase==='verify-talk'){this.lines=captchaLines;this.line(captchaLines[0],entered);}
     if(phase==='lever')this.line(connectionPrompts.verified,entered);
-    if(phase==='charge')this.line(chargeLines[0],entered);
+    if(phase==='charge'){this.castingEntered=entered;this.line(chargeLines[0],entered);}
     if(phase==='rewind'){
       this.castingFrozen=this.castingElapsed;
       this.vcrStarted=entered;
@@ -90,12 +89,16 @@ export class MissionMachine{
     this.target=target.id;this.emit();return true;
   }
   finishSequence(){
-    if(this.phase==='intro'){this.branch='A';this.hooks.onDinner?.('A');this.phaseTo('photo');}
+    if(this.phase==='intro'){this.branch='A';this.hooks.onDinner?.('A');this.phaseTo('walk-out');}
     else if(this.phase==='meal')this.sequence('briefing',sequences.briefing);
+    else if(this.phase==='verify-talk')this.phaseTo('captcha');
+    else if(this.phase==='verified-talk')this.phaseTo('lever');
     else if(this.phase==='briefing')this.phaseTo('login');
     else if(this.phase==='energy')this.phaseTo('rewind');
     else if(this.phase==='flashback')this.phaseTo('hack');
     else if(this.phase==='credentials')this.phaseTo('heat');
+    else if(this.phase==='photo-talk')this.phaseTo('photo');
+    else if(this.phase==='photo-check')this.phaseTo('photo-review');
     else if(this.phase==='cargo')this.sequence('observation',sequences.observation);
     else if(this.phase==='observation')this.phaseTo('comm-request');
     else if(this.phase==='flashback-end')this.phaseTo('return');
@@ -112,7 +115,8 @@ export class MissionMachine{
     if(this.phase!=='choice'||this.paused||!dinnerChoices.some(v=>v.id===id))return false;
     this.branch=id;this.hooks.onDinner?.(id);this.sequence('meal',sequences['meal'+id]);return true;
   }
-  takePhoto(){if(this.phase!=='photo'||this.paused)return false;this.photoTaken=true;this.phaseTo('investigate');return true;}
+  takePhoto(){if(this.phase!=='photo'||this.paused)return false;this.photoTaken=true;this.sequence('photo-check',sequences.photoCheck);return true;}
+  sendPhoto(){if(this.phase!=='photo-review'||this.paused)return false;this.investigation='floor';this.sequence('cargo',sequences.cargo);return true;}
   investigate(id){
     if(this.phase!=='investigate'||this.paused||!['floor','server'].includes(id))return false;
     this.investigation=id;this.sequence(id==='floor'?'cargo':'observation',sequences[id==='floor'?'cargo':'observation']);return true;
@@ -148,13 +152,13 @@ export class MissionMachine{
     if(c[c.field]!==expected){c.error=c.field==='account'?'帳號不對。可重聽提示，再修改。':'密碼不對。可退格修改。';this.action('login-error',c.field);this.emit();return false;}
     c.error='';
     if(c.field==='account'){c.field='password';this.line(connectionPrompts.password);this.action('login-account',true);this.emit();}
-    else {this.action('login-complete',true);this.phaseTo('captcha');}
+    else {this.action('login-complete',true);this.phaseTo('verify-talk');}
     return true;
   }
   replayPrompt(){if(this.paused||this.phase!=='login')return false;this.line(connectionPrompts[this.connection.field]);this.action('dictation',this.connection.field);return true;}
   verify(){
-    if(this.paused||this.phase!=='captcha'||this.time-this.entered<6)return false;
-    this.connection.verified=true;this.connection.error='';this.action('verify',true);this.phaseTo('lever');return true;
+    if(this.paused||this.phase!=='captcha')return false;
+    this.connection.verified=true;this.connection.error='';this.action('verify',true);this.sequence('verified-talk',[connectionPrompts.verified]);return true;
   }
   setLever(value){
     if(this.paused||this.phase!=='lever'||!Number.isFinite(value))return false;
@@ -233,6 +237,8 @@ export class MissionMachine{
     for(let guard=0;guard<10;guard++){
       const elapsed=this.time-this.entered,phase=this.phase;let changed=false;
       if(phase==='charge'&&elapsed>=CHARGE_DURATION){this.phaseTo('combat',this.entered+CHARGE_DURATION);changed=true;}
+      else if(phase==='walk-out'&&elapsed>=5){this.phaseTo('photo-pose',this.entered+5);changed=true;}
+      else if(phase==='photo-pose'&&elapsed>=2){this.sequence('photo-talk',sequences.photoTalk);changed=true;}
       else if(phase==='rewind'&&elapsed>=REWIND_DURATION){this.sequence('flashback',sequences.flashback);changed=true;}
       else if(phase==='heat-demo'&&elapsed>=HEAT_DEMO_DURATION){this.phaseTo('heat',this.entered+HEAT_DEMO_DURATION);changed=true;}
       else if(phase==='return'&&elapsed>=RETURN_DURATION){this.restorePresent();changed=true;}
@@ -243,7 +249,7 @@ export class MissionMachine{
     }
     const elapsed=Math.max(0,this.time-this.entered);
     if(this.phase==='charge')this.timedLine(chargeLines,elapsed);
-    else if(this.phase==='captcha')this.timedLine(captchaLines,elapsed);
+
     else if(this.phase==='lever'&&elapsed>=3&&this.node!==connectionPrompts.lever)this.line(connectionPrompts.lever,this.entered+3);
     else if(this.phase==='heat-demo')this.timedLine(heatDemoLines,elapsed);
     else if(this.phase==='aim-final')this.timedLine(finalAmmoLines,elapsed);
@@ -266,7 +272,7 @@ export class MissionMachine{
   get castingElapsed(){return this.castingEntered===null?0:this.vcrStarted!==null?this.castingFrozen:Math.max(0,this.time-this.castingEntered-this.castingPaused);}
   get state(){
     const elapsed=Math.max(0,this.time-this.entered),meter=this.meterAt(),target=this.targets.find(v=>v.id===this.target),settings=this.meterSettings,c=this.connection;
-    const connection={...c,value:c[c.field],expected:c.field==='account'?CONNECTION_ACCOUNT:CONNECTION_PASSWORD,captchaReady:this.phase==='captcha'&&elapsed>=6};
+    const connection={...c,value:c[c.field],expected:c.field==='account'?CONNECTION_ACCOUNT:CONNECTION_PASSWORD,captchaReady:this.phase==='captcha'};
     const heat=this.rhythm.state(this.time);
     const vcr=vcrPhases.has(this.phase),combatHoldRemaining=Math.max(0,this.attackHoldUntil-this.time),reverse=clamp((elapsed-.4)/6);
     const rewindProgress=this.phase==='rewind'?reverse*reverse*(3-2*reverse):0,rewindStage=this.phase!=='rewind'?null:elapsed<.4?'freeze':elapsed>=6.4?'settle':'reverse';

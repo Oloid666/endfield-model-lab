@@ -18,18 +18,19 @@ export function buildAutomaticDoors(parent,r,glass,glassMeshes){
   r.box(root,'#1e3538',[0,2.68,.125],[.19,.05,.027],{roughness:.22});
   r.box(root,'#a9d8c1',[0,2.68,.142],[.028,.023,.006],{emissive:0x75d7a7,emissiveIntensity:.7});
   r.box(root,'#596961',[0,.315,0],[1.85,.018,.105],{metalness:.65,roughness:.24});
-  let amount=0,heldUntil=0,lastTime=0,target=0;
+  let amount=0,heldUntil=0,lastTime=0,target=0,manual=null;
   return {
     root,
     get open(){return amount;},
     get isOpen(){return amount>.82;},
-    triggerDoor(){heldUntil=Math.max(heldUntil,lastTime+4);},
+    triggerDoor(){manual=!(manual??amount>.5);},
+    get manual(){return manual;},
     update(t,delta=0,actorPosition,companionPosition){
       lastTime=t;
       const sensed=p=>p&&Math.abs((p.x??p[0])+.22)<.94&&Math.abs((p.z??p[2])-1.86)<1.48;
       const near=sensed(actorPosition)||sensed(companionPosition);
       if(near)heldUntil=t+2.2;
-      target=t<heldUntil?1:0;
+      target=near?1:manual===null?(t<heldUntil?1:0):manual?1:0;
       const dt=Math.max(0,Math.min(.1,delta||1/60));amount=T.MathUtils.damp(amount,target,target?4.8:2.8,dt);
       if(Math.abs(amount-target)<.0004)amount=target;
       for(const {leaf,side} of leaves)leaf.position.x=side*(.4+amount*.79);

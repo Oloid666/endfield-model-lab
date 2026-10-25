@@ -8,7 +8,7 @@ import { buildMeals } from './meal-props.js';
 
 const aliases={look:'player',lookPlayer:'player',lookDragon:'dragon',lookGoods:'goods',lookPhone:'phone',receiveBag:'receive',holdFood:'hold',shakeHead:'shake',adjustSleeve:'sleeve',rainStartle:'rain',celebrate:'happy',bow:'nod',sigh:'exhale',hug:'hold',protect:'hold',offer:'receive'};
 
-export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gltf}){
+export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gltf,dragon:providedDragon}){
   function remember(key,bone){
     if(!bone)return;const inverse=bone.getWorldQuaternion(new T.Quaternion()).invert();
     poses[key]={bone,rest:bone.position.clone(),q:bone.quaternion.clone(),x:new T.Vector3(1,0,0).applyQuaternion(inverse),y:new T.Vector3(0,1,0).applyQuaternion(inverse),z:new T.Vector3(0,0,1).applyQuaternion(inverse)};
@@ -33,7 +33,7 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
   }
   const quaternion=new T.Quaternion(),axis=new T.Quaternion();
   function pose(name,pitch=0,yaw=0,roll=0){const p=poses[name];if(p){quaternion.setFromAxisAngle(p.x,pitch).multiply(axis.setFromAxisAngle(p.y,yaw)).multiply(axis.setFromAxisAngle(p.z,roll));p.bone.quaternion.copy(p.q).multiply(quaternion);}}
-  const dragon=buildDragon(r);dragon.root.scale.setScalar(.59);dragon.root.position.set(-.82,.005,.09);dragon.root.rotation.y=.15;root.add(dragon.root);
+  const dragon=providedDragon||buildDragon(r);dragon.root.scale.setScalar(.59);dragon.root.position.set(-.82,.005,.09);dragon.root.rotation.y=.15;root.add(dragon.root);
   const meal=buildMeals(r,root),dragonMeal=buildMeals(r,dragon.foodMount,.68);meal.setDinner(null);dragonMeal.setDinner(null);
   const phone=new T.Group();phone.name='phone';phone.userData.hotspot='phone';root.add(phone);
   r.box(phone,'#1a272b',[0,0,0],[.075,.145,.012],{roughness:.25,metalness:.45});

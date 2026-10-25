@@ -89,7 +89,7 @@ export class World {
     this.walkCamera.onZone(false);
     this.currentView=name==='reset'?'street':name;
     const preset=config.views[name==='reset'?'street':name];if(!preset)return;
-    this.camera.fov=37;this.camera.updateProjectionMatrix();
+    this.setCutaway(name==='interior');this.camera.fov=name==='interior'?65:37;this.camera.updateProjectionMatrix();
     const mobile=this.container.clientWidth/Math.max(1,this.container.clientHeight)<.85;
     const target=new T.Vector3().fromArray(mobile?preset.mobileTarget:preset.target),position=new T.Vector3().fromArray(mobile?preset.mobilePosition:preset.position);
     if(name==='detail'&&this.actors){const offset=this.actors.position.clone().sub(new T.Vector3(-1.25,.32,2.48));target.add(offset);position.add(offset);}
@@ -109,16 +109,33 @@ export class World {
     this.weather.invalidateReflection();
   }
   toggleAutoCamera(){this.autoCamera=!this.autoCamera;if(this.autoCamera)this.resetStoryCamera();else this.manualUntil=Infinity;return this.autoCamera;}
+  setCutaway(enabled){
+    if(this.cutawayActive===enabled)return;
+    if(this.hiddenShell){for(const [mesh,visible]of this.hiddenShell)mesh.visible=visible;this.hiddenShell=null;}
+    this.cutawayActive=enabled;
+    if(enabled){this.scene.updateMatrixWorld(true);this.hiddenShell=[];const box=new T.Box3(),center=new T.Vector3();this.store.root.traverse(mesh=>{if(!mesh.isMesh)return;box.setFromObject(mesh);box.getCenter(center);if((center.y>2.55||center.y>.6&&center.z>1.7)&&Math.abs(center.x)<4.9&&center.z<3.2&&center.z> -4){this.hiddenShell.push([mesh,mesh.visible]);mesh.visible=false;}});}
+    this.weather.invalidateReflection();
+  }
+  interact(ray){
+    if(this.actors&&ray.intersectObject(this.actors.root,true).some(h=>h.object.visible))return false;
+    const beam=ray.ray||ray;const hit=(p,r)=>{const v=new T.Vector3(...p);return beam.direction.dot(v.clone().sub(beam.origin))>0&&beam.distanceSqToPoint(v)<r*r;};
+    if(hit([0,4.55,1.9],.8)){this.roomLightOn=!(this.roomLightOn??true);this.store.destruction.server.root.traverse(n=>{if(n.isPointLight)n.intensity=this.roomLightOn?1.6:0;if(n.material?.userData.switchColor&&this.roomLightOn)n.material.color.copy(n.material.userData.switchColor);});this.weather.invalidateReflection();return true;}
+    if(hit([-6.5,3.57,4.5],.5)){this.signalIndex=((this.signalIndex||0)+1)%3;this.store.streetProps.setSignal(this.signalIndex);this.weather.invalidateReflection();return true;}
+    const plane=new T.Plane(new T.Vector3(0,0,1),-1.9),point=new T.Vector3();if(beam.intersectPlane(plane,point)&&Math.abs(point.x)<4.5&&point.y>.3&&point.y<3.4){this.store.triggerDoor();return true;}return false;
+  }
   capturePhoto(){
     this.composer.render();
     const points=[['floor',[-3.05,1.08,2.1]],['server',[0,4.6,1.4]]].map(([id,p])=>{const q=this.projectPoint(p);return {id,x:(q[0]+1)/2,y:(1-q[1])/2,z:q[2]};});
-    if(points.some(p=>p.z>1||p.z< -1||p.x<.06||p.x>.94||p.y<.08||p.y>.85))throw Error('再退遠一點，讓一樓貨單與二樓窗戶一起入鏡。');
+
     return {src:this.renderer.domElement.toDataURL('image/jpeg',.86),width:this.renderer.domElement.width,height:this.renderer.domElement.height,points};
   }
   projectPoint(point){const p=new T.Vector3().fromArray(point).project(this.camera);return p.toArray();}
   tick(t,delta=.016,render=true){
     this.time=t;this.onTick(t,delta);
+    if(this.earlyDragon){const d=this.earlyDragon;d.root.position.y=.32+Math.abs(Math.sin(t*2.6))*.3;d.root.rotation.y=Math.sin(t*.9)*.65;d.update(t,{nod:.3,gesture:'wave',gestureAmount:(Math.sin(t*2)+1)/2});}
+
     this.director.beforeActors(this.missionState);this.actors?.update(t,delta);this.director.afterActors(t,delta);
+    if(this.roomLightOn===false)this.store.destruction.server.root.traverse(n=>{if(n.isPointLight)n.intensity=0;if(n.isMesh&&n.material?.isMeshBasicMaterial){n.material.userData.switchColor??=n.material.color.clone();n.material.color.set(0x071511);}});
     if(this.actors){
       const p=this.actors.position;this.walkCamera.update(p,delta,this.time<this.manualUntil);
       if(this.walkCamera.automatic&&this.currentView){this.currentView=null;this.onManualView();}

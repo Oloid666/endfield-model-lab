@@ -61,6 +61,6 @@ const result={passed:checks.every(c=>c.passed),checks,resourceBudget:initial,ref
  'https://threejs.org/examples/webgl_points_dynamic.html',
  'https://threejs.org/examples/webgl_postprocessing_unreal_bloom.html'
 ],scope:'Geometry and deterministic pool checks, without GPU appearance or iPhone performance claims'};
-await fs.writeFile(new URL('../artifacts/v10-fx-check.json',import.meta.url),JSON.stringify(result,null,2)+'\n');
+await fs.writeFile(new URL('../artifacts/v11-fx-check.json',import.meta.url),JSON.stringify(result,null,2)+'\n');
 console.log(JSON.stringify({passed:result.passed,checks:checks.length,failed:checks.filter(c=>!c.passed)},null,2));
 if(!result.passed)process.exitCode=1;

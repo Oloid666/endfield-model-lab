@@ -66,8 +66,9 @@ export function buildStreetProps(root,r,surfaces){
   const signalX=-6.5,signalZ=4.35;
   r.cylinder(root,'#334b47',[signalX,2.12,signalZ],.055,3.9,steel);
   box('#213832',[signalX,3.57,signalZ],[.3,.9,.27],{roughness:.45});
+  const lenses=[];
   for(const [y,color,intensity] of [[3.84,'#e6534b',2.1],[3.57,'#96794c',.1],[3.3,'#3d7865',.12]]){
-    r.mesh(r.geometry('CircleGeometry',.085,20),r.material(color,{emissive:new T.Color(color),emissiveIntensity:intensity,roughness:.25}),root,[signalX,y,signalZ+.141]);
+    const lens=r.mesh(r.geometry('CircleGeometry',.085,20),r.material(color,{emissive:new T.Color(color),emissiveIntensity:intensity,roughness:.25}),root,[signalX,y,signalZ+.141]);lens.userData.dynamic=true;lenses.push(lens);
     box('#213832',[signalX,y+.092,signalZ+.16],[.22,.045,.16],{roughness:.45});
   }
   label('行人穿越道',[signalX,2.7,signalZ+.155],[.61,.17,1],{bg:'#175f62',color:'#dfe8d4',font:'bold 56px sans-serif'});
@@ -97,5 +98,5 @@ export function buildStreetProps(root,r,surfaces){
   const alley=new T.PointLight(0x7cbdc8,9,11,2);alley.position.set(4.8,3.7,-4.5);root.add(alley);
   box('#92bbc0',[4.8,4.0,-4.5],[.15,.5,.2],{emissive:0x7cbdc8,emissiveIntensity:1.15});
 
-  return {lights:[red,alley]};
+  return {lights:[red,alley],setSignal(index){const colors=['#ff5b4b','#68dc95','#efc66d'],order=[0,2,1];lenses.forEach((l,i)=>l.material.emissiveIntensity=i===order[index]?2.2:.04);red.color.set(colors[index]);},lenses};
 }

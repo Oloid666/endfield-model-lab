@@ -208,7 +208,7 @@ export function buildStore(scene, r) {
     B('#293e43',[x,h/2-.1,z],[w,h,d]);B('#23393c',[x,h+.05,z],[w+.3,.18,d+.3]);
     for(let y=2;y<h-1;y+=1.7)for(let dx=-w/2+.6;dx<w/2;dx+=1.3)B('#607b70',[x+dx,y,z+d/2+.02],[.55,.75,.025],{emissive:0x70876a,emissiveIntensity:((y+dx)%3)>.8?.13:0});
   }
-  buildStreetProps(root,r,surfaces);
+  const streetProps=buildStreetProps(root,r,surfaces);
   // Fine utility cables frame the back street.
   for(const z of [-3.7,-3.9]){
     const curve=new T.QuadraticBezierCurve3(new T.Vector3(-10,7,z),new T.Vector3(0,5.4,z),new T.Vector3(10,7,z));
@@ -226,5 +226,5 @@ export function buildStore(scene, r) {
   });
   for(const mesh of sources)mesh.removeFromParent();
   for(const [material,geometries] of batches){const merged=mergeGeometries(geometries);if(merged){const mesh=new T.Mesh(r.own(merged),material);mesh.castShadow=true;mesh.receiveShadow=true;root.add(mesh);}for(const g of geometries)g.dispose();}
-  return {root,glass,glassMeshes,spill,floorPlan,destruction,wetMaterials:[...wetMaterials],walkObstacles:floorPlan.obstacles||floorPlan.racks,doors:automaticDoors,triggerDoor:()=>automaticDoors.triggerDoor(),update:(t,delta,actorPosition,companionPosition)=>automaticDoors.update(t,delta,actorPosition,companionPosition)};
+  return {root,glass,glassMeshes,spill,streetProps,floorPlan,destruction,wetMaterials:[...wetMaterials],walkObstacles:floorPlan.obstacles||floorPlan.racks,doors:automaticDoors,triggerDoor:()=>automaticDoors.triggerDoor(),update:(t,delta,actorPosition,companionPosition)=>automaticDoors.update(t,delta,actorPosition,companionPosition)};
 }
