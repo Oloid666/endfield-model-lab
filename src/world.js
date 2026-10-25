@@ -124,10 +124,13 @@ export class World {
     const plane=new T.Plane(new T.Vector3(0,0,1),-1.9),point=new T.Vector3();if(beam.intersectPlane(plane,point)&&Math.abs(point.x)<4.5&&point.y>.3&&point.y<3.4){this.store.triggerDoor();return true;}return false;
   }
   capturePhoto(){
-    this.composer.render();
+    const oldRatio=this.renderer.getPixelRatio(),size=this.renderer.getSize(new T.Vector2());
+    const ratio=Math.min(3,2048/Math.max(size.x,size.y));let src,width,height;
+    try{this.renderer.setPixelRatio(ratio);this.composer.setPixelRatio(ratio);this.fxaa.uniforms.resolution.value.set(1/(size.x*ratio),1/(size.y*ratio));this.composer.render();width=this.renderer.domElement.width;height=this.renderer.domElement.height;src=this.renderer.domElement.toDataURL('image/png');}
+    finally{this.renderer.setPixelRatio(oldRatio);this.composer.setPixelRatio(oldRatio);this.resize();this.composer.render();}
     const points=[['floor',[-3.05,1.08,2.1]],['server',[0,4.6,1.4]]].map(([id,p])=>{const q=this.projectPoint(p);return {id,x:(q[0]+1)/2,y:(1-q[1])/2,z:q[2]};});
 
-    return {src:this.renderer.domElement.toDataURL('image/jpeg',.86),width:this.renderer.domElement.width,height:this.renderer.domElement.height,points};
+    return {src,width,height,points};
   }
   projectPoint(point){const p=new T.Vector3().fromArray(point).project(this.camera);return p.toArray();}
   tick(t,delta=.016,render=true){

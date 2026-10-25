@@ -94,6 +94,7 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
     get position(){return root.position;},get moving(){return status.moving;},
     // Feet origins in world metres. Follower and walking root remain on the ground.
     get heroPosition(){return pivot.getWorldPosition(heroWorld).toArray();},
+    get gripPosition(){const hand=poses.wristL?.bone;if(hand)return hand.getWorldPosition(handPosition).toArray();return api.heroPosition;},
     get dragonPosition(){return dragon.root.getWorldPosition(dragonWorldPosition).toArray();},
     get poseData(){return {head:poses.head?.bone.quaternion.toArray(),wrist:poses.wristL?.bone.quaternion.toArray(),hip:poses.hipL?.bone.quaternion.toArray(),knee:poses.kneeL?.bone.quaternion.toArray(),armL:poses.armL?.bone.quaternion.toArray(),armR:poses.armR?.bone.quaternion.toArray(),elbow:poses.elbowL?.bone.quaternion.toArray(),cloth:secondary.length?poses[secondary[0].key].bone.quaternion.toArray():null,smileCorners:[poses.smile171?.bone.position.toArray(),poses.smile181?.bone.position.toArray()]};},
     setRain(value){raining=value;},setMove:(x,z,enabled=true)=>locomotion.setMove(x,z,enabled),setObstacles(layout){locomotion.setObstacles(layout);follower.invalidate();},
@@ -153,7 +154,7 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
         const foodArm=cinematic.phase==='aim-final'||cinematic.phase==='finisher'||cinematic.phase==='landing';
         status.action=cinematic.phase==='charge'?'summoning':cinematic.phase==='landing'?'landing':'casting';
         pose('spine',-.025*summon-recoil*.17,Math.sin(t*.7)*.01,-.018*summon+recoil*.025);pose('head',-.035*summon+recoil*.085,.065*summon,0);
-        pose('armL',foodArm?.37:.28*summon,-.035,-.88+summon*(foodArm?.26:.32));
+        pose('armL',foodArm?.8:.28*summon,-.035,-.88+summon*(foodArm?.26:.32));
         pose('elbowL',foodArm?.88:.45*summon,.02,foodArm?.12:.035);pose('wristL',foodArm?.13:.04,0,-.06*summon);
         pose('armR',.88*summon+release*.16-recoil*.24,.04,.9-summon*.58+recoil*.16);pose('elbowR',.1+summon*.3-release*.18+recoil*.38,0,-.05);pose('wristR',-.08*summon,0,Math.sin(t*.9)*.015);
         pose('hipL',.04*launch,0,0);pose('hipR',-.065*launch,0,0);pose('kneeL',-.055*launch);pose('kneeR',-.23*launch);pose('footL',-.08*launch);pose('footR',-.14*launch);

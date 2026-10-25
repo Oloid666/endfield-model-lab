@@ -14,16 +14,16 @@ function rhythmWin(r,origin){
 for(const route of ['floor']){
  const events=[],m=new MissionMachine({onAction:e=>events.push(e)});m.setTargets([{id:'structure',label:'店體',position:[0,3,1]}]);
  step(m,900);check('Opening waits',m.phase==='ready');m.start();finish(m);step(m,7);finish(m);check('Dinner no longer blocks story',m.phase==='photo'&&m.branch==='A');
- m.setAuto(true);step(m,500);check('Photo never auto submits',m.phase==='photo');m.setPaused(true);check('Paused shutter rejected',!m.takePhoto());m.setPaused(false);m.takePhoto();finish(m);
+ m.setAuto(true);step(m,500);check('Photo never auto submits',m.phase==='photo');m.setPaused(true);check('Paused shutter rejected',!m.takePhoto());m.setPaused(false);m.takePhoto();check('Photo return is a timed gate',m.phase==='photo-return');step(m,2.5);finish(m);
  check('Review waits for send',m.phase==='photo-review');step(m,50);check('Review never auto sends',m.phase==='photo-review');
  m.setAuto(false);m.sendPhoto();check('Route produces distinct scene',m.phase===(route==='floor'?'cargo':'observation'));
- if(route==='floor')finish(m);finish(m);check('Incoming call waits',m.phase==='comm-request');step(m,50);check('Call never self accepts',m.phase==='comm-request');m.acceptCall();finish(m);check('Briefing reaches login',m.phase==='login');
+ if(route==='floor')finish(m);finish(m);check('Incoming call waits',m.phase==='comm-request');step(m,50);check('Call never self accepts',m.phase==='comm-request');m.acceptCall();finish(m);check('Terminal deployment precedes input',m.phase==='terminal-deploy');step(m,3);check('Briefing reaches login',m.phase==='login');
  for(const chunk of ['endfield','_','power'])check('Account chunk accepted',m.keyChunk(chunk));check('Account auto confirms only after full value',m.connection.field==='password');
  for(const chunk of ['520','1314'])check('Password chunk accepted',m.keyChunk(chunk));check('Verification dialogue precedes input',m.phase==='verify-talk');check('No premature verification',!m.verify());finish(m);m.verify();finish(m);check('Lever waits',m.phase==='lever');
  check('Partial lever does not start charge',m.setLever(.5)&&m.phase==='lever');m.setLever(1);check('Charge starts',m.phase==='charge');step(m,CHARGE_DURATION);check('Combat starts',m.phase==='combat');
  for(let i=0;i<30&&m.phase==='combat';i++){step(m,1);const period=m.state.meterPeriod;const wanted=m.meterEntered+period/4;const next=wanted>m.time?wanted:wanted+Math.ceil((m.time-wanted)/period)*period;step(m,next-m.time);m.attack(m.sourceTime);}
  check('Combat reaches exhaustion',m.phase==='energy'&&m.progress===99);finish(m);check('VCR snapshot saved',m.phase==='rewind'&&m.vcrSnapshot.progress===99);const frozen=m.time;m.setPaused(true);step(m,100);check('Pause freezes VCR',m.time===frozen);m.setPaused(false);step(m,REWIND_DURATION);check('Flashback starts',m.phase==='flashback');finish(m);check('Hack gates progression',m.phase==='hack');
- m.setAuto(true);step(m,100);check('Hack not auto solved',m.phase==='hack');check('Hack invalid tile rejected',!m.hackRotate(9));for(let i=0;i<3;i++)m.hackRotate(i);check('Weak password revealed after puzzle',m.phase==='credentials'&&sequences.credentials.some(l=>l.text.includes('0000')));m.setAuto(false);finish(m);check('Player heat begins directly',m.phase==='heat');
+ m.setAuto(true);step(m,100);check('Hack not auto solved',m.phase==='hack');check('Hack invalid tile rejected',!m.hackRotate(9));m.hackSubmit();check('Incorrect route fails without leaving puzzle',m.phase==='hack'&&m.hackFailures===1);for(let i=0;i<4;i++)while(m.hackTurns[i]!==[1,0,2,3][i])m.hackRotate(i);m.hackSubmit();check('Weak password revealed after puzzle',m.phase==='credentials'&&sequences.credentials.some(l=>l.text.includes('0000')));m.setAuto(false);finish(m);check('Player heat begins directly',m.phase==='heat');
  m.heatStart(m.sourceTime);step(m,3);check('First heat attempt is explicit forced surge',m.rhythm.status==='burnt'&&m.rhythm.failures===1&&m.rhythm.result.includes('非操作失誤'));m.heatRetry();
  for(let round=0;round<3;round++){
    const start=m.time;m.heatStart(m.sourceTime);const notes=m.rhythm.notes.map(n=>({...n}));
@@ -40,4 +40,4 @@ check('Insurance pays off smuggling premise',chargeLines.some(v=>v.text.includes
 check('CCTV hacker voice before explanation',sequences.flashback.findIndex(l=>l.mood==='thought')<sequences.flashback.findIndex(l=>l.speaker==='dragon'));
 check('Every line has stable data fields',[...Object.values(sequences).flat(),...chatterGroups.flat(),...Object.values(hotspots).flat(2)].every(l=>['id','speaker','text','mood','gesture','next'].every(k=>k in l)));
 check('At least fourteen aftermath groups',chatterGroups.length>=14);
-await fs.writeFile(new URL('../artifacts/v11-mission-check.json',import.meta.url),JSON.stringify({passed:true,count:checks.length,checks},null,2)+'\n');console.log(`V11 mission: ${checks.length} checks passed.`);
+await fs.writeFile(new URL('../artifacts/v12-mission-check.json',import.meta.url),JSON.stringify({passed:true,count:checks.length,checks},null,2)+'\n');console.log(`V12 mission: ${checks.length} checks passed.`);

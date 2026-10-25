@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 from urllib.parse import urljoin, urlparse
 
-URL = 'https://oloid666.github.io/endfield-model-lab/?v=11'
+URL = 'https://oloid666.github.io/endfield-model-lab/?v=12'
 PREFIX = '/endfield-model-lab/'
 DIST = Path('dist')
 MODELS = {
@@ -68,12 +68,12 @@ markers = [
     'xaihi-vcr-actor', 'endfield_power', 'VCR · 時間倒帶',
     'cannon-layered-bursts-v9', 'cannon-shared-burst-light',
     'tianshi-green-energy-columns', 'microwave-fault-halo',
-    'mission-camera-reset', '正在準備人物光影', 'photo-framing',
+    'mission-camera-reset', '正在準備人物光影', 'photo-framing', 'dragon-takeaway-bag', 'photo-return', 'terminal-deploy', 'charge-feet', 'tour-ground-sign', 'tour-pear',
     'purple-food-mosaic', 'store-cctv', '管理密碼：0000',
     '電網突波！設備失控', '息壤 10,000 噸', 'photo-shutter', 'photo-review', 'photo-send', '2026.10 NEW', '起飛許可核發', 'server-impact-crater',
 ]
 for marker in markers:
-    assert marker in javascript, ('Missing V11 build marker', marker)
+    assert marker in javascript, ('Missing V12 build marker', marker)
 assert '玩法試驗區' not in javascript, 'Removed playground is still included in public JavaScript'
 models = {}
 for relative, (size, expected_hash) in MODELS.items():
@@ -82,7 +82,7 @@ for relative, (size, expected_hash) in MODELS.items():
     models[relative] = record
 result = {
     'url': URL,
-    'release': 'lookdev-v11-counter-camera-receipt-takeoff',
+    'release': 'lookdev-v12-companion-camera-storyboards',
     'commit': sys.argv[1],
     'action': sys.argv[2],
     'tls_verification': True,

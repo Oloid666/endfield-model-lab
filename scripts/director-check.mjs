@@ -88,8 +88,10 @@ for(const [label,aspect]of [['portrait',390/844],['landscape',844/390]]){
   check(`${label} connection camera keeps actual board corners and hero head on-screen`,Object.values(projected).every(p=>Math.abs(p[0])<1&&Math.abs(p[1])<1&&p[2]>-1&&p[2]<1),projected);
   cw.r.dispose();
 }
+const pw=makeWorld(),pd=new MissionDirector(pw);pd.state=state('photo');const beforePhoto=pw.camera.position.toArray();pd.updateCamera(.1,pw.actors.heroPosition);check('Photo framing remains under player control',JSON.stringify(pw.camera.position.toArray())===JSON.stringify(beforePhoto));pw.r.dispose();
+const tw=makeWorld(),td=new MissionDirector(tw);for(const [at,beat] of [[2,'tour-server-hole'],[6,'tour-smile'],[9,'tour-ruins'],[11,'tour-ground-sign'],[13,'tour-pear'],[17,'tour-dragon']]){td.state=state('tour',{phaseElapsed:at});td.updateCamera(.03,tw.actors.heroPosition);check('Tour retains '+beat,td.status.cameraBeat===beat);}tw.r.dispose();
 // The camera is a shot sequence, with a real front view and clear city subjects.
-const shotSamples=[[1,'charge-lift-face'],[6,'charge-pylon-one'],[11,'charge-city-array'],[16,'charge-caster-face'],[23,'charge-pylon-two'],[28,'charge-battle-wide']];
+const shotSamples=[[1,'charge-feet'],[2,'charge-lift-wide'],[3,'charge-dragon-catchup'],[6,'charge-pylon-one'],[11,'charge-city-array'],[16,'charge-orbit'],[23,'charge-pylon-two'],[28,'charge-battle-wide']];
 const cameraShots=[];
 for(const [label,aspect]of [['portrait',390/844],['landscape',844/390]]){
   const cw=makeWorld(aspect),cd=new MissionDirector(cw);cw.actors.heroPosition=[-1.25,4.32,15.25];cw.actors.status.cinematic={heading:2.91};
@@ -135,5 +137,5 @@ check('VCR reverse follows the shared eased progress',rd.visualTime===282.5&&rd.
 rd.beforeActors(state('rewind',{phaseElapsed:6.7,clock:66.7,rewindProgress:1,rewindStage:'settle',vcr:true}));rd.updateCamera(.016,rw.actors.heroPosition);
 check('VCR ends on the doorway before switching to the past',rd.cameraBeat==='rewind-doorway'&&Math.abs(rd.cameraPosition.z-11.6)<1e-9&&rd.cameraTarget.z===3.25);
 rw.r.dispose();w.r.dispose();
-fs.writeFileSync('artifacts/v11-director-check.json',JSON.stringify({kind:'actual-director-with-mock-world-no-gpu',checks,projections,cameraShots},null,2)+'\n');
-console.log(`V11 director: ${checks.length} checks passed.`);
+fs.writeFileSync('artifacts/v12-director-check.json',JSON.stringify({kind:'actual-director-with-mock-world-no-gpu',checks,projections,cameraShots},null,2)+'\n');
+console.log(`V12 director: ${checks.length} checks passed.`);

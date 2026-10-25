@@ -9,7 +9,7 @@ export function createInvestigationUI({mount,machine,capture,onAuto,getAuto}){
  const title=E('span','investigation-kicker'),message=E('p','investigation-message');message.setAttribute('aria-live','polite');
  const actions=E('div','investigation-actions'),photoStage=E('div','photo-stage'),photoInner=E('div','photo-inner'),image=E('img','photo-evidence');image.alt='你拍下的雨夜便利店照片';photoInner.append(image);photoStage.append(photoInner);
  const callPortrait=E('img','call-portrait');portrait(callPortrait);callPortrait.alt='弭弗通訊肖像';
- const puzzle=E('div','hack-circuit');puzzle.setAttribute('aria-label','轉動三塊線路，讓綠線左右接通');
+ const puzzle=E('div','hack-circuit');puzzle.setAttribute('aria-label','轉動四塊彎線，從左上繞下方連到右上');
  const rhythm=E('div','rhythm-lane'),judgment=E('i','rhythm-judgment');rhythm.append(judgment);const notes=[];
  for(let i=0;i<4;i++){const n=E('span','rhythm-note');n.textContent='●';rhythm.append(n);notes.push(n);}
  const rhythmStatus=E('p','rhythm-status');
@@ -27,14 +27,14 @@ export function createInvestigationUI({mount,machine,capture,onAuto,getAuto}){
    photoStage.hidden=phase!=='photo-review';callPortrait.hidden=phase!=='comm-request';puzzle.hidden=phase!=='hack';rhythm.hidden=rhythmStatus.hidden=phase!=='heat';
    if(phase==='photo'){title.textContent='拍張照片 · 報平安';message.textContent='龍泡泡已就位 · 把 711 招牌也留在畫面裡';button('●',snapshot,'photo-shutter');}
    if(phase==='photo-review'){
-     title.textContent='照片預覽 · 傳給管理員';message.textContent='放大確認有沒有眨眼。';image.src=photo?.src||'';
-     button('－',()=>{scale=Math.max(1,scale-.3);transform();});button('＋',()=>{scale=Math.min(3,scale+.4);transform();});button('重拍',()=>machine.phaseTo('photo'));button('↑ 送出',()=>machine.sendPhoto(),'photo-send');
+     title.textContent='照片預覽 · 傳給管理員';message.textContent='確認沒眨眼，發送給管理員，讓他知道有好好吃飯。';image.src=photo?.src||'';
+     button('－',()=>{scale=Math.max(1,scale-.3);transform();});button('＋',()=>{scale=Math.min(2,scale+.25);transform();});button('重拍',()=>machine.phaseTo('photo'));button('發送',()=>machine.sendPhoto(),'photo-send');
    }
    if(phase==='comm-request'){title.textContent='巡衛通訊 · 請求接入';message.textContent='巡衛隊長・弭弗 請求接入';button('◉ 接通',()=>machine.acceptCall(),'call-accept');}
    if(phase==='hack'){
-     title.textContent='賽希 · 電網維護終端 / login.php';message.textContent='點一下轉動線路。三段左右接通，開啟管理頁。';
-     for(let i=0;i<3;i++){const b=E('button','hack-tile');b.type='button';b.dataset.tile=i;b.setAttribute('aria-label',`旋轉第 ${i+1} 塊線路`);const wire=E('span','hack-wire','━');b.append(wire);listen(b,'click',()=>machine.hackRotate(i));puzzle.append(b);}
-     button('↻ 重看接線提示',()=>{message.textContent='每塊轉成橫線，連起左右的綠色接點。這是虛構終端；接通後查看驗證結果。';});
+     title.textContent='賽希 · 電網維護終端 / login.php';message.textContent='點一下轉動線路。四塊彎線接通綠色入口與出口，再測試連線。';
+     for(let i=0;i<4;i++){const b=E('button','hack-tile');b.type='button';b.dataset.tile=i;b.setAttribute('aria-label',`旋轉第 ${i+1} 塊線路`);const wire=E('span','hack-wire','┏');b.append(wire);listen(b,'click',()=>machine.hackRotate(i));puzzle.append(b);}
+     button('測試連線',()=>machine.hackSubmit());button('接線提示',()=>{message.textContent='路線：左上→左下→右下→右上。轉動四塊彎線，兩兩相接。';});
    }
    if(phase==='heat'){
      title.textContent='極速加熱 · 慢放操作';
@@ -50,7 +50,7 @@ export function createInvestigationUI({mount,machine,capture,onAuto,getAuto}){
  let sourceAnchor=0,perfAnchor=performance.now();
  function source(e){let stamp=Number(e?.timeStamp)||performance.now();if(stamp>1e12)stamp-=performance.timeOrigin;return sourceAnchor+(stamp-perfAnchor)/1000;}
  listen(photoStage,'pointerdown',e=>{if(e.target.closest('button'))return;photoStage.setPointerCapture(e.pointerId);points.set(e.pointerId,{x:e.clientX,y:e.clientY});startPointer={x:e.clientX,y:e.clientY,dx,dy};if(points.size===2){const [a,b]=[...points.values()];gestureStart={distance:Math.hypot(a.x-b.x,a.y-b.y),scale};}});
- listen(photoStage,'pointermove',e=>{if(!points.has(e.pointerId))return;points.set(e.pointerId,{x:e.clientX,y:e.clientY});if(points.size===2&&gestureStart){const [a,b]=[...points.values()];scale=Math.max(1,Math.min(3,gestureStart.scale*Math.hypot(a.x-b.x,a.y-b.y)/Math.max(1,gestureStart.distance)));}else if(points.size===1&&startPointer){dx=Math.max(-160,Math.min(160,startPointer.dx+e.clientX-startPointer.x));dy=Math.max(-180,Math.min(180,startPointer.dy+e.clientY-startPointer.y));}transform();});
+ listen(photoStage,'pointermove',e=>{if(!points.has(e.pointerId))return;points.set(e.pointerId,{x:e.clientX,y:e.clientY});if(points.size===2&&gestureStart){const [a,b]=[...points.values()];scale=Math.max(1,Math.min(2,gestureStart.scale*Math.hypot(a.x-b.x,a.y-b.y)/Math.max(1,gestureStart.distance)));}else if(points.size===1&&startPointer){dx=Math.max(-160,Math.min(160,startPointer.dx+e.clientX-startPointer.x));dy=Math.max(-180,Math.min(180,startPointer.dy+e.clientY-startPointer.y));}transform();});
  for(const type of ['pointerup','pointercancel','lostpointercapture'])listen(photoStage,type,e=>{points.delete(e.pointerId);gestureStart=null;startPointer=null;});
  function update(s){
    sourceAnchor=machine.sourceTime;perfAnchor=performance.now();
@@ -58,7 +58,7 @@ export function createInvestigationUI({mount,machine,capture,onAuto,getAuto}){
    root.hidden=!phases.has(s.phase);if(root.hidden){if(phase!==s.phase){animations.forEach(a=>a.cancel());animations=[];phase=s.phase;}return;}if(phase!==s.phase)build(s);
    root.dataset.paused=String(s.paused);for(const b of root.querySelectorAll('button'))b.disabled=s.paused;
    if(s.phase==='photo-review'&&photo){const fit=Math.min(photoStage.clientWidth/photo.width,photoStage.clientHeight/photo.height);photoInner.style.width=`${photo.width*fit}px`;photoInner.style.height=`${photo.height*fit}px`;}
-   if(s.phase==='hack')for(let i=0;i<3;i++){const b=puzzle.children[i],turn=s.hack.turns[i];b.firstChild.style.transform=`rotate(${turn*90}deg)`;b.classList.toggle('connected',turn%2===0);}
+   if(s.phase==='hack'){if(s.hack.failures)message.textContent=s.hack.failures>1?'輔助路徑：┓ ┏ / ┗ ┛（由上至下）。':'線路未接通。入口在左上，出口在右上；先向下繞一圈。';}if(s.phase==='hack')for(let i=0;i<4;i++){const b=puzzle.children[i],turn=s.hack.turns[i];b.firstChild.style.transform=`rotate(${turn*90}deg)`;b.classList.toggle('connected',turn===[1,0,2,3][i]);}
    if(s.phase==='heat'){
      const h=s.heat,playing=h.status==='playing';
      message.textContent=h.status==='ready'?(h.completed?`第 ${h.completed+1} 段準備。圓點短按，長條按住到尾端。`:'第一輪：額定功率測試。圓點短按，長條按住。'):h.result||'電流到金線時按下。長條要按到尾端。';

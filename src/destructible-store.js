@@ -266,7 +266,9 @@ function buildNeighborImpact(parent,r){
   function showIntactVisual(){intact.visible=true;broken.visible=false;rubble.count=0;collateral.visible=true;for(const item of loosePanels){item.mesh.visible=true;item.mesh.position.copy(item.position);item.mesh.rotation.copy(item.rotation);}balcony.position.set(-6.88,4.38,-2.3);balcony.rotation.set(0,0,0);}
   function reset(){hit=false;settled=false;at=-Infinity;showIntactVisual();}
   reset();
-  return {root,position:point,normal,showIntactVisual,
+  const worldPoint=[.8,1.5,-8];root.position.set(worldPoint[0]-point[0],worldPoint[1]-point[1],worldPoint[2]-point[2]);
+  return {root,get position(){return worldPoint;},normal,showIntactVisual,
+    align(target){root.position.set(target[0]-point[0],target[1]-point[1],target[2]-point[2]);worldPoint.splice(0,3,...target);},
     impact(){if(hit)return false;hit=true;at=time;intact.visible=false;broken.visible=true;rubble.count=fragments.length;return true;},reset,
     update(t){
       time=t;if(!hit||settled)return;const p=T.MathUtils.clamp((t-at)/1.9,0,1),ease=1-(1-p)**2;

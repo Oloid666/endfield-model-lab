@@ -76,9 +76,9 @@ export function buildConnectionStage(scene,r){
   function leverPosition(value=lever){return [root.position.x-1.18+2.36*clamp(value),root.position.y+.37,root.position.z+.02];}
   function update(t,delta,state={}){
     phase=state.phase||'ready';const c=state.connection||{},clock=Number.isFinite(state.clock)?state.clock:t;
-    root.visible=['login','captcha','lever'].includes(phase);if(!root.visible){pressed=false;return;}
+    root.visible=['terminal-deploy','login','captcha','lever'].includes(phase);if(!root.visible){pressed=false;return;}
     field=c.field==='password'?'password':'account';lastKey=canonical(c.lastKey);keyNumber=Number(c.keyNumber)||0;keyAt=Number.isFinite(c.keyAt)?c.keyAt:-Infinity;lever=clamp(c.lever);
-    keyboard.visible=phase==='login';captcha.visible=phase==='captcha';leverRoot.visible=phase==='lever';tick.visible=Boolean(c.verified);handle.position.x=-1.18+2.36*lever;
+    const deploy=phase==='terminal-deploy'?clamp(state.phaseElapsed/2):1;root.scale.set(1,Math.max(.03,deploy),Math.max(.03,deploy));root.position.y=.335+(1-deploy)*.7;keyboard.visible=['terminal-deploy','login'].includes(phase);captcha.visible=phase==='captcha';leverRoot.visible=phase==='lever';tick.visible=Boolean(c.verified);handle.position.x=-1.18+2.36*lever;
     const age=clock-keyAt,depression=age>=0&&age<.38?Math.sin(age/.38*Math.PI)*.048:0;pressed=depression>.002;count=0;
     for(const record of records){
       const active=record.field===field,down=active&&record.key===lastKey?depression:0;

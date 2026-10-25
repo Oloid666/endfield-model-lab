@@ -66,7 +66,7 @@ async function init(){
         const actor=await loadActors(world.scene,world.r,text=>loader.stage(text),abort.signal,world.earlyDragon);
         if(closed){actor.dispose();return;}
         world.actors=actor;world.charactersEnabled=true;$('#characters').checked=true;$('#characters').disabled=false;
-        world.earlyDragon=null;actor.teleport(1.48,.65);world.setView('interior',true);actor.root.visible=true;actor.setRain($('#rain').checked);actor.setObstacles(world.store.floorPlan);
+        world.earlyDragon=null;actor.teleport(-1.25,3.25);world.setView('interior',true);actor.root.visible=true;actor.setRain($('#rain').checked);actor.setObstacles(world.store.floorPlan);
       }catch(e){
         if(e.name==='AbortError'||closed)return;
         console.error('人物初始化失敗',e);
@@ -80,7 +80,7 @@ async function init(){
     if(closed)return;world.time=0;world.previous=undefined;world.tick(0,0,true);
     mission=createMission({mount:$('#app'),onCameraReset:()=>world.resetStoryCamera(),capturePhoto:()=>world.capturePhoto(),onCameraAuto:()=>world.resetStoryCamera(),getCameraAuto:()=>world.autoCamera,
       onDinner:branch=>{
-        if(!branch){exploration?.setActive(false);world.director.reset();mission?.setTargets(world.director.targets);world.actors?.setMove(0,0,false);world.actors?.setObstacles(world.store.floorPlan);world.actors?.teleport(1.48,.65);}
+        if(!branch){exploration?.setActive(false);world.director.reset();mission?.setTargets(world.director.targets);world.actors?.setMove(0,0,false);world.actors?.setObstacles(world.store.floorPlan);world.actors?.teleport(-1.25,3.25);}
         world.actors?.setDinner(branch);
       },
       onGesture:(name,node)=>world.actors?.setGesture(name,node),
