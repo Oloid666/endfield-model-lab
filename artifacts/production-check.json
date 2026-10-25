@@ -1,28 +1,28 @@
 {
-  "url": "https://oloid666.github.io/endfield-model-lab/?v=10",
-  "release": "lookdev-v10-photo-investigation-hacker-rhythm",
-  "commit": "d2d29ea8c2a645b695cda9fba85514ab60355f54",
-  "action": "https://github.com/Oloid666/endfield-model-lab/actions/runs/40200075090",
+  "url": "https://oloid666.github.io/endfield-model-lab/?v=11",
+  "release": "lookdev-v11-counter-camera-receipt-takeoff",
+  "commit": "8636f33544db3e5c6c22df86b46e1caec5221c19",
+  "action": "https://github.com/Oloid666/endfield-model-lab/actions/runs/40213334238",
   "tls_verification": true,
   "browser_public_url_test": false,
   "real_iphone_test": false,
   "assets": [
     {
-      "path": "/endfield-model-lab/assets/index-CwTAfxj0.css",
-      "bytes": 59613,
-      "sha256": "2e2a81f70d2b1e30ec04daacbfc5a1f2da46a746986f824ee34de19ef933c718",
+      "path": "/endfield-model-lab/assets/index-CbRnhtz7.js",
+      "bytes": 1114673,
+      "sha256": "82aa6fb000a83d846afcee9fa30cc759dc708ac0ca163b5f586a37af776c7ff4",
       "matches_tested_build": true
     },
     {
-      "path": "/endfield-model-lab/assets/index-PmsBhbHP.js",
-      "bytes": 1104645,
-      "sha256": "c6ce6a559e293945201121060f5e35f5abdccf92518d493145b4397a49ad377a",
+      "path": "/endfield-model-lab/assets/index-qFKD1lFz.css",
+      "bytes": 64364,
+      "sha256": "5bc6554666fced52a7cfd1ac35e74031f337471d5ad296a50394d4e1a44ed17d",
       "matches_tested_build": true
     },
     {
-      "path": "/endfield-model-lab/assets/xaihi-C5XyZxyB.js",
+      "path": "/endfield-model-lab/assets/xaihi-Cv6we-To.js",
       "bytes": 5991,
-      "sha256": "709ad4e39c6adc1b8aa66bce51cba991570baa0e04fbf4d5641f6e35a3eb8caf",
+      "sha256": "6d42f3b58f6fb5d64351e669f9efcd6aa48f4568281256e2a812c567dff57e32",
       "matches_tested_build": true
     },
     {
@@ -38,9 +38,21 @@
       "matches_tested_build": true
     },
     {
+      "path": "/endfield-model-lab/images/mifu-a.jpg",
+      "bytes": 53227,
+      "sha256": "120263d9ec75e23ce4d9cb20abe0927f88e2b8b96680863bb0bee2a68824bd71",
+      "matches_tested_build": true
+    },
+    {
       "path": "/endfield-model-lab/images/mifu-portrait-a-source.png",
       "bytes": 2950596,
       "sha256": "e54d59d666bb0bf043c972113b513377b6588d3efc475c748632a75c2ea36104",
+      "matches_tested_build": true
+    },
+    {
+      "path": "/endfield-model-lab/images/receipt.svg",
+      "bytes": 1300,
+      "sha256": "785a76a4f386ce66eefaf510660d98daa970ba24d0b4e727ce0155a5e0690375",
       "matches_tested_build": true
     }
   ],
@@ -83,7 +95,12 @@
     "管理密碼：0000",
     "電網突波！設備失控",
     "息壤 10,000 噸",
-    "photo-shutter"
+    "photo-shutter",
+    "photo-review",
+    "photo-send",
+    "2026.10 NEW",
+    "起飛許可核發",
+    "server-impact-crater"
   ],
   "removed_playground_marker_absent": true
 }

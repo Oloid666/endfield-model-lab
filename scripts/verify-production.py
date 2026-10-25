@@ -40,6 +40,7 @@ def verify_file(relative):
 assert len(sys.argv) == 3, 'Usage: python3 scripts/verify-production.py COMMIT ACTION_RUN_URL'
 html = fetch(URL).decode()
 assert html == (DIST / 'index.html').read_text(), 'Public HTML differs from tested build'
+assert 'iPhone 直屏優化' in html, 'Missing iPhone portrait badge in HTML'
 paths = re.findall(r'(?:src|href)="([^"]+)"', html)
 entry_paths = [path for path in paths if path.endswith(('.js', '.css', '.svg'))]
 assert any(path.endswith('.js') for path in entry_paths), 'Missing JavaScript entry'
@@ -69,7 +70,7 @@ markers = [
     'tianshi-green-energy-columns', 'microwave-fault-halo',
     'mission-camera-reset', '正在準備人物光影', 'photo-framing',
     'purple-food-mosaic', 'store-cctv', '管理密碼：0000',
-    '電網突波！設備失控', '息壤 10,000 噸', 'photo-shutter', 'photo-review', 'photo-send', '2026.10 NEW', '起飛許可核發', 'server-impact-crater', 'iPhone 直屏優化',
+    '電網突波！設備失控', '息壤 10,000 噸', 'photo-shutter', 'photo-review', 'photo-send', '2026.10 NEW', '起飛許可核發', 'server-impact-crater',
 ]
 for marker in markers:
     assert marker in javascript, ('Missing V11 build marker', marker)

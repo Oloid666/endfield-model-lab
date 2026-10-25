@@ -54,4 +54,9 @@
 
 ## 發布
 
-待完整驗證後補上 Pages 部署及公開資源核對結果。
+已發布 [V11 網站](https://oloid666.github.io/endfield-model-lab/?v=11)。
+
+- 程式版本：[8636f33](https://github.com/Oloid666/endfield-model-lab/commit/8636f33544db3e5c6c22df86b46e1caec5221c19)
+- [GitHub Actions Build／Pages 部署成功](https://github.com/Oloid666/endfield-model-lab/actions/runs/40213334238)
+- 公開 HTML、JS／CSS、圖片、兩份模型均以正常 TLS 下載，SHA-256 與受測 build 相符；兩份原始 GLB 大小與雜湊不變。
+- [公開資源核對](../artifacts/production-check.json)不等於公開網址瀏覽器或 iPhone 真機測試；不宣稱已取得真機效能結果。
