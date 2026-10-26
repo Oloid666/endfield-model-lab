@@ -27,3 +27,10 @@
 [手機預覽](../artifacts/v13-photo-review.png) · [清晰人像](../artifacts/v13-photo-face.png) · [登入](../artifacts/v13-login.png) · [加熱失敗](../artifacts/v13-purple-failure.png) · [結尾](../artifacts/v13-ending.png)
 
 完整流程後，另以前移平板的最終建置複查開場至驗證，見 `artifacts/v13-terminal-review.json`。
+
+## 發布
+
+- 網址：https://oloid666.github.io/endfield-model-lab/?v=13
+- 程式提交：`0f49a911719a729e6c1f9d0c678f0240aa7f5195`
+- [Actions建置與部署成功](https://github.com/Oloid666/endfield-model-lab/actions/runs/40267504353)
+- 已用正常TLS下載公開HTML、JS、CSS、圖片及兩個模型，雜湊與本地最終建置一致。原始GLB未修改。證據見 `artifacts/production-check.json`。

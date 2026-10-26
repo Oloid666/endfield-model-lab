@@ -1,28 +1,28 @@
 {
-  "url": "https://oloid666.github.io/endfield-model-lab/?v=12",
-  "release": "lookdev-v12-companion-camera-storyboards",
-  "commit": "a56c9bf54125778f0755f12808ee340db42eb0dc",
-  "action": "https://github.com/Oloid666/endfield-model-lab/actions/runs/40243639681",
+  "url": "https://oloid666.github.io/endfield-model-lab/?v=13",
+  "release": "lookdev-v13-flight-phone-aftermath",
+  "commit": "0f49a911719a729e6c1f9d0c678f0240aa7f5195",
+  "action": "https://github.com/Oloid666/endfield-model-lab/actions/runs/40267504353",
   "tls_verification": true,
   "browser_public_url_test": false,
   "real_iphone_test": false,
   "assets": [
     {
-      "path": "/endfield-model-lab/assets/index-DY0UWGNl.css",
-      "bytes": 66422,
-      "sha256": "51f79af93eb573ae73288b72ef6dba82546067dcdb49b3a8431fbab5b9047822",
+      "path": "/endfield-model-lab/assets/index-C7F3JWT7.js",
+      "bytes": 1130164,
+      "sha256": "51241e2ad0737cbcfa0869b49bc71621b2d8b5db0c3e2d6eaa2eebdf68dc180d",
       "matches_tested_build": true
     },
     {
-      "path": "/endfield-model-lab/assets/index-Dx5DEkRI.js",
-      "bytes": 1120025,
-      "sha256": "839a5a0f7822de14bffe7dd6060311c5b8488dcf672f72705bacc3d215ae5926",
+      "path": "/endfield-model-lab/assets/index-CYtm-ij6.css",
+      "bytes": 69575,
+      "sha256": "84fe4ebeea079743ee6ce35bbd92b91d14e360740c7ce37e3d5812d2287b174b",
       "matches_tested_build": true
     },
     {
-      "path": "/endfield-model-lab/assets/xaihi-Dq0dLMN3.js",
+      "path": "/endfield-model-lab/assets/xaihi-Br8jBwqU.js",
       "bytes": 5991,
-      "sha256": "0d544abac3dccf474a70026e33391471d63483bd72beaf3d9d81262601146a57",
+      "sha256": "22fb64f3a09882b4c0cd1debb59b4c25942bb6b9d3f1fd303137b3e63d59714c",
       "matches_tested_build": true
     },
     {
@@ -51,8 +51,8 @@
     },
     {
       "path": "/endfield-model-lab/images/receipt.svg",
-      "bytes": 1286,
-      "sha256": "d47df83b00a3865affc03d7c56adac1e89b37f004fb9d9e2ae83cf57b573c28b",
+      "bytes": 1438,
+      "sha256": "ea0feb2b4137328b7dc80904a401fcafc3df6feabb3497f00b1153b34b045b83",
       "matches_tested_build": true
     },
     {
@@ -111,7 +111,9 @@
     "photo-review",
     "photo-send",
     "2026.10 NEW",
-    "起飛許可核發",
+    "photo-flight",
+    "確認沒眨眼",
+    "武陵的Level 6",
     "server-impact-crater"
   ],
   "removed_playground_marker_absent": true
