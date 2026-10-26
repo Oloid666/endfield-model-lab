@@ -1,28 +1,28 @@
 {
-  "url": "https://oloid666.github.io/endfield-model-lab/?v=13",
-  "release": "lookdev-v13-flight-phone-aftermath",
-  "commit": "0f49a911719a729e6c1f9d0c678f0240aa7f5195",
-  "action": "https://github.com/Oloid666/endfield-model-lab/actions/runs/40267504353",
+  "url": "https://oloid666.github.io/endfield-model-lab/?v=14",
+  "release": "lookdev-v14-cycle-shoe-gate",
+  "commit": "b4bbe3439ea755a94501004fa243beb59a3332ee",
+  "action": "https://github.com/Oloid666/endfield-model-lab/actions/runs/40300372202",
   "tls_verification": true,
   "browser_public_url_test": false,
   "real_iphone_test": false,
   "assets": [
     {
-      "path": "/endfield-model-lab/assets/index-C7F3JWT7.js",
-      "bytes": 1130164,
-      "sha256": "51241e2ad0737cbcfa0869b49bc71621b2d8b5db0c3e2d6eaa2eebdf68dc180d",
+      "path": "/endfield-model-lab/assets/index-CuvO_wR6.js",
+      "bytes": 1132637,
+      "sha256": "49f57a4d6611a1103e0dcaa6cd0ae1d6003970c53533b2d49271de15819f0780",
       "matches_tested_build": true
     },
     {
-      "path": "/endfield-model-lab/assets/index-CYtm-ij6.css",
-      "bytes": 69575,
-      "sha256": "84fe4ebeea079743ee6ce35bbd92b91d14e360740c7ce37e3d5812d2287b174b",
+      "path": "/endfield-model-lab/assets/index-D5tC_3i2.css",
+      "bytes": 70634,
+      "sha256": "b452966deb15e1e42205f9cfc80fe600c28496932c16afb05432901ffa3e09c0",
       "matches_tested_build": true
     },
     {
-      "path": "/endfield-model-lab/assets/xaihi-Br8jBwqU.js",
+      "path": "/endfield-model-lab/assets/xaihi-C8qEns1m.js",
       "bytes": 5991,
-      "sha256": "22fb64f3a09882b4c0cd1debb59b4c25942bb6b9d3f1fd303137b3e63d59714c",
+      "sha256": "c81fefb0dabfcbb251b5bc2330cb59f63b00375143f8c18c8674e5c3888507aa",
       "matches_tested_build": true
     },
     {
@@ -112,6 +112,9 @@
     "photo-send",
     "2026.10 NEW",
     "photo-flight",
+    "shoe-view",
+    "pylon-link",
+    "login-dragon-aside",
     "確認沒眨眼",
     "武陵的Level 6",
     "server-impact-crater"

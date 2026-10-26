@@ -12,3 +12,7 @@
 測試使用Chromium／SwiftShader，非iPhone真機效能測量。
 
 已截圖確認海報正面取景與鞋子等待畫面；相機分類切換採即時定位，避免舊轉場被運鏡狀態取消。
+
+發布：https://oloid666.github.io/endfield-model-lab/?v=14
+
+程式提交 b4bbe3439ea755a94501004fa243beb59a3332ee，Actions 40300372202 成功。公開HTML、JS、CSS、圖片及模型已用正常TLS核對，與本地建置一致。
