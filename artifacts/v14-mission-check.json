@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "count": 67,
+  "count": 70,
   "checks": [
     "Opening waits",
     "Purchase holds at counter",
@@ -30,9 +30,12 @@
     "Authorization precedes ascent",
     "Director reminder at half charge",
     "Shoe gate waits",
+    "First full shoe orbit reveals choices",
+    "Another bowl restarts orbit",
     "Shoe orbit holds partial charge",
     "Pylon after shoes",
     "Charge resumes from thirty percent",
+    "Fire instruction gates combat",
     "Combat starts",
     "Combat reaches exhaustion",
     "VCR snapshot saved",

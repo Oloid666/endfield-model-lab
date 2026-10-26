@@ -50,7 +50,7 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
   let smileTarget=0,smileAmount=0;
   const companionAction={kind:'',amount:0};
   const heroWorld=new T.Vector3(),projectileWorld=new T.Vector3();let dragonHeading=0;let castActive=false,projectileActive=false,projectileRoll=0,landingFeet=false;
-  const castPhases=new Set(['login','captcha','lever','charge','combat','energy','last','aim-final','finisher','landing']);
+  const castPhases=new Set(['login','captcha','lever','ascent','director-reminder','shoe-view','pylon-link','charge','fire-ready','combat','energy','last','aim-final','finisher','landing']);
   const walkPose={shoulderL:0,shoulderR:0,elbowL:0,elbowR:0,wristL:0,wristR:0};
   function relax(key,target,rate,delta){walkPose[key]=T.MathUtils.lerp(walkPose[key],target,delta>0?1-Math.exp(-Math.min(delta,.06)*rate):1);return walkPose[key];}
   const gesture={name:'',start:-100,speaker:''};
@@ -113,13 +113,14 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
     teleport(x,z){const success=locomotion.teleport(x,z);if(success){lastWalking=true;follower.reset();api.update(lastTime,0);}return success;},
     update(t,delta=0){
       lastTime=t;const motion=locomotion.update(delta),walk=motion.amount,walking=motion.moving;
-      const rising=['login','captcha','lever','charge'].includes(cinematic.phase),age=cinematic.castingElapsed??cinematic.elapsed;
+      const rising=['login','captcha','lever','ascent','director-reminder','shoe-view','pylon-link','charge'].includes(cinematic.phase),age=cinematic.castingElapsed??cinematic.elapsed;
       const quick=Math.min(cinematic.height,1.2)*T.MathUtils.smootherstep(age,0,.8),slow=T.MathUtils.smootherstep(age,1.15,14);
       const launch=cinematic.launchOverride??(rising?(quick+(cinematic.height-Math.min(cinematic.height,1.2))*slow)/Math.max(.01,cinematic.height):cinematic.phase==='landing'?1-T.MathUtils.smootherstep(cinematic.elapsed,0,2.8):1);
       const travel=cinematic.launchOverride??(rising?slow:launch);
       const recoil=castActive?cinematic.recoil:0,lift=castActive?cinematic.height*launch:0,forward=castActive?cinematic.distance*travel:0;
       pivot.position.copy(pivotRest);pivot.position.y+=lift+(lift>.1?Math.sin(t*1.8)*.025*launch:0);pivot.position.z+=forward+recoil*.62;pivot.position.y+=recoil*.085;
       if(castActive)pivot.rotation.y=T.MathUtils.lerp(.08,Math.PI-.23,rising?T.MathUtils.smootherstep(age,3,12):1);
+      if(castActive&&['director-reminder','shoe-view','pylon-link'].includes(cinematic.phase))pivot.rotation.y=Math.PI-.23;
       Object.assign(cinematicStatus,{phase:cinematic.phase,lift,forward,heading:pivot.rotation.y,airborne:lift>.015,dragonProjectile:projectileActive,recoil});
       sampleIdle(t,idle);if(!raining){idle.rain=0;idle.startle=0;}
       const elapsed=t-gesture.start,g=T.MathUtils.smoothstep(elapsed,0,.3)*(1-T.MathUtils.smoothstep(elapsed,2.1,2.75));

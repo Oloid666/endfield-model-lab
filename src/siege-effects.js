@@ -91,7 +91,7 @@ export function buildSiegeEffects(scene,r){
     impact,
     update(t,delta,state={}){
       if(!Number.isFinite(t))return;clock=t;
-      const phase=state.phase||'',charge=T.MathUtils.clamp(Number(state.charge)||0,0,1),casting=['charge','combat','energy','return','last','aim-final','finisher','landing'].includes(phase);
+      const phase=state.phase||'',charge=T.MathUtils.clamp(Number(state.charge)||0,0,1),casting=['charge','fire-ready','combat','energy','return','last','aim-final','finisher','landing'].includes(phase);
       if(!casting&&!root.visible){summary.phase=phase;summary.charge=charge;return;}
       if(state.hero)hero.fromArray(state.hero);if(state.target)target.fromArray(state.target);if(state.dragon)dragon.fromArray(state.dragon);
       const strength=['energy','return'].includes(phase)?(.09+.13*Math.max(0,Math.sin(t*17))):phase==='last'?Math.max(.1,charge):phase==='charge'?charge:phase==='landing'?1-T.MathUtils.smootherstep(Number(state.elapsed)||0,0,2.8):casting?1:0;

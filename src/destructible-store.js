@@ -50,7 +50,7 @@ export function makeDestructibleStore(root,r,parts,spill){
   const rubble=new T.Group();rubble.name='permanent-shop-rubble';rubble.visible=false;root.add(rubble);
   const concrete=r.own(new T.MeshStandardMaterial({color:0xffffff,roughness:.9,metalness:.08}));
   const debrisPerStage=30;
-  const chunks=new T.InstancedMesh(r.geometry('BoxGeometry',1,1,1),concrete,debrisPerStage*6);chunks.count=0;chunks.instanceMatrix.setUsage(T.DynamicDrawUsage);chunks.frustumCulled=false;chunks.userData.dynamic=true;chunks.castShadow=true;chunks.receiveShadow=true;rubble.add(chunks);
+  const chunks=new T.InstancedMesh(r.geometry('BoxGeometry',1,1,1),concrete,debrisPerStage*6);chunks.count=0;chunks.instanceMatrix.setUsage(T.DynamicDrawUsage);chunks.frustumCulled=true;chunks.boundingSphere=new T.Sphere(new T.Vector3(0,3,0),16);chunks.userData.dynamic=true;chunks.castShadow=false;chunks.receiveShadow=true;rubble.add(chunks);
   const dummy=new T.Object3D(),color=new T.Color(),records=[];
   let seed=71167;const random=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;};
   const palette=['#8b9187','#b5b4a2','#5a6862','#a09b84','#435851','#688078'];

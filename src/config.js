@@ -3,9 +3,9 @@ export const config = {
   reflection: { low: 192, balanced: 384, high: 512 },
   rainCount: { low: 650, balanced: 1400, high: 2200 },
   views: {
-    poster3:{position:[3.4,1.72,4.4],target:[3.4,1.72,2.04],mobilePosition:[3.4,1.72,4.4],mobileTarget:[3.4,1.72,2.04]},
-    poster2:{position:[2.35,2.12,4.4],target:[2.35,2.12,2.04],mobilePosition:[2.35,2.12,4.4],mobileTarget:[2.35,2.12,2.04]},
-    poster1:{position:[-2.8,1.5,4.4],target:[-2.8,1.5,2.04],mobilePosition:[-2.8,1.5,4.4],mobileTarget:[-2.8,1.5,2.04]},
+    poster3:{position:[3.4,1.95,5.3],target:[3.4,1.95,1.82],mobilePosition:[3.4,1.95,5.3],mobileTarget:[3.4,1.95,1.82]},
+    poster2:{position:[2.35,1.95,5.3],target:[2.35,1.95,1.82],mobilePosition:[2.35,1.95,5.3],mobileTarget:[2.35,1.95,1.82]},
+    poster1:{position:[-2.8,1.95,5.3],target:[-2.8,1.95,1.82],mobilePosition:[-2.8,1.95,5.3],mobileTarget:[-2.8,1.95,1.82]},
     streetRight:{position:[-15,8,20],target:[0,2,0],mobilePosition:[-20,12,27],mobileTarget:[0,2,0]},
 
     shelves:{position:[-.4,2,1.6],target:[-2.5,1,-1],mobilePosition:[-.4,2,1.6],mobileTarget:[-2.5,1,-1]},

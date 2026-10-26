@@ -13,8 +13,8 @@ const lines=(prefix,items)=>items.map(([speaker,text,gesture='look',mood='calm',
 
 export const sequences={
   intro:lines('intro',[
-    ['dragon','雨都下到這裡了，她還在裡面加班。','look'],
-    ['dragon','先叫她出來。今晚一定要吃頓熱的。','point'],
+    ['dragon','辦公室的燈還亮著。阿莊肯定又忘了吃晚餐。','look'],
+    ['dragon','先叫她下班。今晚得讓她好好吃飯。','point'],
     ['dragon','阿莊，下班。','point'],
     ['zhuang','理由？','look'],
     ['dragon','好好吃飯。妳已經連著加班五天了。','point'],
@@ -86,8 +86,9 @@ export const sequences={
     ['mifoe','頭，事故原因那欄怎麼填？','look'],
     ['zhuang','先空著。我還沒動手。','nod'],
     ['zhuang','直接物理移除。','point','calm','physical-removal'],
-    ['dragon','什麼？這間可是\nChatGPT 6.0 Astra 蓋的 711。','look','aside'],
-    ['dragon','燒了十張重置券的算力，\n結果蓋出來當靶？？？？？','shake','aside'],
+    ['dragon','什麼？這間可是 ChatGPT 6.0 Astra 蓋的 711。','look','aside'],
+    ['dragon','雨棚弧度、玻璃反射、貨架動線都挑過。結構美，氣氛也佳。','look','aside'],
+    ['dragon','燒了幾十張算力券，最後蓋出來當靶？？？？？','shake','aside'],
     ['zhuang','弭弗，接上全城的天師樁\n息壤超電容儲能模組。','point'],
     ['zhuang','龍泡泡，幫我登入。我準備一下。','point'],
     ['dragon','準備找人背鍋？','look'],
@@ -251,5 +252,5 @@ export const reactionPools={
   hit:['弭弗：店面外牆破損，招牌正在鬆動。', '龍泡泡：原來「拆開來看」是這個意思。','弭弗：請問公告寫設備維護嗎？莊：不會再壞。'],
   waiting:['龍泡泡：慢慢看。她還不知道自己下班了。','龍泡泡：這個角度不處理公文。莊：也沒有要處理。','龍泡泡：看夠再開始，晚餐會等你。'],
 };
-export const endingSong=['保險～怎麼兩清，怎麼忍心','怎麼做回甲乙丙丁','難道非要耗盡所有委屈','再賠上這一條爛命'];
+export const endingSong=['🎤🎵 保險～怎麼兩清，怎麼忍心','🎵 怎麼做回甲乙丙丁','🎤 難道非要耗盡所有委屈','🎵 再賠上這一條爛命'];
 export const endingCaption='弭弗：就這樣，武陵又平安地度過了一天。\n感謝飛天小女警的努力。\nFin.';

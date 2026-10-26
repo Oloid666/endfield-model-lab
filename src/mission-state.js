@@ -4,6 +4,7 @@ import {sequences,dinnerChoices,chargeLines,chatterGroups,hotspots,endingCaption
 export const METER_TRAVEL=1.35;
 export const METER_PERIOD=METER_TRAVEL*2;
 export const CHARGE_DURATION=30;
+export const SHOE_ORBIT_DURATION=8;
 export const REWIND_DURATION=10;
 export const HEAT_DEMO_DURATION=6;
 export const RETURN_DURATION=3;
@@ -37,7 +38,7 @@ export class MissionMachine{
     this.revealed=0;this.revision=0;this.shots=0;this.hits=0;this.lastAttack=-Infinity;this.feedback=null;
     this.targets=[];this.target=null;this.ended=false;this.quietUntil=Infinity;this.chatDeck=[];this.lastChat=-1;
     this.chatCounts={};this.cooldowns={};this.lastHotspot=-Infinity;this.randomState=71130;this.sequenceKind=null;
-    this.output='steady';this.meterEntered=0;this.attackHoldUntil=0;this.purchaseStarted=null;
+    this.output='steady';this.meterEntered=0;this.attackHoldUntil=0;this.purchaseStarted=null;this.shoeOrbitStart=0;this.shoeRounds=0;
     this.castingEntered=null;this.castingPaused=0;this.castingFrozen=0;this.vcrStarted=null;this.vcrSnapshot=null;
     this.resetInteraction();
   }
@@ -58,6 +59,8 @@ export class MissionMachine{
     if(phase==='verify-talk'){this.lines=captchaLines;this.line(captchaLines[0],entered);}
     if(phase==='lever')this.line(connectionPrompts.verified,entered);
     if(phase==='charge'){this.castingEntered=entered;this.line(chargeLines[0],entered);}
+    if(phase==='shoe-view'){this.shoeOrbitStart=entered;this.shoeRounds=0;}
+    if(phase==='fire-ready')this.line({id:'fire_ready',speaker:'system',text:'充能完畢。進入發射系統。指針接近中央時按下砲擊。',gesture:'look'},entered);
     if(phase==='rewind'){
       this.castingFrozen=this.castingElapsed;
       this.vcrStarted=entered;
@@ -77,7 +80,7 @@ export class MissionMachine{
   sequence(phase,lines){this.phaseTo(phase);this.lines=lines;this.index=0;this.line(lines[0]);}
   start(){
     this.branch=null;this.progress=0;this.ended=false;this.paused=false;this.shots=0;this.hits=0;this.lastAttack=-Infinity;this.feedback=null;
-    this.output='steady';this.attackHoldUntil=0;this.castingEntered=null;this.castingPaused=0;this.castingFrozen=0;this.vcrStarted=null;this.vcrSnapshot=null;this.purchaseStarted=null;this.resetInteraction();
+    this.output='steady';this.attackHoldUntil=0;this.castingEntered=null;this.castingPaused=0;this.castingFrozen=0;this.vcrStarted=null;this.vcrSnapshot=null;this.purchaseStarted=null;this.shoeOrbitStart=0;this.shoeRounds=0;this.resetInteraction();
     this.chatDeck=[];this.lastChat=-1;this.chatCounts={};this.cooldowns={};this.lastHotspot=-Infinity;this.quietUntil=Infinity;this.target=this.targets[0]?.id??null;
     this.hooks.onDinner?.(null);this.sequence('intro',sequences.intro);return true;
   }
@@ -97,7 +100,7 @@ export class MissionMachine{
     else if(this.phase==='energy')this.phaseTo('rewind');
     else if(this.phase==='flashback')this.phaseTo('hack');
     else if(this.phase==='credentials')this.phaseTo('heat');
-    else if(this.phase==='photo-talk'){this.flight={x:-2,z:5,vx:0,vz:0};this.phaseTo('photo-flight');}
+    else if(this.phase==='photo-talk'){this.flight={x:-2,z:3.25,vx:0,vz:0};this.phaseTo('photo-flight');}
     else if(this.phase==='photo-check')this.phaseTo('photo-review');
     else if(this.phase==='cargo')this.sequence('observation',sequences.observation);
     else if(this.phase==='observation')this.phaseTo('comm-request');
@@ -106,17 +109,20 @@ export class MissionMachine{
     else if(this.phase==='complete'){this.node=null;this.lines=[];this.sequenceKind=null;this.quietUntil=this.time+8+this.random()*6;this.emit();}
   }
   next(){
-    if(this.phase==='shoe-view'&&!this.paused){this.phaseTo('pylon-link');return true;}
+    if(this.phase==='shoe-view'&&!this.paused&&this.shoeReady){this.phaseTo('pylon-link');return true;}
+    if(this.phase==='fire-ready'&&!this.paused){this.phaseTo('combat');return true;}
     if(this.paused||!this.node||!manualPhases.has(this.phase))return false;
     if(this.revealed<this.node.text.length){this.revealed=this.node.text.length;this.emit();return true;}
     if(++this.index<this.lines.length)this.line(this.lines[this.index]);else this.finishSequence();return true;
   }
   skip(){if(this.paused||!manualPhases.has(this.phase))return false;this.finishSequence();return true;}
+  get shoeReady(){return this.phase==='shoe-view'&&this.time-this.shoeOrbitStart>=SHOE_ORBIT_DURATION;}
+  anotherBowl(){if(!this.shoeReady||this.paused)return false;this.shoeRounds++;this.shoeOrbitStart=this.time;this.emit();return true;}
   choose(id){
     if(this.phase!=='choice'||this.paused||!dinnerChoices.some(v=>v.id===id))return false;
     this.branch=id;this.hooks.onDinner?.(id);this.sequence('meal',sequences['meal'+id]);return true;
   }
-  stepFlight(d){if(this.phase!=='photo-flight'||this.paused)return;this.flight.z=clamp(this.flight.z+d*.3,4,12);this.flight.x=-2+2*clamp((this.flight.z-5)/5.5);this.emit();}
+  stepFlight(d){if(this.phase!=='photo-flight'||this.paused)return;this.flight.z=clamp(this.flight.z+d*.3,3.25,12);this.flight.x=-2+2*clamp((this.flight.z-5)/5.5);this.emit();}
   fly(x,z){if(this.phase!=='photo-flight'||this.paused)return false;this.flight.vx=Math.max(-1,Math.min(1,x));this.flight.vz=Math.max(-1,Math.min(1,z));return true;}
   finishFlight(){if(this.phase!=='photo-flight'||this.paused||Math.hypot(this.flight.x,this.flight.z-10.5)>1.2)return false;this.phaseTo('photo');return true;}
   takePhoto(){if(this.phase!=='photo'||this.paused)return false;this.photoTaken=true;this.phaseTo('photo-return');return true;}
@@ -140,11 +146,11 @@ export class MissionMachine{
   keyChunk(value){
     if(this.paused||this.phase!=='login')return false;
     const expected=this.connection.field==='account'?['endfield','_','power']:['520','1314'];
-    if(![...expected,'admin','love','boss','retire','0000','8888'].includes(value))return false;const c0=this.connection;(c0.chunks??=[]).push(value);
+    if(![...expected,'admin','love','boss','kiss','0000','8888'].includes(value))return false;const c0=this.connection;(c0.chunks??=[]).push(value);
     for(const c of value)if(!this.key(c))return false;
     this.commentLogin();const c=this.connection;if(c[c.field]===(c.field==='account'?CONNECTION_ACCOUNT:CONNECTION_PASSWORD))this.submitLogin();return true;
   }
-  commentLogin(correct=false){const value=this.connection.account;const kind=correct?'correct':value.includes('love')?'love':'wrong';const pool=kind==='love'?['這是登入，不是告白。','boss love admin？這段要送給管理員嗎？']:kind==='correct'?['帳號對了。接著輸入密碼。']:['你輸入的是帳號，還是辦公室八卦？','電網還沒接通，人際關係先短路了。'];const n=this.asideCounts[kind]||0;this.asideCounts[kind]=n+1;this.loginAside=pool[n%pool.length];}
+  commentLogin(correct=false){const value=this.connection.account;const kind=correct?'correct':value.includes('kiss')?'kiss':value.includes('love')?'love':'wrong';const pool=kind==='kiss'?['等等，誰親誰？這是帳號欄！']:kind==='love'?['等等，誰愛誰？這是帳號欄！']:kind==='correct'?['帳號對了。接著輸入密碼。']:['你輸入的是帳號，還是辦公室八卦？','電網還沒接通，人際關係先短路了。'];const n=this.asideCounts[kind]||0;this.asideCounts[kind]=n+1;this.loginAside=pool[n%pool.length];}
   key(value){
     if(this.paused||this.phase!=='login'||typeof value!=='string')return false;
     const c=this.connection,field=c.field;let next=c[field];
@@ -243,14 +249,14 @@ export class MissionMachine{
   update(sourceTime){
     if(!Number.isFinite(sourceTime))return;
     const delta=Math.max(0,sourceTime-this.sourceTime);this.sourceTime=Math.max(this.sourceTime,sourceTime);
-    if(this.paused)return;this.time+=delta;if(this.phase==='photo-flight'&&this.flight){const f=this.flight,dt=Math.min(.1,delta);f.x=-2+2*Math.max(0,Math.min(1,(f.z-5)/5.5));f.z=Math.max(4,Math.min(12,f.z+f.vz*3*dt));}
+    if(this.paused)return;this.time+=delta;if(this.phase==='photo-flight'&&this.flight){const f=this.flight,dt=Math.min(.1,delta);f.x=-2+2*Math.max(0,Math.min(1,(f.z-5)/5.5));f.z=Math.max(3.25,Math.min(12,f.z+f.vz*3*dt));}
     // Catch up continuous cinematics after a late frame, but stop on every manual or input gate.
     for(let guard=0;guard<10;guard++){
       const elapsed=this.time-this.entered,phase=this.phase;let changed=false;
       if(phase==='ascent'&&elapsed>=5){this.phaseTo('director-reminder',this.entered+5);this.line({id:'director_reminder_0',speaker:'dragon',text:'等等！導播，這邊重點不要漏掉！要照顧一下玩家！',gesture:'point'});changed=true;}
       else if(phase==='director-reminder'&&elapsed>=5){this.phaseTo('shoe-view',this.entered+5);changed=true;}
       else if(phase==='pylon-link'&&elapsed>=4){this.phaseTo('charge',this.entered+4);changed=true;}
-      else if(phase==='charge'&&elapsed>=CHARGE_DURATION){this.phaseTo('combat',this.entered+CHARGE_DURATION);changed=true;}
+      else if(phase==='charge'&&elapsed>=CHARGE_DURATION){this.phaseTo('fire-ready',this.entered+CHARGE_DURATION);changed=true;}
       else if(phase==='terminal-deploy'&&elapsed>=4.5){this.phaseTo('login',this.entered+4.5);changed=true;}
       else if(phase==='photo-return'&&elapsed>=2.5){this.sequence('photo-check',sequences.photoCheck);changed=true;}
       else if(phase==='purchase'&&elapsed>=Math.max(0,6-(this.purchaseStarted===null?0:this.entered-this.purchaseStarted))){this.phaseTo('walk-out');changed=true;}
@@ -300,7 +306,7 @@ export class MissionMachine{
       meter,meterElapsed:Math.max(0,this.time-this.meterEntered),meterPeriod:settings.period,meterSettings:settings,output:this.output,outputModes,
       landingDuration:LANDING_DURATION,tourDuration:TOUR_DURATION,chargeDuration:CHARGE_DURATION,rewindDuration:REWIND_DURATION,returnDuration:RETURN_DURATION,heatDemoDuration:HEAT_DEMO_DURATION,
       phaseElapsed:elapsed,time:this.time,clock:this.time,sourceTime:this.sourceTime,paused:this.paused,auto:this.auto,castingElapsed:this.castingElapsed,
-      loginAside:this.loginAside,purchaseElapsed:this.purchaseStarted===null?null:Math.max(0,this.time-this.purchaseStarted),flight:this.flight?{...this.flight,ready:Math.hypot(this.flight.x,this.flight.z-10.5)<1.2}:null,investigation:this.investigation,photoTaken:this.photoTaken,hack:{turns:[...this.hackTurns],moves:this.hackMoves,failures:this.hackFailures},connection,login:connection,heat,vcr,rewindProgress,rewindStage,returnProgress:this.phase==='return'?clamp(elapsed/RETURN_DURATION):0,vcrElapsed:vcr&&this.vcrStarted!==null?Math.max(0,this.time-this.vcrStarted):0,replayStage:vcr?this.phase:null,vcrSnapshot:this.vcrSnapshot?{...this.vcrSnapshot}:null,
+      loginAside:this.loginAside,purchaseElapsed:this.purchaseStarted===null?null:Math.max(0,this.time-this.purchaseStarted),shoeReady:this.shoeReady,shoeOrbitElapsed:this.phase==='shoe-view'?Math.max(0,this.time-this.shoeOrbitStart):0,shoeRounds:this.shoeRounds,flight:this.flight?{...this.flight,ready:Math.hypot(this.flight.x,this.flight.z-10.5)<1.2}:null,investigation:this.investigation,photoTaken:this.photoTaken,hack:{turns:[...this.hackTurns],moves:this.hackMoves,failures:this.hackFailures},connection,login:connection,heat,vcr,rewindProgress,rewindStage,returnProgress:this.phase==='return'?clamp(elapsed/RETURN_DURATION):0,vcrElapsed:vcr&&this.vcrStarted!==null?Math.max(0,this.time-this.vcrStarted):0,replayStage:vcr?this.phase:null,vcrSnapshot:this.vcrSnapshot?{...this.vcrSnapshot}:null,
       target:this.target,targetLabel:target?.label||'店面外牆',targets:this.targets,feedback:this.feedback,shots:this.shots,hits:this.hits,attackHoldUntil:this.attackHoldUntil,combatHoldRemaining,attackHeld:combatHoldRemaining>0,
       canAttack:['combat','aim-final'].includes(this.phase)&&!this.paused&&this.time-this.lastAttack>=.6&&combatHoldRemaining===0,
       ended:this.ended,busy:!!this.node||!['ready','complete'].includes(this.phase),sequenceKind:this.sequenceKind,endingCaption,revision:this.revision};

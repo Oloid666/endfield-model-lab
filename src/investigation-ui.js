@@ -1,7 +1,7 @@
 import {portrait} from './portrait.js';
 import './investigation.css';
 const E=(tag,cls,text)=>{const n=document.createElement(tag);n.className=cls;if(text)n.textContent=text;return n;};
-const phases=new Set(['shoe-view','pylon-link','photo-flight','photo','photo-review','comm-request','hack','heat']);
+const phases=new Set(['shoe-view','pylon-link','fire-ready','photo-flight','photo','photo-review','comm-request','hack','heat']);
 export function createInvestigationUI({mount,machine,capture,onAuto,getAuto}){
  const abort=new AbortController();let buildAbort=new AbortController(),building=false;
  const listen=(el,type,fn)=>el.addEventListener(type,fn,{signal:building?buildAbort.signal:abort.signal});
@@ -25,8 +25,9 @@ export function createInvestigationUI({mount,machine,capture,onAuto,getAuto}){
    buildAbort.abort();buildAbort=new AbortController();building=true;
    phase=s.phase;root.dataset.phase=phase;actions.replaceChildren();puzzle.replaceChildren();photoInner.querySelectorAll('button').forEach(n=>n.remove());animations.forEach(a=>a.cancel());animations=[];animationKey='';
    photoStage.hidden=phase!=='photo-review';callPortrait.hidden=phase!=='comm-request';puzzle.hidden=phase!=='hack';rhythm.hidden=rhythmStatus.hidden=phase!=='heat';
-   if(phase==='shoe-view'){title.textContent='導播 · 合乎舟禮';message.textContent='龍泡泡：這角度夠清楚了吧？';button('吃飽了',()=>machine.next(),'shoe-continue');}
+   if(phase==='shoe-view'){title.textContent='導播 · 合乎舟禮';message.textContent='鞋子環繞中。先看完這一圈。';button('再來一碗',()=>machine.anotherBowl(),'shoe-again');button('吃飽了',()=>machine.next(),'shoe-continue');}
    if(phase==='pylon-link'){title.textContent='天師樁 · 接入中';message.textContent='鏡頭回到遠景，繼續接通供電。';}
+   if(phase==='fire-ready'){title.textContent='武陵儲能網 · 發射系統';message.textContent='系統：充能完畢。指針接近中央時按下砲擊。';button('進入發射系統',()=>machine.next(),'fire-continue');}
    if(phase==='photo-flight'){title.textContent='龍泡泡 · 攝影就位';for(const [text,d]of [['後退',-1],['前進',1]]){const b=button(text,()=>{},'flight-step');b.dataset.direction=d;let down=false,pressedAt=0;listen(b,'pointerdown',e=>{down=true;pressedAt=performance.now();b.setPointerCapture(e.pointerId);machine.fly(0,d);});for(const type of ['pointerup','pointercancel','lostpointercapture'])listen(b,type,()=>{if(down){down=false;if(performance.now()-pressedAt<180)machine.stepFlight(d);machine.fly(0,0);}});listen(b,'keydown',e=>{if(['Enter',' '].includes(e.key)){e.preventDefault();machine.fly(0,d);}});listen(b,'keyup',()=>machine.fly(0,0));}button('開始拍照',()=>machine.finishFlight(),'flight-ready');}
    if(phase==='photo'){title.textContent='拍張照片 · 報平安';message.textContent='龍泡泡已就位 · 把 711 招牌也留在畫面裡';button('●',snapshot,'photo-shutter');}
    if(phase==='photo-review'){
@@ -60,7 +61,8 @@ export function createInvestigationUI({mount,machine,capture,onAuto,getAuto}){
    auto.textContent=getAuto?.()?'◉ 自動':'◎ 自動';auto.setAttribute('aria-pressed',String(!!getAuto?.()));auto.hidden=['photo-flight','photo','photo-review','hack','heat'].includes(s.phase);
    root.hidden=!phases.has(s.phase);if(root.hidden){if(phase!==s.phase){animations.forEach(a=>a.cancel());animations=[];phase=s.phase;}return;}if(phase!==s.phase)build(s);
    root.dataset.paused=String(s.paused);for(const b of root.querySelectorAll('button'))b.disabled=s.paused;
-   if(s.phase==='photo-flight'){const f=s.flight;message.textContent=f.ready?'已就位。按開始拍照。':`按前進遠離店面，後退靠近店面 · 距離 ${Math.abs(f.z-10.5).toFixed(1)}m`;actions.querySelector('.flight-ready').disabled=!f.ready||s.paused;}if(s.phase==='photo-review'&&photo){const fit=Math.min(photoStage.clientWidth/photo.width,photoStage.clientHeight/photo.height);photoInner.style.width=`${photo.width*fit}px`;photoInner.style.height=`${photo.height*fit}px`;}
+   if(s.phase==='shoe-view'){message.textContent=s.shoeReady?'龍泡泡：還要再看一圈？':'鞋子環繞中。先看完這一圈。';for(const b of actions.children)b.hidden=!s.shoeReady;}
+   if(s.phase==='photo-flight'){const f=s.flight;message.textContent=f.ready?'已就位。按開始拍照。':`按前進遠離店面，後退靠近店面 · 距離 ${Math.abs(f.z-10.5).toFixed(1)}m`;actions.querySelector('.flight-ready').disabled=!f.ready||s.paused;}if(s.phase==='photo-review'&&photo){photoInner.style.width='100%';photoInner.style.height='100%';}
    if(s.phase==='hack'){if(s.hack.failures)message.textContent=s.hack.failures>1?'輔助路徑：┓ ┏ / ┗ ┛（由上至下）。':'線路未接通。入口在左上，出口在右上；先向下繞一圈。';}if(s.phase==='hack')for(let i=0;i<4;i++){const b=puzzle.children[i],turn=s.hack.turns[i];b.firstChild.style.transform=`rotate(${turn*90}deg)`;b.classList.toggle('connected',turn===[1,0,2,3][i]);}
    if(s.phase==='heat'){
      const h=s.heat,playing=h.status==='playing';

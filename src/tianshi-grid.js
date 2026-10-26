@@ -99,7 +99,7 @@ export function buildTianshiGrid(scene,r){
       phase=state.phase||'ready';const clock=phase==='ready'?t:Number.isFinite(state.clock)?state.clock:t;
       const outage=['energy','last','return'].includes(phase),outageFlash=Math.sin(clock*13)>-.2;
       for(const m of lowSigns){m.visible=outage&&outageFlash;}charge=clamp((state.charge||0)/100);if(state.hero)hero.fromArray(state.hero);
-      const lever=clamp(state.connection?.lever??0),casting=['charge','combat','energy','last','aim-final','finisher','landing','tour'].includes(phase);
+      const lever=clamp(state.connection?.lever??0),casting=['charge','fire-ready','combat','energy','last','aim-final','finisher','landing','tour'].includes(phase);
       const linking=phase==='lever'?lever:casting?1:0;
       activeCount=0;
       for(let i=0;i<pillars.length;i++){
