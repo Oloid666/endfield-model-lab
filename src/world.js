@@ -92,7 +92,7 @@ export class World {
     this.setCutaway(['interior','shelves','fridge','oven'].includes(name));this.camera.fov=name==='interior'?65:37;this.camera.updateProjectionMatrix();
     const mobile=this.container.clientWidth/Math.max(1,this.container.clientHeight)<.85;
     const target=new T.Vector3().fromArray(mobile?preset.mobileTarget:preset.target),position=new T.Vector3().fromArray(mobile?preset.mobilePosition:preset.position);
-    if(name==='detail'&&this.actors){const offset=this.actors.position.clone().sub(new T.Vector3(-1.25,.32,2.48));target.add(offset);position.add(offset);}
+    if(['detail','left','right','story'].includes(name)&&this.actors){const offset=this.actors.position.clone().sub(new T.Vector3(-1.25,.32,2.48));target.add(offset);position.add(offset);}
     // Flush damping once, so user momentum does not fight a selected preset.
     const damping=this.controls.enableDamping;this.controls.enableDamping=false;this.controls.update();this.controls.enableDamping=damping;
     if(instant||matchMedia('(prefers-reduced-motion: reduce)').matches){this.camera.position.copy(position);this.controls.target.copy(target);this.transition=null;}

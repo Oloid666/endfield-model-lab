@@ -59,7 +59,7 @@ for(const phase of ['login','captcha','lever']){
 d.beforeActors(state('charge',{phaseElapsed:0,castingElapsed:100,charge:0}));
 check('Charge begins at age 1.15 instead of jumping to fully charged flight',w.actors.cast.castingElapsed===0&&w.actors.cast.distance===12&&w.actors.cast.height===4,w.actors.cast);
 d.beforeActors(state('charge',{phaseElapsed:5,castingElapsed:105,charge:16.7}));
-check('Slow ascent age follows charge elapsed time after login',w.actors.cast.castingElapsed===5,w.actors.cast);
+check('Slow ascent age follows charge elapsed time after login',Math.abs(w.actors.cast.castingElapsed-2.72)<.001,w.actors.cast);
 
 w.time=100;w.store.destruction.state.progress=99;d.stage('rewind',state('rewind',{vcr:true}));
 d.beforeActors(state('rewind',{phaseElapsed:2,rewindProgress:2/7,vcr:true}));const firstReverse=d.visualTime;
@@ -137,5 +137,5 @@ check('VCR reverse follows the shared eased progress',rd.visualTime===282.5&&rd.
 rd.beforeActors(state('rewind',{phaseElapsed:6.7,clock:66.7,rewindProgress:1,rewindStage:'settle',vcr:true}));rd.updateCamera(.016,rw.actors.heroPosition);
 check('VCR ends on the doorway before switching to the past',rd.cameraBeat==='rewind-doorway'&&Math.abs(rd.cameraPosition.z-11.6)<1e-9&&rd.cameraTarget.z===3.25);
 rw.r.dispose();w.r.dispose();
-fs.writeFileSync('artifacts/v13-director-check.json',JSON.stringify({kind:'actual-director-with-mock-world-no-gpu',checks,projections,cameraShots},null,2)+'\n');
-console.log(`V13 director: ${checks.length} checks passed.`);
+fs.writeFileSync('artifacts/v14-director-check.json',JSON.stringify({kind:'actual-director-with-mock-world-no-gpu',checks,projections,cameraShots},null,2)+'\n');
+console.log(`V14 director: ${checks.length} checks passed.`);

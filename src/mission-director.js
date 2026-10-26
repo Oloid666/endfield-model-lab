@@ -3,7 +3,7 @@ import * as T from 'three';
 const flying=new Set(['charge','combat','energy','last','aim-final','finisher','landing']);
 const cctvPhases=new Set(['flashback','hack','credentials','heat-demo','heat','flashback-end']);
 const lockedPhases=new Set(['rewind','flashback','hack','credentials','heat-demo','heat','flashback-end','return','finisher','landing','tour']);
-const cinematicPhases=new Set(['ready','intro','walk-out','photo-pose','photo-talk','photo-flight','photo','photo-return','photo-check','photo-review','terminal-deploy','verify-talk','verified-talk','cargo','observation','comm-request','briefing','login','captcha','lever','charge','combat','energy','rewind','flashback','hack','credentials','heat-demo','heat','flashback-end','return','last','aim-final','finisher','landing','tour','complete']);
+const cinematicPhases=new Set(['shoe-view','pylon-link','ready','intro','walk-out','photo-pose','photo-talk','photo-flight','photo','photo-return','photo-check','photo-review','terminal-deploy','verify-talk','verified-talk','cargo','observation','comm-request','briefing','login','captcha','lever','charge','combat','energy','rewind','flashback','hack','credentials','heat-demo','heat','flashback-end','return','last','aim-final','finisher','landing','tour','complete']);
 const smooth=x=>{const p=Math.max(0,Math.min(1,x));return p*p*(3-2*p);};
 const lerp=(a,b,p,out)=>{for(let i=0;i<3;i++)out[i]=a[i]+(b[i]-a[i])*p;return out;};
 function arc(a,b,p,height,out){lerp(a,b,p,out);out[1]+=Math.sin(Math.PI*p)*height;return out;}
@@ -130,7 +130,7 @@ export class MissionDirector{
     if(phase==='rewind')this.world.store.destruction.updateRewind(state.rewindProgress);
     let cast=flying.has(phase)?{phase,elapsed:e,castingElapsed:state.castingElapsed,charge:state.charge/100,flight:Math.min(1,e/9),recoil:this.recoil,distance:12,height:4}:null;
     if(['login','captcha','verify-talk','lever'].includes(phase))cast=null;
-    if(phase==='charge')cast.castingElapsed=e;
+    if(phase==='charge')cast.castingElapsed=e<4?e*.4:1.6+(e-4)*1.12;
     if(phase==='rewind'||phase==='return'){
       const amount=phase==='rewind'?1-state.rewindProgress:smooth(e/3);
       cast={phase:'charge',elapsed:e,castingElapsed:30*amount,charge:amount,launchOverride:amount,distance:12,height:4};
@@ -159,7 +159,7 @@ export class MissionDirector{
       this.projectile.splice(0,3,...point);this.projectile[1]-=.32;
       actor.setDragonProjectile(this.projectile,-.16-(connection?.lever||0)*.3);actor.setCompanionAction?.({kind:'lever',amount:connection?.lever||0});return;
     }
-    if(phase==='photo-flight'){const f=state.flight;actor.setDragonProjectile([f.x,2.6,f.z],0);if(this.world.photoPhone){this.world.photoPhone.visible=true;this.world.photoPhone.position.set(f.x+.2,2.85,f.z-.25);}return;}
+    if(phase==='photo-flight'){const f=state.flight;actor.setDragonProjectile([f.x,2.6,f.z],0);if(this.world.photoPhone){this.world.photoPhone.visible=true;this.world.photoPhone.position.set(f.x+.3,2.85,f.z+.3);}return;}
     if(phase==='terminal-deploy'){actor.setMove(0,0,false);actor.setDragonProjectile([-2,.65,3.25],0);return;}
     if(phase==='intro'||phase==='ready'){
       const y=1.34+Math.abs(Math.sin(state.clock*2.8))*.12;
@@ -179,8 +179,8 @@ export class MissionDirector{
       const review=['photo-return','photo-check','photo-review','cargo'].includes(phase),back=phase==='photo-return'?smooth(e/2.5):1;
       const from=this.photoReturnFrom||[0,2.6,11.2];const pos=review?[from[0]+(-2-from[0])*back,from[1]+(1.1-from[1])*back+Math.sin(back*Math.PI)*.25,from[2]+(3.25-from[2])*back]:phase==='photo'?[this.world.camera.position.x,this.world.camera.position.y-.25,this.world.camera.position.z+.7]:[-2,1+1.6*p,3.25+1.75*p];
       actor.setDragonProjectile(pos,0);
-      if(!this.world.photoPhone){const phone=new T.Group();this.world.r.box(phone,'#172f36',[0,0,0],[.34,.22,.14]);this.world.r.box(phone,'#8fbab5',[0,0,.015],[.13,.2,.005],{emissive:0x70a399,emissiveIntensity:.5});this.world.r.mesh(this.world.r.geometry('CylinderGeometry',.07,.07,.09,16),this.world.r.material('#101b24',{metalness:.6,roughness:.2}),phone,[0,0,.11]).rotation.x=Math.PI/2;this.world.scene.add(phone);this.world.photoPhone=phone;}
-      this.world.photoPhone.visible=phase!=='photo';this.world.photoPhone.position.set(pos[0]+.2,pos[1]+.25,pos[2]-.25);return;
+      if(!this.world.photoPhone){const phone=new T.Group();this.world.r.box(phone,'#172f36',[0,0,0],[.24,.43,.045]);this.world.r.box(phone,'#8fbab5',[0,0,.027],[.21,.36,.006],{emissive:0x70a399,emissiveIntensity:.5});this.world.r.mesh(this.world.r.geometry('CylinderGeometry',.035,.035,.018,16),this.world.r.material('#101b24',{metalness:.6,roughness:.2}),phone,[.06,.14,-.03]).rotation.x=Math.PI/2;this.world.scene.add(phone);this.world.photoPhone=phone;}
+      this.world.photoPhone.visible=phase!=='photo';this.world.photoPhone.position.set(pos[0]+.3,pos[1]+.25,pos[2]+.3);return;
     }
     if(this.world.photoPhone)this.world.photoPhone.visible=false;
     if(['charge','combat','energy','last','aim-final'].includes(phase)){
@@ -219,6 +219,7 @@ export class MissionDirector{
     this.bag.position.set(dragon[0]+.25,dragon[1]-.05,dragon[2]);this.bag.rotation.z=Math.sin(clock*3)*.08;
     const personal=s?.phase==='last'&&Number((s.nodeId||'').split('_').at(-1))>=4||s?.phase==='aim-final';
     const propState={...(s||{phase:'ready'}),hero:feet,dragon,fxShock:fx.shock||0,impactRevision:fx.impactRevision||0};
+    if(s?.phase==='pylon-link'){propState.phase='lever';propState.connection={lever:Math.min(1,s.phaseElapsed/4)};}
     if(s?.phase==='rewind'){propState.charge=(1-s.rewindProgress)*100;propState.progress=0;}
     this.world.tianshi.update(clock,s?.paused?0:delta,propState);this.world.microwave.update(clock,s?.paused?0:delta,propState);this.world.connectionStage.update(clock,s?.paused?0:delta,propState);
     this.world.investigationProps?.update(clock,s?.paused?0:delta,propState);
@@ -245,6 +246,8 @@ export class MissionDirector{
       if(t<4){position=[.2,2.45,4.8];target=[2.48,1.3,.92];fov=portrait?58:45;beat='dragon-counter';}
       else if(t<8){position=[-1.1,1.9,1.45];target=[-2.5,1.35,-1.4];fov=52;beat='store-shelves';}
       else{position=[.6,2,2.4];target=[3.1,1.3,.6];fov=58;beat='store-purchase';}
+    }else if(s.phase==='shoe-view'){const a=-.6+Math.min(1,e/8)*1.2+(e>8?Math.sin(e*.2)*.08:0);position=[feet[0]+Math.sin(a)*1.7,feet[1]+.3,feet[2]+Math.cos(a)*1.7];target=[feet[0],feet[1]+.15,feet[2]];fov=42;beat='shoe-orbit-wait';
+    }else if(s.phase==='pylon-link'){const p=w.tianshi.focusTargets?.[0]?.position||[-12.8,8.8,-9.6];position=[p[0]-4,p[1]-2+e,p[2]+7];target=p;fov=38+e*3;beat='pylon-before-lift';
     }else if(s.phase==='photo-flight'){const f=s.flight;position=[f.x+4,5.2,f.z+5];target=[f.x,2.6,f.z];fov=60;beat='dragon-flight-control';
     }else if(s.phase==='photo'){
       position=[0,3.3,10.5];target=[-.22,1.65,2.75];fov=50;beat='photo-framing';
@@ -267,7 +270,7 @@ export class MissionDirector{
       position=portrait?[.2,5.9,11.5]:[2.5,4.5,9.5];target=portrait?[-1.4,.7,5.2]:[-1.4,.7,5.2];fov=portrait?74:56;beat='dragon-terminal';
     }else if(s.phase==='rewind'){
       const p=s.rewindProgress;
-      if(e<1.6){position=[3.1,2.3,4.9];target=[3.87,2.53,3.0];fov=portrait?34:29;beat='rewind-cctv-source';}
+      if(e<1.6){position=[2.7,2,-.2];target=w.investigationProps?.camera.position.toArray()||[3.87,2.53,-1.65];fov=portrait?34:29;beat='rewind-cctv-source';}
       else if(p<.26){const q=smooth(p/.26);position=[this.rewindCameraPosition.x+(9-this.rewindCameraPosition.x)*q,this.rewindCameraPosition.y+(10-this.rewindCameraPosition.y)*q,this.rewindCameraPosition.z+(32-this.rewindCameraPosition.z)*q];target=[this.rewindCameraTarget.x+(-.8-this.rewindCameraTarget.x)*q,this.rewindCameraTarget.y+(2.7-this.rewindCameraTarget.y)*q,this.rewindCameraTarget.z+(1-this.rewindCameraTarget.z)*q];fov=portrait?57:48;beat='rewind-pullback';}
       else{const q=smooth((p-.26)/.74);position=[9-3.1*q,10-6.7*q,32-20.4*q];target=[-.8-.45*q,2.7-1.35*q,1+2.25*q];fov=portrait?52:44;beat=p>.995?'rewind-doorway':'rewind-street';}
     }else if(cctvPhases.has(s.phase)){

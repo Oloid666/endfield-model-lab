@@ -26,10 +26,13 @@ listen($('#quality'),'change',e=>world?.setQuality(e.target.value));
 listen($('#sound'),'change',async e=>{try{if(e.target.checked)await audio.enable();else await audio.disable();}catch{e.target.checked=false;message.textContent='雨聲無法開啟。';}});
 listen(document,'visibilitychange',()=>{if(document.hidden)audio.disable();else if($('#sound').checked)audio.enable().catch(()=>{$('#sound').checked=false;});});
 const buttons=[...document.querySelectorAll('[data-view]')];
+const viewCycles={street:[['street','正面'],['store','左側'],['streetRight','右側']],interior:[['interior','櫃檯'],['shelves','商品'],['fridge','冰箱'],['oven','微波爐'],['poster1','海報①'],['poster2','海報②'],['poster3','海報③']],detail:[['left','左近景'],['right','右近景'],['story','雙人'],['dragon','龍泡泡']]};
+const cycleIndex={};let cycleRun=false;
 listen($('.view-dock'),'click',e=>{
-  const button=e.target.closest('[data-view]');if(!button)return;const view=button.dataset.view;
-  if(['street','interior','detail'].includes(view)&&!button.dataset.subview){document.querySelector('.view-options')?.remove();const menu=document.createElement('div');menu.className='view-options';const items=view==='street'?[['street','正面街景'],['store','斜側街景'],['pear','梨花'],['investigate','機房']]:view==='interior'?[['interior','櫃檯'],['shelves','貨架'],['fridge','冰箱'],['oven','微波爐'],['posters','海報']]:[['story','雙人'],['detail','莊大頭'],['half','莊半身'],['left','左側'],['right','右側'],['dragon','龍泡泡']];for(const [id,label]of items){const b=document.createElement('button');b.textContent=label;b.onclick=()=>{world.setView(id);world.manualUntil=Infinity;world.autoCamera=false;menu.remove();};menu.append(b);}document.querySelector('#app').append(menu);return;}world?.setView(view);if(world){world.manualUntil=Infinity;world.autoCamera=false;if(view==='reset')world.resetStoryCamera();}
-  for(const b of buttons){const active=b.dataset.view===(view==='reset'?'street':view);b.classList.toggle('active',active);if(b.dataset.view!=='reset')b.setAttribute('aria-pressed',String(active));}
+ const b=e.target.closest('[data-view]');if(!b||!world)return;const group=b.dataset.view;
+ if(mission?.state.phase==='intro'&&!cycleRun){for(const k in cycleIndex)delete cycleIndex[k];cycleRun=true;}if(mission?.state.phase==='complete')cycleRun=false;
+ let view=group;const items=viewCycles[group]?.slice();if(items){if(group==='street'&&mission?.state.investigation&& !['cargo','photo-review'].includes(mission?.state.phase))items.push(['investigate','機房']);const i=((cycleIndex[group]??-1)+1)%items.length;cycleIndex[group]=i;view=items[i][0];b.setAttribute('aria-label',`${group==='interior'?'店內':group==='detail'?'人物':'街角'}・${items[i][1]} ${i+1}/${items.length}`);b.querySelector('span:last-child')?.replaceChildren(document.createTextNode(items[i][1]));b.dataset.count=`${i+1}/${items.length}`;b.title=`${i+1}/${items.length} · 再按切換`;}
+ world.setView(view,true);world.manualUntil=Infinity;world.autoCamera=false;if(view==='reset')world.resetStoryCamera();for(const n of buttons)n.classList.toggle('active',n===b);
 });
 async function ensureXaihi(){
   if(world?.xaihi)return world.xaihi;

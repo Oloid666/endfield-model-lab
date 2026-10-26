@@ -3,6 +3,11 @@ export const config = {
   reflection: { low: 192, balanced: 384, high: 512 },
   rainCount: { low: 650, balanced: 1400, high: 2200 },
   views: {
+    poster3:{position:[3.4,1.62,5.15],target:[3.4,1.62,2.04],mobilePosition:[3.4,1.62,5.15],mobileTarget:[3.4,1.62,2.04]},
+    poster2:{position:[2.35,2.02,5.15],target:[2.35,2.02,2.04],mobilePosition:[2.35,2.02,5.15],mobileTarget:[2.35,2.02,2.04]},
+    poster1:{position:[-2.8,1.4,5.15],target:[-2.8,1.4,2.04],mobilePosition:[-2.8,1.4,5.15],mobileTarget:[-2.8,1.4,2.04]},
+    streetRight:{position:[-15,8,20],target:[0,2,0],mobilePosition:[-20,12,27],mobileTarget:[0,2,0]},
+
     shelves:{position:[-.4,2,1.6],target:[-2.5,1,-1],mobilePosition:[-.4,2,1.6],mobileTarget:[-2.5,1,-1]},
     fridge:{position:[0,2,2],target:[-2,1.3,-2],mobilePosition:[0,2,2],mobileTarget:[-2,1.3,-2]},
     oven:{position:[2,2,2.5],target:[3.4,1.6,1],mobilePosition:[2,2,2.5],mobileTarget:[3.4,1.6,1]},

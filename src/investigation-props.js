@@ -3,10 +3,11 @@ import * as T from 'three';
 export function buildInvestigationProps(scene,r){
  const root=new T.Group();root.name='investigation-details';scene.add(root);
  const box=(owner,c,p,s,o={})=>r.box(owner,c,p,s,o),label=(owner,text,p,s,options={})=>r.mesh(r.geometry('PlaneGeometry',1,1),r.label(text,{width:1024,height:256,font:'bold 60px sans-serif',...options}),owner,p,s);
- const camera=new T.Group();camera.name='store-cctv';camera.position.set(3.87,2.53,3.0);root.add(camera);camera.rotation.y=Math.PI;
+ const camera=new T.Group();camera.name='store-cctv';camera.position.set(3.87,2.53,-1.65);root.add(camera);camera.rotation.y=Math.PI;
  box(camera,'#687a77',[0,.12,-.14],[.08,.32,.1],{metalness:.6});box(camera,'#c4ccbd',[0,0,0],[.23,.19,.42],{metalness:.3});box(camera,'#24363c',[0,-.01,.219],[.16,.12,.025]);
  const lens=r.mesh(r.geometry('CylinderGeometry',.048,.048,.04,16),r.material('#152c33',{metalness:.8,roughness:.16}),camera,[0,-.01,.245]);lens.rotation.x=Math.PI/2;
- const led=r.mesh(r.geometry('SphereGeometry',.014,8,6),r.material('#e67965',{emissive:0xc43622,emissiveIntensity:1}),camera,[.075,.04,.24]);camera.rotation.y=Math.PI+.2;
+ const led=r.mesh(r.geometry('SphereGeometry',.014,8,6),r.material('#e67965',{emissive:0xc43622,emissiveIntensity:1}),camera,[.075,.04,.24]);camera.rotation.y=-.55;
+ box(root,'#687a77',[3.87,3,-1.65],[.07,.94,.07],{metalness:.6});
  const cable=new T.CatmullRomCurve3([new T.Vector3(0,.16,-.17),new T.Vector3(.2,.28,-.2),new T.Vector3(.4,.25,-.19)]);r.mesh(r.own(new T.TubeGeometry(cable,8,.012,4,false)),r.material('#24393d'),camera);
  const cargo=new T.Group();cargo.position.set(-3.4,.32,1.87);root.add(cargo);
  for(let i=0;i<2;i++){box(cargo,'#6c7565',[i*.43,i*.1+.26,0],[.4,.5,.43],{metalness:.3});box(cargo,'#b2a272',[i*.43,i*.1+.27,.22],[.07,.46,.012]);}
