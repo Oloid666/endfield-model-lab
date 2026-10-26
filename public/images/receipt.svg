@@ -1,1 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="600" height="800" viewBox="0 0 600 800"><rect width="600" height="800" rx="16" fill="#dfd7ba"/><rect x="30" y="30" width="540" height="740" fill="#f0ecda" stroke="#3c665b" stroke-width="3"/><g font-family="sans-serif" fill="#29473e"><text x="55" y="95" font-size="33" font-weight="bold">武陵補給・息壤簽收單</text><text x="55" y="145" font-size="20">交付地點：武陵711　/　2026.10</text><path d="M55 170H545" stroke="#6e8c76"/><text x="55" y="240" font-size="28">申報品名：土產</text><text x="55" y="320" font-size="36" font-weight="bold">息壤：10,000 噸</text><text x="55" y="410" font-size="26">核准人：莊芳宜</text><text x="55" y="490" font-size="30">簽收人：</text><text x="55" y="565" font-size="22">隨貨交付。已收訖。</text><text x="55" y="700" font-size="18">文件編號：WL-711-1026　／　收訖聯</text></g><circle cx="445" cy="605" r="65" fill="none" stroke="#a85b51" stroke-width="5"/><text x="402" y="615" fill="#a85b51" font-family="sans-serif" font-size="28" transform="rotate(-14 445 605)">簽收</text><g fill="#b58b60"><ellipse cx="130" cy="620" rx="25" ry="22"/><circle cx="101" cy="592" r="11"/><circle cx="127" cy="580" r="11"/><circle cx="153" cy="588" r="11"/></g><text x="195" y="497" font-family="BiauKai,DFKai-SB,KaiTi,cursive" font-size="43" fill="#233e70" transform="rotate(-6 280 480)">龍泡泡</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="800" viewBox="0 0 600 800">
+<rect width="600" height="800" rx="12" fill="#e7e0c9"/>
+<rect x="25" y="25" width="550" height="750" fill="#f7f3e5" stroke="#425d55" stroke-width="3"/>
+<g fill="#28423a" font-family="sans-serif">
+<text x="48" y="78" font-size="18" letter-spacing="4">ENDFIELD LOGISTICS · 收訖聯</text>
+<text x="48" y="130" font-size="36" font-weight="bold">武陵補給交付簽收單</text>
+<path d="M48 153H552M48 286H552M48 472H552M48 655H552" stroke="#779287" stroke-width="2"/>
+<text x="48" y="197" font-size="23">文件編號　WL-711-20261026</text>
+<text x="48" y="244" font-size="23">交付地點　武陵 711</text>
+<text x="48" y="331" font-size="24">送貨方　　終末地</text>
+<text x="48" y="384" font-size="24">申報品名　土產／息壤</text>
+<text x="48" y="440" font-size="30" font-weight="bold">交付數量　10,000 噸</text>
+<text x="48" y="521" font-size="23">簽收人</text>
+<text x="48" y="695" font-size="18">武陵城區配送 · 交付完畢 · 收訖存查</text>
+<text x="48" y="733" font-size="16">本單據記錄交付事實；不得作為補休憑證。</text>
+</g>
+<path d="M168 587q29-46 50-2t46-10q24-34 38 3t48-14q38-28 66 8" fill="none" stroke="#183f70" stroke-width="5" stroke-linecap="round"/>
+<text x="170" y="620" font-family="KaiTi,cursive" font-style="italic" font-size="40" fill="#183f70" transform="rotate(-6 285 595)">龍泡泡</text>
+<circle cx="467" cy="581" r="63" fill="none" stroke="#b45b50" stroke-width="4"/>
+<text x="416" y="593" font-family="sans-serif" font-size="27" fill="#b45b50" transform="rotate(-12 467 581)">已簽收</text>
+</svg>

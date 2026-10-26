@@ -1155,9 +1155,9 @@
       "name": "Ten seconds of updates create no new tracked graphics resources",
       "passed": true,
       "detail": {
-        "items": 238,
-        "geometryCount": 26,
-        "materialCount": 40
+        "items": 229,
+        "geometryCount": 27,
+        "materialCount": 39
       }
     },
     {
@@ -1294,8 +1294,8 @@
       "name": "Every owned disposable graphics resource receives dispose",
       "passed": true,
       "detail": {
-        "disposed": 238,
-        "expectedDisposals": 238
+        "disposed": 229,
+        "expectedDisposals": 229
       }
     }
   ]

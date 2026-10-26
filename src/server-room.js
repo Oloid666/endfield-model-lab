@@ -35,7 +35,7 @@ export function buildServerRoom(parent,r){
         const bx=x-.15+bay*.092;box(panel,[bx,y,.421],[.078,.061,.014]);
         for(let slit=0;slit<3;slit++)box(rails,[bx-.021+slit*.021,y+.006,.431],[.005,.035,.005]);
       }
-      ledRecords.push({p:[x-.188,y-.018,.436],color:row%5===0?0xe0ae58:0x8ac281,offset:row*.37+(x>0?.6:0)});
+      ledRecords.push({p:[x-.188,y-.018,.436],color:row%5===0?0xef564d:0x73d38c,offset:row*.37+(x>0?.6:0)});
       if(unit)ledRecords.push({p:[x+.196,y+.018,.436],color:0x8ed4ca,offset:row*.59});
     }
     box(steel,[x,1.43,.407],[.55,.095,.05]);

@@ -91,7 +91,7 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
   function settleFeet(){root.updateMatrixWorld(true);for(const leg of feet)if(leg.foot){leg.foot.getWorldPosition(leg.target);leg.foot.getWorldQuaternion(leg.orientation);}}
   const cinematicStatus={phase:'',lift:0,forward:0,heading:.08,airborne:false,dragonProjectile:false,recoil:0};
   const status={phase:0,action:'settle',footDrift:0,moving:false,speed:0,distance:0,clothJoints:secondary.length,dinner:null,gesture:'',companion:follower.state,arms:walkPose,cinematic:cinematicStatus,smile:0,smileJointCount:smileJoints.length,companionAction:''};
-  const api={root,status,supported:Object.keys(config.zhuangNodes).every(name=>poses[name]),
+  const api={root,heroRoot:pivot,status,supported:Object.keys(config.zhuangNodes).every(name=>poses[name]),
     get position(){return root.position;},get moving(){return status.moving;},
     // Feet origins in world metres. Follower and walking root remain on the ground.
     get heroPosition(){return pivot.getWorldPosition(heroWorld).toArray();},

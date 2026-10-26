@@ -25,8 +25,8 @@ export function createInvestigationUI({mount,machine,capture,onAuto,getAuto}){
    buildAbort.abort();buildAbort=new AbortController();building=true;
    phase=s.phase;root.dataset.phase=phase;actions.replaceChildren();puzzle.replaceChildren();photoInner.querySelectorAll('button').forEach(n=>n.remove());animations.forEach(a=>a.cancel());animations=[];animationKey='';
    photoStage.hidden=phase!=='photo-review';callPortrait.hidden=phase!=='comm-request';puzzle.hidden=phase!=='hack';rhythm.hidden=rhythmStatus.hidden=phase!=='heat';
-   if(phase==='shoe-view'){title.textContent='導播 · 合乎舟禮';message.textContent='龍泡泡：電還沒充，鞋倒是看得很清楚。';button('看夠了・繼續',()=>machine.next(),'shoe-continue');}
-   if(phase==='pylon-link'){title.textContent='天師樁 · 接入中';message.textContent='正在接通供電，準備起飛。';}
+   if(phase==='shoe-view'){title.textContent='導播 · 合乎舟禮';message.textContent='龍泡泡：這角度夠清楚了吧？';button('吃飽了',()=>machine.next(),'shoe-continue');}
+   if(phase==='pylon-link'){title.textContent='天師樁 · 接入中';message.textContent='鏡頭回到遠景，繼續接通供電。';}
    if(phase==='photo-flight'){title.textContent='龍泡泡 · 攝影就位';for(const [text,d]of [['後退',-1],['前進',1]]){const b=button(text,()=>{},'flight-step');b.dataset.direction=d;let down=false,pressedAt=0;listen(b,'pointerdown',e=>{down=true;pressedAt=performance.now();b.setPointerCapture(e.pointerId);machine.fly(0,d);});for(const type of ['pointerup','pointercancel','lostpointercapture'])listen(b,type,()=>{if(down){down=false;if(performance.now()-pressedAt<180)machine.stepFlight(d);machine.fly(0,0);}});listen(b,'keydown',e=>{if(['Enter',' '].includes(e.key)){e.preventDefault();machine.fly(0,d);}});listen(b,'keyup',()=>machine.fly(0,0));}button('開始拍照',()=>machine.finishFlight(),'flight-ready');}
    if(phase==='photo'){title.textContent='拍張照片 · 報平安';message.textContent='龍泡泡已就位 · 把 711 招牌也留在畫面裡';button('●',snapshot,'photo-shutter');}
    if(phase==='photo-review'){

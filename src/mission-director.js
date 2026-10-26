@@ -1,9 +1,9 @@
 import * as T from 'three';
 
-const flying=new Set(['charge','combat','energy','last','aim-final','finisher','landing']);
+const flying=new Set(['ascent','director-reminder','shoe-view','pylon-link','charge','combat','energy','last','aim-final','finisher','landing']);
 const cctvPhases=new Set(['flashback','hack','credentials','heat-demo','heat','flashback-end']);
 const lockedPhases=new Set(['rewind','flashback','hack','credentials','heat-demo','heat','flashback-end','return','finisher','landing','tour']);
-const cinematicPhases=new Set(['shoe-view','pylon-link','ready','intro','walk-out','photo-pose','photo-talk','photo-flight','photo','photo-return','photo-check','photo-review','terminal-deploy','verify-talk','verified-talk','cargo','observation','comm-request','briefing','login','captcha','lever','charge','combat','energy','rewind','flashback','hack','credentials','heat-demo','heat','flashback-end','return','last','aim-final','finisher','landing','tour','complete']);
+const cinematicPhases=new Set(['ascent','director-reminder','shoe-view','pylon-link','ready','intro','purchase','walk-out','photo-pose','photo-talk','photo-flight','photo','photo-return','photo-check','photo-review','terminal-deploy','verify-talk','verified-talk','cargo','observation','comm-request','briefing','login','captcha','lever','charge','combat','energy','rewind','flashback','hack','credentials','heat-demo','heat','flashback-end','return','last','aim-final','finisher','landing','tour','complete']);
 const smooth=x=>{const p=Math.max(0,Math.min(1,x));return p*p*(3-2*p);};
 const lerp=(a,b,p,out)=>{for(let i=0;i<3;i++)out[i]=a[i]+(b[i]-a[i])*p;return out;};
 function arc(a,b,p,height,out){lerp(a,b,p,out);out[1]+=Math.sin(Math.PI*p)*height;return out;}
@@ -12,7 +12,7 @@ function faceFrame(feet,heading,distance=5.6,side=1.1,height=2.12,look=1.46){
   return {position:[feet[0]+sx*distance+sz*side,feet[1]+height,Math.max(2.35,feet[2]+sz*distance-sx*side)],target:[feet[0],feet[1]+look,feet[2]]};
 }
 export function chargeCameraBeat(elapsed){
-  return elapsed<1.1?'charge-feet':elapsed<2.5?'charge-lift-wide':elapsed<4?'charge-dragon-catchup':elapsed<9?'charge-pylon-one':elapsed<14?'charge-city-array':elapsed<21?'charge-orbit':elapsed<25?'charge-pylon-two':'charge-battle-wide';
+  return elapsed<2.5?'charge-lift-wide':elapsed<4?'charge-dragon-catchup':elapsed<9?'charge-pylon-one':elapsed<14?'charge-city-array':elapsed<21?'charge-orbit':elapsed<25?'charge-pylon-two':'charge-battle-wide';
 }
 
 // Coordinates actors, a single camera and pooled effects from the mission clock.
@@ -120,7 +120,7 @@ export class MissionDirector{
   }
   beforeActors(state){
     this.state=state;const actor=this.world.actors;if(!state||!actor)return;
-    const phase=state.phase,e=state.phaseElapsed;actor.setSoot?.(this.neighborImpacted);actor.setDragonHeading?.(phase==='intro'?Math.PI:phase==='observation'?-.5:0);this.bag.visible=['intro','walk-out','photo-pose','photo-talk','photo-return','photo-check','photo-review','cargo'].includes(phase)&&(phase!=='intro'||e>2);if(this.world.photoPhone)this.world.photoPhone.visible=false;
+    const phase=state.phase,e=state.phaseElapsed;actor.setSoot?.(this.neighborImpacted);actor.setDragonHeading?.(phase==='intro'?Math.PI:phase==='observation'?-.5:0);if(actor.heroRoot)actor.heroRoot.visible=phase!=='ready'&&!(phase==='intro'&&(Number((state.nodeId||'').split('_').at(-1))||0)<3);this.bag.visible=['intro','purchase','walk-out','photo-pose','photo-talk','photo-return','photo-check','photo-review','cargo'].includes(phase)&&(state.purchaseElapsed??0)>=3;if(this.world.photoPhone)this.world.photoPhone.visible=false;
     const age=state.clock-this.lastShotAt;
     this.recoil=age>=0?Math.exp(-age*5.4)*Math.sin(Math.min(1,age/.11)*Math.PI/2)*this.recoilAmplitude:0;
     if(phase==='complete'&&this.world.walkCamera.enabled)this.stuckReleased=true;
@@ -130,7 +130,11 @@ export class MissionDirector{
     if(phase==='rewind')this.world.store.destruction.updateRewind(state.rewindProgress);
     let cast=flying.has(phase)?{phase,elapsed:e,castingElapsed:state.castingElapsed,charge:state.charge/100,flight:Math.min(1,e/9),recoil:this.recoil,distance:12,height:4}:null;
     if(['login','captcha','verify-talk','lever'].includes(phase))cast=null;
-    if(phase==='charge')cast.castingElapsed=e<4?e*.4:1.6+(e-4)*1.12;
+    if(['ascent','director-reminder','shoe-view','pylon-link'].includes(phase)){
+      const rise=phase==='ascent'?smooth(e/5)*.5:.5;
+      cast.launchOverride=rise;cast.castingElapsed=phase==='ascent'?e*.55:2.75;
+    }
+    if(phase==='charge'){cast.launchOverride=.5+.5*smooth(e/12);cast.castingElapsed=2.75+e*.92;}
     if(phase==='rewind'||phase==='return'){
       const amount=phase==='rewind'?1-state.rewindProgress:smooth(e/3);
       cast={phase:'charge',elapsed:e,castingElapsed:30*amount,charge:amount,launchOverride:amount,distance:12,height:4};
@@ -161,9 +165,9 @@ export class MissionDirector{
     }
     if(phase==='photo-flight'){const f=state.flight;actor.setDragonProjectile([f.x,2.6,f.z],0);if(this.world.photoPhone){this.world.photoPhone.visible=true;this.world.photoPhone.position.set(f.x+.3,2.85,f.z+.3);}return;}
     if(phase==='terminal-deploy'){actor.setMove(0,0,false);actor.setDragonProjectile([-2,.65,3.25],0);return;}
-    if(phase==='intro'||phase==='ready'){
+    if(phase==='intro'||phase==='ready'||phase==='purchase'){
       const y=1.34+Math.abs(Math.sin(state.clock*2.8))*.12;
-      const p=phase==='intro'?Math.min(1,e/3):0;
+      const p=state.purchaseElapsed===null?0:Math.min(1,state.purchaseElapsed/6);
       const path=[[-2,.65,3.25],[-.22,1.2,2.75],[-.22,1.3,1.35],[2.48,y,.92]],part=Math.min(2,Math.floor(p*3)),mix=smooth(p*3-part);
       arc(path[part],path[part+1],mix,.15,this.projectile);actor.setDragonProjectile(this.projectile,Math.sin(state.clock*.8)*.08);
       if(this.world.photoPhone)this.world.photoPhone.visible=false;
@@ -180,10 +184,10 @@ export class MissionDirector{
       const from=this.photoReturnFrom||[0,2.6,11.2];const pos=review?[from[0]+(-2-from[0])*back,from[1]+(1.1-from[1])*back+Math.sin(back*Math.PI)*.25,from[2]+(3.25-from[2])*back]:phase==='photo'?[this.world.camera.position.x,this.world.camera.position.y-.25,this.world.camera.position.z+.7]:[-2,1+1.6*p,3.25+1.75*p];
       actor.setDragonProjectile(pos,0);
       if(!this.world.photoPhone){const phone=new T.Group();this.world.r.box(phone,'#172f36',[0,0,0],[.24,.43,.045]);this.world.r.box(phone,'#8fbab5',[0,0,.027],[.21,.36,.006],{emissive:0x70a399,emissiveIntensity:.5});this.world.r.mesh(this.world.r.geometry('CylinderGeometry',.035,.035,.018,16),this.world.r.material('#101b24',{metalness:.6,roughness:.2}),phone,[.06,.14,-.03]).rotation.x=Math.PI/2;this.world.scene.add(phone);this.world.photoPhone=phone;}
-      this.world.photoPhone.visible=phase!=='photo';this.world.photoPhone.position.set(pos[0]+.3,pos[1]+.25,pos[2]+.3);return;
+      this.world.photoPhone.visible=phase!=='photo';this.world.photoPhone.position.set(pos[0]+.35,pos[1]+.55,pos[2]-.2);this.world.photoPhone.rotation.y=Math.PI;return;
     }
     if(this.world.photoPhone)this.world.photoPhone.visible=false;
-    if(['charge','combat','energy','last','aim-final'].includes(phase)){
+    if(['ascent','director-reminder','shoe-view','pylon-link','charge','combat','energy','last','aim-final'].includes(phase)){
       const h=actor.heroPosition,lag=phase==='charge'?smooth(Math.max(0,e-1)/3):1,loading=phase==='aim-final'?smooth(e/1.4):0;
       const floor=actor.position||{x:h[0],y:.32,z:3.25};actor.setDragonProjectile([floor.x+(h[0]-.9-floor.x)*lag+loading*.9+(phase==='combat'?Math.sin(e*.7)*.3:0),floor.y+(h[1]+.35-floor.y)*lag+loading*.95,floor.z+(h[2]-.25-floor.z)*lag],loading*.65);if(phase==='aim-final'&&e>1.4&&actor.gripPosition){const g=actor.gripPosition;actor.setDragonProjectile([g[0],g[1]-.3,g[2]],.65);}actor.setCompanionAction?.({kind:loading?'shock':'normal',amount:1});return;
     }
@@ -240,18 +244,28 @@ export class MissionDirector{
     const portrait=w.camera.aspect<.85,e=s.phaseElapsed,heading=w.actors?.status?.cinematic?.heading??2.91;
     let position,target,fov=portrait?48:42,beat=s.phase;
     const sign=w.store.destruction.signFlight?.state;
-    if(['ready','intro'].includes(s.phase)){
-      const t=e%12;
-      if(s.phase==='ready'||e<2){position=[-2.8,2.7,7];target=[-1.4,1.4,3.25];fov=48;beat='street-cast';}else
-      if(t<4){position=[.2,2.45,4.8];target=[2.48,1.3,.92];fov=portrait?58:45;beat='dragon-counter';}
-      else if(t<8){position=[-1.1,1.9,1.45];target=[-2.5,1.35,-1.4];fov=52;beat='store-shelves';}
-      else{position=[.6,2,2.4];target=[3.1,1.3,.6];fov=58;beat='store-purchase';}
-    }else if(s.phase==='shoe-view'){const a=-.6+Math.min(1,e/8)*1.2+(e>8?Math.sin(e*.2)*.08:0);position=[feet[0]+Math.sin(a)*1.7,feet[1]+.3,feet[2]+Math.cos(a)*1.7];target=[feet[0],feet[1]+.15,feet[2]];fov=42;beat='shoe-orbit-wait';
+    if(['ready','intro','purchase'].includes(s.phase)){
+      const node=Number((s.nodeId||'').split('_').at(-1))||0,purchase=s.purchaseElapsed;
+      if(s.phase==='ready'||node<1&&e<2){position=[-2.8,2.7,9.5];target=[-1.4,1.4,3.25];fov=portrait?55:48;beat='street-establish';}
+      else if(purchase!==null){
+        if(purchase<1.5){position=[-.5,2.1,6.6];target=[-1.8,1.2,3.25];fov=portrait?46:40;beat='dragon-enters-store';}
+        else if(purchase<2.5){position=[-1.1,1.9,1.45];target=[-2.5,1.35,-1.4];fov=portrait?54:46;beat='store-shelf-insert';}
+        else{position=[.6,2,2.4];target=[2.48,1.32,.92];fov=portrait?48:42;beat='dragon-at-counter';}
+      }else if(s.speaker==='zhuang'){position=[-.8,2.3,6.8];target=[-1.25,1.6,2.48];fov=portrait?43:36;beat='zhuang-reveal';}
+      else{position=[-3.45,1.9,5.1];target=[-2,1.1,3.25];fov=portrait?42:36;beat='dragon-opening-close';}
+    }else if(s.phase==='ascent'){position=[4,10,26];target=[feet[0],feet[1]+1,feet[2]];fov=portrait?62:53;beat='authorized-wide-ascent';
+    }else if(s.phase==='director-reminder'){const d=w.actors?.dragonPosition||[-2,2,4];position=[d[0]+2.1,d[1]+1.1,d[2]+4.4];target=[d[0],d[1]+.35,d[2]];fov=portrait?45:38;beat='dragon-calls-director';
+    }else if(s.phase==='shoe-view'){const a=e*.48;position=[feet[0]+Math.sin(a)*1.18,feet[1]+.16,feet[2]+Math.cos(a)*1.18];target=[feet[0],feet[1]+.15,feet[2]];fov=portrait?35:38;beat='shoe-orbit-wait';
     }else if(s.phase==='pylon-link'){const p=w.tianshi.focusTargets?.[0]?.position||[-12.8,8.8,-9.6];position=[p[0]-4,p[1]-2+e,p[2]+7];target=p;fov=38+e*3;beat='pylon-before-lift';
     }else if(s.phase==='photo-flight'){const f=s.flight;position=[f.x+4,5.2,f.z+5];target=[f.x,2.6,f.z];fov=60;beat='dragon-flight-control';
     }else if(s.phase==='photo'){
       position=[0,3.3,10.5];target=[-.22,1.65,2.75];fov=50;beat='photo-framing';
-    }else if(s.phase==='walk-out'||s.phase==='photo-pose'||s.phase==='photo-talk'){
+    }else if(s.phase==='walk-out'){
+      const dragon=w.actors?.dragonPosition||[-2,1.1,3.25];
+      if(e<1.65){position=[1.1,2.1,2.7];target=[dragon[0],dragon[1]+.1,dragon[2]];fov=portrait?46:38;beat='counter-purchase-exit';}
+      else if(e<3.3){position=[-2.4,1.8,4.7];target=[dragon[0],dragon[1]+.1,dragon[2]];fov=portrait?50:42;beat='doorway-dragon-bag';}
+      else{position=[.9,2.5,9.1];target=[dragon[0],dragon[1]+.1,dragon[2]];fov=portrait?46:38;beat='dragon-returns-with-dinner';}
+    }else if(s.phase==='photo-pose'||s.phase==='photo-talk'){
       const close=s.speaker==='zhuang'||s.speaker==='manager';
       position=close?[-.8,2.3,6.8]:[1.1,2.5,9.4];target=close?[-1.25,1.6,2.48]:[-1.5,1.1,2.5];fov=portrait?43:36;beat=close?'intro-face':'intro-dragon';
     }else if(['photo-return','photo-check','photo-review'].includes(s.phase)){
@@ -263,7 +277,12 @@ export class MissionDirector{
     }else if(s.phase==='observation'||s.phase==='comm-request'){
       position=[3.5,5.8,8.4];target=[0,4.53,1.3];fov=portrait?37:32;beat='server-window';
     }else if(s.phase==='briefing'){
-      if(s.node?.event==='server-closeup'){position=[3.5,5.8,8.4];target=[0,4.53,1.3];fov=portrait?37:32;beat='server-window';}
+      const index=Number((s.nodeId||'').split('_').at(-1))||0;
+      if([0,1,2,4,8].includes(index)){
+        const detail=index===2?[-1.15,4.15,.65]:index===4?[1.1,4.22,.65]:[0,4.4,1];
+        position=[detail[0]+(index%2?.7:1.3),detail[1]+.3,6.4];target=detail;fov=portrait?36:31;
+        beat=index===2?'server-fanbooks':index===4?'server-copier':'server-led-detail';
+      }
       else{position=portrait?[7.7,6.5,18.2]:[8.8,6.3,16];target=[.3,3,1];fov=37;beat='briefing-street';}
     }else if(s.phase==='terminal-deploy'){position=[-3.6,2.7,7.1];target=[-1.65,.55,5.45];fov=50;beat='terminal-unfold';
     }else if(['terminal-deploy','login','captcha','lever','verify-talk','verified-talk'].includes(s.phase)){
@@ -296,8 +315,7 @@ export class MissionDirector{
       position=[this.wall[0]-.55,this.wall[1]+.65,this.wall[2]+2.5];target=[this.wall[0],this.wall[1]+.45,this.wall[2]];fov=44;beat='final-dragon';
     }else if(s.phase==='charge'){
       beat=chargeCameraBeat(e);
-      if(e<1.1){position=[feet[0]+1.2,feet[1]+.4,feet[2]+2.5];target=[feet[0],feet[1]+.12,feet[2]];fov=42;beat='charge-feet';}
-      else if(e<2.5){position=[4,10,26];target=[feet[0],feet[1]+1,feet[2]];fov=60;beat='charge-lift-wide';}
+      if(e<2.5){position=[4,10,26];target=[feet[0],feet[1]+1,feet[2]];fov=60;beat='charge-lift-wide';}
       else if(e<4){const d=w.actors.dragonPosition;position=[d[0]+2,d[1]+1,d[2]+4];target=d;fov=48;beat='charge-dragon-catchup';}
       else if(e>=14&&e<21){const a=(e-14)*.2;position=[feet[0]+Math.sin(a)*5,feet[1]+2.2,feet[2]+Math.cos(a)*5];target=[feet[0],feet[1]+1.4,feet[2]];fov=45;beat='charge-orbit';}
       else

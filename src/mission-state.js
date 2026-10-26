@@ -19,7 +19,7 @@ export const outputModes=[
 ];
 const manualPhases=new Set(['intro','meal','cargo','photo-talk','photo-check','observation','credentials','verify-talk','verified-talk','briefing','energy','flashback','flashback-end','last','complete']);
 const vcrPhases=new Set(['rewind','flashback','hack','credentials','heat-demo','heat','flashback-end','return']);
-const preChargePhases=new Set(['ready','intro','choice','meal','briefing','login','captcha','lever','shoe-view','pylon-link']);
+const preChargePhases=new Set(['ready','intro','purchase','choice','meal','briefing','login','captcha','lever','ascent','director-reminder','shoe-view','pylon-link']);
 const clamp=(value,min=0,max=1)=>Math.max(min,Math.min(max,value));
 export function meterPosition(elapsed,period=METER_PERIOD){const p=((elapsed%period)+period)%period/(period/2);return p<=1?p:2-p;}
 export function judgeMeter(position,final=false,settings=outputModes[0]){
@@ -37,7 +37,7 @@ export class MissionMachine{
     this.revealed=0;this.revision=0;this.shots=0;this.hits=0;this.lastAttack=-Infinity;this.feedback=null;
     this.targets=[];this.target=null;this.ended=false;this.quietUntil=Infinity;this.chatDeck=[];this.lastChat=-1;
     this.chatCounts={};this.cooldowns={};this.lastHotspot=-Infinity;this.randomState=71130;this.sequenceKind=null;
-    this.output='steady';this.meterEntered=0;this.attackHoldUntil=0;
+    this.output='steady';this.meterEntered=0;this.attackHoldUntil=0;this.purchaseStarted=null;
     this.castingEntered=null;this.castingPaused=0;this.castingFrozen=0;this.vcrStarted=null;this.vcrSnapshot=null;
     this.resetInteraction();
   }
@@ -73,11 +73,11 @@ export class MissionMachine{
     if(phase==='complete'){this.progress=100;this.ended=true;this.quietUntil=this.time+8+this.random()*6;}
     this.hooks.onStage?.(phase,this.state);this.emit();
   }
-  line(node,entered=this.time){this.node=node;this.nodeEntered=entered;this.revealed=0;this.hooks.onGesture?.(node?.gesture||'hold',node||{speaker:'zhuang'});this.emit();}
+  line(node,entered=this.time){this.node=node;this.nodeEntered=entered;this.revealed=0;if(node?.id==='intro_9')this.purchaseStarted=entered;this.hooks.onGesture?.(node?.gesture||'hold',node||{speaker:'zhuang'});this.emit();}
   sequence(phase,lines){this.phaseTo(phase);this.lines=lines;this.index=0;this.line(lines[0]);}
   start(){
     this.branch=null;this.progress=0;this.ended=false;this.paused=false;this.shots=0;this.hits=0;this.lastAttack=-Infinity;this.feedback=null;
-    this.output='steady';this.attackHoldUntil=0;this.castingEntered=null;this.castingPaused=0;this.castingFrozen=0;this.vcrStarted=null;this.vcrSnapshot=null;this.resetInteraction();
+    this.output='steady';this.attackHoldUntil=0;this.castingEntered=null;this.castingPaused=0;this.castingFrozen=0;this.vcrStarted=null;this.vcrSnapshot=null;this.purchaseStarted=null;this.resetInteraction();
     this.chatDeck=[];this.lastChat=-1;this.chatCounts={};this.cooldowns={};this.lastHotspot=-Infinity;this.quietUntil=Infinity;this.target=this.targets[0]?.id??null;
     this.hooks.onDinner?.(null);this.sequence('intro',sequences.intro);return true;
   }
@@ -89,7 +89,7 @@ export class MissionMachine{
     this.target=target.id;this.emit();return true;
   }
   finishSequence(){
-    if(this.phase==='intro'){this.branch='A';this.hooks.onDinner?.('A');this.phaseTo('walk-out');}
+    if(this.phase==='intro'){this.branch='A';this.hooks.onDinner?.('A');this.phaseTo('purchase');}
     else if(this.phase==='meal')this.sequence('briefing',sequences.briefing);
     else if(this.phase==='verify-talk')this.phaseTo('captcha');
     else if(this.phase==='verified-talk')this.phaseTo('lever');
@@ -144,7 +144,7 @@ export class MissionMachine{
     for(const c of value)if(!this.key(c))return false;
     this.commentLogin();const c=this.connection;if(c[c.field]===(c.field==='account'?CONNECTION_ACCOUNT:CONNECTION_PASSWORD))this.submitLogin();return true;
   }
-  commentLogin(correct=false){const value=this.connection.account;const kind=correct?'correct':value.includes('love')?'love':'wrong';const pool=kind==='love'?['這是登入，不是告白。','boss love admin？這段要送給管理員嗎？']:kind==='correct'?['帳號對了。感情狀態沒有提交。','登入成功。資安失敗。']:['你輸入的是帳號，還是辦公室八卦？','電網還沒接通，人際關係先短路了。'];const n=this.asideCounts[kind]||0;this.asideCounts[kind]=n+1;this.loginAside=pool[n%pool.length];}
+  commentLogin(correct=false){const value=this.connection.account;const kind=correct?'correct':value.includes('love')?'love':'wrong';const pool=kind==='love'?['這是登入，不是告白。','boss love admin？這段要送給管理員嗎？']:kind==='correct'?['帳號對了。接著輸入密碼。']:['你輸入的是帳號，還是辦公室八卦？','電網還沒接通，人際關係先短路了。'];const n=this.asideCounts[kind]||0;this.asideCounts[kind]=n+1;this.loginAside=pool[n%pool.length];}
   key(value){
     if(this.paused||this.phase!=='login'||typeof value!=='string')return false;
     const c=this.connection,field=c.field;let next=c[field];
@@ -174,7 +174,7 @@ export class MissionMachine{
   setLever(value){
     if(this.paused||this.phase!=='lever'||!Number.isFinite(value))return false;
     this.connection.lever=clamp(value);this.action('lever',this.connection.lever);this.emit();
-    if(this.connection.lever>=.98){this.connection.lever=1;this.action('grid-connect',true);this.phaseTo('shoe-view');}
+    if(this.connection.lever>=.98){this.connection.lever=1;this.action('grid-connect',true);this.phaseTo('ascent');this.line({id:'ascent_authorized',speaker:'system',text:'系統：允許起飛。',gesture:'look'});}
     return true;
   }
   logicalInput(sourceTime){return this.time+(Number.isFinite(sourceTime)?sourceTime-this.sourceTime:0);}
@@ -247,10 +247,13 @@ export class MissionMachine{
     // Catch up continuous cinematics after a late frame, but stop on every manual or input gate.
     for(let guard=0;guard<10;guard++){
       const elapsed=this.time-this.entered,phase=this.phase;let changed=false;
-      if(phase==='pylon-link'&&elapsed>=4){this.phaseTo('charge',this.entered+4);changed=true;}
+      if(phase==='ascent'&&elapsed>=5){this.phaseTo('director-reminder',this.entered+5);this.line({id:'director_reminder_0',speaker:'dragon',text:'等等！導播，這邊重點不要漏掉！要照顧一下玩家！',gesture:'point'});changed=true;}
+      else if(phase==='director-reminder'&&elapsed>=5){this.phaseTo('shoe-view',this.entered+5);changed=true;}
+      else if(phase==='pylon-link'&&elapsed>=4){this.phaseTo('charge',this.entered+4);changed=true;}
       else if(phase==='charge'&&elapsed>=CHARGE_DURATION){this.phaseTo('combat',this.entered+CHARGE_DURATION);changed=true;}
-      else if(phase==='terminal-deploy'&&elapsed>=3){this.phaseTo('login',this.entered+3);changed=true;}
+      else if(phase==='terminal-deploy'&&elapsed>=4.5){this.phaseTo('login',this.entered+4.5);changed=true;}
       else if(phase==='photo-return'&&elapsed>=2.5){this.sequence('photo-check',sequences.photoCheck);changed=true;}
+      else if(phase==='purchase'&&elapsed>=Math.max(0,6-(this.purchaseStarted===null?0:this.entered-this.purchaseStarted))){this.phaseTo('walk-out');changed=true;}
       else if(phase==='walk-out'&&elapsed>=5){this.phaseTo('photo-pose',this.entered+5);changed=true;}
       else if(phase==='photo-pose'&&elapsed>=2){this.sequence('photo-talk',sequences.photoTalk);changed=true;}
       else if(phase==='rewind'&&elapsed>=REWIND_DURATION){this.sequence('flashback',sequences.flashback);changed=true;}
@@ -263,6 +266,7 @@ export class MissionMachine{
     }
     const elapsed=Math.max(0,this.time-this.entered);
     if(this.phase==='charge')this.timedLine(chargeLines,elapsed);
+    else if(this.phase==='director-reminder'&&elapsed>=2.7&&this.node?.id!=='director_reminder_1')this.line({id:'director_reminder_1',speaker:'system',text:'導播：差點忘了，謝謝龍董。',gesture:'look'},this.entered+2.7);
 
     else if(this.phase==='lever'&&elapsed>=3&&this.node!==connectionPrompts.lever)this.line(connectionPrompts.lever,this.entered+3);
     else if(this.phase==='heat-demo')this.timedLine(heatDemoLines,elapsed);
@@ -292,11 +296,11 @@ export class MissionMachine{
     const rewindProgress=this.phase==='rewind'?reverse*reverse*(3-2*reverse):0,rewindStage=this.phase!=='rewind'?null:elapsed<.4?'freeze':elapsed>=REWIND_DURATION-.6?'settle':'reverse';
     return {phase:this.phase,node:this.node,nodeId:this.node?.id||null,speaker:this.node?.speaker||null,text:this.node?.text||'',revealed:this.revealed,
       branch:this.branch,choices:this.phase==='choice'?dinnerChoices:[],waitingChoice:this.phase==='choice',progress:this.progress,
-      energy:Math.max(0,100-this.progress/99*100),charge:this.phase==='charge'?Math.min(100,elapsed/CHARGE_DURATION*100):preChargePhases.has(this.phase)?0:100,
+      energy:Math.max(0,100-this.progress/99*100),charge:this.phase==='charge'?Math.min(100,30+elapsed/CHARGE_DURATION*70):this.phase==='ascent'?Math.min(30,Math.max(0,elapsed-1)*7.5):['director-reminder','shoe-view','pylon-link'].includes(this.phase)?30:preChargePhases.has(this.phase)?0:100,
       meter,meterElapsed:Math.max(0,this.time-this.meterEntered),meterPeriod:settings.period,meterSettings:settings,output:this.output,outputModes,
       landingDuration:LANDING_DURATION,tourDuration:TOUR_DURATION,chargeDuration:CHARGE_DURATION,rewindDuration:REWIND_DURATION,returnDuration:RETURN_DURATION,heatDemoDuration:HEAT_DEMO_DURATION,
       phaseElapsed:elapsed,time:this.time,clock:this.time,sourceTime:this.sourceTime,paused:this.paused,auto:this.auto,castingElapsed:this.castingElapsed,
-      loginAside:this.loginAside,flight:this.flight?{...this.flight,ready:Math.hypot(this.flight.x,this.flight.z-10.5)<1.2}:null,investigation:this.investigation,photoTaken:this.photoTaken,hack:{turns:[...this.hackTurns],moves:this.hackMoves,failures:this.hackFailures},connection,login:connection,heat,vcr,rewindProgress,rewindStage,returnProgress:this.phase==='return'?clamp(elapsed/RETURN_DURATION):0,vcrElapsed:vcr&&this.vcrStarted!==null?Math.max(0,this.time-this.vcrStarted):0,replayStage:vcr?this.phase:null,vcrSnapshot:this.vcrSnapshot?{...this.vcrSnapshot}:null,
+      loginAside:this.loginAside,purchaseElapsed:this.purchaseStarted===null?null:Math.max(0,this.time-this.purchaseStarted),flight:this.flight?{...this.flight,ready:Math.hypot(this.flight.x,this.flight.z-10.5)<1.2}:null,investigation:this.investigation,photoTaken:this.photoTaken,hack:{turns:[...this.hackTurns],moves:this.hackMoves,failures:this.hackFailures},connection,login:connection,heat,vcr,rewindProgress,rewindStage,returnProgress:this.phase==='return'?clamp(elapsed/RETURN_DURATION):0,vcrElapsed:vcr&&this.vcrStarted!==null?Math.max(0,this.time-this.vcrStarted):0,replayStage:vcr?this.phase:null,vcrSnapshot:this.vcrSnapshot?{...this.vcrSnapshot}:null,
       target:this.target,targetLabel:target?.label||'店面外牆',targets:this.targets,feedback:this.feedback,shots:this.shots,hits:this.hits,attackHoldUntil:this.attackHoldUntil,combatHoldRemaining,attackHeld:combatHoldRemaining>0,
       canAttack:['combat','aim-final'].includes(this.phase)&&!this.paused&&this.time-this.lastAttack>=.6&&combatHoldRemaining===0,
       ended:this.ended,busy:!!this.node||!['ready','complete'].includes(this.phase),sequenceKind:this.sequenceKind,endingCaption,revision:this.revision};

@@ -97,12 +97,13 @@ export function buildTianshiGrid(scene,r){
     quality(value){quality=['low','balanced','high'].includes(value)?value:'balanced';segmentCount=quality==='low'?6:quality==='high'?12:10;motesPerPylon=quality==='low'?2:quality==='high'?8:5;ringsPerPylon=quality==='low'?2:3;},
     update(t,delta,state={}){
       phase=state.phase||'ready';const clock=phase==='ready'?t:Number.isFinite(state.clock)?state.clock:t;
-      for(const m of lowSigns){m.visible=['energy','last','return'].includes(phase)&&Math.sin(clock*4)>.05;}charge=clamp((state.charge||0)/100);if(state.hero)hero.fromArray(state.hero);
+      const outage=['energy','last','return'].includes(phase),outageFlash=Math.sin(clock*13)>-.2;
+      for(const m of lowSigns){m.visible=outage&&outageFlash;}charge=clamp((state.charge||0)/100);if(state.hero)hero.fromArray(state.hero);
       const lever=clamp(state.connection?.lever??0),casting=['charge','combat','energy','last','aim-final','finisher','landing','tour'].includes(phase);
       const linking=phase==='lever'?lever:casting?1:0;
       activeCount=0;
       for(let i=0;i<pillars.length;i++){
-        const depleted=['energy','last','return'].includes(phase);const p=pillars[i],wanted=casting?(depleted?.08:1):clamp((linking-i*.18)*2.6);
+        const depleted=['energy','last','return'].includes(phase);const p=pillars[i],wanted=casting?(depleted?(outageFlash?.18:.045):1):clamp((linking-i*.18)*2.6);
         p.strength=T.MathUtils.damp(p.strength,wanted,5,Math.min(.1,Math.max(0,delta)));
         if(Math.abs(p.strength-wanted)<.001)p.strength=wanted;connected[i]=p.strength>.6;if(connected[i])activeCount++;
         const pulse=reducedMotion?1:1+Math.sin(clock*2.4+i)*.11;

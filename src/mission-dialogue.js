@@ -13,6 +13,8 @@ const lines=(prefix,items)=>items.map(([speaker,text,gesture='look',mood='calm',
 
 export const sequences={
   intro:lines('intro',[
+    ['dragon','雨都下到這裡了，她還在裡面加班。','look'],
+    ['dragon','先叫她出來。今晚一定要吃頓熱的。','point'],
     ['dragon','阿莊，下班。','point'],
     ['zhuang','理由？','look'],
     ['dragon','好好吃飯。妳已經連著加班五天了。','point'],
@@ -35,7 +37,8 @@ export const sequences={
   photoCheck:lines('photo_check', [['zhuang','拍好了？放大看看。','player'],['dragon','確認妳有沒有眨眼？','look'],['zhuang','確認沒眨眼就發給管理員。讓他知道我有好好吃飯。','nod']]),
   observation:lines('observe',[
     ['dragon','唉……我以為接的是外送單，結果接的是共犯通知。','exhale','calm','phone-away'],
-    ['dragon','二樓那間房，怎麼有點陰森？','point','calm','server-closeup'],
+    ['zhuang','今晚月色真美。','look'],
+    ['dragon','妳還有心情看月亮……對了，樓上那間房怎麼有點陰森？','point','calm','server-closeup'],
     ['zhuang','不是燈壞了。是伺服器拿整條街散熱。','goods'],
     ['dragon','你看三秒就知道？','look'],
     ['zhuang','加班十年，認得這種不讓人睡的光。','exhale'],
@@ -46,6 +49,7 @@ export const sequences={
     ['zhuang','小聲一點。','look'],
     ['dragon','品名：土產。簽收人……龍泡泡？','shake'],
     ['dragon','我自己都還沒簽名過！','shake'],
+    ['zhuang','我幫你拿便當。沒關係，不用緊張。攝影機拍到你簽收了。','hold'],
     ['zhuang','送到711。你隨貨簽收。','nod'],
     ['dragon','我答應幫妳拿的是便當，不是萬噸息壤！','shake'],
     ['zhuang','都是補給。','nod'],
@@ -89,7 +93,9 @@ export const sequences={
     ['dragon','準備找人背鍋？','look'],
   ]),
   energy:lines('energy',[
-    ['mifoe','頭，能量用完了。戰損報告：\n店體解體，三樓去向不明。','look'],
+    ['mifoe','頭，能量用完了。戰損報告：\n三樓已坍塌，樓板還在掉。','look'],
+    ['dragon','剛才還唱 Always open，現在只剩 open air。','shake'],
+    ['mifoe','確認：外牆與樓板碎片仍在落下。','look'],
     ['zhuang','能量怎麼可能用這麼快？','shake'],
     ['dragon','電量告急，將軍救急！將軍出手，萬事大吉～','happy'],
     ['zhuang','你錯棚了。','shake'],
@@ -104,7 +110,7 @@ export const sequences={
     ['xaihi','旁邊就有天師樁。接一下，借億點點。','phone','calm','xaihi-terminal'],
     ['dragon','那可是武陵電網，應該沒那麼容易進去吧？','player','aside'],
     ['xaihi','剛剛賽馬娘停服，順手看了個PHP漏洞。沒想到這麼快就用上。','phone'],
-    ['dragon','遊戲維護三小時，電網少了三層防護。','player','aside'],
+    ['dragon','遊戲才停服，妳就讓整條街停電？轉服成本也太高了吧。','player','aside'],
     ['xaihi','先接通管理終端。','phone'],
   ]),
   credentials:lines('credentials',[
@@ -242,7 +248,7 @@ chatterGroups.push(
 );
 export const reactionPools={
   miss:['弭弗：未命中目標。周邊有意見。','龍泡泡：這發有景觀工程的潛力。','弭弗：目標沒事。路牌需要休假。'],
-  hit:['弭弗：三樓已移除。去向仍在追蹤。','龍泡泡：原來「拆開來看」是這個意思。','弭弗：請問公告寫設備維護嗎？莊：不會再壞。'],
+  hit:['弭弗：店面外牆破損，招牌正在鬆動。', '龍泡泡：原來「拆開來看」是這個意思。','弭弗：請問公告寫設備維護嗎？莊：不會再壞。'],
   waiting:['龍泡泡：慢慢看。她還不知道自己下班了。','龍泡泡：這個角度不處理公文。莊：也沒有要處理。','龍泡泡：看夠再開始，晚餐會等你。'],
 };
 export const endingSong=['保險～怎麼兩清，怎麼忍心','怎麼做回甲乙丙丁','難道非要耗盡所有委屈','再賠上這一條爛命'];

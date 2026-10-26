@@ -13,10 +13,17 @@ export function buildInvestigationProps(scene,r){
  for(let i=0;i<2;i++){box(cargo,'#6c7565',[i*.43,i*.1+.26,0],[.4,.5,.43],{metalness:.3});box(cargo,'#b2a272',[i*.43,i*.1+.27,.22],[.07,.46,.012]);}
  label(cargo,'土產 / 店到店',[-.02,.32,.227],[.35,.12,1],{font:'bold 56px sans-serif'});
  const sheet=label(cargo,'息壤 10,000 噸',[.48,.76,.23],[.73,.2,1]);sheet.name='smuggling-manifest';
- label(cargo,'經辦／核准：莊芳宜',[.48,.59,.232],[.73,.12,1],{font:'bold 46px sans-serif'});
+ label(cargo,'送貨方：終末地／地點：武陵 711',[.48,.59,.232],[.73,.12,1],{font:'bold 40px sans-serif'});
  const paperGroup=new T.Group();root.add(paperGroup);
- const posters=[['小蔥傲嬌讚！ 嘴上說不用，第二件還是拿了。',[-2.8,1.5,2.04]],['武陵補給祭・集點開跑 消費一筆蓋一格。萬噸仍算一筆。',[2.35,2.12,2.04]],['黎諾說：沒有洗腦。 魔族佬黑：不注重食品衛生',[3.4,1.72,2.04]]];
- for(const [text,pos]of posters){label(paperGroup,text.split(' ')[0],pos,[.86,.29,1],{bg:'#d6cfb2',color:'#315148',font:'bold 54px sans-serif'});label(paperGroup,text.split(' ').slice(1).join(' '),[pos[0],pos[1]-.2,pos[2]],[.86,.13,1],{bg:'#d6cfb2',color:'#315148',font:'bold 34px sans-serif'});box(paperGroup,'#a9b29e',[pos[0],pos[1]+.17,pos[2]+.006],[.2,.028,.008]);}
+ const posterPositions=[[-2.8,1.5,2.04],[2.35,2.12,2.04],[3.4,1.72,2.04]];
+ const posterUrl=`${import.meta.env?.BASE_URL||'/'}images/store-posters.png`;
+ for(let i=0;i<3;i++){
+   const texture=typeof document==='undefined'||typeof document.createElementNS!=='function'?null:r.own(new T.TextureLoader().load(posterUrl));
+   if(texture){texture.colorSpace=T.SRGBColorSpace;texture.repeat.set(1/3,1);texture.offset.set(i/3,0);}
+   const material=r.own(new T.MeshBasicMaterial({map:texture,color:texture?0xffffff:0xd6cfb2,side:T.DoubleSide,toneMapped:false}));
+   const poster=r.mesh(r.geometry('PlaneGeometry',.92,1.84),material,paperGroup,posterPositions[i]);
+   poster.name=`store-poster-${i+1}`;
+ }
  // A small collection corner visible through the upstairs window.
  const room=new T.Group();room.position.set(1.4,3.56,.66);root.add(room);
  box(room,'#695c50',[0,.45,0],[.8,.05,.48]);for(const x of [-.32,.32])box(room,'#344745',[x,.22,0],[.045,.44,.045]);

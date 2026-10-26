@@ -57,9 +57,9 @@ for(const phase of ['login','captcha','lever']){
   check(`Long ${phase} keeps the first lift at 1.2m in front of the store`,w.actors.cast===null,w.actors.cast);
 }
 d.beforeActors(state('charge',{phaseElapsed:0,castingElapsed:100,charge:0}));
-check('Charge begins at age 1.15 instead of jumping to fully charged flight',w.actors.cast.castingElapsed===0&&w.actors.cast.distance===12&&w.actors.cast.height===4,w.actors.cast);
+check('Charge resumes from half-height gate',w.actors.cast.castingElapsed===2.75&&w.actors.cast.launchOverride===.5&&w.actors.cast.distance===12&&w.actors.cast.height===4,w.actors.cast);
 d.beforeActors(state('charge',{phaseElapsed:5,castingElapsed:105,charge:16.7}));
-check('Slow ascent age follows charge elapsed time after login',Math.abs(w.actors.cast.castingElapsed-2.72)<.001,w.actors.cast);
+check('Slow ascent continues after shoes',Math.abs(w.actors.cast.castingElapsed-7.35)<.001&&w.actors.cast.launchOverride>.5,w.actors.cast);
 
 w.time=100;w.store.destruction.state.progress=99;d.stage('rewind',state('rewind',{vcr:true}));
 d.beforeActors(state('rewind',{phaseElapsed:2,rewindProgress:2/7,vcr:true}));const firstReverse=d.visualTime;
@@ -91,7 +91,7 @@ for(const [label,aspect]of [['portrait',390/844],['landscape',844/390]]){
 const pw=makeWorld(),pd=new MissionDirector(pw);pd.state=state('photo');const beforePhoto=pw.camera.position.toArray();pd.updateCamera(.1,pw.actors.heroPosition);check('Photo framing remains under player control',JSON.stringify(pw.camera.position.toArray())===JSON.stringify(beforePhoto));pw.r.dispose();
 const tw=makeWorld(),td=new MissionDirector(tw);for(const [at,beat] of [[2,'tour-server-hole'],[6,'tour-smile'],[9,'tour-ruins'],[11,'tour-ground-sign'],[13,'tour-pear'],[17,'tour-dragon']]){td.state=state('tour',{phaseElapsed:at});td.updateCamera(.03,tw.actors.heroPosition);check('Tour retains '+beat,td.status.cameraBeat===beat);}tw.r.dispose();
 // The camera is a shot sequence, with a real front view and clear city subjects.
-const shotSamples=[[1,'charge-feet'],[2,'charge-lift-wide'],[3,'charge-dragon-catchup'],[6,'charge-pylon-one'],[11,'charge-city-array'],[16,'charge-orbit'],[23,'charge-pylon-two'],[28,'charge-battle-wide']];
+const shotSamples=[[1,'charge-lift-wide'],[2,'charge-lift-wide'],[3,'charge-dragon-catchup'],[6,'charge-pylon-one'],[11,'charge-city-array'],[16,'charge-orbit'],[23,'charge-pylon-two'],[28,'charge-battle-wide']];
 const cameraShots=[];
 for(const [label,aspect]of [['portrait',390/844],['landscape',844/390]]){
   const cw=makeWorld(aspect),cd=new MissionDirector(cw);cw.actors.heroPosition=[-1.25,4.32,15.25];cw.actors.status.cinematic={heading:2.91};
