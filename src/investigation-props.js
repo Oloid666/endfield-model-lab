@@ -20,9 +20,10 @@ export function buildInvestigationProps(scene,r){
  for(let i=0;i<3;i++){
    const texture=typeof document==='undefined'||typeof document.createElementNS!=='function'?null:r.own(new T.TextureLoader().load(posterUrl));
    if(texture){texture.colorSpace=T.SRGBColorSpace;texture.repeat.set(1/3,1);texture.offset.set(i/3,0);}
-   const material=r.own(new T.MeshBasicMaterial({map:texture,color:texture?0xffffff:0xd6cfb2,side:T.DoubleSide,toneMapped:false}));
+   const material=r.own(new T.MeshBasicMaterial({map:texture,color:texture?0xffffff:0xd6cfb2,side:T.FrontSide,toneMapped:false}));
    const poster=r.mesh(r.geometry('PlaneGeometry',.82,1.64),material,paperGroup,posterPositions[i]);
    poster.name=`store-poster-${i+1}`;
+   const inside=r.mesh(r.geometry('PlaneGeometry',.82,1.64),material,paperGroup,[posterPositions[i][0],posterPositions[i][1],1.813]);inside.rotation.y=Math.PI;inside.name=`store-poster-${i+1}-inside`;
  }
  // A small collection corner visible through the upstairs window.
  const room=new T.Group();room.position.set(1.4,3.56,.66);root.add(room);
