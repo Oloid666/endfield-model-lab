@@ -101,3 +101,6 @@
 .album-receipt{border:12px solid #203c40;border-radius:22px;box-shadow:0 0 0 2px #b9ad83}
 
 .mission-shell[data-phase=complete] .mission-caption{color:#f4e9c7;text-shadow:0 2px 5px #000,0 0 16px #000;font-weight:600}
+
+.mission-complete .walk-toggle{display:block!important}.mission-complete:not(.walking-mode) .walk-toggle{display:block!important}
+.mission-shell[data-phase="energy"] .mission-status-title::before{content:"🔋✕ ";font-size:1.7em;color:#ff655c;text-shadow:0 0 14px #ff3939;animation:power-warning .8s infinite alternate}@keyframes power-warning{to{opacity:.36;filter:brightness(1.8)}}

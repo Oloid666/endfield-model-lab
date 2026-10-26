@@ -26,7 +26,7 @@ listen($('#quality'),'change',e=>world?.setQuality(e.target.value));
 listen($('#sound'),'change',async e=>{try{if(e.target.checked)await audio.enable();else await audio.disable();}catch{e.target.checked=false;message.textContent='雨聲無法開啟。';}});
 listen(document,'visibilitychange',()=>{if(document.hidden)audio.disable();else if($('#sound').checked)audio.enable().catch(()=>{$('#sound').checked=false;});});
 const buttons=[...document.querySelectorAll('[data-view]')];
-const viewCycles={street:[['pear','梨花與房子'],['street','正面'],['store','左側'],['streetRight','右側']],interior:[['interior','櫃檯'],['shelves','商品'],['fridge','冰箱'],['oven','微波爐'],['poster1','海報①'],['poster2','海報②'],['poster3','海報③']],detail:[['back','莊背影'],['left','左近景'],['right','右近景'],['story','雙人'],['dragon','龍泡泡']]};
+const viewCycles={street:[['pear','梨花與房子'],['street','正面'],['store','左側'],['streetRight','右側']],interior:[['interior','櫃檯'],['insideOut','店內望街'],['shelves','商品'],['fridge','冰箱'],['oven','微波爐'],['poster1','海報①'],['poster2','海報②'],['poster3','海報③']],detail:[['back','莊背影'],['left','左近景'],['right','右近景'],['story','雙人'],['dragon','龍泡泡']]};
 const cycleIndex={};let cycleRun=false;
 listen($('.view-dock'),'click',e=>{
  const b=e.target.closest('[data-view]');if(!b||!world)return;const group=b.dataset.view;

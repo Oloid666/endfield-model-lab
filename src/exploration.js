@@ -37,6 +37,7 @@ export function createExploration(world,{mount,onHotspot,onSceneTap,canWalk=()=>
     }
   },{signal});
   return {setActive,get active(){return active;},update(){
+    const walkAllowed=canWalk();toggle.hidden=!walkAllowed;if(!walkAllowed&&active)setActive(false);
     if(!world.actors)return;
     if(!active){world.actors.setMove(0,0,false);return;}
     const x=joyX+(keys.has('d')||keys.has('ArrowRight')?1:0)-(keys.has('a')||keys.has('ArrowLeft')?1:0),y=joyY+(keys.has('s')||keys.has('ArrowDown')?1:0)-(keys.has('w')||keys.has('ArrowUp')?1:0);

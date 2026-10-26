@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "count": 70,
+  "count": 71,
   "checks": [
     "Opening waits",
     "Purchase holds at counter",
@@ -17,6 +17,7 @@
     "Call never self accepts",
     "Terminal deployment precedes input",
     "Briefing reaches login",
+    "Kiss chunk reacts",
     "Account chunk accepted",
     "Account chunk accepted",
     "Account chunk accepted",

@@ -50,7 +50,11 @@ export function buildMicrowave(scene,r,{position=[3.45,.31,1.43]}={}){
   const labels={};
   const texts={clean:'800 W',burning:'ERR',heating:'800 MW',warm:'極速保溫',charred:'極速保溫'};
   for(const mode of ['clean','burning','heating','warm']){
-    const material=r.label(texts[mode],{width:512,height:160,font:mode==='warm'?'bold 65px sans-serif':'bold 100px monospace',bg:'#102720',color:mode==='burning'?'#f4b47c':'#b8efb0'});material.emissiveIntensity=.6;
+    let material;
+    if(mode==='heating'){
+      const canvas=document.createElement('canvas');canvas.width=512;canvas.height=160;const ctx=canvas.getContext('2d');ctx.fillStyle='#102720';ctx.fillRect(0,0,512,160);ctx.textBaseline='middle';ctx.font='bold 100px monospace';ctx.fillStyle='#b8efb0';ctx.fillText('800',42,84);ctx.fillStyle='#f34943';ctx.font='bold 132px monospace';ctx.fillText('M',265,82);ctx.fillStyle='#b8efb0';ctx.font='bold 100px monospace';ctx.fillText('W',375,84);
+      const map=r.own(new T.CanvasTexture(canvas));map.colorSpace=T.SRGBColorSpace;material=r.own(new T.MeshBasicMaterial({map,toneMapped:false}));
+    }else{material=r.label(texts[mode],{width:512,height:160,font:mode==='warm'?'bold 65px sans-serif':'bold 100px monospace',bg:'#102720',color:mode==='burning'?'#f4b47c':'#b8efb0'});material.emissiveIntensity=.6;}
     const label=r.mesh(r.geometry('PlaneGeometry',1,1),material,oven,[.39,.14,.367],[.16,.082,1]);label.name='microwave-display-'+mode;label.visible=false;labels[mode]=label;
   }
   const warningLight=r.mesh(r.geometry('SphereGeometry',.016,8,6),r.own(new T.MeshBasicMaterial({color:0xdbb95f,toneMapped:false})),oven,[.4,.035,.367]);

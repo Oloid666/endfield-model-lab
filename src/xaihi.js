@@ -93,7 +93,7 @@ export function buildXaihi(scene,r,gltf){
       root.updateMatrixWorld(true);
       phone.visible=hack&&!leaving;meal.visible=receive;
       const wrist=poses.wristL?.bone;
-      if(wrist){wrist.getWorldPosition(v);root.worldToLocal(v);phone.position.copy(v).add(phoneOffset);phone.rotation.set(-.3,-.15,-.05);meal.position.copy(v).add(mealOffset);meal.rotation.set(-.06,0,0);}
+      if(wrist){wrist.getWorldPosition(v);root.worldToLocal(v);phone.position.copy(v).add(phoneOffset);phone.rotation.set(-.3,Math.PI-.15,-.05);meal.position.copy(v).add(mealOffset);meal.rotation.set(-.06,0,0);}
       Object.assign(status,{action,headYaw,phoneVisible:phone.visible,mealVisible:meal.visible});
     },
     dispose(){if(disposed)return;disposed=true;api.reset();status.loaded=false;root.removeFromParent();},
