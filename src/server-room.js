@@ -6,6 +6,10 @@ export function buildServerRoom(parent,r){
   const root=new T.Group();root.name='upstairs-server-room';root.position.set(0,3.51,.72);parent.add(root);
   const steel=r.material('#263a3e',{roughness:.38,metalness:.68}),panel=r.material('#101e25',{roughness:.48,metalness:.32});
   const rails=r.material('#8ca1a1',{roughness:.26,metalness:.8}),cyan=r.own(new T.MeshBasicMaterial({color:0x8adbd6}));
+  const books=r.material('#98797e',{roughness:.8}),paper=r.material('#d4ceb8',{roughness:.9});
+  for(let i=0;i<36;i++){const b=r.box(root,i%3?'#a493aa':'#75979a',[-1.15+(i%3)*.22,.06+Math.floor(i/3)*.065,-.1],[.2,.055,.35]);b.rotation.y=(i%4-.5)*.1;}
+  r.box(root,'#b4b7ac',[1.1,.35,-.1],[.65,.65,.55]);r.box(root,'#18373b',[1.1,.69,0],[.5,.05,.3]);for(let i=0;i<8;i++)r.box(root,'#e1d9be',[1.1,.72+i*.008,.15],[.27,.006,.33]);
+  for(let i=0;i<9;i++){const curve=new T.CatmullRomCurve3([new T.Vector3(-.5+i*.12,.2,0),new T.Vector3(-.8+i*.12,.05,.6),new T.Vector3(1.1,.12+i*.04,-.2)]);r.mesh(r.own(new T.TubeGeometry(curve,8,.009,4,false)),i%2?steel:rails,root);}
   const shards=[],ledRecords=[],ledTime={value:0};
   function box(mat,p,s,owner=root){return r.mesh(r.geometry('BoxGeometry',1,1,1),mat,owner,p,s);}
   const labelMaterial=r.label('SERVER 01    /    UPLINK 02',{width:1024,height:128,bg:'#101d22',color:'#c9d5c8',font:'bold 38px monospace'});

@@ -83,7 +83,7 @@ const projections=[];
 for(const [label,aspect]of [['portrait',390/844],['landscape',844/390]]){
   const cw=makeWorld(aspect),cd=new MissionDirector(cw);cd.state=state('login');
   for(let n=0;n<180;n++){cd.updateCamera(1/30,cw.actors.heroPosition);cw.camera.lookAt(cw.controls.target);cw.camera.updateMatrixWorld(true);}
-  const points={heroHead:[-1.25,3.32,3.25],boardLeftNear:[-3.59,.55,4.515],boardLeftFar:[-3.59,.55,1.985],boardRightNear:[.29,.55,4.515],boardRightFar:[.29,.55,1.985]};
+  const b=cw.connectionStage.root.position;const points={heroHead:[-1.25,3.32,3.25],boardLeftNear:[b.x-1.94,b.y+.21,b.z+1.265],boardLeftFar:[b.x-1.94,b.y+.21,b.z-1.265],boardRightNear:[b.x+1.94,b.y+.21,b.z+1.265],boardRightFar:[b.x+1.94,b.y+.21,b.z-1.265]};check(`${label} board clears Zhuang feet`,b.z-1.265>3.25+.4);
   const projected=Object.fromEntries(Object.entries(points).map(([key,p])=>{const point=new T.Vector3().fromArray(p).project(cw.camera);return [key,point.toArray()];}));projections.push({label,projected});
   check(`${label} connection camera keeps actual board corners and hero head on-screen`,Object.values(projected).every(p=>Math.abs(p[0])<1&&Math.abs(p[1])<1&&p[2]>-1&&p[2]<1),projected);
   cw.r.dispose();
@@ -137,5 +137,5 @@ check('VCR reverse follows the shared eased progress',rd.visualTime===282.5&&rd.
 rd.beforeActors(state('rewind',{phaseElapsed:6.7,clock:66.7,rewindProgress:1,rewindStage:'settle',vcr:true}));rd.updateCamera(.016,rw.actors.heroPosition);
 check('VCR ends on the doorway before switching to the past',rd.cameraBeat==='rewind-doorway'&&Math.abs(rd.cameraPosition.z-11.6)<1e-9&&rd.cameraTarget.z===3.25);
 rw.r.dispose();w.r.dispose();
-fs.writeFileSync('artifacts/v12-director-check.json',JSON.stringify({kind:'actual-director-with-mock-world-no-gpu',checks,projections,cameraShots},null,2)+'\n');
-console.log(`V12 director: ${checks.length} checks passed.`);
+fs.writeFileSync('artifacts/v13-director-check.json',JSON.stringify({kind:'actual-director-with-mock-world-no-gpu',checks,projections,cameraShots},null,2)+'\n');
+console.log(`V13 director: ${checks.length} checks passed.`);

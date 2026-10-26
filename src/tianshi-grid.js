@@ -69,6 +69,7 @@ export function buildTianshiGrid(scene,r){
   const ringMaterial=r.own(new T.MeshBasicMaterial({color:new T.Color(.22,1.8,.85),transparent:true,opacity:.65,depthWrite:false,blending:T.AdditiveBlending,toneMapped:false}));
   const rings=r.own(new T.InstancedMesh(r.geometry('TorusGeometry',.85,.018,4,48),ringMaterial,12));rings.name='tianshi-suspended-green-rings';rings.instanceMatrix.setUsage(T.DynamicDrawUsage);rings.frustumCulled=false;rings.userData.dynamic=true;root.add(rings);
   const columns=r.own(new T.InstancedMesh(r.geometry('CylinderGeometry',.64,.24,1,12,1,true),r.own(new T.MeshBasicMaterial({color:new T.Color(.12,1.3,.64),transparent:true,opacity:.12,depthWrite:false,side:T.DoubleSide,blending:T.AdditiveBlending,toneMapped:false})),4));columns.name='tianshi-green-energy-columns';columns.instanceMatrix.setUsage(T.DynamicDrawUsage);columns.frustumCulled=false;columns.userData.dynamic=true;root.add(columns);
+  const lowSigns=pillars.map((p,i)=>{const m=r.mesh(r.geometry('PlaneGeometry',1,1),r.label('⚡ LOW',{width:256,height:128,bg:'#183c39',color:'#f2b66d',font:'bold 42px sans-serif'}),root,[sources[i][0],sources[i][1]+p.h+1,sources[i][2]],[2,1,1]);m.visible=false;return m;});
   let quality='balanced',segmentCount=10,motesPerPylon=5,ringsPerPylon=3,phase='ready',charge=0,activeCount=0;
   const connected=[false,false,false,false];
   function path(pillar,p,clock,out){
@@ -96,12 +97,12 @@ export function buildTianshiGrid(scene,r){
     quality(value){quality=['low','balanced','high'].includes(value)?value:'balanced';segmentCount=quality==='low'?6:quality==='high'?12:10;motesPerPylon=quality==='low'?2:quality==='high'?8:5;ringsPerPylon=quality==='low'?2:3;},
     update(t,delta,state={}){
       phase=state.phase||'ready';const clock=phase==='ready'?t:Number.isFinite(state.clock)?state.clock:t;
-      charge=clamp((state.charge||0)/100);if(state.hero)hero.fromArray(state.hero);
+      for(const m of lowSigns){m.visible=['energy','last','return'].includes(phase)&&Math.sin(clock*4)>.05;}charge=clamp((state.charge||0)/100);if(state.hero)hero.fromArray(state.hero);
       const lever=clamp(state.connection?.lever??0),casting=['charge','combat','energy','last','aim-final','finisher','landing','tour'].includes(phase);
       const linking=phase==='lever'?lever:casting?1:0;
       activeCount=0;
       for(let i=0;i<pillars.length;i++){
-        const p=pillars[i],wanted=casting?1:clamp((linking-i*.18)*2.6);
+        const depleted=['energy','last','return'].includes(phase);const p=pillars[i],wanted=casting?(depleted?.08:1):clamp((linking-i*.18)*2.6);
         p.strength=T.MathUtils.damp(p.strength,wanted,5,Math.min(.1,Math.max(0,delta)));
         if(Math.abs(p.strength-wanted)<.001)p.strength=wanted;connected[i]=p.strength>.6;if(connected[i])activeCount++;
         const pulse=reducedMotion?1:1+Math.sin(clock*2.4+i)*.11;

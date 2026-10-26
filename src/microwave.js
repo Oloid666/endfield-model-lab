@@ -48,7 +48,7 @@ export function buildMicrowave(scene,r,{position=[3.45,.31,1.43]}={}){
   for(const y of [-.11,-.2])r.mesh(r.geometry('CylinderGeometry',.031,.031,.018,12),steel,oven,[.4,y,.362]).rotation.x=Math.PI/2;
   const displayBack=box(oven,dark,[.39,.14,.355],[.17,.115,.015]);
   const labels={};
-  const texts={clean:'03:00',burning:'ERR',heating:'0.30 s',warm:'極速保溫',charred:'極速保溫'};
+  const texts={clean:'800 W',burning:'ERR',heating:'800 MW',warm:'極速保溫',charred:'極速保溫'};
   for(const mode of ['clean','burning','heating','warm']){
     const material=r.label(texts[mode],{width:512,height:160,font:mode==='warm'?'bold 65px sans-serif':'bold 100px monospace',bg:'#102720',color:mode==='burning'?'#f4b47c':'#b8efb0'});material.emissiveIntensity=.6;
     const label=r.mesh(r.geometry('PlaneGeometry',1,1),material,oven,[.39,.14,.367],[.16,.082,1]);label.name='microwave-display-'+mode;label.visible=false;labels[mode]=label;

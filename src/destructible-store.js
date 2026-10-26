@@ -114,8 +114,9 @@ export function makeDestructibleStore(root,r,parts,spill){
     for(const [material,values]of stored.materials){if(values.emissiveIntensity!==undefined)material.emissiveIntensity=values.emissiveIntensity;material.opacity=values.opacity;}
     timeOffset+=Math.max(0,inputTime-stored.sourceTime);presentation=null;if(spill?.shadow)spill.shadow.needsUpdate=true;return true;
   }
+  let aftershockAt=-Infinity;
   function reset(){
-    presentation=null;timeOffset=0;time=inputTime;
+    aftershockAt=-Infinity;presentation=null;timeOffset=0;time=inputTime;
     progress=0;chunks.count=0;rubble.visible=false;for(const record of records)record.settled=false;
     for(const mesh of beams)mesh.visible=false;
     for(const stage of stages){stage.active=false;stage.settled=false;stage.pivot.visible=true;stage.pivot.position.copy(stage.origin);stage.pivot.rotation.set(0,0,0);for(const light of stage.lights)light.node.visible=light.visible;}
@@ -129,25 +130,27 @@ export function makeDestructibleStore(root,r,parts,spill){
   }
   reset();
   return {targets,server,neighbor,signFlight,root:rubble,setProgress,reset,beginRewind,updateRewind,showFlashback,restorePresent,
-    destroyServer:()=>server.destroy(),
+    destroyServer:()=>{if(server.state.alive)aftershockAt=time;return server.destroy();},
     update(t,delta=0){
       inputTime=t;if(presentation)return;time=t-timeOffset;t=time;let changed=false;
       for(const stage of stages){
         if(!stage.active)continue;
         const p=T.MathUtils.clamp((t-stage.start)/stage.duration,0,1),ease=p*p*(3-2*p);
         if(!stage.settled){
-          stage.pivot.position.y=stage.origin.y-ease*Math.max(.5,stage.origin.y-.35)+(stage.id==='roof'?Math.sin(p*Math.PI)*2.2:Math.sin(p*Math.PI)*.35);
+          stage.pivot.position.y=stage.origin.y-ease*Math.max(.5,stage.origin.y-.35)+(stage.id==='roof'?Math.sin(p*Math.PI)*4.2:Math.sin(p*Math.PI)*.35);
           stage.pivot.position.x=stage.origin.x+(stage.id==='roof'?Math.sin(p*Math.PI)*1.9:Math.sin(p*Math.PI)*.35*(stage.index%2?1:-1));
           stage.pivot.rotation.set((stage.index%2?1:-1)*ease*.17,ease*(stage.id==='roof'?.5:.045),ease*(stage.id==='roof'?-.62:stage.index%2?-.12:.12));
           if(p>=1){stage.pivot.visible=false;stage.settled=true;if(stage.id==='roof'||stage.id==='structure')for(const beam of beams)beam.visible=true;}
         }
         for(let i=stage.index*debrisPerStage;i<(stage.index+1)*debrisPerStage;i++){
           const record=records[i];if(record.settled)continue;
-          const q=T.MathUtils.clamp((t-stage.start)/1.95,0,1),w=1-(1-q)**2;
+          const q=T.MathUtils.clamp((t-stage.start)/(1.95+i%4*.55),0,1),w=1-(1-q)**2;
           dummy.position.lerpVectors(record.start,record.end,w);dummy.position.y+=Math.sin(q*Math.PI)*record.hop;
           dummy.scale.copy(record.scale);dummy.rotation.set(record.rotation.x*q,record.rotation.y*q,record.rotation.z*q);dummy.updateMatrix();chunks.setMatrixAt(i,dummy.matrix);changed=true;if(q>=1)record.settled=true;
         }
       }
+      // Finite aftershocks reuse the existing instance pool during the ruins tour.
+      if(Number.isFinite(aftershockAt)&&t-aftershockAt>=18&&t-aftershockAt<32){for(let i=0;i<records.length;i+=5){const a=t-aftershockAt-18-(i%12)*.6;if(a<0)continue;const q=Math.min(1,a/5),record=records[i];dummy.position.copy(record.end);dummy.position.x+=Math.sin(i)*q*.45;dummy.position.z+=Math.cos(i)*q*.3;dummy.position.y+=Math.abs(Math.sin(q*Math.PI*3))*(1-q)*.28;dummy.scale.copy(record.scale);dummy.rotation.set(record.rotation.x,record.rotation.y,record.rotation.z+q*.8);dummy.updateMatrix();chunks.setMatrixAt(i,dummy.matrix);changed=true;}}
       if(changed)chunks.instanceMatrix.needsUpdate=true;
       server.update(t,delta);products.update(t);neighbor.update(t);signFlight.update(t);
     },
@@ -266,7 +269,10 @@ function buildNeighborImpact(parent,r){
   function showIntactVisual(){intact.visible=true;broken.visible=false;rubble.count=0;collateral.visible=true;for(const item of loosePanels){item.mesh.visible=true;item.mesh.position.copy(item.position);item.mesh.rotation.copy(item.rotation);}balcony.position.set(-6.88,4.38,-2.3);balcony.rotation.set(0,0,0);}
   function reset(){hit=false;settled=false;at=-Infinity;showIntactVisual();}
   reset();
-  const worldPoint=[.8,1.5,-8];root.position.set(worldPoint[0]-point[0],worldPoint[1]-point[1],worldPoint[2]-point[2]);
+  // The replacement rear room must not overlap the old solid backdrop or its windows.
+  for(const mesh of [...parent.children])if(mesh.isMesh&&mesh.position.z< -6.7&&Math.abs(mesh.position.x)<3.7&&mesh.position.y>0)mesh.removeFromParent();
+  const fillLight=new T.PointLight(0xd5e7cb,5,5,2);fillLight.position.set(-8.03,4,-.3);root.add(fillLight);
+  const worldPoint=[.8,1.5,-6.8];root.position.set(worldPoint[0]-point[0],worldPoint[1]-point[1],worldPoint[2]-point[2]);
   return {root,get position(){return worldPoint;},normal,showIntactVisual,
     align(target){root.position.set(target[0]-point[0],target[1]-point[1],target[2]-point[2]);worldPoint.splice(0,3,...target);},
     impact(){if(hit)return false;hit=true;at=time;intact.visible=false;broken.visible=true;rubble.count=fragments.length;return true;},reset,

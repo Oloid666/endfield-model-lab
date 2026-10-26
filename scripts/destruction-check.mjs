@@ -71,5 +71,5 @@ check('Standard garden has twice the V6 blossom count',garden.state.blossoms===2
 garden.quality('low');check('Low quality keeps flowers in one shared draw',garden.state.blossoms===1400,garden.state);
 garden.quality('high');check('High quality retains full flowering canopy',garden.state.blossoms===3600,garden.state);
 const result={passed:true,kind:'Node actual scene geometry; Canvas pixels stubbed; not an iPhone or GPU test',checks:checks.length,results:checks};
-fs.writeFileSync('artifacts/v11-destruction-check.json',JSON.stringify(result,null,2)+'\n');
+fs.writeFileSync('artifacts/v13-destruction-check.json',JSON.stringify(result,null,2)+'\n');
 console.log(JSON.stringify({passed:true,checks:checks.length,intactMeshes:initial.visibleIntact,ruins:final.visibleDebris,batches},null,2));r.dispose();

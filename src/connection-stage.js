@@ -6,7 +6,7 @@ const canonical=value=>['BACKSPACE','backspace','Delete','⌫'].includes(String(
 
 // A physical local terminal. The DOM handles touch; this stage supplies exact foot targets.
 export function buildConnectionStage(scene,r){
-  const root=new T.Group();root.name='dragon-login-terminal-v8';root.position.set(-1.65,.335,3.25);scene.add(root);root.visible=false;
+  const root=new T.Group();root.name='dragon-login-terminal-v8';root.position.set(-1.65,.335,5.45);scene.add(root);root.visible=false;
   const shell=new T.Group(),keyboard=new T.Group(),captcha=new T.Group(),leverRoot=new T.Group();root.add(shell,keyboard,captcha,leverRoot);
   const unitBox=r.geometry('BoxGeometry',1,1,1),metal=r.material('#203c3d',{roughness:.42,metalness:.63}),edge=r.material('#83958b',{roughness:.33,metalness:.65});
   const box=(owner,mat,p,s)=>r.mesh(unitBox,mat,owner,p,s);
@@ -76,7 +76,7 @@ export function buildConnectionStage(scene,r){
   function leverPosition(value=lever){return [root.position.x-1.18+2.36*clamp(value),root.position.y+.37,root.position.z+.02];}
   function update(t,delta,state={}){
     phase=state.phase||'ready';const c=state.connection||{},clock=Number.isFinite(state.clock)?state.clock:t;
-    root.visible=['terminal-deploy','login','captcha','lever'].includes(phase);if(!root.visible){pressed=false;return;}
+    root.visible=['terminal-deploy','login','verify-talk','captcha','verified-talk','lever'].includes(phase);if(!root.visible){pressed=false;return;}
     field=c.field==='password'?'password':'account';lastKey=canonical(c.lastKey);keyNumber=Number(c.keyNumber)||0;keyAt=Number.isFinite(c.keyAt)?c.keyAt:-Infinity;lever=clamp(c.lever);
     const deploy=phase==='terminal-deploy'?clamp(state.phaseElapsed/2):1;root.scale.set(1,Math.max(.03,deploy),Math.max(.03,deploy));root.position.y=.335+(1-deploy)*.7;keyboard.visible=['terminal-deploy','login'].includes(phase);captcha.visible=phase==='captcha';leverRoot.visible=phase==='lever';tick.visible=Boolean(c.verified);handle.position.x=-1.18+2.36*lever;
     const age=clock-keyAt,depression=age>=0&&age<.38?Math.sin(age/.38*Math.PI)*.048:0;pressed=depression>.002;count=0;

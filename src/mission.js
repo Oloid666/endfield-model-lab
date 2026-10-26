@@ -2,7 +2,7 @@ import {portrait as setPortrait} from './portrait.js';
 import {createInvestigationUI} from './investigation-ui.js';
 import './mission.css';
 import {MissionMachine,METER_PERIOD} from './mission-state.js';
-import {speakers,endingCaption,reactionPools} from './mission-dialogue.js';
+import {speakers,endingCaption,endingSong,reactionPools} from './mission-dialogue.js';
 
 const E=(tag,className,text)=>{const e=document.createElement(tag);e.className=className;if(text!==undefined)e.textContent=text;return e;};
 const setText=(node,text)=>{const value=String(text??'');if(node.textContent!==value)node.textContent=value;};
@@ -18,7 +18,7 @@ export function createMission({mount=document.querySelector('#app'),onDinner,onG
   const motionQuery=window.matchMedia?.('(prefers-reduced-motion: reduce)');
   const events=new AbortController(),listen=(target,type,fn,options={})=>target.addEventListener(type,fn,{...options,signal:events.signal});
   const root=E('section','mission-shell');root.setAttribute('aria-label','莊的晚餐與光害改善任務');
-  const inspection=E('p','mission-inspection');inspection.append(E('span','','先看看她。故事會等你。'),E('span','','拖曳旋轉，雙指放大。準備好再開始。'));
+  const inspection=E('p','mission-inspection');inspection.append(E('span','','龍泡泡：阿莊，下班。莊：理由？'),E('span','','龍泡泡：好好吃飯。妳已經加班五天了。'));
   const launch=E('button','mission-launch');launch.type='button';launch.append(E('span','mission-kicker','一場雨，一頓飯。'),E('span','mission-launch-title','去買晚餐'),E('span','mission-launch-arrow','↗'));
   const panel=E('div','mission-panel');panel.hidden=true;
   const comm=E('div','mission-comm');comm.hidden=true;comm.setAttribute('aria-label','弭弗的巡衛通訊');
@@ -78,7 +78,7 @@ export function createMission({mount=document.querySelector('#app'),onDinner,onG
   }
   function buildKeys(field){
     if(keyLayout===field)return;keyLayout=field;keys.replaceChildren();keys.dataset.layout=field;
-    const values=field==='password'?['520','1314','backspace','找管理員']:['endfield','_','power','backspace','下班'];
+    const values=field==='password'?['1314','8888','520','0000','backspace']:['boss','power','love','endfield','retire','admin','_','backspace'];
     for(const value of values){const b=E('button','mission-key',value==='backspace'?'⌫':value==='submit'?'確認':value);b.type='button';b.dataset.key=value;if(value==='backspace')b.setAttribute('aria-label','刪除上一個字元');keys.append(b);}
   }
   function render(force=false){
@@ -91,11 +91,11 @@ export function createMission({mount=document.querySelector('#app'),onDinner,onG
     if(lastNode!==s.nodeId){panel.classList.toggle('is-angry',s.node?.mood==='anger');panel.classList.toggle('is-evidence',s.node?.mood==='evidence');lastNode=s.nodeId;}
     panel.classList.toggle('has-choices',s.phase==='choice');panel.classList.toggle('is-timed',['charge','landing','heat-demo','return'].includes(s.phase));
     setText(name,s.phase==='choice'?'莊芳宜':speakers[s.speaker]||'通訊');name.dataset.speaker=s.speaker||'';setText(chapter,phaseTitles[s.phase]||'');setText(text,s.phase==='choice'?'晚餐，你幫我挑。':s.text.slice(0,s.revealed));
-    if(s.phase==='ready')setText(inspection.firstChild,reactionPools.waiting[Math.floor(s.phaseElapsed/10)%reactionPools.waiting.length]);
+    if(s.phase==='ready')setText(inspection.firstChild,s.phaseElapsed<6?'龍泡泡：阿莊，下班。莊：理由？':reactionPools.waiting[Math.floor(s.phaseElapsed/10)%reactionPools.waiting.length]);
     const manual=manualPhases.has(s.phase)&&!!s.node;line.disabled=!manual||s.paused;next.hidden=false;setText(next,s.paused?'Ⅱ 已暫停':!manual?'⌛ 演出中':s.revealed<s.text.length?'⋯ 點一下顯示全文':'▼ 點一下繼續');controls.hidden=true;setText(auto,s.auto?'自動對話：開':'自動對話');auto.setAttribute('aria-pressed',String(s.auto));auto.disabled=skip.disabled=s.paused;setText(hint,s.paused?'已暫停':'點台詞繼續');
     const choiceSignature=s.choices.map(v=>v.id).join(',');if(choiceSignature!==lastChoices){choices.replaceChildren();for(const item of s.choices){const b=E('button','mission-choice');b.type='button';b.dataset.choice=item.id;b.append(E('span','mission-choice-label',item.label),E('span','mission-choice-hint',item.hint));choices.append(b);}lastChoices=choiceSignature;}for(const b of choices.children)b.disabled=s.paused;
     status.hidden=s.phase==='terminal-deploy'||isVcr||isConnection||s.phase==='tour'||(!runningPhases.has(s.phase)&&!(s.phase==='complete'&&s.phaseElapsed<2.8));
-    setText(statusTitle,s.phase==='complete'?'任務完成':isCharge?'全城儲能接通':s.phase==='last'||s.phase==='aim-final'?'摧毀最後機櫃':s.phase==='finisher'?'龍泡泡 · 最後一擊':s.phase==='landing'?'目標停止運作':'任務進度');
+    setText(statusTitle,s.phase==='complete'?'任務完成':isCharge?'全城儲能接通':s.phase==='last'||s.phase==='aim-final'?'摧毀最後機櫃':s.phase==='finisher'?'龍泡泡 · 最後一擊':s.phase==='landing'?'目標停止運作':'光害改善率');
     const shown=isCharge?s.charge:s.progress;setText(value,`${Math.floor(shown)}%`);statusFill.style.transform=`scaleX(${shown/100})`;pause.hidden=['ready','complete'].includes(s.phase);setText(pause,s.paused?'繼續':'暫停');pause.setAttribute('aria-pressed',String(s.paused));
     combat.hidden=!isCombat;setText(target,s.phase==='aim-final'?'最後目標 · 伺服器':`目標 · ${s.targetLabel}`);outputs.hidden=s.phase!=='combat';finalSeal.hidden=s.phase!=='aim-final';combat.classList.toggle('is-final',s.phase==='aim-final');
     if(s.phase==='aim-final'){const index=Math.min(2,Math.floor(s.phaseElapsed/3));setText(finalQuote,s.text||['不對吧？我現在是彈藥？','等一下，哪裡搞錯了。','我說的不是方向——'][index]);finalPortrait.dataset.expression=['shock','doubt','panic'][index];finalPortrait.setAttribute('aria-label',['龍泡泡錯愕','龍泡泡懷疑人生','龍泡泡慌張'][index]);}
@@ -106,10 +106,10 @@ export function createMission({mount=document.querySelector('#app'),onDinner,onG
     if(s.feedback&&s.feedback.number!==lastFeedback){lastFeedback=s.feedback.number;setText(combatAside,(s.feedback.result==='miss'?reactionPools.miss:reactionPools.hit)[(s.feedback.number-1)%3]);setText(feedback,s.feedback.result==='miss'?'MISS':'命中');feedback.dataset.result=s.feedback.result;}else if(lastPhase!==s.phase){setText(feedback,s.phase==='aim-final'?'對準中央，按下發射':'按中中央，威力更強');delete feedback.dataset.result;}
     if(s.combatHoldRemaining>0)setText(feedback,'招牌正在落下……');else if(wasAttackHeld)setText(feedback,'招牌已落地。繼續砲擊。');wasAttackHeld=s.combatHoldRemaining>0;
     combatAside.hidden=s.phase!=='combat'||!s.feedback||s.clock-s.feedback.time>3;
-    completed.hidden=s.phase!=='complete'||!!s.node;caption.classList.toggle('visible',s.phase==='tour'&&s.phaseElapsed>=14||s.phase==='complete'&&s.phaseElapsed<5);
+    completed.hidden=s.phase!=='complete'||!!s.node;setText(caption,s.phase==='tour'&&s.phaseElapsed>=14&&s.phaseElapsed<30?endingSong[Math.min(3,Math.floor((s.phaseElapsed-14)/4))]:endingCaption);caption.classList.toggle('visible',s.phase==='tour'&&s.phaseElapsed>=14||s.phase==='complete'&&s.phaseElapsed<5);
     connection.hidden=!isConnection;connectionQuote.hidden=true;login.hidden=s.phase!=='login';captcha.hidden=s.phase!=='captcha';lever.hidden=s.phase!=='lever';setText(connectionHeading.lastElementChild,s.phase==='login'?(c.field==='password'?'02 / 密碼':'01 / 帳號'):s.phase==='captcha'?'03 / 身分驗證':'04 / 接通');
     if(isConnection){setText(connectionQuote,s.text||(s.phase==='login'?'莊芳宜：「我在忙。幫我連線。」':s.phase==='captcha'?'莊芳宜：「勾『我不是機器人』。」':'莊芳宜：「拉到底。」'));connectionQuote.dataset.speaker=s.speaker||'zhuang';}
-    if(s.phase==='login'){const field=c.field||'account';buildKeys(field);setText(loginLabel,field==='password'?'莊：密碼 5201314。':'莊：帳號 endfield_power。');setText(loginValue,c.value||'＿');loginValue.classList.toggle('is-empty',!c.value);setText(loginExpected,field==='password'?'5201314':'endfield_power');setText(loginSubmit,field==='password'?'登入儲能網':'確認帳號');setText(loginError,c.error||'依序點鍵，龍泡泡幫你輸入。');loginError.classList.toggle('is-error',!!c.error);for(const b of keys.children)b.disabled=s.paused;loginSubmit.disabled=promptReplay.disabled=s.paused;}
+    if(s.phase==='login'){const field=c.field||'account';buildKeys(field);setText(loginLabel,field==='password'?'莊：密碼 5201314。':'莊：帳號 endfield_power。');setText(loginValue,c.value||'＿');loginValue.classList.toggle('is-empty',!c.value);setText(loginExpected,field==='password'?'5201314':'endfield_power');setText(loginSubmit,field==='password'?'登入儲能網':'確認帳號');setText(loginError,c.error||(c.field==='password'?'便條：5201314。不是寫給資訊組的。':c.value?.includes('boss')?'龍泡泡：把上司打進去，誰來背鍋？':'詞塊可組合，⌫ 刪除上一塊。'));loginError.classList.toggle('is-error',!!c.error);for(const b of keys.children)b.disabled=s.paused;loginSubmit.disabled=promptReplay.disabled=s.paused;}
     captchaCheck.disabled=s.paused||!c.captchaReady;captchaCheck.setAttribute('aria-checked',String(!!c.verified));captcha.classList.toggle('is-ready',!!c.captchaReady);leverThumb.disabled=s.paused;leverThumb.setAttribute('aria-valuenow',String(Math.round((c.lever||0)*100)));leverTrack.style.setProperty('--lever',String(c.lever||0));
     vcr.hidden=!isVcr;
     if(isVcr){
@@ -132,7 +132,7 @@ export function createMission({mount=document.querySelector('#app'),onDinner,onG
   listen(auto,'click',()=>{machine.setAuto(!machine.auto);render();});listen(skip,'click',()=>{machine.skip();render(true);});listen(outputs,'click',event=>{const b=event.target.closest('[data-output]');if(b){machine.setOutput(b.dataset.output);render(true);}});
   listen(pause,'click',()=>{machine.setPaused(!machine.paused);resetAnchor();render(true);});listen(replay,'click',()=>{cancelSpeech();machine.replay();lastFeedback=-1;render(true);});listen(attack,'pointerdown',fire);listen(attack,'click',event=>{if(event.detail===0)fire(event);});
   listen(cameraReset,'click',()=>{onCameraReset?.();cameraReset.blur();});
-  listen(keys,'click',event=>{const b=event.target.closest('[data-key]');if(!b)return;if(b.dataset.key==='submit')act('submitLogin');else if(['endfield','_','power','520','1314'].includes(b.dataset.key))act('keyChunk',b.dataset.key);else if(['下班','找管理員'].includes(b.dataset.key)){loginError.textContent=b.dataset.key==='下班'?'龍泡泡：這個鍵終於有人設了。':'莊：這個先別按。';}else act('key',b.dataset.key);});listen(loginSubmit,'click',()=>act('submitLogin'));listen(promptReplay,'click',replayPrompt);listen(captchaCheck,'click',()=>act('verify'));
+  listen(keys,'click',event=>{const b=event.target.closest('[data-key]');if(!b)return;if(b.dataset.key==='submit')act('submitLogin');else if(['endfield','_','power','admin','love','boss','retire','520','1314','0000','8888'].includes(b.dataset.key))act('keyChunk',b.dataset.key);else if(['下班','找管理員'].includes(b.dataset.key)){loginError.textContent=b.dataset.key==='下班'?'龍泡泡：這個鍵終於有人設了。':'莊：這個先別按。';}else act('key',b.dataset.key);});listen(loginSubmit,'click',()=>act('submitLogin'));listen(promptReplay,'click',replayPrompt);listen(captchaCheck,'click',()=>act('verify'));
   function moveLever(event){if(event.pointerId!==leverPointer)return;const box=leverTrack.getBoundingClientRect(),thumbWidth=leverThumb.getBoundingClientRect().width;act('setLever',Math.max(0,Math.min(1,(event.clientX-box.left-thumbWidth/2)/Math.max(1,box.width-thumbWidth))));}
   listen(leverTrack,'pointerdown',event=>{if(machine.paused||event.isPrimary===false||event.button>0)return;event.preventDefault();leverPointer=event.pointerId;leverTrack.setPointerCapture(event.pointerId);moveLever(event);});listen(leverTrack,'pointermove',moveLever);
   listen(leverTrack,'pointerup',event=>{if(event.pointerId!==leverPointer)return;moveLever(event);leverPointer=null;if(leverTrack.hasPointerCapture(event.pointerId))leverTrack.releasePointerCapture(event.pointerId);});

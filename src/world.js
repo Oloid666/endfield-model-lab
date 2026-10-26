@@ -89,7 +89,7 @@ export class World {
     this.walkCamera.onZone(false);
     this.currentView=name==='reset'?'street':name;
     const preset=config.views[name==='reset'?'street':name];if(!preset)return;
-    this.setCutaway(name==='interior');this.camera.fov=name==='interior'?65:37;this.camera.updateProjectionMatrix();
+    this.setCutaway(['interior','shelves','fridge','oven'].includes(name));this.camera.fov=name==='interior'?65:37;this.camera.updateProjectionMatrix();
     const mobile=this.container.clientWidth/Math.max(1,this.container.clientHeight)<.85;
     const target=new T.Vector3().fromArray(mobile?preset.mobileTarget:preset.target),position=new T.Vector3().fromArray(mobile?preset.mobilePosition:preset.position);
     if(name==='detail'&&this.actors){const offset=this.actors.position.clone().sub(new T.Vector3(-1.25,.32,2.48));target.add(offset);position.add(offset);}
@@ -123,14 +123,14 @@ export class World {
     if(hit([-6.5,3.57,4.5],.5)){this.signalIndex=((this.signalIndex||0)+1)%3;this.store.streetProps.setSignal(this.signalIndex);this.weather.invalidateReflection();return true;}
     const plane=new T.Plane(new T.Vector3(0,0,1),-1.9),point=new T.Vector3();if(beam.intersectPlane(plane,point)&&Math.abs(point.x)<4.5&&point.y>.3&&point.y<3.4){this.store.triggerDoor();return true;}return false;
   }
-  capturePhoto(){
+  capturePhoto(portrait=false){
     const oldRatio=this.renderer.getPixelRatio(),size=this.renderer.getSize(new T.Vector2());
     const ratio=Math.min(3,2048/Math.max(size.x,size.y));let src,width,height;
     try{this.renderer.setPixelRatio(ratio);this.composer.setPixelRatio(ratio);this.fxaa.uniforms.resolution.value.set(1/(size.x*ratio),1/(size.y*ratio));this.composer.render();width=this.renderer.domElement.width;height=this.renderer.domElement.height;src=this.renderer.domElement.toDataURL('image/png');}
     finally{this.renderer.setPixelRatio(oldRatio);this.composer.setPixelRatio(oldRatio);this.resize();this.composer.render();}
     const points=[['floor',[-3.05,1.08,2.1]],['server',[0,4.6,1.4]]].map(([id,p])=>{const q=this.projectPoint(p);return {id,x:(q[0]+1)/2,y:(1-q[1])/2,z:q[2]};});
 
-    return {src,width,height,points};
+    let closeup;if(!portrait){const pos=this.camera.position.clone(),target=this.controls.target.clone(),fov=this.camera.fov;try{const h=this.actors.heroPosition;this.camera.position.set(h[0]+.12,h[1]+1.7,h[2]+1.4);this.controls.target.set(h[0],h[1]+1.65,h[2]);this.camera.fov=35;this.camera.lookAt(this.controls.target);this.camera.updateProjectionMatrix();closeup=this.capturePhoto(true).src;}finally{this.camera.position.copy(pos);this.controls.target.copy(target);this.camera.fov=fov;this.camera.lookAt(target);this.camera.updateProjectionMatrix();this.composer.render();}}return {src,width,height,points,closeup};
   }
   projectPoint(point){const p=new T.Vector3().fromArray(point).project(this.camera);return p.toArray();}
   tick(t,delta=.016,render=true){

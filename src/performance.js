@@ -34,6 +34,7 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
   const quaternion=new T.Quaternion(),axis=new T.Quaternion();
   function pose(name,pitch=0,yaw=0,roll=0){const p=poses[name];if(p){quaternion.setFromAxisAngle(p.x,pitch).multiply(axis.setFromAxisAngle(p.y,yaw)).multiply(axis.setFromAxisAngle(p.z,roll));p.bone.quaternion.copy(p.q).multiply(quaternion);}}
   const dragon=providedDragon||buildDragon(r);dragon.root.scale.setScalar(.59);dragon.root.position.set(-.82,.005,.09);dragon.root.rotation.y=.15;root.add(dragon.root);
+  const soot=new T.Group();dragon.root.add(soot);for(let i=0;i<9;i++){const dot=r.mesh(r.geometry('SphereGeometry',1,8,6),r.material('#423f39',{roughness:1}),soot,[(i%3-1)*.21,.28+Math.floor(i/3)*.24,.41],[.09,.035,.025]);dot.rotation.z=i*.8;}soot.visible=false;
   const meal=buildMeals(r,root),dragonMeal=buildMeals(r,dragon.foodMount,.68);meal.setDinner(null);dragonMeal.setDinner(null);
   const phone=new T.Group();phone.name='phone';phone.userData.hotspot='phone';root.add(phone);
   r.box(phone,'#1a272b',[0,0,0],[.075,.145,.012],{roughness:.25,metalness:.45});
@@ -48,7 +49,7 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
   const pivotRest=pivot.position.clone(),cinematic={phase:'',elapsed:0,charge:0,flight:0,recoil:0,distance:1.2,height:2.7,castingElapsed:null,launchOverride:null};
   let smileTarget=0,smileAmount=0;
   const companionAction={kind:'',amount:0};
-  const heroWorld=new T.Vector3(),projectileWorld=new T.Vector3();let castActive=false,projectileActive=false,projectileRoll=0,landingFeet=false;
+  const heroWorld=new T.Vector3(),projectileWorld=new T.Vector3();let dragonHeading=0;let castActive=false,projectileActive=false,projectileRoll=0,landingFeet=false;
   const castPhases=new Set(['login','captcha','lever','charge','combat','energy','last','aim-final','finisher','landing']);
   const walkPose={shoulderL:0,shoulderR:0,elbowL:0,elbowR:0,wristL:0,wristR:0};
   function relax(key,target,rate,delta){walkPose[key]=T.MathUtils.lerp(walkPose[key],target,delta>0?1-Math.exp(-Math.min(delta,.06)*rate):1);return walkPose[key];}
@@ -108,7 +109,7 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
       castActive=active;cinematic.phase=value?.phase||'';cinematic.elapsed=Math.max(0,Number(value?.elapsed)||0);cinematic.charge=T.MathUtils.clamp(Number(value?.charge)||0,0,1);cinematic.flight=T.MathUtils.clamp(Number(value?.flight)||0,0,1);cinematic.recoil=T.MathUtils.clamp(Number(value?.recoil)||0,0,1.8);cinematic.distance=Number.isFinite(value?.distance)?value.distance:1.2;cinematic.height=Number.isFinite(value?.height)?value.height:2.7;cinematic.castingElapsed=Number.isFinite(value?.castingElapsed)?Math.max(0,value.castingElapsed):Number.isFinite(value?.ascentElapsed)?Math.max(0,value.ascentElapsed):null;cinematic.launchOverride=Number.isFinite(value?.launchOverride)?T.MathUtils.clamp(value.launchOverride,0,1):null;
       if(!active){pivot.position.copy(pivotRest);projectileActive=false;}
     },
-    setDragonProjectile(position,roll=0){projectileActive=Boolean(position);if(position)projectileWorld.fromArray(position);projectileRoll=Number(roll)||0;},
+    setSoot(value){soot.visible=value;},setDragonHeading(value){dragonHeading=value;},setDragonProjectile(position,roll=0){projectileActive=Boolean(position);if(position)projectileWorld.fromArray(position);projectileRoll=Number(roll)||0;},
     teleport(x,z){const success=locomotion.teleport(x,z);if(success){lastWalking=true;follower.reset();api.update(lastTime,0);}return success;},
     update(t,delta=0){
       lastTime=t;const motion=locomotion.update(delta),walk=motion.amount,walking=motion.moving;
@@ -170,12 +171,12 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
       if(!castActive)pinFeet();status.footDrift=0;if(!castActive)for(const leg of feet)if(leg.foot)status.footDrift=Math.max(status.footDrift,leg.foot.getWorldPosition(footPosition).distanceTo(leg.target));lastWalking=walking;
       const companion=follower.update(delta,t);
       idle.dragon=attention;idle.rain=rain;idle.nod=Math.max(idle.nod,gest('happy'));idle.walk=companion.walk;idle.walkPhase=companion.phase;idle.lookYaw=companion.lookYaw;idle.lookPitch=companion.lookPitch;idle.followerMode=companion.mode;idle.glance=companion.glance;idle.gesture=status.gesture;idle.gestureAmount=g;idle.holding=!!dinner;idle.action=companionAction;idle.projectile=projectileActive&&!['key','lever'].includes(companionAction.kind);dragon.update(t,idle);status.companionExpression=dragon.state.mood;
-      dragonWorldPosition.copy(projectileActive?projectileWorld:heroWorld.fromArray(companion.position));root.worldToLocal(dragonWorldPosition);dragon.root.position.copy(dragonWorldPosition);dragon.root.rotation.set(projectileActive?-.08:0,projectileActive?0:companion.heading,projectileActive?projectileRoll:0);dragon.root.scale.set(.59,projectileActive?.55:.59,.59);
+      dragonWorldPosition.copy(projectileActive?projectileWorld:heroWorld.fromArray(companion.position));root.worldToLocal(dragonWorldPosition);dragon.root.position.copy(dragonWorldPosition);dragon.root.rotation.set(projectileActive?-.08:0,projectileActive?dragonHeading:companion.heading,projectileActive?projectileRoll:0);dragon.root.scale.set(.59,projectileActive?.55:.59,.59);
       meal.mount.visible=Boolean(dinner)&&(!castActive||['aim-final','finisher','landing'].includes(cinematic.phase));dragonMeal.mount.visible=Boolean(dinner)&&!projectileActive;
       shadows[0].position.set(0,.006-(castActive?.116*launch:0),.04+forward);shadows[0].scale.set(.7+lift*.07,.48+lift*.045,1);
       shadows[1].visible=!projectileActive;
       shadows[1].position.x=dragon.root.position.x;shadows[1].position.z=dragon.root.position.z;root.updateMatrixWorld(true);
-      if(poses.wristL){poses.wristL.bone.getWorldPosition(handPosition);root.worldToLocal(handPosition);meal.mount.position.copy(handPosition);meal.mount.position.y+=.015;meal.mount.position.z+=.04;meal.mount.rotation.set(-.06,motion.heading,0);}
+      if(poses.wristL){poses.wristL.bone.getWorldPosition(handPosition);root.worldToLocal(handPosition);meal.mount.position.copy(handPosition);meal.mount.position.y+=.015;meal.mount.position.z+=.16;meal.mount.rotation.set(-.06,motion.heading,0);}
       phone.visible=phoneLook>.06&&!castActive;
       if(phone.visible&&poses.wristR){poses.wristR.bone.getWorldPosition(handPosition);root.worldToLocal(handPosition);phone.position.copy(handPosition);phone.position.y+=.055;phone.position.z+=.025;phone.rotation.set(-.23,motion.heading+.1,-.08);screen.material.emissiveIntensity=.35+phoneLook*.7;}
     },

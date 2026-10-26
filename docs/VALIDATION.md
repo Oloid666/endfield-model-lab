@@ -122,3 +122,11 @@ https://oloid666.github.io/endfield-model-lab/
 本環境 Chromium 直接開啟公開網址時，遇到本機代理憑證信任錯誤 `ERR_CERT_AUTHORITY_INVALID`。沒有停用 TLS 驗證；未取得公開網址的瀏覽器截圖。先前本機同版場景的 Chromium 測試與截圖仍有效，但不等同公開網址的端到端瀏覽器驗證。
 
 尚無 iPhone Safari 真機測試結果，不能宣稱達成手機穩定 30 FPS。
+
+## V13：飛行、手機與結尾
+
+- 狀態60、鏡頭72、骨架69、破壞36、道具51、特效25、暖機15項通過。
+- 完整Chromium／SwiftShader流程46項通過，結尾觀察60.04秒，無JavaScript錯誤。
+- 最終平板位置另跑開場至驗證的瀏覽器複查。兩份報告記錄各自的建置資源URL。
+- 修正背景樓遮住結尾角色；實際檢視截圖確認髒兮兮龍泡泡與破洞。
+- 未做iPhone真機效能測量。詳見[本輪紀錄](LOOKDEV-V13.md)。

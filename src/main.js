@@ -28,7 +28,7 @@ listen(document,'visibilitychange',()=>{if(document.hidden)audio.disable();else 
 const buttons=[...document.querySelectorAll('[data-view]')];
 listen($('.view-dock'),'click',e=>{
   const button=e.target.closest('[data-view]');if(!button)return;const view=button.dataset.view;
-  world?.setView(view);if(world){world.manualUntil=Infinity;world.autoCamera=false;if(view==='reset')world.resetStoryCamera();}
+  if(['street','interior','detail'].includes(view)&&!button.dataset.subview){document.querySelector('.view-options')?.remove();const menu=document.createElement('div');menu.className='view-options';const items=view==='street'?[['street','正面街景'],['store','斜側街景'],['pear','梨花'],['investigate','機房']]:view==='interior'?[['interior','櫃檯'],['shelves','貨架'],['fridge','冰箱'],['oven','微波爐'],['posters','海報']]:[['story','雙人'],['detail','莊大頭'],['half','莊半身'],['left','左側'],['right','右側'],['dragon','龍泡泡']];for(const [id,label]of items){const b=document.createElement('button');b.textContent=label;b.onclick=()=>{world.setView(id);world.manualUntil=Infinity;world.autoCamera=false;menu.remove();};menu.append(b);}document.querySelector('#app').append(menu);return;}world?.setView(view);if(world){world.manualUntil=Infinity;world.autoCamera=false;if(view==='reset')world.resetStoryCamera();}
   for(const b of buttons){const active=b.dataset.view===(view==='reset'?'street':view);b.classList.toggle('active',active);if(b.dataset.view!=='reset')b.setAttribute('aria-pressed',String(active));}
 });
 async function ensureXaihi(){
@@ -109,7 +109,7 @@ async function init(){
         const target=world.director.pick(ray.ray);if(target!==null)mission.selectTarget(target);return true;
       }
     });
-    world.onTick=(time,delta)=>{mission.update(time);world.missionState=mission.state;exploration.update(delta);};
+    world.onTick=(time,delta)=>{mission.update(time);world.missionState=mission.state;if(mission.state.phase==='tour'&&mission.state.phaseElapsed>=14&&mission.state.phaseElapsed<30&&!mission.state.paused)audio.hum(mission.state.phaseElapsed);exploration.update(delta);};
     loader.hide();world.start();
     window.__rainy711={
       get switches(){return {signal:world.signalIndex||0,room:world.roomLightOn??true,door:world.store.doors.manual};},get time(){return world.time;},get renders(){return world.renderCount;},get drawCalls(){return world.renderer.info.render.calls;},get triangles(){return world.renderer.info.render.triangles;},get warmup(){return world.shaderWarmup.state;},resetCamera:()=>world.resetStoryCamera(),
@@ -120,7 +120,7 @@ async function init(){
       get mission(){return mission.state;},get story(){return mission.state;},get destruction(){return {...world.store.destruction.state,targets:world.store.destruction.targets};},get garden(){return world.garden.state;},get effects(){return world.siege.state;},
       get cinematic(){return world.director.status;},get tianshi(){return world.tianshi.state;},get microwave(){return world.microwave.state;},get connectionStage(){return world.connectionStage.state;},get xaihi(){return world.xaihi?.state||{loaded:false,loading:world.xaihiLoading,error:world.xaihiError};},
       get position(){return world.actors?.position.toArray();},get heroPosition(){return world.actors?.heroPosition;},get dragonPosition(){return world.actors?.dragonPosition;},get walking(){return exploration.active;},get minimumZoom(){return world.controls.minDistance;},projectPoint:point=>world.projectPoint(point),
-      sendPhoto:()=>mission.sendPhoto(),takePhoto:()=>mission.takePhoto(),investigate:id=>mission.investigate(id),acceptCall:()=>mission.acceptCall(),hackRotate:index=>mission.hackRotate(index),keyChunk:value=>mission.keyChunk(value),get photo(){return mission.photo;},get investigationProps(){return world.investigationProps.state;},toggleAutoCamera:()=>world.toggleAutoCamera(),
+      fly:(x,z)=>mission.machine.fly(x,z),finishFlight:()=>mission.machine.finishFlight(),sendPhoto:()=>mission.sendPhoto(),takePhoto:()=>mission.takePhoto(),investigate:id=>mission.investigate(id),acceptCall:()=>mission.acceptCall(),hackRotate:index=>mission.hackRotate(index),keyChunk:value=>mission.keyChunk(value),get photo(){return mission.photo;},get investigationProps(){return world.investigationProps.state;},toggleAutoCamera:()=>world.toggleAutoCamera(),
       missionStart:()=>mission.start(),missionNext:()=>mission.next(),missionChoose:id=>mission.choose(id),missionReplay:()=>mission.replay(),missionAttack:t=>mission.attack(t),missionSelectTarget:id=>mission.selectTarget(id),missionOutput:id=>mission.setOutput(id),missionPause:value=>mission.setPaused(value),
       missionKey:value=>mission.key(value),missionSubmit:()=>mission.submitLogin(),missionVerify:()=>mission.verify(),missionLever:value=>mission.setLever(value),missionHeatStart:time=>mission.heatStart(time??world.time),missionHeatStop:time=>mission.heatStop(time??world.time),missionHeatRetry:()=>mission.heatRetry(),missionHeatCancel:()=>mission.heatCancel(),
       storyNext:()=>mission.next(),storyChoose:id=>mission.choose(id),storyStart:()=>mission.start(),storyReplay:()=>mission.replay(),hotspot:kind=>mission.hotspot(kind),

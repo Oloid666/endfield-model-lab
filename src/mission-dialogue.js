@@ -13,7 +13,11 @@ const lines=(prefix,items)=>items.map(([speaker,text,gesture='look',mood='calm',
 
 export const sequences={
   intro:lines('intro',[
-    ['dragon','阿莊，先吃飯。','point'],
+    ['dragon','阿莊，下班。','point'],
+    ['zhuang','理由？','look'],
+    ['dragon','好好吃飯。妳已經連著加班五天了。','point'],
+    ['zhuang','這兩件事可以同時做。','look'],
+    ['dragon','所以我才親自來拖人。','shake'],
     ['zhuang','買了帶回去，邊整理資料——','phone'],
     ['dragon','先吃完，再整理。','shake'],
     ['dragon','妳留在這。我進去拿晚餐。','point'],
@@ -30,14 +34,14 @@ export const sequences={
   ]),
   photoCheck:lines('photo_check', [['zhuang','拍好了？放大看看。','player'],['dragon','確認妳有沒有眨眼？','look'],['zhuang','確認沒眨眼就發給管理員。讓他知道我有好好吃飯。','nod']]),
   observation:lines('observe',[
-    ['dragon','唉……連晚餐都能變成送貨。','exhale','calm','phone-away'],
+    ['dragon','唉……我以為接的是外送單，結果接的是共犯通知。','exhale','calm','phone-away'],
     ['dragon','二樓那間房，怎麼有點陰森？','point','calm','server-closeup'],
     ['zhuang','不是燈壞了。是伺服器拿整條街散熱。','goods'],
     ['dragon','你看三秒就知道？','look'],
     ['zhuang','加班十年，認得這種不讓人睡的光。','exhale'],
   ]),
   cargo:lines('cargo',[
-    ['dragon','送出了。咦，手機跳到下一張了。','phone'],
+    ['dragon','送出了。咦，手機跳到上一張了。','phone'],
     ['dragon','息壤簽收單……一萬噸？','point','calm','receipt-reveal'],
     ['zhuang','小聲一點。','look'],
     ['dragon','品名：土產。簽收人……龍泡泡？','shake'],
@@ -61,7 +65,7 @@ export const sequences={
     ['dragon','明白，這叫分工。','happy'],
   ]),
   briefing:lines('briefing',[
-    ['mifoe','頭，IP 追到了。','look'],
+    ['mifoe','頭，IP 追到了。','look','calm','server-closeup'],
     ['mifoe','大量散布盜版同人掃描檔的伺服器，\n就在梨花樹旁的便利店二樓。','point'],
     ['zhuang','那有我的嗎？','phone'],
     ['mifoe','查起來沒有。','look'],
@@ -75,8 +79,8 @@ export const sequences={
     ['mifoe','窗面照度 10.5 lux，本案限值 10 lux。\n超標 0.5 lux。','look'],
     ['zhuang','那就對了。光害超標。\n影響我旁邊的梨花。','point'],
     ['mifoe','附近沒有目擊者。','nod'],
-    ['mifoe','保單也承保人為落雷？','look'],
-    ['zhuang','看保險怎麼認定。','nod'],
+    ['mifoe','頭，事故原因那欄怎麼填？','look'],
+    ['zhuang','先空著。我還沒動手。','nod'],
     ['zhuang','直接物理移除。','point','calm','physical-removal'],
     ['dragon','什麼？這間可是\nChatGPT 6.0 Astra 蓋的 711。','look','aside'],
     ['dragon','燒了十張重置券的算力，\n結果蓋出來當靶？？？？？','shake','aside'],
@@ -99,7 +103,7 @@ export const sequences={
     ['xaihi','人不該等便當。先查附近有沒有快一點的方法。','phone','thought'],
     ['xaihi','旁邊就有天師樁。接一下，借億點點。','phone','calm','xaihi-terminal'],
     ['dragon','那可是武陵電網，應該沒那麼容易進去吧？','player','aside'],
-    ['xaihi','前幾天賽馬娘停服，剛好看到一個PHP漏洞。','phone'],
+    ['xaihi','剛剛賽馬娘停服，順手看了個PHP漏洞。沒想到這麼快就用上。','phone'],
     ['dragon','遊戲維護三小時，電網少了三層防護。','player','aside'],
     ['xaihi','先接通管理終端。','phone'],
   ]),
@@ -108,14 +112,14 @@ export const sequences={
     ['system','管理密碼：0000。','look','evidence'],
     ['xaihi','四位。輸入效率很好。','nod'],
     ['dragon','管理員權限不用金鑰，微波爐加熱還要排隊？','player','aside'],
-    ['dragon','妳是天才，不要連這個也稱讚。','shake'],
+    ['dragon','這不是密碼，是怕訪客迷路吧？','shake'],
     ['dragon','2026 年十月的新 BUG，不用金鑰就拿最高權限？','player','aside'],
     ['xaihi','三分鐘，改成零點三秒。','point','calm','microwave-closeup'],
   ]),
   'flashback-end':lines('flashback_end',[
     ['system','加熱完成：0.3 秒。','hold','calm','heated-meal'],
     ['xaihi','這樣就不用等了。','receive'],
-    ['system','極速保溫：持續運轉。\n儲能網分流：已保留。','look','calm','warm-setting'],
+    ['system','保溫不打烊。武陵電網持續買單。','look','calm','warm-setting'],
     ['dragon','她忘了關。\n我們剛充的電，正在替便當保溫。','player','aside'],
     ['dragon','難怪微波爐這麼黑。','look','aside','charred-microwave'],
   ]),
@@ -124,6 +128,8 @@ export const sequences={
     ['mifoe','運作正常，還在上傳。','look'],
     ['dragon','所以，最該壞的沒壞。','shake'],
     ['zhuang','今晚勢在必得。\n還剩最後一發子彈。','point'],
+    ['zhuang','我可是武陵的Level 6。','point','calm','personal-charge'],
+    ['dragon','妳剛才才說我錯棚！','shake'],
     ['dragon','哪裡？','look'],
     ['zhuang','就是你。','dragon'],
     ['dragon','……三小？','shake','shock'],
@@ -131,7 +137,8 @@ export const sequences={
     ['zhuang','方向沒錯。','nod'],
   ]),
   landing:lines('landing',[
-    ['mifoe','伺服器粉碎。鄰居家也多了一個洞。','nod'],
+    ['mifoe','伺服器粉碎。後面那棟有保隕石險嗎？','look'],
+    ['zhuang','那棟跟我沒關係。','nod'],
     ['zhuang','梨花呢？','goods'],
     ['mifoe','沒事。','nod'],
     ['zhuang','那就是無損失。','nod'],
@@ -139,7 +146,7 @@ export const sequences={
 };
 
 export const chargeLines=lines('charge',[
-  ['system','起飛許可核發。全城儲能接入。','look'],
+  ['dragon','導播，合乎舟禮。鞋子拍完可以拍臉了。','player','aside'],
   ['mifoe','711 怎麼辦？','look'],
   ['zhuang','建物、貨物、天災打雷，都保了。','nod'],
   ['dragon','貨單、保單、現場照，妳一樣都沒少？','look'],
@@ -238,4 +245,5 @@ export const reactionPools={
   hit:['弭弗：三樓已移除。去向仍在追蹤。','龍泡泡：原來「拆開來看」是這個意思。','弭弗：請問公告寫設備維護嗎？莊：不會再壞。'],
   waiting:['龍泡泡：慢慢看。她還不知道自己下班了。','龍泡泡：這個角度不處理公文。莊：也沒有要處理。','龍泡泡：看夠再開始，晚餐會等你。'],
 };
-export const endingCaption='武陵城又過了平安的一天\n可喜可賀';
+export const endingSong=['保險～怎麼兩清，怎麼忍心','怎麼做回甲乙丙丁','難道非要耗盡所有委屈','再賠上這一條爛命'];
+export const endingCaption='弭弗：就這樣，武陵又平安地度過了一天。\n感謝飛天小女警的努力。\nFin.';

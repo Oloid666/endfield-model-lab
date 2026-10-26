@@ -217,6 +217,6 @@ a.dispose();resources.dispose();
 check('World disposal releases every Xaihi skinning texture',disposedBoneTextures===xSkeletons.size&&[...xSkeletons].every(skeleton=>skeleton.boneTexture===null),{disposedBoneTextures,skeletons:xSkeletons.size});
 const finalHash=createHash('sha256').update(await fs.readFile(file)).digest('hex');check('Original GLB unchanged after tests',finalHash===expectedHash);
 const result={kind:'Node actual-GLB geometry, skeleton, controller, cinematic and pooled FX checks; in-memory image materials removed and Canvas painting stubbed; not a render, GPU benchmark or iPhone test',passed:checks.every(c=>c.passed),checks,trace};
-await fs.writeFile(new URL('../artifacts/v9-actor-check.json',import.meta.url),JSON.stringify(result,null,2)+'\n');
+await fs.writeFile(new URL('../artifacts/v13-actor-check.json',import.meta.url),JSON.stringify(result,null,2)+'\n');
 console.log(JSON.stringify({passed:result.passed,checks:checks.length,failed:checks.filter(c=>!c.passed),maxIdleFootError:maxIdle,maxWalkingFootError:maxWalk,secondaryJoints:a.status.clothJoints},null,2));
 if(!result.passed)process.exitCode=1;

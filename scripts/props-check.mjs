@@ -123,5 +123,5 @@ check('Replay resets pylons, restores charred oven height and hides terminal',gr
 check('Replay ends the impact gust and removes the pear protection glow',garden.state.gustPetals===0&&!garden.state.protected&&garden.state.shield===0,garden.state);
 let disposed=0;for(const item of r.items)item.addEventListener?.('dispose',()=>disposed++);const expectedDisposals=[...r.items].filter(item=>typeof item.dispose==='function').length;
 r.dispose();check('Every owned disposable graphics resource receives dispose',disposed===expectedDisposals&&r.items.size===0,{disposed,expectedDisposals});
-fs.writeFileSync('artifacts/v11-props-check.json',JSON.stringify({kind:'actual-geometry-with-stubbed-canvas',checks},null,2)+'\n');
+fs.writeFileSync('artifacts/v13-props-check.json',JSON.stringify({kind:'actual-geometry-with-stubbed-canvas',checks},null,2)+'\n');
 console.log(`V11 props: ${checks.length} checks passed.`);

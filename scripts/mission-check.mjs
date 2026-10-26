@@ -13,7 +13,7 @@ function rhythmWin(r,origin){
 }
 for(const route of ['floor']){
  const events=[],m=new MissionMachine({onAction:e=>events.push(e)});m.setTargets([{id:'structure',label:'店體',position:[0,3,1]}]);
- step(m,900);check('Opening waits',m.phase==='ready');m.start();finish(m);step(m,7);finish(m);check('Dinner no longer blocks story',m.phase==='photo'&&m.branch==='A');
+ step(m,900);check('Opening waits',m.phase==='ready');m.start();finish(m);step(m,7);finish(m);check('Flight gate waits',m.phase==='photo-flight');m.fly(1,1);for(let j=0;j<7;j++)step(m,.1);m.fly(0,1);for(let j=0;j<12;j++)step(m,.1);m.fly(0,0);check('Flight positioning opens camera',m.finishFlight());check('Dinner no longer blocks story',m.phase==='photo'&&m.branch==='A');
  m.setAuto(true);step(m,500);check('Photo never auto submits',m.phase==='photo');m.setPaused(true);check('Paused shutter rejected',!m.takePhoto());m.setPaused(false);m.takePhoto();check('Photo return is a timed gate',m.phase==='photo-return');step(m,2.5);finish(m);
  check('Review waits for send',m.phase==='photo-review');step(m,50);check('Review never auto sends',m.phase==='photo-review');
  m.setAuto(false);m.sendPhoto();check('Route produces distinct scene',m.phase===(route==='floor'?'cargo':'observation'));
@@ -40,4 +40,4 @@ check('Insurance pays off smuggling premise',chargeLines.some(v=>v.text.includes
 check('CCTV hacker voice before explanation',sequences.flashback.findIndex(l=>l.mood==='thought')<sequences.flashback.findIndex(l=>l.speaker==='dragon'));
 check('Every line has stable data fields',[...Object.values(sequences).flat(),...chatterGroups.flat(),...Object.values(hotspots).flat(2)].every(l=>['id','speaker','text','mood','gesture','next'].every(k=>k in l)));
 check('At least fourteen aftermath groups',chatterGroups.length>=14);
-await fs.writeFile(new URL('../artifacts/v12-mission-check.json',import.meta.url),JSON.stringify({passed:true,count:checks.length,checks},null,2)+'\n');console.log(`V12 mission: ${checks.length} checks passed.`);
+await fs.writeFile(new URL('../artifacts/v13-mission-check.json',import.meta.url),JSON.stringify({passed:true,count:checks.length,checks},null,2)+'\n');console.log(`V13 mission: ${checks.length} checks passed.`);

@@ -4,10 +4,10 @@ import {sequences,dinnerChoices,chargeLines,chatterGroups,hotspots,endingCaption
 export const METER_TRAVEL=1.35;
 export const METER_PERIOD=METER_TRAVEL*2;
 export const CHARGE_DURATION=30;
-export const REWIND_DURATION=7;
+export const REWIND_DURATION=10;
 export const HEAT_DEMO_DURATION=6;
 export const RETURN_DURATION=3;
-export const TOUR_DURATION=20;
+export const TOUR_DURATION=34;
 export const LANDING_DURATION=sequences.landing.length*3;
 export const HEAT_TARGET=.3;
 export const CONNECTION_ACCOUNT='endfield_power';
@@ -97,7 +97,7 @@ export class MissionMachine{
     else if(this.phase==='energy')this.phaseTo('rewind');
     else if(this.phase==='flashback')this.phaseTo('hack');
     else if(this.phase==='credentials')this.phaseTo('heat');
-    else if(this.phase==='photo-talk')this.phaseTo('photo');
+    else if(this.phase==='photo-talk'){this.flight={x:-2,z:5,vx:0,vz:0};this.phaseTo('photo-flight');}
     else if(this.phase==='photo-check')this.phaseTo('photo-review');
     else if(this.phase==='cargo')this.sequence('observation',sequences.observation);
     else if(this.phase==='observation')this.phaseTo('comm-request');
@@ -115,6 +115,8 @@ export class MissionMachine{
     if(this.phase!=='choice'||this.paused||!dinnerChoices.some(v=>v.id===id))return false;
     this.branch=id;this.hooks.onDinner?.(id);this.sequence('meal',sequences['meal'+id]);return true;
   }
+  fly(x,z){if(this.phase!=='photo-flight'||this.paused)return false;this.flight.vx=Math.max(-1,Math.min(1,x));this.flight.vz=Math.max(-1,Math.min(1,z));return true;}
+  finishFlight(){if(this.phase!=='photo-flight'||this.paused||Math.hypot(this.flight.x,this.flight.z-10.5)>1.2)return false;this.phaseTo('photo');return true;}
   takePhoto(){if(this.phase!=='photo'||this.paused)return false;this.photoTaken=true;this.phaseTo('photo-return');return true;}
   sendPhoto(){if(this.phase!=='photo-review'||this.paused)return false;this.investigation='floor';this.sequence('cargo',sequences.cargo);return true;}
   investigate(id){
@@ -136,14 +138,14 @@ export class MissionMachine{
   keyChunk(value){
     if(this.paused||this.phase!=='login')return false;
     const expected=this.connection.field==='account'?['endfield','_','power']:['520','1314'];
-    if(!expected.includes(value))return false;
+    if(![...expected,'admin','love','boss','retire','0000','8888'].includes(value))return false;const c0=this.connection;(c0.chunks??=[]).push(value);
     for(const c of value)if(!this.key(c))return false;
     const c=this.connection;if(c[c.field]===(c.field==='account'?CONNECTION_ACCOUNT:CONNECTION_PASSWORD))this.submitLogin();return true;
   }
   key(value){
     if(this.paused||this.phase!=='login'||typeof value!=='string')return false;
     const c=this.connection,field=c.field;let next=c[field];
-    if(['backspace','Backspace','⌫'].includes(value))next=next.slice(0,-1);
+    if(['backspace','Backspace','⌫'].includes(value)){const chunk=c.chunks?.pop();next=next.slice(0,-(chunk?.length||1));}
     else if(['clear','Clear'].includes(value))next='';
     else{
       if(value.length!==1||(field==='password'?!/^[0-9]$/.test(value):!/^[a-z_]$/.test(value))||next.length>=(field==='password'?16:32))return false;
@@ -157,7 +159,7 @@ export class MissionMachine{
     const c=this.connection,expected=c.field==='account'?CONNECTION_ACCOUNT:CONNECTION_PASSWORD;
     if(c[c.field]!==expected){c.error=c.field==='account'?'帳號不對。可重聽提示，再修改。':'密碼不對。可退格修改。';this.action('login-error',c.field);this.emit();return false;}
     c.error='';
-    if(c.field==='account'){c.field='password';this.line(connectionPrompts.password);this.action('login-account',true);this.emit();}
+    if(c.field==='account'){c.field='password';c.chunks=[];this.line(connectionPrompts.password);this.action('login-account',true);this.emit();}
     else {this.action('login-complete',true);this.phaseTo('verify-talk');}
     return true;
   }
@@ -238,7 +240,7 @@ export class MissionMachine{
   update(sourceTime){
     if(!Number.isFinite(sourceTime))return;
     const delta=Math.max(0,sourceTime-this.sourceTime);this.sourceTime=Math.max(this.sourceTime,sourceTime);
-    if(this.paused)return;this.time+=delta;
+    if(this.paused)return;this.time+=delta;if(this.phase==='photo-flight'&&this.flight){const f=this.flight,dt=Math.min(.1,delta);f.x=Math.max(-4,Math.min(4,f.x+f.vx*3*dt));f.z=Math.max(4,Math.min(12,f.z+f.vz*3*dt));}
     // Catch up continuous cinematics after a late frame, but stop on every manual or input gate.
     for(let guard=0;guard<10;guard++){
       const elapsed=this.time-this.entered,phase=this.phase;let changed=false;
@@ -282,15 +284,15 @@ export class MissionMachine{
     const elapsed=Math.max(0,this.time-this.entered),meter=this.meterAt(),target=this.targets.find(v=>v.id===this.target),settings=this.meterSettings,c=this.connection;
     const connection={...c,value:c[c.field],expected:c.field==='account'?CONNECTION_ACCOUNT:CONNECTION_PASSWORD,captchaReady:this.phase==='captcha'};
     const heat=this.rhythm.state(this.time);
-    const vcr=vcrPhases.has(this.phase),combatHoldRemaining=Math.max(0,this.attackHoldUntil-this.time),reverse=clamp((elapsed-.4)/6);
-    const rewindProgress=this.phase==='rewind'?reverse*reverse*(3-2*reverse):0,rewindStage=this.phase!=='rewind'?null:elapsed<.4?'freeze':elapsed>=6.4?'settle':'reverse';
+    const vcr=vcrPhases.has(this.phase),combatHoldRemaining=Math.max(0,this.attackHoldUntil-this.time),reverse=clamp((elapsed-.4)/(REWIND_DURATION-1));
+    const rewindProgress=this.phase==='rewind'?reverse*reverse*(3-2*reverse):0,rewindStage=this.phase!=='rewind'?null:elapsed<.4?'freeze':elapsed>=REWIND_DURATION-.6?'settle':'reverse';
     return {phase:this.phase,node:this.node,nodeId:this.node?.id||null,speaker:this.node?.speaker||null,text:this.node?.text||'',revealed:this.revealed,
       branch:this.branch,choices:this.phase==='choice'?dinnerChoices:[],waitingChoice:this.phase==='choice',progress:this.progress,
       energy:Math.max(0,100-this.progress/99*100),charge:this.phase==='charge'?Math.min(100,elapsed/CHARGE_DURATION*100):preChargePhases.has(this.phase)?0:100,
       meter,meterElapsed:Math.max(0,this.time-this.meterEntered),meterPeriod:settings.period,meterSettings:settings,output:this.output,outputModes,
       landingDuration:LANDING_DURATION,tourDuration:TOUR_DURATION,chargeDuration:CHARGE_DURATION,rewindDuration:REWIND_DURATION,returnDuration:RETURN_DURATION,heatDemoDuration:HEAT_DEMO_DURATION,
       phaseElapsed:elapsed,time:this.time,clock:this.time,sourceTime:this.sourceTime,paused:this.paused,auto:this.auto,castingElapsed:this.castingElapsed,
-      investigation:this.investigation,photoTaken:this.photoTaken,hack:{turns:[...this.hackTurns],moves:this.hackMoves,failures:this.hackFailures},connection,login:connection,heat,vcr,rewindProgress,rewindStage,returnProgress:this.phase==='return'?clamp(elapsed/RETURN_DURATION):0,vcrElapsed:vcr&&this.vcrStarted!==null?Math.max(0,this.time-this.vcrStarted):0,replayStage:vcr?this.phase:null,vcrSnapshot:this.vcrSnapshot?{...this.vcrSnapshot}:null,
+      flight:this.flight?{...this.flight,ready:Math.hypot(this.flight.x,this.flight.z-10.5)<1.2}:null,investigation:this.investigation,photoTaken:this.photoTaken,hack:{turns:[...this.hackTurns],moves:this.hackMoves,failures:this.hackFailures},connection,login:connection,heat,vcr,rewindProgress,rewindStage,returnProgress:this.phase==='return'?clamp(elapsed/RETURN_DURATION):0,vcrElapsed:vcr&&this.vcrStarted!==null?Math.max(0,this.time-this.vcrStarted):0,replayStage:vcr?this.phase:null,vcrSnapshot:this.vcrSnapshot?{...this.vcrSnapshot}:null,
       target:this.target,targetLabel:target?.label||'店面外牆',targets:this.targets,feedback:this.feedback,shots:this.shots,hits:this.hits,attackHoldUntil:this.attackHoldUntil,combatHoldRemaining,attackHeld:combatHoldRemaining>0,
       canAttack:['combat','aim-final'].includes(this.phase)&&!this.paused&&this.time-this.lastAttack>=.6&&combatHoldRemaining===0,
       ended:this.ended,busy:!!this.node||!['ready','complete'].includes(this.phase),sequenceKind:this.sequenceKind,endingCaption,revision:this.revision};

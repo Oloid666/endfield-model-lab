@@ -1,0 +1,117 @@
+{
+  "url": "http://127.0.0.1:4220/endfield-model-lab/",
+  "real_iphone_test": false,
+  "renderer": "Chromium / SwiftShader",
+  "checks": [
+    {
+      "name": "Both actors visible at entry",
+      "passed": true
+    },
+    {
+      "name": "One renderer",
+      "passed": true
+    },
+    {
+      "name": "Manual mode remains after 30 seconds",
+      "passed": true
+    },
+    {
+      "name": "Explicit camera resume",
+      "passed": true
+    },
+    {
+      "name": "No automatic dialogue or skip controls",
+      "passed": true
+    },
+    {
+      "name": "Dialogue can reveal text",
+      "passed": true
+    },
+    {
+      "name": "Dialogue now shows advance symbol",
+      "passed": true
+    },
+    {
+      "name": "Next line restores cinematic ownership",
+      "passed": true
+    },
+    {
+      "name": "Zhuang stays at waiting position",
+      "passed": true
+    },
+    {
+      "name": "Flight gate waits for player",
+      "passed": true
+    },
+    {
+      "name": "Flight reaches target",
+      "passed": true
+    },
+    {
+      "name": "Opening goes to photo",
+      "passed": true
+    },
+    {
+      "name": "Real canvas photo captured",
+      "passed": true
+    },
+    {
+      "name": "Photo has more than 1600 pixels on long edge",
+      "passed": true
+    },
+    {
+      "name": "Clear face photo available",
+      "passed": true
+    },
+    {
+      "name": "Floor clue starts cargo investigation",
+      "passed": true
+    },
+    {
+      "name": "Communication waits for accept",
+      "passed": true
+    },
+    {
+      "name": "Communication still waiting",
+      "passed": true
+    },
+    {
+      "name": "Zhuang reply uses Zhuang portrait",
+      "passed": true
+    },
+    {
+      "name": "Terminal deploy precedes login",
+      "passed": true
+    },
+    {
+      "name": "Login stays on ground",
+      "passed": true
+    },
+    {
+      "name": "Five chunk login ready",
+      "passed": true
+    },
+    {
+      "name": "Decoy word enters input",
+      "passed": true
+    },
+    {
+      "name": "Delete removes whole word",
+      "passed": true
+    },
+    {
+      "name": "Captcha awaits player",
+      "passed": true
+    },
+    {
+      "name": "No JavaScript errors",
+      "passed": true
+    }
+  ],
+  "local_ready_seconds": 22.9,
+  "passed": true,
+  "errors": [],
+  "assets": [
+    "http://127.0.0.1:4220/endfield-model-lab/assets/index-C7F3JWT7.js"
+  ]
+}

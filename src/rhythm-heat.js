@@ -2,11 +2,11 @@
 export class RhythmHeat {
   constructor(){this.round=0;this.failures=0;this.attempts=0;this.first=true;this.status='ready';this.notes=[];this.origin=0;this.holding=false;this.active=-1;this.revision=0;this.result='';}
   get level(){return Math.min(3,this.failures);}
-  get window(){return [.14,.12,.10][Math.min(2,this.round)]+this.level*.045;}
+  get window(){return [.12,.10,.085][Math.min(2,this.round)]+this.level*.045;}
   start(now){
     if(this.status!=='ready')return false;
     this.attempts++;this.origin=now;this.status='playing';this.result='';this.holding=false;this.active=-1;
-    this.bpm=Math.max(65,[90,110,130][this.round]-this.level*15);this.beat=60/this.bpm;
+    this.bpm=Math.max(65,[120,135,150][this.round]-this.level*15);this.beat=60/this.bpm;
     const patterns=[['tap','tap','tap','tap'],['tap','hold','tap','tap'],['hold','tap','hold','tap']];
     let cursor=1.5;this.notes=patterns[this.round].map(type=>{const note={type,at:cursor*this.beat,end:(cursor+(type==='hold'?1:0))*this.beat,result:'pending'};cursor+=type==='hold'?2:1;return note;});
     this.forced=this.first;this.revision++;return true;
