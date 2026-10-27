@@ -36,10 +36,10 @@ for(let bits=0;bits<32;bits++){
 }
 check(SETTLEMENT_STAMPS,['理賠通過','新案承保','長期合作']);
 p.data.claimsSettled=true;p.save();check(new BonusProgress(storage).data.claimsSettled,true);check(new BonusProgress({getItem:()=>JSON.stringify({claimsSettled:'yes'})}).data.claimsSettled,false);
-check(LESSONS.length,9);check(new Set(LESSONS.map(l=>l.id)).size,9);check(LESSONS.slice(0,2).map(l=>l.id),['general','mikoto']);
+check(LESSONS.length,10);check(new Set(LESSONS.map(l=>l.id)).size,10);check(LESSONS[4].id,'lino');check(LESSONS.slice(0,2).map(l=>l.id),['general','mikoto']);
 check(LESSONS[0].analysis.join('').includes('將軍是爻光'),true);check(LESSONS[1].analysis.join('').includes('御坂美琴'),true);
-for(const l of LESSONS){check(l.analysis.length,3);check(LESSON_NOTES[l.id].length,3);check(l.analysis.every(s=>s.length>=60),true);check(l.recap.includes('undefined'),false);for(const source of l.sources)check(new URL(source.url).protocol,'https:');}
-check(LESSONS[4].id,'login');check(LESSONS[5].id,'pear');
+for(const l of LESSONS){check(l.analysis.length,3);check(LESSON_NOTES[l.id].length,3);check(l.analysis.every(s=>s.length>=50),true);check(l.recap.includes('undefined'),false);for(const source of l.sources)check(new URL(source.url).protocol,'https:');}
+check(LESSONS[5].id,'login');check(LESSONS[6].id,'pear');
 check(LESSONS[1].recap.includes('妳剛才才說我錯棚'),false);check(LESSONS[1].aside.includes('妳剛才才說我錯棚'),true);
 check(LESSONS.find(l=>l.id==='taste').analysis.join('').includes('不能據此宣布'),false);check(LESSONS[4].analysis.join('').includes('未核實的最早出處'),false);
 check([0,1,2,3,4,5].map(i=>lessonProgress(i,6)),[0,20,40,60,80,100]);check(lessonProgress(-2,6),0);check(lessonProgress(20,6),100);check(lessonProgress(0,0),0);

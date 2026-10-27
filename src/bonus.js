@@ -1,7 +1,7 @@
 import {BonusProgress,LESSONS,CLASS_MOTTO,LESSON_NOTES,ClassCourse,lessonCardCount} from './bonus-data.js';
 import {ClaimsNegotiation,APPLICATION_FIELDS,SETTLEMENT_STAMPS} from './claims-negotiation.js';
 import {createBonusRoom} from './bonus-room.js';
-import {lessonFrame,StampSequence,SmoothMeter,lessonProgress} from './bonus-presentation.js';
+import {lessonFrame,StampSequence,SmoothMeter} from './bonus-presentation.js';
 import './bonus.css';
 
 const E=(tag,cls='',text)=>{const n=document.createElement(tag);n.className=cls;if(text!==undefined)n.textContent=text;return n;};
@@ -27,7 +27,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{}})
  const header=E('header','bonus-header'),title=E('span','bonus-room-name'),nav=E('div','bonus-nav');
  const panel=E('section','bonus-panel'),toolbar=E('div','bonus-reading-tools'),content=E('div','bonus-content');content.tabIndex=-1;panel.append(toolbar,content);
  const classMeter=E('section','bonus-class-meter');classMeter.hidden=true;const deathLabel=E('span','','笑點死亡率 0%');deathLabel.setAttribute('aria-live','polite');
- const readingMeter=E('div','bonus-lesson-progress'),readingLabel=E('span'),readingTrack=E('div','bonus-lesson-track'),readingFill=E('i');readingMeter.hidden=true;readingTrack.setAttribute('role','progressbar');readingTrack.setAttribute('aria-label','本題閱讀進度');readingTrack.setAttribute('aria-valuemin','0');readingTrack.setAttribute('aria-valuemax','100');readingTrack.append(readingFill);readingMeter.append(readingLabel,readingTrack);classMeter.append(deathLabel,readingMeter);panel.prepend(classMeter);
+ const readingMeter=E('div','bonus-lesson-progress'),readingLabel=E('span'),readingTrack=E('div','bonus-lesson-track'),readingFill=E('i');readingMeter.hidden=true;readingTrack.setAttribute('role','progressbar');readingTrack.setAttribute('aria-label','全部題目進度');readingTrack.setAttribute('aria-valuemin','0');readingTrack.setAttribute('aria-valuemax','100');readingTrack.append(readingFill);readingMeter.append(readingLabel,readingTrack);classMeter.append(deathLabel,readingMeter);panel.prepend(classMeter);
  const classDock=E('footer','bonus-class-dock'),classPrimary=E('button','bonus-primary','開講 →'),classContinue=E('button','bonus-class-continue','繼續看 →');classDock.hidden=true;classPrimary.type=classContinue.type='button';classPrimary.dataset.action='class-next';classContinue.dataset.action='class-continue';classContinue.hidden=true;classDock.append(classContinue,classPrimary);
  const claimsDock=E('footer','bonus-class-dock bonus-claims-dock'),claimsPrimary=E('button','bonus-primary','開始調解 →');claimsDock.hidden=true;claimsPrimary.type='button';claimsPrimary.dataset.action='claims-next';claimsDock.append(claimsPrimary);
  const objection=E('div','bonus-objection','異議あり！');objection.hidden=true;objection.setAttribute('aria-hidden','true');
@@ -77,7 +77,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{}})
  function selectLesson(id,resume=false){lessonIndex=LESSONS.findIndex(l=>l.id===id);if(lessonIndex<0)lessonIndex=0;const steps=resume?Math.min(course.steps[LESSONS[lessonIndex].id]||0,lessonCardCount(id)-1):0;pageIndex=Math.min(4,steps);enterLessonPage();responseIndex=Math.max(0,steps-4);route='lesson';}
  function renderClassControls(){
   const show=active&&isClassRoute();classDock.hidden=classMeter.hidden=!show;root.classList.toggle('bonus-class-flow',show);root.dataset.classStage=route;classContinue.hidden=route!=='class-result';
-  readingMeter.hidden=route!=='lesson';if(route==='lesson'){const pct=lessonProgress(pageIndex<4?pageIndex:4+responseIndex,lessonCardCount(LESSONS[lessonIndex].id));readingLabel.textContent=`本題閱讀進度 ${pct}%`;readingTrack.setAttribute('aria-valuenow',String(pct));readingFill.style.transform=`scaleX(${pct/100})`;}
+  readingMeter.hidden=route!=='lesson';if(route==='lesson'){const pct=Math.round(course.completedCount/LESSONS.length*100);readingLabel.textContent=`全部題目進度 ${pct}%`;readingTrack.setAttribute('aria-valuenow',String(pct));readingFill.style.transform=`scaleX(${pct/100})`;}
   classPrimary.disabled=['class-wait','class-stamping'].includes(route);
   classPrimary.textContent=route==='classroom'?(course.stamped?(course.next()?'繼續看（自由）→':'查看死亡證明'):'開講 →'):route==='class-result'?'下課 · 完成 ✓':route==='class-wait'?'笑點正在死亡…':route==='class-stamping'?'正在蓋章…':'繼續 →';
  }
@@ -85,7 +85,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{}})
   const d=modal('課堂選單');dialogKind='class-menu';d.dataset.kind='class-menu';
   if(route==='lesson'){button(d,'上一段','prev');button(d,'看黑板','board');button(d,'出處與劇內設定','sources');}
   button(d,progress.data.reading?'切回演出':'專心閱讀','reading');button(d,`字級 ${progress.data.textSize} · 調整`,'text-size');
-  const details=E('details','bonus-class-catalog');details.append(E('summary','','全部九題 · 自由選篇／重看'));LESSONS.forEach(l=>button(details,`${course.completed.includes(l.id)?'本堂 ✓ ':progress.data.read.includes(l.id)?'讀過 · ':''}${l.title}`,'lesson-id',l.id));d.append(details);
+  const details=E('details','bonus-class-catalog');details.append(E('summary','','全部十題 · 自由選篇／重看'));LESSONS.forEach(l=>button(details,`${course.completed.includes(l.id)?'本堂 ✓ ':progress.data.read.includes(l.id)?'讀過 · ':''}${l.title}`,'lesson-id',l.id));d.append(details);
   if(course.stamped)button(d,'查看死亡證明','class-certificate');button(d,'選其他房間','class-rooms');button(d,'返回街景','close');button(d,'重新上課 · 死亡條歸零','class-reset',undefined,'bonus-text-button');
  }
  function advanceClass(){
@@ -140,14 +140,18 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{}})
  }
  async function travel(destination){
   if(busy||disposed)return;stampSequence.cancel();objectionAnimation?.cancel();objection.hidden=true;busy=true;root.setAttribute('aria-busy','true');dialog.close();
-  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;let covered=false;
   try{
-   // Show the two side windows before changing the cutaway stage.
+   // Rewind the ruined storefront visually; restore its logical damage afterward.
    route='exterior';setExterior();title.textContent='二樓 · 左室教室／右室理賠';
-   if(!reduced){transitionAnimation=curtain.animate([{opacity:0},{opacity:0,offset:.35},{opacity:1}],{duration:650,fill:'forwards'});await transitionAnimation.finished;}
+   if(destination!=='rooms'&&mission.state.phase==='complete'&&!reduced){
+    const destruction=world.store.destruction;destruction.beginRewind();
+    try{await new Promise(resolve=>{const start=performance.now();function frame(now){if(disposed){resolve();return;}const p=Math.min(1,(now-start)/2400);destruction.updateRewind(p);if(p<1)requestAnimationFrame(frame);else resolve();}requestAnimationFrame(frame);});if(!disposed){transitionAnimation=curtain.animate([{opacity:0},{opacity:1}],{duration:300,fill:'forwards'});await transitionAnimation.finished;covered=true;}}finally{destruction.restorePresent();}
+   }
+   if(!reduced&&!covered){transitionAnimation=curtain.animate([{opacity:0},{opacity:0,offset:.35},{opacity:1}],{duration:650,fill:'forwards'});await transitionAnimation.finished;}
    if(disposed)return;route=destination;
    if(destination==='classroom')resetClass();
-   if(destination==='rooms')setExterior();else ensureRoom().setMode(destination==='classroom'||destination==='lesson'?'classroom':'claims');
+   if(destination==='rooms')setExterior();else {ensureRoom().setMode(destination==='classroom'||destination==='lesson'?'classroom':'claims');if(destination==='classroom'||destination==='claims')room.enter(world.time);}
    render();focusContent();
    if(!reduced){transitionAnimation=curtain.animate([{opacity:1},{opacity:0}],{duration:300,fill:'forwards'});await transitionAnimation.finished;}
   }catch(e){if(e.name!=='AbortError')throw e;}finally{busy=false;root.removeAttribute('aria-busy');}
@@ -166,7 +170,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{}})
   }
   if(route==='classroom'){
    ensureRoom().board(CLASS_MOTTO[2],CLASS_MOTTO.slice(0,2),Math.max(0,1-course.percentage/100),world.time,false,'welcome');room.setFocus('wide');room.perform('explain');
-   heading('龍泡泡主講','笑點解析小教室','聽完四個不同題目即可結業。九題都能自由選讀、重看。');
+   heading('龍泡泡主講','笑點解析小教室','聽完四個不同題目即可結業。十題都能自由選讀、重看。');
    content.append(E('p','bonus-description','按下方「繼續」往下聽，選篇、字級和出處都在右上選單。'));return;
   }
   if(route==='lesson'){
@@ -188,7 +192,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{}})
   }
   if(route==='class-result'){
    room.board('笑點已死亡',['手術成功，笑點死亡。','剩下的解析，自由繼續看。'],0,world.time,false,'certificate');room.perform('dismissed');
-   heading('笑點解析小教室 · 結業','手術成功，笑點已死亡');const paper=E('article','bonus-paper');paper.append(E('p','bonus-document-id','死亡證明 · 龍泡泡簽發'),E('h3','','笑點已死亡'),E('p','',`已完成 ${course.completedCount} 篇解剖。死亡率 100%。`),E('p','','死因：講得太清楚。'),E('strong','bonus-stamp','笑點已死亡'));content.append(paper,E('p','bonus-description',`莊：可以下課了？\n龍泡泡：可以。${LESSONS.length-course.completed.length?`剩下 ${LESSONS.length-course.completed.length} 篇，想聽再聽。`:'九題都看過了，想重看也可以。'}`));return;
+   heading('笑點解析小教室 · 結業','手術成功，笑點已死亡');const paper=E('article','bonus-paper');paper.append(E('p','bonus-document-id','死亡證明 · 龍泡泡簽發'),E('h3','','笑點已死亡'),E('p','',`已完成 ${course.completedCount} 篇解剖。死亡率 100%。`),E('p','','死因：講得太清楚。'),E('strong','bonus-stamp','笑點已死亡'));content.append(paper,E('p','bonus-description',`莊：可以下課了？\n龍泡泡：可以。${LESSONS.length-course.completed.length?`剩下 ${LESSONS.length-course.completed.length} 篇，想聽再聽。`:'十題都看過了，想重看也可以。'}`));return;
   }
   if(route==='claims'){
    room.negotiate(null,world.time);

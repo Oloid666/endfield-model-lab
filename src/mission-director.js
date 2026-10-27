@@ -72,6 +72,7 @@ export class MissionDirector{
       this.world.setWalking(false);this.world.actors?.setMove(0,0,false);
       this.world.currentView=null;this.world.transition=null;
     }
+    if(phase==='shoe-view'||phase==='pylon-link'){this.world.autoCamera=true;this.world.manualUntil=this.world.time;this.world.transition=null;this.world.setWalking(false);}
     if(phase==='lever'){this.keyQueue.length=0;this.keyHop=null;}
     if(phase==='rewind'){
       this.rewindStarted=this.world.time;this.rewindCameraPosition.copy(this.world.camera.position);this.rewindCameraTarget.copy(this.world.controls.target);this.rewindFov=this.world.camera.fov;
@@ -284,7 +285,6 @@ export class MissionDirector{
       else if(purchase!==null){
         if(purchase<1.2){position=[-2.8,2.05,5.6];target=[-.22,1.2,2.7];fov=portrait?52:44;beat='dragon-enters-store';}
         else if(purchase<2){const d=w.actors?.dragonPosition||[-.22,1.2,2.75];position=[-1.5,2.1,5];target=[d[0],d[1]+.35,d[2]];fov=portrait?52:44;beat='dragon-through-door';}
-        else if(purchase<2.5){position=[3.35,2.45,-.85];target=[3.87,2.53,-1.65];fov=portrait?46:39;beat='store-camera-insert';}
         else if(purchase<4.8){position=[-1.1,1.9,1.45];target=[-2.5,1.35,-1.4];fov=portrait?54:46;beat='store-shelf-insert';}
         else{const d=w.actors?.dragonPosition||[2.48,1.34,.92];position=[4.05,2.4,-1.5];target=[d[0],d[1]+.32,d[2]];fov=portrait?48:42;beat='dragon-at-counter';}
       }else{const shot=dialogueShot(s,feet,w.actors?.dragonPosition||[-2,.65,3.25],portrait,this.reducedMotion);({position,target,fov,beat}=shot);}

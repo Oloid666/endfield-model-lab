@@ -1,5 +1,5 @@
 // Original fan fiction. These lines and the demolition episode are not official lore.
-export const speakers={zhuang:'莊芳宜',dragon:'龍泡泡',mifoe:'弭弗',xaihi:'賽希',clerk:'店員',system:'天師樁終端',manager:'管理員'};
+export const speakers={zhuang:'莊芳宜',dragon:'龍泡泡',mifoe:'弭弗',xaihi:'賽希',clerk:'店員',system:'天師樁終端',microwave:'微波爐',manager:'管理員'};
 
 export const dinnerChoices=[
   {id:'A',label:'熱便當＋湯',hint:'先吃頓熱的。'},
@@ -97,7 +97,7 @@ export const sequences={
     ['mifoe','頭，能量不夠了。戰損報告：\n三樓已坍塌，樓板還在掉。','look'],
     ['dragon','招牌說全天營業，現在連屋頂都下班了。','shake'],
     ['mifoe','確認：外牆與樓板碎片仍在落下。','look'],
-    ['zhuang','怎麼可能用這麼快？','shake'],
+    ['zhuang','能量怎麼可能用這麼快？','shake'],
     ['dragon','電量告急，將軍救急！將軍出手，萬事大吉～','happy'],
     ['zhuang','你錯棚了。','shake'],
     ['zhuang','電隊是越來越多人，\n但還是撐得住啊。','look'],
@@ -106,16 +106,16 @@ export const sequences={
   flashback:lines('flashback',[
     ['xaihi','難得出門，晚餐應該快一點。','phone','thought','cctv-counter'],
     ['dragon','三小時前。賽希難得出門，來711買晚餐。','player','aside'],
-    ['system','微波加熱：預計三分鐘。','look'],
+    ['microwave','微波加熱：預計三分鐘。','look'],
     ['xaihi','人不該等便當。先查附近有沒有快一點的方法。','phone','thought'],
-    ['xaihi','旁邊就有天師樁。接一下，借億點點。','phone','calm','xaihi-terminal'],
+    ['xaihi','找到了，這方法蠻方便的。\n旁邊就有天師樁。接一下，借億點點。','phone','calm','xaihi-terminal'],
     ['dragon','那可是武陵電網，應該沒那麼容易進去吧？','player','aside'],
     ['xaihi','剛剛賽馬娘停服，順手看了個PHP漏洞。沒想到這麼快就用上。','phone'],
     ['dragon','遊戲才停服，妳就讓整條街停電？轉服成本也太高了吧。','player','aside'],
     ['xaihi','先接通管理終端。','phone'],
   ]),
   credentials:lines('credentials',[
-    ['system','2026.10 NEW｜PHP 維護後台驗證失效。免金鑰，取得最高權限。','look','evidence'],
+    ['system','2026.10 NEW｜PHP 後台驗證出包，免輸金鑰，管理員權限直接到手。','look','evidence'],
     ['system','管理密碼：0000。','look','evidence'],
     ['xaihi','四位。輸入效率很好。','nod'],
     ['dragon','管理員權限不用金鑰，微波爐加熱還要排隊？','player','aside'],

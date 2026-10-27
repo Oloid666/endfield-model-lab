@@ -3,9 +3,9 @@ export const config = {
   reflection: { low: 192, balanced: 384, high: 512 },
   rainCount: { low: 650, balanced: 1400, high: 2200 },
   views: {
-    poster3:{position:[3.4,1.75,5.9],target:[3.4,1.75,1.82],mobilePosition:[3.4,1.75,5.9],mobileTarget:[3.4,1.75,1.82]},
-    poster2:{position:[2.35,1.75,5.9],target:[2.35,1.75,1.82],mobilePosition:[2.35,1.75,5.9],mobileTarget:[2.35,1.75,1.82]},
-    poster1:{position:[-2.8,1.75,5.9],target:[-2.8,1.75,1.82],mobilePosition:[-2.8,1.75,5.9],mobileTarget:[-2.8,1.75,1.82]},
+    poster3:{position:[3.4,2.05,5.9],target:[3.4,2.05,1.82],mobilePosition:[3.4,2.05,5.9],mobileTarget:[3.4,2.05,1.82]},
+    poster2:{position:[2.35,2.05,5.9],target:[2.35,2.05,1.82],mobilePosition:[2.35,2.05,5.9],mobileTarget:[2.35,2.05,1.82]},
+    poster1:{position:[-2.8,2.05,5.9],target:[-2.8,2.05,1.82],mobilePosition:[-2.8,2.05,5.9],mobileTarget:[-2.8,2.05,1.82]},
     streetRight:{position:[-15,8,20],target:[0,2,0],mobilePosition:[-20,12,27],mobileTarget:[0,2,0]},
 
     insideOut:{position:[-.1,1.7,-.75],target:[-.7,1.45,5],mobilePosition:[-.1,1.7,-.75],mobileTarget:[-.7,1.45,5]},

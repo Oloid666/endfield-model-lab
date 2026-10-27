@@ -81,6 +81,7 @@ export function createBonusRoom(){
   if(!value){focus='wide';return;}
   if(value.phase==='stamp')focus='stamp';else if(value.cue?.event==='policyholder')focus='policy';else if(value.phase==='complete'||value.phase==='choice')focus='wide';else focus=value.cue?.speaker==='保險代表'?'representative':value.phase==='business'?'contract':'client';
  }
+ let entryAt=-Infinity;
  let mode='classroom',focus='wide',boardKey='',paintKey='',boardAt=0,lastTime=null,stampAt=-Infinity,stampReduced=false,pose='explain';
  let boardData={title:'笑點解析小教室',lines:CLASS_MOTTO,life:1,reaction:false};
  const reduced=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -129,12 +130,12 @@ export function createBonusRoom(){
  board();
  return {scene,camera,board,get state(){return {mode,focus,cameraPosition:camera.position.toArray(),board:{title:boardData.title,lines:[...boardData.lines]},representative:negotiation?.polite?'polite':'serious',policyholderVisible:policyCard.visible,completedStamps:completedInks.filter(n=>n.visible).length,paperStamped:mode==='classroom'?classInk.visible:ink.visible};},resetPaper(){stampAt=-Infinity;ink.visible=classInk.visible=false;classStamp.position.y=.83;classPaper.position.z=-.65;stamp.position.y=1.04;output.position.z=.18;focus='wide';},
  setMode(value){if(mode!==value){mode=value;firstFrame=true;}classroom.visible=value==='classroom';claims.visible=value==='claims';focus='wide';frameKey='';},
- negotiate,setFocus(value){focus=value;},perform(value){pose=value;},stamp(t,status){stampAt=t;stampReduced=reduced();focus='stamp';ink.visible=classInk.visible=false;const c=ink.material.map.image.getContext('2d');c.fillStyle='#e8dfc1';c.fillRect(0,0,1024,160);c.fillStyle='#a34b3b';c.font='bold 110px sans-serif';c.textAlign='center';c.textBaseline='middle';c.fillText(status,512,80,1000);ink.material.map.needsUpdate=true;},
+ enter(time){entryAt=reduced()?-Infinity:time;},negotiate,setFocus(value){focus=value;},perform(value){pose=value;},stamp(t,status){stampAt=t;stampReduced=reduced();focus='stamp';ink.visible=classInk.visible=false;const c=ink.material.map.image.getContext('2d');c.fillStyle='#e8dfc1';c.fillRect(0,0,1024,160);c.fillStyle='#a34b3b';c.font='bold 110px sans-serif';c.textAlign='center';c.textBaseline='middle';c.fillText(status,512,80,1000);ink.material.map.needsUpdate=true;},
  render(renderer,time,width,height){
   frame(width,height,time);paint(time);
   const state=lessonFrame(time-boardAt,boardData.reaction,reduced()),interrupted=pose==='interrupted'||boardData.reaction&&state.pose==='interrupted',awkward=pose==='awkward'||boardData.reaction&&state.pose==='awkward';
   dragon.update(interrupted?boardAt:time,{gesture:interrupted||awkward?'look':'point',gestureAmount:interrupted||awkward?0:.8,curious:awkward?.8:0,lookYaw:0});
-  dragonMount.position.y=.95+(interrupted?0:Math.sin(time*1.5)*.05);dragon.root.rotation.y=awkward?Math.atan2(camera.position.x-dragonMount.position.x,camera.position.z-dragonMount.position.z):-.2;
+  const arrival=Number.isFinite(entryAt)?T.MathUtils.smoothstep(time-entryAt,0,1.6):1;dragonMount.position.x=2.35+(1-arrival)*4;clientMount.position.x=-1.35-(1-arrival)*4;dragonMount.position.y=.95+(interrupted?0:Math.sin(time*1.5)*.05)+(1-arrival)*.5;clientMount.position.y=1.05+(1-arrival)*.5;dragon.root.rotation.y=awkward?Math.atan2(camera.position.x-dragonMount.position.x,camera.position.z-dragonMount.position.z):-.2;
   pointer.rotation.z=interrupted?-.35:awkward?-1.1:Math.sin(time*.9)*.07;pointer.visible=pose!=='dismissed';
   client.update(reduced()?0:time,{gesture:negotiation?.cue?.speaker==='龍泡泡'?'point':'look',gestureAmount:.35,lookYaw:.15});
   const hitAge=time-objectionAt,hit=!reduced()&&hitAge>=0&&hitAge<.6?Math.sin(Math.min(1,hitAge/.18)*Math.PI/2)*Math.exp(-Math.max(0,hitAge-.18)*7):0;

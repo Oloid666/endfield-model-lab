@@ -6,8 +6,8 @@ export function buildInvestigationProps(scene,r){
  const camera=new T.Group();camera.name='store-cctv';camera.position.set(3.87,2.53,-1.65);root.add(camera);camera.rotation.y=Math.PI;
  box(camera,'#687a77',[0,.12,-.14],[.08,.32,.1],{metalness:.6});box(camera,'#c4ccbd',[0,0,0],[.23,.19,.42],{metalness:.3});box(camera,'#24363c',[0,-.01,.219],[.16,.12,.025]);
  const lens=r.mesh(r.geometry('CylinderGeometry',.048,.048,.04,16),r.material('#152c33',{metalness:.8,roughness:.16}),camera,[0,-.01,.245]);lens.rotation.x=Math.PI/2;
- const led=r.mesh(r.geometry('SphereGeometry',.014,8,6),r.material('#e67965',{emissive:0xc43622,emissiveIntensity:1}),camera,[.075,.04,.24]);camera.rotation.y=-.55;
- box(root,'#687a77',[3.87,3,-1.65],[.07,.94,.07],{metalness:.6});
+ const led=r.mesh(r.geometry('SphereGeometry',.014,8,6),r.material('#e67965',{emissive:0xc43622,emissiveIntensity:1}),camera,[.075,.04,.24]);camera.rotation.y=-1.2;
+ box(camera,'#687a77',[0,.47,0],[.07,.94,.07],{metalness:.6});
  const cable=new T.CatmullRomCurve3([new T.Vector3(0,.16,-.17),new T.Vector3(.2,.28,-.2),new T.Vector3(.4,.25,-.19)]);r.mesh(r.own(new T.TubeGeometry(cable,8,.012,4,false)),r.material('#24393d'),camera);
  const cargo=new T.Group();cargo.position.set(-3.4,.32,1.87);root.add(cargo);
  for(let i=0;i<2;i++){box(cargo,'#6c7565',[i*.43,i*.1+.26,0],[.4,.5,.43],{metalness:.3});box(cargo,'#b2a272',[i*.43,i*.1+.27,.22],[.07,.46,.012]);}
@@ -15,15 +15,15 @@ export function buildInvestigationProps(scene,r){
  const sheet=label(cargo,'息壤 10,000 噸',[.48,.76,.23],[.73,.2,1]);sheet.name='smuggling-manifest';
  label(cargo,'送貨方：終末地／地點：武陵 711',[.48,.59,.232],[.73,.12,1],{font:'bold 40px sans-serif'});
  const paperGroup=new T.Group();root.add(paperGroup);
- const posterPositions=[[-2.8,1.75,1.82],[2.35,1.75,1.82],[3.4,1.75,1.82]];
+ const posterPositions=[[-2.8,2.05,1.82],[2.35,2.05,1.82],[3.4,2.05,1.82]];
  const posterUrl=`${import.meta.env?.BASE_URL||'/'}images/store-posters.png`;
  for(let i=0;i<3;i++){
    const texture=typeof document==='undefined'||typeof document.createElementNS!=='function'?null:r.own(new T.TextureLoader().load(posterUrl));
    if(texture){texture.colorSpace=T.SRGBColorSpace;texture.repeat.set(1/3,1);texture.offset.set(i/3,0);}
    const material=r.own(new T.MeshBasicMaterial({map:texture,color:texture?0xffffff:0xd6cfb2,side:T.FrontSide,toneMapped:false}));
-   const poster=r.mesh(r.geometry('PlaneGeometry',.82,1.64),material,paperGroup,posterPositions[i]);
+   const poster=r.mesh(r.geometry('PlaneGeometry',.65,1.3),material,paperGroup,posterPositions[i]);
    poster.name=`store-poster-${i+1}`;
-   const inside=r.mesh(r.geometry('PlaneGeometry',.82,1.64),material,paperGroup,[posterPositions[i][0],posterPositions[i][1],1.813]);inside.rotation.y=Math.PI;inside.name=`store-poster-${i+1}-inside`;
+   const inside=r.mesh(r.geometry('PlaneGeometry',.65,1.3),material,paperGroup,[posterPositions[i][0],posterPositions[i][1],1.813]);inside.rotation.y=Math.PI;inside.name=`store-poster-${i+1}-inside`;
  }
  // A small collection corner visible through the upstairs window.
  const room=new T.Group();room.position.set(1.4,3.56,.66);root.add(room);
@@ -53,7 +53,7 @@ export function buildInvestigationProps(scene,r){
      dummy.scale.set(i<active?.065:0,i<active?.065:0,i<active?.045:0);dummy.rotation.set(0,0,(i%3-1)*.1);dummy.updateMatrix();pixels.setMatrixAt(i,dummy.matrix);
    }
    pixels.instanceMatrix.needsUpdate=true;led.material.emissiveIntensity=.5+Math.sin(t*2)**2*.5;
-   camera.visible=paperGroup.visible=(state.progress||0)<62||past;
+   paperGroup.visible=(state.progress||0)<62||past;camera.visible=((state.progress||0)<62||past)&&(past||state.phase==='cargo'&&Number((state.nodeId||'').split('_').at(-1))>=5||['observation','comm-request','briefing','login','captcha','lever','ascent','director-reminder','shoe-view','pylon-link','charge','fire-ready','combat','energy','rewind'].includes(state.phase));
    room.visible=!past&&(state.progress||0)<62;cargo.visible=(state.progress||0)<62||past;
    wasPast=past;
  }
