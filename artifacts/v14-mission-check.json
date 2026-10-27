@@ -1,7 +1,10 @@
 {
   "passed": true,
-  "count": 71,
+  "count": 74,
   "checks": [
+    "Paused dialogue holds the shot clock",
+    "Dialogue shot clock resumes with the story",
+    "A new line resets the shot clock",
     "Opening waits",
     "Purchase holds at counter",
     "Flight gate waits",

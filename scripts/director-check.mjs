@@ -2,7 +2,7 @@
 import * as T from 'three';
 import fs from 'node:fs';
 import {Resources} from '../src/resources.js';
-import {MissionDirector,chargeCameraBeat} from '../src/mission-director.js';
+import {MissionDirector,chargeCameraBeat,dialogueShot} from '../src/mission-director.js';
 import {buildConnectionStage} from '../src/connection-stage.js';
 
 const ctx=new Proxy({measureText:s=>({width:s.length*12})},{get:(o,k)=>k in o?o[k]:(()=>{})});
@@ -13,7 +13,7 @@ function makeWorld(aspect=390/844){
   const r=new Resources(),scene=new T.Scene(),calls={rewind:[],updates:[],begin:0,past:0,restore:0,reflection:0};
   const actors={root:new T.Group(),heroPosition:[-1.25,1.52,3.25],dragonPosition:[-2,.54,3.25],status:{smile:0},cast:null,action:null,
     setCinematic(value){this.cast=value;},setDragonProjectile(point,roll){this.projectile=point?[...point]:null;if(point)this.dragonPosition=[...point];this.roll=roll;},
-    setSmile(value){this.status.smile=value;},setCompanionAction(value){this.action=value;},setMove(){},teleport(x,z){this.heroPosition[0]=x;this.heroPosition[2]=z;}};
+    setSmile(value){this.status.smile=value;},setDragonHeading(value){this.dragonHeading=value;},setCompanionAction(value){this.action=value;},setMove(){},teleport(x,z){this.heroPosition[0]=x;this.heroPosition[2]=z;}};
   scene.add(actors.root);
   const prop=name=>({root:new T.Group(),reset(){calls.updates.push({name,reset:true});},update(t,dt,state){calls.updates.push({name,t,dt,phase:state.phase});}});
   const d={state:{progress:99,serverPosition:[0,.8,1],milestones:[]},targets:[{id:'server',position:[0,.8,1]}],signFlight:null,
@@ -88,6 +88,37 @@ for(const [label,aspect]of [['portrait',390/844],['landscape',844/390]]){
   check(`${label} connection camera keeps actual board corners and hero head on-screen`,Object.values(projected).every(p=>Math.abs(p[0])<1&&Math.abs(p[1])<1&&p[2]>-1&&p[2]<1),projected);
   cw.r.dispose();
 }
+// The same street-side conversation stays bounded, pauses cleanly and uses the listener for the punchline.
+for(const portrait of [true,false]){
+ const feet=[-1.25,.32,2.48],dragon=[-2,.65,3.25],base={phase:'cargo',nodeId:'cargo_8',speaker:'zhuang',text:'都是補給。',nodeElapsed:0};
+ const first=dialogueShot(base,feet,dragon,portrait),later=dialogueShot({...base,nodeElapsed:2},feet,dragon,portrait);
+ check('Speaking subject is Zhuang',first.beat==='dialogue-zhuang');check('Punchline holds on Dragon reaction',later.beat==='dialogue-reaction');
+ check('Dialogue keeps camera on street side',first.position[2]>=4.35&&later.position[2]>=4.35);
+ const calm=dialogueShot({...base,nodeId:'cargo_5',nodeElapsed:1},feet,dragon,portrait),calm2=dialogueShot({...base,nodeId:'cargo_5',nodeElapsed:4},feet,dragon,portrait);
+ check('Normal dialogue makes a small orbit',Math.abs(calm2.position[0]-calm.position[0])>.05&&Math.abs(calm2.position[0]-calm.position[0])<1);
+ const still1=dialogueShot({...base,nodeId:'cargo_5',nodeElapsed:1},feet,dragon,portrait,true),still2=dialogueShot({...base,nodeId:'cargo_5',nodeElapsed:4},feet,dragon,portrait,true);
+ check('Reduced motion keeps the dialogue camera still',JSON.stringify(still1.position)===JSON.stringify(still2.position));
+}
+const faceWorld=makeWorld(),faceDirector=new MissionDirector(faceWorld);
+faceDirector.beforeActors(state('intro',{nodeId:'intro_4',phaseElapsed:5,purchaseElapsed:null}));check('Opening conversation shows Dragon face toward Zhuang and camera',faceWorld.actors.dragonHeading===.5);
+faceDirector.beforeActors(state('intro',{nodeId:'intro_9',purchaseElapsed:0}));check('Dragon starts turning without snapping away from the conversation',faceWorld.actors.dragonHeading===.5);
+faceDirector.beforeActors(state('purchase',{purchaseElapsed:2.5}));check('Dragon faces into the store while entering',Math.abs(faceWorld.actors.dragonHeading-Math.PI)<1e-9);
+faceDirector.beforeActors(state('purchase',{purchaseElapsed:4.5}));check('Dragon turns toward the counter along the path',Math.abs(faceWorld.actors.dragonHeading-1.73)<1e-9);
+faceDirector.beforeActors(state('cargo',{nodeId:'cargo_1'}));check('Cargo dialogue shows Dragon face',faceWorld.actors.dragonHeading===.5);faceWorld.r.dispose();
+const sw=makeWorld(),sd=new MissionDirector(sw);sw.actors.dragonPosition=[1.2,1.3,1.2];
+for(const [at,beat] of [[2.2,'store-camera-insert'],[2.8,'store-shelf-insert'],[4.0,'store-shelf-insert'],[4.9,'dragon-at-counter']]){sd.state=state('purchase',{purchaseElapsed:at});sd.updateCamera(.03,sw.actors.heroPosition);check('Purchase reaches '+beat,sd.status.cameraBeat===beat);if(at===4.9){check('Counter insert tracks the actual Dragon position',sd.cameraTarget.distanceTo(new T.Vector3(1.2,1.62,1.2))<1e-9);check('Insert transitions cut instead of passing through models',sw.camera.position.distanceTo(sd.cameraPosition)<1e-9);}}
+for(const [id,age,beat] of [['briefing_2',.5,'server-fanbooks'],['briefing_2',1.5,'briefing-zhuang'],['briefing_4',.5,'server-copier'],['briefing_4',1.5,'briefing-zhuang'],['briefing_8',2.6,'briefing-reaction'],['briefing_9',0,'briefing-zhuang']]){sd.state=state('briefing',{nodeId:id,nodeElapsed:age,text:'少女可以是十幾歲、幾百歲，但是不能三四十歲。'});sd.updateCamera(.03,sw.actors.heroPosition);check('Briefing preserves evidence then reaction: '+id+' '+age,sd.status.cameraBeat===beat);}
+sw.r.dispose();
+const travelWorld=makeWorld(),travelDirector=new MissionDirector(travelWorld);let closest=Infinity,closestAt=0;
+for(let i=0;i<=180;i++){const t=i/30,shot=state('purchase',{purchaseElapsed:t,phaseElapsed:t,clock:t});travelDirector.beforeActors(shot);travelDirector.updateCamera(1/30,travelWorld.actors.heroPosition);const d=travelWorld.actors.dragonPosition,dist=travelWorld.camera.position.distanceTo(new T.Vector3(d[0],d[1]+.35,d[2]));if(dist<closest){closest=dist;closestAt=t;}}
+check('Shopping shots keep the camera outside Dragon with a buffer',closest>.75,{distance:closest,at:closestAt});travelWorld.r.dispose();
+const cutWorld=makeWorld(),cutDirector=new MissionDirector(cutWorld);cutDirector.state=state('briefing',{nodeId:'briefing_2',nodeElapsed:.5});cutDirector.updateCamera(.016,cutWorld.actors.heroPosition);cutDirector.state=state('briefing',{nodeId:'briefing_2',nodeElapsed:1.5});cutDirector.updateCamera(.016,cutWorld.actors.heroPosition);check('Evidence cuts directly to reaction without crossing the facade',cutWorld.camera.position.distanceTo(cutDirector.cameraPosition)<1e-9);cutDirector.state=state('briefing',{nodeId:'briefing_4',nodeElapsed:.5});cutDirector.updateCamera(.016,cutWorld.actors.heroPosition);check('Reaction cuts back to evidence without crossing the facade',cutWorld.camera.position.distanceTo(cutDirector.cameraPosition)<1e-9);cutWorld.r.dispose();
+const lastWorld=makeWorld(),lastDirector=new MissionDirector(lastWorld),lastFeet=[-1.25,4.32,15.25];lastWorld.actors.status.cinematic={heading:2.91};lastWorld.actors.dragonPosition=[-2.15,4.67,15];
+for(const [id,age,beat] of [['last_4',0,'caster-dialogue-face'],['last_5',0,'dragon-ammo-reaction'],['last_6',0,'dragon-ammo-reaction'],['last_7',0,'caster-dialogue-face'],['last_7',1.5,'dragon-ammo-reaction'],['last_8',0,'dragon-ammo-reaction'],['last_10',0,'caster-dialogue-face']]){lastDirector.state=state('last',{nodeId:id,nodeElapsed:age});lastDirector.updateCamera(.1,lastFeet);check('Final bullet dialogue shows the right reaction: '+id+' '+age,lastDirector.status.cameraBeat===beat);}
+lastDirector.state=state('last',{nodeId:'last_7',nodeElapsed:0});lastDirector.updateCamera(.016,lastFeet);lastDirector.state=state('last',{nodeId:'last_7',nodeElapsed:1.5});lastDirector.updateCamera(.016,lastFeet);check('Final bullet cuts directly to the reaction instead of crossing the actors',lastWorld.camera.position.distanceTo(lastDirector.cameraPosition)<1e-9);
+lastDirector.state=state('last',{nodeId:'last_4'});for(let n=0;n<180;n++)lastDirector.updateCamera(1/30,lastFeet);
+const frontNormal=new T.Vector3(Math.sin(2.91),0,Math.cos(2.91)),toCamera=lastWorld.camera.position.clone().sub(new T.Vector3(...lastFeet)).setY(0).normalize();check('Final bullet shows the front of Zhuang',frontNormal.dot(toCamera)>.8);lastWorld.r.dispose();
+const quietWorld=makeWorld(),quietDirector=new MissionDirector(quietWorld);quietDirector.reducedMotion=true;quietDirector.state=state('cargo',{speaker:'dragon',nodeId:'cargo_3',nodeElapsed:2});quietDirector.updateCamera(.016,quietWorld.actors.heroPosition);check('Reduced motion cuts directly to a stable dialogue framing',quietWorld.camera.position.distanceTo(quietDirector.cameraPosition)<1e-9);quietWorld.r.dispose();
 const pw=makeWorld(),pd=new MissionDirector(pw);pd.state=state('photo');const beforePhoto=pw.camera.position.toArray();pd.updateCamera(.1,pw.actors.heroPosition);check('Photo framing remains under player control',JSON.stringify(pw.camera.position.toArray())===JSON.stringify(beforePhoto));pw.r.dispose();
 const tw=makeWorld(),td=new MissionDirector(tw);for(const [at,beat] of [[2,'tour-server-hole'],[6,'tour-smile'],[9,'tour-ruins'],[11,'tour-ground-sign'],[13,'tour-pear'],[17,'tour-dragon']]){td.state=state('tour',{phaseElapsed:at});td.updateCamera(.03,tw.actors.heroPosition);check('Tour retains '+beat,td.status.cameraBeat===beat);}tw.r.dispose();
 // The camera is a shot sequence, with a real front view and clear city subjects.

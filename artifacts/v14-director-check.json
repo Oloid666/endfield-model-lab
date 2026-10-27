@@ -292,6 +292,209 @@
       }
     },
     {
+      "name": "Speaking subject is Zhuang",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Punchline holds on Dragon reaction",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Dialogue keeps camera on street side",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Normal dialogue makes a small orbit",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Reduced motion keeps the dialogue camera still",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Speaking subject is Zhuang",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Punchline holds on Dragon reaction",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Dialogue keeps camera on street side",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Normal dialogue makes a small orbit",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Reduced motion keeps the dialogue camera still",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Opening conversation shows Dragon face toward Zhuang and camera",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Dragon starts turning without snapping away from the conversation",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Dragon faces into the store while entering",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Dragon turns toward the counter along the path",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Cargo dialogue shows Dragon face",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Purchase reaches store-camera-insert",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Purchase reaches store-shelf-insert",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Purchase reaches store-shelf-insert",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Purchase reaches dragon-at-counter",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Counter insert tracks the actual Dragon position",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Insert transitions cut instead of passing through models",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Briefing preserves evidence then reaction: briefing_2 0.5",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Briefing preserves evidence then reaction: briefing_2 1.5",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Briefing preserves evidence then reaction: briefing_4 0.5",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Briefing preserves evidence then reaction: briefing_4 1.5",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Briefing preserves evidence then reaction: briefing_8 2.6",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Briefing preserves evidence then reaction: briefing_9 0",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Shopping shots keep the camera outside Dragon with a buffer",
+      "passed": true,
+      "detail": {
+        "distance": 0.9063845835058493,
+        "at": 3.6
+      }
+    },
+    {
+      "name": "Evidence cuts directly to reaction without crossing the facade",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Reaction cuts back to evidence without crossing the facade",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Final bullet dialogue shows the right reaction: last_4 0",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Final bullet dialogue shows the right reaction: last_5 0",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Final bullet dialogue shows the right reaction: last_6 0",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Final bullet dialogue shows the right reaction: last_7 0",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Final bullet dialogue shows the right reaction: last_7 1.5",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Final bullet dialogue shows the right reaction: last_8 0",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Final bullet dialogue shows the right reaction: last_10 0",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Final bullet cuts directly to the reaction instead of crossing the actors",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Final bullet shows the front of Zhuang",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Reduced motion cuts directly to a stable dialogue framing",
+      "passed": true,
+      "detail": null
+    },
+    {
       "name": "Photo framing remains under player control",
       "passed": true,
       "detail": null

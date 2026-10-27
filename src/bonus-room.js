@@ -72,10 +72,10 @@ export function createBonusRoom(){
  const policyCard=label(claims,'要保人：莊芳宜',[.1,1.62,-.25],1.75,.38,'#29483e','#f0e2bb');policyCard.visible=false;
  const contract=label(claims,'新產險 · 長期合作',[.1,1.93,-.28],2,.32,'#745b32','#eed6a0');contract.visible=false;
  const completedInks=['理賠通過','新案承保','長期合作'].map((text,i)=>{const n=label(claims,text,[-1.12+i*.24,1.073,.35],.23,.09,'#a34b3b','#e8dfc1');n.rotation.x=-Math.PI/2;n.visible=false;return n;});
- let negotiation=null,negotiationKey='',objectionAt=-Infinity;
+ let negotiation=null,negotiationKey='',objectionAt=-Infinity,cueAt=0;
  function negotiate(value,time){
   negotiation=value;const key=value?`${value.phase}:${value.field}:${value.line}:${value.stampIndex}`:'welcome';
-  if(key!==negotiationKey){negotiationKey=key;if(value?.cue?.event==='objection')objectionAt=time;}
+  if(key!==negotiationKey){negotiationKey=key;cueAt=time;if(value?.cue?.event==='objection')objectionAt=time;}
   policyCard.visible=!!value?.policyholderVisible;contract.visible=!!value&&['business','stamp','complete'].includes(value.phase);
   completedInks.forEach((n,i)=>n.visible=!!value&&i<value.stampIndex);
   if(!value){focus='wide';return;}
@@ -96,7 +96,7 @@ export function createBonusRoom(){
   c.font='76px sans-serif';c.fillStyle='#d9e4c2';const shown=lines.slice(0,state.reveal+1).flatMap(line=>wrapBoardText(line,t=>c.measureText(t).width,1380));
   shown.forEach((line,i)=>c.fillText(line,78,190+titleLines.length*105+i*95));texture.needsUpdate=true;
  }
- const endPosition=new T.Vector3(),endTarget=new T.Vector3(),lookTarget=new T.Vector3();
+ const endPosition=new T.Vector3(),framePosition=new T.Vector3(),endTarget=new T.Vector3(),lookTarget=new T.Vector3();
  let frameKey='',firstFrame=true;
  function frame(width,height,time){
   const k=`${mode}:${focus}:${width}:${height}`;
@@ -122,10 +122,12 @@ export function createBonusRoom(){
    if(firstFrame||reduced()){camera.position.copy(endPosition);lookTarget.copy(endTarget);firstFrame=false;}
   }
   const dt=lastTime===null?0:Math.max(0,time-lastTime),amount=reduced()?1:1-Math.exp(-dt*10);
-  camera.position.lerp(endPosition,amount);lookTarget.lerp(endTarget,amount);camera.lookAt(lookTarget);
+  framePosition.copy(endPosition);
+  if(mode==='claims'&&['client','representative'].includes(focus)&&!reduced()){const move=T.MathUtils.smootherstep(time-cueAt,0,3);framePosition.x+=(focus==='client'?.13:-.13)*move;framePosition.z-=.1*move;}
+  camera.position.lerp(framePosition,amount);lookTarget.lerp(endTarget,amount);camera.lookAt(lookTarget);
  }
  board();
- return {scene,camera,board,get state(){return {mode,focus,board:{title:boardData.title,lines:[...boardData.lines]},representative:negotiation?.polite?'polite':'serious',policyholderVisible:policyCard.visible,completedStamps:completedInks.filter(n=>n.visible).length,paperStamped:mode==='classroom'?classInk.visible:ink.visible};},resetPaper(){stampAt=-Infinity;ink.visible=classInk.visible=false;classStamp.position.y=.83;classPaper.position.z=-.65;stamp.position.y=1.04;output.position.z=.18;focus='wide';},
+ return {scene,camera,board,get state(){return {mode,focus,cameraPosition:camera.position.toArray(),board:{title:boardData.title,lines:[...boardData.lines]},representative:negotiation?.polite?'polite':'serious',policyholderVisible:policyCard.visible,completedStamps:completedInks.filter(n=>n.visible).length,paperStamped:mode==='classroom'?classInk.visible:ink.visible};},resetPaper(){stampAt=-Infinity;ink.visible=classInk.visible=false;classStamp.position.y=.83;classPaper.position.z=-.65;stamp.position.y=1.04;output.position.z=.18;focus='wide';},
  setMode(value){if(mode!==value){mode=value;firstFrame=true;}classroom.visible=value==='classroom';claims.visible=value==='claims';focus='wide';frameKey='';},
  negotiate,setFocus(value){focus=value;},perform(value){pose=value;},stamp(t,status){stampAt=t;stampReduced=reduced();focus='stamp';ink.visible=classInk.visible=false;const c=ink.material.map.image.getContext('2d');c.fillStyle='#e8dfc1';c.fillRect(0,0,1024,160);c.fillStyle='#a34b3b';c.font='bold 110px sans-serif';c.textAlign='center';c.textBaseline='middle';c.fillText(status,512,80,1000);ink.material.map.needsUpdate=true;},
  render(renderer,time,width,height){

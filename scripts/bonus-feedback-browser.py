@@ -35,7 +35,9 @@ async def main():
     else:await click('claims-next')
    raise AssertionError('Never reached settlement')
   async def new_case():
-   await click('claims');await click('claims-next');await js('__rainy711.tick(__rainy711.time+.8,0,true)');await page.screenshot(path=str(OUT/'bonus-form.png'));await to_stamp()
+   await click('claims');await click('claims-next');await js('__rainy711.tick(__rainy711.time+.8,0,true)');await page.screenshot(path=str(OUT/'bonus-form.png'))
+   await click('claims-select','B');await js('__rainy711.tick(__rainy711.time+.8,0,true)');first=await js('__rainy711.bonus.room.cameraPosition');await js('__rainy711.tick(__rainy711.time+2,0,true)');second=await js('__rainy711.bonus.room.cameraPosition');distance=sum((a-b)**2 for a,b in zip(first,second))**.5;check('Negotiation camera moves gently while a line is held',.03<distance<.25)
+   await page.emulate_media(reduced_motion='reduce');await js('__rainy711.tick(__rainy711.time+.1,0,true)');still=await js('__rainy711.bonus.room.cameraPosition');await js('__rainy711.tick(__rainy711.time+1,0,true)');check('Reduced motion keeps negotiation shot still',await js('__rainy711.bonus.room.cameraPosition')==still);await page.emulate_media(reduced_motion='no-preference');await to_stamp()
   try:
    await page.goto(os.environ.get('PREVIEW_URL','http://127.0.0.1:4173/'),wait_until='domcontentloaded');await page.wait_for_function('window.__rainy711?.actorsLoaded',timeout=120000)
    await page.locator('#menu-toggle').click();await page.locator('#sound').check();await page.locator('#menu-close').click();await js('__rainy711.pauseForCapture()');await page.locator('.bonus-entry').click();await new_case()

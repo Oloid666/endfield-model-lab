@@ -1,0 +1,102 @@
+{
+  "checks": [
+    {
+      "name": "Opening establishes the two people",
+      "passed": true
+    },
+    {
+      "name": "Zhuang gets a speaker shot",
+      "passed": true
+    },
+    {
+      "name": "Dragon gets a speaker shot",
+      "passed": true
+    },
+    {
+      "name": "Pause freezes dialogue clock",
+      "passed": true
+    },
+    {
+      "name": "Pause preserves focal point",
+      "passed": true
+    },
+    {
+      "name": "Store CCTV insert appears",
+      "passed": true
+    },
+    {
+      "name": "Store shelf insert appears",
+      "passed": true
+    },
+    {
+      "name": "Landscape layout fits screen",
+      "passed": true
+    },
+    {
+      "name": "Counter waits until Dragon has cleared the camera",
+      "passed": true
+    },
+    {
+      "name": "Counter camera keeps a comfortable distance from Dragon",
+      "passed": true
+    },
+    {
+      "name": "Counter has a clear physical sightline to Dragon",
+      "passed": true
+    },
+    {
+      "name": "Counter shot is not inside a character",
+      "passed": true
+    },
+    {
+      "name": "Dragon stays in the portrait counter frame",
+      "passed": true
+    },
+    {
+      "name": "Purchase and exit lead to photo conversation",
+      "passed": true
+    },
+    {
+      "name": "Photo flight waits for player",
+      "passed": true
+    },
+    {
+      "name": "Flight gate can be reached",
+      "passed": true
+    },
+    {
+      "name": "Photo review is reached",
+      "passed": true
+    },
+    {
+      "name": "Receipt line uses the two-person view",
+      "passed": true
+    },
+    {
+      "name": "Receipt is visible for its reveal",
+      "passed": true
+    },
+    {
+      "name": "Receipt is visible for itemization",
+      "passed": true
+    },
+    {
+      "name": "Receipt clears for the character exchange",
+      "passed": true
+    },
+    {
+      "name": "Supplement punchline starts on Zhuang",
+      "passed": true
+    },
+    {
+      "name": "Supplement punchline reveals Dragon reaction",
+      "passed": true
+    },
+    {
+      "name": "No page errors",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "real_iphone_test": false
+}

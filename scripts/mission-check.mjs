@@ -11,6 +11,7 @@ function rhythmWin(r,origin){
  for(const note of notes){check('Beat down accepted',r.down(origin+note.at));if(note.type==='hold')check('Hold release accepted',r.up(origin+note.end));}
  r.update(origin+notes.at(-1).end+1);
 }
+const lineClock=new MissionMachine();lineClock.start();step(lineClock,1);const ageBeforePause=lineClock.state.nodeElapsed;lineClock.setPaused(true);step(lineClock,50);check('Paused dialogue holds the shot clock',lineClock.state.nodeElapsed===ageBeforePause);lineClock.setPaused(false);step(lineClock,1);check('Dialogue shot clock resumes with the story',Math.abs(lineClock.state.nodeElapsed-ageBeforePause-1)<1e-9);lineClock.next();lineClock.next();check('A new line resets the shot clock',lineClock.state.nodeElapsed===0);
 for(const route of ['floor']){
  const events=[],m=new MissionMachine({onAction:e=>events.push(e)});m.setTargets([{id:'structure',label:'店體',position:[0,3,1]}]);
  step(m,900);check('Opening waits',m.phase==='ready');m.start();finish(m);check('Purchase holds at counter',m.phase==='purchase');step(m,6);step(m,7);finish(m);check('Flight gate waits',m.phase==='photo-flight');m.fly(1,1);for(let j=0;j<7;j++)step(m,.1);m.fly(0,1);for(let j=0;j<18;j++)step(m,.1);m.fly(0,0);check('Flight positioning opens camera',m.finishFlight());check('Dinner no longer blocks story',m.phase==='photo'&&m.branch==='A');

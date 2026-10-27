@@ -84,7 +84,8 @@ export function createMission({mount=document.querySelector('#app'),onDinner,onG
   }
   function render(force=false){
     if(disposed)return;const s=machine.state,active=!['ready','complete'].includes(s.phase),isCombat=['combat','aim-final'].includes(s.phase),isCharge=['ascent','director-reminder','shoe-view','pylon-link','charge','fire-ready'].includes(s.phase),isConnection=connectionPhases.has(s.phase),isVcr=s.vcr??vcrPhases.has(s.phase),c=s.connection||s.login||{},h=s.heat||{};
-    receipt.hidden=s.phase!=='cargo';root.dataset.phase=s.phase;root.dataset.paused=String(s.paused);root.dataset.clockRunning=String(clockRunning&&!document.hidden);mount.dataset.missionPhase=s.phase;
+    // Read the document on its reveal and itemization, then return to the people.
+    receipt.hidden=s.phase!=='cargo'||!['cargo_0','cargo_1','cargo_3'].includes(s.nodeId);root.dataset.phase=s.phase;root.dataset.paused=String(s.paused);root.dataset.clockRunning=String(clockRunning&&!document.hidden);mount.dataset.missionPhase=s.phase;
     cameraReset.hidden=true;
     mount.classList.toggle('mission-ready',s.phase==='ready');mount.classList.toggle('mission-active',active);mount.classList.toggle('mission-running',runningPhases.has(s.phase));mount.classList.toggle('mission-complete',s.phase==='complete');mount.classList.toggle('mission-vcr-active',isVcr);
     loginAside.hidden=!['login','verify-talk'].includes(s.phase)||!s.loginAside;setText(loginAside,'龍泡泡：'+s.loginAside);

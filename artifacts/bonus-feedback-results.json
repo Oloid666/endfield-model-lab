@@ -1,6 +1,14 @@
 {
   "checks": [
     {
+      "name": "Negotiation camera moves gently while a line is held",
+      "passed": true
+    },
+    {
+      "name": "Reduced motion keeps negotiation shot still",
+      "passed": true
+    },
+    {
       "name": "Each objection sounds once",
       "passed": true
     },

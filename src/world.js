@@ -133,6 +133,21 @@ export class World {
     let closeup;if(!portrait){const pos=this.camera.position.clone(),target=this.controls.target.clone(),fov=this.camera.fov;try{const h=this.actors.heroPosition;this.camera.position.set(h[0]+.12,h[1]+1.7,h[2]+1.4);this.controls.target.set(h[0],h[1]+1.65,h[2]);this.camera.fov=35;this.camera.lookAt(this.controls.target);this.camera.updateProjectionMatrix();closeup=this.capturePhoto(true).src;}finally{this.camera.position.copy(pos);this.controls.target.copy(target);this.camera.fov=fov;this.camera.lookAt(target);this.camera.updateProjectionMatrix();this.composer.render();}}return {src,width,height,points,closeup};
   }
   projectPoint(point){const p=new T.Vector3().fromArray(point).project(this.camera);return p.toArray();}
+  // Read-only diagnostic for checking the camera against visible shop geometry.
+  cameraOcclusion(point){
+    const target=new T.Vector3().fromArray(point),direction=target.clone().sub(this.camera.position),distance=direction.length();
+    if(distance<=.15)return null;
+    this.scene.updateMatrixWorld(true);const ray=new T.Raycaster(this.camera.position,direction.normalize(),.04,distance-.15);
+    const roots=[this.store.root,this.investigationProps?.root].filter(Boolean);
+    for(const hit of ray.intersectObjects(roots,true)){
+      let visible=true;for(let node=hit.object;node;node=node.parent)if(!node.visible){visible=false;break;}
+      const materials=Array.isArray(hit.object.material)?hit.object.material:[hit.object.material];
+      if(!visible||materials.every(m=>!m||m.visible===false||m.transparent&&m.opacity<.1))continue;
+      return {object:hit.object.name||hit.object.parent?.name||hit.object.type,distance:hit.distance};
+    }
+    return null;
+  }
+
   tick(t,delta=.016,render=true){
     if(this.bonus?.active){this.time=t;this.bonus.tick(t,render);return;}
     this.time=t;this.onTick(t,delta);
