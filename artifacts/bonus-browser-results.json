@@ -1,0 +1,347 @@
+{
+  "browser": "Chromium / SwiftShader",
+  "real_iphone_test": false,
+  "checks": [
+    {
+      "name": "Six real sign taps do not unlock",
+      "passed": true,
+      "detail": {
+        "active": false,
+        "route": "rooms",
+        "busy": false,
+        "lesson": "cargo",
+        "page": 0,
+        "response": 0,
+        "presentation": {
+          "reveal": 2,
+          "dead": false,
+          "pose": "explain"
+        },
+        "stampPhase": "",
+        "taps": 6,
+        "unlocked": false,
+        "warned": false,
+        "read": [],
+        "finished": [],
+        "preference": "",
+        "reading": false,
+        "textSize": 18,
+        "trial": {
+          "mode": "A",
+          "found": [],
+          "errors": 0,
+          "clue": null,
+          "proofs": [],
+          "form": {},
+          "result": null
+        }
+      }
+    },
+    {
+      "name": "Seventh real sign tap unlocks",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "First visit warns about spoilers",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Room freezes main story clock",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Lesson 1 opens",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Lesson 1 waits for reaction input",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Lesson 1 read recorded",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Source dialog opens",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Reading mode expands text area",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Largest text is 26px",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Large text does not overflow page",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Lesson 2 opens",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Lesson 2 waits for reaction input",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Lesson 2 read recorded",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Lesson 3 opens",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Lesson 3 waits for reaction input",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Lesson 3 read recorded",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Lesson 4 opens",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Lesson 4 waits for reaction input",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Lesson 4 read recorded",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Lesson 5 opens",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Lesson 5 waits for reaction input",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Lesson 5 read recorded",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Lesson 6 opens",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Lesson 6 waits for reaction input",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Lesson 6 read recorded",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Lesson 7 opens",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Lesson 7 waits for reaction input",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Lesson 7 read recorded",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Lesson 8 opens",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Lesson 8 waits for reaction input",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Lesson 8 read recorded",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Both fixed evidence images load",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Evidence close preserves case scroll",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Two mistakes show concrete hint",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Claim and selected quote are shown together",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Both exact clues recorded",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Stamping starts before result appears",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Evidence path accepts correction",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "PNG export is downloadable",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "False form rejected",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Loss is first reason",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Accurate form accepted",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Preference saved",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Return restores mission phase",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Return consumes paused source-clock gap",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Return preserves camera",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "One renderer after repeated visits",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "No background is left inert",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Reading preference survives reload",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Text size survives reload",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Unlock survives reload",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Read chapters survive reload",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Spoiler warning not repeated",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Landscape has no horizontal overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Portrait has no horizontal overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Normal stamp holds before impact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Stamp impact has one sound",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Repeated frame does not repeat impact sound",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Stamp sequence reaches result",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Sound off suppresses stamp sound",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "No JS exceptions",
+      "passed": true,
+      "detail": []
+    }
+  ],
+  "errors": []
+}

@@ -9,6 +9,12 @@ export class RainAudio {
     await this.context.resume();
   }
   hum(time){if(!this.context||this.context.state!=='running')return;const beat=Math.floor(time*2);if(beat===this.lastHum)return;this.lastHum=beat;const c=this.context,o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=[196,220,247,220,174,196,165,196][beat%8];g.gain.setValueAtTime(.0001,c.currentTime);g.gain.exponentialRampToValueAtTime(.035,c.currentTime+.05);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+.35);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.4);o.onended=()=>{o.disconnect();g.disconnect();};}
+  effect(kind){
+    const c=this.context;if(!c||c.state!=='running')return;
+    const now=c.currentTime,o=c.createOscillator(),g=c.createGain();
+    o.type=kind==='stamp'?'triangle':'sine';o.frequency.setValueAtTime(kind==='stamp'?150:920,now);o.frequency.exponentialRampToValueAtTime(kind==='stamp'?55:650,now+.09);
+    g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(kind==='stamp'?.14:.022,now+.008);g.gain.exponentialRampToValueAtTime(.0001,now+.13);o.connect(g);g.connect(c.destination);o.start();o.stop(now+.15);o.onended=()=>{o.disconnect();g.disconnect();};
+  }
   async disable(){await this.context?.suspend();}
   dispose(){this.source?.stop();this.context?.close();}
 }

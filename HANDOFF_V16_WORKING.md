@@ -46,3 +46,22 @@ Vite + Three.js；劇情狀態 `src/mission-state.js`、文案 `src/mission-dial
 ## V17 手機回報修正（待實機複核）
 
 2026-10-26 後續依 iPhone 截圖修正：`kiss` 鍵盤點擊白名單、收據「不適用七天退貨」、驗證及能量／最後一發台詞、龍泡泡買完晚餐的銜接。店內輪播新增往外看，微波爐鏡頭改由店內取景；海報前的原生促銷牌移到海報後側，海報位置降低、觀看鏡頭退後。龍泡泡取餐增加入店／攝影機短鏡頭，拍照定位鏡頭較低並追角色；回到莊旁時讓手機和角色朝向分享畫面。鞋子環繞改用雙鞋鞋跟中心，每圈繞完仍由玩家決定。賽希手機螢幕轉向自己；微波爐過載顯示 `800 MW` 並以大紅字突出 M；能量段放大沒電提示；散步只在 ready／complete 階段可見。程式建置與 `scripts/*check.mjs` 通過，尚待 iPhone 複核遮擋、手機朝向與鞋子完整入鏡。通訊大頭貼二樓室內角度仍屬先前未完成美術項。
+
+## 二周目小教室與理賠試玩（2026-10-27，本地修改）
+
+新增秘密入口：在 ready／complete 點實際 711 招牌七次解鎖，不再用梨花五次。解鎖、已讀章節與玩法偏好本機保存。二樓左室為龍泡泡黑板教室（八章、每章原句＋三頁詳解＋補刀），右室為同案 A 找矛盾／B 填單兩種試玩，附前後照片與可保存 PNG 的結案書。先試玩再決定正式理賠玩法，不視為已選定其一。
+
+新增 `src/bonus*.js`／`src/bonus.css`，入口接 `main.js` 的場景點擊；共用 renderer，進房凍結主線與街景更新，返回還原相機、散步與暫停。完整操作、來源界線與測試命令見 `docs/BONUS-ROOMS.md`。本節是本地交接，不代表已部署或完成 iPhone 驗收；本輪 `npm run build`、全部 11 支 `scripts/*check.mjs`（共 888 項）與 `git diff --check` 通過；Chromium／SwiftShader 40 項操作檢查通過，包含真正點招牌七次、八章已讀、A/B 結案、PNG、刷新保存、十次往返、300 秒房內停留不推進主線與相機還原。結果見 `artifacts/bonus-browser-results.json`，預覽見 `artifacts/bonus-classroom.png`、`artifacts/bonus-result-a.png`。非 iPhone 真機驗收，尚未推送。
+
+## 二周目演出與操作優化（2026-10-27，本地修改）
+
+依使用者同意的第一輪項目完成：黑板分段揭示與可讀重點、龍泡泡講解／被打斷／尷尬／下課反應、理賠 A 指出具體原句或照片區域後並排提出矛盾、抬章／落印／出單與單次音效、手機專心閱讀及 18／22／26px 字級。逐句手動回應後才標記章節已讀；附件關閉保留捲動與焦點。閱讀偏好沿原本本機保存方式增補，舊解鎖紀錄保留。
+
+蓋章演出中途返回不算試辦完成；新案件清除舊紅印，落印前不顯示紅印。音效沿設定中的「雨聲與音效」開關，減少動態模式縮短演出。這輪沒有擴充理賠案件數，也沒有修改主線拍照／鞋子構圖或補拍莊頭像。
+
+驗證：建置通過；11 支程式檢查共 922 項通過；完整 Chromium 操作 62 項通過，另對蓋章取消／重播／音效／閱讀焦點做 13 項針對性檢查通過。結果為 `artifacts/bonus-browser-results.json` 與 `artifacts/bonus-feedback-results.json`。新預覽含 `bonus-blackboard.png`、`bonus-reading.png`、`bonus-evidence-comparison.png`、`bonus-stamp.png`。尚未推送或部署，仍待 iPhone Safari 真機驗收。
+
+
+## 推送交接（2026-10-27）
+
+使用者已要求將本輪二周目與演出優化推送至 `main`。上述「本地修改／尚未推送」為各輪完成當時的紀錄；本次發布以最新 main 提交及 GitHub Actions 的 Build and deploy Pages 結果為準。測試網址： https://oloid666.github.io/endfield-model-lab/?v=bonus-20261027 。開場或結局點實際 711 招牌七次，從「二周目・樓上請」進入。iPhone Safari 真機驗收仍待使用者回報。

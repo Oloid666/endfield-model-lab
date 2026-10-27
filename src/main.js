@@ -6,10 +6,11 @@ import { loadActors } from './actors.js';
 import { RainAudio } from './audio.js';
 import { createMission } from './mission.js';
 import { createExploration } from './exploration.js';
+import { createBonus } from './bonus.js';
 
 const $=s=>document.querySelector(s),loading=$('#loading'),message=$('#loading-message'),error=$('#error');
 const loader=createLoading();
-const audio=new RainAudio(),abort=new AbortController();let world,mission,exploration,closed=false,menuPaused=false,xaihiPromise=null,assetPaused=false;
+const audio=new RainAudio(),abort=new AbortController();let world,mission,exploration,bonus,closed=false,menuPaused=false,xaihiPromise=null,assetPaused=false;
 const listen=(element,type,fn)=>element.addEventListener(type,fn,{signal:abort.signal});
 function showError(text){$('#error-message').textContent=text;error.hidden=false;loading.hidden=true;}
 function menu(open){
@@ -105,16 +106,19 @@ async function init(){
     });
     mission.setTargets(world.director.targets);world.onClockState=value=>mission.setClockRunning(value);mission.setClockRunning(world.running&&!document.hidden);
     exploration=createExploration(world,{mount:$('#app'),signal:abort.signal,
-      canWalk:()=>['ready','complete'].includes(mission.state.phase),onHotspot:kind=>mission.hotspot(kind),
+      canWalk:()=>!bonus?.active&&['ready','complete'].includes(mission.state.phase),onHotspot:kind=>mission.hotspot(kind),
       onSceneTap:ray=>{
+        if(bonus?.handleTap(ray))return true;
         if(['ready','intro','complete','photo'].includes(mission.state.phase)&&world.interact(ray))return true;
         if(!['combat','aim-final'].includes(mission.state.phase))return false;
         const target=world.director.pick(ray.ray);if(target!==null)mission.selectTarget(target);return true;
       }
     });
-    world.onTick=(time,delta)=>{mission.update(time);world.missionState=mission.state;if(mission.state.phase==='tour'&&mission.state.phaseElapsed>=14&&mission.state.phaseElapsed<30&&!mission.state.paused)audio.hum(mission.state.phaseElapsed);exploration.update(delta);};
+    bonus=createBonus({mount:$('#app'),world,mission,exploration,playEffect:kind=>{if($('#sound').checked&&!document.hidden)audio.effect(kind);}});
+    world.onTick=(time,delta)=>{mission.update(time);world.missionState=mission.state;if(mission.state.phase==='tour'&&mission.state.phaseElapsed>=14&&mission.state.phaseElapsed<30&&!mission.state.paused)audio.hum(mission.state.phaseElapsed);exploration.update(delta);bonus.update();};
     loader.hide();world.start();
     window.__rainy711={
+      get bonus(){return bonus.state;},
       get switches(){return {signal:world.signalIndex||0,room:world.roomLightOn??true,door:world.store.doors.manual};},get time(){return world.time;},get renders(){return world.renderCount;},get drawCalls(){return world.renderer.info.render.calls;},get triangles(){return world.renderer.info.render.triangles;},get warmup(){return world.shaderWarmup.state;},resetCamera:()=>world.resetStoryCamera(),
       get aa(){return {msaa:world.msaaSamples,postSamples:world.composer.renderTarget1.samples,postDepth:world.composer.renderTarget1.depthBuffer,fxaa:world.fxaa.enabled,dpr:world.renderer.getPixelRatio()};},
       get metrics(){let lights=0;world.scene.traverse(n=>{if(n.isLight&&n.visible)lights++;});return {batches:world.batchStats,lights,weather:world.weather.metrics,camera:world.walkCamera.state};},
@@ -133,7 +137,7 @@ async function init(){
     };
   }catch(e){world?.dispose();showError('無法啟動 3D 畫面。請使用支援 WebGL 2 的 Safari，然後重新載入。');console.error(e);}
 }
-function dispose(){closed=true;loader.dispose();abort.abort();exploration?.dispose();mission?.dispose();audio.dispose();world?.dispose();}
+function dispose(){closed=true;loader.dispose();abort.abort();bonus?.dispose();exploration?.dispose();mission?.dispose();audio.dispose();world?.dispose();}
 listen(window,'pagehide',event=>{if(!event.persisted)dispose();else world?.stop();});listen(window,'pageshow',event=>{if(event.persisted)world?.start();});
 if(import.meta.hot)import.meta.hot.dispose(dispose);
 init();

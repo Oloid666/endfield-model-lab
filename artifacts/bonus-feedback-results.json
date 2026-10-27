@@ -1,0 +1,58 @@
+{
+  "checks": [
+    {
+      "name": "New case has blank paper",
+      "passed": true
+    },
+    {
+      "name": "No ink before impact",
+      "passed": true
+    },
+    {
+      "name": "Cancel does not mark case complete",
+      "passed": true
+    },
+    {
+      "name": "Cancel before impact has no sound",
+      "passed": true
+    },
+    {
+      "name": "Ink appears on impact",
+      "passed": true
+    },
+    {
+      "name": "Impact sound once",
+      "passed": true
+    },
+    {
+      "name": "No repeated sound",
+      "passed": true
+    },
+    {
+      "name": "Printing finishes",
+      "passed": true
+    },
+    {
+      "name": "Replay clears previous red stamp",
+      "passed": true
+    },
+    {
+      "name": "Reading toggle keeps focus",
+      "passed": true
+    },
+    {
+      "name": "Font control keeps focus",
+      "passed": true
+    },
+    {
+      "name": "Look at board restores performance layout",
+      "passed": true
+    },
+    {
+      "name": "No page exception",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "real_iphone_test": false
+}

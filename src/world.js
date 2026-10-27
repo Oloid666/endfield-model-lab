@@ -67,7 +67,7 @@ export class World {
     this.opaqueTarget=target;this.composer=new EffectComposer(this.renderer,new T.WebGLRenderTarget(1,1,{type:T.HalfFloatType,depthBuffer:false}));this.composer.addPass(new OpaquePass(this.scene,this.camera,target));
     this.glassPass=new ThinGlassPass(this.scene,this.camera,this.store.glass,target);this.composer.addPass(this.glassPass);
     this.bloom=new UnrealBloomPass(new T.Vector2(1,1),.29,.62,1.05);this.composer.addPass(this.bloom);this.output=new OutputPass();this.composer.addPass(this.output);this.fxaa=new ShaderPass(FXAAShader);this.composer.addPass(this.fxaa);
-    this.resize=()=>{if(this.disposed)return;const width=container.clientWidth,height=Math.max(1,container.clientHeight);this.camera.aspect=width/height;this.camera.updateProjectionMatrix();this.weather?.invalidateReflection();this.renderer.setSize(width,height,false);this.composer.setSize(width,height);this.fxaa.uniforms.resolution.value.set(1/(width*this.renderer.getPixelRatio()),1/(height*this.renderer.getPixelRatio()));this.bloom.resolution.set(width*.5,height*.5);this.bloom.setSize(width*.5,height*.5);const mobile=width/height<.85;if(this.mobile!==mobile&&this.currentView)this.setView(this.currentView,true);this.mobile=mobile;};
+    this.resize=()=>{if(this.disposed)return;const width=container.clientWidth,height=Math.max(1,container.clientHeight);this.camera.aspect=width/height;this.camera.updateProjectionMatrix();this.weather?.invalidateReflection();this.renderer.setSize(width,height,false);this.composer.setSize(width,height);this.fxaa.uniforms.resolution.value.set(1/(width*this.renderer.getPixelRatio()),1/(height*this.renderer.getPixelRatio()));this.bloom.resolution.set(width*.5,height*.5);this.bloom.setSize(width*.5,height*.5);const mobile=width/height<.85;if(this.mobile!==mobile&&this.currentView&&!this.bonus?.active)this.setView(this.currentView,true);this.mobile=mobile;};
     this.observer=new ResizeObserver(this.resize);this.observer.observe(container);this.resize();this.setView('street',true);
     this.visibility=()=>{this.previous=undefined;this.onClockState?.(!document.hidden&&this.running);};document.addEventListener('visibilitychange',this.visibility);
   }
@@ -134,6 +134,7 @@ export class World {
   }
   projectPoint(point){const p=new T.Vector3().fromArray(point).project(this.camera);return p.toArray();}
   tick(t,delta=.016,render=true){
+    if(this.bonus?.active){this.time=t;this.bonus.tick(t,render);return;}
     this.time=t;this.onTick(t,delta);
     if(this.earlyDragon){const d=this.earlyDragon;d.root.position.y=.32+Math.abs(Math.sin(t*2.6))*.3;d.root.rotation.y=Math.sin(t*.9)*.65;d.update(t,{nod:.3,gesture:'wave',gestureAmount:(Math.sin(t*2)+1)/2});}
 
@@ -160,7 +161,7 @@ export class World {
     if(document.hidden){this.previous=undefined;return;}
     const delta=this.previous===undefined?0:Math.max(0,(now-this.previous)/1000);this.previous=now;
     this.time+=delta;
-    if(this.transition){const p=this.transition,w=T.MathUtils.smootherstep(this.time-p.start,0,1.5);this.camera.position.lerpVectors(p.position,p.endPosition,w);this.controls.target.lerpVectors(p.target,p.endTarget,w);if(w===1)this.transition=null;}
+    if(this.transition&&!this.bonus?.active){const p=this.transition,w=T.MathUtils.smootherstep(this.time-p.start,0,1.5);this.camera.position.lerpVectors(p.position,p.endPosition,w);this.controls.target.lerpVectors(p.target,p.endTarget,w);if(w===1)this.transition=null;}
     this.tick(this.time,Math.min(delta,.08));
   });}
   stop(){this.renderer.setAnimationLoop(null);this.previous=undefined;this.running=false;this.onClockState?.(false);}
