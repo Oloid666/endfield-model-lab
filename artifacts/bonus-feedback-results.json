@@ -1,6 +1,10 @@
 {
   "checks": [
     {
+      "name": "Each objection sounds once",
+      "passed": true
+    },
+    {
       "name": "New case has blank paper",
       "passed": true
     },
@@ -13,7 +17,11 @@
       "passed": true
     },
     {
-      "name": "Cancel before impact has no sound",
+      "name": "Cancel before impact has no stamp sound",
+      "passed": true
+    },
+    {
+      "name": "Replay clears reveal, choices and stamps",
       "passed": true
     },
     {
@@ -29,19 +37,59 @@
       "passed": true
     },
     {
-      "name": "Printing finishes",
+      "name": "Restart cancels stamp ceremony",
       "passed": true
     },
     {
-      "name": "Replay clears previous red stamp",
+      "name": "Cancelled ceremony cannot complete later",
       "passed": true
     },
     {
-      "name": "Reading toggle keeps focus",
+      "name": "All three document stamps persist in room",
       "passed": true
     },
     {
-      "name": "Font control keeps focus",
+      "name": "Three stamps and two objections played once",
+      "passed": true
+    },
+    {
+      "name": "Result has happy ending",
+      "passed": true
+    },
+    {
+      "name": "Export is reachable in the result menu",
+      "passed": true
+    },
+    {
+      "name": "Replay hides old red ink and policyholder",
+      "passed": true
+    },
+    {
+      "name": "Claims reading toggle keeps focus",
+      "passed": true
+    },
+    {
+      "name": "Claims font control keeps focus",
+      "passed": true
+    },
+    {
+      "name": "Large text has no horizontal overflow",
+      "passed": true
+    },
+    {
+      "name": "Landscape advance stays within screen",
+      "passed": true
+    },
+    {
+      "name": "Classroom begins with Yaoguang",
+      "passed": true
+    },
+    {
+      "name": "Class reading toggle keeps focus",
+      "passed": true
+    },
+    {
+      "name": "Class font control keeps focus",
       "passed": true
     },
     {
@@ -49,11 +97,15 @@
       "passed": true
     },
     {
+      "name": "Second topic is Mikoto",
+      "passed": true
+    },
+    {
       "name": "Short course produces death certificate",
       "passed": true
     },
     {
-      "name": "Same bottom button finishes all the way to street",
+      "name": "Same bottom button finishes to street",
       "passed": true
     },
     {

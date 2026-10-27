@@ -1,0 +1,17 @@
+{
+  "checks": [
+    {
+      "name": "Landscape menu does not cover advance",
+      "passed": true
+    },
+    {
+      "name": "Landscape page has no horizontal overflow",
+      "passed": true
+    },
+    {
+      "name": "Menu remains reachable",
+      "passed": true
+    }
+  ],
+  "real_iphone_test": false
+}

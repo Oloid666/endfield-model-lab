@@ -4,6 +4,20 @@ import {sequences,chargeLines,captchaLines,connectionPrompts} from './mission-di
 const quote=(sequence,...indices)=>indices.map(i=>sequence[i].text).join('\n');
 const lesson=(id,title,board,recap,analysis,aside,diagnosis,sources=[])=>({id,title,board,recap,analysis,aside,diagnosis,sources});
 export const LESSONS=[
+ lesson('general','將軍救急，救到哪一棚','爻光充能 → 武陵缺電',quote(sequences.energy,4,5),[
+  '龍泡泡：各位同學，這句口號借用的是《崩壞：星穹鐵道》與 UGREEN 綠聯聯動宣傳中的「爻光充能手勢曲」。這裡的將軍是爻光，原本服務的是大家手上的充電設備；現在卻被唱進武陵電網告急的現場。',
+  '龍泡泡：充電廣告的承諾，是幫手機補充電量。本劇的需求卻是替全城電網救急，服務範圍突然擴大了好幾個數量級。熟悉聯動的同學會認出口號，不熟悉的同學也能聽懂向將軍求救的誇張程度。',
+  '龍泡泡：在武陵缺電的時候，搬出另一部作品的充電宣傳，再被阿莊當場抓到跨棚，形成了作品、商品與情境的三重錯位，令人忍俊不禁。請各位記住「你錯棚了」這句話，下一題還會用到。'
+ ],'莊：所以我才說你錯棚。\n龍泡泡：是的。請各位記住這句話，下一題會考。','診斷：充電服務跨區營業。',[
+  {label:'帕姆的收藏夾官方微博原文：爻光充能手勢曲（新浪轉載）',url:'https://www.sina.cn/news/detail/5311219349327437.html'},
+  {label:'UGREEN 官方：爻光聯名系列',url:'https://www.ugreen.com/en-ca/pages/ugreen-honkai-star-rail'}]),
+ lesson('mikoto','武陵的 Level 6','炮姐 Level 5 → 武陵自行加級',quote(sequences.last,3,4,5),[
+  '龍泡泡：接著，剛才要求別人不要跨棚的莊，宣布自己是「武陵的 Level 6」。熟悉炮姐的同學應該已經產生反應。御坂美琴是《魔法禁書目錄》與《科學超電磁砲》系列的電擊使，常態設定為學園都市第三位的 Level 5。',
+  '龍泡泡：炮姐透過電磁力發射硬幣，因此以「超電磁砲」聞名；本劇借用的是她的電擊形象、等級制度與砲擊聯想。阿莊把學園都市的分級搬到武陵，還自行往上加了一級。這屬於跨棚兼戰力膨脹，令人忍俊不禁。',
+  '龍泡泡：前面先抓別人錯棚，後面自己宣布武陵開分校，規則的適用顯得相當有彈性。炮姐拿硬幣當彈丸，阿莊最後拿我當子彈，連彈藥規格都自行升級。等級可以加，講師的工傷也請一併處理。'
+ ],'莊：我有說我是御坂美琴嗎？\n龍泡泡：沒有。妳直接宣布武陵開分校了。\n莊：下一題。\n龍泡泡：本人以更高位階跨棚，並要求結束討論，令人忍俊不禁。','診斷：武陵校區自行招生。',[
+  {label:'動畫官方：御坂美琴為 Level 5 第三位、電擊使與超電磁砲',url:'https://toaru-project.com/index_3/chara/mikoto.html'}]),
+
  lesson('cargo','便當與共犯通知','補給 ≠ 無限責任',quote(sequences.cargo,1,3,6,8),[
   '故事先把任務縮得很小：龍泡泡只是想讓加班的莊吃晚餐，拍照也像普通的報平安。觀眾因此預期接下來會是照顧人的溫柔短劇。手機翻到上一張收據，才把同一個「幫忙拿東西」突然放大成一萬噸的責任。',
   '「都是補給」把便當和息壤塞進同一類，字面上勉強說得通，重量、風險與責任卻完全不同。莊用平靜口吻維持行政上的合理，龍泡泡則替觀眾說出兩者不能混為一談；越是淡定，落差越大。',
@@ -34,11 +48,6 @@ export const LESSONS=[
   'W 是瓦特，M 是百萬的 SI 前綴，所以 800 MW 是八億瓦，並不是一般家用微波爐的 800 W。畫面把 M 放大，是把原本容易略過的一個字母變成揭露：角色以為只是加熱便當，實際用了城市尺度的輸出。',
   '三分鐘變零點三秒先給出效率上的成功，忘記關保溫才揭露電量消失的原因，回頭回答現場為什麼沒電。「停服」「PHP 免金鑰」「0000」構成戲內的低門檻入侵笑話；沒有核實的停服事件與漏洞公告不當成真事介紹。'
  ],'賽希：有熱就好。\n龍泡泡：這句的主詞是便當，不是整座城市。','死因：單位未確認。',[{label:'BIPM：SI 單位與前綴（mega = 10⁶）',url:'https://www.bipm.org/en/measurement-units/si-prefixes'}]),
- lesson('ammo','武陵 Level 6','最後一發：就是你',quote(sequences.energy,3,4)+'\n'+quote(sequences.last,3,4,5,7),[
-  '龍泡泡先用「將軍救急」的口號替電量告急解圍，被莊指出錯棚。後來莊自己又搬出 Level 6，等於建立規矩的人先違反規矩。即使不熟悉外部作品，也能從前後兩句看懂這個雙重標準。',
-  'Level 6 是《科學超電磁砲》系列確實使用的名詞；放進武陵並不表示莊在原作真的具有這個等級，而是此劇借用另一部作品的語彙抬高出力。將軍口號與「最後一發子彈」的精確外部出處若未核實，僅分析本劇用法。',
-  '故事前面讓龍泡泡拿便當、簽收、登入與背鍋，最後連彈藥都由他提供，是同一種被徵用的極端終點。「哪裡搞錯了」問的是身分和處境，莊卻回答方向沒錯，故意把求救理解成彈道校正。'
- ],'龍泡泡：我不是要聽彈道分析。\n莊：那你選錯教室了。','死因：講師同時是教具。',[{label:'《科學超電磁砲》官方：第 22 話 Level 6',url:'https://toaru-project.com/railgun/story/22.html'}]),
  lesson('insurance','保險與平安的一天','梨花無損失 ≠ 全場無損失',quote(chargeLines,2,7,8)+'\n'+quote(sequences.landing,0,1,2,3,4),[
   '莊以「雷是我打的」把主動行為說成符合天災條件，重點是角色在偷換分類，不是提供真實保險判定。前面保留的貨單、保單和照片因此一起回收：原本溫柔的報平安照，也變成建物存在過的證據。',
   '伺服器是原本目標，便利店和鄰棟卻跟著受損，最後只確認梨花安全就宣布無損失。觀眾看到的廣角與角色選擇承認的小範圍互相衝突。結尾保險歌詞把事情拉回誰承擔代價；本課不新增或擴寫原有歌詞。',
@@ -47,72 +56,34 @@ export const LESSONS=[
 ];
 export const CLASS_MOTTO=['解釋笑話就像解剖青蛙。','你會更了解牠，但青蛙死了。','手術成功，笑點死亡。'];
 export const LESSON_NOTES={
+ general:['聯動角色：爻光','充手機 → 救全城電網','先記住：你錯棚了'],
+ mikoto:['炮姐：御坂美琴，Level 5','莊：武陵 Level 6','先抓跨棚 → 自己開分校'],
  cargo:['拿便當 → 萬噸簽收','同樣叫補給，責任卻不同','報平安照片 → 戰損證據'],
  taste:['確認受害者 → 批評品味','私人冒犯 → 公共理由','前後態度，才是反轉'],
  pear:['超標 0.5 lux → 拆掉整棟','事情未發生，表格已備妥','只看梨花 → 宣布無損失'],
  login:['登入詞塊 → 感情試探','驗證身分 → 確認能背鍋','玩家加看 → 導播不下班'],
  compute:['角色突然談起製作成本','先稱讚細節 → 再拿來當靶','劇中台詞 ≠ 真實帳單'],
  microwave:['加熱便當 → 接管電網','800 W → 800 MW','效率成功 → 忘記關保溫'],
- ammo:['先說錯棚 → 自己也跨棚','借用 Level 6，抬高出力','徵用幫手 → 徵用彈藥'],
  insurance:['主動打雷 → 自稱天災','梨花安全 ≠ 建物無損','平安旁白 ↔ 毀損街景'],
 };
-export const CLAIM_CLUES=[
- {id:'thunder',evidence:'record',text:'莊：雷是我打的，條件符合。',matches:'cause'},
- {id:'ammo',evidence:'record',text:'莊：就是你。',matches:null},
- {id:'time',evidence:'application',text:'事故時間：待補。',matches:null},
- {id:'damage',evidence:'photos',text:'案發後：店面、招牌與樓板毀損。',matches:'loss'},
- {id:'pear-safe',evidence:'photos',text:'案發後：梨花保留。',matches:null},
-];
-export const CLAIM_DECLARATIONS={cause:'申報原因：自然雷擊。',loss:'損失申報：梨花無損失，故本案無損失。'};
-export const EVIDENCE=[
- {id:'application',title:'01 · 理賠申請書',text:'事故原因：自然雷擊。\n損失申報：梨花無損失，故本案無損失。\n申請人：莊芳宜。\n事故時間：待補。',note:'本模式新增的戲內申請書。'},
- {id:'record',title:'02 · 現場發射紀錄',text:quote(chargeLines,7,8)+'\n'+quote(sequences.last,3,7),note:'摘錄本劇台詞：出力與發射均由莊主動決定。'},
- {id:'photos',title:'03 · 店面前後對照',text:'案發前：招牌、樓板與店面完整。\n案發後：便利店建物與招牌毀損，梨花保留。',note:'同版本場景固定取景；不代表你本次砲擊的命中紀錄。'},
-];
-export const CLAIM_FIELDS=[
- {id:'cause',label:'事故原因',options:[['natural','自然雷擊','莊：雷是我打的，條件符合。\n龍泡泡：所以妳不能省略「我打的」。'],['human','人工雷擊','弭弗：已註記主動出力。\n莊：字可以小一點。'],['dinner','晚餐延誤','龍泡泡：餓了是動機，不是天氣。']]},
- {id:'responsibility',label:'責任歸屬',options:[['weather','天氣','弭弗：天氣表示，今晚沒有接到發射指令。'],['zhuang','莊芳宜','莊：姓名有必要寫全嗎？\n龍泡泡：工號也可以附上。'],['dragon','暫填龍泡泡','龍泡泡：暫填為什麼已經印好了？']]},
- {id:'loss',label:'損失範圍',options:[['pear','只看梨花','莊：沒有損失。\n龍泡泡：妳保的是便利店，請看一下受詞。'],['building','依現場建物紀錄','弭弗：建物毀損已列入，鄰棟另案。']]},
-];
-export function claimResult(form){
- if(!CLAIM_FIELDS.every(f=>f.options.some(o=>o[0]===form[f.id])))return null;
- const reasons=[];
- if(form.loss!=='building')reasons.push('損失漏報：梨花無損失，不等於便利店無損失。');
- if(form.responsibility!=='zhuang')reasons.push('責任矛盾：現場紀錄中的主動出力者是莊芳宜。');
- if(form.cause!=='human')reasons.push('原因矛盾：發射紀錄不支持自然雷擊或晚餐延誤分類。');
- return {status:reasons.length?'退回補件':'更正受理',reasons:reasons.length?reasons:['已依現場紀錄更正；受理不代表核賠。'],aside:reasons.length?'龍泡泡：表格可以重填，便利店不能只擦掉重畫。':'莊：多久回款？\n龍泡泡：我只說收到了。'};
-}
 const STORAGE_KEY='rainy711.bonus.v1';
 export class BonusProgress{
- constructor(storage){this.storage=storage;this.data={unlocked:false,warned:false,read:[],finished:[],preference:'',reading:false,textSize:18,course:null};this.taps=0;try{const d=JSON.parse(storage?.getItem(STORAGE_KEY)||'null');if(d){this.data={unlocked:d.unlocked===true,warned:d.warned===true,read:Array.isArray(d.read)?d.read.filter(id=>LESSONS.some(l=>l.id===id)):[],finished:Array.isArray(d.finished)?d.finished.filter(id=>['A','B'].includes(id)):[],preference:['A','B','both'].includes(d.preference)?d.preference:'',reading:d.reading===true,textSize:[18,22,26].includes(d.textSize)?d.textSize:18,course:d.course&&typeof d.course==='object'?d.course:null};}}catch{/* Private browsing still works for this visit. */}}
+ constructor(storage){this.storage=storage;this.data={unlocked:false,warned:false,read:[],finished:[],preference:'',reading:false,textSize:18,course:null,claimsSettled:false};this.taps=0;try{const d=JSON.parse(storage?.getItem(STORAGE_KEY)||'null');if(d){this.data={unlocked:d.unlocked===true,warned:d.warned===true,read:Array.isArray(d.read)?d.read.filter(id=>LESSONS.some(l=>l.id===id)):[],finished:Array.isArray(d.finished)?d.finished.filter(id=>['A','B'].includes(id)):[],preference:['A','B','both'].includes(d.preference)?d.preference:'',reading:d.reading===true,textSize:[18,22,26].includes(d.textSize)?d.textSize:18,course:d.course&&typeof d.course==='object'?d.course:null,claimsSettled:d.claimsSettled===true};}}catch{/* Private browsing still works for this visit. */}}
  save(){try{this.storage?.setItem(STORAGE_KEY,JSON.stringify(this.data));}catch{/* Keep the in-memory progress. */}}
  tap(sign,phase){if(!['ready','complete'].includes(phase)){this.taps=0;return false;}if(!sign){this.taps=0;return false;}if(this.data.unlocked)return false;this.taps++;if(this.taps===7){this.data.unlocked=true;this.save();return true;}return false;}
  mark(kind,id){const values=kind==='read'?LESSONS.map(l=>l.id):kind==='finished'?['A','B']:[];if(!values.includes(id))return;if(!this.data[kind].includes(id))this.data[kind].push(id);this.save();}
 }
-export class ClaimTrial{
- constructor(){this.reset('A');}
- reset(mode){this.mode=mode==='B'?'B':'A';this.field=null;this.found=[];this.errors=0;this.feedback='先翻閱證據，再比對申請欄位。';this.form={};this.result=null;this.clue=null;this.proofs=[];}
- selectClue(id){if(!this.field||!CLAIM_CLUES.some(c=>c.id===id))return false;this.clue=id;return true;}
- compare(id=this.clue){
-  const clue=CLAIM_CLUES.find(c=>c.id===id);if(!clue||!['cause','loss'].includes(this.field))return false;
-  if(clue.matches!==this.field){this.errors++;this.feedback=this.errors>=2?'提示：找出誰主動打雷，再看店面是否真的沒有損失。':'龍泡泡：這段內容還不能反駁該欄。再看一眼附件。';return false;}
-  if(!this.found.includes(this.field)){this.found.push(this.field);this.proofs.push({field:this.field,clue:id});}
-  this.feedback=this.field==='cause'?'矛盾成立：自然雷擊／主動發射。':'矛盾成立：無損失／店面毀損。';this.field=null;this.clue=null;return true;
- }
- finishA(decision){if(this.found.length!==2||!['return','accept'].includes(decision))return false;this.result={status:decision==='return'?'退回補件':'更正受理',reasons:decision==='return'?['請補正事故原因、損失範圍與事故時間。']:['原因更正為人工雷擊，責任人莊芳宜，損失依建物紀錄；事故時間待補。','受理不代表核賠。'],aside:decision==='return'?'莊：退回要幾個工作日？\n龍泡泡：妳願意等公文的時候真多。':'莊：梨花那欄保留。\n龍泡泡：可以，但不是損失總表。'};return true;}
- finishB(){this.result=claimResult(this.form);return !!this.result;}
-}
-
 export const CLASS_REQUIRED=3;
 export const lessonCardCount=id=>{const l=LESSONS.find(l=>l.id===id);return l?1+l.analysis.length+l.aside.split('\n').length:0;};
 // A short course counts three complete topics. Partial topics never add up to a fake completion.
 export class ClassCourse{
- constructor(saved){this.steps={};for(const l of LESSONS){const n=Number(saved?.steps?.[l.id]);if(Number.isFinite(n)&&n>0)this.steps[l.id]=Math.min(lessonCardCount(l.id),Math.floor(n));}this.stamped=this.eligible&&saved?.stamped===true;}
+ constructor(saved){this.legacyCompleted=saved?.legacyCompleted===true||Number(saved?.steps?.ammo)>=6;this.steps={};for(const l of LESSONS){const n=Number(saved?.steps?.[l.id]);if(Number.isFinite(n)&&n>0)this.steps[l.id]=Math.min(lessonCardCount(l.id),Math.floor(n));}this.stamped=this.eligible&&saved?.stamped===true;}
  get completed(){return LESSONS.filter(l=>(this.steps[l.id]||0)>=lessonCardCount(l.id)).map(l=>l.id);}
- get eligible(){return this.completed.length>=CLASS_REQUIRED;}
- get percentage(){if(this.eligible)return 100;const partial=Math.max(0,...LESSONS.filter(l=>!this.completed.includes(l.id)).map(l=>(this.steps[l.id]||0)/lessonCardCount(l.id)));return Math.min(99,(this.completed.length+partial)/CLASS_REQUIRED*100);}
+ get completedCount(){return this.completed.length+(this.legacyCompleted?1:0);}
+ get eligible(){return this.completedCount>=CLASS_REQUIRED;}
+ get percentage(){if(this.eligible)return 100;const partial=Math.max(0,...LESSONS.filter(l=>!this.completed.includes(l.id)).map(l=>(this.steps[l.id]||0)/lessonCardCount(l.id)));return Math.min(99,(this.completedCount+partial)/CLASS_REQUIRED*100);}
  confirm(id,cursor){const max=lessonCardCount(id);if(!max||!Number.isInteger(cursor)||cursor<0||cursor>=max)return false;this.steps[id]=Math.max(this.steps[id]||0,cursor+1);return true;}
  next(){return LESSONS.find(l=>!this.completed.includes(l.id))?.id||null;}
  certify(){if(!this.eligible)return false;this.stamped=true;return true;}
- get saved(){return {steps:{...this.steps},stamped:this.stamped};}
+ get saved(){return {steps:{...this.steps},stamped:this.stamped,legacyCompleted:this.legacyCompleted};}
 }

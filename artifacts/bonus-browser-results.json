@@ -9,7 +9,7 @@
         "active": false,
         "route": "rooms",
         "busy": false,
-        "lesson": "cargo",
+        "lesson": "general",
         "page": 0,
         "response": 0,
         "room": null,
@@ -34,14 +34,17 @@
           "percentage": 0,
           "display": 0
         },
-        "trial": {
-          "mode": "A",
-          "found": [],
-          "errors": 0,
-          "clue": null,
-          "proofs": [],
-          "form": {},
-          "result": null
+        "claimsSettled": false,
+        "negotiation": {
+          "phase": "choice",
+          "field": 0,
+          "line": 0,
+          "round": -1,
+          "choices": {},
+          "cue": null,
+          "stampIndex": 0,
+          "policyholderVisible": false,
+          "polite": false
         }
       }
     },
@@ -62,6 +65,16 @@
     },
     {
       "name": "Only menu and one primary control are visible",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Primary stays at the same position",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Primary stays at the same position",
       "passed": true,
       "detail": null
     },
@@ -226,37 +239,197 @@
       "detail": null
     },
     {
-      "name": "Both fixed evidence images load",
+      "name": "Application starts with two complete options",
       "passed": true,
       "detail": null
     },
     {
-      "name": "Evidence close preserves case scroll",
+      "name": "Five fields retain the requested order",
       "passed": true,
       "detail": null
     },
     {
-      "name": "Two mistakes show concrete hint",
+      "name": "Both joke options are readable",
       "passed": true,
       "detail": null
     },
     {
-      "name": "Claim and selected quote are shown together",
+      "name": "No policyholder name before reveal",
       "passed": true,
       "detail": null
     },
     {
-      "name": "Both exact clues recorded",
+      "name": "Dragon reads chosen sentence",
       "passed": true,
       "detail": null
     },
     {
-      "name": "Stamping starts before result appears",
+      "name": "Advance button stays fixed",
       "passed": true,
       "detail": null
     },
     {
-      "name": "Evidence path accepts correction",
+      "name": "Five fields retain the requested order",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Both joke options are readable",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "No policyholder name before reveal",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Dragon reads chosen sentence",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Advance button stays fixed",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Objection occurs after handling and amount",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Five fields retain the requested order",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Both joke options are readable",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "No policyholder name before reveal",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Dragon reads chosen sentence",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Advance button stays fixed",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Five fields retain the requested order",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Both joke options are readable",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "No policyholder name before reveal",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Dragon reads chosen sentence",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Advance button stays fixed",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Five fields retain the requested order",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Both joke options are readable",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "No policyholder name before reveal",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Dragon reads chosen sentence",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Advance button stays fixed",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Objection occurs after handling and amount",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Exactly two insurance objections",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Dragon asks to check policyholder",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Name is still hidden on Dragon cue",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Policyholder is revealed on next beat",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Representative changes tone",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Dragon changes the subject",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "New business is monthly Xirang and property insurance",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Three stamps begin after agreement",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "All three stamps complete the happy ending",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Settlement is saved",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Result preserves five selected lines",
       "passed": true,
       "detail": null
     },
@@ -266,22 +439,7 @@
       "detail": null
     },
     {
-      "name": "False form rejected",
-      "passed": true,
-      "detail": null
-    },
-    {
-      "name": "Loss is first reason",
-      "passed": true,
-      "detail": null
-    },
-    {
-      "name": "Accurate form accepted",
-      "passed": true,
-      "detail": null
-    },
-    {
-      "name": "Preference saved",
+      "name": "PNG preview loads",
       "passed": true,
       "detail": null
     },
@@ -311,12 +469,22 @@
       "detail": null
     },
     {
+      "name": "Short-course graduation survives reload",
+      "passed": true,
+      "detail": null
+    },
+    {
       "name": "Reading preference survives reload",
       "passed": true,
       "detail": null
     },
     {
       "name": "Text size survives reload",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "New settlement survives reload",
       "passed": true,
       "detail": null
     },
@@ -346,6 +514,11 @@
       "detail": null
     },
     {
+      "name": "Two objections each play once",
+      "passed": true,
+      "detail": null
+    },
+    {
       "name": "New case starts with unstamped paper",
       "passed": true,
       "detail": null
@@ -371,12 +544,17 @@
       "detail": null
     },
     {
-      "name": "Stamp sequence reaches result",
+      "name": "Three stamp sequence reaches result",
       "passed": true,
       "detail": null
     },
     {
-      "name": "Sound off suppresses stamp sound",
+      "name": "Three impacts produce exactly three sounds",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Sound off suppresses objections and stamps",
       "passed": true,
       "detail": null
     },
