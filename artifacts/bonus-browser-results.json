@@ -69,7 +69,27 @@
       "detail": null
     },
     {
-      "name": "Primary stays at the same position",
+      "name": "Central board overlay is removed",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Death rate is numeric without a bar",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Reading starts at zero",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Reading progress is separate from death rate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Only short stage labels appear",
       "passed": true,
       "detail": null
     },
@@ -79,7 +99,12 @@
       "detail": null
     },
     {
-      "name": "Primary stays at the same position",
+      "name": "Reading progress is separate from death rate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Only short stage labels appear",
       "passed": true,
       "detail": null
     },
@@ -89,7 +114,57 @@
       "detail": null
     },
     {
+      "name": "Reading progress is separate from death rate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Only short stage labels appear",
+      "passed": true,
+      "detail": null
+    },
+    {
       "name": "Primary stays at the same position",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Reading progress is separate from death rate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Only short stage labels appear",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Primary stays at the same position",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Reading progress is separate from death rate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Only short stage labels appear",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Primary stays at the same position",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Reading progress is separate from death rate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Only short stage labels appear",
       "passed": true,
       "detail": null
     },
@@ -114,7 +189,12 @@
       "detail": null
     },
     {
-      "name": "Primary stays at the same position",
+      "name": "Reading progress is separate from death rate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Only short stage labels appear",
       "passed": true,
       "detail": null
     },
@@ -124,7 +204,12 @@
       "detail": null
     },
     {
-      "name": "Primary stays at the same position",
+      "name": "Reading progress is separate from death rate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Only short stage labels appear",
       "passed": true,
       "detail": null
     },
@@ -134,7 +219,57 @@
       "detail": null
     },
     {
+      "name": "Reading progress is separate from death rate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Only short stage labels appear",
+      "passed": true,
+      "detail": null
+    },
+    {
       "name": "Primary stays at the same position",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Reading progress is separate from death rate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Only short stage labels appear",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Primary stays at the same position",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Reading progress is separate from death rate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Only short stage labels appear",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Primary stays at the same position",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Reading progress is separate from death rate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Only short stage labels appear",
       "passed": true,
       "detail": null
     },
@@ -149,7 +284,12 @@
       "detail": null
     },
     {
-      "name": "Primary stays at the same position",
+      "name": "Reading progress is separate from death rate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Only short stage labels appear",
       "passed": true,
       "detail": null
     },
@@ -159,7 +299,12 @@
       "detail": null
     },
     {
-      "name": "Primary stays at the same position",
+      "name": "Reading progress is separate from death rate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Only short stage labels appear",
       "passed": true,
       "detail": null
     },
@@ -169,7 +314,57 @@
       "detail": null
     },
     {
+      "name": "Reading progress is separate from death rate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Only short stage labels appear",
+      "passed": true,
+      "detail": null
+    },
+    {
       "name": "Primary stays at the same position",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Reading progress is separate from death rate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Only short stage labels appear",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Primary stays at the same position",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Reading progress is separate from death rate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Only short stage labels appear",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Primary stays at the same position",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Reading progress is separate from death rate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Only short stage labels appear",
       "passed": true,
       "detail": null
     },
@@ -184,7 +379,12 @@
       "detail": null
     },
     {
-      "name": "Primary stays at the same position",
+      "name": "Reading progress is separate from death rate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Only short stage labels appear",
       "passed": true,
       "detail": null
     },
@@ -194,7 +394,12 @@
       "detail": null
     },
     {
-      "name": "Primary stays at the same position",
+      "name": "Reading progress is separate from death rate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Only short stage labels appear",
       "passed": true,
       "detail": null
     },
@@ -204,7 +409,57 @@
       "detail": null
     },
     {
+      "name": "Reading progress is separate from death rate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Only short stage labels appear",
+      "passed": true,
+      "detail": null
+    },
+    {
       "name": "Primary stays at the same position",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Reading progress is separate from death rate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Only short stage labels appear",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Primary stays at the same position",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Reading progress is separate from death rate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Only short stage labels appear",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Primary stays at the same position",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Reading progress is separate from death rate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Only short stage labels appear",
       "passed": true,
       "detail": null
     },

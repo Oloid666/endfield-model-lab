@@ -35,3 +35,5 @@
 .bonus-entry{min-height:52px;padding:12px 20px;border:2px solid #e9cc84;background:#355347;color:#fff0b8;font-size:16px;font-weight:700;box-shadow:0 0 0 3px #ddc47d22,0 6px 24px #0006;animation:bonus-entry-glow 2.4s ease-in-out infinite}
 @keyframes bonus-entry-glow{0%,100%{box-shadow:0 0 0 3px #ddc47d22,0 6px 24px #0006;border-color:#cbb376}50%{box-shadow:0 0 0 5px #ddc47d44,0 0 24px #e6c77d77;border-color:#fff0b8}}
 @media(prefers-reduced-motion:reduce){.bonus-entry{animation:none;border-color:#fff0b8;box-shadow:0 0 0 4px #ddc47d44}}
+/* The board owns the short notes; the reading panel owns the full explanation. */
+.bonus-class-meter>span{display:block;font-size:16px}.bonus-lesson-progress{margin-top:8px;display:grid;grid-template-columns:auto minmax(60px,1fr);align-items:center;gap:12px}.bonus-lesson-progress>span{font-size:12px;color:#baccb7;white-space:nowrap}.bonus-lesson-track{height:6px;background:#0d241c;border:1px solid #c4b37a55;border-radius:5px;overflow:hidden}.bonus-lesson-track i{display:block;width:100%;height:100%;background:#d4c399;transform:scaleX(0);transform-origin:left center}

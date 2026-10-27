@@ -101,7 +101,51 @@
       "passed": true
     },
     {
+      "name": "Analysis opens a board-first shot",
+      "passed": true
+    },
+    {
+      "name": "Numeric death rate and reading progress are separate",
+      "passed": true
+    },
+    {
+      "name": "No central overlay remains",
+      "passed": true
+    },
+    {
+      "name": "Another explanation angle is available",
+      "passed": true
+    },
+    {
+      "name": "Board has one short keyword rather than repeated filler",
+      "passed": true
+    },
+    {
+      "name": "Landscape blackboard is visibly rendered",
+      "passed": true
+    },
+    {
+      "name": "Interview layout fits landscape",
+      "passed": true
+    },
+    {
       "name": "Second topic is Mikoto",
+      "passed": true
+    },
+    {
+      "name": "Cross-show objection is absent from recap",
+      "passed": true
+    },
+    {
+      "name": "Cross-show objection appears at the final reaction",
+      "passed": true
+    },
+    {
+      "name": "First reaction is not confused with final reading progress",
+      "passed": true
+    },
+    {
+      "name": "Final reply reaches 100 percent reading progress",
       "passed": true
     },
     {

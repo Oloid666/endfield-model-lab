@@ -22,3 +22,9 @@ export class SmoothMeter{
  set(target,time,snap=false){if(this.target===target)return;this.from=snap?target:this.value(time);this.target=target;this.at=time;}
  reset(time=0){this.from=this.target=0;this.at=time;}
 }
+
+// Reading position is independent of the four-topic graduation meter.
+export function lessonProgress(cursor,count){return count>1?Math.round(Math.max(0,Math.min(count-1,cursor))/(count-1)*100):0;}
+export function wrapBoardText(text,measure,width){
+ const lines=[];for(const paragraph of String(text).split('\n')){let line='';for(const ch of paragraph){if(line&&measure(line+ch)>width){lines.push(line);line='';}line+=ch;}lines.push(line);}return lines;
+}

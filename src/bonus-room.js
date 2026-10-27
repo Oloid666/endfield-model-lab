@@ -2,7 +2,7 @@ import * as T from 'three';
 import {Resources} from './resources.js';
 import {buildDragon} from './companion.js';
 import {CLASS_MOTTO} from './bonus-data.js';
-import {lessonFrame} from './bonus-presentation.js';
+import {lessonFrame,wrapBoardText} from './bonus-presentation.js';
 
 // A cutaway stage for the two upstairs rooms. It shares World's renderer and clock.
 export function createBonusRoom(){
@@ -21,17 +21,17 @@ export function createBonusRoom(){
   box(parent,'#273e35',[2.5,2.76,-2.30],[.025,.14,.02]);box(parent,'#273e35',[2.55,2.7,-2.30],[.12,.025,.02]);clock.name='class-clock';
  }
  shell(classroom);shell(claims);
- box(classroom,'#927b53',[0,1.91,-2.26],[4.8,1.94,.12]);
+ box(classroom,'#927b53',[-.35,1.91,-2.26],[4.7,1.94,.12]);
  const canvas=document.createElement('canvas');canvas.width=1536;canvas.height=640;
  const texture=r.own(new T.CanvasTexture(canvas));texture.colorSpace=T.SRGBColorSpace;
- r.mesh(r.geometry('PlaneGeometry',1,1),r.own(new T.MeshBasicMaterial({map:texture})),classroom,[0,1.91,-2.185],[4.62,1.78,1]);
- box(classroom,'#baa779',[0,.91,-2.10],[4.9,.045,.13]);box(classroom,'#f5edcc',[.5,.95,-2.04],[.14,.025,.03]);
+ r.mesh(r.geometry('PlaneGeometry',1,1),r.own(new T.MeshBasicMaterial({map:texture})),classroom,[-.35,1.91,-2.185],[4.5,1.78,1]);
+ box(classroom,'#baa779',[-.35,.91,-2.10],[4.7,.045,.13]);box(classroom,'#f5edcc',[.5,.95,-2.04],[.14,.025,.03]);
  for(const x of [-1.6,.3])for(const z of [.65,1.8]){
   box(classroom,'#a78b5e',[x,.72,z],[1.2,.09,.65]);for(const dx of [-.45,.45])box(classroom,'#35423a',[x+dx,.35,z],[.04,.7,.05]);
   box(classroom,'#8a7957',[x,.42,z+.6],[.65,.06,.5]);box(classroom,'#8a7957',[x,.72,z+.85],[.65,.55,.05]);
  }
  box(classroom,'#927c54',[1.8,.75,-.7],[1.1,.12,.65]);box(classroom,'#586047',[1.8,.36,-.7],[.75,.7,.45]);
- const dragon=buildDragon(r),dragonMount=new T.Group();dragonMount.add(dragon.root);classroom.add(dragonMount);dragonMount.position.set(1.6,.85,-.8);dragon.root.scale.setScalar(.8);dragon.root.rotation.y=-.2;
+ const dragon=buildDragon(r),dragonMount=new T.Group();dragonMount.add(dragon.root);classroom.add(dragonMount);dragonMount.position.set(2.35,.95,-1.95);dragon.root.scale.setScalar(.65);dragon.root.rotation.y=-.2;
  // Glasses stay on the face, and the pointer follows the pointing arm.
  const body=dragon.root.children[0],rim=r.material('#2c3834',{metalness:.4});
  for(const x of [-.21,.21]){const ring=r.mesh(r.geometry('TorusGeometry',.15,.018,6,20),rim,body,[x,.69,.53]);ring.scale.y=.85;}
@@ -90,13 +90,11 @@ export function createBonusRoom(){
  function paint(time){
   const state=lessonFrame(time-boardAt,boardData.reaction,reduced()),k=`${boardKey}:${state.reveal}:${state.dead}`;
   if(k===paintKey)return;paintKey=k;
-  const {title,lines,life}=boardData,c=canvas.getContext('2d');c.fillStyle='#21473b';c.fillRect(0,0,1536,640);
-  c.strokeStyle='#c4d1ad55';c.lineWidth=2;c.strokeRect(28,26,1480,588);c.fillStyle='#f3e6ac';c.textAlign='left';c.font='bold 84px sans-serif';c.fillText(title,70,125,1380);
-  const shown=boardData.reaction&&!state.dead?['笑點仍在搶救中。']:lines;
-  c.font='66px sans-serif';shown.slice(0,state.reveal+1).forEach((line,i)=>{c.fillStyle=i===state.reveal?'#f3dfa0':'#d9e4c2';c.fillText(line,70,240+i*86,1380);});
-  const alive=boardData.reaction?!state.dead:life>0;
-  c.strokeStyle=alive?'#c5d6aa':'#d1ab8f';c.lineWidth=5;c.beginPath();c.moveTo(75,555);for(let x=75;x<1420;x+=10)c.lineTo(x,555+(x%160>100&&alive?Math.sin(x*.15)*27*Math.max(.2,life):0));c.stroke();
-  c.font='30px sans-serif';c.fillStyle='#e1ddbb';c.fillText(alive?'笑點生命跡象 · 解析中':'死亡時間：講師說「也就是說」的那一刻',75,605);texture.needsUpdate=true;
+  const {title,lines}=boardData,c=canvas.getContext('2d');c.fillStyle='#21473b';c.fillRect(0,0,1536,640);
+  c.strokeStyle='#c4d1ad55';c.lineWidth=2;c.strokeRect(28,26,1480,588);c.fillStyle='#f3e6ac';c.textAlign='left';
+  c.font='bold 92px sans-serif';const titleLines=wrapBoardText(title,t=>c.measureText(t).width,1380);titleLines.forEach((line,i)=>c.fillText(line,78,145+i*105));
+  c.font='76px sans-serif';c.fillStyle='#d9e4c2';const shown=lines.slice(0,state.reveal+1).flatMap(line=>wrapBoardText(line,t=>c.measureText(t).width,1380));
+  shown.forEach((line,i)=>c.fillText(line,78,190+titleLines.length*105+i*95));texture.needsUpdate=true;
  }
  const endPosition=new T.Vector3(),endTarget=new T.Vector3(),lookTarget=new T.Vector3();
  let frameKey='',firstFrame=true;
@@ -114,10 +112,12 @@ export function createBonusRoom(){
     else{pos=[narrow?0:2.4,2.6,narrow?6.4:5.5];target=[0,1.45,-.7];}
    }
    else if(focus==='stamp'){pos=[2.6,2.05,1.75];target=[1.7,1.05,-.55];}
-   else if(focus==='board'){pos=[0,1.95,narrow?3.6:2.6];target=[0,1.9,-2.1];}
-   else if(focus==='teacher'){pos=[2.05,1.9,2.8];target=[1.5,1.5,-.75];}
-   else if(focus==='reaction'){pos=[1.4,1.9,3.3];target=[1.6,1.4,-.8];}
-   else {pos=[narrow?0:3.4,narrow?2.5:2.8,narrow?6.8:5.7];target=[0,1.5,-.9];}
+   else {
+    // Keep the full board and the teacher's face in frame, like a seated interview.
+    const side=focus==='board-side',reaction=focus==='reaction';
+    const distance=Math.max(2.2,(reaction?5.7:5.9)/(2*Math.tan(T.MathUtils.degToRad(camera.fov/2))*camera.aspect));
+    target=[.1,1.85,-2.1];pos=[.1+(side?-.45:reaction?.55:0),reaction?2.12:1.96,-2.1+distance];
+   }
    endPosition.fromArray(pos);endTarget.fromArray(target);
    if(firstFrame||reduced()){camera.position.copy(endPosition);lookTarget.copy(endTarget);firstFrame=false;}
   }
@@ -125,14 +125,14 @@ export function createBonusRoom(){
   camera.position.lerp(endPosition,amount);lookTarget.lerp(endTarget,amount);camera.lookAt(lookTarget);
  }
  board();
- return {scene,camera,board,get state(){return {mode,focus,representative:negotiation?.polite?'polite':'serious',policyholderVisible:policyCard.visible,completedStamps:completedInks.filter(n=>n.visible).length,paperStamped:mode==='classroom'?classInk.visible:ink.visible};},resetPaper(){stampAt=-Infinity;ink.visible=classInk.visible=false;classStamp.position.y=.83;classPaper.position.z=-.65;stamp.position.y=1.04;output.position.z=.18;focus='wide';},
+ return {scene,camera,board,get state(){return {mode,focus,board:{title:boardData.title,lines:[...boardData.lines]},representative:negotiation?.polite?'polite':'serious',policyholderVisible:policyCard.visible,completedStamps:completedInks.filter(n=>n.visible).length,paperStamped:mode==='classroom'?classInk.visible:ink.visible};},resetPaper(){stampAt=-Infinity;ink.visible=classInk.visible=false;classStamp.position.y=.83;classPaper.position.z=-.65;stamp.position.y=1.04;output.position.z=.18;focus='wide';},
  setMode(value){if(mode!==value){mode=value;firstFrame=true;}classroom.visible=value==='classroom';claims.visible=value==='claims';focus='wide';frameKey='';},
  negotiate,setFocus(value){focus=value;},perform(value){pose=value;},stamp(t,status){stampAt=t;stampReduced=reduced();focus='stamp';ink.visible=classInk.visible=false;const c=ink.material.map.image.getContext('2d');c.fillStyle='#e8dfc1';c.fillRect(0,0,1024,160);c.fillStyle='#a34b3b';c.font='bold 110px sans-serif';c.textAlign='center';c.textBaseline='middle';c.fillText(status,512,80,1000);ink.material.map.needsUpdate=true;},
  render(renderer,time,width,height){
   frame(width,height,time);paint(time);
   const state=lessonFrame(time-boardAt,boardData.reaction,reduced()),interrupted=pose==='interrupted'||boardData.reaction&&state.pose==='interrupted',awkward=pose==='awkward'||boardData.reaction&&state.pose==='awkward';
   dragon.update(interrupted?boardAt:time,{gesture:interrupted||awkward?'look':'point',gestureAmount:interrupted||awkward?0:.8,curious:awkward?.8:0,lookYaw:0});
-  dragonMount.position.y=.85+(interrupted?0:Math.sin(time*1.5)*.05);dragon.root.rotation.y=awkward?Math.atan2(camera.position.x-dragonMount.position.x,camera.position.z-dragonMount.position.z):-.2;
+  dragonMount.position.y=.95+(interrupted?0:Math.sin(time*1.5)*.05);dragon.root.rotation.y=awkward?Math.atan2(camera.position.x-dragonMount.position.x,camera.position.z-dragonMount.position.z):-.2;
   pointer.rotation.z=interrupted?-.35:awkward?-1.1:Math.sin(time*.9)*.07;pointer.visible=pose!=='dismissed';
   client.update(reduced()?0:time,{gesture:negotiation?.cue?.speaker==='龍泡泡'?'point':'look',gestureAmount:.35,lookYaw:.15});
   const hitAge=time-objectionAt,hit=!reduced()&&hitAge>=0&&hitAge<.6?Math.sin(Math.min(1,hitAge/.18)*Math.PI/2)*Math.exp(-Math.max(0,hitAge-.18)*7):0;

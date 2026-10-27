@@ -43,8 +43,13 @@ async def main():
    await click('classroom');await page.wait_for_function('__rainy711.bonus.route==="classroom"');await js('__rainy711.tick(__rainy711.time,0,true)');await shot('classroom')
    check('Only menu and one primary control are visible',await page.locator('.bonus-ui button:visible').count()==2)
    await page.emulate_media(reduced_motion='no-preference');await click('class-next');fixed=await page.locator('.bonus-class-dock [data-action=class-next]').bounding_box()
+   check('Central board overlay is removed',await page.locator('.bonus-board-caption').count()==0)
+   check('Death rate is numeric without a bar',await page.locator('.bonus-death-track').count()==0)
+   check('Reading starts at zero',await page.locator('.bonus-lesson-track').get_attribute('aria-valuenow')=='0')
    for topic in range(4):
-    for _ in range(6):
+    for step in range(6):
+     check('Reading progress is separate from death rate',await page.locator('.bonus-lesson-track').get_attribute('aria-valuenow')==str(step*20))
+     check('Only short stage labels appear',not __import__('re').search(r'\d+ / \d+',await page.locator('.bonus-content').inner_text()))
      box=await page.locator('.bonus-class-dock [data-action=class-next]').bounding_box();check('Primary stays at the same position',box==fixed);await click('class-next')
     check('Each distinct complete topic adds 25 percent',await js('__rainy711.bonus.course.percentage')==(topic+1)*25)
     if topic==0:
@@ -57,7 +62,7 @@ async def main():
    check('Meter animates instead of jumping to 100',await js('__rainy711.bonus.course.display')<100)
    await js('__rainy711.tick(__rainy711.time+.6,0,true)');check('Meter advances gradually',0<await js('__rainy711.bonus.course.display')<100);await shot('class-meter');check('Meter completion starts the stamp ceremony',await js('__rainy711.bonus.route')=='class-stamping');await js('__rainy711.tick(__rainy711.time+1.2,0,true)');check('Death certificate is stamped',await js('__rainy711.bonus.course.stamped'));await shot('class-certificate')
    cert_box=await page.locator('.bonus-class-dock [data-action=class-next]').bounding_box();check('Finish stays at same thumb target',cert_box==fixed)
-   await click('class-continue');check('Continue opens remaining topics',await js('__rainy711.bonus.lesson')=='pear')
+   await click('class-continue');check('Continue opens remaining topics',await js('__rainy711.bonus.lesson')=='login')
    for _ in range(6):await click('class-next')
    check('Extra topic does not force another ceremony',await js('__rainy711.bonus.route')=='lesson' and len(await js('__rainy711.bonus.course.completed'))==5)
    for _ in range(24):await click('class-next')

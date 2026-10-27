@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {lessonFrame,StampSequence,SmoothMeter} from '../src/bonus-presentation.js';
+import {lessonFrame,StampSequence,SmoothMeter,lessonProgress,wrapBoardText} from '../src/bonus-presentation.js';
 import {BonusProgress,LESSONS,LESSON_NOTES,ClassCourse,lessonCardCount,CLASS_REQUIRED} from '../src/bonus-data.js';
 import {ClaimsNegotiation,APPLICATION_FIELDS,SETTLEMENT_STAMPS} from '../src/claims-negotiation.js';
 let checks=0;const check=(actual,expected)=>{assert.deepEqual(actual,expected);checks++;};
@@ -39,6 +39,11 @@ p.data.claimsSettled=true;p.save();check(new BonusProgress(storage).data.claimsS
 check(LESSONS.length,9);check(new Set(LESSONS.map(l=>l.id)).size,9);check(LESSONS.slice(0,2).map(l=>l.id),['general','mikoto']);
 check(LESSONS[0].analysis.join('').includes('將軍是爻光'),true);check(LESSONS[1].analysis.join('').includes('御坂美琴'),true);
 for(const l of LESSONS){check(l.analysis.length,3);check(LESSON_NOTES[l.id].length,3);check(l.analysis.every(s=>s.length>=60),true);check(l.recap.includes('undefined'),false);for(const source of l.sources)check(new URL(source.url).protocol,'https:');}
+check(LESSONS[4].id,'login');check(LESSONS[5].id,'pear');
+check(LESSONS[1].recap.includes('妳剛才才說我錯棚'),false);check(LESSONS[1].aside.includes('妳剛才才說我錯棚'),true);
+check(LESSONS.find(l=>l.id==='taste').analysis.join('').includes('不能據此宣布'),false);check(LESSONS[4].analysis.join('').includes('未核實的最早出處'),false);
+check([0,1,2,3,4,5].map(i=>lessonProgress(i,6)),[0,20,40,60,80,100]);check(lessonProgress(-2,6),0);check(lessonProgress(20,6),100);check(lessonProgress(0,0),0);
+check(wrapBoardText('黑板不壓縮文字',t=>t.length,4),['黑板不壓','縮文字']);check(wrapBoardText('第一行\n第二行',t=>t.length,3),['第一行','第二行']);
 check(CLASS_REQUIRED,4);const course=new ClassCourse({steps:{cargo:99,ammo:6},stamped:true,legacyCompleted:true});check(course.percentage,0);check(course.stamped,false);check(course.confirm('bad',0),false);check(course.confirm('cargo',-1),false);check(course.confirm('cargo',5),false);
 for(let topic=0;topic<LESSONS.length;topic++){
  const l=LESSONS[topic];
