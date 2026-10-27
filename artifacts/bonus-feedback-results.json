@@ -81,6 +81,10 @@
       "passed": true
     },
     {
+      "name": "Landscape menu does not cover advance",
+      "passed": true
+    },
+    {
       "name": "Classroom begins with Yaoguang",
       "passed": true
     },

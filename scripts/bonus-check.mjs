@@ -39,17 +39,15 @@ p.data.claimsSettled=true;p.save();check(new BonusProgress(storage).data.claimsS
 check(LESSONS.length,9);check(new Set(LESSONS.map(l=>l.id)).size,9);check(LESSONS.slice(0,2).map(l=>l.id),['general','mikoto']);
 check(LESSONS[0].analysis.join('').includes('將軍是爻光'),true);check(LESSONS[1].analysis.join('').includes('御坂美琴'),true);
 for(const l of LESSONS){check(l.analysis.length,3);check(LESSON_NOTES[l.id].length,3);check(l.analysis.every(s=>s.length>=60),true);check(l.recap.includes('undefined'),false);for(const source of l.sources)check(new URL(source.url).protocol,'https:');}
-check(CLASS_REQUIRED,3);const course=new ClassCourse();check(course.percentage,0);check(course.certify(),false);check(course.confirm('cargo',-1),false);check(course.confirm('bad',0),false);
-course.confirm('cargo',0);const first=course.percentage;check(first>0,true);course.confirm('cargo',0);check(course.percentage,first);check(course.completed.length,0);
-for(const l of LESSONS.slice(0,2)){for(let i=0;i<lessonCardCount(l.id);i++)course.confirm(l.id,i);}check(course.completed.length,2);check(course.eligible,false);check(course.percentage<100,true);
-// Several half-read topics cannot replace the required third complete topic.
-for(const l of LESSONS.slice(2,6))course.confirm(l.id,1);check(course.eligible,false);check(course.percentage<100,true);
-for(let i=0;i<lessonCardCount('pear');i++)course.confirm('pear',i);check(course.eligible,true);check(course.percentage,100);check(course.certify(),true);check(new ClassCourse(course.saved).stamped,true);check(new ClassCourse(course.saved).completed.length,3);
-course.confirm('login',lessonCardCount('login')-1);check(course.percentage,100);check(course.completed.length,4);
-const badCourse=new ClassCourse({steps:{cargo:-2,bogus:99},stamped:true});check(badCourse.percentage,0);check(badCourse.stamped,false);
-// Retain earned credit for the retired combined lesson without marking new topics read.
-const migrated=new ClassCourse({steps:{cargo:lessonCardCount('cargo'),pear:lessonCardCount('pear'),ammo:6},stamped:true});
-check(migrated.completed,['cargo','pear']);check(migrated.completedCount,3);check(migrated.stamped,true);check(migrated.percentage,100);check(migrated.next(),'general');
-check(new ClassCourse(migrated.saved).completedCount,3);check(new ClassCourse({steps:{ammo:5}}).completedCount,0);
+check(CLASS_REQUIRED,4);const course=new ClassCourse({steps:{cargo:99,ammo:6},stamped:true,legacyCompleted:true});check(course.percentage,0);check(course.stamped,false);check(course.confirm('bad',0),false);check(course.confirm('cargo',-1),false);check(course.confirm('cargo',5),false);
+for(let topic=0;topic<LESSONS.length;topic++){
+ const l=LESSONS[topic];
+ for(let i=0;i<lessonCardCount(l.id)-1;i++){course.confirm(l.id,i);check(course.percentage,Math.min(100,topic*25));}
+ course.confirm(l.id,lessonCardCount(l.id)-1);check(course.percentage,Math.min(100,(topic+1)*25));check(course.eligible,topic>=3);
+ for(let i=0;i<lessonCardCount(l.id);i++)course.confirm(l.id,i);check(course.completedCount,topic+1);
+}
+check(course.next('insurance'),'general');check(course.next('general'),'mikoto');check(course.certify(),true);check(new ClassCourse(course.saved).percentage,0);course.reset();check(course.percentage,0);check(course.stamped,false);check(course.next(),'general');
+for(const l of LESSONS)check(l.aside.split('\n').length<=2,true);
+const auto=new BonusProgress(storage);auto.data.unlocked=false;check(auto.complete('ready'),false);check(auto.complete('tour'),false);check(auto.complete('complete'),true);check(auto.complete('complete'),false);check(new BonusProgress(storage).data.unlocked,true);
 const meter=new SmoothMeter();meter.set(100,0);check(meter.value(0),0);check(meter.value(.5)>0&&meter.value(.5)<100,true);const halfway=meter.value(.5);meter.set(100,.5);check(meter.value(.5),halfway);check(meter.value(1.2),100);meter.reset(5);check(meter.value(5),0);meter.set(60,5,true);check(meter.value(5),60);
 console.log(`Bonus: ${checks} checks passed (including all 32 negotiation combinations).`);

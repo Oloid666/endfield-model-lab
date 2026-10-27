@@ -1,0 +1,45 @@
+{
+  "checks": [
+    {
+      "name": "Entrance hidden before either unlock condition",
+      "passed": true
+    },
+    {
+      "name": "Legacy progress cannot pre-complete new classroom",
+      "passed": true
+    },
+    {
+      "name": "Final tour alone does not unlock early",
+      "passed": true
+    },
+    {
+      "name": "Completing first run reveals entrance without sign taps",
+      "passed": true
+    },
+    {
+      "name": "Unlock is persisted",
+      "passed": true
+    },
+    {
+      "name": "Read history remains intact",
+      "passed": true
+    },
+    {
+      "name": "Reduced motion uses static highlight",
+      "passed": true
+    },
+    {
+      "name": "Normal mode has slow entrance glow",
+      "passed": true
+    },
+    {
+      "name": "Prominent touch target fits portrait",
+      "passed": true
+    },
+    {
+      "name": "No runtime exception",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

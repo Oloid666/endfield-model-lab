@@ -99,7 +99,17 @@
       "detail": null
     },
     {
-      "name": "Primary stays at the same position",
+      "name": "Each distinct complete topic adds 25 percent",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "All nine topics remain in catalog",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Repeating a topic does not add credit",
       "passed": true,
       "detail": null
     },
@@ -134,7 +144,7 @@
       "detail": null
     },
     {
-      "name": "Primary stays at the same position",
+      "name": "Each distinct complete topic adds 25 percent",
       "passed": true,
       "detail": null
     },
@@ -169,7 +179,47 @@
       "detail": null
     },
     {
-      "name": "Three topics are sufficient",
+      "name": "Each distinct complete topic adds 25 percent",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Primary stays at the same position",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Primary stays at the same position",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Primary stays at the same position",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Primary stays at the same position",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Primary stays at the same position",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Primary stays at the same position",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Each distinct complete topic adds 25 percent",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Four topics are sufficient",
       "passed": true,
       "detail": null
     },
@@ -215,6 +265,16 @@
     },
     {
       "name": "Extra topic does not force another ceremony",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "All nine topics can be completed and loop back",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Replay after all topics stays available",
       "passed": true,
       "detail": null
     },
@@ -444,6 +504,56 @@
       "detail": null
     },
     {
+      "name": "Every classroom visit starts at zero",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Every classroom visit starts at zero",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Every classroom visit starts at zero",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Every classroom visit starts at zero",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Every classroom visit starts at zero",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Every classroom visit starts at zero",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Every classroom visit starts at zero",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Every classroom visit starts at zero",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Every classroom visit starts at zero",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Every classroom visit starts at zero",
+      "passed": true,
+      "detail": null
+    },
+    {
       "name": "Return restores mission phase",
       "passed": true,
       "detail": null
@@ -469,7 +579,7 @@
       "detail": null
     },
     {
-      "name": "Short-course graduation survives reload",
+      "name": "New visit does not inherit graduation",
       "passed": true,
       "detail": null
     },

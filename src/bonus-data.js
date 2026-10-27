@@ -15,7 +15,7 @@ export const LESSONS=[
   '龍泡泡：接著，剛才要求別人不要跨棚的莊，宣布自己是「武陵的 Level 6」。熟悉炮姐的同學應該已經產生反應。御坂美琴是《魔法禁書目錄》與《科學超電磁砲》系列的電擊使，常態設定為學園都市第三位的 Level 5。',
   '龍泡泡：炮姐透過電磁力發射硬幣，因此以「超電磁砲」聞名；本劇借用的是她的電擊形象、等級制度與砲擊聯想。阿莊把學園都市的分級搬到武陵，還自行往上加了一級。這屬於跨棚兼戰力膨脹，令人忍俊不禁。',
   '龍泡泡：前面先抓別人錯棚，後面自己宣布武陵開分校，規則的適用顯得相當有彈性。炮姐拿硬幣當彈丸，阿莊最後拿我當子彈，連彈藥規格都自行升級。等級可以加，講師的工傷也請一併處理。'
- ],'莊：我有說我是御坂美琴嗎？\n龍泡泡：沒有。妳直接宣布武陵開分校了。\n莊：下一題。\n龍泡泡：本人以更高位階跨棚，並要求結束討論，令人忍俊不禁。','診斷：武陵校區自行招生。',[
+ ],'莊：我有說我是御坂美琴嗎？\n龍泡泡：沒有。妳直接宣布武陵開分校，令人忍俊不禁。','診斷：武陵校區自行招生。',[
   {label:'動畫官方：御坂美琴為 Level 5 第三位、電擊使與超電磁砲',url:'https://toaru-project.com/index_3/chara/mikoto.html'}]),
 
  lesson('cargo','便當與共犯通知','補給 ≠ 無限責任',quote(sequences.cargo,1,3,6,8),[
@@ -52,7 +52,7 @@ export const LESSONS=[
   '莊以「雷是我打的」把主動行為說成符合天災條件，重點是角色在偷換分類，不是提供真實保險判定。前面保留的貨單、保單和照片因此一起回收：原本溫柔的報平安照，也變成建物存在過的證據。',
   '伺服器是原本目標，便利店和鄰棟卻跟著受損，最後只確認梨花安全就宣布無損失。觀眾看到的廣角與角色選擇承認的小範圍互相衝突。結尾保險歌詞把事情拉回誰承擔代價；本課不新增或擴寫原有歌詞。',
   '收尾借用了《飛天小女警》守護城市的結尾語感，畫面卻是剛被拆過的街區。形式像一天平安結束，內容完全不是，熟悉原作會多認出一層致敬，不熟悉也能看懂畫面與旁白的反差。至於歌詞改編的精確來源，未核實前不指定歌曲。'
- ],'龍泡泡：手術成功，笑點死了。\n莊：有保嗎？\n龍泡泡：……下課。','診斷完成。請至隔壁辦理。',[{label:'國立臺灣歷史博物館：飛天小女警的結尾語',url:'https://women.nmth.gov.tw/?p=1913'}]),
+ ],'莊：笑點死了，有保嗎？\n龍泡泡：手術成功，笑點死亡。請至隔壁辦理。','診斷完成。請至隔壁辦理。',[{label:'國立臺灣歷史博物館：飛天小女警的結尾語',url:'https://women.nmth.gov.tw/?p=1913'}]),
 ];
 export const CLASS_MOTTO=['解釋笑話就像解剖青蛙。','你會更了解牠，但青蛙死了。','手術成功，笑點死亡。'];
 export const LESSON_NOTES={
@@ -69,21 +69,24 @@ export const LESSON_NOTES={
 const STORAGE_KEY='rainy711.bonus.v1';
 export class BonusProgress{
  constructor(storage){this.storage=storage;this.data={unlocked:false,warned:false,read:[],finished:[],preference:'',reading:false,textSize:18,course:null,claimsSettled:false};this.taps=0;try{const d=JSON.parse(storage?.getItem(STORAGE_KEY)||'null');if(d){this.data={unlocked:d.unlocked===true,warned:d.warned===true,read:Array.isArray(d.read)?d.read.filter(id=>LESSONS.some(l=>l.id===id)):[],finished:Array.isArray(d.finished)?d.finished.filter(id=>['A','B'].includes(id)):[],preference:['A','B','both'].includes(d.preference)?d.preference:'',reading:d.reading===true,textSize:[18,22,26].includes(d.textSize)?d.textSize:18,course:d.course&&typeof d.course==='object'?d.course:null,claimsSettled:d.claimsSettled===true};}}catch{/* Private browsing still works for this visit. */}}
+ unlock(){if(this.data.unlocked)return false;this.data.unlocked=true;this.save();return true;}
+ complete(phase){return phase==='complete'&&this.unlock();}
  save(){try{this.storage?.setItem(STORAGE_KEY,JSON.stringify(this.data));}catch{/* Keep the in-memory progress. */}}
- tap(sign,phase){if(!['ready','complete'].includes(phase)){this.taps=0;return false;}if(!sign){this.taps=0;return false;}if(this.data.unlocked)return false;this.taps++;if(this.taps===7){this.data.unlocked=true;this.save();return true;}return false;}
+ tap(sign,phase){if(!['ready','complete'].includes(phase)){this.taps=0;return false;}if(!sign){this.taps=0;return false;}if(this.data.unlocked)return false;this.taps++;if(this.taps===7){return this.unlock();}return false;}
  mark(kind,id){const values=kind==='read'?LESSONS.map(l=>l.id):kind==='finished'?['A','B']:[];if(!values.includes(id))return;if(!this.data[kind].includes(id))this.data[kind].push(id);this.save();}
 }
-export const CLASS_REQUIRED=3;
+export const CLASS_REQUIRED=4;
 export const lessonCardCount=id=>{const l=LESSONS.find(l=>l.id===id);return l?1+l.analysis.length+l.aside.split('\n').length:0;};
-// A short course counts three complete topics. Partial topics never add up to a fake completion.
+// Completion belongs to this visit. Read history lives separately in BonusProgress.
 export class ClassCourse{
- constructor(saved){this.legacyCompleted=saved?.legacyCompleted===true||Number(saved?.steps?.ammo)>=6;this.steps={};for(const l of LESSONS){const n=Number(saved?.steps?.[l.id]);if(Number.isFinite(n)&&n>0)this.steps[l.id]=Math.min(lessonCardCount(l.id),Math.floor(n));}this.stamped=this.eligible&&saved?.stamped===true;}
+ constructor(){this.reset();}
+ reset(){this.steps={};this.stamped=false;}
  get completed(){return LESSONS.filter(l=>(this.steps[l.id]||0)>=lessonCardCount(l.id)).map(l=>l.id);}
- get completedCount(){return this.completed.length+(this.legacyCompleted?1:0);}
+ get completedCount(){return this.completed.length;}
  get eligible(){return this.completedCount>=CLASS_REQUIRED;}
- get percentage(){if(this.eligible)return 100;const partial=Math.max(0,...LESSONS.filter(l=>!this.completed.includes(l.id)).map(l=>(this.steps[l.id]||0)/lessonCardCount(l.id)));return Math.min(99,(this.completedCount+partial)/CLASS_REQUIRED*100);}
- confirm(id,cursor){const max=lessonCardCount(id);if(!max||!Number.isInteger(cursor)||cursor<0||cursor>=max)return false;this.steps[id]=Math.max(this.steps[id]||0,cursor+1);return true;}
- next(){return LESSONS.find(l=>!this.completed.includes(l.id))?.id||null;}
+ get percentage(){return Math.min(100,this.completedCount/CLASS_REQUIRED*100);}
+ confirm(id,cursor){const max=lessonCardCount(id),seen=this.steps[id]||0;if(!max||!Number.isInteger(cursor)||cursor<0||cursor>=max||cursor>seen)return false;this.steps[id]=Math.max(seen,cursor+1);return true;}
+ next(after=null){return LESSONS.find(l=>!this.completed.includes(l.id))?.id||LESSONS[(LESSONS.findIndex(l=>l.id===after)+1)%LESSONS.length].id;}
  certify(){if(!this.eligible)return false;this.stamped=true;return true;}
- get saved(){return {steps:{...this.steps},stamped:this.stamped,legacyCompleted:this.legacyCompleted};}
+ get saved(){return {steps:{...this.steps},stamped:this.stamped};}
 }

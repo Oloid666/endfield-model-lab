@@ -49,7 +49,7 @@ async def main():
    await click('text-size');await click('reading');await click('dialog-close');await click('rooms');await click('classroom');await click('class-next');check('Classroom begins with Yaoguang',await js('__rainy711.bonus.lesson')=='general');await click('reading');check('Class reading toggle keeps focus',await js('document.activeElement.dataset.action')=='reading');await click('text-size');check('Class font control keeps focus',await js('document.activeElement.dataset.action')=='text-size');await click('board');check('Look at board restores performance layout',not await js('__rainy711.bonus.reading'));await js('__rainy711.tick(__rainy711.time+1,0,true)');await page.screenshot(path=str(OUT/'bonus-blackboard.png'))
    for _ in range(6):await click('class-next')
    check('Second topic is Mikoto',await js('__rainy711.bonus.lesson')=='mikoto')
-   for _ in range(20):
+   for _ in range(30):
     if await js('__rainy711.bonus.route')!='lesson':break
     await click('class-next')
    await js('__rainy711.tick(__rainy711.time+2,0,true)');await js('__rainy711.tick(__rainy711.time+1.2,0,true)');check('Short course produces death certificate',await js('__rainy711.bonus.route')=='class-result');await click('class-next');check('Same bottom button finishes to street',not await js('__rainy711.bonus.active'));check('No page exception',not errors)
