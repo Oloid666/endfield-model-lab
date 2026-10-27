@@ -8,14 +8,12 @@ export const dinnerChoices=[
 ];
 
 const lines=(prefix,items)=>items.map(([speaker,text,gesture='look',mood='calm',event=null],index)=>({
-  id:`${prefix}_${index}`,speaker,text,mood,gesture,event,next:index+1<items.length?`${prefix}_${index+1}`:null,
+  id:`${prefix}_${prefix==='intro'?index+2:index}`,speaker,text,mood,gesture,event,next:index+1<items.length?`${prefix}_${prefix==='intro'?index+3:index+1}`:null,
 }));
 
 export const sequences={
   intro:lines('intro',[
-    ['dragon','辦公室的燈還亮著。阿莊肯定又忘了吃晚餐。','look'],
-    ['dragon','先叫她下班。今晚得讓她好好吃飯。','point'],
-    ['dragon','阿莊，下班。','point'],
+        ['dragon','阿莊，下班。','point'],
     ['zhuang','理由？','look'],
     ['dragon','好好吃飯。妳已經連著加班五天了。','point'],
     ['zhuang','這兩件事可以同時做。','look'],
@@ -28,11 +26,9 @@ export const sequences={
     ['dragon','買完了，來吃吧。','hold'],
   ]),
   photoTalk:lines('photo_talk',[
-    ['manager','還在忙？記得吃飯。','phone'],
-    ['zhuang','龍泡泡，幫我拍一張。','point'],
-    ['dragon','傳給管理員？','look'],
-    ['zhuang','……把 711 招牌也拍進去。','nod'],
+    ['zhuang','龍泡泡，幫我拍一張。跟管理員報個平安，讓他知道我有好好吃飯。','phone'],
     ['dragon','懂了，證明妳真的有出來吃飯。','happy'],
+    ['zhuang','相機給你。退遠一點，把店也拍進去。','receive','calm','camera-handover'],
   ]),
   photoCheck:lines('photo_check', [['zhuang','拍好了？放大看看。','player'],['dragon','確認妳有沒有眨眼？','look'],['zhuang','確認沒眨眼就發給管理員。讓他知道我有好好吃飯。','nod']]),
   observation:lines('observe',[
@@ -44,7 +40,7 @@ export const sequences={
     ['zhuang','加班十年，認得這種不讓人睡的光。','exhale'],
   ]),
   cargo:lines('cargo',[
-    ['dragon','送出了。咦，手機跳到上一張了。','phone'],
+    ['zhuang','咦，手機跳到上一張了。','phone','calm','album-previous'],
     ['dragon','息壤簽收單……一萬噸？','point','calm','receipt-reveal'],
     ['zhuang','小聲一點。','look'],
     ['dragon','品名：土產。簽收人……龍泡泡？','shake'],
@@ -87,7 +83,7 @@ export const sequences={
     ['zhuang','先空著。我還沒動手。','nod'],
     ['zhuang','直接物理移除。','point','calm','physical-removal'],
     ['dragon','什麼？這間可是 ChatGPT 6.0 Astra 蓋的 711。','look','aside'],
-    ['dragon','雨棚弧度、玻璃反射、貨架動線都挑過。結構美，氣氛也佳。','look','aside'],
+    ['dragon','建築的比例、玻璃的反射，連霓虹映在雨裡的顏色都挑過。結構漂亮，夜雨的氣氛也到位。審美在線。','look','aside'],
     ['dragon','燒了幾十張算力券，最後蓋出來當靶？？？？？','shake','aside'],
     ['zhuang','弭弗，接上全城的天師樁\n息壤超電容儲能模組。','point'],
     ['zhuang','龍泡泡，幫我登入。我準備一下。','point'],
@@ -254,3 +250,5 @@ export const reactionPools={
 };
 export const endingSong=['🎤🎵 保險～怎麼兩清，怎麼忍心','🎵 怎麼做回甲乙丙丁','🎤 難道非要耗盡所有委屈','🎵 再賠上這一條爛命'];
 export const endingCaption='弭弗：就這樣，武陵又平安地度過了一天。\n感謝飛天小女警的努力。\nFin.';
+
+export const storyQuote=(sequence,...ids)=>ids.map(id=>sequences[sequence].find(n=>n.id===id)?.text||'').join('\n');

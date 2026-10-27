@@ -7,9 +7,9 @@ const clamp=v=>T.MathUtils.clamp(Number(v)||0,0,1);
 const ids={spine:45,neck:46,head:47,eyeL:74,eyeR:55,armL:219,elbowL:221,wristL:223,armR:291,elbowR:293,wristR:295};
 
 // The original GLB remains untouched. Only the placement group and runtime rig move.
-export async function loadXaihi(scene,r,onStage=()=>{},signal){
+export async function loadXaihi(scene,r,onStage=()=>{},signal,onProgress){
   onStage('正在讀取較早的店內影像');
-  const buffer=await downloadModel(`${import.meta.env.BASE_URL}models/xaihi.glb`,onStage,signal,'賽希');
+  const buffer=await downloadModel(`${import.meta.env.BASE_URL}models/xaihi.glb`,onStage,signal,'賽希',onProgress);
   onStage('正在解析賽希與回放素材');
   if(signal?.aborted)throw new DOMException('已取消載入','AbortError');
   const gltf=await new GLTFLoader().parseAsync(buffer,`${import.meta.env.BASE_URL}models/`);

@@ -170,8 +170,8 @@
       "passed": true,
       "detail": {
         "A": 7,
-        "B": 3,
-        "C": 6
+        "B": 4,
+        "C": 7
       }
     },
     {
@@ -734,8 +734,8 @@
       "name": "FX pool allocates no new resources while animating",
       "passed": true,
       "detail": {
-        "before": 140,
-        "after": 140
+        "before": 141,
+        "after": 141
       }
     },
     {

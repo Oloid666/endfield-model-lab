@@ -114,7 +114,7 @@ export function buildMicrowave(scene,r,{position=[3.45,.31,1.43]}={}){
   const cleanColor=new T.Color('#c4c8ba'),burntColor=new T.Color('#202825'),cleanTrim=new T.Color('#85978a'),burntTrim=new T.Color('#394940'),riceCold=new T.Color('#d8cdb0'),riceHot=new T.Color('#eee2ba'),riceBurnt=new T.Color('#332b20'),meatHot=new T.Color('#b17b45'),meatBurnt=new T.Color('#251f19');
   const currentPosition=[...position];
   function modeFor(state){
-    if(forced)return forced;if(state.microwaveMode)return state.microwaveMode;
+    if(state.node?.event==='microwave-closeup')return 'heating';if(forced)return forced;if(state.microwaveMode)return state.microwaveMode;
     const phase=state.phase||'ready';if(['flashback','hack','credentials'].includes(phase))return 'clean';if(phase==='heat-demo')return 'burning';if(phase==='heat')return 'heating';if(phase==='flashback-end')return 'warm';if(phase==='rewind'&&state.rewindProgress>.72)return 'clean';return 'charred';
   }
   function arcPoint(index,p,t,out){const s=arcStart[index],e=arcEnd[index],jitter=Math.sin(p*31+t*29+index*7)*.082*Math.sin(p*Math.PI),side=s[2]<-.3&&e[2]<-.3?-1:1;out.set(s[0]+(e[0]-s[0])*p+jitter,s[1]+(e[1]-s[1])*p+Math.cos(p*27-t*23)*.07*Math.sin(p*Math.PI),s[2]+(e[2]-s[2])*p+Math.sin(p*Math.PI)*.15*side);return out;}

@@ -159,7 +159,7 @@ export function buildPearGarden(scene,r){
   function setQuality(value){quality=['low','balanced','high'].includes(value)?value:'balanced';blossoms.count=quality==='low'?1400:quality==='high'?3600:2700;leaves.count=quality==='low'?240:420;driftBudget=quality==='low'?20:quality==='high'?64:48;gustBudget=quality==='low'?8:quality==='high'?32:24;if(reducedMotion){driftBudget=Math.ceil(driftBudget*.65);gustBudget=Math.ceil(gustBudget*.5);}falling.count=driftBudget;}
   setQuality('balanced');
   updatePetals(0);
-  return {root,center,wetMaterials:[stone],
+  return {root,center,wetMaterials:[stone],touch(t){if(t-gustAt>.7){gustAt=t;gustStrength=reducedMotion?.15:.65;}},
     update(t,delta=0,options){time.value=t;updatePetals(t,options);if(options?.protected!==undefined)protectedTarget=Boolean(options.protected);shieldAmount=T.MathUtils.damp(shieldAmount,protectedTarget?1:0,3,Math.max(0,Math.min(.1,delta)));protection.visible=shieldAmount>.003;ringMaterial.opacity=shieldAmount*(.16+Math.sin(t*1.7)*.025);protection.rotation.y=Math.sin(t*.22)*.04;},
     quality:setQuality,
     reset(){protectedTarget=false;shieldAmount=0;ringMaterial.opacity=0;protection.visible=false;time.value=0;gustAt=-Infinity;gustStrength=0;lastImpactRevision=0;lastRecoil=0;updatePetals(0);},

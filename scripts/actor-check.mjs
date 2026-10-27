@@ -82,7 +82,7 @@ for(const meal of ['A','B','C']){
   for(const n of visible)n.traverse(child=>{if(child.isMesh)count++;});mealMeshCounts[meal]=count;
   check(`Only meal ${meal} visible`,food.visible&&visible.length===1&&visible[0].name===`meal-${meal}`);
 }
-check('Three meal branches contain different props',new Set(Object.values(mealMeshCounts)).size===3,mealMeshCounts);
+const mealSignatures=food.children.map(group=>{const parts=[];group.traverse(n=>{if(n.isMesh)parts.push([n.geometry.type,n.material.color?.getHex(),n.scale.toArray()]);});return JSON.stringify(parts);});check('Three meal branches contain different props',new Set(mealSignatures).size===3,mealMeshCounts);
 a.setDinner(null);check('Replay clears meal props',!food.visible&&a.status.dinner===null);
 a.setGesture('phone',{speaker:'zhuang'});a.update(66.2,0);a.update(66.8,0);
 check('Phone follows a real wrist during gesture',root.getObjectByName('phone').visible,{phonePosition:root.getObjectByName('phone').position.toArray()});

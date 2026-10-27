@@ -5,7 +5,7 @@ import {RhythmHeat} from '../src/rhythm-heat.js';
 import {sequences,chargeLines,chatterGroups,hotspots,reactionPools} from '../src/mission-dialogue.js';
 const checks=[];function check(name,condition){assert.ok(condition,name);checks.push(name);}
 const step=(m,t)=>m.update(m.sourceTime+t);
-function finish(m){for(let n=0;m.node&&n<100;n++){const phase=m.phase;m.next();if(m.phase!==phase)return;} }
+function finish(m){for(let n=0;m.node&&n<100;n++){const phase=m.phase;if(m.state.presentationLocked)step(m,2);m.next();if(m.phase!==phase)return;} }
 function rhythmWin(r,origin){
  r.start(origin);const notes=r.notes.map(n=>({...n}));
  for(const note of notes){check('Beat down accepted',r.down(origin+note.at));if(note.type==='hold')check('Hold release accepted',r.up(origin+note.end));}
@@ -17,7 +17,7 @@ for(const route of ['floor']){
  step(m,900);check('Opening waits',m.phase==='ready');m.start();finish(m);check('Purchase holds at counter',m.phase==='purchase');step(m,6);step(m,7);finish(m);check('Flight gate waits',m.phase==='photo-flight');m.fly(1,1);for(let j=0;j<7;j++)step(m,.1);m.fly(0,1);for(let j=0;j<18;j++)step(m,.1);m.fly(0,0);check('Flight positioning opens camera',m.finishFlight());check('Dinner no longer blocks story',m.phase==='photo'&&m.branch==='A');
  m.setAuto(true);step(m,500);check('Photo never auto submits',m.phase==='photo');m.setPaused(true);check('Paused shutter rejected',!m.takePhoto());m.setPaused(false);m.takePhoto();check('Photo return is a timed gate',m.phase==='photo-return');step(m,2.5);finish(m);
  check('Review waits for send',m.phase==='photo-review');step(m,50);check('Review never auto sends',m.phase==='photo-review');
- m.setAuto(false);m.sendPhoto();check('Route produces distinct scene',m.phase===(route==='floor'?'cargo':'observation'));
+ m.setAuto(false);m.sendPhoto();step(m,1.2);check('Route produces distinct scene',m.phase===(route==='floor'?'cargo':'observation'));
  if(route==='floor')finish(m);finish(m);check('Incoming call waits',m.phase==='comm-request');step(m,50);check('Call never self accepts',m.phase==='comm-request');m.acceptCall();finish(m);check('Terminal deployment precedes input',m.phase==='terminal-deploy');step(m,4.5);check('Briefing reaches login',m.phase==='login');check('Kiss chunk reacts',m.keyChunk('kiss')&&m.loginAside.includes('誰親誰'));m.key('backspace');
  for(const chunk of ['endfield','_','power'])check('Account chunk accepted',m.keyChunk(chunk));check('Account auto confirms only after full value',m.connection.field==='password');
  for(const chunk of ['520','1314'])check('Password chunk accepted',m.keyChunk(chunk));check('Verification dialogue precedes input',m.phase==='verify-talk');check('No premature verification',!m.verify());finish(m);m.verify();finish(m);check('Lever waits',m.phase==='lever');
@@ -32,7 +32,7 @@ for(const route of ['floor']){
    step(m,notes.at(-1).end+1);
  }
  check('Rhythm wins and returns to dialogue',m.phase==='flashback-end');finish(m);check('Return phase',m.phase==='return');step(m,RETURN_DURATION);check('Return preserves damage and route',m.phase==='last'&&m.progress===99&&m.investigation===route);finish(m);check('Last ammo waits',m.phase==='aim-final');
- const period=m.state.meterPeriod;step(m,period/4);m.attack(m.sourceTime);check('Final shot starts animation',m.phase==='finisher');step(m,9+LANDING_DURATION+TOUR_DURATION);check('Completed',m.phase==='complete'&&m.progress===100);
+ const period=m.state.meterPeriod;step(m,9+period/4);m.attack(m.sourceTime);check('Final shot starts animation',m.phase==='finisher');step(m,9+LANDING_DURATION+TOUR_DURATION);check('Completed',m.phase==='complete'&&m.progress===100);
  step(m,15);check('Aftermath stays alive',m.phase==='complete'&&!!m.node);check('Busy chatter blocks hotspot',!m.hotspot('phone'));m.replay();check('Replay resets all new state',m.phase==='intro'&&!m.photoTaken&&m.investigation===null&&m.rhythm.first&&m.hackMoves===0);
 }
 const r=new RhythmHeat();r.start(0);r.cancel();r.start(4);r.update(7);check('Cancel does not bypass forced surge',r.status==='burnt'&&r.failures===1);r.retry();const initialWindow=r.window;r.start(10);r.update(20);check('Real missed notes fail',r.status==='burnt'&&r.failures===2);r.retry();check('Failure widens timing and slows BPM',r.window>initialWindow);rhythmWin(r,30);check('Completed round retained',r.round===1);r.start(40);r.cancel();check('Cancel retains successful round',r.round===1&&r.status==='ready');

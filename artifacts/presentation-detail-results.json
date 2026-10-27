@@ -1,0 +1,29 @@
+{
+  "checks": [
+    {
+      "name": "CCTV appears on its dialogue cue",
+      "passed": true
+    },
+    {
+      "name": "Return ends with the pair looking at the picture",
+      "passed": true
+    },
+    {
+      "name": "Server impact cue",
+      "passed": true
+    },
+    {
+      "name": "Neighbor impact cue",
+      "passed": true
+    },
+    {
+      "name": "Wide aftermath has no obscuring power links",
+      "passed": true
+    },
+    {
+      "name": "No runtime errors",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

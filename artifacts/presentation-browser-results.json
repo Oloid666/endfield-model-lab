@@ -1,0 +1,125 @@
+{
+  "checks": [
+    {
+      "name": "Old unlocked save does not show entry",
+      "passed": true
+    },
+    {
+      "name": "Ready phase has intact store",
+      "passed": true
+    },
+    {
+      "name": "Desktop label is appropriate",
+      "passed": true
+    },
+    {
+      "name": "Street picker has all eight views",
+      "passed": true
+    },
+    {
+      "name": "Direct picker shows water tank",
+      "passed": true
+    },
+    {
+      "name": "Seven front-logo taps reveal entrance",
+      "passed": true
+    },
+    {
+      "name": "Desktop room panel stays in right column",
+      "passed": true
+    },
+    {
+      "name": "Opening uses Dragon close-up",
+      "passed": true
+    },
+    {
+      "name": "Photo dialogue reached",
+      "passed": true
+    },
+    {
+      "name": "Photo flight reached after handover",
+      "passed": true
+    },
+    {
+      "name": "Retreat reaches valid shooting distance",
+      "passed": true
+    },
+    {
+      "name": "Shutter stores an image",
+      "passed": true
+    },
+    {
+      "name": "Return uses side shot",
+      "passed": true
+    },
+    {
+      "name": "Photo review reached",
+      "passed": true
+    },
+    {
+      "name": "Desktop preview fits viewport",
+      "passed": true
+    },
+    {
+      "name": "Send animation exists",
+      "passed": true
+    },
+    {
+      "name": "Album transition spoken by Zhuang",
+      "passed": true
+    },
+    {
+      "name": "Login panel fully fits desktop",
+      "passed": true
+    },
+    {
+      "name": "Fifth error reveals assistance button",
+      "passed": true
+    },
+    {
+      "name": "Login assist preserves verification dialogue",
+      "passed": true
+    },
+    {
+      "name": "Final shot locked during preparation",
+      "passed": true
+    },
+    {
+      "name": "Final shot opens after performance",
+      "passed": true
+    },
+    {
+      "name": "First explosion is presented",
+      "passed": true
+    },
+    {
+      "name": "Second explosion is presented",
+      "passed": true
+    },
+    {
+      "name": "Both impact sites get wide view",
+      "passed": true
+    },
+    {
+      "name": "Ending reached",
+      "passed": true
+    },
+    {
+      "name": "Chapter review unlocked",
+      "passed": true
+    },
+    {
+      "name": "Claims reaches happy ending",
+      "passed": true
+    },
+    {
+      "name": "Three settlement stamps persist",
+      "passed": true
+    },
+    {
+      "name": "No runtime errors",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

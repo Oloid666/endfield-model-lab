@@ -90,7 +90,7 @@
         "energyRings": 3,
         "energyColumns": 1,
         "moteBudget": 20,
-        "emission": 2.7113614877725576
+        "emission": 0
       }
     },
     {
@@ -136,7 +136,7 @@
         "energyRings": 12,
         "energyColumns": 4,
         "moteBudget": 20,
-        "emission": 3.3475922452992934
+        "emission": 0
       }
     },
     {
@@ -182,7 +182,7 @@
         "energyRings": 12,
         "energyColumns": 4,
         "moteBudget": 20,
-        "emission": 4.55918215283958
+        "emission": 4.154022540138123
       }
     },
     {
@@ -228,7 +228,7 @@
         "energyRings": 12,
         "energyColumns": 4,
         "moteBudget": 20,
-        "emission": 4.55918215283958
+        "emission": 4.154022540138123
       }
     },
     {
@@ -337,7 +337,7 @@
       "name": "Every physical electrical segment stays outside the face close-up volume",
       "passed": true,
       "detail": {
-        "faceDistance": 2.63692989031825
+        "faceDistance": 2.6369298917932813
       }
     },
     {
@@ -388,7 +388,7 @@
         "energyRings": 8,
         "energyColumns": 4,
         "moteBudget": 8,
-        "emission": 4.720478302736664
+        "emission": 4.7670351605342285
       }
     },
     {
@@ -434,7 +434,7 @@
         "energyRings": 0,
         "energyColumns": 0,
         "moteBudget": 8,
-        "emission": 0.13
+        "emission": 0
       }
     },
     {

@@ -3,10 +3,17 @@ export const config = {
   reflection: { low: 192, balanced: 384, high: 512 },
   rainCount: { low: 650, balanced: 1400, high: 2200 },
   views: {
+    front:{position:[0,3.5,17],target:[0,2.3,.4],mobilePosition:[0,4.5,23],mobileTarget:[0,2.7,.4]},
+    storeLeft:{position:[-12,5.8,12],target:[-.3,2.3,0],mobilePosition:[-16,7,17],mobileTarget:[-.3,2.3,0]},
+    heroFront:{position:[.3,2,6.2],target:[-1.25,1.6,3.25],mobilePosition:[.3,2,6.2],mobileTarget:[-1.25,1.6,3.25]},
+    traffic:{position:[-8.3,2.5,8.5],target:[-6.5,3.35,4.35],mobilePosition:[-8.3,2.5,8.5],mobileTarget:[-6.5,3.35,4.35]},
+    waterTank:{position:[5.5,6.5,4],target:[1.7,6.75,-1.7],mobilePosition:[5.5,6.5,4],mobileTarget:[1.7,6.75,-1.7]},
+    reflection:{position:[-3.8,.55,12],target:[.4,.65,4.1],mobilePosition:[-3.8,.55,12],mobileTarget:[.4,.65,4.1]},
+    cctv:{position:[2.5,2.45,-2.8],target:[3.87,2.53,-1.65],mobilePosition:[2.5,2.45,-2.8],mobileTarget:[3.87,2.53,-1.65]},
     poster3:{position:[3.4,2.05,5.9],target:[3.4,2.05,1.82],mobilePosition:[3.4,2.05,5.9],mobileTarget:[3.4,2.05,1.82]},
     poster2:{position:[2.35,2.05,5.9],target:[2.35,2.05,1.82],mobilePosition:[2.35,2.05,5.9],mobileTarget:[2.35,2.05,1.82]},
     poster1:{position:[-2.8,2.05,5.9],target:[-2.8,2.05,1.82],mobilePosition:[-2.8,2.05,5.9],mobileTarget:[-2.8,2.05,1.82]},
-    streetRight:{position:[-15,8,20],target:[0,2,0],mobilePosition:[-20,12,27],mobileTarget:[0,2,0]},
+    streetRight:{position:[13,5.8,12],target:[.3,2.3,0],mobilePosition:[17,7,17],mobileTarget:[.3,2.3,0]},
 
     insideOut:{position:[-.1,1.7,-.75],target:[-.7,1.45,5],mobilePosition:[-.1,1.7,-.75],mobileTarget:[-.7,1.45,5]},
     shelves:{position:[-.4,2,1.6],target:[-2.5,1,-1],mobilePosition:[-.4,2,1.6],mobileTarget:[-2.5,1,-1]},

@@ -3,6 +3,7 @@ import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 
 // A real room behind the centre window. It also supplies the last, independently powered target.
 export function buildServerRoom(parent,r){
+  const reducedMotion=typeof matchMedia==='function'&&matchMedia('(prefers-reduced-motion: reduce)').matches;
   const root=new T.Group();root.name='upstairs-server-room';root.position.set(0,3.51,.72);parent.add(root);
   const steel=r.material('#263a3e',{roughness:.38,metalness:.68}),panel=r.material('#101e25',{roughness:.48,metalness:.32});
   const rails=r.material('#8ca1a1',{roughness:.26,metalness:.8}),cyan=r.own(new T.MeshBasicMaterial({color:0x8adbd6}));
@@ -35,7 +36,7 @@ export function buildServerRoom(parent,r){
         const bx=x-.15+bay*.092;box(panel,[bx,y,.421],[.078,.061,.014]);
         for(let slit=0;slit<3;slit++)box(rails,[bx-.021+slit*.021,y+.006,.431],[.005,.035,.005]);
       }
-      ledRecords.push({p:[x-.188,y-.018,.436],color:row%5===0?0xef564d:0x73d38c,offset:row*.37+(x>0?.6:0)});
+      ledRecords.push({p:[x-.188,y-.018,.436],color:row%3===0?0xef564d:0x73d38c,offset:row*.37+(x>0?.6:0)});
       if(unit)ledRecords.push({p:[x+.196,y+.018,.436],color:0x8ed4ca,offset:row*.59});
     }
     box(steel,[x,1.43,.407],[.55,.095,.05]);
@@ -62,7 +63,7 @@ export function buildServerRoom(parent,r){
   }
   // All status lamps share one instance draw and pulse on the scene clock.
   const ledMaterial=r.own(new T.MeshBasicMaterial({color:0xffffff,vertexColors:true,toneMapped:false}));
-  ledMaterial.onBeforeCompile=shader=>{shader.uniforms.uServerTime=ledTime;shader.vertexShader=shader.vertexShader.replace('#include <common>','#include <common>\nuniform float uServerTime;');shader.vertexShader=shader.vertexShader.replace('#include <color_vertex>','#include <color_vertex>\n#ifdef USE_INSTANCING_COLOR\nvColor*=.28+.72*step(-.08,sin(uServerTime*3.1+instanceMatrix[3].y*9.7+instanceMatrix[3].x*2.7));\n#endif');};
+  ledMaterial.onBeforeCompile=shader=>{shader.uniforms.uServerTime=ledTime;shader.vertexShader=shader.vertexShader.replace('#include <common>','#include <common>\nuniform float uServerTime;');shader.vertexShader=shader.vertexShader.replace('#include <color_vertex>','#include <color_vertex>\n#ifdef USE_INSTANCING_COLOR\nvColor*=.28+.72*step(-.08,sin(uServerTime*15.1+instanceMatrix[3].y*9.7+instanceMatrix[3].x*2.7));\n#endif');};
   ledMaterial.customProgramCacheKey=()=> 'server-status-led-v7';
   const ledMesh=r.own(new T.InstancedMesh(r.geometry('BoxGeometry',1,1,1),ledMaterial,ledRecords.length)),dummy=new T.Object3D(),ledColor=new T.Color();
   for(let i=0;i<ledRecords.length;i++){dummy.position.fromArray(ledRecords[i].p);dummy.scale.set(.014,.009,.008);dummy.updateMatrix();ledMesh.setMatrixAt(i,dummy.matrix);ledMesh.setColorAt(i,ledColor.setHex(ledRecords[i].color));}ledMesh.instanceMatrix.needsUpdate=true;ledMesh.instanceColor.needsUpdate=true;ledMesh.name='rack-network-status-lamps';root.add(ledMesh);
@@ -97,7 +98,7 @@ export function buildServerRoom(parent,r){
       if(alive){
         const pulse=.47+.36*Math.sin(t*5.3)+.17*Math.sin(t*11.7+1.3);spill.intensity=1.15+pulse*.9;
         cyan.color.setRGB(.31+pulse*.2,.63+pulse*.2,.72+pulse*.2);
-        ledTime.value=t;
+        ledTime.value=reducedMotion?0:t;
       }else{
         const elapsed=Math.max(0,t-destroyedAt),p=Math.min(1,elapsed/1.05),ease=1-(1-p)**3;
         for(const shard of shards){shard.mesh.position.lerpVectors(shard.p,shard.end,ease);shard.mesh.position.y+=Math.sin(p*Math.PI)*.9;shard.mesh.rotation.set(shard.rotation.x*p,shard.rotation.y*p,shard.rotation.z*p);}

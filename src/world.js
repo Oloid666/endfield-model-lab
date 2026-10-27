@@ -89,10 +89,10 @@ export class World {
     this.walkCamera.onZone(false);
     this.currentView=name==='reset'?'street':name;
     const preset=config.views[name==='reset'?'street':name];if(!preset)return;
-    this.setCutaway(['interior','shelves','fridge','oven'].includes(name));this.camera.fov=name==='interior'?65:37;this.camera.updateProjectionMatrix();
+    this.setCutaway(['interior','insideOut','shelves','fridge','oven','cctv'].includes(name));this.camera.fov=name==='interior'?65:37;this.camera.updateProjectionMatrix();
     const mobile=this.container.clientWidth/Math.max(1,this.container.clientHeight)<.85;
     const target=new T.Vector3().fromArray(mobile?preset.mobileTarget:preset.target),position=new T.Vector3().fromArray(mobile?preset.mobilePosition:preset.position);
-    if(['detail','left','right','back','story'].includes(name)&&this.actors){const offset=this.actors.position.clone().sub(new T.Vector3(-1.25,.32,2.48));target.add(offset);position.add(offset);}
+    if(['detail','heroFront','left','right','back','story','dragon'].includes(name)&&this.actors){const anchor=name==='dragon'?this.actors.dragonPosition:this.actors.heroPosition;const origin=name==='dragon'?[-2,1,3.25]:[-1.25,.32,3.25];const offset=new T.Vector3(...anchor).sub(new T.Vector3(...origin));target.add(offset);position.add(offset);}
     // Flush damping once, so user momentum does not fight a selected preset.
     const damping=this.controls.enableDamping;this.controls.enableDamping=false;this.controls.update();this.controls.enableDamping=damping;
     if(instant||matchMedia('(prefers-reduced-motion: reduce)').matches){this.camera.position.copy(position);this.controls.target.copy(target);this.transition=null;}
@@ -104,7 +104,7 @@ export class World {
   prepareShaders(object=this.scene,label='scene'){return this.shaderWarmup.prepare(object,label);}
   resetStoryCamera(){
     this.setWalking(false);this.autoCamera=true;
-    if(this.missionState&&this.missionState.phase!=='ready')this.director.resumeCamera();
+    this.setCutaway(false);if(this.missionState)this.director.resumeCamera();
     else{this.manualUntil=this.time;this.setView('reset');}
     this.weather.invalidateReflection();
   }
@@ -116,21 +116,29 @@ export class World {
     if(enabled){this.scene.updateMatrixWorld(true);this.hiddenShell=[];const box=new T.Box3(),center=new T.Vector3();this.store.root.traverse(mesh=>{if(!mesh.isMesh)return;box.setFromObject(mesh);box.getCenter(center);if((center.y>2.55||center.y>.6&&center.z>1.7)&&Math.abs(center.x)<4.9&&center.z<3.2&&center.z> -4){this.hiddenShell.push([mesh,mesh.visible]);mesh.visible=false;}});}
     this.weather.invalidateReflection();
   }
+  pulseLight(materials=[]){
+    this.lightPulse?.materials.forEach(([m,c,e])=>{m.color.copy(c);if(e!=null)m.emissiveIntensity=e;});
+    if(!materials.length)this.store.root.traverse(n=>{if((n.userData.bonusSign||n.userData.originalSign)&&n.material?.color)materials.push(n.material);});
+    this.lightPulse={at:this.time,materials:[...new Set(materials)].filter(m=>m?.color).map(m=>[m,m.color.clone(),m.emissiveIntensity])};this.weather.invalidateReflection();
+  }
   interact(ray){
     if(this.actors&&ray.intersectObject(this.actors.root,true).some(h=>h.object.visible))return false;
+    this.scene.updateMatrixWorld(true);const nearest=ray.intersectObjects([this.store.root,this.garden.root],true).find(h=>{for(let n=h.object;n;n=n.parent)if(!n.visible)return false;return true;});if(nearest){const materials=Array.isArray(nearest.object.material)?nearest.object.material:[nearest.object.material];if(materials.some(m=>m?.emissive?.getHex()>0&&m.emissiveIntensity>=.5)){this.pulseLight(materials);return true;}}if(nearest&&nearest.object.parent){let node=nearest.object;while(node){if(node===this.garden.root){this.garden.touch?.(this.missionState?.clock??this.time);return true;}node=node.parent;}}
     const beam=ray.ray||ray;const hit=(p,r)=>{const v=new T.Vector3(...p);return beam.direction.dot(v.clone().sub(beam.origin))>0&&beam.distanceSqToPoint(v)<r*r;};
-    if(hit([0,4.55,1.9],.8)){this.roomLightOn=!(this.roomLightOn??true);this.store.destruction.server.root.traverse(n=>{if(n.isPointLight)n.intensity=this.roomLightOn?1.6:0;if(n.material?.userData.switchColor&&this.roomLightOn)n.material.color.copy(n.material.userData.switchColor);});this.weather.invalidateReflection();return true;}
+    if(hit([0,4.55,1.9],.8)){const materials=[];this.store.destruction.server.root.traverse(n=>{if(n.material?.isMeshBasicMaterial)materials.push(n.material);});this.pulseLight(materials);return true;}
     if(hit([-6.5,3.57,4.5],.5)){this.signalIndex=((this.signalIndex||0)+1)%3;this.store.streetProps.setSignal(this.signalIndex);this.weather.invalidateReflection();return true;}
     const plane=new T.Plane(new T.Vector3(0,0,1),-1.9),point=new T.Vector3();if(beam.intersectPlane(plane,point)&&Math.abs(point.x)<4.5&&point.y>.3&&point.y<3.4){this.store.triggerDoor();return true;}return false;
   }
-  capturePhoto(portrait=false){
-    const oldRatio=this.renderer.getPixelRatio(),size=this.renderer.getSize(new T.Vector2());
-    const ratio=Math.min(3,2048/Math.max(size.x,size.y));let src,width,height;
-    try{this.renderer.setPixelRatio(ratio);this.composer.setPixelRatio(ratio);this.fxaa.uniforms.resolution.value.set(1/(size.x*ratio),1/(size.y*ratio));this.composer.render();width=this.renderer.domElement.width;height=this.renderer.domElement.height;src=this.renderer.domElement.toDataURL('image/png');}
-    finally{this.renderer.setPixelRatio(oldRatio);this.composer.setPixelRatio(oldRatio);this.resize();this.composer.render();}
+  capturePhoto(){
+    // One scene render, then both views are derived from exactly this shutter frame.
+    this.composer.render();const source=this.renderer.domElement,ratio=Math.min(1,1600/Math.max(source.width,source.height)),canvas=document.createElement('canvas');
+    canvas.width=Math.max(1,Math.round(source.width*ratio));canvas.height=Math.max(1,Math.round(source.height*ratio));canvas.getContext('2d').drawImage(source,0,0,canvas.width,canvas.height);
+    const display=this.photoPhone?.getObjectByName('camera-screen');if(display){const thumb=document.createElement('canvas');thumb.width=256;thumb.height=384;const c=thumb.getContext('2d');c.fillStyle='#132b2f';c.fillRect(0,0,256,384);const scale=Math.min(256/canvas.width,384/canvas.height);c.drawImage(canvas,(256-canvas.width*scale)/2,(384-canvas.height*scale)/2,canvas.width*scale,canvas.height*scale);this.photoTexture??=this.r.own(new T.CanvasTexture(thumb));this.photoTexture.image=thumb;this.photoTexture.colorSpace=T.SRGBColorSpace;this.photoTexture.needsUpdate=true;display.material.map=display.material.emissiveMap=this.photoTexture;display.material.color.set(0xffffff);display.material.emissive.set(0xffffff);display.material.emissiveIntensity=.3;display.material.needsUpdate=true;}
+    const width=canvas.width,height=canvas.height,src=canvas.toDataURL('image/jpeg',.92),h=this.actors.heroPosition,face=this.projectPoint([h[0],h[1]+1.65,h[2]]);
+    const crop=document.createElement('canvas');crop.width=400;crop.height=500;const cropWidth=Math.max(100,width*.15),cropHeight=cropWidth*1.25,x=Math.max(0,Math.min(width-cropWidth,(face[0]+1)*width/2-cropWidth/2)),y=Math.max(0,Math.min(height-cropHeight,(1-face[1])*height/2-cropHeight*.3));
+    crop.getContext('2d').drawImage(canvas,x,y,cropWidth,cropHeight,0,0,400,500);
     const points=[['floor',[-3.05,1.08,2.1]],['server',[0,4.6,1.4]]].map(([id,p])=>{const q=this.projectPoint(p);return {id,x:(q[0]+1)/2,y:(1-q[1])/2,z:q[2]};});
-
-    let closeup;if(!portrait){const pos=this.camera.position.clone(),target=this.controls.target.clone(),fov=this.camera.fov;try{const h=this.actors.heroPosition;this.camera.position.set(h[0]+.12,h[1]+1.7,h[2]+1.4);this.controls.target.set(h[0],h[1]+1.65,h[2]);this.camera.fov=35;this.camera.lookAt(this.controls.target);this.camera.updateProjectionMatrix();closeup=this.capturePhoto(true).src;}finally{this.camera.position.copy(pos);this.controls.target.copy(target);this.camera.fov=fov;this.camera.lookAt(target);this.camera.updateProjectionMatrix();this.composer.render();}}return {src,width,height,points,closeup};
+    return {src,width,height,points,closeup:crop.toDataURL('image/jpeg',.92)};
   }
   projectPoint(point){const p=new T.Vector3().fromArray(point).project(this.camera);return p.toArray();}
   // Read-only diagnostic for checking the camera against visible shop geometry.
@@ -150,7 +158,7 @@ export class World {
 
   tick(t,delta=.016,render=true){
     if(this.bonus?.active){this.time=t;this.bonus.tick(t,render);return;}
-    this.time=t;this.onTick(t,delta);
+    this.time=t;if(this.lightPulse){const age=t-this.lightPulse.at,brightness=age>=.45?1:matchMedia('(prefers-reduced-motion: reduce)').matches?.75:.6+.4*Math.cos(age*Math.PI*4/.45);for(const [m,c,e]of this.lightPulse.materials){m.color.copy(c).multiplyScalar(brightness);if(e!=null)m.emissiveIntensity=e*brightness;}if(age>=.45)this.lightPulse=null;}if(this.loadingPresentation){if(render)this.loadingPresentation.render(t);return;}this.onTick(t,delta);
     if(this.earlyDragon){const d=this.earlyDragon;d.root.position.y=.32+Math.abs(Math.sin(t*2.6))*.3;d.root.rotation.y=Math.sin(t*.9)*.65;d.update(t,{nod:.3,gesture:'wave',gestureAmount:(Math.sin(t*2)+1)/2});}
 
     this.director.beforeActors(this.missionState);this.actors?.update(t,delta);this.director.afterActors(t,delta);
@@ -162,15 +170,19 @@ export class World {
       const h=cctv?[1.95,.31,.85]:this.actors.heroPosition||p.toArray();
       const cast=this.actors.status.cinematic,yaw=cctv?0:cast?.phase?cast.heading:0,c=Math.cos(yaw),s=Math.sin(yaw);
       this.portrait.key.position.set(h[0]-2.35*c+4.22*s,h[1]+3.38,h[2]+2.35*s+4.22*c);this.portrait.key.target.position.set(h[0]-.35,h[1]+.98,h[2]);
-      this.portrait.fill.position.set(h[0]+3.25*c+2.92*s,h[1]+2.48,h[2]-3.25*s+2.92*c);this.portrait.fill.target.position.set(h[0]-.15,h[1]+.93,h[2]);
+      this.portrait.fill.position.set(h[0]+3.25*c+2.92*s,h[1]+2.48,h[2]-3.25*s+2.92*c);this.portrait.fill.target.position.set(h[0]-.15,h[1]+.93,h[2]);if(['photo-return','photo-flight'].includes(this.missionState?.phase)){const d=this.actors.dragonPosition;this.portrait.fill.position.set(d[0]-2,d[1]+2,d[2]+3);this.portrait.fill.target.position.set(d[0],d[1]+.35,d[2]);}
     }
+    if(this.flashUntil>t){const strength=matchMedia('(prefers-reduced-motion: reduce)').matches?.7:Math.sin((this.flashUntil-t)*24)>0?1.2:.5;this.portrait.fill.intensity=28*strength;}else this.portrait.fill.intensity=28;
     this.store.update(t,delta,this.actors?.position,this.actors?.status.companion?.position);
     this.controls.update();if(this.director.cameraRoll)this.camera.rotateZ(this.director.cameraRoll);const close=this.camera.position.distanceTo(this.controls.target)<(this.camera.aspect<.85?14:11);
     if(close!==this.closeFraming){this.closeFraming=close;this.onFraming(close);}
     const presentation=this.missionState?.vcr,damage=presentation?0:this.store.destruction.state.progress;this.weather.setShelter(damage<80,damage<44);
     const visualTime=this.director.visualTime??t;
     this.store.glass.uniforms.uTime.value=visualTime;this.wet.update(visualTime);this.weather.update(visualTime);
-    if(render){this.renderer.info.reset();this.composer.render();this.renderCount++;}
+    if(render){this.renderer.info.reset();this.composer.render();this.renderCount++;
+      const phase=this.missionState?.phase,key={energy:'general',last:'mikoto',cargo:'cargo',briefing:'taste',login:'login',heat:'microwave',landing:'insurance'}[phase];this.sceneStills??={};
+      if(key&&!this.sceneStills[key]&&this.missionState.phaseElapsed>.5){const c=document.createElement('canvas');c.width=640;c.height=Math.round(640*this.renderer.domElement.height/this.renderer.domElement.width);c.getContext('2d').drawImage(this.renderer.domElement,0,0,c.width,c.height);this.sceneStills[key]=c.toDataURL('image/jpeg',.7);}
+    }
   }
   start(){this.stop();this.running=true;this.onClockState?.(!document.hidden);this.renderer.setAnimationLoop(now=>{
     if(document.hidden){this.previous=undefined;return;}

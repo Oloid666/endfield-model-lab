@@ -53,7 +53,7 @@ export function buildInvestigationProps(scene,r){
      dummy.scale.set(i<active?.065:0,i<active?.065:0,i<active?.045:0);dummy.rotation.set(0,0,(i%3-1)*.1);dummy.updateMatrix();pixels.setMatrixAt(i,dummy.matrix);
    }
    pixels.instanceMatrix.needsUpdate=true;led.material.emissiveIntensity=.5+Math.sin(t*2)**2*.5;
-   paperGroup.visible=(state.progress||0)<62||past;camera.visible=((state.progress||0)<62||past)&&(past||state.phase==='cargo'&&Number((state.nodeId||'').split('_').at(-1))>=5||['observation','comm-request','briefing','login','captcha','lever','ascent','director-reminder','shoe-view','pylon-link','charge','fire-ready','combat','energy','rewind'].includes(state.phase));
+   paperGroup.visible=(state.progress||0)<62||past;camera.visible=((state.progress||0)<62||past)&&(state.inspectCctv||past||state.phase==='cargo'&&Number((state.nodeId||'').split('_').at(-1))>=5||['observation','comm-request','briefing','login','captcha','lever','ascent','director-reminder','shoe-view','pylon-link','charge','fire-ready','combat','energy','rewind'].includes(state.phase));
    room.visible=!past&&(state.progress||0)<62;cargo.visible=(state.progress||0)<62||past;
    wasPast=past;
  }

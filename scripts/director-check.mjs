@@ -100,11 +100,11 @@ for(const portrait of [true,false]){
  check('Reduced motion keeps the dialogue camera still',JSON.stringify(still1.position)===JSON.stringify(still2.position));
 }
 const faceWorld=makeWorld(),faceDirector=new MissionDirector(faceWorld);
-faceDirector.beforeActors(state('intro',{nodeId:'intro_4',phaseElapsed:5,purchaseElapsed:null}));check('Opening conversation shows Dragon face toward Zhuang and camera',faceWorld.actors.dragonHeading===.5);
-faceDirector.beforeActors(state('intro',{nodeId:'intro_9',purchaseElapsed:0}));check('Dragon starts turning without snapping away from the conversation',faceWorld.actors.dragonHeading===.5);
+faceDirector.beforeActors(state('intro',{nodeId:'intro_4',phaseElapsed:5,purchaseElapsed:null}));check('Opening conversation shows Dragon face toward Zhuang and camera',faceWorld.actors.dragonHeading===.9);
+faceDirector.beforeActors(state('intro',{nodeId:'intro_9',purchaseElapsed:0}));check('Dragon starts turning without snapping away from the conversation',faceWorld.actors.dragonHeading===.9);
 faceDirector.beforeActors(state('purchase',{purchaseElapsed:2.5}));check('Dragon faces into the store while entering',Math.abs(faceWorld.actors.dragonHeading-Math.PI)<1e-9);
 faceDirector.beforeActors(state('purchase',{purchaseElapsed:4.5}));check('Dragon turns toward the counter along the path',Math.abs(faceWorld.actors.dragonHeading-1.73)<1e-9);
-faceDirector.beforeActors(state('cargo',{nodeId:'cargo_1'}));check('Cargo dialogue shows Dragon face',faceWorld.actors.dragonHeading===.5);faceWorld.r.dispose();
+faceDirector.beforeActors(state('cargo',{nodeId:'cargo_1'}));check('Cargo dialogue shows Dragon face',faceWorld.actors.dragonHeading===1);faceWorld.r.dispose();
 const sw=makeWorld(),sd=new MissionDirector(sw);sw.actors.dragonPosition=[1.2,1.3,1.2];
 for(const [at,beat] of [[2.2,'store-shelf-insert'],[2.8,'store-shelf-insert'],[4.0,'store-shelf-insert'],[4.9,'dragon-at-counter']]){sd.state=state('purchase',{purchaseElapsed:at});sd.updateCamera(.03,sw.actors.heroPosition);check('Purchase reaches '+beat,sd.status.cameraBeat===beat);if(at===4.9){check('Counter insert tracks the actual Dragon position',sd.cameraTarget.distanceTo(new T.Vector3(1.2,1.62,1.2))<1e-9);check('Insert transitions cut instead of passing through models',sw.camera.position.distanceTo(sd.cameraPosition)<1e-9);}}
 for(const [id,age,beat] of [['briefing_2',.5,'server-fanbooks'],['briefing_2',1.5,'briefing-zhuang'],['briefing_4',.5,'server-copier'],['briefing_4',1.5,'briefing-zhuang'],['briefing_8',2.6,'briefing-reaction'],['briefing_9',0,'briefing-zhuang']]){sd.state=state('briefing',{nodeId:id,nodeElapsed:age,text:'少女可以是十幾歲、幾百歲，但是不能三四十歲。'});sd.updateCamera(.03,sw.actors.heroPosition);check('Briefing preserves evidence then reaction: '+id+' '+age,sd.status.cameraBeat===beat);}

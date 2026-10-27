@@ -69,7 +69,7 @@ export function buildTianshiGrid(scene,r){
   const ringMaterial=r.own(new T.MeshBasicMaterial({color:new T.Color(.22,1.8,.85),transparent:true,opacity:.65,depthWrite:false,blending:T.AdditiveBlending,toneMapped:false}));
   const rings=r.own(new T.InstancedMesh(r.geometry('TorusGeometry',.85,.018,4,48),ringMaterial,12));rings.name='tianshi-suspended-green-rings';rings.instanceMatrix.setUsage(T.DynamicDrawUsage);rings.frustumCulled=false;rings.userData.dynamic=true;root.add(rings);
   const columns=r.own(new T.InstancedMesh(r.geometry('CylinderGeometry',.64,.24,1,12,1,true),r.own(new T.MeshBasicMaterial({color:new T.Color(.12,1.3,.64),transparent:true,opacity:.12,depthWrite:false,side:T.DoubleSide,blending:T.AdditiveBlending,toneMapped:false})),4));columns.name='tianshi-green-energy-columns';columns.instanceMatrix.setUsage(T.DynamicDrawUsage);columns.frustumCulled=false;columns.userData.dynamic=true;root.add(columns);
-  const lowSigns=pillars.map((p,i)=>{const m=r.mesh(r.geometry('PlaneGeometry',1,1),r.label('⚡ LOW',{width:256,height:128,bg:'#183c39',color:'#f2b66d',font:'bold 42px sans-serif'}),root,[sources[i][0],sources[i][1]+p.h+1,sources[i][2]],[2,1,1]);m.visible=false;return m;});
+  const lowSigns=pillars.map((p,i)=>{const m=r.mesh(r.geometry('PlaneGeometry',1,1),r.label('⚡ LOW',{width:256,height:128,bg:'#183c39',color:'#f2b66d',font:'bold 42px sans-serif'}),root,[sources[i][0],sources[i][1]+p.h+1,sources[i][2]],[3.2,1.6,1]);m.visible=false;return m;});
   let quality='balanced',segmentCount=10,motesPerPylon=5,ringsPerPylon=3,phase='ready',charge=0,activeCount=0;
   const connected=[false,false,false,false];
   function path(pillar,p,clock,out){
@@ -92,38 +92,38 @@ export function buildTianshiGrid(scene,r){
   function hideInstances(){dummy.scale.setScalar(0);dummy.updateMatrix();for(const mesh of [beams,linkGlow,motes,rings,columns]){for(let i=0;i<mesh.count;i++)mesh.setMatrixAt(i,dummy.matrix);mesh.instanceMatrix.needsUpdate=true;}}
   hideInstances();
   return {root,
-    focusTargets:pillars.map((p,i)=>({id:'tianshi-'+i,position:[p.source.x,p.source.y,p.source.z],base:[...sources[i]],height:p.h,detailTarget:[p.source.x,p.source.y+.35,p.source.z],detailEye:[p.source.x+(i<2?-3.8:4.2),p.source.y+2.7,p.source.z+6.3]})),
-    reset(){phase='ready';charge=0;activeCount=0;connected.fill(false);for(const p of pillars){p.strength=0;p.glow.emissiveIntensity=.16;p.crown.position.y=p.h;p.halo.scale.set(0,0,1);}hideInstances();},
-    quality(value){quality=['low','balanced','high'].includes(value)?value:'balanced';segmentCount=quality==='low'?6:quality==='high'?12:10;motesPerPylon=quality==='low'?2:quality==='high'?8:5;ringsPerPylon=quality==='low'?2:3;},
+    warningTargets:lowSigns.map(m=>m.position.toArray()),focusTargets:pillars.map((p,i)=>({id:'tianshi-'+i,position:[p.source.x,p.source.y,p.source.z],base:[...sources[i]],height:p.h,detailTarget:[p.source.x,p.source.y+.35,p.source.z],detailEye:[p.source.x+(i<2?-3.8:4.2),p.source.y+2.7,p.source.z+6.3]})),
+    reset(){root.visible=false;phase='ready';charge=0;activeCount=0;connected.fill(false);for(const p of pillars){p.strength=0;p.glow.emissiveIntensity=.16;p.crown.position.y=p.h;p.halo.scale.set(0,0,1);}hideInstances();},
+    quality(value){quality=['low','balanced','high'].includes(value)?value:'balanced';segmentCount=quality==='low'?6:quality==='high'?12:10;motesPerPylon=quality==='low'?2:quality==='high'?8:7;ringsPerPylon=quality==='low'?2:3;},
     update(t,delta,state={}){
-      phase=state.phase||'ready';const clock=phase==='ready'?t:Number.isFinite(state.clock)?state.clock:t;
-      const outage=['energy','last','return'].includes(phase),outageFlash=Math.sin(clock*13)>-.2;
-      for(const m of lowSigns){m.visible=outage&&outageFlash;}charge=clamp((state.charge||0)/100);if(state.hero)hero.fromArray(state.hero);
-      const lever=clamp(state.connection?.lever??0),casting=['charge','fire-ready','combat','energy','last','aim-final','finisher','landing','tour'].includes(phase);
+      phase=state.phase||'ready';root.visible=['lever','ascent','director-reminder','shoe-view','pylon-link','charge','fire-ready','combat','energy','last','aim-final','finisher','landing','tour','complete','return'].includes(phase);const clock=phase==='ready'?t:Number.isFinite(state.clock)?state.clock:t;
+      const outage=['energy','last','return'].includes(phase),outageFlash=reducedMotion||Math.sin(clock*4)>-.2;
+      for(const m of lowSigns){m.visible=outage;m.material.color.setScalar(reducedMotion?1:.75+.25*Math.sin(clock*2)**2);}charge=clamp((state.charge||0)/100);if(state.hero)hero.fromArray(state.hero);
+      const lever=clamp(state.connection?.lever??0),casting=['ascent','director-reminder','shoe-view','pylon-link','charge','fire-ready','combat','energy','last','aim-final','finisher','landing','tour'].includes(phase)&&!(phase==='finisher'&&(state.phaseElapsed||0)>=4.9);
       const linking=phase==='lever'?lever:casting?1:0;
       activeCount=0;
       for(let i=0;i<pillars.length;i++){
-        const depleted=['energy','last','return'].includes(phase);const p=pillars[i],wanted=casting?(depleted?(outageFlash?.18:.045):1):clamp((linking-i*.18)*2.6);
+        pillars[i].owner.visible=phase!=='lever'||lever>=i*.18;const depleted=['energy','last','return'].includes(phase);const p=pillars[i],wanted=casting?(depleted?(outageFlash?.18:.045):1):clamp((linking-i*.18)*2.6);
         p.strength=T.MathUtils.damp(p.strength,wanted,5,Math.min(.1,Math.max(0,delta)));
         if(Math.abs(p.strength-wanted)<.001)p.strength=wanted;connected[i]=p.strength>.6;if(connected[i])activeCount++;
         const pulse=reducedMotion?1:1+Math.sin(clock*2.4+i)*.11;
-        p.glow.emissiveIntensity=.13+p.strength*(2.9+charge*1.4)*pulse;
+        p.glow.emissiveIntensity=p.strength*charge*(charge<.3?1.5:4.8)*pulse;
         p.crown.position.y=p.h+(reducedMotion?0:Math.sin(clock*.7+i)*.08)*p.strength;p.core.rotation.y=clock*(reducedMotion?.025:.12);
         p.halo.scale.set((2.7+charge)*p.strength,(3.8+charge)*p.strength,1);
-        p.halo.visible=p.strength>.01;
+        p.halo.visible=charge>.005&&p.strength>.01;
         dummy.position.set(sources[i][0],sources[i][1]+p.h*.51,sources[i][2]);dummy.rotation.set(0,0,0);dummy.scale.set(p.strength,p.h*.86,p.strength);dummy.updateMatrix();columns.setMatrixAt(i,dummy.matrix);
         for(let ring=0;ring<3;ring++){
           dummy.position.set(sources[i][0],sources[i][1]+p.h*(.49+ring*.185)+(reducedMotion?0:Math.sin(clock*.7+i+ring)*.1)*p.strength,sources[i][2]);
           dummy.rotation.set(-Math.PI/2+(reducedMotion?0:Math.sin(clock*.3+i+ring)*.16),clock*(reducedMotion?.03:.12)*(ring%2?-1:1),i*.7);
           const scale=ring<ringsPerPylon?p.strength*(.86+ring*.17):0;dummy.scale.setScalar(scale);dummy.updateMatrix();rings.setMatrixAt(i*3+ring,dummy.matrix);
         }
-        const visible=p.strength>.01&&(casting||phase==='lever')&&phase!=='landing'&&phase!=='tour';
+        const visible=charge>.005&&p.strength>.01&&(casting||phase==='lever')&&phase!=='landing'&&phase!=='tour';
         for(let segment=0;segment<maxSegments;segment++){
           const index=i*maxSegments+segment;
           if(visible&&segment<segmentCount){
             path(p,segment/segmentCount,clock,a);path(p,(segment+1)/segmentCount,clock,b);
             direction.copy(b).sub(a);const length=direction.length();direction.normalize();dummy.position.copy(a).add(b).multiplyScalar(.5);dummy.quaternion.setFromUnitVectors(up,direction);
-            const width=(.014+(reducedMotion?.003:.008*Math.sin(clock*4+i)**2))*p.strength;dummy.scale.set(width,length,width);
+            const width=(.014+(reducedMotion?.003:.008*Math.sin(clock*4+i)**2))*p.strength*(.5+charge*2.5);dummy.scale.set(width,length,width);
           }else dummy.scale.setScalar(0);
           dummy.updateMatrix();beams.setMatrixAt(index,dummy.matrix);
           dummy.scale.x*=4.5;dummy.scale.z*=4.5;dummy.updateMatrix();linkGlow.setMatrixAt(index,dummy.matrix);
@@ -132,7 +132,7 @@ export function buildTianshiGrid(scene,r){
           const index=i*8+j;if(visible&&j<motesPerPylon){const progress=((clock*(reducedMotion?.13:.29)+j/motesPerPylon+i*.11)%1+1)%1;path(p,progress,clock,dummy.position);dummy.rotation.set(clock+i,j,clock*.7);dummy.scale.setScalar(.07*p.strength*(.4+Math.sin(progress*Math.PI)));}else dummy.scale.setScalar(0);dummy.updateMatrix();motes.setMatrixAt(index,dummy.matrix);
         }
       }
-      for(const mesh of [beams,linkGlow,motes,rings,columns])mesh.instanceMatrix.needsUpdate=true;beams.visible=linkGlow.visible=motes.visible=(casting||phase==='lever')&&activeCount>0;rings.visible=columns.visible=activeCount>0;
+      for(const mesh of [beams,linkGlow,motes,rings,columns])mesh.instanceMatrix.needsUpdate=true;beams.visible=linkGlow.visible=motes.visible=(casting||phase==='lever')&&activeCount>0;rings.visible=columns.visible=charge>.005&&activeCount>0;
     },
     get state(){return {phase,quality,reducedMotion,charge,activePylons:activeCount,connected:[...connected],positions:sources.map(p=>[...p]),originalStyle:true,drawnLinks:beams.visible?activeCount:0,greenHalos:activeCount,energyRings:activeCount*ringsPerPylon,energyColumns:activeCount,moteBudget:motesPerPylon*4,emission:Math.max(...pillars.map(p=>p.glow.emissiveIntensity))};}
   };

@@ -11,7 +11,7 @@ export function pickBonusSign(world,ray){
  world.scene.updateMatrixWorld(true);
  for(const hit of ray.intersectObjects([world.store.root,world.actors?.root].filter(Boolean),true)){
   const n=hit.object;if(!visible(n))continue;
-  if(n.userData.bonusSign||n.userData.originalSign)return true;
+  if(n.userData.bonusSign||n.userData.originalSign){const box=new (world.camera.position.constructor)();n.getWorldPosition(box);if(box.z>1)return true;}
   if(!n.material?.transparent)return false;
  }
  return false;
@@ -19,6 +19,7 @@ export function pickBonusSign(world,ray){
 export function createBonus({mount,world,mission,exploration,playEffect=()=>{}}){
  let storage;try{storage=window.localStorage;}catch{/* Ephemeral mode. */}
  const progress=new BonusProgress(storage),negotiation=new ClaimsNegotiation(),events=new AbortController(),stampSequence=new StampSequence(),course=new ClassCourse(),deathMeter=new SmoothMeter();
+ progress.data.unlocked=false;
  let active=false,route='rooms',lessonIndex=0,pageIndex=0,room=null,snapshot=null,busy=false,disposed=false,transitionAnimation=null,exportUrl=null,exportBlob=null;
  let responseIndex=0,lessonAt=0,lessonKey='',lastReveal=-1,dialogOpener=null,dialogScroll=0,stampPhase='',stampKind='class',dialogKind='',objectionKey='',objectionAnimation=null;
  const entry=E('button','bonus-entry','二周目開放 · 樓上請 ↗');entry.type='button';entry.hidden=true;entry.dataset.action='open';
@@ -177,11 +178,11 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{}})
    const l=LESSONS[lessonIndex],last=l.analysis.length+1,turns=lessonTurns(),reaction=pageIndex===last;
    content.append(E('h2','',l.title));
    let text,kicker;
-   if(pageIndex===0){kicker='原句回顧';text=l.recap;room.setFocus('wide');}
+   if(pageIndex===0){if(l.id==='lino'){const frame=E('div','bonus-poster-recap'),poster=E('img');poster.src=`${import.meta.env.BASE_URL}images/store-posters.png`;poster.alt='梨諾說沒有洗腦 · 食品衛生海報';frame.append(poster);content.append(frame);}kicker='原句回顧';text=l.recap;room.setFocus('wide');const image=world.sceneStills?.[l.id]||world.sceneStills?.[l.id==='compute'||l.id==='pear'?'taste':l.id];if(image){const still=E('img','bonus-recap-still');still.src=image;still.alt=l.title+' · 本次劇情畫面';content.append(still);}}
    else if(!reaction){kicker='解析';text=l.analysis[pageIndex-1];room.setFocus(pageIndex===2?'board-side':'board');}
    else {kicker='課後吐槽';text=turns[responseIndex];room.setFocus('reaction');}
    const boardTitle=pageIndex===0?l.board:reaction?'講師補充':LESSON_NOTES[l.id][pageIndex-1];
-   const notes=reaction?[l.diagnosis]:[];
+   const notes=reaction?[l.diagnosis]:pageIndex===0?LESSON_NOTES[l.id].slice(0,2):[];
    room.board(boardTitle,notes,Math.max(0,1-course.percentage/100),lessonAt,false,lessonKey);
    room.perform(reaction?(text.startsWith('莊：')?'interrupted':responseIndex===turns.length-1&&lessonIndex===LESSONS.length-1?'dismissed':'awkward'):'explain');
    content.append(E('p','bonus-section-label',kicker),E('p',reaction?'bonus-reading bonus-spoken':'bonus-reading',text));
@@ -295,8 +296,8 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{}})
  dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close();},{signal:events.signal});
  root.addEventListener('keydown',e=>{if(!active)return;if(e.key==='Escape'&&!dialog.open){e.preventDefault();close();}if(e.key==='Tab'&&!dialog.open){const nodes=[...root.querySelectorAll('button,a[href]')].filter(n=>!n.disabled&&n.getClientRects().length);if(!nodes.length)return;const first=nodes[0],last=nodes.at(-1);if(e.shiftKey&&(document.activeElement===first||document.activeElement===content)){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}},{signal:events.signal});
  const api={get active(){return active;},get state(){return {active,route,busy,lesson:LESSONS[lessonIndex].id,page:pageIndex,response:responseIndex,room:room?.state||null,presentation:lessonFrame(world.time-lessonAt,course.eligible,reducedMotion()),stampPhase,taps:progress.taps,...structuredClone(progress.data),course:{...course.saved,completed:course.completed,percentage:course.percentage,display:deathMeter.value(world.time)},negotiation:negotiation.state};},
-  handleTap(ray){if(active)return true;const allowed=['ready','complete'].includes(mission.state.phase);if(!allowed){progress.tap(false,mission.state.phase);return false;}const sign=pickBonusSign(world,ray);if(progress.tap(sign,mission.state.phase)){notice('龍泡泡：樓上還沒下班。');mount.classList.add('bonus-unlocked');const flash=world.container.animate([{filter:'brightness(1)'},{filter:'brightness(1.7)'},{filter:'brightness(1)'}],{duration:320});flash.onfinish=()=>mount.classList.remove('bonus-unlocked');updateEntry();}return sign;},
-  update(){if(progress.complete(mission.state.phase))notice('一周目完成！二周目已開放，樓上請。');if(!['ready','complete'].includes(mission.state.phase))progress.taps=0;updateEntry();},
+  handleTap(ray){if(active)return true;const allowed=['ready','complete'].includes(mission.state.phase);if(!allowed){progress.tap(false,mission.state.phase);return false;}const sign=pickBonusSign(world,ray);if(sign){world.flashUntil=world.time+.45;world.pulseLight?.();}if(progress.tap(sign,mission.state.phase)){notice('龍泡泡：樓上還沒下班。');mount.classList.add('bonus-unlocked');const flash=world.container.animate([{filter:'brightness(1)'},{filter:'brightness(1.7)'},{filter:'brightness(1)'}],{duration:320});flash.onfinish=()=>mount.classList.remove('bonus-unlocked');updateEntry();}return sign;},
+  update(){if(!['ready','complete'].includes(mission.state.phase))progress.taps=0;updateEntry();},
   tick(time,render=true){syncClass(time);advanceStamp(time);syncLesson(time);if(!render)return;world.renderer.info.reset();if(['classroom','lesson','claims','negotiation','settlement-result','class-wait','class-stamping','class-result'].includes(route)){ensureRoom().render(world.renderer,time,world.container.clientWidth,world.container.clientHeight);}else world.composer.render();world.renderCount++;},
   dispose(){disposed=true;transitionAnimation?.cancel();objectionAnimation?.cancel();toast.getAnimations().forEach(a=>a.cancel());dialog.close();events.abort();if(active){busy=false;close();}room?.dispose();if(exportUrl)URL.revokeObjectURL(exportUrl);root.remove();entry.remove();toast.remove();}};
  world.bonus=api;updateEntry();return api;

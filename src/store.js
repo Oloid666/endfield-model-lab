@@ -126,7 +126,7 @@ export function buildStore(scene, r) {
   for(const y of [3.58,4.77])B('#435a50',[4.78,y,1.3],[.75,.055,.07],{metalness:.6,roughness:.32});
   B('#798f7e',[5.08,4.12,1.3],[.97,2.24,.24],{metalness:.6,roughness:.3});
   B('#e9e9d7',[5.08,4.12,1.43],[.9,2.16,.025],{emissive:0xf0e8c9,emissiveIntensity:1});
-  for(const [z,rotation] of [[1.451,0],[1.169,Math.PI]]){const sign=r.mesh(r.geometry('PlaneGeometry',1,1),logoMaterial(true),root,[5.08,4.12,z],[.87,2.11,1]);sign.rotation.y=rotation;sign.userData.bonusSign=true;}
+  for(const [z,rotation] of [[1.451,0],[1.169,Math.PI]]){const sign=r.mesh(r.geometry('PlaneGeometry',1,1),logoMaterial(true),root,[5.08,4.12,z],[.87,2.11,1]);sign.rotation.y=rotation;sign.userData.interactiveLight=true;}
   collectBuildingPart(root,buildingParts,'sign',section);section=new Set(root.children);
   // Canopy with an illuminated underside. Slender supports frame the actors.
   B('#24332f',[0,2.79,2.23],[9.65,.09,1.28],{roughness:.24,metalness:.35});
