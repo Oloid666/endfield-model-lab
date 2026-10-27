@@ -25,7 +25,7 @@ check('Original GLB hash and byte count',hash===expectedHash&&bytes.length===752
 
 // Canvas pixels are irrelevant to these geometry and motion checks.
 globalThis.ProgressEvent=class {constructor(type,props){this.type=type;Object.assign(this,props);}};
-const context={createRadialGradient:()=>({addColorStop(){}}),createLinearGradient:()=>({addColorStop(){}}),fillRect(){},beginPath(){},moveTo(){},lineTo(){},quadraticCurveTo(){},stroke(){},roundRect(){},fill(){},ellipse(){}};
+const context={createRadialGradient:()=>({addColorStop(){}}),createLinearGradient:()=>({addColorStop(){}}),fillText(){},fillRect(){},beginPath(){},moveTo(){},lineTo(){},quadraticCurveTo(){},stroke(){},roundRect(){},fill(){},ellipse(){}};
 globalThis.document={createElement:()=>({width:256,height:256,getContext:()=>context})};
 
 const jsonLength=bytes.readUInt32LE(12),json=JSON.parse(bytes.subarray(20,20+jsonLength));

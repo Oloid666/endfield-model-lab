@@ -21,6 +21,9 @@ export async function loadActors(scene,r,onStage,signal,dragon,onProgress) {
   gltf.scene.traverse(n=>{if(n.isMesh){n.frustumCulled=false;n.userData.hotspot='zhuang';r.own(n.geometry);if(n.isSkinnedMesh)r.own(n.skeleton);for(const m of Array.isArray(n.material)?n.material:[n.material]){r.own(m);for(const value of Object.values(m))if(value?.isTexture){value.anisotropy=8;r.own(value);}}}});
   const bones=[];gltf.scene.traverse(n=>{if(n.isBone)bones.push(n);});const byId=id=>bones.find(n=>gltf.parser.associations.get(n)?.nodes===id);
   root.updateMatrixWorld(true);
+  const footBones=new Set();for(const key of ['footL','footR'])byId(config.zhuangNodes[key])?.traverse(n=>{if(n.isBone)footBones.add(n);});
+  let sole=Infinity;const v=new T.Vector3();gltf.scene.traverse(mesh=>{if(!mesh.isSkinnedMesh)return;const weights=mesh.geometry.attributes.skinWeight,indices=mesh.geometry.attributes.skinIndex,positions=mesh.geometry.attributes.position;if(!weights||!indices)return;for(let i=0;i<positions.count;i++){let influence=0;for(let k=0;k<4;k++)if(footBones.has(mesh.skeleton.bones[indices.getComponent(i,k)]))influence+=weights.getComponent(i,k);if(influence<.5)continue;v.fromBufferAttribute(positions,i);mesh.applyBoneTransform(i,v);mesh.localToWorld(v);sole=Math.min(sole,v.y);}});
+  if(Number.isFinite(sole)){actor.position.y+=root.position.y-sole;root.updateMatrixWorld(true);}
   const poses={};for(const [name,id] of Object.entries(config.zhuangNodes)){
     const bone=byId(id);if(!bone)continue;const inverse=bone.getWorldQuaternion(new T.Quaternion()).invert();
     poses[name]={bone,rest:bone.position.clone(),q:bone.quaternion.clone(),x:new T.Vector3(1,0,0).applyQuaternion(inverse),y:new T.Vector3(0,1,0).applyQuaternion(inverse),z:new T.Vector3(0,0,1).applyQuaternion(inverse)};

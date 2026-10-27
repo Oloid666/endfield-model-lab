@@ -14,13 +14,9 @@ function faceFrame(feet,heading,distance=5.6,side=1.1,height=2.12,look=1.46){
 // A short, bounded move on the street side of the conversation. The phase clock
 // freezes during pauses; the camera never circles through the store facade.
 export function dialogueShot(state,feet,dragon,portrait,reduced=false){
-  const age=Math.max(0,state.nodeElapsed||0),hero=[feet[0],feet[1]+1.42,feet[2]],pet=[dragon[0],dragon[1]+.32,dragon[2]];
+  const age=Math.max(0,state.phaseElapsed||0),hero=[feet[0],feet[1]+1.42,feet[2]],pet=[dragon[0],dragon[1]+.32,dragon[2]];
   const pair=[(hero[0]+pet[0])/2,(hero[1]+pet[1])/2,(hero[2]+pet[2])/2];
-  let subject=state.speaker==='zhuang'?'zhuang':state.speaker==='dragon'?'dragon':'pair';
-  if(state.nodeId==='cargo_1')subject='receipt';
-  // The reveal finishes before the silent reaction; no timer advances the line.
-  if(state.nodeId==='cargo_8'&&age>=Math.max(1.3,(state.text?.length||0)/30+.4))subject='reaction';
-  if(state.nodeId==='intro_3'&&age<.8)subject='pair';
+  const subject='pair';
   const target=subject==='zhuang'?hero:subject==='dragon'||subject==='reaction'?pet:pair;
   const side=subject==='zhuang'?1.15:subject==='dragon'||subject==='reaction'?-1.1:.45;
   const distance=subject==='pair'?6.8:subject==='receipt'?6.1:4.9;
@@ -399,32 +395,23 @@ export class MissionDirector{
     }else{
       position=portrait?[9,9,32]:[11,8,24];target=[-.8,2.4,.9];fov=portrait?56:47;beat='street-after-hours';
     }
+    if(s.phase==='energy'){position=portrait?[1.8,17.2,35.5]:[11,16,31];target=w.tianshi.arrayTarget||[0,7,-1];fov=portrait?74:53;beat='outage-wide';}
     if(s.phase==='credentials'&&s.node?.event==='microwave-closeup'){position=[3.06,1.8,.25];target=[3.06,1.74,1.063];fov=portrait?24:20;beat='microwave-power-detail';}
-    if(s.phase==='energy'&&['energy_0','energy_2'].includes(s.nodeId)){const p=w.tianshi.warningTargets?.[0]||[-12.8,10.8,-9.6];position=[p[0]-1.8,p[1]+.6,p[2]+7];target=p;fov=portrait?40:34;beat='outage-warning';}
+    if(s.phase==='energy'&&e>=3&&e<5){const p=w.tianshi.warningTargets?.[0]||[-12.8,10.8,-9.6];position=[p[0]-1.8,p[1]+.6,p[2]+7];target=p;fov=portrait?40:34;beat='outage-warning';}
     if(s.phase==='finisher'&&e>=6.2&&e<7.8){position=[this.wall[0]+3,this.wall[1]+2.3,this.wall[2]+5];target=[this.wall[0],this.wall[1]+.5,this.wall[2]];fov=portrait?56:48;beat='finisher-neighbor-impact';}
     if(s.phase==='finisher'&&e>=7.8){position=portrait?[10,12,27]:[14,10,22];target=[(this.wall[0]+this.end[0])/2,2.8,(this.wall[2]+this.end[2])/2];fov=portrait?64:54;beat='finisher-two-sites';}
-    // Show the upstairs evidence first, then the person's reaction to it.
-    if(s.phase==='briefing'){
-      const index=Number((s.nodeId||'').split('_').at(-1))||0,age=Math.max(0,s.nodeElapsed||0);
-      if((index===2||index===4)&&age>=1.4||index===8&&age>=Math.max(2,(s.text?.length||0)/30+.5)||index===9){
-        const shot=dialogueShot({...s,speaker:'zhuang'},feet,w.actors?.dragonPosition||[-2,1,3.25],portrait,this.reducedMotion);
-        ({position,target,fov}=shot);beat=index===8?'briefing-reaction':'briefing-zhuang';
-      }
+    if(s.phase==='briefing'&&s.nodeId!=='briefing_18'){
+      const index=Number((s.nodeId||'').split('_').at(-1))||0;
+      if(index<2){position=[1.4,4.9,7];target=[0,4.4,1];fov=portrait?40:34;beat='briefing-evidence';}
+      else if(index<11){const shot=dialogueShot(s,feet,w.actors?.dragonPosition||[-2,1,3.25],portrait,this.reducedMotion);({position,target,fov}=shot);beat='briefing-pair';}
+      else if(index<17){position=portrait?[7.7,6.5,18.2]:[8.8,6.3,16];target=[.3,3,1];fov=37;beat='briefing-pear-report';}
+      else{const shot=dialogueShot(s,feet,w.actors?.dragonPosition||[-2,1,3.25],portrait,this.reducedMotion);({position,target,fov}=shot);beat='briefing-decision';}
     }
-    if(!this.reducedMotion&&['briefing','credentials','flashback'].includes(s.phase)&&!s.node?.event&&!beat.startsWith('briefing-zhuang')&&!beat.startsWith('briefing-reaction')){const index=Number((s.nodeId||'').split('_').at(-1))||0;const side=Math.floor(index/3)%3;if(side===1){position[0]+=.8;position[2]+=.7;}if(side===2){position[0]-=.6;fov+=5;}}
-    if(!this.reducedMotion&&['briefing','observation','credentials'].includes(s.phase)&&!beat.startsWith('briefing-zhuang')&&!beat.startsWith('briefing-reaction')){position[0]+=Math.sin(e*.23)*.2;position[1]+=Math.sin(e*.17)*.05;}
-    // Evidence is behind the facade; cut to the street-side reaction so a
-    // travelling look target cannot sweep through the large 711 sign.
-    const isEvidence=v=>v.startsWith('server-')||v==='briefing-street';
-    const isBriefingPerson=v=>v==='briefing-zhuang'||v==='briefing-reaction';
-    const storeInsert=v=>['store-camera-insert','store-shelf-insert','dragon-at-counter'].includes(v);
-    const storeCut=storeInsert(beat)&&this.cameraBeat!==beat||storeInsert(this.cameraBeat)&&beat==='counter-purchase-exit';
-    const lastCut=s.phase==='last'&&(['caster-dialogue-face','dragon-ammo-reaction'].includes(this.cameraBeat)&&['caster-dialogue-face','dragon-ammo-reaction'].includes(beat)&&this.cameraBeat!==beat);
-    const storyCut=storeCut||lastCut||s.phase==='briefing'&&(isEvidence(this.cameraBeat)&&isBriefingPerson(beat)||isBriefingPerson(this.cameraBeat)&&isEvidence(beat));
-    if(this.previousBeat!==beat&&w.cameraOcclusion&&(beat.startsWith('dialogue-')||beat==='photo-together')){const saved=w.camera.position.clone();w.camera.position.fromArray(position);if(w.cameraOcclusion(target)){position=[target[0],target[1]+.45,Math.max(6.4,target[2]+4.5)];}w.camera.position.copy(saved);}
+    const isBriefingPerson=beat=>beat==='briefing-pair'||beat==='briefing-decision';
+    const storyCut=false;
     this.cameraBeat=beat;this.cameraPosition.fromArray(position);this.cameraTarget.fromArray(target);
     const quietCut=this.reducedMotion&&(beat.startsWith('dialogue-')||isBriefingPerson(beat)||beat==='caster-dialogue-face'||beat==='dragon-ammo-reaction');
-        const blend=s.paused?0:quietCut||storyCut||this.previousBeat!==beat?1:1-Math.exp(-Math.min(.1,Math.max(0,delta))*(s.phase==='finisher'?3.9:3.1));
+        const blend=s.paused?0:quietCut||storyCut||this.previousBeat!==beat&&!beat.startsWith('dialogue-')&&!beat.startsWith('briefing-')?1:1-Math.exp(-Math.min(.1,Math.max(0,delta))*(s.phase==='finisher'?3.9:3.1));
     this.baseCameraPosition.lerp(this.cameraPosition,blend);this.baseCameraTarget.lerp(this.cameraTarget,blend);this.baseFov=T.MathUtils.lerp(this.baseFov,fov,blend);
     w.camera.position.copy(this.baseCameraPosition);w.controls.target.copy(this.baseCameraTarget);
     const battle=['combat','energy','finisher','landing'].includes(s.phase),age=s.clock-this.lastShotAt,kick=age>=0?Math.exp(-age*5.2)*this.recoilAmplitude:0,shock=Number(w.siege.state?.shock)||0;

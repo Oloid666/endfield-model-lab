@@ -23,7 +23,7 @@ check('Original GLB hash and byte count',hash===expectedHash&&bytes.length===752
 
 // Canvas pixels are irrelevant to these geometry and motion checks.
 globalThis.ProgressEvent=class {constructor(type,props){this.type=type;Object.assign(this,props);}};
-const context={createRadialGradient:()=>({addColorStop(){}}),createLinearGradient:()=>({addColorStop(){}}),fillRect(){},beginPath(){},moveTo(){},lineTo(){},quadraticCurveTo(){},stroke(){},roundRect(){},fill(){},ellipse(){}};
+const context={createRadialGradient:()=>({addColorStop(){}}),createLinearGradient:()=>({addColorStop(){}}),fillText(){},fillRect(){},beginPath(){},moveTo(){},lineTo(){},quadraticCurveTo(){},stroke(){},roundRect(){},fill(){},ellipse(){}};
 globalThis.document={createElement:()=>({width:256,height:256,getContext:()=>context})};
 
 const jsonLength=bytes.readUInt32LE(12),json=JSON.parse(bytes.subarray(20,20+jsonLength));
@@ -131,6 +131,8 @@ check('Companion yields when the owner walks toward it',yieldingFollow.reached&&
 const rackFollow=followScenario([-1.15,-.5],[[-1.15,.9],[1.15,.9],[1.15,-.5]],{obstacles:[{x:0,z:0,w:.8,d:.9}],entrance:{minX:-1,maxX:.6,z:10}});
 check('Companion routes around a shelf instead of cutting the corner',rackFollow.reached&&rackFollow.collisions===0&&rackFollow.largestStep<.025&&rackFollow.minimumGap>=.55&&rackFollow.final.mode==='idle',rackFollow);
 
+const reactions=[];for(let i=0;i<8;i++){const time=1000+i*3.1;reactions.push(a.reactDragon(time,true));check('Reaction cooldown blocks rapid repeat '+i,a.reactDragon(time+.1,true)===null);a.update(time+.5,.016);}check('Eight clicks rotate through all unique reactions',new Set(reactions).size===8&&reactions.every(Boolean));a.cancelReaction();
+a.setMove(0,0,false);for(const heading of [-.9,.4,-.35]){a.setSceneAction({heading});for(let i=0;i<90;i++)a.update(1100+i/60,1/60);check('Standing feet follow the body turn '+heading,a.status.footDrift<.006,{footDrift:a.status.footDrift});}
 a.dispose();resources.dispose();
 const finalHash=createHash('sha256').update(await fs.readFile(file)).digest('hex');check('Original GLB unchanged after tests',finalHash===expectedHash);
 const result={kind:'Node actual-GLB geometry, skeleton and controller checks; in-memory image materials removed and Canvas painting stubbed; not a render, GPU benchmark or iPhone test',passed:checks.every(c=>c.passed),checks,trace};

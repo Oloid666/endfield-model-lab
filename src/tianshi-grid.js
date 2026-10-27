@@ -98,7 +98,7 @@ export function buildTianshiGrid(scene,r){
     update(t,delta,state={}){
       phase=state.phase||'ready';root.visible=['lever','ascent','director-reminder','shoe-view','pylon-link','charge','fire-ready','combat','energy','last','aim-final','finisher','landing','tour','complete','return'].includes(phase);const clock=phase==='ready'?t:Number.isFinite(state.clock)?state.clock:t;
       const outage=['energy','last','return'].includes(phase),outageFlash=reducedMotion||Math.sin(clock*4)>-.2;
-      for(const m of lowSigns){m.visible=outage;m.material.color.setScalar(reducedMotion?1:.75+.25*Math.sin(clock*2)**2);}charge=clamp((state.charge||0)/100);if(state.hero)hero.fromArray(state.hero);
+      for(const m of lowSigns){m.visible=outage;m.material.color.setScalar(reducedMotion?.9:.16+.84*(.5+.5*Math.cos(clock*Math.PI*2)));}charge=clamp((state.charge||0)/100);if(state.hero)hero.fromArray(state.hero);
       const lever=clamp(state.connection?.lever??0),casting=['ascent','director-reminder','shoe-view','pylon-link','charge','fire-ready','combat','energy','last','aim-final','finisher','landing','tour'].includes(phase)&&!(phase==='finisher'&&(state.phaseElapsed||0)>=4.9);
       const linking=phase==='lever'?lever:casting?1:0;
       activeCount=0;

@@ -41,6 +41,11 @@ export function buildDragon(r) {
   }
   const geo=r.own(new T.BufferGeometry());geo.setAttribute('position',new T.Float32BufferAttribute(vertices,3));geo.setAttribute('uv',new T.Float32BufferAttribute(uv,2));geo.setIndex(index);geo.computeVertexNormals();r.mesh(geo,material,body);
   root.traverse(n=>n.userData.hotspot='dragon');
+  const marks=['!','👍','✦','♪','…','汗','…','?'];
+  const markMaps=marks.map(text=>{const canvas=document.createElement('canvas');canvas.width=256;canvas.height=160;const c=canvas.getContext('2d');c.fillStyle='#173b38';c.beginPath();c.roundRect(12,12,232,132,28);c.fill();c.strokeStyle='#d9c38c';c.lineWidth=5;c.stroke();c.fillStyle='#f5e5af';c.textAlign='center';c.textBaseline='middle';c.font='bold 96px sans-serif';c.fillText(text,128,82);const map=r.own(new T.CanvasTexture(canvas));map.colorSpace=T.SRGBColorSpace;return map;});
+  const emote=new T.Sprite(r.own(new T.SpriteMaterial({map:markMaps[0],transparent:true,depthTest:false})));emote.position.set(0,1.7,0);emote.scale.set(.62,.39,1);emote.visible=false;body.add(emote);
+  const thumb=part(white,[.66,.56,.08],[.055,.14,.065]);thumb.visible=false;
+  const flightLines=new T.Group();body.add(flightLines);for(let i=0;i<4;i++){const line=r.mesh(r.geometry('PlaneGeometry',.018,.3+i*.04),r.material('#d9e4cc',{transparent:true,opacity:.65}),flightLines,[(i%2?1:-1)*(.7+Math.floor(i/2)*.12),.55,0]);line.rotation.z=(i%2?1:-1)*.4;}flightLines.visible=false;
   const state={mood:'normal',action:''};
   return {root,foodMount,get state(){return {...state};},update(t,s={}){
     const blink=Math.max(0,1-Math.abs((t+.7)%4.3-.15)/.11);
@@ -51,8 +56,8 @@ export function buildDragon(r) {
     const curiosity=Math.max(s.curious||0,s.glance?.35:0),startle=Math.max(s.startle||0,s.gesture==='rain'?gesture*.7:0),attention=s.dragon||0,walk=s.walk||0;
     const catchUp=s.followerMode==='catch-up'?1:0,hesitate=s.followerMode==='hesitate'?1:0,phase=s.walkPhase||0;
     body.rotation.set(curiosity*.11-startle*.12+walk*.035+nod*Math.sin(t*7)*.06+(s.lookPitch||0),attention*.3+(s.rain||0)*.15+(s.lookYaw||0)*.72,curiosity*-.05+startle*.11+walk*Math.sin(phase)*.035+happy*Math.sin(gesture*Math.PI)*.28+roll*Math.PI);
-    body.position.y=walk*Math.max(0,Math.cos(phase*2))*.006;
-    body.scale.set(1+startle*.035,1-startle*.075,1+startle*.035);
+    body.position.y=walk*Math.max(0,Math.cos(phase*2))*.006+Math.sin(t*Math.PI*2/3.6)*.025;
+    const breath=Math.sin(t*Math.PI*2/3.6)*.008;body.scale.set(1+startle*.035+breath,1-startle*.075-breath,1+startle*.035+breath);
     root.position.y=.005;
     arms[0].rotation.z=-curiosity*.3+startle*.45-(s.holding?.28:0)+walk*Math.sin(phase-.3)*.075;arms[1].rotation.z=attention*.22-startle*.45+(s.holding?.28:0)+wave*Math.sin(t*9)*.45+point*.8-walk*Math.sin(phase-.5)*.09;
     arms[0].position.set(-.53,.43,.07);arms[1].position.set(.53,.43,.07);
@@ -70,6 +75,17 @@ export function buildDragon(r) {
       arms[0].position.set(-.32,.7,.36);arms[1].position.set(.32,.7,.36);
       arms[0].rotation.z=-.85;arms[1].rotation.z=.85;
       feet[0].position.z=.22;feet[1].position.z=-.02;tail.rotation.x=-.88;
+    }
+    emote.visible=!!s.reaction;thumb.visible=false;flightLines.visible=false;
+    if(s.reaction&&!s.projectile){const {id,age,large}=s.reaction,p=Math.max(0,Math.min(1,age/2)),ease=Math.sin(p*Math.PI),reduced=typeof matchMedia==='function'&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+      emote.material.map=markMaps[id];emote.position.y=1.7+(reduced?0:ease*.08);
+      if(id===0)arms[1].rotation.z=.6+Math.sin(age*9)*.35*ease;
+      if(id===1){arms[1].rotation.z=.8;thumb.visible=true;material.map=maps[2];}
+      if(id===2&&!reduced)body.rotation.y+=Math.sin(p*Math.PI*2)*Math.PI*(large?1:.06);
+      if(id===3&&!reduced){body.position.y+=ease*(large?.2:.025);body.rotation.z+=Math.sin(p*Math.PI*2)*(large?.18:.03);}
+      if([4,5,6].includes(id)){body.position.y-=ease*.045;body.rotation.x+=ease*.12;material.map=maps[4];}
+      if(id===7){body.rotation.z-=ease*.12;material.map=maps[4];}
+      flightLines.visible=!reduced&&large&&[2,3].includes(id)&&p>.1&&p<.85;
     }
     if(s.projectile){
       body.rotation.set(0,0,0);body.position.y=0;body.scale.set(1,.94,1);

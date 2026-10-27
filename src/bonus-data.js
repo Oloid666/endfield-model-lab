@@ -1,77 +1,126 @@
-import {sequences,chargeLines,captchaLines,connectionPrompts,storyQuote} from './mission-dialogue.js';
-
-// Quotes come from the shipped script, so the classroom follows dialogue revisions.
-const quote=(sequence,...indices)=>indices.map(i=>sequence[i].text).join('\n');
-const lesson=(id,title,board,recap,analysis,aside,diagnosis,sources=[])=>({id,title,board,recap,analysis,aside,diagnosis,sources});
 export const LESSONS=[
- lesson('general','將軍救急，救到哪一棚','爻光充能 → 武陵缺電',storyQuote('energy','energy_4','energy_5'),[
-  '龍泡泡老師：各位同學，這句口號借用的是《崩壞：星穹鐵道》與綠聯行動電源聯動宣傳中的「爻光充能手勢曲」。這裡的將軍是爻光，原本服務的是大家手上的充電設備；現在卻被唱進武陵電網告急的現場。',
-  '龍泡泡：充電廣告的承諾，是幫手機補充電量。本劇的需求卻是替全城電網救急，服務範圍突然擴大了好幾個數量級。熟悉聯動的同學會認出口號，不熟悉的同學也能聽懂向將軍求救的誇張程度。',
-  '龍泡泡：在武陵缺電的時候，搬出另一部作品的充電宣傳，再被阿莊當場抓到跨棚，形成了作品、商品與情境的三重錯位，令人忍俊不禁。請各位記住「你錯棚了」這句話，下一題還會用到。'
- ],'莊：所以我才說你錯棚。\n龍泡泡：下一題，請妳親自示範。','診斷：充電服務跨區營業。',[
-  {label:'帕姆的收藏夾官方微博原文：爻光充能手勢曲（新浪轉載）',url:'https://www.sina.cn/news/detail/5311219349327437.html'},
-  {label:'UGREEN 官方：爻光聯名系列',url:'https://www.ugreen.com/en-ca/pages/ugreen-honkai-star-rail'}]),
- lesson('mikoto','武陵的 Level 6','炮姐 Level 5 → 武陵自行加級',storyQuote('last','last_3','last_4'),[
-  '龍泡泡：接著，剛才要求別人不要跨棚的莊，宣布自己是「武陵的 Level 6」。熟悉炮姐的同學應該已經產生反應。御坂美琴是《魔法禁書目錄》與《科學超電磁砲》系列的電擊使，常態設定為學園都市第三位的 Level 5。',
-  '龍泡泡：炮姐透過電磁力發射硬幣，因此以「超電磁砲」聞名；本劇借用的是她的電擊形象、等級制度與砲擊聯想。阿莊把學園都市的分級搬到武陵，還自行往上加了一級。這屬於跨棚兼戰力膨脹，令人忍俊不禁。',
-  '龍泡泡：前面先抓別人錯棚，後面自己宣布武陵開分校，規則的適用顯得相當有彈性。炮姐拿硬幣當彈丸，阿莊最後拿我當子彈，連彈藥規格都自行升級。等級可以加，講師的工傷也請一併處理。'
- ],'龍泡泡：妳剛才才說我錯棚！\n莊：武陵校區，現在招生。','診斷：武陵校區自行招生。',[
-  {label:'動畫官方：御坂美琴為 Level 5 第三位、電擊使與超電磁砲',url:'https://toaru-project.com/index_3/chara/mikoto.html'}]),
-
- lesson('cargo','便當與共犯通知','補給 ≠ 無限責任',storyQuote('cargo','cargo_1','cargo_3','cargo_6','cargo_8'),[
-  '故事先把任務縮得很小：龍泡泡只是想讓加班的莊吃晚餐，拍照也像普通的報平安。觀眾因此預期接下來會是照顧人的溫柔短劇。手機翻到上一張收據，才把同一個「幫忙拿東西」突然放大成一萬噸的責任。',
-  '「都是補給」把便當和息壤塞進同一類，字面上勉強說得通，重量、風險與責任卻完全不同。莊用平靜口吻維持行政上的合理，龍泡泡則替觀眾說出兩者不能混為一談；越是淡定，落差越大。',
-  '報平安照片後來又能證明店面原本長怎樣，簽收單與保單則一路留到戰損。這些物件不只是當下的包袱，也替後半段理賠鋪路。「外送單」變成「共犯通知」，把照顧者一步步推成背鍋人。'
- ],'莊：我有幫你拿便當。\n龍泡泡：所以我還得說謝謝？','死因：補給範圍解釋過寬。'),
- lesson('taste','莊的辦案標準','依法辦理 → 幫我找罪名',storyQuote('briefing','briefing_1','briefing_2','briefing_3','briefing_4','briefing_9'),[
-  '前半段的「那有我的嗎」讓人以為莊在確認自己是否也是受害者；回答沒有之後，她卻先批評品味。辦案的公共理由與角色的私人在意同時露出來，但她還願意走正常流程，因此笑點仍留在言外。',
-  '主嫌的自介說，十幾歲、幾百歲都可以是少女，唯獨三、四十歲不行。這種精準排除的嫌棄戳中莊的不悅，原本還願意移交查辦，下一秒就要求幫忙找罪名。案情沒有突然加重，辦案的心情倒是立刻變了。',
-  '同一件案子，前一句還按正常流程走，後一句就急著補上一條罪名。私人不悅披上公務理由，弭弗一句「哪有這麼容易」又把程序拉回現實。辦案標準隨心情即時更新，卻仍維持一本正經的口氣，令人忍俊不禁。'
- ],'莊：教案裡沒有我的嗎？\n龍泡泡：有！所以不用增加課程了。','死因：講師求生欲介入。'),
- lesson('lino','梨諾說沒有洗腦','洗腦 → 沒洗食材？','梨諾說：沒有洗腦。\n魔族佬黑：不注重食品衛生。',[
-  '龍泡泡：梨諾是笞心魔，會洗腦。他說自己沒有洗腦，本來是在否認操控別人的心智，說的是能力和行為，與料理完全無關。',
-  '龍泡泡：魔族佬黑卻把「洗腦」拆成清洗腦這種食材，聽成他做菜以前沒有把食物洗乾淨，於是指控她不注意食品衛生。',
-  '龍泡泡：一句話從精神控制轉進廚房衛生，兩人討論的根本不是同一件事，卻好像都在回答對方。如此認真地錯開話題，令人忍俊不禁。'
- ],'龍泡泡：請問腦洗乾淨了嗎？\n莊：先把課上完。','死因：食品衛生突然介入。'),
- lesson('login','誰愛誰，誰親誰','登入 ≠ 表白；驗證 ≠ 免責',connectionPrompts.password.text+'\n'+quote(captchaLines,0,1,2)+'\n'+quote(chargeLines,0),[
-  '帳號本來是電網接入的工具，love 和 kiss 卻把普通詞塊變成角色關係的試探。玩家故意按錯，換來「誰愛誰」「誰親誰」的反問，就像偷偷問了一個人物不願正面回答的問題。5201314 也沿用了常見的數字表意讀法。',
-  '「我不是機器人」通常只是一個網站驗證步驟，龍泡泡卻先追問自己連人都不是該怎麼選。莊又把判準改成能不能背鍋，讓身分認證滑向責任認定；這也延續便當、簽收和最後當彈藥的受害者位置。',
-  '充能演出突然停下來，鏡頭卻繼續圍著鞋子轉，導播的觀看偏好被角色當場吐槽。玩家按「再來一碗」，還能配合導播延長鏡頭，讓觀看本身也成了包袱。「舟禮」就是對這套觀看默契的戲稱：電可以晚點充，這一碗得先看完。'
- ],'龍泡泡：這裡我們分析一下誰親誰。\n莊：先分析一下誰要加班。','死因：登入頁出現感情欄位。'),
- lesson('pear','梨花的環境影響評估','0.5 lux → 物理移除',storyQuote('briefing','briefing_11','briefing_12','briefing_14','briefing_15','briefing_16'),[
-  '照度數字、限值與事故原因欄讓情節看起來像正式稽查。接著卻用大規模火力處理極小的超標量，讓處置尺度與問題尺度完全失衡。0.5 lux 是本劇設定的差值，不是這間店所在地真實法規的判定。',
-  '「事故原因先空著，我還沒動手」把未來事故當成可以預約的行政事項。該在事情發生後留下的紀錄，反而預先為即將發生的事準備好；語氣越像例行公事，觀眾越容易意識到事情不對。',
-  '梨花同時是開場能看的街角景物、出手的理由與結尾的損失標準。莊最後只問梨花有沒有事，把建物與鄰居排除在視野之外。這個反覆出現的物件讓荒謬有前後呼應，而不只是隨口換一個藉口。'
- ],'莊：梨花沒事，這堂可以結束了。\n龍泡泡：便利店有事！','死因：評估範圍只剩一棵樹。'),
- lesson('compute','算力券蓋出的靶','細節越認真，拆除越心痛',storyQuote('briefing','briefing_17','briefing_18','briefing_19'),[
-  '龍泡泡突然談雨棚、反射、貨架和算力券，跨出了角色所在的世界，直接評論這個網頁怎麼被做出來。觀眾知道自己正在看一個作品，於是能同時理解戲內的建物與戲外的製作成本。這就是打破第四面牆。',
-  '前一句稱讚結構與氣氛，後一句才揭示這些細節最後都要當靶，先把價值抬高再拆掉。玩家已經看過店內道具和玻璃，所以這個心痛有具體對象，不是單純說「很貴」；細節本身成了包袱的鋪陳。',
-  '「ChatGPT 6.0 Astra」和幾十張算力券是現有劇本的後設台詞。本課不把它當成經查證的產品版本、計價方式或實際帳單。能確認的製作事實是：這個場景有被精心安排，而主線又把同一個場景拆毀。'
- ],'莊：課桌也做得不錯。\n龍泡泡：那不是給妳選下一個目標！','死因：製作成本完成回收。'),
- lesson('microwave','三分鐘變零點三秒','W → MW：只多一個字母？',storyQuote('credentials','credentials_0','credentials_1','credentials_6')+'\n'+storyQuote('flashback-end','flashback_end_2','flashback_end_3'),[
-  '原本的問題只是便當要等三分鐘，解法卻一路升級到接管全城電網。賽希把等待時間當作唯一目標，外部代價全部交給城市承擔，與莊為梨花處理整棟建築形成對照：兩人都非常有效率，只是範圍令人害怕。',
-  'W 是瓦特，M 是百萬的 SI 前綴，所以 800 MW 是八億瓦，並不是一般家用微波爐的 800 W。畫面把 M 放大，是把原本容易略過的一個字母變成揭露：角色以為只是加熱便當，實際用了城市尺度的輸出。',
-  '三分鐘變零點三秒先給出效率上的成功，忘記關保溫才揭露電量消失的原因，回頭回答現場為什麼沒電。「停服」「PHP 免金鑰」「0000」構成戲內的低門檻入侵笑話；沒有核實的停服事件與漏洞公告不當成真事介紹。'
- ],'賽希：有熱就好。\n龍泡泡：這句的主詞是便當，不是整座城市。','死因：單位未確認。',[{label:'BIPM：SI 單位與前綴（mega = 10⁶）',url:'https://www.bipm.org/en/measurement-units/si-prefixes'}]),
- lesson('insurance','保險與平安的一天','梨花無損失 ≠ 全場無損失',quote(chargeLines,2,7,8)+'\n'+storyQuote('landing','landing_0','landing_1','landing_2','landing_3','landing_4'),[
-  '莊以「雷是我打的」把主動行為說成符合天災條件，重點是角色在偷換分類，不是提供真實保險判定。前面保留的貨單、保單和照片因此一起回收：原本溫柔的報平安照，也變成建物存在過的證據。',
-  '伺服器是原本目標，便利店和鄰棟卻跟著受損，最後只確認梨花安全就宣布無損失。觀眾看到的廣角與角色選擇承認的小範圍互相衝突。結尾保險歌詞把事情拉回誰承擔代價；本課不新增或擴寫原有歌詞。',
-  '收尾借用了《飛天小女警》守護城市的結尾語感，畫面卻是剛被拆過的街區。形式像一天平安結束，內容完全不是，熟悉原作會多認出一層致敬，不熟悉也能看懂畫面與旁白的反差。至於歌詞改編的精確來源，未核實前不指定歌曲。'
- ],'莊：笑點死了，有保嗎？\n龍泡泡：手術成功，笑點死亡。請至隔壁辦理。','診斷完成。請至隔壁辦理。',[{label:'國立臺灣歷史博物館：飛天小女警的結尾語',url:'https://women.nmth.gov.tw/?p=1913'}]),
+ {
+  "id": "general",
+  "title": "你說我錯棚，自己卻是 Level 6？",
+  "board": "爻光救急 → 武陵 Level 6",
+  "recap": "電量告急，將軍救急！將軍出手，萬事大吉～\n莊：你錯棚了。\n莊：今晚勢在必得。還剩最後一發子彈。我可是武陵的 Level 6。",
+  "analysis": [
+   "龍泡泡老師：「電量告急，將軍救急」借用《崩壞：星穹鐵道》與綠聯聯動的「爻光充能手勢曲」，這位將軍是爻光。原本替充電設備宣傳，現在被我請來救武陵電網，於是阿莊說我錯棚。",
+   "龍泡泡老師：結果她轉頭宣布自己是「武陵的 Level 6」。這裡借的是《科學超電磁砲》御坂美琴的電擊能力與等級設定。炮姐原本是 Level 5，阿莊跨棚還自行加級，令人忍俊不禁。"
+  ],
+  "aside": "龍泡泡：妳剛才才說我錯棚！\n莊：你借口號。我借火力。",
+  "diagnosis": "手術成功，笑點死亡。",
+  "sources": [
+   {
+    "label": "UGREEN 官方：爻光聯名系列",
+    "url": "https://www.ugreen.com/en-ca/pages/ugreen-honkai-star-rail"
+   },
+   {
+    "label": "動畫官方：御坂美琴",
+    "url": "https://toaru-project.com/index_3/chara/mikoto.html"
+   }
+  ]
+ },
+ {
+  "id": "lino",
+  "title": "沒有洗腦，怎麼變成食品衛生？",
+  "board": "精神控制 → 清洗食材",
+  "recap": "梨諾：沒有洗腦。\n魔族佬黑：不注重食品衛生。",
+  "analysis": [
+   "龍泡泡老師：梨諾是會洗腦的笞心魔。他說「沒有洗腦」，原本是在否認操控別人的心智。",
+   "龍泡泡老師：魔族佬黑卻把「洗腦」理解成清洗腦這種食材，於是認為他不注重食品衛生。同一個詞，一邊談精神控制，一邊談備料程序。兩人接得如此自然，話題卻早已不在同一間廚房。"
+  ],
+  "aside": "龍泡泡：一位在澄清能力，一位在準備稽查。\n莊：先把手洗乾淨。",
+  "diagnosis": "手術成功，笑點死亡。",
+  "sources": []
+ },
+ {
+  "id": "taste",
+  "title": "少女可以，三四十歲不行？",
+  "board": "移交查辦 → 幫我找罪名",
+  "recap": "莊：真沒品味。移交巡衛隊，立案查辦。\n主嫌自介：「少女可以是十幾歲、幾百歲，但是就是不能三四十歲。」\n莊：……幫我找一條罪名。",
+  "analysis": [
+   "龍泡泡老師：阿莊先問盜版同人裡有沒有自己，得知沒有，竟然先嫌對方沒品味。不過這時她還願意移交巡衛隊，照程序查辦。",
+   "龍泡泡老師：直到聽見主嫌說，少女可以十幾歲、幾百歲，唯獨不能三四十歲，她立刻改口：「幫我找一條罪名。」案情沒有增加新證據，主嫌倒是精準增加了辦案人員的不悅。前後態度的轉折，就是這段笑點的關鍵。"
+  ],
+  "aside": "",
+  "diagnosis": "手術成功，笑點死亡。",
+  "sources": []
+ },
+ {
+  "id": "compute",
+  "title": "審美在線，最後拿來當靶？",
+  "board": "細節越認真 → 拆除越心痛",
+  "recap": "龍泡泡：建築的比例、玻璃的反射，連霓虹映在雨裡的顏色都挑過。結構漂亮，夜雨的氣氛也到位。審美在線。\n龍泡泡：燒了幾十張算力券，最後蓋出來當靶？",
+  "analysis": [
+   "龍泡泡老師：大家正在看故事，我卻突然開始評論建築比例、玻璃反射和製作成本。角色知道自己住在一個被做出來的場景裡，這就是打破第四面牆。",
+   "龍泡泡老師：前面把便利店誇得越漂亮，後面宣布要拆掉就越心痛。玩家剛欣賞完的細節，轉眼全部變成戰損項目。那些認真做出來的物件，也就成了笑點的鋪陳。"
+  ],
+  "aside": "",
+  "diagnosis": "手術成功，笑點死亡。",
+  "sources": []
+ },
+ {
+  "id": "cargo",
+  "title": "拿個便當，怎麼簽了一萬噸？",
+  "board": "都叫補給 → 責任差一萬噸",
+  "recap": "龍泡泡：我答應幫妳拿的是便當，不是萬噸息壤！\n莊：都是補給。",
+  "analysis": [
+   "龍泡泡老師：我答應幫忙拿晚餐，阿莊卻把一萬噸息壤的簽收也算到我頭上，理由只有四個字：「都是補給。」",
+   "龍泡泡老師：便當和息壤確實都能叫補給，但一個需要餐具，一個需要交代。我們對工作內容的理解相差如此巨大，她卻依然說得像順便拿雙筷子，令人忍俊不禁。"
+  ],
+  "aside": "龍泡泡：一個用餐袋，一個要寫供詞！\n莊：單據收好。晚點有用。",
+  "diagnosis": "手術成功，笑點死亡。",
+  "sources": []
+ },
+ {
+  "id": "pear",
+  "title": "為了梨花拆整棟，梨花沒事就無損？",
+  "board": "超標 0.5 lux → 梨花無損",
+  "recap": "弭弗：超標 0.5 lux。\n莊：直接物理移除。\n莊：梨花呢？\n弭弗：沒事。\n莊：那就是無損失。",
+  "analysis": [
+   "龍泡泡老師：事情從照度超標 0.5 lux 開始，處理方式卻是把整棟建築物理移除。問題很小，解決方案很大，連事故表格都提前準備，只等她動手填上時間。",
+   "龍泡泡老師：最後便利店倒了，鄰棟也受損，阿莊卻只確認梨花沒事，就宣布「無損失」。前面用梨花作為出手理由，後面又只用梨花判定結果。觀眾看的是整條街，她看的始終只有那棵樹。"
+  ],
+  "aside": "",
+  "diagnosis": "手術成功，笑點死亡。",
+  "sources": []
+ },
+ {
+  "id": "microwave",
+  "title": "塞西熱個便當，武陵怎麼沒電了？",
+  "board": "800 W → 800 MW",
+  "recap": "微波加熱：預計三分鐘。\n塞西：旁邊就有天師樁。接一下，借億點點。\n塞西：三分鐘，改成零點三秒。\n龍泡泡：她忘了關。",
+  "analysis": [
+   "龍泡泡老師：賽博修女塞西不想等便當，於是接上武陵電網。她確實解決了三分鐘的等待，只是把代價分攤給整座城市。",
+   "龍泡泡老師：800 W 和 800 MW 看起來只差一個字母，功率卻差了一百萬倍。加熱縮短到零點三秒，保溫又忘了關。我們辛苦充進去的電，原來一直在照顧她的晚餐。"
+  ],
+  "aside": "龍泡泡：妳借的那「億點點」，原來是八億瓦。\n塞西：便當有熱。",
+  "diagnosis": "手術成功，笑點死亡。",
+  "sources": [
+   {
+    "label": "BIPM：SI 前綴",
+    "url": "https://www.bipm.org/en/measurement-units/si-prefixes"
+   }
+  ]
+ },
+ {
+  "id": "lyrics",
+  "title": "本片歌詞總複習：唱到最後，誰來賠？",
+  "board": "撥開你的心 → 拆開你的樓",
+  "recap": "我會一層一層撥開你的心 🎷\n\n保險～怎麼兩清，怎麼忍心\n怎麼做回甲乙丙丁\n難道非要耗盡所有委屈\n再賠上這一條爛命",
+  "analysis": [
+   "龍泡泡老師：《洋蔥》的句型到了這裡，情歌裡一層一層靠近內心，阿莊一層一層靠近伺服器。別人卸下心防，她卸下外牆與樓板。配上深情的薩克斯風，畫面卻是建築物逐層解體。背景音樂很深情，背景建築很危急。",
+   "龍泡泡老師：前面唱「怎麼兩清」，到了這裡，真的有人在等理賠結清。「甲乙丙丁」原本是普通人的代稱，放進保險情境，卻讓人想到甲式、乙式、丙式車體險。一首苦情歌，唱到一半突然需要確認保單種類，令人忍俊不禁。",
+   "龍泡泡老師：原本大家在問「你怎麼忍心」，保險代表聽完只問：「所以您投保哪一式？」最後唱到「賠上這一條爛命」，我很有感觸。原本只是來拿晚餐，後來負責簽收、登入、攝影，最後還兼任彈藥。歌詞唱的是委屈，畫面提供的是完整佐證附件。"
+  ],
+  "aside": "龍泡泡：甲式、乙式，哪一式保我被當砲彈？\n莊：去隔壁問。",
+  "diagnosis": "手術成功，笑點死亡。",
+  "sources": []
+ }
 ];
-export const CLASS_MOTTO=['解釋笑話就像解剖青蛙。','你會更了解牠，但青蛙死了。','手術成功，笑點死亡。'];
-export const LESSON_NOTES={
- general:['聯動角色：爻光','充手機 → 救全城電網','先記住：你錯棚了'],
- mikoto:['炮姐：御坂美琴，Level 5','莊：武陵 Level 6','先抓跨棚 → 自己開分校'],
- cargo:['拿便當 → 萬噸簽收','同樣叫補給，責任卻不同','報平安照片 → 戰損證據'],
- taste:['確認受害者 → 批評品味','私人冒犯 → 公共理由','前後態度，才是反轉'],
- pear:['超標 0.5 lux → 拆掉整棟','事情未發生，表格已備妥','只看梨花 → 宣布無損失'],
- lino:['笞心魔 → 會洗腦','沒有洗腦 → 食材沒洗','精神控制 → 食品衛生'],
- login:['登入詞塊 → 感情試探','驗證身分 → 確認能背鍋','玩家加看 → 導播不下班'],
- compute:['角色突然談起製作成本','先稱讚細節 → 再拿來當靶','劇中台詞 ≠ 真實帳單'],
- microwave:['加熱便當 → 接管電網','800 W → 800 MW','效率成功 → 忘記關保溫'],
- insurance:['主動打雷 → 自稱天災','梨花安全 ≠ 建物無損','平安旁白 ↔ 毀損街景'],
-};
+export const LESSON_NOTES={"general": ["充手機 → 救全城", "炮姐 Level 5 → 莊 Level 6"], "lino": ["笞心魔 → 會洗腦", "否認控制 → 食材沒洗"], "taste": ["確認有沒有自己", "私人冒犯 → 態度轉折"], "compute": ["角色評論製作 → 第四面牆", "先抬高價值 → 再拆掉"], "cargo": ["拿便當 → 萬噸簽收", "同一個詞 → 不同責任"], "pear": ["小幅超標 → 大規模處置", "整條街受損 → 只評估梨花"], "microwave": ["三分鐘 → 零點三秒", "效率成功 → 忘記關保溫"], "lyrics": ["情歌拆心防 → 劇中拆樓板", "甲乙丙丁 → 甲乙丙式", "苦情歌 → 理賠文件"]};
+export const CLASS_MOTTO=["解釋笑話就像解剖青蛙。","你會更了解牠，但青蛙死了。","手術成功，笑點死亡。"];
 const STORAGE_KEY='rainy711.bonus.v1';
 export class BonusProgress{
  constructor(storage){this.storage=storage;this.data={unlocked:false,warned:false,read:[],finished:[],preference:'',reading:false,textSize:18,course:null,claimsSettled:false};this.taps=0;try{const d=JSON.parse(storage?.getItem(STORAGE_KEY)||'null');if(d){this.data={unlocked:d.unlocked===true,warned:d.warned===true,read:Array.isArray(d.read)?d.read.filter(id=>LESSONS.some(l=>l.id===id)):[],finished:Array.isArray(d.finished)?d.finished.filter(id=>['A','B'].includes(id)):[],preference:['A','B','both'].includes(d.preference)?d.preference:'',reading:d.reading===true,textSize:[18,22,26].includes(d.textSize)?d.textSize:18,course:d.course&&typeof d.course==='object'?d.course:null,claimsSettled:d.claimsSettled===true};}}catch{/* Private browsing still works for this visit. */}}
@@ -81,8 +130,8 @@ export class BonusProgress{
  tap(sign,phase){if(!['ready','complete'].includes(phase)){this.taps=0;return false;}if(!sign){this.taps=0;return false;}if(this.data.unlocked)return false;this.taps++;if(this.taps===7){return this.unlock();}return false;}
  mark(kind,id){const values=kind==='read'?LESSONS.map(l=>l.id):kind==='finished'?['A','B']:[];if(!values.includes(id))return;if(!this.data[kind].includes(id))this.data[kind].push(id);this.save();}
 }
-export const CLASS_REQUIRED=4;
-export const lessonCardCount=id=>{const l=LESSONS.find(l=>l.id===id);return l?1+l.analysis.length+l.aside.split('\n').length:0;};
+export const CLASS_REQUIRED=8;
+export const lessonCardCount=id=>{const l=LESSONS.find(l=>l.id===id);return l?1+l.analysis.length+(l.aside?l.aside.split('\n').length:0):0;};
 // Completion belongs to this visit. Read history lives separately in BonusProgress.
 export class ClassCourse{
  constructor(){this.reset();}
@@ -92,7 +141,7 @@ export class ClassCourse{
  get eligible(){return this.completedCount>=CLASS_REQUIRED;}
  get percentage(){return Math.min(100,this.completedCount/CLASS_REQUIRED*100);}
  confirm(id,cursor){const max=lessonCardCount(id),seen=this.steps[id]||0;if(!max||!Number.isInteger(cursor)||cursor<0||cursor>=max||cursor>seen)return false;this.steps[id]=Math.max(seen,cursor+1);return true;}
- next(after=null){return LESSONS.find(l=>!this.completed.includes(l.id))?.id||LESSONS[(LESSONS.findIndex(l=>l.id===after)+1)%LESSONS.length].id;}
+ next(after=null){return LESSONS.find(l=>!this.completed.includes(l.id))?.id||null;}
  certify(){if(!this.eligible)return false;this.stamped=true;return true;}
  get saved(){return {steps:{...this.steps},stamped:this.stamped};}
 }

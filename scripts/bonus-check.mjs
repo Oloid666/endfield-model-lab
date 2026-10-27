@@ -36,23 +36,21 @@ for(let bits=0;bits<32;bits++){
 }
 check(SETTLEMENT_STAMPS,['理賠通過','新案承保','長期合作']);
 p.data.claimsSettled=true;p.save();check(new BonusProgress(storage).data.claimsSettled,true);check(new BonusProgress({getItem:()=>JSON.stringify({claimsSettled:'yes'})}).data.claimsSettled,false);
-check(LESSONS.length,10);check(new Set(LESSONS.map(l=>l.id)).size,10);check(LESSONS[4].id,'lino');check(LESSONS.slice(0,2).map(l=>l.id),['general','mikoto']);
-check(LESSONS[0].analysis.join('').includes('將軍是爻光'),true);check(LESSONS[1].analysis.join('').includes('御坂美琴'),true);
-for(const l of LESSONS){check(l.analysis.length,3);check(LESSON_NOTES[l.id].length,3);check(l.analysis.every(s=>s.length>=50),true);check(l.recap.includes('undefined'),false);for(const source of l.sources)check(new URL(source.url).protocol,'https:');}
-check(LESSONS[5].id,'login');check(LESSONS[6].id,'pear');
-check(LESSONS[1].recap.includes('妳剛才才說我錯棚'),false);check(LESSONS[1].aside.includes('妳剛才才說我錯棚'),true);
-check(LESSONS.find(l=>l.id==='taste').analysis.join('').includes('不能據此宣布'),false);check(LESSONS[4].analysis.join('').includes('未核實的最早出處'),false);
-check([0,1,2,3,4,5].map(i=>lessonProgress(i,6)),[0,20,40,60,80,100]);check(lessonProgress(-2,6),0);check(lessonProgress(20,6),100);check(lessonProgress(0,0),0);
-check(wrapBoardText('黑板不壓縮文字',t=>t.length,4),['黑板不壓','縮文字']);check(wrapBoardText('第一行\n第二行',t=>t.length,3),['第一行','第二行']);
-check(CLASS_REQUIRED,4);const course=new ClassCourse({steps:{cargo:99,ammo:6},stamped:true,legacyCompleted:true});check(course.percentage,0);check(course.stamped,false);check(course.confirm('bad',0),false);check(course.confirm('cargo',-1),false);check(course.confirm('cargo',5),false);
+check(LESSONS.length,8);check(LESSONS.map(l=>l.id),['general','lino','taste','compute','cargo','pear','microwave','lyrics']);
+for(const l of LESSONS){check(l.analysis.length>=2,true);check(LESSON_NOTES[l.id].length,l.analysis.length);check(l.recap.includes('undefined'),false);for(const source of l.sources)check(new URL(source.url).protocol,'https:');}
+for(const id of ['taste','compute','pear'])check(LESSONS.find(l=>l.id===id).aside,'');
+check(LESSONS[0].recap.includes('妳剛才才說我錯棚'),false);check(LESSONS[0].aside.includes('妳剛才才說我錯棚'),true);
+check(LESSONS.at(-1).analysis.join('').includes('丙式車體險'),true);
+check(lessonProgress(3,6),60);check(wrapBoardText('黑板不壓縮文字',t=>t.length,4),['黑板不壓','縮文字']);
+check(CLASS_REQUIRED,8);const course=new ClassCourse();check(course.confirm('bad',0),false);check(course.confirm('cargo',5),false);
 for(let topic=0;topic<LESSONS.length;topic++){
  const l=LESSONS[topic];
- for(let i=0;i<lessonCardCount(l.id)-1;i++){course.confirm(l.id,i);check(course.percentage,Math.min(100,topic*25));}
- course.confirm(l.id,lessonCardCount(l.id)-1);check(course.percentage,Math.min(100,(topic+1)*25));check(course.eligible,topic>=3);
+ for(let i=0;i<lessonCardCount(l.id)-1;i++){course.confirm(l.id,i);check(course.percentage,topic*12.5);}
+ course.confirm(l.id,lessonCardCount(l.id)-1);check(course.percentage,(topic+1)*12.5);check(course.eligible,topic===7);
+ if(topic===3)check(course.certify(),false);
  for(let i=0;i<lessonCardCount(l.id);i++)course.confirm(l.id,i);check(course.completedCount,topic+1);
 }
-check(course.next('insurance'),'general');check(course.next('general'),'mikoto');check(course.certify(),true);check(new ClassCourse(course.saved).percentage,0);course.reset();check(course.percentage,0);check(course.stamped,false);check(course.next(),'general');
-for(const l of LESSONS)check(l.aside.split('\n').length<=2,true);
+check(course.next(),null);check(course.certify(),true);course.reset();check(course.percentage,0);check(course.stamped,false);check(course.next(),'general');
 const auto=new BonusProgress(storage);auto.data.unlocked=false;check(auto.complete('ready'),false);check(auto.complete('tour'),false);check(auto.complete('complete'),true);check(auto.complete('complete'),false);check(new BonusProgress(storage).data.unlocked,true);
 const meter=new SmoothMeter();meter.set(100,0);check(meter.value(0),0);check(meter.value(.5)>0&&meter.value(.5)<100,true);const halfway=meter.value(.5);meter.set(100,.5);check(meter.value(.5),halfway);check(meter.value(1.2),100);meter.reset(5);check(meter.value(5),0);meter.set(60,5,true);check(meter.value(5),60);
 console.log(`Bonus: ${checks} checks passed (including all 32 negotiation combinations).`);

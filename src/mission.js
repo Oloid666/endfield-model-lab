@@ -18,7 +18,7 @@ export function createMission({mount=document.querySelector('#app'),onDinner,onG
   const motionQuery=window.matchMedia?.('(prefers-reduced-motion: reduce)');
   const events=new AbortController(),listen=(target,type,fn,options={})=>target.addEventListener(type,fn,{...options,signal:events.signal});
   const root=E('section','mission-shell');root.setAttribute('aria-label','莊的晚餐與光害改善任務');
-  const inspection=E('p','mission-inspection');inspection.append(E('span','','點點招牌或梨花試試。按「去買晚餐」開始故事。'),E('span','','視角按一下切換；旁邊箭頭可直接選鏡位。'));
+  const inspection=E('p','mission-inspection');inspection.append(E('span','','點點招牌或梨花試試。按「去買晚餐」開始故事。'),E('span','','視角重複按即可切換；拖曳旋轉，雙指縮放。'));
   const launch=E('button','mission-launch');launch.type='button';launch.append(E('span','mission-kicker','一場雨，一頓飯。'),E('span','mission-launch-title','去買晚餐'),E('span','mission-launch-arrow','↗'));
   const panel=E('div','mission-panel');panel.hidden=true;
   const comm=E('div','mission-comm');comm.hidden=true;comm.setAttribute('aria-label','弭弗的巡衛通訊');
@@ -133,7 +133,7 @@ export function createMission({mount=document.querySelector('#app'),onDinner,onG
   function fire(event){if(event?.isPrimary===false||event?.button>0)return;event?.preventDefault();const result=machine.attack(inputSource(event));render();return result;}
   function act(method,...args){const result=machine[method](...args);render();return result;}
   function replayPrompt(){const result=machine.replayPrompt();if('speechSynthesis'in window&&'SpeechSynthesisUtterance'in window){cancelSpeech();const utterance=new SpeechSynthesisUtterance(machine.state.connection.field==='password'?'密碼，五，二，零，一，三，一，四。':'帳號，endfield，底線，power。');utterance.lang='zh-TW';utterance.rate=.88;window.speechSynthesis.speak(utterance);}render();return result;}
-  listen(launch,'click',()=>{machine.start();render(true);});listen(line,'click',()=>{onCameraReset?.();act('next');});listen(choices,'click',event=>{const b=event.target.closest('[data-choice]');if(b){machine.choose(b.dataset.choice);render(true);}});
+  listen(launch,'click',()=>{machine.start();render(true);});listen(line,'click',()=>{if(machine.state.revealed>=machine.state.text.length)onCameraReset?.();act('next');});listen(choices,'click',event=>{const b=event.target.closest('[data-choice]');if(b){machine.choose(b.dataset.choice);render(true);}});
   listen(auto,'click',()=>{machine.setAuto(!machine.auto);render();});listen(skip,'click',()=>{machine.skip();render(true);});listen(outputs,'click',event=>{const b=event.target.closest('[data-output]');if(b){machine.setOutput(b.dataset.output);render(true);}});
   listen(pause,'click',()=>{machine.setPaused(!machine.paused);resetAnchor();render(true);});listen(replay,'click',()=>{cancelSpeech();machine.replay();lastFeedback=-1;render(true);});listen(attack,'pointerdown',fire);listen(attack,'click',event=>{if(event.detail===0)fire(event);});
   listen(cameraReset,'click',()=>{onCameraReset?.();cameraReset.blur();});

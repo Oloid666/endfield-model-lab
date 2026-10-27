@@ -292,12 +292,12 @@
       }
     },
     {
-      "name": "Speaking subject is Zhuang",
+      "name": "Conversation holds the two-person frame",
       "passed": true,
       "detail": null
     },
     {
-      "name": "Punchline holds on Dragon reaction",
+      "name": "Punchline keeps both reactions in frame",
       "passed": true,
       "detail": null
     },
@@ -317,12 +317,12 @@
       "detail": null
     },
     {
-      "name": "Speaking subject is Zhuang",
+      "name": "Conversation holds the two-person frame",
       "passed": true,
       "detail": null
     },
     {
-      "name": "Punchline holds on Dragon reaction",
+      "name": "Punchline keeps both reactions in frame",
       "passed": true,
       "detail": null
     },
@@ -435,12 +435,12 @@
       }
     },
     {
-      "name": "Evidence cuts directly to reaction without crossing the facade",
+      "name": "Briefing holds its topic frame across reaction lines",
       "passed": true,
       "detail": null
     },
     {
-      "name": "Reaction cuts back to evidence without crossing the facade",
+      "name": "Next speaker retains the same conversation topic frame",
       "passed": true,
       "detail": null
     },

@@ -1,0 +1,57 @@
+{
+  "checks": [
+    {
+      "name": "Resume goes to last unread topic",
+      "passed": true
+    },
+    {
+      "name": "Seven unique topics retained",
+      "passed": true
+    },
+    {
+      "name": "Reduced-motion graduation works",
+      "passed": true
+    },
+    {
+      "name": "Reduced-motion stamp touches paper",
+      "passed": true
+    },
+    {
+      "name": "Reduced-motion true ending reaches rating",
+      "passed": true
+    },
+    {
+      "name": "1 star selection accessible",
+      "passed": true
+    },
+    {
+      "name": "2 star selection accessible",
+      "passed": true
+    },
+    {
+      "name": "3 star selection accessible",
+      "passed": true
+    },
+    {
+      "name": "4 star selection accessible",
+      "passed": true
+    },
+    {
+      "name": "5 star selection accessible",
+      "passed": true
+    },
+    {
+      "name": "Review retains all eight completed topics",
+      "passed": true
+    },
+    {
+      "name": "Review does not replay true ending",
+      "passed": true
+    },
+    {
+      "name": "No reduced-motion exceptions",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

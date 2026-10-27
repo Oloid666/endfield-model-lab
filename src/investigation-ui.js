@@ -14,12 +14,12 @@ export function createInvestigationUI({mount,machine,capture,onAuto,getAuto}){
  for(let i=0;i<4;i++){const n=E('span','rhythm-note');n.textContent='●';rhythm.append(n);notes.push(n);}
  const rhythmStatus=E('p','rhythm-status');
  root.append(title,callPortrait,message,photoStage,puzzle,rhythm,rhythmStatus,actions);mount.append(root);
- const auto=E('button','cinematic-toggle','◉ 自動運鏡');auto.type='button';mount.append(auto);listen(auto,'click',()=>onAuto?.());
+ const auto=E('p','cinematic-toggle','自由觀看 · 點下一句回到演出');auto.type='button';mount.append(auto);listen(auto,'click',()=>onAuto?.());
  let phase='',photo=null,scale=1,dx=0,dy=0,held=null,animationKey='',animations=[],startPointer=null;
  const points=new Map();let gestureStart=null;
  const transform=()=>{photoInner.style.transform=`translate(${dx}px,${dy}px) scale(${scale})`;};
  const button=(label,fn,cls='')=>{const b=E('button',cls,label);b.type='button';listen(b,'click',fn);actions.append(b);return b;};
- function snapshot(){try{photo=capture();scale=1;dx=dy=0;transform();machine.takePhoto();}catch(e){message.textContent=e.message;}}
+ let capturing=false;async function snapshot(){if(capturing)return;capturing=true;root.setAttribute('aria-busy','true');message.textContent='正在處理清晰遠景與人物近照…';try{const result=await capture();if(machine.phase!=='photo')return;photo=result;scale=1;dx=dy=0;transform();machine.takePhoto();}catch(e){message.textContent=e.message;}finally{capturing=false;root.removeAttribute('aria-busy');}}
  function inspect(id){if(scale<1.2){message.textContent='先放大照片，再點你想調查的異常。';return;}machine.investigate(id);}
  function build(s){
    buildAbort.abort();buildAbort=new AbortController();building=true;
@@ -36,7 +36,7 @@ export function createInvestigationUI({mount,machine,capture,onAuto,getAuto}){
    }
    if(phase==='comm-request'){title.textContent='巡衛通訊 · 請求接入';message.textContent='巡衛隊長・弭弗 請求接入';button('◉ 接通',()=>machine.acceptCall(),'call-accept');}
    if(phase==='hack'){
-     title.textContent='賽希 · 電網維護終端 / login.php';message.textContent='點一下轉動線路。繞過防火牆：四塊彎線接通入口與出口，再開始駭入。';
+     title.textContent='塞西 · 電網維護終端 / login.php';message.textContent='點一下轉動線路。繞過防火牆：四塊彎線接通入口與出口，再開始駭入。';
      for(let i=0;i<4;i++){const b=E('button','hack-tile');b.type='button';b.dataset.tile=i;b.setAttribute('aria-label',`旋轉第 ${i+1} 塊線路`);const wire=E('span','hack-wire','┏');b.append(wire);listen(b,'click',()=>machine.hackRotate(i));puzzle.append(b);}
      button('開始駭入',()=>machine.hackSubmit());
    }
@@ -58,7 +58,7 @@ export function createInvestigationUI({mount,machine,capture,onAuto,getAuto}){
  for(const type of ['pointerup','pointercancel','lostpointercapture'])listen(photoStage,type,e=>{points.delete(e.pointerId);gestureStart=null;startPointer=null;});
  function update(s){
    sourceAnchor=machine.sourceTime;perfAnchor=performance.now();
-   auto.textContent=getAuto?.()?'◉ 自動運鏡':'↺ 回到劇情鏡頭';auto.setAttribute('aria-pressed',String(!!getAuto?.()));auto.hidden=['photo-flight','photo','photo-review','hack','heat'].includes(s.phase);
+   auto.textContent='自由觀看 · 點下一句回到演出';auto.hidden=!!getAuto?.()||['photo-flight','photo','photo-review','hack','heat'].includes(s.phase);
    root.hidden=!phases.has(s.phase);if(root.hidden){if(phase!==s.phase){animations.forEach(a=>a.cancel());animations=[];phase=s.phase;}return;}if(phase!==s.phase)build(s);
    root.dataset.paused=String(s.paused);for(const b of root.querySelectorAll('button'))b.disabled=s.paused;
    if(s.phase==='shoe-view'){message.textContent=s.shoeReady?'龍泡泡：還要再看一圈？':'鞋子環繞中。先看完這一圈。';for(const b of actions.children)b.hidden=!s.shoeReady;}

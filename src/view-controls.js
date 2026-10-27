@@ -4,18 +4,13 @@ export const VIEW_CYCLES={
  detail:[['heroFront','莊右側正面'],['story','雙人'],['dragon','龍泡泡'],['back','莊背影'],['left','左近景'],['right','右近景']]
 };
 export function createViewControls(getWorld,getMission,signal){
- const dock=document.querySelector('.view-dock'),indices={},buttons=[...dock.querySelectorAll('[data-view]')];
- const menu=document.createElement('div');menu.className='view-picker';menu.hidden=true;menu.setAttribute('aria-label','直接選擇鏡位');dock.after(menu);
- function pick(group,index){const w=getWorld(),s=getMission()?.state;if(!w||s?.presentationLocked||['photo-return','photo-sending','finisher','purchase','walk-out','photo'].includes(s?.phase))return;menu.hidden=true;
+ const dock=document.querySelector('.view-dock'),home=dock.parentElement,settings=document.querySelector('#settings'),indices={},buttons=[...dock.querySelectorAll('[data-view]')];
+ function pick(group,index){const w=getWorld(),s=getMission()?.state;if(!w||s?.presentationLocked||['photo-return','photo-sending','finisher','purchase','walk-out','photo'].includes(s?.phase))return;
   if(group==='reset'){w.resetStoryCamera();return;}
   const items=VIEW_CYCLES[group];indices[group]=index;const [name,label]=items[index];w.setWalking(false);w.setView(name,true);w.manualUntil=Infinity;w.autoCamera=false;
   for(const b of buttons){b.classList.toggle('active',b.dataset.view===group);b.setAttribute('aria-pressed',String(b.dataset.view===group));}
   const b=buttons.find(b=>b.dataset.view===group);b.querySelector('span').textContent=label;b.dataset.count=`${index+1}/${items.length}`;b.setAttribute('aria-label',`${label} ${index+1}/${items.length}`);
  }
- for(const b of buttons){const group=b.dataset.view;b.addEventListener('click',()=>pick(group,((indices[group]??-1)+1)%(VIEW_CYCLES[group]?.length||1)),{signal});if(!VIEW_CYCLES[group])continue;
-  const arrow=document.createElement('button');arrow.className='view-expand';arrow.textContent='⌄';arrow.setAttribute('aria-label',`展開${b.textContent.trim()}鏡位`);arrow.setAttribute('aria-expanded','false');b.after(arrow);
-  arrow.addEventListener('click',()=>{const opening=menu.hidden||menu.dataset.group!==group;menu.replaceChildren();menu.dataset.group=group;menu.hidden=!opening;arrow.setAttribute('aria-expanded',String(opening));if(opening)VIEW_CYCLES[group].forEach(([id,label],i)=>{const n=document.createElement('button');n.textContent=`${i+1} · ${label}`;n.type='button';n.addEventListener('click',()=>pick(group,i),{signal});menu.append(n);});},{signal});
- }
- document.addEventListener('pointerdown',e=>{if(!dock.contains(e.target)&&!menu.contains(e.target))menu.hidden=true;},{signal});document.addEventListener('keydown',e=>{if(e.key==='Escape')menu.hidden=true;},{signal});
- return {pick};
+ for(const b of buttons){const group=b.dataset.view;b.addEventListener('click',()=>pick(group,((indices[group]??-1)+1)%(VIEW_CYCLES[group]?.length||1)),{signal});}
+ return {pick,update(){const inside=!['ready','complete'].includes(getMission()?.state.phase);const parent=inside?settings:home;if(dock.parentElement!==parent)parent.append(dock);dock.classList.toggle('in-menu',inside);}};
 }

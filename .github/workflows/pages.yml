@@ -24,6 +24,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: node scripts/loading-check.mjs
+      - run: node scripts/presentation-check.mjs
       - run: node scripts/bonus-check.mjs
       - run: node scripts/mission-check.mjs
       - run: node scripts/destruction-check.mjs

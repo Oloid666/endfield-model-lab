@@ -129,16 +129,19 @@ export class World {
     if(hit([-6.5,3.57,4.5],.5)){this.signalIndex=((this.signalIndex||0)+1)%3;this.store.streetProps.setSignal(this.signalIndex);this.weather.invalidateReflection();return true;}
     const plane=new T.Plane(new T.Vector3(0,0,1),-1.9),point=new T.Vector3();if(beam.intersectPlane(plane,point)&&Math.abs(point.x)<4.5&&point.y>.3&&point.y<3.4){this.store.triggerDoor();return true;}return false;
   }
-  capturePhoto(){
-    // One scene render, then both views are derived from exactly this shutter frame.
-    this.composer.render();const source=this.renderer.domElement,ratio=Math.min(1,1600/Math.max(source.width,source.height)),canvas=document.createElement('canvas');
-    canvas.width=Math.max(1,Math.round(source.width*ratio));canvas.height=Math.max(1,Math.round(source.height*ratio));canvas.getContext('2d').drawImage(source,0,0,canvas.width,canvas.height);
-    const display=this.photoPhone?.getObjectByName('camera-screen');if(display){const thumb=document.createElement('canvas');thumb.width=256;thumb.height=384;const c=thumb.getContext('2d');c.fillStyle='#132b2f';c.fillRect(0,0,256,384);const scale=Math.min(256/canvas.width,384/canvas.height);c.drawImage(canvas,(256-canvas.width*scale)/2,(384-canvas.height*scale)/2,canvas.width*scale,canvas.height*scale);this.photoTexture??=this.r.own(new T.CanvasTexture(thumb));this.photoTexture.image=thumb;this.photoTexture.colorSpace=T.SRGBColorSpace;this.photoTexture.needsUpdate=true;display.material.map=display.material.emissiveMap=this.photoTexture;display.material.color.set(0xffffff);display.material.emissive.set(0xffffff);display.material.emissiveIntensity=.3;display.material.needsUpdate=true;}
-    const width=canvas.width,height=canvas.height,src=canvas.toDataURL('image/jpeg',.92),h=this.actors.heroPosition,face=this.projectPoint([h[0],h[1]+1.65,h[2]]);
-    const crop=document.createElement('canvas');crop.width=400;crop.height=500;const cropWidth=Math.max(100,width*.15),cropHeight=cropWidth*1.25,x=Math.max(0,Math.min(width-cropWidth,(face[0]+1)*width/2-cropWidth/2)),y=Math.max(0,Math.min(height-cropHeight,(1-face[1])*height/2-cropHeight*.3));
-    crop.getContext('2d').drawImage(canvas,x,y,cropWidth,cropHeight,0,0,400,500);
-    const points=[['floor',[-3.05,1.08,2.1]],['server',[0,4.6,1.4]]].map(([id,p])=>{const q=this.projectPoint(p);return {id,x:(q[0]+1)/2,y:(1-q[1])/2,z:q[2]};});
-    return {src,width,height,points,closeup:crop.toDataURL('image/jpeg',.92)};
+  async capturePhoto(){
+    // Freeze one pose and render two independent optical views; never enlarge a crop.
+    const wasRunning=this.running;this.stop();const nextFrame=()=>new Promise(r=>requestAnimationFrame(()=>r()));await nextFrame();
+    const camera=this.camera,position=camera.position.clone(),quaternion=camera.quaternion.clone(),fov=camera.fov,aspect=camera.aspect,dpr=this.renderer.getPixelRatio();
+    const render=(width,height)=>{this.renderer.setPixelRatio(1);this.renderer.setSize(width,height,false);this.composer.setSize(width,height);this.fxaa.uniforms.resolution.value.set(1/width,1/height);camera.aspect=width/height;camera.updateProjectionMatrix();this.composer.render();const c=document.createElement('canvas');c.width=width;c.height=height;c.getContext('2d').drawImage(this.renderer.domElement,0,0);return c;};
+    try{
+      const width=aspect>=1?2048:Math.round(2048*aspect),height=aspect>=1?Math.round(2048/aspect):2048;
+      const wide=render(width,height),points=[['floor',[-3.05,1.08,2.1]],['server',[0,4.6,1.4]]].map(([id,p])=>{const q=this.projectPoint(p);return {id,x:(q[0]+1)/2,y:(1-q[1])/2,z:q[2]};});
+      const h=this.actors.heroPosition;camera.position.set(h[0]+.18,h[1]+1.73,h[2]+1.65);camera.lookAt(h[0],h[1]+1.63,h[2]);camera.fov=32;
+      await nextFrame();const close=render(1024,1280),src=wide.toDataURL('image/png'),closeup=close.toDataURL('image/png');
+      const display=this.photoPhone?.getObjectByName('camera-screen');if(display){const thumb=document.createElement('canvas');thumb.width=256;thumb.height=384;thumb.getContext('2d').drawImage(close,0,0,256,384);this.photoTexture??=this.r.own(new T.CanvasTexture(thumb));this.photoTexture.image=thumb;this.photoTexture.colorSpace=T.SRGBColorSpace;this.photoTexture.needsUpdate=true;display.material.map=display.material.emissiveMap=this.photoTexture;display.material.color.set(0xffffff);display.material.emissive.set(0xffffff);display.material.emissiveIntensity=.3;display.material.needsUpdate=true;}
+      return {src,width,height,points,closeup};
+    }finally{camera.position.copy(position);camera.quaternion.copy(quaternion);camera.fov=fov;this.renderer.setPixelRatio(dpr);this.resize();camera.aspect=aspect;camera.updateProjectionMatrix();if(wasRunning)this.start();}
   }
   projectPoint(point){const p=new T.Vector3().fromArray(point).project(this.camera);return p.toArray();}
   // Read-only diagnostic for checking the camera against visible shop geometry.

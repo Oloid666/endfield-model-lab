@@ -1,5 +1,5 @@
 // Original fan fiction. These lines and the demolition episode are not official lore.
-export const speakers={zhuang:'莊芳宜',dragon:'龍泡泡',mifoe:'弭弗',xaihi:'賽希',clerk:'店員',system:'天師樁終端',microwave:'微波爐',manager:'管理員'};
+export const speakers={zhuang:'莊芳宜',dragon:'龍泡泡',mifoe:'弭弗',xaihi:'塞西',clerk:'店員',system:'天師樁終端',microwave:'微波爐',manager:'管理員'};
 
 export const dinnerChoices=[
   {id:'A',label:'熱便當＋湯',hint:'先吃頓熱的。'},
@@ -101,7 +101,7 @@ export const sequences={
   ]),
   flashback:lines('flashback',[
     ['xaihi','難得出門，晚餐應該快一點。','phone','thought','cctv-counter'],
-    ['dragon','三小時前。賽希難得出門，來711買晚餐。','player','aside'],
+    ['dragon','三小時前。塞西難得出門，來711買晚餐。','player','aside'],
     ['microwave','微波加熱：預計三分鐘。','look'],
     ['xaihi','人不該等便當。先查附近有沒有快一點的方法。','phone','thought'],
     ['xaihi','找到了，這方法蠻方便的。\n旁邊就有天師樁。接一下，借億點點。','phone','calm','xaihi-terminal'],
@@ -245,7 +245,7 @@ chatterGroups.push(
 );
 export const reactionPools={
   miss:['弭弗：未命中目標。周邊有意見。','龍泡泡：這發有景觀工程的潛力。','弭弗：目標沒事。路牌需要休假。'],
-  hit:['弭弗：店面外牆破損，招牌正在鬆動。', '龍泡泡：原來「拆開來看」是這個意思。','弭弗：請問公告寫設備維護嗎？莊：不會再壞。'],
+  hit:['弭弗：店面外牆破損，招牌正在鬆動。', '龍泡泡：我會一層一層撥開你的心 🎷','弭弗：請問公告寫設備維護嗎？莊：不會再壞。'],
   waiting:['龍泡泡：慢慢看。她還不知道自己下班了。','龍泡泡：這個角度不處理公文。莊：也沒有要處理。','龍泡泡：看夠再開始，晚餐會等你。'],
 };
 export const endingSong=['🎤🎵 保險～怎麼兩清，怎麼忍心','🎵 怎麼做回甲乙丙丁','🎤 難道非要耗盡所有委屈','🎵 再賠上這一條爛命'];

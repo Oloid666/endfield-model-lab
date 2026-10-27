@@ -1,0 +1,161 @@
+{
+  "checks": [
+    {
+      "name": "House exists at opening",
+      "passed": true
+    },
+    {
+      "name": "Old unlock does not expose second floor",
+      "passed": true
+    },
+    {
+      "name": "Arrow picker removed",
+      "passed": true
+    },
+    {
+      "name": "Repeated button reaches onion poster",
+      "passed": true
+    },
+    {
+      "name": "Secret hint appears",
+      "passed": true
+    },
+    {
+      "name": "Photo ready",
+      "passed": true
+    },
+    {
+      "name": "Wide image >=2048",
+      "passed": true
+    },
+    {
+      "name": "Independent sharp portrait",
+      "passed": true
+    },
+    {
+      "name": "Fake ending reaches interrupted epilogue",
+      "passed": true
+    },
+    {
+      "name": "Zhuang remembers remaining task",
+      "passed": true
+    },
+    {
+      "name": "Dragon remembers second floor",
+      "passed": true
+    },
+    {
+      "name": "Claims entered first without room selection",
+      "passed": true
+    },
+    {
+      "name": "No room chooser",
+      "passed": true
+    },
+    {
+      "name": "Reload offers unfinished task",
+      "passed": true
+    },
+    {
+      "name": "Reload preserves selected claim",
+      "passed": true
+    },
+    {
+      "name": "Reload resumes read step",
+      "passed": true
+    },
+    {
+      "name": "Stamp contacts actual paper",
+      "passed": true
+    },
+    {
+      "name": "Stamp contacts actual paper",
+      "passed": true
+    },
+    {
+      "name": "Stamp contacts actual paper",
+      "passed": true
+    },
+    {
+      "name": "Five fields and happy settlement",
+      "passed": true
+    },
+    {
+      "name": "Three stamps",
+      "passed": true
+    },
+    {
+      "name": "Classroom follows claims",
+      "passed": true
+    },
+    {
+      "name": "Eight topics advertised",
+      "passed": true
+    },
+    {
+      "name": "Topic 1 counts once",
+      "passed": true
+    },
+    {
+      "name": "Topic 2 counts once",
+      "passed": true
+    },
+    {
+      "name": "Topic 3 counts once",
+      "passed": true
+    },
+    {
+      "name": "Topic 4 counts once",
+      "passed": true
+    },
+    {
+      "name": "Four topics do not graduate",
+      "passed": true
+    },
+    {
+      "name": "Topic 5 counts once",
+      "passed": true
+    },
+    {
+      "name": "Topic 6 counts once",
+      "passed": true
+    },
+    {
+      "name": "Topic 7 counts once",
+      "passed": true
+    },
+    {
+      "name": "All eight required",
+      "passed": true
+    },
+    {
+      "name": "Class stamped only after eight",
+      "passed": true
+    },
+    {
+      "name": "True ending reaches rating",
+      "passed": true
+    },
+    {
+      "name": "Submit waits for a star",
+      "passed": true
+    },
+    {
+      "name": "Dry thank-you punchline",
+      "passed": true
+    },
+    {
+      "name": "Local rating saved",
+      "passed": true
+    },
+    {
+      "name": "Desktop panel fits",
+      "passed": true
+    },
+    {
+      "name": "No browser exceptions",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

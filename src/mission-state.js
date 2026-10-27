@@ -307,7 +307,7 @@ export class MissionMachine{
       if(this.rhythm.revision!==revision){this.action('heat-stop',this.rhythm.status==='burnt'?'burnt':'charged',{forced:this.rhythm.forced});this.emit();}
       if(this.rhythm.status==='won')this.sequence('flashback-end',sequences['flashback-end']);
     }
-    if(this.phase==='complete'&&!this.node&&this.time>=this.quietUntil){this.nextChat();return;}
+    if(this.phase==='complete'&&!this.epiloguePending&&!this.node&&this.time>=this.quietUntil){this.nextChat();return;}
     if(this.node){
       const textLength=this.node.text.length,nodeElapsed=this.time-this.nodeEntered;
       const revealed=['charge','captcha','lever','heat-demo','heat','return','aim-final','landing'].includes(this.phase)?textLength:Math.min(textLength,Math.floor(nodeElapsed*30));

@@ -31,27 +31,27 @@ export function createBonusRoom(){
   box(classroom,'#8a7957',[x,.42,z+.6],[.65,.06,.5]);box(classroom,'#8a7957',[x,.72,z+.85],[.65,.55,.05]);
  }
  box(classroom,'#927c54',[1.8,.75,-.7],[1.1,.12,.65]);box(classroom,'#586047',[1.8,.36,-.7],[.75,.7,.45]);
- const dragon=buildDragon(r),dragonMount=new T.Group();dragonMount.add(dragon.root);classroom.add(dragonMount);dragonMount.position.set(2.35,.95,-1.95);dragon.root.scale.setScalar(.65);dragon.root.rotation.y=-.2;
+ const dragon=buildDragon(r),dragonMount=new T.Group();dragonMount.add(dragon.root);classroom.add(dragonMount);dragonMount.position.set(1.95,.95,-1.8);dragon.root.scale.setScalar(.65);dragon.root.rotation.y=-.2;
  // Glasses stay on the face, and the pointer follows the pointing arm.
  const body=dragon.root.children[0],rim=r.material('#2c3834',{metalness:.4});
  for(const x of [-.21,.21]){const ring=r.mesh(r.geometry('TorusGeometry',.15,.018,6,20),rim,body,[x,.69,.53]);ring.scale.y=.85;}
  box(body,'#2c3834',[0,.69,.55],[.13,.022,.02]);
  const pointer=new T.Group();pointer.position.set(-.53,.43,.12);body.add(pointer);const stick=box(pointer,'#b79f6c',[-.27,.4,0],[.027,.9,.027]);stick.rotation.z=.55;
- label(classroom,'左室 · 笑點解析小教室',[0,3.05,-2.18],3.5,.24);
+ label(classroom,'左室 · 笑點小學堂',[0,3.05,-2.18],3.5,.24);
  box(claims,'#8b7551',[0,.95,.1],[4.6,.15,1.1]);box(claims,'#3c6155',[0,.44,.2],[4.4,.88,.8]);
- label(claims,'武陵事故調查暨理賠中心',[0,2.7,-2.26],4.8,.44);
+ label(claims,'武陵事故理賠調解會',[0,2.7,-2.26],4.8,.44);
  label(claims,'理賠調解 · 新產險洽談',[0,.55,.62],3,.3,'#f3deab','#3c6155');
  box(claims,'#b69b65',[-1.5,1.85,-2.26],[1.85,1.1,.08]);
  for(let i=0;i<3;i++){box(claims,'#e3dfcb',[-2.07+i*.57,1.85,-2.20],[.48,.8,.02]);label(claims,`0${i+1}`,[-2.07+i*.57,1.95,-2.18],.35,.16,'#33483d','#e3dfcb');}
  for(let i=0;i<4;i++)box(claims,'#e8dfc1',[-.9+i*.03,1.05,.2],[.65,.012,.8]);
- const stamp=new T.Group();claims.add(stamp);stamp.position.set(.55,1.04,.25);box(stamp,'#9a463c',[0,.03,0],[.35,.06,.25]);r.cylinder(stamp,'#6e4f39',[0,.18,0],.065,.26);r.mesh(r.geometry('SphereGeometry',.1,12,8),r.material('#6e4f39'),stamp,[0,.32,0]);
+ const stamp=new T.Group();claims.add(stamp);stamp.position.set(-.9,1.06,.2);box(stamp,'#9a463c',[0,.03,0],[.35,.06,.25]);r.cylinder(stamp,'#6e4f39',[0,.18,0],.065,.26);r.mesh(r.geometry('SphereGeometry',.1,12,8),r.material('#6e4f39'),stamp,[0,.32,0]);
  box(claims,'#c5bfab',[1.5,1.19,-.2],[.8,.35,.6]);box(claims,'#263c36',[1.5,1.15,.105],[.62,.04,.02]);
  const output=box(claims,'#efe9d5',[1.5,1.04,.5],[.57,.015,.65]);
- const ink=label(claims,'已受理',[-.9,1.065,.2],.58,.22,'#a34b3b','#e8dfc1');ink.rotation.x=-Math.PI/2;ink.visible=false;
+ const ink=label(claims,'已受理',[-.9,1.0605,.2],.47,.18,'#a34b3b','#e8dfc1');ink.rotation.x=-Math.PI/2;ink.visible=false;
  // A small copy of the desk props belongs to the classroom graduation ceremony.
- const classStamp=stamp.clone(true);classStamp.position.set(1.95,.83,-.65);classStamp.scale.setScalar(.65);classroom.add(classStamp);
- const classInk=ink.clone();classInk.position.set(1.65,.825,-.55);classInk.scale.set(.55,.18,1);classroom.add(classInk);classInk.visible=false;
- const classPaper=output.clone();classPaper.position.set(1.65,.82,-.65);classPaper.scale.set(.45,.012,.48);classroom.add(classPaper);
+ const classStamp=stamp.clone(true);classStamp.position.set(1.65,.822,-.65);classStamp.scale.setScalar(.65);classroom.add(classStamp);
+ const classInk=ink.clone();classInk.position.set(1.65,.8225,-.65);classInk.scale.set(.55,.18,1);classroom.add(classInk);classInk.visible=false;
+ const classPaper=output.clone();classPaper.position.set(1.65,.816,-.65);classPaper.scale.set(.6,.012,.48);classroom.add(classPaper);
  // Original desk-side representative: suit, glasses, tie, and a hinged writing arm.
  const rep=new T.Group();claims.add(rep);rep.position.set(1.15,0,-1.08);
  box(rep,'#263f50',[0,1.25,0],[.64,.78,.38]);box(rep,'#d9ded7',[0,1.58,.205],[.24,.25,.02]);
@@ -77,15 +77,15 @@ export function createBonusRoom(){
   negotiation=value;const key=value?`${value.phase}:${value.field}:${value.line}:${value.stampIndex}`:'welcome';
   if(key!==negotiationKey){negotiationKey=key;cueAt=time;if(value?.cue?.event==='objection')objectionAt=time;}
   policyCard.visible=!!value?.policyholderVisible;contract.visible=!!value&&['business','stamp','complete'].includes(value.phase);
-  completedInks.forEach((n,i)=>n.visible=!!value&&i<value.stampIndex);
+  completedInks.forEach((n,i)=>{n.position.set(-1.1+i*.2,1.0606,.15);n.visible=!!value&&i<value.stampIndex;});
   if(!value){focus='wide';return;}
   if(value.phase==='stamp')focus='stamp';else if(value.cue?.event==='policyholder')focus='policy';else if(value.phase==='complete'||value.phase==='choice')focus='wide';else focus=value.cue?.speaker==='保險代表'?'representative':value.phase==='business'?'contract':'client';
  }
  let entryAt=-Infinity;
  let mode='classroom',focus='wide',boardKey='',paintKey='',boardAt=0,lastTime=null,stampAt=-Infinity,stampReduced=false,pose='explain';
- let boardData={title:'笑點解析小教室',lines:CLASS_MOTTO,life:1,reaction:false};
+ let boardData={title:'笑點小學堂',lines:CLASS_MOTTO,life:1,reaction:false};
  const reduced=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
- function board(title='笑點解析小教室',lines=CLASS_MOTTO,life=1,time=0,reaction=false,key=''){
+ function board(title='笑點小學堂',lines=CLASS_MOTTO,life=1,time=0,reaction=false,key=''){
   const k=JSON.stringify([title,lines,life,reaction,key]);if(k===boardKey)return;boardKey=k;paintKey='';boardAt=time;boardData={title,lines,life,reaction};
  }
  function paint(time){
@@ -128,14 +128,14 @@ export function createBonusRoom(){
   camera.position.lerp(framePosition,amount);lookTarget.lerp(endTarget,amount);camera.lookAt(lookTarget);
  }
  board();
- return {scene,camera,board,get state(){return {mode,focus,cameraPosition:camera.position.toArray(),board:{title:boardData.title,lines:[...boardData.lines]},representative:negotiation?.polite?'polite':'serious',policyholderVisible:policyCard.visible,completedStamps:completedInks.filter(n=>n.visible).length,paperStamped:mode==='classroom'?classInk.visible:ink.visible};},resetPaper(){stampAt=-Infinity;ink.visible=classInk.visible=false;classStamp.position.y=.83;classPaper.position.z=-.65;stamp.position.y=1.04;output.position.z=.18;focus='wide';},
+ return {scene,camera,board,get state(){return {mode,focus,cameraPosition:camera.position.toArray(),board:{title:boardData.title,lines:[...boardData.lines]},representative:negotiation?.polite?'polite':'serious',policyholderVisible:policyCard.visible,completedStamps:completedInks.filter(n=>n.visible).length,paperStamped:mode==='classroom'?classInk.visible:ink.visible,stampContactError:mode==='classroom'?classStamp.position.y-(classPaper.position.y+classPaper.scale.y/2):stamp.position.y-(output.position.y+output.scale.y/2)};},resetPaper(){stampAt=-Infinity;ink.visible=classInk.visible=false;classStamp.position.y=.822;classPaper.position.z=-.65;stamp.position.y=1.06;output.position.set(-.9,1.0525,.2);focus='wide';},
  setMode(value){if(mode!==value){mode=value;firstFrame=true;}classroom.visible=value==='classroom';claims.visible=value==='claims';focus='wide';frameKey='';},
  enter(time){entryAt=reduced()?-Infinity:time;},negotiate,setFocus(value){focus=value;},perform(value){pose=value;},stamp(t,status){stampAt=t;stampReduced=reduced();focus='stamp';ink.visible=classInk.visible=false;const c=ink.material.map.image.getContext('2d');c.fillStyle='#e8dfc1';c.fillRect(0,0,1024,160);c.fillStyle='#a34b3b';c.font='bold 110px sans-serif';c.textAlign='center';c.textBaseline='middle';c.fillText(status,512,80,1000);ink.material.map.needsUpdate=true;},
  render(renderer,time,width,height){
   frame(width,height,time);paint(time);
   const state=lessonFrame(time-boardAt,boardData.reaction,reduced()),interrupted=pose==='interrupted'||boardData.reaction&&state.pose==='interrupted',awkward=pose==='awkward'||boardData.reaction&&state.pose==='awkward';
   dragon.update(interrupted?boardAt:time,{gesture:interrupted||awkward?'look':'point',gestureAmount:interrupted||awkward?0:.8,curious:awkward?.8:0,lookYaw:0});
-  const arrival=Number.isFinite(entryAt)?T.MathUtils.smoothstep(time-entryAt,0,1.6):1;dragonMount.position.x=2.35+(1-arrival)*4;clientMount.position.x=-1.35-(1-arrival)*4;dragonMount.position.y=.95+(interrupted?0:Math.sin(time*1.5)*.05)+(1-arrival)*.5;clientMount.position.y=1.05+(1-arrival)*.5;dragon.root.rotation.y=awkward?Math.atan2(camera.position.x-dragonMount.position.x,camera.position.z-dragonMount.position.z):-.2;
+  const arrival=Number.isFinite(entryAt)?T.MathUtils.smoothstep(time-entryAt,0,1.6):1;dragonMount.position.x=1.95+(1-arrival)*4;clientMount.position.x=-1.35-(1-arrival)*4;dragonMount.position.y=.95+(interrupted?0:Math.sin(time*1.5)*.05)+(1-arrival)*.5;clientMount.position.y=1.05+(1-arrival)*.5;dragon.root.rotation.y=awkward?Math.atan2(camera.position.x-dragonMount.position.x,camera.position.z-dragonMount.position.z):-.2;
   pointer.rotation.z=interrupted?-.35:awkward?-1.1:Math.sin(time*.9)*.07;pointer.visible=pose!=='dismissed';
   client.update(reduced()?0:time,{gesture:negotiation?.cue?.speaker==='龍泡泡'?'point':'look',gestureAmount:.35,lookYaw:.15});
   const hitAge=time-objectionAt,hit=!reduced()&&hitAge>=0&&hitAge<.6?Math.sin(Math.min(1,hitAge/.18)*Math.PI/2)*Math.exp(-Math.max(0,hitAge-.18)*7):0;
@@ -145,8 +145,11 @@ export function createBonusRoom(){
 
   const age=time-stampAt;
   if(Number.isFinite(stampAt)&&age>=0){
-   let lift=0;if(!stampReduced){if(age<.22)lift=age/.22*.3;else if(age<.4)lift=.3*(1-(age-.22)/.18);else if(age>.56&&age<.8)lift=Math.sin((age-.56)/.24*Math.PI)*.08;}
-   stamp.position.y=1.04+lift;classStamp.position.y=.83+lift*.65;ink.visible=classInk.visible=stampReduced||age>=.4;const feed=T.MathUtils.smoothstep(age,stampReduced?0:.65,stampReduced?.15:1.1);output.position.z=.18+.32*feed;classPaper.position.z=-.65+.28*feed;
+   let lift=0;if(!stampReduced){if(age<.22)lift=age/.22*.3;else if(age<.4)lift=.3*(1-(age-.22)/.18);else if(age>.56)lift=.22*T.MathUtils.smoothstep(age,.56,.8);}
+   stamp.position.set(-.9,1.06+lift,.2);classStamp.position.set(1.65,.822+lift*.65,-.65);
+   ink.visible=classInk.visible=stampReduced||age>=.4;
+   const feed=T.MathUtils.smoothstep(age,stampReduced?0:.82,stampReduced?.15:1.1);output.position.set(-.9,1.0525,.2+.32*feed);ink.position.z=.2+.32*feed;classPaper.position.z=-.65+.28*feed;classInk.position.z=classPaper.position.z;
+
   }
   renderer.setRenderTarget(null);renderer.render(scene,camera);lastTime=time;
  },dispose(){dragon.dispose();client.dispose();r.dispose();}};
