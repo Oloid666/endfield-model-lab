@@ -65,3 +65,11 @@ Vite + Three.js；劇情狀態 `src/mission-state.js`、文案 `src/mission-dial
 ## 推送交接（2026-10-27）
 
 使用者已要求將本輪二周目與演出優化推送至 `main`。上述「本地修改／尚未推送」為各輪完成當時的紀錄；本次發布以最新 main 提交及 GitHub Actions 的 Build and deploy Pages 結果為準。測試網址： https://oloid666.github.io/endfield-model-lab/?v=bonus-20261027 。開場或結局點實際 711 招牌七次，從「二周目・樓上請」進入。iPhone Safari 真機驗收仍待使用者回報。
+
+## 小教室輕鬆流程（2026-10-27）
+
+依使用者要求，把課堂主流程改為同一顆底部固定主按鈕：開講、原句、解析、吐槽、下一篇一路接續；次要操作收進右上選單。完整看三個不同篇目即可結業，另外五篇自由看。每段最高進度僅計一次，死亡條漸進到 100% 後在教室講桌蓋章並開立「笑點已死亡」證明。下方「下課・完成」直接返回街景；可另選「繼續看」，不重複強迫蓋章。進度與證明本機保存，舊版已讀保留。
+
+保險中心仍是目前 A／B 玩法，使用者本輪要求先思考改版提案，尚未選定新玩法。具體候選見 `docs/CLAIMS-NEXT-PROPOSALS.md`，推薦三回合理賠談判桌；另有話術翻譯與離譜申請快審。
+
+驗證：建置、11 支程式檢查共 950 項通過。完整 Chromium 流程 69 項、針對性流程 15 項通過，涵蓋固定按鈕位置、三篇結業、漸進死亡條、蓋章、自由繼續、直接下課回街景，以及原理賠回歸測試。新圖為 `artifacts/bonus-class-meter.png` 與 `artifacts/bonus-class-certificate.png`。沿用使用者先前的推送發布指示更新 main／GitHub Pages；正式上線狀態以最新 Actions 為準，iPhone Safari 仍待使用者實機回報。

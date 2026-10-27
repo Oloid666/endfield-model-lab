@@ -15,3 +15,10 @@ export class StampSequence{
  }
  cancel(){this.active=false;this.at=0;this.hit=false;this.completed=false;}
 }
+
+export class SmoothMeter{
+ constructor(){this.from=0;this.target=0;this.at=0;}
+ value(time){const p=Math.max(0,Math.min(1,(time-this.at)/1.15));return this.from+(this.target-this.from)*p*p*(3-2*p);}
+ set(target,time,snap=false){if(this.target===target)return;this.from=snap?target:this.value(time);this.target=target;this.at=time;}
+ reset(time=0){this.from=this.target=0;this.at=time;}
+}

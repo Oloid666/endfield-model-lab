@@ -53,3 +53,16 @@
 技巧參考：[game-feel](https://github.com/gamedev-skills/awesome-gamedev-agent-skills/blob/main/skills/disciplines/game-feel/SKILL.md)、[dialogue-systems](https://github.com/gamedev-skills/awesome-gamedev-agent-skills/blob/main/skills/disciplines/dialogue-systems/SKILL.md)、[game-ui-ux](https://github.com/gamedev-skills/awesome-gamedev-agent-skills/blob/main/skills/disciplines/game-ui-ux/SKILL.md)。
 
 最新驗證：建置與全部 11 支程式檢查共 922 項通過。完整 Chromium 流程 62 項、針對蓋章取消／重播／音效與閱讀焦點的 13 項通過；分別記於 `artifacts/bonus-browser-results.json`、`artifacts/bonus-feedback-results.json`。針對性腳本為 `python scripts/bonus-feedback-browser.py`，預設使用 production preview 的 4173 port。手機原生 Safari 的音效、分享與安全區仍待實機複核；本輪尚未推送或部署。
+
+
+## 輕鬆課堂版（2026-10-27）
+
+主流程現在只有底部固定位置的主按鈕。進房後按「開講」，同一位置的「繼續」會依序播放原句、解析、角色補刀與下一篇。看滿三個不同篇目即能結業；另外五篇自由看。上一段、選篇、字級、閱讀模式、看黑板、出處與離開都收進右上「選單」。主按鈕不會因文字長度、補刀或換篇移位。
+
+每按一次會累積該段的最高閱讀進度；重看不重複加分。死亡條以約 1.15 秒的漸進動畫追上目標，未完整看完三篇不會到 100%。100% 後在教室的講桌完成蓋章，出示「笑點已死亡」證明。底部「下課・完成」直接回街景；「繼續看」則接剩餘內容，保持 100% 且不再強迫蓋章。已讀、結業與字級偏好保存在此瀏覽器。選單可手動重新上課並歸零死亡條。
+
+原本已讀紀錄仍保留，新短課堂進度使用同一紀錄內的 `course` 欄位；舊版已讀不會讓第一次進入新版直接跳結業。再次開啟會接續尚未確認的段落。
+
+理賠 A／B 仍保留目前玩法。下一版候選見 [理賠中心提案](CLAIMS-NEXT-PROPOSALS.md)，目前推薦三回合談判桌，尚未製作或宣稱已替換。
+
+輕鬆課堂版驗證：11 支程式檢查共 950 項通過，完整 Chromium 69 項與針對性 15 項通過。新截圖為 `artifacts/bonus-class-meter.png`、`artifacts/bonus-class-certificate.png`；瀏覽器視窗模擬不代表 iPhone 真機驗收。

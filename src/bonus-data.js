@@ -84,7 +84,7 @@ export function claimResult(form){
 }
 const STORAGE_KEY='rainy711.bonus.v1';
 export class BonusProgress{
- constructor(storage){this.storage=storage;this.data={unlocked:false,warned:false,read:[],finished:[],preference:'',reading:false,textSize:18};this.taps=0;try{const d=JSON.parse(storage?.getItem(STORAGE_KEY)||'null');if(d){this.data={unlocked:d.unlocked===true,warned:d.warned===true,read:Array.isArray(d.read)?d.read.filter(id=>LESSONS.some(l=>l.id===id)):[],finished:Array.isArray(d.finished)?d.finished.filter(id=>['A','B'].includes(id)):[],preference:['A','B','both'].includes(d.preference)?d.preference:'',reading:d.reading===true,textSize:[18,22,26].includes(d.textSize)?d.textSize:18};}}catch{/* Private browsing still works for this visit. */}}
+ constructor(storage){this.storage=storage;this.data={unlocked:false,warned:false,read:[],finished:[],preference:'',reading:false,textSize:18,course:null};this.taps=0;try{const d=JSON.parse(storage?.getItem(STORAGE_KEY)||'null');if(d){this.data={unlocked:d.unlocked===true,warned:d.warned===true,read:Array.isArray(d.read)?d.read.filter(id=>LESSONS.some(l=>l.id===id)):[],finished:Array.isArray(d.finished)?d.finished.filter(id=>['A','B'].includes(id)):[],preference:['A','B','both'].includes(d.preference)?d.preference:'',reading:d.reading===true,textSize:[18,22,26].includes(d.textSize)?d.textSize:18,course:d.course&&typeof d.course==='object'?d.course:null};}}catch{/* Private browsing still works for this visit. */}}
  save(){try{this.storage?.setItem(STORAGE_KEY,JSON.stringify(this.data));}catch{/* Keep the in-memory progress. */}}
  tap(sign,phase){if(!['ready','complete'].includes(phase)){this.taps=0;return false;}if(!sign){this.taps=0;return false;}if(this.data.unlocked)return false;this.taps++;if(this.taps===7){this.data.unlocked=true;this.save();return true;}return false;}
  mark(kind,id){const values=kind==='read'?LESSONS.map(l=>l.id):kind==='finished'?['A','B']:[];if(!values.includes(id))return;if(!this.data[kind].includes(id))this.data[kind].push(id);this.save();}
@@ -101,4 +101,18 @@ export class ClaimTrial{
  }
  finishA(decision){if(this.found.length!==2||!['return','accept'].includes(decision))return false;this.result={status:decision==='return'?'退回補件':'更正受理',reasons:decision==='return'?['請補正事故原因、損失範圍與事故時間。']:['原因更正為人工雷擊，責任人莊芳宜，損失依建物紀錄；事故時間待補。','受理不代表核賠。'],aside:decision==='return'?'莊：退回要幾個工作日？\n龍泡泡：妳願意等公文的時候真多。':'莊：梨花那欄保留。\n龍泡泡：可以，但不是損失總表。'};return true;}
  finishB(){this.result=claimResult(this.form);return !!this.result;}
+}
+
+export const CLASS_REQUIRED=3;
+export const lessonCardCount=id=>{const l=LESSONS.find(l=>l.id===id);return l?1+l.analysis.length+l.aside.split('\n').length:0;};
+// A short course counts three complete topics. Partial topics never add up to a fake completion.
+export class ClassCourse{
+ constructor(saved){this.steps={};for(const l of LESSONS){const n=Number(saved?.steps?.[l.id]);if(Number.isFinite(n)&&n>0)this.steps[l.id]=Math.min(lessonCardCount(l.id),Math.floor(n));}this.stamped=this.eligible&&saved?.stamped===true;}
+ get completed(){return LESSONS.filter(l=>(this.steps[l.id]||0)>=lessonCardCount(l.id)).map(l=>l.id);}
+ get eligible(){return this.completed.length>=CLASS_REQUIRED;}
+ get percentage(){if(this.eligible)return 100;const partial=Math.max(0,...LESSONS.filter(l=>!this.completed.includes(l.id)).map(l=>(this.steps[l.id]||0)/lessonCardCount(l.id)));return Math.min(99,(this.completed.length+partial)/CLASS_REQUIRED*100);}
+ confirm(id,cursor){const max=lessonCardCount(id);if(!max||!Number.isInteger(cursor)||cursor<0||cursor>=max)return false;this.steps[id]=Math.max(this.steps[id]||0,cursor+1);return true;}
+ next(){return LESSONS.find(l=>!this.completed.includes(l.id))?.id||null;}
+ certify(){if(!this.eligible)return false;this.stamped=true;return true;}
+ get saved(){return {steps:{...this.steps},stamped:this.stamped};}
 }

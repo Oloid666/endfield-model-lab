@@ -48,6 +48,10 @@ export function createBonusRoom(){
  box(claims,'#c5bfab',[1.5,1.19,-.2],[.8,.35,.6]);box(claims,'#263c36',[1.5,1.15,.105],[.62,.04,.02]);
  const output=box(claims,'#efe9d5',[1.5,1.04,.5],[.57,.015,.65]);
  const ink=label(claims,'已受理',[-.9,1.065,.2],.58,.22,'#a34b3b','#e8dfc1');ink.rotation.x=-Math.PI/2;ink.visible=false;
+ // A small copy of the desk props belongs to the classroom graduation ceremony.
+ const classStamp=stamp.clone(true);classStamp.position.set(1.95,.83,-.65);classStamp.scale.setScalar(.65);classroom.add(classStamp);
+ const classInk=ink.clone();classInk.position.set(1.65,.825,-.55);classInk.scale.set(.55,.18,1);classroom.add(classInk);classInk.visible=false;
+ const classPaper=output.clone();classPaper.position.set(1.65,.82,-.65);classPaper.scale.set(.45,.012,.48);classroom.add(classPaper);
  const clerk=buildDragon(r),clerkMount=new T.Group();clerkMount.add(clerk.root);claims.add(clerkMount);clerkMount.position.set(0,1.1,-1.1);clerk.root.scale.setScalar(.85);
  let mode='classroom',focus='wide',boardKey='',paintKey='',boardAt=0,lastTime=null,stampAt=-Infinity,stampReduced=false,pose='explain';
  let boardData={title:'笑點解析小教室',lines:CLASS_MOTTO,life:1,reaction:false};
@@ -74,6 +78,7 @@ export function createBonusRoom(){
    frameKey=k;camera.aspect=width/Math.max(1,height);camera.updateProjectionMatrix();const narrow=camera.aspect<1.2;
    let pos,target;
    if(mode==='claims') {pos=focus==='stamp'?[1.2,2.25,2.8]:[narrow?0:3,2.5,narrow?6.4:5.3];target=focus==='stamp'?[.1,1.05,.1]:[0,1.45,-.7];}
+   else if(focus==='stamp'){pos=[2.6,2.05,1.75];target=[1.7,1.05,-.55];}
    else if(focus==='board'){pos=[0,1.95,narrow?3.6:2.6];target=[0,1.9,-2.1];}
    else if(focus==='teacher'){pos=[2.05,1.9,2.8];target=[1.5,1.5,-.75];}
    else if(focus==='reaction'){pos=[1.4,1.9,3.3];target=[1.6,1.4,-.8];}
@@ -85,9 +90,9 @@ export function createBonusRoom(){
   camera.position.lerp(endPosition,amount);lookTarget.lerp(endTarget,amount);camera.lookAt(lookTarget);
  }
  board();
- return {scene,camera,board,get state(){return {mode,focus,paperStamped:ink.visible};},resetPaper(){stampAt=-Infinity;ink.visible=false;stamp.position.y=1.04;output.position.z=.18;focus='wide';},
+ return {scene,camera,board,get state(){return {mode,focus,paperStamped:mode==='classroom'?classInk.visible:ink.visible};},resetPaper(){stampAt=-Infinity;ink.visible=classInk.visible=false;classStamp.position.y=.83;classPaper.position.z=-.65;stamp.position.y=1.04;output.position.z=.18;focus='wide';},
  setMode(value){if(mode!==value){mode=value;firstFrame=true;}classroom.visible=value==='classroom';claims.visible=value==='claims';focus='wide';frameKey='';},
- setFocus(value){focus=value;},perform(value){pose=value;},stamp(t,status){stampAt=t;stampReduced=reduced();focus='stamp';ink.visible=false;const c=ink.material.map.image.getContext('2d');c.fillStyle='#e8dfc1';c.fillRect(0,0,1024,160);c.fillStyle='#a34b3b';c.font='bold 110px sans-serif';c.textAlign='center';c.textBaseline='middle';c.fillText(status,512,80,1000);ink.material.map.needsUpdate=true;},
+ setFocus(value){focus=value;},perform(value){pose=value;},stamp(t,status){stampAt=t;stampReduced=reduced();focus='stamp';ink.visible=classInk.visible=false;const c=ink.material.map.image.getContext('2d');c.fillStyle='#e8dfc1';c.fillRect(0,0,1024,160);c.fillStyle='#a34b3b';c.font='bold 110px sans-serif';c.textAlign='center';c.textBaseline='middle';c.fillText(status,512,80,1000);ink.material.map.needsUpdate=true;},
  render(renderer,time,width,height){
   frame(width,height,time);paint(time);
   const state=lessonFrame(time-boardAt,boardData.reaction,reduced()),interrupted=pose==='interrupted'||boardData.reaction&&state.pose==='interrupted',awkward=pose==='awkward'||boardData.reaction&&state.pose==='awkward';
@@ -98,7 +103,7 @@ export function createBonusRoom(){
   const age=time-stampAt;
   if(Number.isFinite(stampAt)&&age>=0){
    let lift=0;if(!stampReduced){if(age<.22)lift=age/.22*.3;else if(age<.4)lift=.3*(1-(age-.22)/.18);else if(age>.56&&age<.8)lift=Math.sin((age-.56)/.24*Math.PI)*.08;}
-   stamp.position.y=1.04+lift;ink.visible=stampReduced||age>=.4;output.position.z=.18+.32*T.MathUtils.smoothstep(age,stampReduced?0:.65,stampReduced?.15:1.1);
+   stamp.position.y=1.04+lift;classStamp.position.y=.83+lift*.65;ink.visible=classInk.visible=stampReduced||age>=.4;const feed=T.MathUtils.smoothstep(age,stampReduced?0:.65,stampReduced?.15:1.1);output.position.z=.18+.32*feed;classPaper.position.z=-.65+.28*feed;
   }
   renderer.setRenderTarget(null);renderer.render(scene,camera);lastTime=time;
  },dispose(){dragon.dispose();clerk.dispose();r.dispose();}};

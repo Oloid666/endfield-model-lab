@@ -49,6 +49,14 @@
       "passed": true
     },
     {
+      "name": "Short course produces death certificate",
+      "passed": true
+    },
+    {
+      "name": "Same bottom button finishes all the way to street",
+      "passed": true
+    },
+    {
       "name": "No page exception",
       "passed": true
     }

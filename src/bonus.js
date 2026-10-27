@@ -1,6 +1,6 @@
-import {BonusProgress,ClaimTrial,LESSONS,CLASS_MOTTO,EVIDENCE,CLAIM_FIELDS,LESSON_NOTES,CLAIM_CLUES,CLAIM_DECLARATIONS} from './bonus-data.js';
+import {BonusProgress,ClaimTrial,LESSONS,CLASS_MOTTO,EVIDENCE,CLAIM_FIELDS,LESSON_NOTES,CLAIM_CLUES,CLAIM_DECLARATIONS,ClassCourse,CLASS_REQUIRED,lessonCardCount} from './bonus-data.js';
 import {createBonusRoom} from './bonus-room.js';
-import {lessonFrame,StampSequence} from './bonus-presentation.js';
+import {lessonFrame,StampSequence,SmoothMeter} from './bonus-presentation.js';
 import './bonus.css';
 
 const E=(tag,cls='',text)=>{const n=document.createElement(tag);n.className=cls;if(text!==undefined)n.textContent=text;return n;};
@@ -17,23 +17,66 @@ export function pickBonusSign(world,ray){
 }
 export function createBonus({mount,world,mission,exploration,playEffect=()=>{}}){
  let storage;try{storage=window.localStorage;}catch{/* Ephemeral mode. */}
- const progress=new BonusProgress(storage),trial=new ClaimTrial(),events=new AbortController(),stampSequence=new StampSequence();
+ const progress=new BonusProgress(storage),trial=new ClaimTrial(),events=new AbortController(),stampSequence=new StampSequence(),course=new ClassCourse(progress.data.course),deathMeter=new SmoothMeter();
  let active=false,route='rooms',lessonIndex=0,pageIndex=0,room=null,snapshot=null,busy=false,disposed=false,transitionAnimation=null,exportUrl=null,exportBlob=null;
- let responseIndex=0,lessonAt=0,lessonKey='',boardExpanded=false,lastReveal=-1,dialogOpener=null,dialogScroll=0,dialogSelection=false,stampPhase='';
+ let responseIndex=0,lessonAt=0,lessonKey='',boardExpanded=false,lastReveal=-1,dialogOpener=null,dialogScroll=0,dialogSelection=false,stampPhase='',stampKind='claim',dialogKind='';
  const entry=E('button','bonus-entry','二周目 · 樓上請 ↗');entry.type='button';entry.hidden=true;entry.dataset.action='open';
  const toast=E('p','bonus-toast');toast.hidden=true;toast.setAttribute('role','status');
  const root=E('section','bonus-ui');root.hidden=true;root.setAttribute('aria-label','二周目・樓上請');
  const header=E('header','bonus-header'),title=E('span','bonus-room-name'),nav=E('div','bonus-nav');
  const panel=E('section','bonus-panel'),toolbar=E('div','bonus-reading-tools'),content=E('div','bonus-content');content.tabIndex=-1;panel.append(toolbar,content);
+ const classMeter=E('section','bonus-class-meter');classMeter.hidden=true;const deathLabel=E('span','','笑點死亡率 0%'),deathTrack=E('div','bonus-death-track'),deathFill=E('i'),deathHint=E('small');deathTrack.setAttribute('role','progressbar');deathTrack.setAttribute('aria-label','笑點死亡率');deathTrack.setAttribute('aria-valuemin','0');deathTrack.setAttribute('aria-valuemax','100');deathTrack.append(deathFill);classMeter.append(deathLabel,deathTrack,deathHint);panel.prepend(classMeter);
+ const classDock=E('footer','bonus-class-dock'),classPrimary=E('button','bonus-primary','開講 →'),classContinue=E('button','bonus-class-continue','繼續看 →');classDock.hidden=true;classPrimary.type=classContinue.type='button';classPrimary.dataset.action='class-next';classContinue.dataset.action='class-continue';classContinue.hidden=true;classDock.append(classContinue,classPrimary);
  const boardCaption=E('aside','bonus-board-caption');boardCaption.hidden=true;boardCaption.setAttribute('aria-label','黑板重點');
  const curtain=E('div','bonus-curtain');curtain.setAttribute('aria-hidden','true');
  const dialog=E('dialog','bonus-dialog');dialog.setAttribute('aria-label','附件與出處');
- root.append(header,panel,boardCaption,curtain,dialog);header.append(title,nav);mount.append(entry,toast,root);
+ root.append(header,panel,boardCaption,classDock,curtain,dialog);header.append(title,nav);mount.append(entry,toast,root);
  function button(parent,text,action,value,cls='') {const b=E('button',cls,text);b.type='button';b.dataset.action=action;if(value!==undefined)b.dataset.value=value;parent.append(b);return b;}
  function heading(kicker,text,description){content.append(E('p','bonus-kicker',kicker),E('h2','',text));if(description)content.append(E('p','bonus-description',description));}
  function focusContent(){content.focus({preventScroll:true});content.scrollTop=0;panel.scrollTop=0;}
  function reducedMotion(){return matchMedia('(prefers-reduced-motion: reduce)').matches;}
- function preferences(){mount.classList.toggle('bonus-reading',active&&progress.data.reading);root.style.setProperty('--bonus-text-size',`${progress.data.textSize}px`);root.dataset.textSize=String(progress.data.textSize);toolbar.replaceChildren();button(toolbar,progress.data.reading?'看演出':'專心閱讀','reading');button(toolbar,`字級 ${progress.data.textSize} · 調整`,'text-size');toolbar.hidden=!active||['warning','rooms'].includes(route);}
+ function preferences(){mount.classList.toggle('bonus-reading',active&&progress.data.reading);root.style.setProperty('--bonus-text-size',`${progress.data.textSize}px`);root.dataset.textSize=String(progress.data.textSize);toolbar.replaceChildren();button(toolbar,progress.data.reading?'看演出':'專心閱讀','reading');button(toolbar,`字級 ${progress.data.textSize} · 調整`,'text-size');toolbar.hidden=!active||['warning','rooms'].includes(route)||isClassRoute();}
+ function isClassRoute(){return ['classroom','lesson','class-wait','class-stamping','class-result'].includes(route);}
+ function persistCourse(){progress.data.course=course.saved;progress.save();}
+ function selectLesson(id,resume=false){lessonIndex=LESSONS.findIndex(l=>l.id===id);if(lessonIndex<0)lessonIndex=0;const steps=resume?Math.min(course.steps[LESSONS[lessonIndex].id]||0,lessonCardCount(id)-1):0;pageIndex=Math.min(4,steps);enterLessonPage();responseIndex=Math.max(0,steps-4);route='lesson';}
+ function renderClassControls(){
+  const show=active&&isClassRoute();classDock.hidden=classMeter.hidden=!show;root.classList.toggle('bonus-class-flow',show);root.dataset.classStage=route;classContinue.hidden=route!=='class-result'||!course.next();
+  classPrimary.disabled=['class-wait','class-stamping'].includes(route);
+  classPrimary.textContent=route==='classroom'?(course.stamped?(course.next()?'繼續看（自由）→':'查看死亡證明'):'開講 →'):route==='class-result'?'下課 · 完成 ✓':route==='class-wait'?'笑點正在死亡…':route==='class-stamping'?'正在蓋章…':'繼續 →';
+ }
+ function showClassMenu(){
+  const d=modal('課堂選單');dialogKind='class-menu';d.dataset.kind='class-menu';
+  if(route==='lesson'){button(d,'上一段','prev');button(d,'看黑板','board');button(d,'出處與劇內設定','sources');}
+  button(d,progress.data.reading?'切回演出':'專心閱讀','reading');button(d,`字級 ${progress.data.textSize} · 調整`,'text-size');
+  const details=E('details','bonus-class-catalog');details.append(E('summary','','自由選篇（不必全部看）'));LESSONS.forEach(l=>button(details,`${course.completed.includes(l.id)?'✓ ':''}${l.title}`,'lesson-id',l.id));d.append(details);
+  if(course.stamped)button(d,'查看死亡證明','class-certificate');button(d,'選其他房間','class-rooms');button(d,'返回街景','close');button(d,'重新上課 · 死亡條歸零','class-reset',undefined,'bonus-text-button');
+ }
+ function advanceClass(){
+  if(route==='class-result'){close();return;}
+  if(route==='classroom'){
+   if(course.eligible&&!course.stamped)route='class-wait';
+   else if(course.next())selectLesson(course.next(),true);
+   else route='class-result';
+  }else if(route==='lesson'){
+   const l=LESSONS[lessonIndex],cursor=pageIndex<4?pageIndex:4+responseIndex;
+   course.confirm(l.id,cursor);persistCourse();deathMeter.set(course.percentage,world.time,reducedMotion());
+   if(cursor+1>=lessonCardCount(l.id)){
+    progress.mark('read',l.id);
+    if(course.eligible&&!course.stamped)route='class-wait';
+    else if(course.next())selectLesson(course.next(),true);
+    else route='class-result';
+   }else if(pageIndex<4){pageIndex++;enterLessonPage();}else responseIndex++;
+  }else return;
+  render();panel.scrollTop=0;classPrimary.focus({preventScroll:true});syncClass(world.time);
+ }
+ function syncClass(time){
+  if(!isClassRoute())return;
+  deathMeter.set(course.percentage,time,reducedMotion());const value=deathMeter.value(time),display=Math.min(100,Math.round(value));
+  deathFill.style.transform=`scaleX(${value/100})`;deathTrack.setAttribute('aria-valuenow',String(display));deathLabel.textContent=`笑點死亡率 ${display}%`;deathHint.textContent=course.stamped?'死亡證明已開立 · 剩下的自由看':`已解剖 ${Math.min(course.completed.length,CLASS_REQUIRED)} / ${CLASS_REQUIRED} 篇 · 不必全部看完`;
+  if(route==='class-wait'&&value>=99.99){
+   stampKind='class';stampSequence.start(time,reducedMotion());stampPhase='';route='class-stamping';room.resetPaper();room.board('笑點已死亡',['手術成功，笑點死亡。','本教室不提供笑點復活服務。'],0,time,true,'graduation');room.perform('dismissed');room.stamp(time,'笑點已死亡');render();classPrimary.focus({preventScroll:true});
+  }
+ }
  function lessonTurns(){return LESSONS[lessonIndex].aside.split('\n');}
  function enterLessonPage(){lessonAt=world.time;lastReveal=-1;responseIndex=0;boardExpanded=false;lessonKey=`${lessonIndex}:${pageIndex}:${lessonAt}`;}
  function keepPosition(action,value){const y=panel.scrollTop;render();panel.scrollTop=y;const node=[...root.querySelectorAll('[data-action]')].find(n=>n.dataset.action===action&&n.dataset.value===value);node?.focus({preventScroll:true});}
@@ -73,9 +116,9 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{}})
   }catch(e){if(e.name!=='AbortError')throw e;}finally{busy=false;root.removeAttribute('aria-busy');}
  }
  function render(){
-  content.replaceChildren();nav.replaceChildren();preferences();boardCaption.hidden=true;
-  title.textContent=route==='rooms'||route==='warning'?'二周目 · 樓上請':['classroom','lesson'].includes(route)?'二樓左室 · 笑點解析小教室':'二樓右室 · 理賠中心';
-  if(route!=='warning'&&route!=='rooms')button(nav,'選房','rooms');button(nav,'返回街景','close');
+  content.replaceChildren();nav.replaceChildren();preferences();renderClassControls();boardCaption.hidden=true;
+  title.textContent=route==='rooms'||route==='warning'?'二周目 · 樓上請':isClassRoute()?'二樓左室 · 笑點解析小教室':'二樓右室 · 理賠中心';
+  if(isClassRoute())button(nav,'☰ 選單','class-menu');else{if(route!=='warning'&&route!=='rooms')button(nav,'選房','rooms');button(nav,'返回街景','close');}
   if(route==='warning'){
    heading('課後時間','這裡會把包袱拆開來講。','包含完整劇情與結尾解析。還沒看完主線的話，可以先回去吃晚餐。');button(content,'知道了，樓上請','confirm',undefined,'bonus-primary');return;
   }
@@ -85,8 +128,9 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{}})
    for(const [name,action,desc,number]of [['笑點解析小教室','classroom','龍泡泡授課。八堂解析，附笑點死亡證明。','01 / 左室'],['事故調查暨理賠中心','claims','同一案件，兩種玩法。先試辦，再決定要怎麼辦。','02 / 右室']]){const card=E('article','bonus-card');card.append(E('small','',number),E('h3','',name),E('p','',desc));button(card,'進入 →',action);cards.append(card);}return;
   }
   if(route==='classroom'){
-   ensureRoom().board();room.setFocus('wide');heading('龍泡泡主講 · 可自由選課','笑點解析小教室','解釋笑話就像解剖青蛙。你會更了解牠，但青蛙死了。');
-   const list=E('div','bonus-lessons');content.append(list);LESSONS.forEach((l,i)=>{const b=button(list,`${String(i+1).padStart(2,'0')}  ${l.title}${progress.data.read.includes(l.id)?' · 已讀':''}`,'lesson',String(i));b.setAttribute('aria-label',l.title);});return;
+   ensureRoom().board('笑點解析小教室',CLASS_MOTTO,Math.max(0,1-course.percentage/100),world.time,false,'welcome');room.setFocus('wide');room.perform('explain');
+   heading('龍泡泡主講 · 輕鬆聽三篇','笑點解析小教室',course.stamped?'上次的死亡證明還有效。想繼續看，再按下方就好。':'解釋笑話就像解剖青蛙。看滿三篇就能結業，其餘自由看。');
+   content.append(E('p','bonus-description','拇指留在下方，按「繼續」就能一路聽完。選篇、字級和出處都收在右上選單。'));return;
   }
   if(route==='lesson'){
    const l=LESSONS[lessonIndex],last=l.analysis.length+1,turns=lessonTurns(),reaction=pageIndex===last;
@@ -95,14 +139,18 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{}})
    if(pageIndex===0){kicker='原句回顧';text=l.recap;room.setFocus('wide');}
    else if(!reaction){kicker=`逐步解析 ${pageIndex} / ${l.analysis.length}`;text=l.analysis[pageIndex-1];room.setFocus(pageIndex===2?'board':'teacher');}
    else {kicker=`下課前的最後一刀 · ${responseIndex+1} / ${turns.length}`;text=turns[responseIndex];room.setFocus('reaction');}
-   const notes=reaction?[CLASS_MOTTO[2],l.diagnosis]:pageIndex===0?['回顧原句','鋪陳 → 反差 → 回收']: [LESSON_NOTES[l.id][pageIndex-1],`第 ${pageIndex} 刀：${['鋪陳','反差','回收'][pageIndex-1]}`,'笑點仍在搶救中。'];
-   room.board(l.board,notes,Math.max(0,1-pageIndex/last),lessonAt,reaction,lessonKey);
+   const notes=reaction?[l.diagnosis,'繼續解剖，笑點逐漸死亡。']:pageIndex===0?['回顧原句','鋪陳 → 反差 → 回收']: [LESSON_NOTES[l.id][pageIndex-1],`第 ${pageIndex} 刀：${['鋪陳','反差','回收'][pageIndex-1]}`,'笑點仍在搶救中。'];
+   room.board(l.board,notes,Math.max(0,1-course.percentage/100),lessonAt,false,lessonKey);
    room.perform(reaction?(text.startsWith('莊：')?'interrupted':responseIndex===turns.length-1&&lessonIndex===7?'dismissed':'awkward'):'explain');
    content.append(E('p','bonus-section-label',kicker),E('p',reaction?'bonus-reading bonus-spoken':'bonus-reading',text));
-   if(reaction&&responseIndex<turns.length-1)button(content,'聽下一句 →','response-next',undefined,'bonus-primary');
-   const tools=E('div','bonus-tools');content.append(tools);button(tools,'看黑板','board');button(tools,'出處與劇內設定','sources');
-   const pager=E('div','bonus-pager');content.append(pager);const prev=button(pager,'← 上一頁','prev');prev.disabled=pageIndex===0;button(pager,'課程目錄','classroom');const next=button(pager,reaction?'下一堂 →':'下一頁 →',reaction?'next-lesson':'next',undefined,'bonus-primary');next.disabled=reaction&&responseIndex<turns.length-1;if(reaction&&lessonIndex===LESSONS.length-1)next.textContent='下課 · 回目錄';
    syncLesson(world.time);return;
+  }
+  if(route==='class-wait'||route==='class-stamping'){
+   heading('解剖報告 · 正在結業','笑點搶救無效');const label=E('p','bonus-stamp-progress',route==='class-wait'?'解析完成 · 死亡率持續上升':'抬章 · 開立死亡證明');label.setAttribute('role','status');content.append(label);return;
+  }
+  if(route==='class-result'){
+   room.board('笑點已死亡',['手術成功，笑點死亡。','剩下的解析，自由繼續看。'],0,world.time,false,'certificate');room.perform('dismissed');
+   heading('笑點解析小教室 · 結業','手術成功，笑點已死亡');const paper=E('article','bonus-paper');paper.append(E('p','bonus-document-id','死亡證明 · 龍泡泡簽發'),E('h3','','笑點已死亡'),E('p','',`已完成 ${course.completed.length} 篇解剖。死亡率 100%。`),E('p','','死因：講得太清楚。'),E('strong','bonus-stamp','笑點已死亡'));content.append(paper,E('p','bonus-description',course.next()?`莊：可以下課了？\n龍泡泡：可以。剩下 ${LESSONS.length-course.completed.length} 篇，想聽再聽。`:'龍泡泡：全部講完了。連復活的希望也解釋掉了。'));return;
   }
   if(route==='claims'){
    heading('武陵 · 試辦櫃檯','711 雷擊與建物損失案','同一份申請、同一組證據。兩種辦法都能玩，沒有倒數。');
@@ -143,7 +191,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{}})
   }
  }
  function resultRows(){const rows=[];if(trial.mode==='B')for(const f of CLAIM_FIELDS)rows.push(`${f.label}：${f.options.find(o=>o[0]===trial.form[f.id])?.[1]||'未填'}`);else rows.push('核對事項：自然雷擊／主動發射；無損失／建物毀損。');rows.push('證據：申請書、現場發射紀錄、店面前後對照。',...trial.result.reasons);return rows;}
- function modal(titleText){dialogSelection=false;dialogOpener=document.activeElement;dialogScroll=panel.scrollTop;dialog.replaceChildren();const bar=E('div','bonus-dialog-heading');bar.append(E('h3','',titleText));button(bar,'關閉','dialog-close');dialog.append(bar);dialog.showModal();return dialog;}
+ function modal(titleText){dialog.dataset.kind='';dialogKind='';dialogSelection=false;if(!dialog.open){dialogOpener=document.activeElement;dialogScroll=panel.scrollTop;}dialog.replaceChildren();const bar=E('div','bonus-dialog-heading');bar.append(E('h3','',titleText));button(bar,'關閉','dialog-close');dialog.append(bar);if(!dialog.open)dialog.showModal();return dialog;}
  function showEvidence(id){
   const e=EVIDENCE.find(e=>e.id===id);if(!e)return;const d=modal(e.title),comparing=route==='trial'&&trial.mode==='A'&&trial.field;
   d.append(E('p','bonus-reading',e.text),E('small','',e.note));
@@ -171,44 +219,51 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{}})
  }
  function syncLesson(time){
   if(route!=='lesson')return;
-  const l=LESSONS[lessonIndex],reaction=pageIndex===l.analysis.length+1,state=lessonFrame(time-lessonAt,reaction,reducedMotion());
+  const l=LESSONS[lessonIndex],reaction=pageIndex===l.analysis.length+1,state=lessonFrame(time-lessonAt,reaction&&course.eligible,reducedMotion());
   boardCaption.hidden=!(boardExpanded||pageIndex===2||reaction);
   if(state.reveal!==lastReveal){if(lastReveal>=0&&!reducedMotion())playEffect('chalk');lastReveal=state.reveal;}
   const key=`${lessonKey}:${state.reveal}:${state.dead}`;
   if(boardCaption.dataset.key!==key){boardCaption.dataset.key=key;boardCaption.replaceChildren(E('strong','',l.board));
-   const lines=reaction?[state.dead?CLASS_MOTTO[2]:'笑點仍在搶救中。',l.diagnosis]:[pageIndex?LESSON_NOTES[l.id][pageIndex-1]:'鋪陳 → 反差 → 回收','先看關鍵詞，再拆解。'];
+   const lines=reaction?[l.diagnosis,'笑點死亡率逐步上升。']:[pageIndex?LESSON_NOTES[l.id][pageIndex-1]:'鋪陳 → 反差 → 回收','先看關鍵詞，再拆解。'];
    lines.slice(0,state.reveal+1).forEach(line=>boardCaption.append(E('p','',line)));
   }
  }
  function beginStamp(){
   if(route!=='trial'||!trial.result)return;
   if(!stampSequence.start(world.time,reducedMotion()))return;
-  stampPhase='';route='stamping';room.stamp(world.time,trial.result.status);render();focusContent();
+  stampKind='claim';stampPhase='';route='stamping';room.stamp(world.time,trial.result.status);render();focusContent();
  }
  function advanceStamp(time){
-  if(route!=='stamping')return;
+  if(!['stamping','class-stamping'].includes(route))return;
   const beat=stampSequence.advance(time);if(beat.impact)playEffect('stamp');
-  if(beat.phase!==stampPhase){stampPhase=beat.phase;const label=content.querySelector('.bonus-stamp-progress');if(label)label.textContent={lifting:'抬章 · 核對紀錄',impact:'落印 · '+trial.result.status,printing:'出單 · 附上現場紀錄',complete:'出單完成'}[beat.phase]||'處理中';}
-  if(beat.done){progress.mark('finished',trial.mode);route='result';render();focusContent();}
+  if(beat.phase!==stampPhase){stampPhase=beat.phase;const label=content.querySelector('.bonus-stamp-progress');if(label)label.textContent={lifting:stampKind==='class'?'抬章 · 確認死亡':'抬章 · 核對紀錄',impact:'落印 · '+(stampKind==='class'?'笑點已死亡':trial.result.status),printing:stampKind==='class'?'開立笑點死亡證明':'出單 · 附上現場紀錄',complete:'出單完成'}[beat.phase]||'處理中';}
+  if(beat.done){if(stampKind==='class'){course.certify();persistCourse();route='class-result';render();classPrimary.focus({preventScroll:true});}else{progress.mark('finished',trial.mode);route='result';render();focusContent();}}
  }
  async function dispatch(action,value){
   if(busy||disposed)return;
-  if(route==='stamping'&&!['close','reading','text-size'].includes(action))return;
+  if(['stamping','class-stamping','class-wait'].includes(route)&&!['close','reading','text-size','class-menu','class-rooms'].includes(action))return;
   switch(action){
-   case 'reading':progress.data.reading=!progress.data.reading;progress.save();preferences();toolbar.querySelector('[data-action=reading]')?.focus({preventScroll:true});return;
-   case 'text-size':progress.data.textSize={18:22,22:26,26:18}[progress.data.textSize];progress.save();preferences();toolbar.querySelector('[data-action=text-size]')?.focus({preventScroll:true});return;
+   case 'class-next':advanceClass();return;
+   case 'class-menu':showClassMenu();return;
+   case 'class-certificate':if(!course.stamped)return;dialog.close();route='class-result';render();classPrimary.focus({preventScroll:true});return;
+   case 'class-rooms':dialog.close();await travel('rooms');return;
+   case 'class-continue':if(!course.next())return;selectLesson(course.next(),true);render();panel.scrollTop=0;classPrimary.focus({preventScroll:true});return;
+   case 'class-reset':course.steps={};course.stamped=false;persistCourse();deathMeter.reset(world.time);dialog.close();route='classroom';room.resetPaper();render();classPrimary.focus({preventScroll:true});return;
+   case 'lesson-id':dialog.close();selectLesson(value);render();panel.scrollTop=0;classPrimary.focus({preventScroll:true});return;
+   case 'reading':progress.data.reading=!progress.data.reading;progress.save();preferences();if(dialogKind==='class-menu'){showClassMenu();dialog.querySelector('[data-action=reading]')?.focus({preventScroll:true});}else toolbar.querySelector('[data-action=reading]')?.focus({preventScroll:true});return;
+   case 'text-size':progress.data.textSize={18:22,22:26,26:18}[progress.data.textSize];progress.save();preferences();if(dialogKind==='class-menu'){showClassMenu();dialog.querySelector('[data-action=text-size]')?.focus({preventScroll:true});}else toolbar.querySelector('[data-action=text-size]')?.focus({preventScroll:true});return;
    case 'open':open();return;
    case 'close':close();return;
    case 'confirm':progress.data.warned=true;progress.save();route='rooms';break;
    case 'rooms':await travel('rooms');return;
    case 'classroom':if(route==='lesson'){route='classroom';break;}await travel('classroom');return;
-   case 'claims':if(['trial','stamping','result'].includes(route)){route='claims';break;}await travel('claims');return;
+   case 'claims':if(['trial','stamping','result','class-wait','class-stamping','class-result'].includes(route)){route='claims';break;}await travel('claims');return;
    case 'lesson':lessonIndex=Number(value);if(!LESSONS[lessonIndex])return;pageIndex=0;route='lesson';enterLessonPage();break;
    case 'next':pageIndex=Math.min(LESSONS[lessonIndex].analysis.length+1,pageIndex+1);enterLessonPage();break;
-   case 'prev':pageIndex=Math.max(0,pageIndex-1);enterLessonPage();break;
+   case 'prev':dialog.close();if(pageIndex===4&&responseIndex>0)responseIndex--;else{pageIndex=Math.max(0,pageIndex-1);enterLessonPage();}break;
    case 'response-next':responseIndex=Math.min(lessonTurns().length-1,responseIndex+1);if(responseIndex===lessonTurns().length-1)progress.mark('read',LESSONS[lessonIndex].id);break;
    case 'next-lesson':if(responseIndex<lessonTurns().length-1)return;if(lessonIndex===LESSONS.length-1)route='classroom';else{lessonIndex++;pageIndex=0;enterLessonPage();}break;
-   case 'board':boardExpanded=true;progress.data.reading=false;progress.save();preferences();room.setFocus('board');syncLesson(world.time);return;
+   case 'board':dialog.close();boardExpanded=true;progress.data.reading=false;progress.save();preferences();room.setFocus('board');syncLesson(world.time);return;
    case 'sources':showSources();return;
    case 'dialog-close':dialog.close();return;
    case 'evidence':showEvidence(value);return;
@@ -231,10 +286,10 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{}})
  dialog.addEventListener('close',()=>{if(dialogSelection){dialogSelection=false;return;}panel.scrollTop=dialogScroll;if(dialogOpener?.isConnected)dialogOpener.focus({preventScroll:true});},{signal:events.signal});
  dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close();},{signal:events.signal});
  root.addEventListener('keydown',e=>{if(!active)return;if(e.key==='Escape'&&!dialog.open){e.preventDefault();close();}if(e.key==='Tab'&&!dialog.open){const nodes=[...root.querySelectorAll('button,a[href]')].filter(n=>!n.disabled&&n.getClientRects().length);if(!nodes.length)return;const first=nodes[0],last=nodes.at(-1);if(e.shiftKey&&(document.activeElement===first||document.activeElement===content)){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}},{signal:events.signal});
- const api={get active(){return active;},get state(){return {active,route,busy,lesson:LESSONS[lessonIndex].id,page:pageIndex,response:responseIndex,room:room?.state||null,presentation:lessonFrame(world.time-lessonAt,pageIndex===LESSONS[lessonIndex].analysis.length+1,reducedMotion()),stampPhase,taps:progress.taps,...structuredClone(progress.data),trial:{mode:trial.mode,found:[...trial.found],errors:trial.errors,clue:trial.clue,proofs:structuredClone(trial.proofs),form:{...trial.form},result:trial.result?structuredClone(trial.result):null}};},
+ const api={get active(){return active;},get state(){return {active,route,busy,lesson:LESSONS[lessonIndex].id,page:pageIndex,response:responseIndex,room:room?.state||null,presentation:lessonFrame(world.time-lessonAt,course.eligible,reducedMotion()),stampPhase,taps:progress.taps,...structuredClone(progress.data),course:{...course.saved,completed:course.completed,percentage:course.percentage,display:deathMeter.value(world.time)},trial:{mode:trial.mode,found:[...trial.found],errors:trial.errors,clue:trial.clue,proofs:structuredClone(trial.proofs),form:{...trial.form},result:trial.result?structuredClone(trial.result):null}};},
   handleTap(ray){if(active)return true;const allowed=['ready','complete'].includes(mission.state.phase);if(!allowed){progress.tap(false,mission.state.phase);return false;}const sign=pickBonusSign(world,ray);if(progress.tap(sign,mission.state.phase)){notice('龍泡泡：樓上還沒下班。');mount.classList.add('bonus-unlocked');const flash=world.container.animate([{filter:'brightness(1)'},{filter:'brightness(1.7)'},{filter:'brightness(1)'}],{duration:320});flash.onfinish=()=>mount.classList.remove('bonus-unlocked');updateEntry();}return sign;},
   update(){if(!['ready','complete'].includes(mission.state.phase))progress.taps=0;updateEntry();},
-  tick(time,render=true){advanceStamp(time);syncLesson(time);if(!render)return;world.renderer.info.reset();if(['classroom','lesson','claims','trial','stamping','result'].includes(route)){ensureRoom().render(world.renderer,time,world.container.clientWidth,world.container.clientHeight);}else world.composer.render();world.renderCount++;},
+  tick(time,render=true){syncClass(time);advanceStamp(time);syncLesson(time);if(!render)return;world.renderer.info.reset();if(['classroom','lesson','claims','trial','stamping','result','class-wait','class-stamping','class-result'].includes(route)){ensureRoom().render(world.renderer,time,world.container.clientWidth,world.container.clientHeight);}else world.composer.render();world.renderCount++;},
   dispose(){disposed=true;transitionAnimation?.cancel();toast.getAnimations().forEach(a=>a.cancel());dialog.close();events.abort();if(active){busy=false;close();}room?.dispose();if(exportUrl)URL.revokeObjectURL(exportUrl);root.remove();entry.remove();toast.remove();}};
  world.bonus=api;updateEntry();return api;
 }

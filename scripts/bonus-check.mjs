@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
-import {lessonFrame,StampSequence} from '../src/bonus-presentation.js';
-import {BonusProgress,ClaimTrial,CLAIM_FIELDS,LESSONS,LESSON_NOTES,claimResult} from '../src/bonus-data.js';
+import {lessonFrame,StampSequence,SmoothMeter} from '../src/bonus-presentation.js';
+import {BonusProgress,ClaimTrial,CLAIM_FIELDS,LESSONS,LESSON_NOTES,claimResult,ClassCourse,lessonCardCount,CLASS_REQUIRED} from '../src/bonus-data.js';
 let checks=0;const check=(actual,expected)=>{assert.deepEqual(actual,expected);checks++;};
 const values=new Map(),storage={getItem:k=>values.get(k),setItem:(k,v)=>values.set(k,v)};
 const p=new BonusProgress(storage);
@@ -26,4 +26,13 @@ for(const [cause]of CLAIM_FIELDS[0].options)for(const [responsibility]of CLAIM_F
 check(accepted,1);check(claimResult({cause:'invalid',responsibility:'zhuang',loss:'building'}),null);
 check(LESSONS.length,8);check(new Set(LESSONS.map(l=>l.id)).size,8);
 for(const l of LESSONS){check(l.analysis.length,3);check(LESSON_NOTES[l.id].length,3);check(l.analysis.every(s=>s.length>=60),true);check(l.recap.includes('undefined'),false);for(const source of l.sources)check(new URL(source.url).protocol,'https:');}
+check(CLASS_REQUIRED,3);const course=new ClassCourse();check(course.percentage,0);check(course.certify(),false);check(course.confirm('cargo',-1),false);check(course.confirm('bad',0),false);
+course.confirm('cargo',0);const first=course.percentage;check(first>0,true);course.confirm('cargo',0);check(course.percentage,first);check(course.completed.length,0);
+for(const l of LESSONS.slice(0,2)){for(let i=0;i<lessonCardCount(l.id);i++)course.confirm(l.id,i);}check(course.completed.length,2);check(course.eligible,false);check(course.percentage<100,true);
+// Several half-read topics cannot replace the required third complete topic.
+for(const l of LESSONS.slice(2,6))course.confirm(l.id,1);check(course.eligible,false);check(course.percentage<100,true);
+for(let i=0;i<lessonCardCount('pear');i++)course.confirm('pear',i);check(course.eligible,true);check(course.percentage,100);check(course.certify(),true);check(new ClassCourse(course.saved).stamped,true);check(new ClassCourse(course.saved).completed.length,3);
+course.confirm('login',lessonCardCount('login')-1);check(course.percentage,100);check(course.completed.length,4);
+const badCourse=new ClassCourse({steps:{cargo:-2,bogus:99},stamped:true});check(badCourse.percentage,0);check(badCourse.stamped,false);
+const meter=new SmoothMeter();meter.set(100,0);check(meter.value(0),0);check(meter.value(.5)>0&&meter.value(.5)<100,true);const halfway=meter.value(.5);meter.set(100,.5);check(meter.value(.5),halfway);check(meter.value(1.2),100);meter.reset(5);check(meter.value(5),0);meter.set(60,5,true);check(meter.value(5),60);
 console.log(`Bonus: ${checks} checks passed (including all 18 claim combinations).`);

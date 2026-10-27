@@ -12,6 +12,7 @@
         "lesson": "cargo",
         "page": 0,
         "response": 0,
+        "room": null,
         "presentation": {
           "reveal": 2,
           "dead": false,
@@ -26,6 +27,13 @@
         "preference": "",
         "reading": false,
         "textSize": 18,
+        "course": {
+          "steps": {},
+          "stamped": false,
+          "completed": [],
+          "percentage": 0,
+          "display": 0
+        },
         "trial": {
           "mode": "A",
           "found": [],
@@ -53,22 +61,152 @@
       "detail": null
     },
     {
-      "name": "Lesson 1 opens",
+      "name": "Only menu and one primary control are visible",
       "passed": true,
       "detail": null
     },
     {
-      "name": "Lesson 1 waits for reaction input",
+      "name": "Primary stays at the same position",
       "passed": true,
       "detail": null
     },
     {
-      "name": "Lesson 1 read recorded",
+      "name": "Primary stays at the same position",
       "passed": true,
       "detail": null
     },
     {
-      "name": "Source dialog opens",
+      "name": "Primary stays at the same position",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Primary stays at the same position",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Primary stays at the same position",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Primary stays at the same position",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Primary stays at the same position",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Primary stays at the same position",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Primary stays at the same position",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Primary stays at the same position",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Primary stays at the same position",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Primary stays at the same position",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Primary stays at the same position",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Primary stays at the same position",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Primary stays at the same position",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Primary stays at the same position",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Primary stays at the same position",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Primary stays at the same position",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Three topics are sufficient",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Remaining topics are optional",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Death meter reaches target before ceremony",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Meter animates instead of jumping to 100",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Meter advances gradually",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Meter completion starts the stamp ceremony",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Death certificate is stamped",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Finish stays at same thumb target",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Continue opens remaining topics",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Extra topic does not force another ceremony",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Sources are available in overflow menu",
       "passed": true,
       "detail": null
     },
@@ -84,111 +222,6 @@
     },
     {
       "name": "Large text does not overflow page",
-      "passed": true,
-      "detail": null
-    },
-    {
-      "name": "Lesson 2 opens",
-      "passed": true,
-      "detail": null
-    },
-    {
-      "name": "Lesson 2 waits for reaction input",
-      "passed": true,
-      "detail": null
-    },
-    {
-      "name": "Lesson 2 read recorded",
-      "passed": true,
-      "detail": null
-    },
-    {
-      "name": "Lesson 3 opens",
-      "passed": true,
-      "detail": null
-    },
-    {
-      "name": "Lesson 3 waits for reaction input",
-      "passed": true,
-      "detail": null
-    },
-    {
-      "name": "Lesson 3 read recorded",
-      "passed": true,
-      "detail": null
-    },
-    {
-      "name": "Lesson 4 opens",
-      "passed": true,
-      "detail": null
-    },
-    {
-      "name": "Lesson 4 waits for reaction input",
-      "passed": true,
-      "detail": null
-    },
-    {
-      "name": "Lesson 4 read recorded",
-      "passed": true,
-      "detail": null
-    },
-    {
-      "name": "Lesson 5 opens",
-      "passed": true,
-      "detail": null
-    },
-    {
-      "name": "Lesson 5 waits for reaction input",
-      "passed": true,
-      "detail": null
-    },
-    {
-      "name": "Lesson 5 read recorded",
-      "passed": true,
-      "detail": null
-    },
-    {
-      "name": "Lesson 6 opens",
-      "passed": true,
-      "detail": null
-    },
-    {
-      "name": "Lesson 6 waits for reaction input",
-      "passed": true,
-      "detail": null
-    },
-    {
-      "name": "Lesson 6 read recorded",
-      "passed": true,
-      "detail": null
-    },
-    {
-      "name": "Lesson 7 opens",
-      "passed": true,
-      "detail": null
-    },
-    {
-      "name": "Lesson 7 waits for reaction input",
-      "passed": true,
-      "detail": null
-    },
-    {
-      "name": "Lesson 7 read recorded",
-      "passed": true,
-      "detail": null
-    },
-    {
-      "name": "Lesson 8 opens",
-      "passed": true,
-      "detail": null
-    },
-    {
-      "name": "Lesson 8 waits for reaction input",
-      "passed": true,
-      "detail": null
-    },
-    {
-      "name": "Lesson 8 read recorded",
       "passed": true,
       "detail": null
     },
@@ -313,7 +346,17 @@
       "detail": null
     },
     {
+      "name": "New case starts with unstamped paper",
+      "passed": true,
+      "detail": null
+    },
+    {
       "name": "Normal stamp holds before impact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Ink appears at stamp impact",
       "passed": true,
       "detail": null
     },
