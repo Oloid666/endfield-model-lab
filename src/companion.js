@@ -48,6 +48,7 @@ export function buildDragon(r) {
   const flightLines=new T.Group();body.add(flightLines);for(let i=0;i<4;i++){const line=r.mesh(r.geometry('PlaneGeometry',.018,.3+i*.04),r.material('#d9e4cc',{transparent:true,opacity:.65}),flightLines,[(i%2?1:-1)*(.7+Math.floor(i/2)*.12),.55,0]);line.rotation.z=(i%2?1:-1)*.4;}flightLines.visible=false;
   const microphone=new T.Group();body.add(microphone);r.box(microphone,'#26363c',[0,-.1,0],[.045,.22,.045]);r.mesh(r.geometry('SphereGeometry',.075,12,8),r.material('#9ba7a5',{metalness:.7,roughness:.5}),microphone,[0,.05,0]);microphone.name='floating-singing-microphone';microphone.position.set(.34,.55,.72);microphone.visible=false;
   root.traverse(n=>n.userData.hotspot='dragon');
+  const reduced=typeof matchMedia==='function'&&matchMedia('(prefers-reduced-motion: reduce)').matches;
   const state={mood:'normal',action:''};
   return {root,foodMount,hand:arms[1],get state(){return {...state};},update(t,s={}){
     const blink=Math.max(0,1-Math.abs((t+.7)%4.3-.15)/.11);
@@ -99,5 +100,15 @@ export function buildDragon(r) {
       for(let i=0;i<feet.length;i++){feet[i].position.y=.23;feet[i].position.z=.04;feet[i].rotation.x=-.3;}
       tail.rotation.x=-.76;tail.rotation.z=0;
     }
+    // Singing owns the final pose, including when the dragon is stuck in rubble.
+    if(s.singing){
+      const beat=reduced?0:Math.sin(t*2)*.025;
+      arms[0].position.set(-.59,.46,.12);arms[0].rotation.z=-.12;
+      arms[1].position.set(.62,.69,.22);arms[1].rotation.z=.32+beat;
+      body.rotation.set(0,0,beat);body.scale.set(1,1,1);
+      microphone.position.set(.18,.46+beat*.4,.79);
+      material.map=maps[Math.sin(t*5)>0?3:0];state.mood='singing';
+    }
+    state.singing=!!s.singing;state.hand=arms[1].position.toArray();state.microphone=microphone.position.toArray();
   },dispose(){root.removeFromParent();}};
 }

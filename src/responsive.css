@@ -43,3 +43,10 @@
    out of the transparent loading scene until both gates have completed. */
 #app.is-loading:has(#loading:not(.compact)) > :not(#scene):not(#loading):not(.masthead):not(#error){visibility:hidden!important}
 #app.is-loading:has(#loading:not(.compact)) #menu-toggle{visibility:hidden}
+
+/* Safe touch targets and keyboard focus across story and postgame controls. */
+.mission-shell button,.bonus-ui button,.epilogue-prompt button,.mission-completed button{min-height:48px;touch-action:manipulation}
+button:focus-visible,select:focus-visible{outline:3px solid #e7d39a;outline-offset:3px}
+#app[data-story-phase="heat-demo"] .mission-panel{max-height:36dvh;overflow:auto}
+#app.epilogue-pending .mission-completed{display:none}
+@media (orientation:landscape) and (max-height:500px){.epilogue-prompt{max-height:42dvh;overflow:auto}.mission-panel{max-height:42dvh;overflow:auto}}

@@ -179,7 +179,11 @@ export const heatDemoLines=lines('heat_demo',[
   ['dragon','微波爐的？','look'],
   ['system','武陵電網額定輸出。','look'],
   ['dragon','單位看一下啊！','shake'],
-]).map((node,index)=>({...node,at:index*1.2}));
+]).map((node,index)=>({...node,at:index*1.2})).concat([
+  {id:'meal_origin',at:6,speaker:'dragon',text:'剛剛那股電流灌進微波爐，把晚餐電活了。',gesture:'look',event:'meal-born'},
+  {id:'meal_reaction',at:10,speaker:'zhuang',text:'你把晚餐……電活了？',gesture:'look',event:'meal-closeup'},
+  {id:'meal_joke',at:14,speaker:'dragon',text:'至少現在不用我送了。',gesture:'happy',event:'meal-closeup'},
+]);
 export const finalAmmoLines=lines('ammo',[
   ['dragon','不對吧？我現在是彈藥？','shake','shock'],
   ['dragon','等一下，哪裡搞錯了。','look','shock'],

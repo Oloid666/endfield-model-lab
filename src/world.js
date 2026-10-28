@@ -1,5 +1,6 @@
 import {buildInvestigationProps} from './investigation-props.js';
 import * as T from 'three';
+import {AdaptiveQuality} from './adaptive-quality.js';
 import {CameraSafety} from './camera-safety.js';
 import {PhotoCamera} from './photo-camera.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
@@ -29,7 +30,7 @@ import { ShaderWarmup } from './shader-warmup.js';
 
 export class World {
   constructor(container,{onContextLost,onContextRestored,onManual,onFraming=()=>{},onZone=()=>{},renderer=null}) {
-    this.onFraming=onFraming;this.r=new Resources();this.container=container;this.quality='balanced';this.time=0;this.disposed=false;this.renderCount=0;this.charactersEnabled=true;this.autoCamera=true;
+    this.onFraming=onFraming;this.r=new Resources();this.container=container;this.quality='balanced';this.qualityMode='auto';this.adaptiveQuality=new AdaptiveQuality();this.time=0;this.disposed=false;this.renderCount=0;this.charactersEnabled=true;this.autoCamera=true;
     this.scene=new T.Scene();this.scene.background=new T.Color('#080f1d');this.scene.fog=new T.FogExp2('#101a2c',.009);
     this.camera=new T.PerspectiveCamera(37,1,.04,100);this.onTick=()=>{};this.manualUntil=0;
     this.renderer=renderer||new T.WebGLRenderer({antialias:true,alpha:false,powerPreference:'high-performance'});
@@ -105,7 +106,7 @@ export class World {
     else this.transition={start:this.time,position:this.camera.position.clone(),target:this.controls.target.clone(),endPosition:position,endTarget:target};
     this.controls.update();this.cameraSafety?.sync();const close=this.camera.position.distanceTo(this.controls.target)<(this.camera.aspect<.85?14:11);if(close!==this.closeFraming){this.closeFraming=close;this.onFraming(close);}
   }
-  setQuality(value){if(!config.dpr[value])return;this.quality=value;this.renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,config.dpr[value]));this.composer.setPixelRatio(this.renderer.getPixelRatio());this.msaaSamples=Math.min(this.supportedSamples,value==='low'?2:4);for(const target of [this.opaqueTarget])if(target.samples!==this.msaaSamples){target.samples=this.msaaSamples;target.dispose();}this.bloom.enabled=value!=='low';this.weather.quality(value);this.garden.quality(value);this.siege.quality(value);this.tianshi.quality?.(value);this.microwave.quality?.(value);this.store.glass.uniforms.uRefraction.value=value==='low'?.0012:value==='high'?.005:.003;const size=value==='low'?512:1024;this.store.spill.shadow.mapSize.set(size,size);this.store.spill.shadow.map?.dispose();this.store.spill.shadow.map=null;this.store.spill.shadow.needsUpdate=true;this.resize();}
+  setQuality(value,automatic=false){if(!automatic){this.qualityMode=value;this.adaptiveQuality.reset();}if(value==='auto')value='balanced';if(!config.dpr[value])return;this.quality=value;this.renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,config.dpr[value]));this.composer.setPixelRatio(this.renderer.getPixelRatio());this.msaaSamples=Math.min(this.supportedSamples,value==='low'?2:4);for(const target of [this.opaqueTarget])if(target.samples!==this.msaaSamples){target.samples=this.msaaSamples;target.dispose();}this.bloom.enabled=value!=='low';this.weather.quality(value);this.garden.quality(value);this.siege.quality(value);this.tianshi.quality?.(value);this.microwave.quality?.(value);this.store.glass.uniforms.uRefraction.value=value==='low'?.0012:value==='high'?.005:.003;const size=value==='low'?512:1024;this.store.spill.shadow.mapSize.set(size,size);this.store.spill.shadow.map?.dispose();this.store.spill.shadow.map=null;this.store.spill.shadow.needsUpdate=true;this.resize();}
   setWalking(value){const was=this.walkCamera.enabled;this.walkCamera.setEnabled(value,this.actors?.position);if(was&&!value)this.manualUntil=this.time+14;if(value){this.manualUntil=this.time;this.transition=null;this.currentView=null;this.onManualView();this.weather.invalidateReflection();}}
   prepareShaders(object=this.scene,label='scene'){return this.shaderWarmup.prepare(object,label);}
   resetStoryCamera(){
@@ -189,7 +190,7 @@ export class World {
     if(this.missionState?.phase==='photo')this.photoCamera.apply();else this.controls.update();this.cameraSafety.resolve(this.autoCamera===false&&!this.currentView&&this.missionState?.phase!=='photo',this.store.destruction.state.progress<62);this.camera.lookAt(this.controls.target);if(this.director.cameraRoll)this.camera.rotateZ(this.director.cameraRoll);const close=this.camera.position.distanceTo(this.controls.target)<(this.camera.aspect<.85?14:11);
     if(close!==this.closeFraming){this.closeFraming=close;this.onFraming(close);}
     const presentation=this.missionState?.vcr,damage=presentation?0:this.store.destruction.state.progress;this.weather.setShelter(damage<80,damage<44);
-    const visualTime=this.director.visualTime??sceneTime;this.remnant.update(visualTime,this.missionState);
+    const visualTime=this.director.visualTime??sceneTime;this.remnant.update(visualTime,this.missionState,this.missionState?.postgame?this.actors?.heelCenter:null);
     this.store.glass.uniforms.uTime.value=visualTime;this.wet.update(visualTime);this.weather.update(visualTime);
     if(render){this.renderer.info.reset();this.composer.render();this.renderCount++;
       const phase=this.missionState?.phase,key={energy:'general',last:'mikoto',cargo:'cargo',briefing:'taste',login:'login',heat:'microwave',landing:'insurance'}[phase];this.sceneStills??={};
@@ -202,6 +203,7 @@ export class World {
     this.time+=delta;
     if(this.transition&&!this.bonus?.active){const p=this.transition,w=T.MathUtils.smootherstep(this.time-p.start,0,1.5);this.camera.position.lerpVectors(p.position,p.endPosition,w);this.controls.target.lerpVectors(p.target,p.endTarget,w);if(w===1)this.transition=null;}
     this.tick(this.time,Math.min(delta,.08));
+    const next=this.adaptiveQuality.sample(delta,this.qualityMode==='auto'&&!this.loadingPresentation&&!this.capturingPhoto&&!this.missionState?.paused&&!document.hidden,this.quality);if(next)this.setQuality(next,true);
   });}
   stop(){this.renderer.setAnimationLoop(null);this.previous=undefined;this.running=false;this.onClockState?.(false);}
   dispose(){if(this.disposed)return;this.disposed=true;this.stop();this.shaderWarmup.dispose();this.observer.disconnect();document.removeEventListener('visibilitychange',this.visibility);this.controls.removeEventListener('start',this.manual);this.photoCamera.dispose();this.controls.dispose();this.renderer.domElement.removeEventListener('webglcontextlost',this.contextLost);this.renderer.domElement.removeEventListener('webglcontextrestored',this.contextRestored);this.actors?.dispose();this.xaihi?.dispose();this.siege.dispose();this.garden.root.removeFromParent();this.tianshi.root.removeFromParent();this.microwave.root.removeFromParent();this.connectionStage.root.removeFromParent();this.store.spill.shadow.dispose();this.weather.dispose();for(const pass of this.composer.passes)pass.dispose?.();this.composer.dispose();this.r.dispose();this.renderer.dispose();this.renderer.domElement.remove();}

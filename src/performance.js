@@ -150,7 +150,7 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
       const stride=Math.sin(motion.phase),breathe=Math.sin(t*1.17)*.007+Math.sin(t*.53)*.003;
       if(pelvis){pelvis.bone.position.copy(pelvis.rest).addScaledVector(shiftAxis,idle.shift*.009*(1-walk)).addScaledVector(downAxis,idle.shift*.002+walk*(.012+.008*Math.cos(motion.phase*2)));pose('pelvis',walk*.012,walk*stride*.014,idle.shift*.009*(1-walk)+walk*stride*.012);}
       pose('spine',breathe-exhale*.022-phoneLook*.045+walk*.018,-goods*.035-walk*Math.sin(motion.phase-.15)*.022,-idle.shift*.004+walk*Math.sin(motion.phase-.35)*.004);
-      pose('head',.015+(sceneAction.photoLook?.12:0)+attention*.17+nod*.065-rain*.065+phoneLook*.12,-attention*.35-goods*.25+rain*.15+shake*.12,-player*.025+Math.sin(t*.27)*.008);
+      pose('head',.015+(sceneAction.mealLook?.24:0)+(sceneAction.photoLook?.12:0)+attention*.17+nod*.065-rain*.065+phoneLook*.12,-attention*.35-goods*.25+rain*.15+shake*.12,-player*.025+Math.sin(t*.27)*.008);
       const sway=Math.sin(t*.63)*.012,freeLeft=(1-hold*.94)*(1-sleeve*.75),freeRight=(1-phoneLook*.94)*(1-wave*.9)*(1-point*.8);
       const shoulderL=relax('shoulderL',walk*(-stride*.085+Math.sin(motion.phase*.5-.4)*.008)*freeLeft,8,delta);
       const shoulderR=relax('shoulderR',walk*(Math.sin(motion.phase+.08)*.108+Math.sin(motion.phase*2-.6)*.009)*freeRight,9,delta);
@@ -177,6 +177,18 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
         pose('hipL',.04*launch,0,0);pose('hipR',-.065*launch,0,0);pose('kneeL',-.055*launch);pose('kneeR',-.23*launch);pose('footL',-.08*launch+Math.sin(t*.8)*.02);pose('footR',-.14*launch+Math.cos(t*.7)*.015);
         for(const s of secondary){const phase=s.id*.37,amplitude=s.type==='ribbon'?.055:s.type==='sleeve'?.038:s.type==='hair'?.032:.016;pose(s.key,(Math.sin(t*2-phase)*.6+.4)*amplitude*s.weight*launch+recoil*amplitude*2.8*Math.sin(phase),0,Math.cos(t*1.3-phase)*amplitude*.45*launch+recoil*amplitude*1.6);}
       }
+      if(castActive){
+        const e=cinematic.elapsed,phase=cinematic.phase;
+        const prepare=phase==='aim-final'?T.MathUtils.smootherstep(e,0,1.8):phase==='finisher'?1-T.MathUtils.smootherstep(e,1.5,2):0;
+        const release=phase==='finisher'?T.MathUtils.smootherstep(e,1.65,2)*(1-T.MathUtils.smootherstep(e,2.3,3.1)):0;
+        const settle=phase==='landing'?Math.sin(Math.PI*T.MathUtils.clamp((e-2.3)/.7,0,1))*.16:0;
+        pose('spine',-.025-prepare*.08+release*.1-recoil*.13,prepare*-.12+release*.1,-.018+recoil*.025);
+        pose('armR',.88*launch+prepare*.12-release*.22-recoil*.18,.04-prepare*.1,.9-.58*launch+prepare*.12-release*.12);
+        pose('elbowR',.1+.3*launch+prepare*.35-release*.3+recoil*.38,0,-.05);
+        pose('wristR',-.08-prepare*.07+release*.12,0,0);
+        pose('kneeL',-.055-settle);pose('kneeR',-.23-settle);
+        status.castBeat=prepare>.1?'prepare':release>.1?'release':recoil>.05?'recoil':phase==='landing'?'settle':'hover';
+      }
       root.updateMatrixWorld(true);
       if(landingFeet){settleFeet();landingFeet=false;}
       if(walking&&!castActive){
@@ -186,7 +198,7 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
       }else if(!castActive){pivot.getWorldQuaternion(rootQuaternion);for(const leg of feet){leg.target.copy(leg.local);pivot.localToWorld(leg.target);leg.orientation.copy(rootQuaternion).multiply(leg.localOrientation);}}
       if(!castActive)pinFeet();status.footDrift=0;if(!castActive)for(const leg of feet)if(leg.foot)status.footDrift=Math.max(status.footDrift,leg.foot.getWorldPosition(footPosition).distanceTo(leg.target));lastWalking=walking;
       const companion=follower.update(delta,t);
-      idle.dragon=attention;idle.rain=rain;idle.nod=Math.max(idle.nod,gest('happy'));idle.walk=companion.walk;idle.walkPhase=companion.phase;idle.lookYaw=companion.lookYaw;idle.lookPitch=companion.lookPitch;idle.followerMode=companion.mode;idle.glance=companion.glance;idle.gesture=status.gesture;idle.gestureAmount=g;idle.holding=!!dinner;idle.gestureAmount=sceneAction.photoLook?0:g;idle.action=companionAction;idle.projectile=projectileActive&&['aim-final','finisher','landing','tour','complete'].includes(cinematic.phase)&&!['key','lever'].includes(companionAction.kind);idle.phoneHold=sceneAction.photoLook;idle.allowIdleEmote=sceneAction.playful&&!castActive;idle.singing=sceneAction.singing;idle.reaction=reaction&&t-reaction.at<2?{...reaction,age:t-reaction.at}:null;dragon.update(t,idle);status.companionExpression=dragon.state.mood;
+      idle.dragon=attention;idle.rain=rain;idle.nod=Math.max(idle.nod,gest('happy'));idle.walk=companion.walk;idle.walkPhase=companion.phase;idle.lookYaw=companion.lookYaw;idle.lookPitch=companion.lookPitch;idle.followerMode=companion.mode;idle.glance=companion.glance;idle.gesture=status.gesture;idle.gestureAmount=g;idle.holding=!!dinner;idle.gestureAmount=sceneAction.photoLook?0:g;idle.action=companionAction;idle.projectile=!sceneAction.homecoming&&projectileActive&&['aim-final','finisher','landing','tour','complete'].includes(cinematic.phase)&&!['key','lever'].includes(companionAction.kind);idle.phoneHold=sceneAction.photoLook;idle.allowIdleEmote=sceneAction.playful&&!castActive;idle.singing=sceneAction.singing;idle.reaction=reaction&&t-reaction.at<2?{...reaction,age:t-reaction.at}:null;dragon.update(t,idle);status.companionExpression=dragon.state.mood;
       dragonWorldPosition.copy(projectileActive?projectileWorld:heroWorld.fromArray(companion.position));root.worldToLocal(dragonWorldPosition);dragon.root.position.copy(dragonWorldPosition);status.dragonHeading=dragonHeading;dragon.root.rotation.set(sceneAction.photoLook?.25:projectileActive?-.08:0,projectileActive?dragonHeading:companion.heading,projectileActive?projectileRoll:0);dragon.root.scale.set(.59,idle.projectile?.55:.59,.59);
       meal.mount.visible=sceneAction.mealVisible!==false&&Boolean(dinner)&&(!castActive||['aim-final','finisher','landing'].includes(cinematic.phase));dragonMeal.mount.visible=Boolean(dinner)&&!projectileActive;
       shadows[0].position.set(0,.006-(castActive?.116*launch:0),.04+forward);shadows[0].scale.set(.7+lift*.07,.48+lift*.045,1);

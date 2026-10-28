@@ -6,7 +6,7 @@ export const METER_PERIOD=METER_TRAVEL*2;
 export const CHARGE_DURATION=30;
 export const SHOE_ORBIT_DURATION=8;
 export const REWIND_DURATION=10;
-export const HEAT_DEMO_DURATION=6;
+export const HEAT_DEMO_DURATION=18;
 export const RETURN_DURATION=3;
 export const TOUR_DURATION=34;
 export const LANDING_DURATION=sequences.landing.length*3;
@@ -45,7 +45,7 @@ export class MissionMachine{
     this.resetInteraction();
   }
   resetInteraction(){
-    this.flightStableAt=null;this.failures={};this.seenHeatFailures=0;this.flight=null;this.loginAside='';this.asideCounts={};this.investigation=null;this.photoTaken=false;this.hackTurns=[1,2,3,1];this.hackMoves=0;this.hackFailures=0;this.rhythm=new RhythmHeat();
+    this.postgame=false;this.homecomingAt=null;this.homecomingSpoken=false;this.flightStableAt=null;this.failures={};this.seenHeatFailures=0;this.flight=null;this.loginAside='';this.asideCounts={};this.investigation=null;this.photoTaken=false;this.hackTurns=[1,2,3,1];this.hackMoves=0;this.hackFailures=0;this.rhythm=new RhythmHeat();
     this.connection={field:'account',account:'',password:'',lastKey:'',keyAt:-Infinity,keyNumber:0,error:'',verified:false,lever:0};
 
   }
@@ -88,6 +88,11 @@ export class MissionMachine{
     this.chatDeck=[];this.lastChat=-1;this.chatCounts={};this.cooldowns={};this.lastHotspot=-Infinity;this.quietUntil=Infinity;this.target=this.targets[0]?.id??null;
     this.hooks.onDinner?.(null);this.sequence('intro',sequences.intro);return true;
   }
+  returnToStreet(){
+    if(this.postgame)return false;
+    this.postgame=true;this.homecomingAt=this.time;this.homecomingSpoken=false;
+    this.phaseTo('complete');this.quietUntil=Infinity;return true;
+  }
   replay(){this.start();return true;}
   setTargets(targets){this.targets=Array.isArray(targets)?targets.map((v,i)=>({id:v.id??i,label:v.label||`目標 ${i+1}`,position:v.position})):[];this.target=this.targets[0]?.id??null;this.emit();}
   selectTarget(id){
@@ -103,7 +108,7 @@ export class MissionMachine{
     else if(this.phase==='briefing')this.phaseTo('terminal-deploy');
     else if(this.phase==='energy')this.phaseTo('rewind');
     else if(this.phase==='flashback')this.phaseTo('hack');
-    else if(this.phase==='credentials')this.phaseTo('heat');
+    else if(this.phase==='credentials')this.phaseTo('heat-demo');
     else if(this.phase==='photo-talk'){this.flight={x:-2,z:3.25,vx:0,vz:0};this.phaseTo('photo-flight');}
     else if(this.phase==='photo-check')this.phaseTo('photo-review');
     else if(this.phase==='cargo')this.sequence('observation',sequences.observation);
@@ -288,7 +293,7 @@ export class MissionMachine{
       else if(phase==='walk-out'&&elapsed>=5){this.phaseTo('photo-pose',this.entered+5);changed=true;}
       else if(phase==='photo-pose'&&elapsed>=2){this.sequence('photo-talk',sequences.photoTalk);changed=true;}
       else if(phase==='rewind'&&elapsed>=REWIND_DURATION){this.sequence('flashback',sequences.flashback);changed=true;}
-      else if(phase==='heat-demo'&&elapsed>=HEAT_DEMO_DURATION){this.phaseTo('heat',this.entered+HEAT_DEMO_DURATION);changed=true;}
+      else if(phase==='heat-demo'&&elapsed>=HEAT_DEMO_DURATION){this.rhythm.first=false;this.phaseTo('heat',this.entered+HEAT_DEMO_DURATION);changed=true;}
       else if(phase==='return'&&elapsed>=RETURN_DURATION){this.restorePresent();changed=true;}
       else if(phase==='finisher'&&elapsed>=9){this.phaseTo('landing',this.entered+9);changed=true;}
       else if(phase==='landing'&&elapsed>=LANDING_DURATION){this.phaseTo('tour',this.entered+LANDING_DURATION);changed=true;}
@@ -309,7 +314,13 @@ export class MissionMachine{
       if(this.rhythm.revision!==revision){this.action('heat-stop',this.rhythm.status==='burnt'?'burnt':'charged',{forced:this.rhythm.forced});this.emit();}
       if(this.rhythm.status==='won')this.sequence('flashback-end',sequences['flashback-end']);
     }
-    if(this.phase==='complete'&&!this.epiloguePending&&!this.node&&this.time>=this.quietUntil){this.nextChat();return;}
+    if(this.postgame&&!this.homecomingSpoken&&this.time-this.homecomingAt>=17){
+      this.homecomingSpoken=true;this.sequence('complete',[
+        {id:'meal_home',speaker:'dragon',text:'你看，晚餐自己跟來了。',gesture:'look',event:'meal-arrival'},
+        {id:'meal_bag',speaker:'zhuang',text:'……先不准進袋子。',gesture:'look',event:'meal-arrival'}
+      ]);return;
+    }
+    if(this.phase==='complete'&&!this.postgame&&!this.epiloguePending&&!this.node&&this.time>=this.quietUntil){this.nextChat();return;}
     if(this.node){
       const textLength=this.node.text.length,nodeElapsed=this.time-this.nodeEntered;
       const revealed=['charge','captcha','lever','heat-demo','heat','return','aim-final','landing'].includes(this.phase)?textLength:Math.min(textLength,Math.floor(nodeElapsed*30));
@@ -326,7 +337,7 @@ export class MissionMachine{
     const heat=this.rhythm.state(this.time);
     const vcr=vcrPhases.has(this.phase),combatHoldRemaining=Math.max(0,this.attackHoldUntil-this.time),reverse=clamp((elapsed-.4)/(REWIND_DURATION-1));
     const rewindProgress=this.phase==='rewind'?reverse*reverse*(3-2*reverse):0,rewindStage=this.phase!=='rewind'?null:elapsed<.4?'freeze':elapsed>=REWIND_DURATION-.6?'settle':'reverse';
-    return {phase:this.phase,node:this.node,nodeId:this.node?.id||null,nodeElapsed:this.node?Math.max(0,this.time-this.nodeEntered):0,speaker:this.node?.speaker||null,text:this.node?.text||'',revealed:this.revealed,
+    return {postgame:this.postgame,homecomingAt:this.homecomingAt,phase:this.phase,node:this.node,nodeId:this.node?.id||null,nodeElapsed:this.node?Math.max(0,this.time-this.nodeEntered):0,speaker:this.node?.speaker||null,text:this.node?.text||'',revealed:this.revealed,
       branch:this.branch,choices:this.phase==='choice'?dinnerChoices:[],waitingChoice:this.phase==='choice',progress:this.progress,
       energy:Math.max(0,100-this.progress/99*100),charge:this.phase==='charge'?Math.min(100,30+elapsed/CHARGE_DURATION*70):this.phase==='ascent'?Math.min(30,Math.max(0,elapsed-1)*7.5):['director-reminder','shoe-view','pylon-link'].includes(this.phase)?30:preChargePhases.has(this.phase)?0:100,
       meter,meterElapsed:Math.max(0,this.time-this.meterEntered),meterPeriod:settings.period,meterSettings:settings,output:this.output,outputModes,
