@@ -22,7 +22,7 @@ export function createInvestigationUI({mount,machine,capture,onAuto,getAuto,onGu
  const points=new Map();let gestureStart=null;
  const transform=()=>{photoInner.style.transform=`translate(${dx}px,${dy}px) scale(${scale})`;};
  const button=(label,fn,cls='')=>{const b=E('button',cls,label);b.type='button';listen(b,'click',fn);actions.append(b);return b;};
- let capturing=false,pendingCapture=false;async function snapshot(){if(capturing)return;capturing=true;root.setAttribute('aria-busy','true');message.textContent='正在處理清晰遠景與人物近照…';try{const result=await capture();if(machine.phase!=='photo')return;photo=result;scale=1;dx=dy=0;transform();if(machine.paused)pendingCapture=true;else machine.takePhoto();}catch(e){message.textContent=e.message;}finally{capturing=false;root.removeAttribute('aria-busy');}}
+ let capturing=false,pendingCapture=false,captureGeneration=0,disposed=false;async function snapshot(){if(capturing||machine.paused||machine.phase!=='photo')return;const generation=++captureGeneration,entered=machine.entered;capturing=true;root.setAttribute('aria-busy','true');message.textContent='正在處理清晰遠景與人物近照…';try{const result=await capture();if(disposed||generation!==captureGeneration||machine.phase!=='photo'||machine.entered!==entered)return;photo=result;scale=1;dx=dy=0;transform();if(machine.paused)pendingCapture=true;else machine.takePhoto();}catch(e){message.textContent=e.message;}finally{capturing=false;root.removeAttribute('aria-busy');}}
  function inspect(id){if(scale<1.2){message.textContent='先放大照片，再點你想調查的異常。';return;}machine.investigate(id);}
  function build(s){
    buildAbort.abort();buildAbort=new AbortController();building=true;
@@ -58,6 +58,7 @@ export function createInvestigationUI({mount,machine,capture,onAuto,getAuto,onGu
  function update(s){
    if(pendingCapture&&!s.paused&&s.phase==='photo'){pendingCapture=false;machine.takePhoto();return;}
    if(s.phase!=='photo-review'&&viewer.active)viewer.hide();
+   if(s.phase!=='photo'){pendingCapture=false;captureGeneration++;}
    viewer.setPaused(s.paused);
    sourceAnchor=machine.sourceTime;perfAnchor=performance.now();
    auto.textContent='自由觀看 · 點下一句回到演出';auto.hidden=!!getAuto?.()||['photo-flight','photo','photo-review','hack','heat'].includes(s.phase);
@@ -77,5 +78,5 @@ export function createInvestigationUI({mount,machine,capture,onAuto,getAuto,onGu
    }
  }
  listen(window,'blur',()=>{machine.fly(0,0);if(held!==null){held=null;machine.heatCancel();}});
- return {update,get photo(){return photo;},get viewer(){return viewer.state;},snapshot,dispose(){abort.abort();buildAbort.abort();animations.forEach(a=>a.cancel());viewer.dispose();root.remove();auto.remove();}};
+ return {update,get photo(){return photo;},get viewer(){return viewer.state;},snapshot,dispose(){disposed=true;captureGeneration++;abort.abort();buildAbort.abort();animations.forEach(a=>a.cancel());viewer.dispose();root.remove();auto.remove();}};
 }

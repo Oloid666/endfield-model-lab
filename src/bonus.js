@@ -22,7 +22,8 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{}})
  progress.data.unlocked=false;
  let active=false,route='claims',lessonIndex=0,pageIndex=0,room=null,snapshot=null,busy=false,disposed=false,transitionAnimation=null,exportUrl=null,exportBlob=null;
  let responseIndex=0,lessonAt=0,lessonKey='',lastReveal=-1,dialogOpener=null,dialogScroll=0,stampPhase='',stampKind='class',dialogKind='',objectionKey='',objectionAnimation=null;
- let saved=null;
+ let saved=null,claimsLockedUntil=0,claimsControlsKey='';
+ const externallyPaused=()=>document.hidden||mission.pauseReasons.some(reason=>reason!=='bonus');
  let flowStage=saved?.stage||'claims',endingAge=0,whispered=false,answerAt=null,lastEpilogueClock=null,epilogueStep=0,thanksStep=0,skippedRating=false,rebuilt=false;
  const epilogue=E('section','epilogue-prompt');epilogue.hidden=true;const epilogueText=E('p'),epilogueGo=E('button','','繼續');epilogueGo.type='button';epilogue.append(epilogueText,epilogueGo);mount.append(epilogue);
  epilogueGo.addEventListener('click',()=>{if(epilogueStep<2){epilogueStep++;updateEpilogue();}else open(true);},{signal:events.signal});
@@ -47,9 +48,10 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{}})
  function isClassRoute(){return ['classroom','lesson','class-wait','class-stamping','class-result'].includes(route);}
  function isClaimsRoute(){return ['claims','negotiation','settlement-result'].includes(route);}
  function renderClaimsControls(){
+  const key=`${active}:${route}:${negotiation.phase}:${externallyPaused()}:${world.time<claimsLockedUntil}`;if(key===claimsControlsKey)return;claimsControlsKey=key;
   const show=active&&isClaimsRoute();claimsDock.hidden=!show;root.classList.toggle('bonus-claims-flow',show);root.dataset.claimsPhase=route==='claims'?'welcome':negotiation.phase;
-  claimsPrimary.disabled=route==='negotiation'&&['choice','stamp'].includes(negotiation.phase);
-  claimsPrimary.textContent=route==='claims'?'開始調解 →':route==='settlement-result'?'看看隔壁空房':negotiation.phase==='choice'?'請填寫申請單':negotiation.phase==='stamp'?'合作辦理中…':'繼續 →';
+  claimsPrimary.disabled=externallyPaused()||world.time<claimsLockedUntil||route==='negotiation'&&['choice','stamp'].includes(negotiation.phase);
+  claimsPrimary.textContent=world.time<claimsLockedUntil?'承辦反應中…':route==='claims'?'開始調解 →':route==='settlement-result'?'看看隔壁空房':negotiation.phase==='choice'?'請填寫申請單':negotiation.phase==='stamp'?'合作辦理中…':'繼續 →';
  }
  function showClaimsMenu(){
   const d=modal('理賠選單');dialogKind='claims-menu';d.dataset.kind='claims-menu';
@@ -58,12 +60,13 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{}})
   if(route==='settlement-result')button(d,'保存結案圖片','export');
   button(d,'重新調解','claims-reset');button(d,'返回街景','close');
  }
- function resetClaims(){stampSequence.cancel();negotiation.reset();objectionKey='';objectionAnimation?.cancel();objection.hidden=true;room.resetPaper();route='negotiation';render();focusContent();}
+ function resetClaims(){claimsLockedUntil=0;stampSequence.cancel();negotiation.reset();objectionKey='';objectionAnimation?.cancel();objection.hidden=true;room.resetPaper();route='negotiation';render();focusContent();}
  function advanceClaims(){
+  if(world.time<claimsLockedUntil)return;
   if(route==='claims'){resetClaims();return;}
   if(route==='settlement-result'){if(flowStage==='done'){route='final';render();return;}flowStage='class';route='class-invite';render();return;}
   if(route!=='negotiation'||!negotiation.next())return;
-  if(negotiation.phase==='stamp')startSettlementStamp(world.time);
+  if(negotiation.phase==='stamp')startSettlementStamp(world.time);if(negotiation.cue?.event==='policyholder')claimsLockedUntil=world.time+1.5;
   render();panel.scrollTop=0;claimsPrimary.focus({preventScroll:true});
  }
  function presentNegotiation(){
@@ -171,14 +174,14 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{}})
   mission.update(world.time);mission.setPaused(false,'bonus');updateEntry();entry.focus();snapshot=null;
  }
  async function travel(destination){
-  if(busy||disposed)return;stampSequence.cancel();objectionAnimation?.cancel();objection.hidden=true;busy=true;root.setAttribute('aria-busy','true');dialog.close();
+  if(busy||disposed||externallyPaused())return;stampSequence.cancel();objectionAnimation?.cancel();objection.hidden=true;busy=true;root.setAttribute('aria-busy','true');dialog.close();
   const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;let covered=false;if(reduced&&mission.state.phase==='complete'&&!rebuilt){world.store.destruction.reset();rebuilt=true;}
   try{
    // Rewind the ruined storefront visually; restore its logical damage afterward.
    route='exterior';setExterior();title.textContent='倒帶 · 二樓還不能拆';
    if(['claims','street'].includes(destination)&&mission.state.phase==='complete'&&!rebuilt&&!reduced){
     const destruction=world.store.destruction;destruction.beginRewind();
-    try{await new Promise(resolve=>{let elapsed=0,last=performance.now();function frame(now){if(disposed){resolve();return;}if(!document.hidden&&!mission.pauseReasons.includes('background'))elapsed+=Math.min(100,now-last);last=now;const p=Math.min(1,elapsed/6000);destruction.updateRewind(p);const a=p*Math.PI*.35;world.camera.position.set(1+Math.sin(a)*8,6.2+p*2,13-Math.sin(a)*2);world.camera.lookAt(0,3.8,1);world.controls.target.set(0,3.8,1);if(p<1)requestAnimationFrame(frame);else resolve();}requestAnimationFrame(frame);});if(!disposed){const actor=world.actors,from=actor.dragonPosition;await new Promise(resolve=>{let elapsed=0,last=performance.now();function fly(now){if(disposed){resolve();return;}if(!document.hidden&&!mission.pauseReasons.includes('background'))elapsed+=Math.min(100,now-last);last=now;const p=Math.min(1,elapsed/900),q=p*p*(3-2*p);actor.setDragonProjectile([from[0]+(.2-from[0])*q,from[1]+(4.3-from[1])*q+Math.sin(p*Math.PI)*.5,from[2]+(.4-from[2])*q]);actor.update(world.time,.016);if(p<1)requestAnimationFrame(fly);else resolve();}requestAnimationFrame(fly);});transitionAnimation=curtain.animate([{opacity:0},{opacity:1}],{duration:300,fill:'forwards'});await transitionAnimation.finished;covered=true;}}finally{destruction.reset();rebuilt=true;world.weather.invalidateReflection();}
+    try{await new Promise(resolve=>{let elapsed=0,last=performance.now();function frame(now){if(disposed){resolve();return;}if(!externallyPaused())elapsed+=Math.min(100,now-last);last=now;const p=Math.min(1,elapsed/6000);destruction.updateRewind(p);const a=p*Math.PI*.35;world.camera.position.set(1+Math.sin(a)*8,6.2+p*2,13-Math.sin(a)*2);world.camera.lookAt(0,3.8,1);world.controls.target.set(0,3.8,1);if(p<1)requestAnimationFrame(frame);else resolve();}requestAnimationFrame(frame);});if(!disposed){const actor=world.actors,from=actor.dragonPosition;await new Promise(resolve=>{let elapsed=0,last=performance.now();function fly(now){if(disposed){resolve();return;}if(!externallyPaused())elapsed+=Math.min(100,now-last);last=now;const p=Math.min(1,elapsed/900),q=p*p*(3-2*p);actor.setDragonProjectile([from[0]+(.2-from[0])*q,from[1]+(4.3-from[1])*q+Math.sin(p*Math.PI)*.5,from[2]+(.4-from[2])*q]);actor.update(world.time,.016);if(p<1)requestAnimationFrame(fly);else resolve();}requestAnimationFrame(fly);});transitionAnimation=curtain.animate([{opacity:0},{opacity:1}],{duration:300,fill:'forwards'});await transitionAnimation.finished;covered=true;}}finally{destruction.reset();rebuilt=true;world.weather.invalidateReflection();}
    }
    if(!reduced&&!covered){transitionAnimation=curtain.animate([{opacity:0},{opacity:0,offset:.35},{opacity:1}],{duration:650,fill:'forwards'});await transitionAnimation.finished;}
    if(disposed)return;if(destination==='street'){world.store.destruction.reset();rebuilt=true;progress.data.unlocked=false;progress.taps=0;busy=false;close();return;}route=destination;
@@ -294,7 +297,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{}})
   }
  }
  async function dispatch(action,value){
-  if(busy||disposed)return;
+  if(busy||disposed||externallyPaused()&&!['close','dialog-close'].includes(action))return;
   if((['class-stamping','class-wait'].includes(route)||route==='negotiation'&&negotiation.phase==='stamp')&&!['close','reading','text-size','class-menu','claims-menu','class-rooms','claims-reset','dialog-close'].includes(action))return;
   switch(action){
    case 'final-menu':{const d=modal('雨夜選單');button(d,'返回街角','close');if(flowStage==='done'){button(d,'重看笑點課程','review-class');button(d,'重看理賠調解會','review-claims');button(d,'修改評分','rate-again');}return;}
@@ -309,7 +312,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{}})
    case 'claims-menu':showClaimsMenu();return;
    case 'claims-next':advanceClaims();return;
    case 'claims-reset':dialog.close();resetClaims();return;
-   case 'claims-select':if(route!=='negotiation'||!negotiation.select(value))return;render();panel.scrollTop=0;claimsPrimary.focus({preventScroll:true});return;
+   case 'claims-select':if(world.time<claimsLockedUntil||route!=='negotiation'||!negotiation.select(value))return;claimsLockedUntil=world.time+1;render();panel.scrollTop=0;claimsPrimary.focus({preventScroll:true});return;
    case 'class-next':advanceClass();return;
    case 'class-menu':showClassMenu();return;
    case 'class-certificate':if(!course.stamped)return;dialog.close();route='class-result';render();classPrimary.focus({preventScroll:true});return;
@@ -356,7 +359,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{}})
    if(!epilogue.hidden)updateEpilogue();
    updateEntry();
   },
-  tick(time,renderFrame=true){if(document.hidden||mission.pauseReasons.includes('background')){const gap=lastEpilogueClock===null?0:Math.max(0,time-lastEpilogueClock);if(stampSequence.active)stampSequence.at+=gap;lessonAt+=gap;deathMeter.at+=gap;room?.shiftClock(gap);lastEpilogueClock=time;return;}for(const a of root.getAnimations({subtree:true}))if(a._backgroundPaused){a._backgroundPaused=false;a.play();}if(lastEpilogueClock===null)lastEpilogueClock=time;const dt=document.hidden?0:Math.max(0,time-lastEpilogueClock);lastEpilogueClock=time;syncClass(time);advanceStamp(time);syncLesson(time);if(!renderFrame)return;world.renderer.info.reset();if(['classroom','lesson','claims','negotiation','settlement-result','class-wait','class-stamping','class-result','rating','rating-result','final','class-invite'].includes(route)){ensureRoom().render(world.renderer,time,world.container.clientWidth,world.container.clientHeight);}else world.composer.render();world.renderCount++;},
+  tick(time,renderFrame=true){if(externallyPaused()){const gap=lastEpilogueClock===null?0:Math.max(0,time-lastEpilogueClock);if(stampSequence.active)stampSequence.at+=gap;lessonAt+=gap;claimsLockedUntil+=gap;deathMeter.at+=gap;room?.shiftClock(gap);lastEpilogueClock=time;return;}for(const a of root.getAnimations({subtree:true}))if(a._backgroundPaused){a._backgroundPaused=false;a.play();}if(lastEpilogueClock===null)lastEpilogueClock=time;const dt=document.hidden?0:Math.max(0,time-lastEpilogueClock);lastEpilogueClock=time;syncClass(time);advanceStamp(time);syncLesson(time);if(isClaimsRoute())renderClaimsControls();if(!renderFrame)return;world.renderer.info.reset();if(['classroom','lesson','claims','negotiation','settlement-result','class-wait','class-stamping','class-result','rating','rating-result','final','class-invite'].includes(route)){ensureRoom().render(world.renderer,time,world.container.clientWidth,world.container.clientHeight);}else world.composer.render();world.renderCount++;},
   dispose(){disposed=true;transitionAnimation?.cancel();objectionAnimation?.cancel();toast.getAnimations().forEach(a=>a.cancel());dialog.close();events.abort();if(active){busy=false;close();}room?.dispose();if(exportUrl)URL.revokeObjectURL(exportUrl);root.remove();entry.remove();toast.remove();epilogue.remove();}};
  const rebuildButton=button(document.querySelector('#settings'),'好想回到那時候','rebuild-street');rebuildButton.hidden=true;rebuildButton.addEventListener('click',async()=>{const previous=saved;document.querySelector('#menu-close').click();progress.unlock();open(false,true);await travel('street');saved=previous;},{signal:events.signal});const update=api.update;api.update=()=>{update();rebuildButton.hidden=mission.state.phase!=='complete'||rebuilt;};world.bonus=api;updateEntry();return api;
 }

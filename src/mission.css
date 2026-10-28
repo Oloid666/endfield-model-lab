@@ -97,7 +97,7 @@
 /* An overdue frame may report overheat before an earlier release is handled. */
 .mission-heat-hold[aria-disabled=true]{opacity:.46}
 .mission-panel.is-angry .mission-text{font-size:clamp(28px,7vw,38px)!important;font-weight:800;letter-spacing:.06em}
-.mission-shell[data-phase="terminal-deploy"]::after{content:'加密登入系統已展開';position:fixed;left:15%;right:15%;bottom:20%;padding:18px;background:#17383bea;border:1px solid #c7b684;color:#e5d5a6;text-align:center;pointer-events:none}
+.mission-shell[data-phase="terminal-deploy"]::after{content:none}
 .album-receipt{border:12px solid #203c40;border-radius:22px;box-shadow:0 0 0 2px #b9ad83}
 
 .mission-shell[data-phase=complete] .mission-caption{color:#f4e9c7;text-shadow:0 2px 5px #000,0 0 16px #000;font-weight:600}

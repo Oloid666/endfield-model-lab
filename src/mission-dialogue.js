@@ -40,7 +40,7 @@ export const sequences={
     ['zhuang','加班十年，認得這種不讓人睡的光。','exhale'],
   ]),
   cargo:lines('cargo',[
-    ['zhuang','咦，手機跳到上一張了。','phone','calm','album-previous'],
+    ['zhuang','怎麼跳到上一張了？','phone','calm','album-previous'],
     ['dragon','息壤簽收單……一萬噸？','point','calm','receipt-reveal'],
     ['zhuang','小聲一點。','look'],
     ['dragon','品名：土產。簽收人……龍泡泡？','shake'],
@@ -133,7 +133,7 @@ export const sequences={
     ['zhuang','我可是武陵的Level 6。','point','calm','personal-charge'],
     ['dragon','妳剛才才說我錯棚！','shake'],
     ['dragon','最後一發子彈在哪裡？','look'],
-    ['zhuang','就是你。','dragon'],
+    ['zhuang','就是你。','dragon','calm','dragon-capture'],
     ['dragon','……三小？','shake','shock'],
     ['dragon','不對吧？等一下，\n哪裡搞錯了。','shake','shock'],
     ['zhuang','方向沒錯。','nod'],
@@ -157,7 +157,7 @@ export const chargeLines=lines('charge',[
   ['zhuang','等一下填。','nod'],
   ['mifoe','您現在算天災？','look'],
   ['zhuang','雷是我打的，條件符合。','point'],
-  ['dragon','保險公司要聽完整版嗎？','player','aside'],
+  ['dragon','保險公司看完會先賠誰？','player','aside'],
 ]).map((line,index)=>({...line,at:index*3}));
 
 // Terminal instructions share the same story clock and dialogue schema.

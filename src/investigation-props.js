@@ -30,7 +30,7 @@ export function buildInvestigationProps(scene,r){
  box(room,'#695c50',[0,.45,0],[.8,.05,.48]);for(const x of [-.32,.32])box(room,'#344745',[x,.22,0],[.045,.44,.045]);
  for(let i=0;i<3;i++){r.mesh(r.geometry('CylinderGeometry',.07,.06,.12,10),r.material(['#b88e57','#a55462','#668b83'][i]),room,[-.25+i*.23,.54,.03]);box(room,'#536b66',[-.24+i*.2,.79,-.18],[.13,.3,.12]);}
  label(room,'禁止碰我老婆',[0,1.02,.1],[.78,.18,1],{bg:'#2b3545',color:'#d0bbc9',font:'bold 58px sans-serif'});
- const pixels=r.own(new T.InstancedMesh(r.geometry('BoxGeometry',1,1,1),r.own(new T.MeshBasicMaterial({color:0xffffff})),96));pixels.frustumCulled=false;pixels.name='purple-food-mosaic';root.add(pixels);
+ const pixels=r.own(new T.InstancedMesh(r.geometry('CircleGeometry',1,7),r.own(new T.MeshBasicMaterial({color:0xffffff,side:T.DoubleSide})),96));pixels.frustumCulled=false;pixels.name='purple-food-mosaic';root.add(pixels);
  const dummy=new T.Object3D(),color=new T.Color(),spots=[new T.Vector3(3.2,1.85,1.06),new T.Vector3(3.83,1.55,1.06),new T.Vector3(3.1,1.1,1.94),new T.Vector3(3.8,.34,.3),new T.Vector3(2.55,.34,1.4),new T.Vector3(3.9,1.65,1.93)];
  for(let i=0;i<96;i++){pixels.setColorAt(i,color.setHSL(.75+(i%4)*.018,.4,.23+(i%5)*.075));pixels.setMatrixAt(i,dummy.matrix);}pixels.instanceColor.needsUpdate=true;
  const launch=new T.Vector3(3.45,1.67,1.1);
@@ -43,14 +43,14 @@ export function buildInvestigationProps(scene,r){
    if(state.phase==='ready'){lastFailures=0;burstCount=0;burstAt=-100;}
    if(past&&failures>lastFailures){burstCount=Math.min(3,burstCount+1);burstAt=t;}
    if(past)lastFailures=failures;
-   const stains=past?(state.phase==='heat'?Math.min(6,burstCount*3):0):Math.max(3,Math.min(6,burstCount*3));
+   const stains=past?(state.phase==='heat'?Math.min(6,burstCount*3):0):Math.min(6,burstCount*3);
    active=stains*16;
    for(let i=0;i<96;i++){
      const spot=spots[Math.floor(i/16)],j=i%16,age=t-burstAt,flight=state.phase==='heat'&&age<1.1&&i>=Math.max(0,(stains-2)*16),p=Math.max(0,Math.min(1,age/1.1));
      dummy.position.set(spot.x+(j%4-1.5)*.065,spot.y+(Math.floor(j/4)-1.5)*.065,spot.z+.01*(i%3));
      if(!past&&(state.progress||0)>=62)dummy.position.y-=1.045;
      if(flight){dummy.position.lerpVectors(launch,dummy.position,p);dummy.position.y+=Math.sin(p*Math.PI)*.75;}
-     dummy.scale.set(i<active?.065:0,i<active?.065:0,i<active?.045:0);dummy.rotation.set(0,0,(i%3-1)*.1);dummy.updateMatrix();pixels.setMatrixAt(i,dummy.matrix);
+     dummy.scale.set(i<active?.035+(i%3)*.012:0,i<active?.018+(i%4)*.006:0,1);dummy.rotation.set(spot.y<.5?-Math.PI/2:0,0,i*2.4);dummy.updateMatrix();pixels.setMatrixAt(i,dummy.matrix);
    }
    pixels.instanceMatrix.needsUpdate=true;led.material.emissiveIntensity=.5+Math.sin(t*2)**2*.5;
    paperGroup.visible=(state.progress||0)<62||past;camera.visible=((state.progress||0)<62||past)&&(state.inspectCctv||past||state.phase==='cargo'&&Number((state.nodeId||'').split('_').at(-1))>=5||['observation','comm-request','briefing','login','captcha','lever','ascent','director-reminder','shoe-view','pylon-link','charge','fire-ready','combat','energy','rewind'].includes(state.phase));

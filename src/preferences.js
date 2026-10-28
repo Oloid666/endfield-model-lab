@@ -1,0 +1,3 @@
+const defaults={rain:true,quality:'balanced',volume:.7,textSize:18};
+export function readPreferences(storage){try{const p=JSON.parse(storage?.getItem('rainy711.preferences.v1')||'{}');return {rain:typeof p.rain==='boolean'?p.rain:true,quality:['low','balanced','high'].includes(p.quality)?p.quality:'balanced',volume:Number.isFinite(p.volume)?Math.max(0,Math.min(1,p.volume)):.7,textSize:[18,22,26].includes(p.textSize)?p.textSize:18};}catch{return {...defaults};}}
+export function savePreferences(storage,preferences){try{storage?.setItem('rainy711.preferences.v1',JSON.stringify(preferences));}catch{/* Settings remain usable in private / storage-full sessions. */}}

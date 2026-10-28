@@ -46,7 +46,7 @@ export function buildDragon(r) {
   const emote=new T.Sprite(r.own(new T.SpriteMaterial({map:markMaps[0],transparent:true,depthTest:false})));emote.position.set(0,1.7,0);emote.scale.set(.62,.39,1);emote.visible=false;body.add(emote);
   const thumb=part(white,[.66,.56,.08],[.055,.14,.065]);thumb.visible=false;
   const flightLines=new T.Group();body.add(flightLines);for(let i=0;i<4;i++){const line=r.mesh(r.geometry('PlaneGeometry',.018,.3+i*.04),r.material('#d9e4cc',{transparent:true,opacity:.65}),flightLines,[(i%2?1:-1)*(.7+Math.floor(i/2)*.12),.55,0]);line.rotation.z=(i%2?1:-1)*.4;}flightLines.visible=false;
-  const microphone=new T.Group();body.add(microphone);r.box(microphone,'#26363c',[0,-.1,0],[.045,.22,.045]);r.mesh(r.geometry('SphereGeometry',.075,12,8),r.material('#9ba7a5',{metalness:.7,roughness:.5}),microphone,[0,.05,0]);microphone.position.set(.39,.6,.4);microphone.visible=false;
+  const microphone=new T.Group();body.add(microphone);r.box(microphone,'#26363c',[0,-.1,0],[.045,.22,.045]);r.mesh(r.geometry('SphereGeometry',.075,12,8),r.material('#9ba7a5',{metalness:.7,roughness:.5}),microphone,[0,.05,0]);microphone.name='floating-singing-microphone';microphone.position.set(.34,.55,.72);microphone.visible=false;
   root.traverse(n=>n.userData.hotspot='dragon');
   const state={mood:'normal',action:''};
   return {root,foodMount,hand:arms[1],get state(){return {...state};},update(t,s={}){
@@ -80,7 +80,7 @@ export function buildDragon(r) {
     }
     if(!s.reaction&&s.allowIdleEmote&&t%10<1.6)s.reaction={id:[0,1,3,7,4,2][Math.floor(t/10)%6],age:t%10,large:false};
     if(s.phoneHold){arms[1].position.set(.6,.52,.28);arms[1].rotation.z=.25;}
-    microphone.visible=!!s.singing;if(s.singing){arms[1].position.set(.35,.62,.35);arms[1].rotation.z=.65;body.rotation.z+=Math.sin(t*2)*.06;}
+    microphone.visible=!!s.singing;microphone.position.y=.55+(s.singing?Math.sin(t*2)*.025:0);if(s.singing){arms[1].position.set(.35,.62,.35);arms[1].rotation.z=.65;body.rotation.z+=Math.sin(t*2)*.06;}
     if(action==='call'){arms[0].position.set(-.4,.75,.2);arms[0].rotation.z=-.85;body.rotation.z=Math.sin(t*1.1)*.05;}
     emote.visible=!!s.reaction;thumb.visible=false;flightLines.visible=false;
     if(s.reaction&&!s.projectile){const {id,age,large}=s.reaction,p=Math.max(0,Math.min(1,age/2)),ease=Math.sin(p*Math.PI),reduced=typeof matchMedia==='function'&&matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -93,7 +93,7 @@ export function buildDragon(r) {
       if(id===7){body.rotation.z-=ease*.12;material.map=maps[4];}
       flightLines.visible=!reduced&&large&&[2,3].includes(id)&&p>.1&&p<.85;
     }
-    if(s.projectile){microphone.visible=false;
+    if(s.projectile){microphone.visible=!!s.singing;
       body.rotation.set(0,0,0);body.position.y=0;body.scale.set(1,.94,1);
       arms[0].rotation.z=-1.08;arms[1].rotation.z=1.08;
       for(let i=0;i<feet.length;i++){feet[i].position.y=.23;feet[i].position.z=.04;feet[i].rotation.x=-.3;}

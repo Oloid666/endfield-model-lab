@@ -5,7 +5,7 @@ export const config = {
   views: {
     front:{position:[0,3.5,17],target:[0,2.3,.4],mobilePosition:[0,4.5,23],mobileTarget:[0,2.7,.4]},
     storeLeft:{position:[-12,5.8,12],target:[-.3,2.3,0],mobilePosition:[-16,7,17],mobileTarget:[-.3,2.3,0]},
-    heroFront:{position:[.3,2,6.2],target:[-1.25,1.6,3.25],mobilePosition:[.3,2,6.2],mobileTarget:[-1.25,1.6,3.25]},
+    heroFront:{position:[.05,1.92,5.9],target:[-1.25,1.72,3.25],mobilePosition:[.05,1.92,5.9],mobileTarget:[-1.25,1.72,3.25],fov:34},
     traffic:{position:[-8.3,2.5,8.5],target:[-6.5,3.35,4.35],mobilePosition:[-8.3,2.5,8.5],mobileTarget:[-6.5,3.35,4.35]},
     waterTank:{position:[5.5,6.5,4],target:[1.7,6.75,-1.7],mobilePosition:[5.5,6.5,4],mobileTarget:[1.7,6.75,-1.7]},
     reflection:{position:[-3.8,.55,12],target:[.4,.65,4.1],mobilePosition:[-3.8,.55,12],mobileTarget:[.4,.65,4.1]},
@@ -33,7 +33,7 @@ export const config = {
     store: { position: [.2, 3.7, 13.8], target: [0, 1.6, -.2], mobilePosition: [1, 4.3, 20], mobileTarget: [0, 1.7, -.2] },
     awning: { position: [2.8, 2.9, 9.8], target: [-1.45, 1.25, 2.5], mobilePosition: [-.45, 2.3, 9.5], mobileTarget: [-1.6, 1.25, 2.5] },
     detail: { position: [-.92,2.02,5.04],target:[-1.25,1.87,2.48],mobilePosition:[-1.07,2.04,5.45],mobileTarget:[-1.25,1.88,2.48]},
-    story:{position:[1.2,2.5,10.3],target:[-1.5,.85,2.5],mobilePosition:[-.45,2.3,10.4],mobileTarget:[-1.6,.35,2.5]},
+    story:{position:[-2,2.05,9.1],target:[-2,1.38,3.35],mobilePosition:[-2,2.05,9.9],mobileTarget:[-2,1.38,3.35],fov:39},
   },
   zhuangNodes: { pelvis:13,hipL:55,kneeL:56,footL:57,hipR:33,kneeR:34,footR:35,spine:80, head:83, eyeL:85, eyeR:90, armL:338, elbowL:340, wristL:342, armR:385, elbowR:387, wristR:389 },
   eyelids: [[132,143],[134,142],[137,141],[146,157],[148,156],[151,155]],

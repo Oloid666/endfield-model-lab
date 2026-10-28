@@ -1,5 +1,6 @@
 import {buildInvestigationProps} from './investigation-props.js';
 import * as T from 'three';
+import {CameraSafety} from './camera-safety.js';
 import {PhotoCamera} from './photo-camera.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
@@ -27,11 +28,11 @@ import {buildMealRemnant} from './meal-remnant.js';
 import { ShaderWarmup } from './shader-warmup.js';
 
 export class World {
-  constructor(container,{onContextLost,onContextRestored,onManual,onFraming=()=>{},onZone=()=>{}}) {
+  constructor(container,{onContextLost,onContextRestored,onManual,onFraming=()=>{},onZone=()=>{},renderer=null}) {
     this.onFraming=onFraming;this.r=new Resources();this.container=container;this.quality='balanced';this.time=0;this.disposed=false;this.renderCount=0;this.charactersEnabled=true;this.autoCamera=true;
     this.scene=new T.Scene();this.scene.background=new T.Color('#080f1d');this.scene.fog=new T.FogExp2('#101a2c',.009);
     this.camera=new T.PerspectiveCamera(37,1,.04,100);this.onTick=()=>{};this.manualUntil=0;
-    this.renderer=new T.WebGLRenderer({antialias:true,alpha:false,powerPreference:'high-performance'});
+    this.renderer=renderer||new T.WebGLRenderer({antialias:true,alpha:false,powerPreference:'high-performance'});
     this.renderer.outputColorSpace=T.SRGBColorSpace;this.renderer.toneMapping=T.ACESFilmicToneMapping;this.renderer.toneMappingExposure=1.05;this.renderer.shadowMap.enabled=true;this.renderer.shadowMap.type=T.PCFSoftShadowMap;this.renderer.info.autoReset=false;this.renderer.transmissionResolutionScale=.5;
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,config.dpr.balanced));container.append(this.renderer.domElement);
     this.contextLost=e=>{e.preventDefault();this.stop();this.shaderWarmup?.invalidate();onContextLost();};this.contextRestored=async()=>{
@@ -59,7 +60,7 @@ export class World {
     this.shopFixtures=[this.r.mesh(this.r.geometry('PlaneGeometry',1,1),glow(this.r),this.scene,[0,3.51,2.2],[9.05,1.4,1]),
     this.r.mesh(this.r.geometry('BoxGeometry',1,1,1),this.r.material('#e6f1ff',{emissive:0xb6d5ff,emissiveIntensity:2.5}),this.scene,[0,3.45,2.16],[8.95,.045,.06])];
     this.scene.environment=makeNightEnvironment(this.renderer,this.r);this.scene.environmentIntensity=.48;
-    this.store=buildStore(this.scene,this.r);this.batchStats=optimizeStaticSet(this.store.root,this.r);
+    this.store=buildStore(this.scene,this.r);this.cameraSafety=new CameraSafety(this.camera,this.store.floorPlan);this.batchStats=optimizeStaticSet(this.store.root,this.r);
     this.remnant=buildMealRemnant(this.scene,this.r);this.garden=buildPearGarden(this.scene,this.r);this.siege=buildSiegeEffects(this.scene,this.r);
     this.tianshi=buildTianshiGrid(this.scene,this.r);this.microwave=buildMicrowave(this.scene,this.r);this.connectionStage=buildConnectionStage(this.scene,this.r);this.investigationProps=buildInvestigationProps(this.scene,this.r);
     this.weather=buildWeather(this.scene,this.r);this.wet=applyWetPavement([...(this.store.wetMaterials||[]),...(this.garden.wetMaterials||[])],this.weather.reflection,this.r);
@@ -96,12 +97,13 @@ export class World {
     const mobile=this.container.clientWidth/Math.max(1,this.container.clientHeight)<.85;
     const target=new T.Vector3().fromArray(mobile?preset.mobileTarget:preset.target),position=new T.Vector3().fromArray(mobile?preset.mobilePosition:preset.position);
     if(['detail','heroFront','left','right','back','story','dragon'].includes(name)&&this.actors){const anchor=name==='dragon'?this.actors.dragonPosition:this.actors.heroPosition;const origin=name==='dragon'?[-2,1,3.25]:[-1.25,.32,3.25];const offset=new T.Vector3(...anchor).sub(new T.Vector3(...origin));target.add(offset);position.add(offset);}
+    if(name==='heroFront'&&this.actors?.headPosition){const h=this.actors.headPosition;target.set(h[0],h[1]-.27,h[2]);position.set(h[0]+.9,h[1]+.05,h[2]+2.8);}
     if(name==='dragon'&&this.actors){const d=this.actors.dragonPosition,heading=this.actors.status.dragonHeading??0;target.set(d[0],d[1]+.4,d[2]);position.set(d[0]+Math.sin(heading-.5)*1.8,d[1]+.5,d[2]+Math.cos(heading-.5)*1.8);}
     // Flush damping once, so user momentum does not fight a selected preset.
     const damping=this.controls.enableDamping;this.controls.enableDamping=false;this.controls.update();this.controls.enableDamping=damping;
     if(instant||matchMedia('(prefers-reduced-motion: reduce)').matches){this.camera.position.copy(position);this.controls.target.copy(target);this.transition=null;}
     else this.transition={start:this.time,position:this.camera.position.clone(),target:this.controls.target.clone(),endPosition:position,endTarget:target};
-    this.controls.update();const close=this.camera.position.distanceTo(this.controls.target)<(this.camera.aspect<.85?14:11);if(close!==this.closeFraming){this.closeFraming=close;this.onFraming(close);}
+    this.controls.update();this.cameraSafety?.sync();const close=this.camera.position.distanceTo(this.controls.target)<(this.camera.aspect<.85?14:11);if(close!==this.closeFraming){this.closeFraming=close;this.onFraming(close);}
   }
   setQuality(value){if(!config.dpr[value])return;this.quality=value;this.renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,config.dpr[value]));this.composer.setPixelRatio(this.renderer.getPixelRatio());this.msaaSamples=Math.min(this.supportedSamples,value==='low'?2:4);for(const target of [this.opaqueTarget])if(target.samples!==this.msaaSamples){target.samples=this.msaaSamples;target.dispose();}this.bloom.enabled=value!=='low';this.weather.quality(value);this.garden.quality(value);this.siege.quality(value);this.tianshi.quality?.(value);this.microwave.quality?.(value);this.store.glass.uniforms.uRefraction.value=value==='low'?.0012:value==='high'?.005:.003;const size=value==='low'?512:1024;this.store.spill.shadow.mapSize.set(size,size);this.store.spill.shadow.map?.dispose();this.store.spill.shadow.map=null;this.store.spill.shadow.needsUpdate=true;this.resize();}
   setWalking(value){const was=this.walkCamera.enabled;this.walkCamera.setEnabled(value,this.actors?.position);if(was&&!value)this.manualUntil=this.time+14;if(value){this.manualUntil=this.time;this.transition=null;this.currentView=null;this.onManualView();this.weather.invalidateReflection();}}
@@ -170,7 +172,8 @@ export class World {
     this.time=t;if(this.lightPulse){const age=t-this.lightPulse.at,brightness=age>=.45?1:matchMedia('(prefers-reduced-motion: reduce)').matches?.75:.6+.4*Math.cos(age*Math.PI*4/.45);for(const [m,c,e]of this.lightPulse.materials){m.color.copy(c).multiplyScalar(brightness);if(e!=null)m.emissiveIntensity=e*brightness;}if(age>=.45)this.lightPulse=null;}if(this.loadingPresentation){if(render)this.loadingPresentation.render(t);return;}this.onTick(t,delta);
     if(this.earlyDragon){const d=this.earlyDragon;d.root.position.y=.32+Math.abs(Math.sin(t*2.6))*.3;d.root.rotation.y=Math.sin(t*.9)*.65;d.update(t,{nod:.3,gesture:'wave',gestureAmount:(Math.sin(t*2)+1)/2});}
 
-    this.director.beforeActors(this.missionState);this.actors?.update(t,delta);this.director.afterActors(t,delta);
+    const sceneTime=this.missionState?.clock??t,sceneDelta=this.missionState?.paused?0:delta;
+    this.director.beforeActors(this.missionState);this.actors?.update(sceneTime,sceneDelta);this.director.afterActors(sceneTime,sceneDelta);
     if(this.roomLightOn===false)this.store.destruction.server.root.traverse(n=>{if(n.isPointLight)n.intensity=0;if(n.isMesh&&n.material?.isMeshBasicMaterial){n.material.userData.switchColor??=n.material.color.clone();n.material.color.set(0x071511);}});
     if(this.actors){
       const p=this.actors.position;this.walkCamera.update(p,delta,this.time<this.manualUntil);
@@ -182,11 +185,11 @@ export class World {
       this.portrait.fill.position.set(h[0]+3.25*c+2.92*s,h[1]+2.48,h[2]-3.25*s+2.92*c);this.portrait.fill.target.position.set(h[0]-.15,h[1]+.93,h[2]);if(['photo-return','photo-flight'].includes(this.missionState?.phase)){const d=this.actors.dragonPosition;this.portrait.fill.position.set(d[0]-2,d[1]+2,d[2]+3);this.portrait.fill.target.position.set(d[0],d[1]+.35,d[2]);}
     }
     if(this.flashUntil>t){const strength=matchMedia('(prefers-reduced-motion: reduce)').matches?.7:Math.sin((this.flashUntil-t)*24)>0?1.2:.5;this.portrait.fill.intensity=28*strength;}else this.portrait.fill.intensity=28;
-    this.store.update(t,delta,this.actors?.position,this.actors?.status.companion?.position,this.currentView==='insideOut'?this.camera.position:null);
-    if(this.missionState?.phase==='photo')this.photoCamera.apply();else this.controls.update();if(this.director.cameraRoll)this.camera.rotateZ(this.director.cameraRoll);const close=this.camera.position.distanceTo(this.controls.target)<(this.camera.aspect<.85?14:11);
+    this.store.update(sceneTime,sceneDelta,this.actors?.position,this.actors?.status.companion?.position,this.currentView==='insideOut'?this.camera.position:null);
+    if(this.missionState?.phase==='photo')this.photoCamera.apply();else this.controls.update();this.cameraSafety.resolve(this.autoCamera===false&&!this.currentView&&this.missionState?.phase!=='photo',this.store.destruction.state.progress<62);this.camera.lookAt(this.controls.target);if(this.director.cameraRoll)this.camera.rotateZ(this.director.cameraRoll);const close=this.camera.position.distanceTo(this.controls.target)<(this.camera.aspect<.85?14:11);
     if(close!==this.closeFraming){this.closeFraming=close;this.onFraming(close);}
     const presentation=this.missionState?.vcr,damage=presentation?0:this.store.destruction.state.progress;this.weather.setShelter(damage<80,damage<44);
-    const visualTime=this.director.visualTime??t;this.remnant.update(visualTime,this.missionState);
+    const visualTime=this.director.visualTime??sceneTime;this.remnant.update(visualTime,this.missionState);
     this.store.glass.uniforms.uTime.value=visualTime;this.wet.update(visualTime);this.weather.update(visualTime);
     if(render){this.renderer.info.reset();this.composer.render();this.renderCount++;
       const phase=this.missionState?.phase,key={energy:'general',last:'mikoto',cargo:'cargo',briefing:'taste',login:'login',heat:'microwave',landing:'insurance'}[phase];this.sceneStills??={};

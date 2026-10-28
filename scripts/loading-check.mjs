@@ -1,14 +1,9 @@
 import assert from 'node:assert/strict';
-import {createLoading} from '../src/loading.js';
-let now=0,id=0;const jobs=new Map(),nodes=new Map();const node=()=>({hidden:false,textContent:'',className:'',classList:{contains:()=>false,add(){},remove(){},toggle(){}},setAttribute(){},addEventListener(){},append(){},querySelector:()=>node()});
-globalThis.performance={now:()=>now};globalThis.innerWidth=390;globalThis.document={hidden:false,querySelector:key=>{if(!nodes.has(key))nodes.set(key,node());return nodes.get(key);},createElement:()=>node()};
-globalThis.setInterval=(fn,delay)=>{jobs.set(++id,{fn,delay,at:now+delay,repeat:true});return id;};globalThis.setTimeout=(fn,delay)=>{jobs.set(++id,{fn,delay,at:now+delay});return id;};globalThis.clearInterval=i=>jobs.delete(i);
-async function advance(ms){const end=now+ms;while(true){let next;for(const [i,j]of jobs)if(j.at<=end&&(!next||j.at<next[1].at))next=[i,j];if(!next)break;now=next[1].at;if(next[1].repeat)next[1].at+=next[1].delay;else jobs.delete(next[0]);next[1].fn();await Promise.resolve();}now=end;await Promise.resolve();}
-let checks=0;function check(value){assert.ok(value);checks++;}
-const loading=createLoading();loading.show('init');let done=false;const finish=loading.finish().then(()=>{done=true;});check(nodes.get('#loading-joke').textContent.includes('阿莊，下班了'));
-await advance(2000);check(nodes.get('#loading-joke').textContent.includes('再五分鐘'));
-document.hidden=true;await advance(10000);check(!done&&nodes.get('#loading-joke').textContent.includes('再五分鐘'));document.hidden=false;
-await advance(2000);check(nodes.get('#loading-joke').textContent.includes('晚餐我來買'));await advance(2000);check(nodes.get('#loading-joke').textContent.includes('說定了'));check(!done);
-await advance(1450);check(!done);await advance(50);await finish;check(done);loading.dispose();
-const slow=createLoading();slow.show('init');await advance(9000);check(nodes.get('#loading-joke').textContent.includes('晚餐我來買'));let slowDone=false;const sf=slow.finish().then(()=>{slowDone=true;});await advance(50);check(nodes.get('#loading-message').textContent.includes('開場演出'));await advance(1450);check(!slowDone);await advance(50);await sf;check(slowDone);slow.dispose();
-console.log(`Loading: ${checks} fast-cache, background and slow-resource checks passed.`);
+import {OpeningTimeline,OPENING_LINES} from '../src/opening-timeline.js';
+let checks=0;const check=(label,value)=>{assert.ok(value,label);checks++;};
+function advance(t,seconds,visible=true){for(let i=0;i<Math.round(seconds*100);i++)t.tick(.01,visible);}
+const fast=new OpeningTimeline();fast.ready=true;check('Welcome comes before telephone',fast.text===OPENING_LINES[0][0]);advance(fast,1.8);check('Question mark has its own reading beat',fast.index===1);advance(fast,.8);check('Hero has not finished work yet',fast.index===2);advance(fast,2);check('Phone begins after welcome',fast.phone&&fast.text.includes('阿莊'));
+const index=fast.index;advance(fast,30,false);check('Hidden tab does not consume a line',fast.index===index&&fast.age===0);advance(fast,7.8);check('All three phone lines finish before final line',!fast.done&&fast.index===6);advance(fast,1.5);check('Final confirmation remains readable',fast.final&&!fast.done);advance(fast,1.1);check('Ready and narrative gates both complete',fast.done);
+const slow=new OpeningTimeline();advance(slow,12.4);check('Slow resources enter quiet interaction gap',slow.idle&&slow.text==='');check('Click triggers a reply',slow.interact());check('No overlapping reply',!slow.interact());slow.ready=true;advance(slow,1);check('Readiness does not interrupt current reply',!slow.final&&slow.reaction>=0);advance(slow,3.4);check('Finishes after reply and last phone line',slow.done);
+const wait=new OpeningTimeline();advance(wait,12.4);const seen=new Set();for(let i=0;i<8;i++){check('Idle response accepted',wait.interact());seen.add(wait.text);advance(wait,2.1);}check('Eight distinct waiting replies',seen.size===8);advance(wait,15);check('Long idle gets a bounded automatic reply',wait.reaction>=0);check('Dialogue cannot be clicked through',!new OpeningTimeline().interact());
+console.log(`Loading: ${checks} narrative, background, fast-cache and slow-network checks passed.`);

@@ -65,6 +65,16 @@ export function buildConnectionStage(scene,r){
   optimizeStaticSet(leverRoot,r);
   // The rail batch excludes this moving assembly on the external scene pass.
   root.traverse(node=>{if(node.isMesh){node.userData.dynamic=true;node.castShadow=false;node.receiveShadow=true;}});
+  // Hinged light-book: covers open, pages spread, then keys settle into the terminal.
+  const book=new T.Group();book.name='book-deployment';root.add(book);
+  const bookMat=r.material('#b9e1cf',{emissive:0x7bbca4,emissiveIntensity:.8,transparent:true,opacity:.85,roughness:.4});
+  const covers=[],pages=[];
+  for(const side of [-1,1]){const hinge=new T.Group();book.add(hinge);box(hinge,metal,[side*.48,0,0],[.96,.065,1.32]);box(hinge,bookMat,[side*.48,.043,0],[.87,.02,1.22]);covers.push({hinge,side});
+    for(let i=0;i<3;i++){const page=new T.Group();book.add(page);box(page,bookMat,[side*.46,0,0],[.85,.007,1.18]);pages.push({page,side,index:i});}}
+  const spine=box(book,edge,[0,0,0],[.055,.09,1.35]);
+  const ease=value=>{const p=clamp(value);return p*p*(3-2*p);};
+  const reduced=typeof matchMedia==='function'&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let deployment=1;
   let phase='ready',field='account',lastKey='',keyNumber=0,keyAt=-Infinity,lever=0,pressed=false;
   let count=0;
   const position=[0,0,0];
@@ -80,8 +90,14 @@ export function buildConnectionStage(scene,r){
     root.visible=['terminal-deploy','login','verify-talk','captcha','verified-talk','lever'].includes(phase);if(!root.visible){pressed=false;return;}
     field=c.field==='password'?'password':'account';lastKey=canonical(c.lastKey);keyNumber=Number(c.keyNumber)||0;keyAt=Number.isFinite(c.keyAt)?c.keyAt:-Infinity;lever=clamp(c.lever);
     scanner.visible=['terminal-deploy','lever'].includes(phase);scanner.position.z=-1.1+((Number(state.clock)||t)*.5%1)*2.2;
-    const deploy=phase==='terminal-deploy'?clamp(state.phaseElapsed/5.5):1;root.scale.set(1,Math.max(.03,deploy),Math.max(.03,deploy));root.position.y=.335+(1-deploy)*.7;keyboard.visible=['terminal-deploy','login'].includes(phase);captcha.visible=phase==='captcha';leverRoot.visible=phase==='lever';tick.visible=Boolean(c.verified);handle.position.x=-1.18+2.36*lever;
-    const age=clock-keyAt,depression=age>=0&&age<.38?Math.sin(age/.38*Math.PI)*.048:0;pressed=depression>.002;count=0;
+    const age=phase==='terminal-deploy'?Number(state.phaseElapsed)||0:6;deployment=ease((age-3.2)/2.3);root.scale.set(1,1,1);root.position.y=.335;
+    book.visible=phase==='terminal-deploy'&&age<5.2;book.position.set(0,.55*(1-ease((age-2.4)/2)),0);book.scale.setScalar(.65+ease((age-1)/2.2)*1.2);
+    const opening=reduced?1:ease((age-.7)/2);for(const {hinge,side}of covers)hinge.rotation.z=side*(1-opening)*1.45;
+    for(const {page,side,index}of pages){page.rotation.z=side*(1-opening)*1.5+side*(reduced?0:Math.sin(ease((age-1-index*.18)/1.4)*Math.PI)*.55);page.position.y=.065+index*.012;}
+    shell.visible=age>=3.1;shell.position.y=reduced?0:(1-deployment)*.22;keyboard.position.y=reduced?0:(1-deployment)*.4;
+    scanner.visible=phase==='lever'||phase==='terminal-deploy'&&age>3.2;
+    keyboard.visible=['terminal-deploy','login'].includes(phase)&&age>=3.4;captcha.visible=phase==='captcha';leverRoot.visible=phase==='lever';tick.visible=Boolean(c.verified);handle.position.x=-1.18+2.36*lever;
+    const keyAge=clock-keyAt,depression=keyAge>=0&&keyAge<.38?Math.sin(keyAge/.38*Math.PI)*.048:0;pressed=depression>.002;count=0;
     for(const record of records){
       const active=record.field===field,down=active&&record.key===lastKey?depression:0;
       dummy.rotation.set(0,0,0);dummy.position.set(record.x,.13-down,record.z);dummy.scale.set(active?record.w:0,active?.1:0,active?record.d:0);dummy.updateMatrix();bodies.setMatrixAt(record.index,dummy.matrix);
@@ -93,6 +109,6 @@ export function buildConnectionStage(scene,r){
   update(0,0,{phase:'ready'});
   return {root,keyPosition,leverPosition,
     reset(){phase='ready';field='account';lastKey='';keyNumber=0;keyAt=-Infinity;lever=0;pressed=false;root.visible=false;handle.position.x=-1.18;},update,
-    get state(){return {visible:root.visible,phase,field,lastKey,keyNumber,pressed,lever,keys:count,position:root.position.toArray(),keyTop:root.position.y+.21,leverPosition:leverPosition(),physical:true};}
+    get state(){return {visible:root.visible,phase,field,lastKey,keyNumber,pressed,lever,keys:count,position:root.position.toArray(),keyTop:root.position.y+.21,leverPosition:leverPosition(),physical:true,deployment,bookVisible:book.visible};}
   };
 }

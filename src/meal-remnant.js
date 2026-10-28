@@ -1,8 +1,21 @@
 import * as T from 'three';
 export function buildMealRemnant(scene,r){
  const root=new T.Group();root.name='purple-mystery-meal';scene.add(root);root.visible=false;
- const body=new T.Group();root.add(body);const material=r.material('#794fb5',{roughness:.28,metalness:.08,emissive:0x4d2678,emissiveIntensity:.35});
- r.mesh(r.geometry('SphereGeometry',1,18,12),material,body,[0,.2,0],[.27,.24,.24]);for(const x of [-.09,.09]){r.mesh(r.geometry('SphereGeometry',.055,10,8),r.material('#e1e4cb'),body,[x,.26,.22]);r.mesh(r.geometry('SphereGeometry',.022,8,6),r.material('#253830'),body,[x,.26,.265]);}
- const points=new Float32Array(30),geometry=r.own(new T.BufferGeometry());geometry.setAttribute('position',new T.BufferAttribute(points,3));const lightning=new T.Line(geometry,r.own(new T.LineBasicMaterial({color:0xc9a1ff,transparent:true,opacity:.8})));root.add(lightning);let born=false,touched=-Infinity;
- return {root,reset(){born=false;touched=-Infinity;root.visible=false;},tap(ray,time){if(!root.visible||!ray.intersectObject(body,true).length)return false;touched=time;return true;},update(time,state={}){if(state.heat?.failures||state.phase==='heat-demo'||(state.progress||0)>=62)born=true;const wreck=(state.progress||0)>=62&&!state.vcr;root.visible=born&&(wreck||['heat','heat-demo','flashback-end'].includes(state.phase));if(!root.visible)return;const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches,phase=time%3.7,hop=reduced?0:phase<1.3?Math.sin(phase/1.3*Math.PI)*.44:phase>2.8?Math.sin((phase-2.8)/.9*Math.PI)*.17:0,press=Math.max(0,1-(time-touched)/.8);root.position.set(wreck?2.8:3.06,(wreck?.35:1.35)+hop, wreck?4.15:.8);body.scale.set(1+press*.35,1-press*.5+(reduced?0:hop*.3),1+press*.25);body.rotation.z=reduced?0:Math.sin(time*2)*.07;lightning.visible=reduced||phase<.25||phase>2.9&&phase<3.1;for(let i=0;i<10;i++){points[i*3]=-.36+i*.08;points[i*3+1]=.28+Math.sin(i*8+time*23)*.09;points[i*3+2]=.12+Math.cos(i*5)*.08;}geometry.attributes.position.needsUpdate=true;},get state(){return {born,visible:root.visible};}};
+ const body=new T.Group();root.add(body);
+ // One continuous, asymmetrical surface: no separate balls, no vertical hopping.
+ const geometry=r.own(new T.SphereGeometry(1,28,16)),positions=geometry.attributes.position,rest=positions.array.slice();
+ const material=r.material('#73508e',{roughness:.56,metalness:.02,emissive:0x4d2678,emissiveIntensity:.12});
+ r.mesh(geometry,material,body);
+ const points=new Float32Array(30),boltGeo=r.own(new T.BufferGeometry());boltGeo.setAttribute('position',new T.BufferAttribute(points,3));const lightning=new T.Line(boltGeo,r.own(new T.LineBasicMaterial({color:0xc9a1ff,transparent:true,opacity:.55})));root.add(lightning);
+ const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;let born=false,touched=-Infinity,bornAt=0,lastShape=-Infinity;
+ function shape(time,press){for(let i=0;i<positions.count;i++){const j=i*3,x=rest[j],y=rest[j+1],z=rest[j+2],wave=reduced?0:Math.sin(time*2.6+x*5+z*3)*.035;const lobe=1+.2*Math.sin(x*7+z*4)+.12*Math.cos(z*8-y*3);positions.setXYZ(i,x*.34*lobe+wave,(y+1)*.095*(1-press*.45)*(1+.25*Math.sin(x*5+time*2))+.012,z*.22*lobe-wave*.6);}positions.needsUpdate=true;geometry.computeVertexNormals();}
+ shape(0,0);
+ return {root,reset(){born=false;touched=-Infinity;root.visible=false;lastShape=-Infinity;},tap(ray,time){if(!root.visible||!ray.intersectObject(body,true).length)return false;touched=time;return true;},update(time,state={}){
+  if(!born&&((state.heat?.failures||0)>0||state.phase==='heat-demo'&&state.phaseElapsed>=3.6||state.phase==='flashback-end')){born=true;bornAt=time;}
+  const wreck=(state.progress||0)>=62&&!state.vcr;root.visible=born&&(wreck||['heat','heat-demo','flashback-end'].includes(state.phase));if(!root.visible)return;
+  const age=Math.max(0,time-bornAt),crawl=reduced?0:Math.sin(age*.45)*.12,press=Math.max(0,1-(time-touched)/.8);
+  root.position.set((wreck?2.8:3.06)+crawl,wreck?.35:1.35,(wreck?4.15:.8)+crawl*.35);body.rotation.y=reduced?0:Math.sin(age*.6)*.15;
+  if(time-lastShape>=1/24||time<lastShape){shape(reduced?0:age,press);lastShape=time;}
+  lightning.visible=!reduced&&age%4<.3;for(let i=0;i<10;i++){points[i*3]=-.31+i*.07;points[i*3+1]=.16+Math.sin(i*8+time*13)*.04;points[i*3+2]=.08+Math.cos(i*5)*.08;}boltGeo.attributes.position.needsUpdate=true;
+ },get state(){return {born,visible:root.visible,shape:'crawling-lump'};}};
 }

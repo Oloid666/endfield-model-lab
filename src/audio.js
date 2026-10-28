@@ -14,7 +14,7 @@ export class RainAudio {
   duck(active){if(!this.context||!this.gain)return;if(this.ducked===active)return;this.ducked=active;if(this.context&&this.gain)this.gain.gain.setTargetAtTime(active?.075:.18,this.context.currentTime,.25);}
   effect(kind){
     const c=this.context;if(!c||c.state!=='running')return;
-    const now=c.currentTime,o=c.createOscillator(),g=c.createGain(),tone={shutter:[1400,600],flight:[420,180],'photo-send':[750,1100],'grid-connect':[130,500],shot:[95,40],handover:[500,330]}[kind];
+    const now=c.currentTime,o=c.createOscillator(),g=c.createGain(),tone={book:[360,720],tractor:[260,520],shutter:[1400,600],flight:[420,180],'photo-send':[750,1100],'grid-connect':[130,500],shot:[95,40],handover:[500,330]}[kind];
     o.type=kind==='objection'?'sawtooth':kind==='stamp'?'triangle':'sine';o.frequency.setValueAtTime(kind==='objection'?220:kind==='stamp'?150:tone?.[0]||920,now);o.frequency.exponentialRampToValueAtTime(kind==='objection'?90:kind==='stamp'?55:tone?.[1]||650,now+.09);
     g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(kind==='objection'?.065:kind==='stamp'?.14:.022,now+.008);g.gain.exponentialRampToValueAtTime(.0001,now+.13);o.connect(g);g.connect(this.master);o.start();o.stop(now+.15);o.onended=()=>{o.disconnect();g.disconnect();};
   }

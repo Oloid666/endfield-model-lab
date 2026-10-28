@@ -1,4 +1,5 @@
 import * as T from 'three';
+import {claimsReaction} from './claims-performance.js';
 import {Resources} from './resources.js';
 import {buildDragon} from './companion.js';
 import {CLASS_MOTTO} from './bonus-data.js';
@@ -60,9 +61,9 @@ export function createBonusRoom(){
  const head=new T.Group();head.position.y=1.99;rep.add(head);
  r.mesh(r.geometry('SphereGeometry',.27,16,12),r.material('#d8b494'),head,[0,0,0],[.93,1.15,.88]);
  const hair=r.mesh(r.geometry('SphereGeometry',.275,16,12,0,Math.PI*2,0,Math.PI*.48),r.material('#333936'),head,[0,.03,0],[.97,1.15,.92]);hair.rotation.z=-.07;
- for(const x of [-.105,.105]){
-  box(head,'#23302d',[x,.015,.244],[.027,.035,.025]);
-  const ring=r.mesh(r.geometry('TorusGeometry',.085,.012,6,16),r.material('#a49c7b'),head,[x,.015,.25]);ring.scale.y=.7;
+ const eyes=[];for(const x of [-.105,.105]){
+  const eye=new T.Group();eye.position.set(x,.015,.244);head.add(eye);eyes.push(eye);box(eye,'#23302d',[0,0,0],[.027,.035,.025]);
+  const ring=r.mesh(r.geometry('TorusGeometry',.085,.012,6,16),r.material('#a49c7b'),eye,[0,0,.006]);ring.scale.y=.7;
  }
  box(head,'#a49c7b',[0,.015,.25],[.06,.012,.02]);const mouth=box(head,'#835a4d',[0,-.13,.23],[.1,.016,.016]);
  const arms=[];for(const side of [-1,1]){const arm=new T.Group();arm.position.set(side*.38,1.57,0);rep.add(arm);box(arm,'#263f50',[0,-.23,.03],[.19,.46,.2]);box(arm,'#d9ded7',[0,-.47,.08],[.19,.06,.18]);box(arm,'#d8b494',[0,-.54,.13],[.2,.12,.22]);arms.push(arm);}
@@ -72,14 +73,14 @@ export function createBonusRoom(){
  const policyCard=label(claims,'要保人：莊芳宜',[.1,1.62,-.25],1.75,.38,'#29483e','#f0e2bb');policyCard.visible=false;
  const contract=label(claims,'新產險 · 長期合作',[.1,1.93,-.28],2,.32,'#745b32','#eed6a0');contract.visible=false;
  const completedInks=['理賠通過','新案承保','長期合作'].map((text,i)=>{const n=label(claims,text,[-1.12+i*.24,1.073,.35],.23,.09,'#a34b3b','#e8dfc1');n.rotation.x=-Math.PI/2;n.visible=false;return n;});
- let negotiation=null,negotiationKey='',objectionAt=-Infinity,cueAt=0;
+ let negotiation=null,negotiationKey='',objectionAt=-Infinity,cueAt=0,reactionAt=-Infinity,policyAt=-Infinity,detached=0;
  function negotiate(value,time){
   negotiation=value;const key=value?`${value.phase}:${value.field}:${value.line}:${value.stampIndex}`:'welcome';
-  if(key!==negotiationKey){negotiationKey=key;cueAt=time;if(value?.cue?.event==='objection')objectionAt=time;}
+  if(key!==negotiationKey){negotiationKey=key;cueAt=time;if(value?.phase==='read')reactionAt=time;if(value?.cue?.event==='policyholder')policyAt=time;if(value?.cue?.event==='objection')objectionAt=time;}
   policyCard.visible=!!value?.policyholderVisible;contract.visible=!!value&&['business','stamp','complete'].includes(value.phase);
   completedInks.forEach((n,i)=>{n.position.set(-1.1+i*.2,1.0606,.15);n.visible=!!value&&i<value.stampIndex;});
-  if(!value){focus='wide';return;}
-  if(value.phase==='stamp')focus='stamp';else if(value.cue?.event==='policyholder')focus='policy';else if(value.phase==='complete'||value.phase==='choice')focus='wide';else focus=value.cue?.speaker==='保險代表'?'representative':value.phase==='business'?'contract':'client';
+  if(!value){reactionAt=policyAt=-Infinity;focus='wide';return;}
+  if(value.phase==='stamp')focus='stamp';else if(value.cue?.event==='policyholder')focus='representative';else if(value.phase==='read')focus='representative';else if(value.phase==='complete'||value.phase==='choice')focus='wide';else focus=value.cue?.speaker==='保險代表'?'representative':value.phase==='business'?'contract':'client';
  }
  let entryAt=-Infinity;
  let mode='classroom',focus='wide',boardKey='',paintKey='',boardAt=0,lastTime=null,stampAt=-Infinity,stampReduced=false,poseAt=0,pose='explain';
@@ -128,9 +129,9 @@ export function createBonusRoom(){
   camera.position.lerp(framePosition,amount);lookTarget.lerp(endTarget,amount);camera.lookAt(lookTarget);
  }
  board();
- return {scene,camera,board,get state(){return {mode,focus,cameraPosition:camera.position.toArray(),board:{title:boardData.title,lines:[...boardData.lines]},representative:negotiation?.polite?'polite':'serious',policyholderVisible:policyCard.visible,completedStamps:completedInks.filter(n=>n.visible).length,paperStamped:mode==='classroom'?classInk.visible:ink.visible,stampContactError:mode==='classroom'?classStamp.position.y-(classPaper.position.y+classPaper.scale.y/2):stamp.position.y-(output.position.y+output.scale.y/2)};},resetPaper(){stampAt=-Infinity;ink.visible=classInk.visible=false;classStamp.position.y=.822;classPaper.position.z=-.65;stamp.position.y=1.06;output.position.set(-.9,1.0525,.2);focus='wide';},
+ return {scene,camera,board,get state(){return {mode,focus,cameraPosition:camera.position.toArray(),board:{title:boardData.title,lines:[...boardData.lines]},representative:negotiation?.polite?'polite':'serious',policyholderVisible:policyCard.visible,faceDetached:detached,completedStamps:completedInks.filter(n=>n.visible).length,paperStamped:mode==='classroom'?classInk.visible:ink.visible,stampContactError:mode==='classroom'?classStamp.position.y-(classPaper.position.y+classPaper.scale.y/2):stamp.position.y-(output.position.y+output.scale.y/2)};},resetPaper(){stampAt=-Infinity;ink.visible=classInk.visible=false;classStamp.position.y=.822;classPaper.position.z=-.65;stamp.position.y=1.06;output.position.set(-.9,1.0525,.2);focus='wide';},
  setMode(value){if(mode!==value){mode=value;firstFrame=true;}classroom.visible=value==='classroom';claims.visible=value==='claims';focus='wide';frameKey='';},
- shiftClock(delta){boardAt+=delta;stampAt+=delta;entryAt+=delta;cueAt+=delta;objectionAt+=delta;poseAt+=delta;if(lastTime!==null)lastTime+=delta;},enter(time){entryAt=reduced()?-Infinity:time;},negotiate,setFocus(value){focus=value;},perform(value){if(value!==pose)poseAt=lastTime??0;pose=value;},stamp(t,status){stampAt=t;stampReduced=reduced();focus='stamp';ink.visible=classInk.visible=false;const c=ink.material.map.image.getContext('2d');c.fillStyle='#e8dfc1';c.fillRect(0,0,1024,160);c.fillStyle='#a34b3b';c.font='bold 110px sans-serif';c.textAlign='center';c.textBaseline='middle';c.fillText(status,512,80,1000);ink.material.map.needsUpdate=true;},
+ shiftClock(delta){boardAt+=delta;stampAt+=delta;entryAt+=delta;cueAt+=delta;objectionAt+=delta;reactionAt+=delta;policyAt+=delta;poseAt+=delta;if(lastTime!==null)lastTime+=delta;},enter(time){entryAt=reduced()?-Infinity:time;},negotiate,setFocus(value){focus=value;},perform(value){if(value!==pose)poseAt=lastTime??0;pose=value;},stamp(t,status){stampAt=t;stampReduced=reduced();focus='stamp';ink.visible=classInk.visible=false;const c=ink.material.map.image.getContext('2d');c.fillStyle='#e8dfc1';c.fillRect(0,0,1024,160);c.fillStyle='#a34b3b';c.font='bold 110px sans-serif';c.textAlign='center';c.textBaseline='middle';c.fillText(status,512,80,1000);ink.material.map.needsUpdate=true;},
  render(renderer,time,width,height){
   frame(width,height,time);paint(time);
   dragonMount.visible=pose!=='gone';
@@ -141,7 +142,14 @@ export function createBonusRoom(){
   client.update(reduced()?0:time,{gesture:negotiation?.cue?.speaker==='龍泡泡'?'point':'look',gestureAmount:.35,lookYaw:.15});
   const hitAge=time-objectionAt,hit=!reduced()&&hitAge>=0&&hitAge<.6?Math.sin(Math.min(1,hitAge/.18)*Math.PI/2)*Math.exp(-Math.max(0,hitAge-.18)*7):0;
   arms[0].rotation.x=-.65;arms[1].rotation.x=-.35-hit*.9;
-  head.rotation.x=negotiation?.polite?.15:0;rep.rotation.z=hit*.045;mouth.scale.x=.1*(negotiation?.polite?1.3:1);
+  const reaction=claimsReaction(time-reactionAt,negotiation?.field||0,false,reduced()),policy=claimsReaction(time-policyAt,4,true,reduced());detached=policy.fly;
+  const exaggeration=Math.max(reaction.intensity,hit,policy.intensity),breath=reduced()?0:Math.sin(time*1.7)*.008;
+  rep.scale.y=1+breath;rep.rotation.z=hit*.045+(reduced()?0:exaggeration*.035);head.rotation.x=(negotiation?.polite?.15:0)-exaggeration*.22;
+  const blink=!reduced()&&time%4.7<.12;
+  eyes.forEach((eye,i)=>{const side=i?1:-1;eye.position.set(side*(.105+detached*.24),.015+detached*.28,.244+detached*.45);eye.scale.set(1+exaggeration*.65,blink?.15:1+exaggeration*.8,1);eye.rotation.z=side*detached*.4;});
+  mouth.position.set(detached*.32,-.13+detached*.18,.23+detached*.5);mouth.scale.set(.1*(negotiation?.polite?1.3:1)+exaggeration*.08,.016+exaggeration*.08,.016);mouth.rotation.z=detached*-.3;
+  arms[0].rotation.z=-exaggeration*.25;arms[1].rotation.z=exaggeration*.3;
+
   if(hit>0&&!reduced())camera.position.x+=Math.sin(hitAge*65)*hit*.025;
 
   const age=time-stampAt;

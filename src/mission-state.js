@@ -69,6 +69,7 @@ export class MissionMachine{
       this.vcrSnapshot={progress:this.progress,branch:this.branch,shots:this.shots,hits:this.hits,output:this.output,target:this.target};
       this.action('vcr-freeze',true,{snapshot:{...this.vcrSnapshot}});
     }
+    if(phase==='terminal-deploy')this.line({id:'terminal_book',speaker:'zhuang',text:'BOOK！',gesture:'point',event:'book-open'},entered);
     if(phase==='heat-demo')this.line(heatDemoLines[0],entered);
     if(phase==='heat')this.line(connectionPrompts.heat,entered);
     if(phase==='return')this.line(connectionPrompts.returned,entered);
@@ -333,7 +334,7 @@ export class MissionMachine{
       phaseElapsed:elapsed,time:this.time,clock:this.time,sourceTime:this.sourceTime,paused:this.paused,auto:this.auto,castingElapsed:this.castingElapsed,
       loginAside:this.loginAside,purchaseElapsed:this.purchaseStarted===null?null:Math.max(0,this.time-this.purchaseStarted),shoeReady:this.shoeReady,shoeOrbitElapsed:this.phase==='shoe-view'?Math.max(0,this.time-this.shoeOrbitStart):0,shoeRounds:this.shoeRounds,flight:this.flight?{...this.flight,ready:Math.abs(this.flight.z-10.5)<=.6&&this.time-(this.flightStableAt??this.time)>=.5}:null,investigation:this.investigation,photoTaken:this.photoTaken,hack:{turns:[...this.hackTurns],moves:this.hackMoves,failures:this.hackFailures},connection,login:connection,heat,vcr,rewindProgress,rewindStage,returnProgress:this.phase==='return'?clamp(elapsed/RETURN_DURATION):0,vcrElapsed:vcr&&this.vcrStarted!==null?Math.max(0,this.time-this.vcrStarted):0,replayStage:vcr?this.phase:null,vcrSnapshot:this.vcrSnapshot?{...this.vcrSnapshot}:null,
       target:this.target,targetLabel:target?.label||'店面外牆',targets:this.targets,feedback:this.feedback,shots:this.shots,hits:this.hits,attackHoldUntil:this.attackHoldUntil,combatHoldRemaining,attackHeld:combatHoldRemaining>0,
-      presentationLocked:this.node?.event==='pear-tour'&&this.time-this.nodeEntered<6||this.phase==='photo-check'&&elapsed<5||this.phase==='aim-final'&&elapsed<FINAL_READY||this.phase==='photo-talk'&&this.node?.event==='camera-handover'&&this.time-this.nodeEntered<1.5,failures:{...this.failures},canAssist:(this.failures[this.phase]||0)>=5,
+      presentationLocked:this.node?.event==='dragon-capture'&&this.time-this.nodeEntered<2.1||this.node?.event==='pear-tour'&&this.time-this.nodeEntered<6||this.phase==='photo-check'&&elapsed<5||this.phase==='aim-final'&&elapsed<FINAL_READY||this.phase==='photo-talk'&&this.node?.event==='camera-handover'&&this.time-this.nodeEntered<1.5,failures:{...this.failures},canAssist:(this.failures[this.phase]||0)>=5,
       canAttack:(this.phase!=='aim-final'||elapsed>=FINAL_READY)&&['combat','aim-final'].includes(this.phase)&&!this.paused&&this.time-this.lastAttack>=.6&&combatHoldRemaining===0,
       ended:this.ended,busy:!!this.node||!['ready','complete'].includes(this.phase),sequenceKind:this.sequenceKind,endingCaption,revision:this.revision};
   }

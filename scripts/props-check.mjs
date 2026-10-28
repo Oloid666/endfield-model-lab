@@ -106,12 +106,12 @@ garden.quality('high');garden.update(15,1/60,{fxShock:1,impactRevision:2});check
 const details=buildInvestigationProps(scene,r);
 details.breakServer([0,1,.7]);check('Finisher creates a visible server crater',details.state.crater===true);details.reset();check('Replay clears the server crater',details.state.crater===false);
 details.update(0,0,{phase:'ready'});
-check('Opening has physical CCTV and three purple food marks',details.state.cctv&&details.state.pixels===48&&details.root.getObjectByName('store-cctv'));
+check('Opening has physical CCTV without premature food splashes',details.state.cctv&&details.state.pixels===0&&details.root.getObjectByName('store-cctv'));
 details.update(1,0,{phase:'flashback'});check('Earlier recording starts without food stains',details.state.pixels===0);
-details.update(2,.016,{phase:'heat',heat:{failures:1}});check('First failed meal creates a fixed pixel burst',details.state.bursts===1&&details.state.pixels===48);
+details.update(2,.016,{phase:'heat',heat:{failures:1}});check('First failed meal creates a pooled irregular stain burst',details.state.bursts===1&&details.state.pixels===48);
 for(let n=2;n<9;n++)details.update(n,.016,{phase:'heat',heat:{failures:n}});
 check('Repeated failures cap the food pool',details.state.pixels===96&&details.state.bursts===3);
-details.reset();details.update(0,0,{phase:'ready'});check('Replay restores original evidence stains',details.state.bursts===0&&details.state.pixels===48);
+details.reset();details.update(0,0,{phase:'ready'});check('Replay clears food splashes until the next overload',details.state.bursts===0&&details.state.pixels===0);
 const itemCount=r.items.size,geometryCount=r.geometries.size,materialCount=r.materials.size;
 for(let n=0;n<600;n++){
   const state={phase:'charge',clock:n/60,charge:n/6,hero:[-1.25,4.32,15.25],connection:{lever:1}};
