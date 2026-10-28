@@ -35,7 +35,7 @@ export class RhythmHeat {
       else this.fail('timing');
     }
   }
-  fail(reason){if(reason==='surge')this.first=false;this.status='burnt';this.holding=false;this.active=-1;this.failures++;this.result=reason==='surge'?'電網突波！設備失控，非操作失誤。':'節拍失穩，便當逃出去了。';this.revision++;}
+  fail(reason){if(reason==='surge')this.first=false;this.status='burnt';this.holding=false;this.active=-1;this.failures++;this.result=reason==='surge'?'功率爆表！便當沒碳化，直接變成紫色不明物體了。':'電流沒對上。等圓點到金線再按，長條按住到尾端。';this.revision++;}
   retry(){if(this.status!=='burnt')return false;this.status='ready';this.result=this.level>=2?'人類操作相容模式：啟用。':'功率已調低，判定已放寬。';return true;}
   state(now){const t=Math.max(0,now-this.origin);return {status:this.status,round:Math.min(2,this.round),completed:this.round,failures:this.failures,attempts:this.attempts,holding:this.holding,powered:this.holding||this.notes.some(n=>n.result==='hit'&&t-n.at>=0&&t-n.at<.2),forced:this.forced,revision:this.revision,result:this.result,bpm:this.bpm||90,window:this.window,elapsed:t,notes:this.notes.map(n=>({...n})),progress:Math.min(1,(this.round+(this.status==='playing'?Math.min(1,t/(this.notes.at(-1)?.end||1)):0))/3),electricalTime:Math.min(.3,this.round*.1),demoIndex:-1,demoProgress:0};}
 }

@@ -46,8 +46,10 @@ export function buildDragon(r) {
   const emote=new T.Sprite(r.own(new T.SpriteMaterial({map:markMaps[0],transparent:true,depthTest:false})));emote.position.set(0,1.7,0);emote.scale.set(.62,.39,1);emote.visible=false;body.add(emote);
   const thumb=part(white,[.66,.56,.08],[.055,.14,.065]);thumb.visible=false;
   const flightLines=new T.Group();body.add(flightLines);for(let i=0;i<4;i++){const line=r.mesh(r.geometry('PlaneGeometry',.018,.3+i*.04),r.material('#d9e4cc',{transparent:true,opacity:.65}),flightLines,[(i%2?1:-1)*(.7+Math.floor(i/2)*.12),.55,0]);line.rotation.z=(i%2?1:-1)*.4;}flightLines.visible=false;
+  const microphone=new T.Group();body.add(microphone);r.box(microphone,'#26363c',[0,-.1,0],[.045,.22,.045]);r.mesh(r.geometry('SphereGeometry',.075,12,8),r.material('#9ba7a5',{metalness:.7,roughness:.5}),microphone,[0,.05,0]);microphone.position.set(.39,.6,.4);microphone.visible=false;
+  root.traverse(n=>n.userData.hotspot='dragon');
   const state={mood:'normal',action:''};
-  return {root,foodMount,get state(){return {...state};},update(t,s={}){
+  return {root,foodMount,hand:arms[1],get state(){return {...state};},update(t,s={}){
     const blink=Math.max(0,1-Math.abs((t+.7)%4.3-.15)/.11);
     const action=s.action?.kind||'',effort=T.MathUtils.clamp(Number(s.action?.amount)||0,0,1),shocked=action==='shock'||!!s.projectile;
     state.mood=shocked?'shock':action==='lever'?'doubt':blink>.3?'blink':(s.nod||0)>.15?'happy':'normal';state.action=action;
@@ -56,7 +58,7 @@ export function buildDragon(r) {
     const curiosity=Math.max(s.curious||0,s.glance?.35:0),startle=Math.max(s.startle||0,s.gesture==='rain'?gesture*.7:0),attention=s.dragon||0,walk=s.walk||0;
     const catchUp=s.followerMode==='catch-up'?1:0,hesitate=s.followerMode==='hesitate'?1:0,phase=s.walkPhase||0;
     body.rotation.set(curiosity*.11-startle*.12+walk*.035+nod*Math.sin(t*7)*.06+(s.lookPitch||0),attention*.3+(s.rain||0)*.15+(s.lookYaw||0)*.72,curiosity*-.05+startle*.11+walk*Math.sin(phase)*.035+happy*Math.sin(gesture*Math.PI)*.28+roll*Math.PI);
-    body.position.y=walk*Math.max(0,Math.cos(phase*2))*.006+Math.sin(t*Math.PI*2/3.6)*.025;
+    body.position.y=walk*Math.max(0,Math.cos(phase*2))*.006+Math.sin(t*Math.PI*2/3.6)*(s.allowIdleEmote?.055:.025);
     const breath=Math.sin(t*Math.PI*2/3.6)*.008;body.scale.set(1+startle*.035+breath,1-startle*.075-breath,1+startle*.035+breath);
     root.position.y=.005;
     arms[0].rotation.z=-curiosity*.3+startle*.45-(s.holding?.28:0)+walk*Math.sin(phase-.3)*.075;arms[1].rotation.z=attention*.22-startle*.45+(s.holding?.28:0)+wave*Math.sin(t*9)*.45+point*.8-walk*Math.sin(phase-.5)*.09;
@@ -76,6 +78,10 @@ export function buildDragon(r) {
       arms[0].rotation.z=-.85;arms[1].rotation.z=.85;
       feet[0].position.z=.22;feet[1].position.z=-.02;tail.rotation.x=-.88;
     }
+    if(!s.reaction&&s.allowIdleEmote&&t%10<1.6)s.reaction={id:[0,1,3,7,4,2][Math.floor(t/10)%6],age:t%10,large:false};
+    if(s.phoneHold){arms[1].position.set(.6,.52,.28);arms[1].rotation.z=.25;}
+    microphone.visible=!!s.singing;if(s.singing){arms[1].position.set(.35,.62,.35);arms[1].rotation.z=.65;body.rotation.z+=Math.sin(t*2)*.06;}
+    if(action==='call'){arms[0].position.set(-.4,.75,.2);arms[0].rotation.z=-.85;body.rotation.z=Math.sin(t*1.1)*.05;}
     emote.visible=!!s.reaction;thumb.visible=false;flightLines.visible=false;
     if(s.reaction&&!s.projectile){const {id,age,large}=s.reaction,p=Math.max(0,Math.min(1,age/2)),ease=Math.sin(p*Math.PI),reduced=typeof matchMedia==='function'&&matchMedia('(prefers-reduced-motion: reduce)').matches;
       emote.material.map=markMaps[id];emote.position.y=1.7+(reduced?0:ease*.08);
@@ -87,7 +93,7 @@ export function buildDragon(r) {
       if(id===7){body.rotation.z-=ease*.12;material.map=maps[4];}
       flightLines.visible=!reduced&&large&&[2,3].includes(id)&&p>.1&&p<.85;
     }
-    if(s.projectile){
+    if(s.projectile){microphone.visible=false;
       body.rotation.set(0,0,0);body.position.y=0;body.scale.set(1,.94,1);
       arms[0].rotation.z=-1.08;arms[1].rotation.z=1.08;
       for(let i=0;i<feet.length;i++){feet[i].position.y=.23;feet[i].position.z=.04;feet[i].rotation.x=-.3;}

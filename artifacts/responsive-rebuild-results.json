@@ -1,0 +1,101 @@
+{
+  "checks": [
+    {
+      "name": "Dialogue fits 320x568",
+      "passed": true
+    },
+    {
+      "name": "Dialogue fits 390x844",
+      "passed": true
+    },
+    {
+      "name": "Dialogue fits 1366x768",
+      "passed": true
+    },
+    {
+      "name": "Dialogue fits 1920x1080",
+      "passed": true
+    },
+    {
+      "name": "Dialogue fits 844x390",
+      "passed": true
+    },
+    {
+      "name": "Ruined street offers rebuild",
+      "passed": true
+    },
+    {
+      "name": "Reduced rebuild restores actual house",
+      "passed": true
+    },
+    {
+      "name": "Rebuilt street hides premature ending card",
+      "passed": true
+    },
+    {
+      "name": "Rebuild still requires seven taps",
+      "passed": true
+    },
+    {
+      "name": "Seven taps work after reconstruction",
+      "passed": true
+    },
+    {
+      "name": "Reduced claims completes",
+      "passed": true
+    },
+    {
+      "name": "Background continue works inside second floor",
+      "passed": true
+    },
+    {
+      "name": "Class controls fit 320x568",
+      "passed": true
+    },
+    {
+      "name": "Class reading stays above fixed control 320x568",
+      "passed": true
+    },
+    {
+      "name": "Class controls fit 390x844",
+      "passed": true
+    },
+    {
+      "name": "Class reading stays above fixed control 390x844",
+      "passed": true
+    },
+    {
+      "name": "Class controls fit 1366x768",
+      "passed": true
+    },
+    {
+      "name": "Class reading stays above fixed control 1366x768",
+      "passed": true
+    },
+    {
+      "name": "Class controls fit 1920x1080",
+      "passed": true
+    },
+    {
+      "name": "Class reading stays above fixed control 1920x1080",
+      "passed": true
+    },
+    {
+      "name": "Class controls fit 844x390",
+      "passed": true
+    },
+    {
+      "name": "Class reading stays above fixed control 844x390",
+      "passed": true
+    },
+    {
+      "name": "Reduced ending returns to street",
+      "passed": true
+    },
+    {
+      "name": "No runtime exceptions",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

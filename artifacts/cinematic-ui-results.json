@@ -1,0 +1,149 @@
+{
+  "checks": [
+    {
+      "name": "Old ending save ignored",
+      "passed": true
+    },
+    {
+      "name": "Building intact",
+      "passed": true
+    },
+    {
+      "name": "Opening continues phone conversation",
+      "passed": true
+    },
+    {
+      "name": "Conversation has social distance",
+      "passed": true
+    },
+    {
+      "name": "Flight is manual gate",
+      "passed": true
+    },
+    {
+      "name": "Zhuang guides position",
+      "passed": true
+    },
+    {
+      "name": "Correct position enables camera",
+      "passed": true
+    },
+    {
+      "name": "Independent portrait exists",
+      "passed": true
+    },
+    {
+      "name": "Gallery opens automatically",
+      "passed": true
+    },
+    {
+      "name": "Gallery switches to portrait",
+      "passed": true
+    },
+    {
+      "name": "Gallery zooms",
+      "passed": true
+    },
+    {
+      "name": "Closing retains accessible reopen",
+      "passed": true
+    },
+    {
+      "name": "Reopen retains image",
+      "passed": true
+    },
+    {
+      "name": "Background pause offers reachable continue",
+      "passed": true
+    },
+    {
+      "name": "Continue re-enables gallery send",
+      "passed": true
+    },
+    {
+      "name": "Gallery reachable 320x568",
+      "passed": true
+    },
+    {
+      "name": "Gallery reachable 390x844",
+      "passed": true
+    },
+    {
+      "name": "Gallery reachable 1366x768",
+      "passed": true
+    },
+    {
+      "name": "Gallery reachable 1920x1080",
+      "passed": true
+    },
+    {
+      "name": "Gallery reachable 844x390",
+      "passed": true
+    },
+    {
+      "name": "Receipt stays in scene",
+      "passed": true
+    },
+    {
+      "name": "Slow terminal reaches login",
+      "passed": true
+    },
+    {
+      "name": "Fake Fin interrupted",
+      "passed": true
+    },
+    {
+      "name": "Important-task button after speech",
+      "passed": true
+    },
+    {
+      "name": "Rebuild restores actual structure",
+      "passed": true
+    },
+    {
+      "name": "Claims introduction",
+      "passed": true
+    },
+    {
+      "name": "Claims completes",
+      "passed": true
+    },
+    {
+      "name": "Class invitation connects rooms",
+      "passed": true
+    },
+    {
+      "name": "Eight lessons finish",
+      "passed": true
+    },
+    {
+      "name": "Rating precedes true Fin",
+      "passed": true
+    },
+    {
+      "name": "Secret comes first",
+      "passed": true
+    },
+    {
+      "name": "Dry feedback line second",
+      "passed": true
+    },
+    {
+      "name": "886 third",
+      "passed": true
+    },
+    {
+      "name": "True Fin has street return",
+      "passed": true
+    },
+    {
+      "name": "Reload after final returns to beginning",
+      "passed": true
+    },
+    {
+      "name": "No runtime exceptions",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

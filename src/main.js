@@ -11,6 +11,7 @@ import { createMission } from './mission.js';
 import { createExploration } from './exploration.js';
 import { createBonus } from './bonus.js';
 import './presentation.css';
+import './responsive.css';
 
 const $=s=>document.querySelector(s),loading=$('#loading'),message=$('#loading-message'),error=$('#error');
 const loader=createLoading();
@@ -20,8 +21,7 @@ function showError(text){$('#error-message').textContent=text;error.hidden=false
 function menu(open){
   $('#settings').hidden=!open;$('#menu-toggle').setAttribute('aria-expanded',String(open));$('#menu-toggle').setAttribute('aria-label',open?'關閉設定':'開啟設定');
   if(open){exploration?.setActive(false);for(const b of document.querySelectorAll('[data-chapter]'))b.disabled=!chapters.data.unlocked.includes(b.dataset.chapter);}
-  if(open&&mission&&!mission.state.paused){menuPaused=true;mission.setPaused(true);}
-  else if(!open&&menuPaused){menuPaused=false;mission?.setPaused(false);}
+  if(mission)mission.setPaused(open,'menu');
 }
 listen($('#menu-toggle'),'click',()=>menu($('#settings').hidden));listen($('#menu-close'),'click',()=>menu(false));
 listen(document,'keydown',e=>{if(e.key==='Escape')menu(false);});listen($('#retry'),'click',()=>location.reload());
@@ -34,7 +34,8 @@ const reactionBubble=document.createElement('p');reactionBubble.className='drago
 const buttons=[...document.querySelectorAll('[data-view]')];
 const viewControls=createViewControls(()=>world,()=>mission,abort.signal);
 let chapterStorage;try{chapterStorage=localStorage;}catch{}
-const chapters=new ChapterProgress(chapterStorage);let restoring=false;
+for(const key of ['rainy711.epilogue.v3','rainy711.chapters.v1','rainy711.bonus.v1'])try{localStorage.removeItem(key);}catch{}
+const chapters=new ChapterProgress();let restoring=false;
 async function ensureXaihi(){
   if(world?.xaihi)return world.xaihi;
   if(xaihiPromise)return xaihiPromise;
@@ -43,7 +44,7 @@ async function ensureXaihi(){
     if(closed){actor.dispose();return null;}
     if(assetPaused)loader.progress(90);await world.prepareShaders(actor.root,'xaihi');if(closed){actor.dispose();return null;}
     world.xaihi=actor;world.xaihiLoading=false;
-    if(assetPaused){assetPaused=false;loader.hide();mission?.setPaused(false);}
+    if(assetPaused){assetPaused=false;loader.hide();mission?.setPaused(false,'asset');}
     return actor;
   }).catch(e=>{
     world.xaihiLoading=false;xaihiPromise=null;if(e.name==='AbortError')return null;
@@ -84,7 +85,7 @@ async function init(){
     if(closed)return;world.time=0;world.previous=undefined;world.tick(0,0,true);
     mission=createMission({mount:$('#app'),onCameraReset:()=>{world.actors?.cancelReaction();reactionBubble.hidden=true;world.resetStoryCamera();},capturePhoto:()=>{if($('#sound').checked)audio.effect('shutter');return world.capturePhoto();},onCameraAuto:()=>world.resetStoryCamera(),getCameraAuto:()=>world.autoCamera,
       onDinner:branch=>{
-        if(!branch){exploration?.setActive(false);world.director.reset();mission?.setTargets(world.director.targets);world.actors?.setMove(0,0,false);world.actors?.setObstacles(world.store.floorPlan);world.actors?.teleport(-1.25,3.25);}
+        if(!branch){exploration?.setActive(false);world.director.reset();world.remnant.reset();mission?.setTargets(world.director.targets);world.actors?.setMove(0,0,false);world.actors?.setObstacles(world.store.floorPlan);world.actors?.teleport(-1.25,3.25);}
         world.actors?.setDinner(branch);
       },
       onRestore:(id,state)=>{if(['rewind','last'].includes(id)){world.store.destruction.setProgress(99);world.store.destruction.update(state.clock+8,8);}world.director.finalBegun=false;},
@@ -95,14 +96,14 @@ async function init(){
         if(phase==='photo-review')ensureXaihi();
         if(['rewind','flashback'].includes(phase)&&!world.xaihi){
           assetPaused=!state.paused;
-          if(assetPaused){mission?.setPaused(true);loader.show('正在下載較早的店內影像',{compact:true});}
+          if(assetPaused){mission?.setPaused(true,'asset');loader.show('正在下載較早的店內影像',{compact:true});}
           ensureXaihi();
         }
         if(phase==='complete')world.actors?.setObstacles({obstacles:[],entrance:{minX:-4,maxX:4,z:1.8}});
         if(phase==='last'||phase==='aim-final')mission?.setTargets(world.director.targets);
       },
       onAction:event=>{world.director.action?.(event);if($('#sound').checked&&['photo-send','heat-start','key','grid-connect'].includes(event.type))audio.effect(event.type);},
-      onAttack:event=>{if($('#sound').checked)audio.effect(event.finisher?'stamp':'shot');const hadSign=world.store.destruction.state.progress>=44;world.director.attack(event);if(!hadSign&&event.progress>=44&&!event.finisher)mission?.holdAttack(4.4);mission?.setTargets(world.director.targets);},
+      onAttack:event=>{if($('#sound').checked)audio.effect(event.finisher?'stamp':'shot');world.resetStoryCamera();const hadSign=world.store.destruction.state.progress>=44;world.director.attack(event);if(!hadSign&&event.progress>=44&&!event.finisher)mission?.holdAttack(4.4);mission?.setTargets(world.director.targets);},
       onState:state=>{world.missionState=state;const resume=document.querySelector('.chapter-resume');if(resume&&state.phase!=='ready'&&!state.paused)resume.hidden=true;$('#app').dataset.storyPhase=state.phase;}
     });
     mission.setTargets(world.director.targets);world.onClockState=value=>mission.setClockRunning(value);mission.setClockRunning(world.running&&!document.hidden);
@@ -114,6 +115,7 @@ async function init(){
           const first=ray.intersectObjects([world.actors?.root,world.store.root].filter(Boolean),true).find(h=>{for(let n=h.object;n;n=n.parent)if(!n.visible)return false;return h.object.material?.visible!==false;});
           if(first?.object.userData.hotspot==='dragon'){const text=world.actors.reactDragon(world.time,['ready','complete'].includes(mission.state.phase));if(text){reactionBubble.textContent=text;reactionBubbleUntil=world.time+2;reactionBubble.hidden=false;}return true;}
         }
+        if(!mission.state.paused&&world.remnant.tap(ray,world.time))return true;
         if(!mission.state.presentationLocked&&!['finisher','photo-return','photo-sending'].includes(mission.state.phase)&&world.interact(ray))return true;
         if(!['combat','aim-final'].includes(mission.state.phase))return false;
         const target=world.director.pick(ray.ray);if(target!==null)mission.selectTarget(target);return true;
@@ -132,7 +134,9 @@ async function init(){
     const volumeRow=document.createElement('label');volumeRow.className='setting-row';volumeRow.textContent='音量';const volume=document.createElement('input');volume.type='range';volume.min=0;volume.max=100;volume.value=70;volume.setAttribute('aria-label','雨聲與音效音量');volume.addEventListener('input',()=>audio.setVolume(Number(volume.value)/100),{signal:abort.signal});volumeRow.append(volume);$('#settings').append(volumeRow);audio.setVolume(.7);
     const resetCameraButton=document.createElement('button');resetCameraButton.textContent='立即回到演出';resetCameraButton.addEventListener('click',()=>{world.resetStoryCamera();menu(false);},{signal:abort.signal});$('#settings').append(resetCameraButton);
     const chapterMenu=document.createElement('section');chapterMenu.className='chapter-menu';const heading=document.createElement('h3');heading.textContent='章節接續／重看';chapterMenu.append(heading);$('#settings').append(chapterMenu);for(const c of CHAPTERS){const b=document.createElement('button');b.textContent=c.label;b.dataset.chapter=c.id;b.disabled=!chapters.data.unlocked.includes(c.id);b.addEventListener('click',()=>restore(c.id),{signal:abort.signal});chapterMenu.append(b);}
-    let hiddenPaused=false;listen(document,'visibilitychange',()=>{if(document.hidden&&!mission.state.paused){hiddenPaused=true;mission.setPaused(true);}else if(!document.hidden&&hiddenPaused){hiddenPaused=false;resume.hidden=false;resume.textContent='已暫停 · 按繼續回到故事';resume.onclick=()=>{mission.setPaused(false);resume.hidden=true;resume.onclick=null;};}});
+    const backgroundResume=document.createElement('button');backgroundResume.className='background-resume';backgroundResume.textContent='已暫停 · 繼續';backgroundResume.hidden=true;$('#app').append(backgroundResume);
+    listen(document,'visibilitychange',()=>{if(document.hidden){mission.setPaused(true,'background');}else if(mission.pauseReasons.includes('background'))backgroundResume.hidden=false;});
+    backgroundResume.addEventListener('click',()=>{mission.setPaused(false,'background');backgroundResume.hidden=true;},{signal:abort.signal});
     window.__rainy711={
       get bonus(){return bonus.state;},get chapters(){return chapters.data;},restoreChapter:id=>restore(id),assist:()=>mission.machine.assist(),
       get switches(){return {signal:world.signalIndex||0,room:world.roomLightOn??true,door:world.store.doors.manual};},get time(){return world.time;},get renders(){return world.renderCount;},get drawCalls(){return world.renderer.info.render.calls;},get triangles(){return world.renderer.info.render.triangles;},get warmup(){return world.shaderWarmup.state;},resetCamera:()=>world.resetStoryCamera(),
@@ -143,7 +147,7 @@ async function init(){
       get mission(){return mission.state;},get story(){return mission.state;},get destruction(){return {...world.store.destruction.state,targets:world.store.destruction.targets};},get garden(){return world.garden.state;},get effects(){return world.siege.state;},
       get cinematic(){return world.director.status;},get tianshi(){return world.tianshi.state;},get microwave(){return world.microwave.state;},get connectionStage(){return world.connectionStage.state;},get xaihi(){return world.xaihi?.state||{loaded:false,loading:world.xaihiLoading,error:world.xaihiError};},
       get position(){return world.actors?.position.toArray();},get heroPosition(){return world.actors?.heroPosition;},get dragonPosition(){return world.actors?.dragonPosition;},get walking(){return exploration.active;},get minimumZoom(){return world.controls.minDistance;},projectPoint:point=>world.projectPoint(point),cameraOcclusion:point=>world.cameraOcclusion(point),
-      fly:(x,z)=>mission.machine.fly(x,z),finishFlight:()=>mission.machine.finishFlight(),sendPhoto:()=>mission.sendPhoto(),takePhoto:()=>mission.takePhoto(),investigate:id=>mission.investigate(id),acceptCall:()=>mission.acceptCall(),hackRotate:index=>mission.hackRotate(index),keyChunk:value=>mission.keyChunk(value),get photo(){return mission.photo;},get investigationProps(){return world.investigationProps.state;},toggleAutoCamera:()=>world.toggleAutoCamera(),
+      fly:(x,z)=>mission.machine.fly(x,z),finishFlight:()=>mission.machine.finishFlight(),sendPhoto:()=>mission.sendPhoto(),takePhoto:()=>mission.takePhoto(),investigate:id=>mission.investigate(id),acceptCall:()=>mission.acceptCall(),hackRotate:index=>mission.hackRotate(index),keyChunk:value=>mission.keyChunk(value),get photo(){return mission.photo;},get photoViewer(){return mission.viewer;},get investigationProps(){return world.investigationProps.state;},toggleAutoCamera:()=>world.toggleAutoCamera(),
       missionStart:()=>mission.start(),missionNext:()=>mission.next(),missionChoose:id=>mission.choose(id),missionReplay:()=>mission.replay(),missionAttack:t=>mission.attack(t),missionSelectTarget:id=>mission.selectTarget(id),missionOutput:id=>mission.setOutput(id),missionPause:value=>mission.setPaused(value),
       missionKey:value=>mission.key(value),missionSubmit:()=>mission.submitLogin(),missionVerify:()=>mission.verify(),missionLever:value=>mission.setLever(value),missionHeatStart:time=>mission.heatStart(time??world.time),missionHeatStop:time=>mission.heatStop(time??world.time),missionHeatRetry:()=>mission.heatRetry(),missionHeatCancel:()=>mission.heatCancel(),
       storyNext:()=>mission.next(),storyChoose:id=>mission.choose(id),storyStart:()=>mission.start(),storyReplay:()=>mission.replay(),hotspot:kind=>mission.hotspot(kind),

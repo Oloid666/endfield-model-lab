@@ -28,6 +28,7 @@ export function buildConnectionStage(scene,r){
     shader.vertexShader=shader.vertexShader.replace('#include <common>','#include <common>\nattribute vec4 instanceKeyUV;');
     shader.vertexShader=shader.vertexShader.replace('#include <uv_vertex>','#include <uv_vertex>\n#ifdef USE_MAP\nvMapUv=vMapUv*instanceKeyUV.zw+instanceKeyUV.xy;\n#endif');
   };material.customProgramCacheKey=()=> 'dragon-keycap-atlas-v8';
+  const scanner=box(root,r.material('#89cfb5',{emissive:0x72bfa4,emissiveIntensity:.8,transparent:true,opacity:.55}),[0,.15,-1.1],[3.4,.012,.035]);scanner.userData.dynamic=true;
   const records=[];
   function add(key,field,x,z,w,d){records.push({key,field,x,z,w,d,index:records.length});}
   [...letters,'_','⌫'].forEach((key,i)=>add(key,'account',-1.5+i%6*.6,-.84+Math.floor(i/6)*.42,.5,.32));
@@ -78,7 +79,8 @@ export function buildConnectionStage(scene,r){
     phase=state.phase||'ready';const c=state.connection||{},clock=Number.isFinite(state.clock)?state.clock:t;
     root.visible=['terminal-deploy','login','verify-talk','captcha','verified-talk','lever'].includes(phase);if(!root.visible){pressed=false;return;}
     field=c.field==='password'?'password':'account';lastKey=canonical(c.lastKey);keyNumber=Number(c.keyNumber)||0;keyAt=Number.isFinite(c.keyAt)?c.keyAt:-Infinity;lever=clamp(c.lever);
-    const deploy=phase==='terminal-deploy'?clamp(state.phaseElapsed/2):1;root.scale.set(1,Math.max(.03,deploy),Math.max(.03,deploy));root.position.y=.335+(1-deploy)*.7;keyboard.visible=['terminal-deploy','login'].includes(phase);captcha.visible=phase==='captcha';leverRoot.visible=phase==='lever';tick.visible=Boolean(c.verified);handle.position.x=-1.18+2.36*lever;
+    scanner.visible=['terminal-deploy','lever'].includes(phase);scanner.position.z=-1.1+((Number(state.clock)||t)*.5%1)*2.2;
+    const deploy=phase==='terminal-deploy'?clamp(state.phaseElapsed/5.5):1;root.scale.set(1,Math.max(.03,deploy),Math.max(.03,deploy));root.position.y=.335+(1-deploy)*.7;keyboard.visible=['terminal-deploy','login'].includes(phase);captcha.visible=phase==='captcha';leverRoot.visible=phase==='lever';tick.visible=Boolean(c.verified);handle.position.x=-1.18+2.36*lever;
     const age=clock-keyAt,depression=age>=0&&age<.38?Math.sin(age/.38*Math.PI)*.048:0;pressed=depression>.002;count=0;
     for(const record of records){
       const active=record.field===field,down=active&&record.key===lastKey?depression:0;

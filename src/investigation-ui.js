@@ -1,8 +1,9 @@
+import {createPhotoViewer} from './photo-viewer.js';
 import {portrait} from './portrait.js';
 import './investigation.css';
 const E=(tag,cls,text)=>{const n=document.createElement(tag);n.className=cls;if(text)n.textContent=text;return n;};
 const phases=new Set(['shoe-view','pylon-link','fire-ready','photo-flight','photo','photo-review','comm-request','hack','heat']);
-export function createInvestigationUI({mount,machine,capture,onAuto,getAuto}){
+export function createInvestigationUI({mount,machine,capture,onAuto,getAuto,onGuide}){
  const abort=new AbortController();let buildAbort=new AbortController(),building=false;
  const listen=(el,type,fn)=>el.addEventListener(type,fn,{signal:building?buildAbort.signal:abort.signal});
  const root=E('section','investigation-ui');root.hidden=true;
@@ -15,25 +16,26 @@ export function createInvestigationUI({mount,machine,capture,onAuto,getAuto}){
  const rhythmStatus=E('p','rhythm-status');
  root.append(title,callPortrait,message,photoStage,puzzle,rhythm,rhythmStatus,actions);mount.append(root);
  const auto=E('p','cinematic-toggle','自由觀看 · 點下一句回到演出');auto.type='button';mount.append(auto);listen(auto,'click',()=>onAuto?.());
+ const viewer=createPhotoViewer({mount,signal:abort.signal,onSend:()=>machine.sendPhoto(),onRetake:()=>machine.phaseTo('photo')});
+ let guidance='',guideSince=0,guidePending='';let viewButton=null;
  let phase='',photo=null,scale=1,dx=0,dy=0,held=null,animationKey='',animations=[],startPointer=null;
  const points=new Map();let gestureStart=null;
  const transform=()=>{photoInner.style.transform=`translate(${dx}px,${dy}px) scale(${scale})`;};
  const button=(label,fn,cls='')=>{const b=E('button',cls,label);b.type='button';listen(b,'click',fn);actions.append(b);return b;};
- let capturing=false;async function snapshot(){if(capturing)return;capturing=true;root.setAttribute('aria-busy','true');message.textContent='正在處理清晰遠景與人物近照…';try{const result=await capture();if(machine.phase!=='photo')return;photo=result;scale=1;dx=dy=0;transform();machine.takePhoto();}catch(e){message.textContent=e.message;}finally{capturing=false;root.removeAttribute('aria-busy');}}
+ let capturing=false,pendingCapture=false;async function snapshot(){if(capturing)return;capturing=true;root.setAttribute('aria-busy','true');message.textContent='正在處理清晰遠景與人物近照…';try{const result=await capture();if(machine.phase!=='photo')return;photo=result;scale=1;dx=dy=0;transform();if(machine.paused)pendingCapture=true;else machine.takePhoto();}catch(e){message.textContent=e.message;}finally{capturing=false;root.removeAttribute('aria-busy');}}
  function inspect(id){if(scale<1.2){message.textContent='先放大照片，再點你想調查的異常。';return;}machine.investigate(id);}
  function build(s){
    buildAbort.abort();buildAbort=new AbortController();building=true;
    phase=s.phase;root.dataset.phase=phase;actions.replaceChildren();puzzle.replaceChildren();photoInner.querySelectorAll('button').forEach(n=>n.remove());animations.forEach(a=>a.cancel());animations=[];animationKey='';
-   photoStage.hidden=phase!=='photo-review';callPortrait.hidden=phase!=='comm-request';puzzle.hidden=phase!=='hack';rhythm.hidden=rhythmStatus.hidden=phase!=='heat';
+   photoStage.hidden=true;callPortrait.hidden=phase!=='comm-request';puzzle.hidden=phase!=='hack';rhythm.hidden=rhythmStatus.hidden=phase!=='heat';
    if(phase==='shoe-view'){title.textContent='導播 · 合乎舟禮';message.textContent='鞋子環繞中。先看完這一圈。';button('再來一碗',()=>machine.anotherBowl(),'shoe-again');button('吃飽了',()=>machine.next(),'shoe-continue');}
    if(phase==='pylon-link'){title.textContent='天師樁 · 接入中';message.textContent='鏡頭回到遠景，繼續接通供電。';}
    if(phase==='fire-ready'){title.textContent='武陵儲能網 · 發射系統';message.textContent='系統：充能完畢。指針接近中央時按下砲擊。';button('進入發射系統',()=>machine.next(),'fire-continue');}
-   if(phase==='photo-flight'){title.textContent='龍泡泡 · 攝影就位';for(const [text,d]of [['後退',1],['前進',-1]]){const b=button(text,()=>{},'flight-step');b.dataset.direction=d;let down=false,pressedAt=0;listen(b,'pointerdown',e=>{down=true;pressedAt=performance.now();b.setPointerCapture(e.pointerId);machine.fly(0,d);});for(const type of ['pointerup','pointercancel','lostpointercapture'])listen(b,type,()=>{if(down){down=false;if(performance.now()-pressedAt<180)machine.stepFlight(d);machine.fly(0,0);}});listen(b,'keydown',e=>{if(['Enter',' '].includes(e.key)){e.preventDefault();machine.fly(0,d);}});listen(b,'keyup',()=>machine.fly(0,0));}button('開始拍照',()=>machine.finishFlight(),'flight-ready');}
-   if(phase==='photo'){title.textContent='拍張照片 · 報平安';message.textContent='龍泡泡已就位 · 把 711 招牌也留在畫面裡';button('●',snapshot,'photo-shutter');}
+   if(phase==='photo-flight'){title.textContent='龍泡泡 · 攝影就位';for(const [text,d]of [['後退',1],['前進',-1]]){const b=button(text,()=>{},'flight-step');b.dataset.direction=d;let down=false,pressedAt=0;listen(b,'pointerdown',e=>{down=true;pressedAt=performance.now();b.setPointerCapture(e.pointerId);machine.fly(0,d);});for(const type of ['pointerup','pointercancel','lostpointercapture'])listen(b,type,()=>{if(down){down=false;if(performance.now()-pressedAt<180)machine.stepFlight(d);machine.fly(0,0);}});listen(b,'keydown',e=>{if(['Enter',' '].includes(e.key)){e.preventDefault();machine.fly(0,d);}});listen(b,'keyup',()=>machine.fly(0,0));}button('可以拍了',()=>machine.finishFlight(),'flight-ready');}
+   if(phase==='photo'){title.textContent='拍張照片 · 報平安';message.textContent='龍泡泡已就位 · 把 711 招牌也留在畫面裡';button('拍好了，給她看看',snapshot,'photo-shutter');}
    if(phase==='photo-review'){
-     title.textContent='照片預覽 · 傳給管理員';message.textContent='確認沒眨眼，發送給管理員，讓他知道有好好吃飯。';image.src=photo?.src||'';
-     button('確認沒眨眼',()=>{image.src=photo.closeup||photo.src;scale=1;transform();},'photo-face');button('遠景',()=>{image.src=photo.src;scale=1;transform();});button('－',()=>{scale=Math.max(1,scale-.3);transform();});button('＋',()=>{scale=Math.min(2,scale+.25);transform();});button('重拍',()=>machine.phaseTo('photo'));button('發送',()=>{if(root.dataset.sending)return;root.dataset.sending='true';if(matchMedia('(prefers-reduced-motion: reduce)').matches){delete root.dataset.sending;machine.sendPhoto();return;}const a=actions.animate([{transform:'translateY(0)'},{transform:'translateY(-5px)'},{transform:'translateY(0)'}],{duration:450});animations.push(a);a.onfinish=()=>{delete root.dataset.sending;machine.sendPhoto();};},'photo-send');
-   }
+     title.textContent='莊芳宜與龍泡泡';message.textContent='一起確認照片，再傳給管理員。';viewButton=button('查看照片',()=>viewer.open(photo,viewButton),'photo-open');button('重拍',()=>machine.phaseTo('photo'));button('傳給管理員',()=>machine.sendPhoto(),'photo-send');viewer.open(photo,viewButton);
+   }else if(viewer.active)viewer.hide();
    if(phase==='comm-request'){title.textContent='巡衛通訊 · 請求接入';message.textContent='巡衛隊長・弭弗 請求接入';button('◉ 接通',()=>machine.acceptCall(),'call-accept');}
    if(phase==='hack'){
      title.textContent='塞西 · 電網維護終端 / login.php';message.textContent='點一下轉動線路。繞過防火牆：四塊彎線接通入口與出口，再開始駭入。';
@@ -41,7 +43,7 @@ export function createInvestigationUI({mount,machine,capture,onAuto,getAuto}){
      button('開始駭入',()=>machine.hackSubmit());
    }
    if(phase==='heat'){
-     title.textContent='極速加熱 · 慢放操作';
+     title.textContent='微波加熱 · 功率控制';
      const hit=button('開始送電',()=>{},'rhythm-pad');hit.setAttribute('aria-label','節拍送電，圓點短按，長條按住到尾端');
      listen(hit,'pointerdown',e=>{if(e.isPrimary===false||e.button>0||held!==null||machine.paused)return;e.preventDefault();held=e.pointerId;hit.setPointerCapture(e.pointerId);machine.heatStart(source(e));});
      listen(hit,'pointerup',e=>{if(held!==e.pointerId)return;e.preventDefault();held=null;machine.heatStop(source(e));});
@@ -53,16 +55,15 @@ export function createInvestigationUI({mount,machine,capture,onAuto,getAuto}){
  }
  let sourceAnchor=0,perfAnchor=performance.now();
  function source(e){let stamp=Number(e?.timeStamp)||performance.now();if(stamp>1e12)stamp-=performance.timeOrigin;return sourceAnchor+(stamp-perfAnchor)/1000;}
- listen(photoStage,'pointerdown',e=>{if(e.target.closest('button'))return;photoStage.setPointerCapture(e.pointerId);points.set(e.pointerId,{x:e.clientX,y:e.clientY});startPointer={x:e.clientX,y:e.clientY,dx,dy};if(points.size===2){const [a,b]=[...points.values()];gestureStart={distance:Math.hypot(a.x-b.x,a.y-b.y),scale};}});
- listen(photoStage,'pointermove',e=>{if(!points.has(e.pointerId))return;points.set(e.pointerId,{x:e.clientX,y:e.clientY});if(points.size===2&&gestureStart){const [a,b]=[...points.values()];scale=Math.max(1,Math.min(2,gestureStart.scale*Math.hypot(a.x-b.x,a.y-b.y)/Math.max(1,gestureStart.distance)));}else if(points.size===1&&startPointer){dx=Math.max(-160,Math.min(160,startPointer.dx+e.clientX-startPointer.x));dy=Math.max(-180,Math.min(180,startPointer.dy+e.clientY-startPointer.y));}transform();});
- for(const type of ['pointerup','pointercancel','lostpointercapture'])listen(photoStage,type,e=>{points.delete(e.pointerId);gestureStart=null;startPointer=null;});
  function update(s){
+   if(pendingCapture&&!s.paused&&s.phase==='photo'){pendingCapture=false;machine.takePhoto();return;}
+   viewer.setPaused(s.paused);
    sourceAnchor=machine.sourceTime;perfAnchor=performance.now();
    auto.textContent='自由觀看 · 點下一句回到演出';auto.hidden=!!getAuto?.()||['photo-flight','photo','photo-review','hack','heat'].includes(s.phase);
    root.hidden=!phases.has(s.phase);if(root.hidden){if(phase!==s.phase){animations.forEach(a=>a.cancel());animations=[];phase=s.phase;}return;}if(phase!==s.phase)build(s);
-   root.dataset.paused=String(s.paused);for(const b of root.querySelectorAll('button'))b.disabled=s.paused;
+   root.dataset.paused=String(s.paused);for(const b of root.querySelectorAll('button'))b.disabled=s.paused||capturing;
    if(s.phase==='shoe-view'){message.textContent=s.shoeReady?'龍泡泡：還要再看一圈？':'鞋子環繞中。先看完這一圈。';for(const b of actions.children)b.hidden=!s.shoeReady;}
-   if(s.phase==='photo-flight'){const f=s.flight;message.textContent=f.ready?'構圖合適，可以拍照。':`往後退，找到適合拍照的位置 · 還差 ${Math.abs(f.z-10.5).toFixed(1)}m`;actions.querySelector('.flight-ready').disabled=!f.ready||s.paused;}if(s.phase==='photo-review'&&photo){photoInner.style.width='100%';photoInner.style.height='100%';}
+   if(s.phase==='photo-flight'){const f=s.flight,zone=f.z<9.9?'近':f.z>11.1?'遠':'好';if(guidePending!==zone){guidePending=zone;guideSince=s.clock;}if((s.clock-guideSince>=.6||!guidance)&&guidance!==zone){guidance=zone;onGuide?.();}title.textContent='莊芳宜 · 攝影就位';message.textContent=guidance==='好'?'莊：對，就這裡。可以拍了。':guidance==='遠'?'莊：太遠了，回來一些。':'莊：再退一點。';actions.querySelector('.flight-ready').disabled=!f.ready||s.paused;}
    if(s.phase==='hack'){if(s.hack.failures)message.textContent=s.hack.failures>1?'輔助路徑：┓ ┏ / ┗ ┛（由上至下）。':'線路未接通。入口在左上，出口在右上；先向下繞一圈。';}if(s.phase==='hack')for(let i=0;i<4;i++){const b=puzzle.children[i],turn=s.hack.turns[i];b.firstChild.style.transform=`rotate(${turn*90}deg)`;b.classList.toggle('connected',turn===[1,0,2,3][i]);}
    if(s.phase==='heat'){
      const h=s.heat,playing=h.status==='playing';
@@ -74,6 +75,6 @@ export function createInvestigationUI({mount,machine,capture,onAuto,getAuto}){
      for(let i=0;i<4;i++){const note=h.notes[i],n=notes[i];n.hidden=!playing||!note;n.dataset.result=note?.result||'';if(note&&animations[i]){const wanted=(h.elapsed-note.at+4)*1000;if(!playing||s.paused||document.hidden){animations[i].pause();animations[i].currentTime=wanted;}else{if(Math.abs(Number(animations[i].currentTime)-wanted)>100)animations[i].currentTime=wanted;animations[i].play();}}}
    }
  }
- listen(window,'blur',()=>{if(held!==null){held=null;machine.heatCancel();}});
- return {update,get photo(){return photo;},snapshot,dispose(){abort.abort();buildAbort.abort();animations.forEach(a=>a.cancel());root.remove();auto.remove();}};
+ listen(window,'blur',()=>{machine.fly(0,0);if(held!==null){held=null;machine.heatCancel();}});
+ return {update,get photo(){return photo;},get viewer(){return viewer.state;},snapshot,dispose(){abort.abort();buildAbort.abort();animations.forEach(a=>a.cancel());viewer.dispose();root.remove();auto.remove();}};
 }

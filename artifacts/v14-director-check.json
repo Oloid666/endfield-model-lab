@@ -367,32 +367,62 @@
       "detail": null
     },
     {
-      "name": "Purchase reaches store-shelf-insert",
+      "name": "Purchase reaches dragon-store-follow",
       "passed": true,
       "detail": null
     },
     {
-      "name": "Purchase reaches store-shelf-insert",
+      "name": "Continuous shopping shot tracks Dragon rather than shelves",
       "passed": true,
       "detail": null
     },
     {
-      "name": "Purchase reaches store-shelf-insert",
+      "name": "Shopping camera remains safely outside Dragon",
       "passed": true,
       "detail": null
     },
     {
-      "name": "Purchase reaches dragon-at-counter",
+      "name": "Purchase reaches dragon-store-follow",
       "passed": true,
       "detail": null
     },
     {
-      "name": "Counter insert tracks the actual Dragon position",
+      "name": "Continuous shopping shot tracks Dragon rather than shelves",
       "passed": true,
       "detail": null
     },
     {
-      "name": "Insert transitions cut instead of passing through models",
+      "name": "Shopping camera remains safely outside Dragon",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Purchase reaches dragon-store-follow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Continuous shopping shot tracks Dragon rather than shelves",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Shopping camera remains safely outside Dragon",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Purchase reaches dragon-store-follow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Continuous shopping shot tracks Dragon rather than shelves",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Shopping camera remains safely outside Dragon",
       "passed": true,
       "detail": null
     },
@@ -430,8 +460,8 @@
       "name": "Shopping shots keep the camera outside Dragon with a buffer",
       "passed": true,
       "detail": {
-        "distance": 0.9063845835058497,
-        "at": 3.6
+        "distance": 3.669698936541071,
+        "at": 4.166666666666667
       }
     },
     {
@@ -728,9 +758,9 @@
         "elapsed": 23,
         "beat": "charge-pylon-two",
         "position": [
-          17.8,
-          10.77622222222222,
-          -2
+          19,
+          12.589185185185185,
+          -12.8
         ],
         "target": [
           13.6,
@@ -745,17 +775,17 @@
       "passed": true,
       "detail": {
         "projected": [
-          1.3054417743321707e-15,
-          0.061257852054607424,
-          0.987562059421065
+          1.2938806685300706e-15,
+          0.05557160169032138,
+          0.9876766400544836
         ],
         "label": "portrait",
         "elapsed": 23,
         "beat": "charge-pylon-two",
         "position": [
-          17.8,
-          10.77622222222222,
-          -2
+          19,
+          12.589185185185185,
+          -12.8
         ],
         "target": [
           13.6,
@@ -773,9 +803,9 @@
         "elapsed": 23,
         "beat": "charge-pylon-two",
         "position": [
-          17.8,
-          10.77622222222222,
-          -2
+          19,
+          12.589185185185185,
+          -12.8
         ],
         "target": [
           13.6,
@@ -1004,9 +1034,9 @@
         "elapsed": 23,
         "beat": "charge-pylon-two",
         "position": [
-          17.799999999999997,
-          10.77622222222222,
-          -2
+          19,
+          12.589185185185185,
+          -12.8
         ],
         "target": [
           13.6,
@@ -1021,17 +1051,17 @@
       "passed": true,
       "detail": {
         "projected": [
-          3.2966413957928496e-16,
-          0.07244887490913485,
-          0.9875620594210649
+          3.267446053099115e-16,
+          0.06572381963006721,
+          0.9876766400544836
         ],
         "label": "landscape",
         "elapsed": 23,
         "beat": "charge-pylon-two",
         "position": [
-          17.799999999999997,
-          10.77622222222222,
-          -2
+          19,
+          12.589185185185185,
+          -12.8
         ],
         "target": [
           13.6,
@@ -1049,9 +1079,9 @@
         "elapsed": 23,
         "beat": "charge-pylon-two",
         "position": [
-          17.799999999999997,
-          10.77622222222222,
-          -2
+          19,
+          12.589185185185185,
+          -12.8
         ],
         "target": [
           13.6,
@@ -1071,7 +1101,7 @@
         "position": [
           4.76,
           11.352,
-          32
+          31.999999999999996
         ],
         "target": [
           -0.6999999999999994,
@@ -1304,9 +1334,9 @@
       "elapsed": 23,
       "beat": "charge-pylon-two",
       "position": [
-        17.8,
-        10.77622222222222,
-        -2
+        19,
+        12.589185185185185,
+        -12.8
       ],
       "target": [
         13.6,
@@ -1432,9 +1462,9 @@
       "elapsed": 23,
       "beat": "charge-pylon-two",
       "position": [
-        17.799999999999997,
-        10.77622222222222,
-        -2
+        19,
+        12.589185185185185,
+        -12.8
       ],
       "target": [
         13.6,
@@ -1450,7 +1480,7 @@
       "position": [
         4.76,
         11.352,
-        32
+        31.999999999999996
       ],
       "target": [
         -0.6999999999999994,

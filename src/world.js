@@ -22,6 +22,7 @@ import { MissionDirector } from './mission-director.js';
 import { buildTianshiGrid } from './tianshi-grid.js';
 import { buildMicrowave } from './microwave.js';
 import { buildConnectionStage } from './connection-stage.js';
+import {buildMealRemnant} from './meal-remnant.js';
 import { ShaderWarmup } from './shader-warmup.js';
 
 export class World {
@@ -57,7 +58,7 @@ export class World {
     this.r.mesh(this.r.geometry('BoxGeometry',1,1,1),this.r.material('#e6f1ff',{emissive:0xb6d5ff,emissiveIntensity:2.5}),this.scene,[0,3.45,2.16],[8.95,.045,.06])];
     this.scene.environment=makeNightEnvironment(this.renderer,this.r);this.scene.environmentIntensity=.48;
     this.store=buildStore(this.scene,this.r);this.batchStats=optimizeStaticSet(this.store.root,this.r);
-    this.garden=buildPearGarden(this.scene,this.r);this.siege=buildSiegeEffects(this.scene,this.r);
+    this.remnant=buildMealRemnant(this.scene,this.r);this.garden=buildPearGarden(this.scene,this.r);this.siege=buildSiegeEffects(this.scene,this.r);
     this.tianshi=buildTianshiGrid(this.scene,this.r);this.microwave=buildMicrowave(this.scene,this.r);this.connectionStage=buildConnectionStage(this.scene,this.r);this.investigationProps=buildInvestigationProps(this.scene,this.r);
     this.weather=buildWeather(this.scene,this.r);this.wet=applyWetPavement([...(this.store.wetMaterials||[]),...(this.garden.wetMaterials||[])],this.weather.reflection,this.r);
     this.director=new MissionDirector(this);this.refreshGlassProbe();this.shaderWarmup=new ShaderWarmup(this.renderer,this.scene,this.camera);
@@ -135,12 +136,14 @@ export class World {
     const camera=this.camera,position=camera.position.clone(),quaternion=camera.quaternion.clone(),fov=camera.fov,aspect=camera.aspect,dpr=this.renderer.getPixelRatio();
     const render=(width,height)=>{this.renderer.setPixelRatio(1);this.renderer.setSize(width,height,false);this.composer.setSize(width,height);this.fxaa.uniforms.resolution.value.set(1/width,1/height);camera.aspect=width/height;camera.updateProjectionMatrix();this.composer.render();const c=document.createElement('canvas');c.width=width;c.height=height;c.getContext('2d').drawImage(this.renderer.domElement,0,0);return c;};
     try{
+      const lens=this.photoPhone?.getObjectByName('camera-lens');if(lens){lens.getWorldPosition(camera.position);camera.lookAt(...this.controls.target.toArray());}
+      const captureOrigin=camera.position.toArray();
       const width=aspect>=1?2048:Math.round(2048*aspect),height=aspect>=1?Math.round(2048/aspect):2048;
       const wide=render(width,height),points=[['floor',[-3.05,1.08,2.1]],['server',[0,4.6,1.4]]].map(([id,p])=>{const q=this.projectPoint(p);return {id,x:(q[0]+1)/2,y:(1-q[1])/2,z:q[2]};});
-      const h=this.actors.heroPosition;camera.position.set(h[0]+.18,h[1]+1.73,h[2]+1.65);camera.lookAt(h[0],h[1]+1.63,h[2]);camera.fov=32;
+      const h=this.actors.heroPosition;camera.lookAt(h[0],h[1]+1.57,h[2]);const distance=camera.position.distanceTo(new T.Vector3(h[0],h[1]+1.57,h[2]));camera.fov=T.MathUtils.radToDeg(2*Math.atan(.57/distance));
       await nextFrame();const close=render(1024,1280),src=wide.toDataURL('image/png'),closeup=close.toDataURL('image/png');
       const display=this.photoPhone?.getObjectByName('camera-screen');if(display){const thumb=document.createElement('canvas');thumb.width=256;thumb.height=384;thumb.getContext('2d').drawImage(close,0,0,256,384);this.photoTexture??=this.r.own(new T.CanvasTexture(thumb));this.photoTexture.image=thumb;this.photoTexture.colorSpace=T.SRGBColorSpace;this.photoTexture.needsUpdate=true;display.material.map=display.material.emissiveMap=this.photoTexture;display.material.color.set(0xffffff);display.material.emissive.set(0xffffff);display.material.emissiveIntensity=.3;display.material.needsUpdate=true;}
-      return {src,width,height,points,closeup};
+      return {src,width,height,points,closeup,captureOrigin};
     }finally{camera.position.copy(position);camera.quaternion.copy(quaternion);camera.fov=fov;this.renderer.setPixelRatio(dpr);this.resize();camera.aspect=aspect;camera.updateProjectionMatrix();if(wasRunning)this.start();}
   }
   projectPoint(point){const p=new T.Vector3().fromArray(point).project(this.camera);return p.toArray();}
@@ -180,7 +183,7 @@ export class World {
     this.controls.update();if(this.director.cameraRoll)this.camera.rotateZ(this.director.cameraRoll);const close=this.camera.position.distanceTo(this.controls.target)<(this.camera.aspect<.85?14:11);
     if(close!==this.closeFraming){this.closeFraming=close;this.onFraming(close);}
     const presentation=this.missionState?.vcr,damage=presentation?0:this.store.destruction.state.progress;this.weather.setShelter(damage<80,damage<44);
-    const visualTime=this.director.visualTime??t;
+    const visualTime=this.director.visualTime??t;this.remnant.update(visualTime,this.missionState);
     this.store.glass.uniforms.uTime.value=visualTime;this.wet.update(visualTime);this.weather.update(visualTime);
     if(render){this.renderer.info.reset();this.composer.render();this.renderCount++;
       const phase=this.missionState?.phase,key={energy:'general',last:'mikoto',cargo:'cargo',briefing:'taste',login:'login',heat:'microwave',landing:'insurance'}[phase];this.sceneStills??={};

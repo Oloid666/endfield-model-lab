@@ -16,9 +16,9 @@ export const CHAPTERS=[{id:'intro',label:'晚餐與拍照'},{id:'cargo',label:'�
 export const CONNECTION_ACCOUNT='endfield_power';
 export const CONNECTION_PASSWORD='5201314';
 export const outputModes=[
-  {id:'steady',label:'穩壓',hint:'寬判定 · 低後座',multiplier:1,speed:1,width:.18,miss:.38,perfect:.06,recoil:.7},
-  {id:'strong',label:'強攻',hint:'威力 +20% · 較快',multiplier:1.2,speed:1.2,width:.15,miss:.34,perfect:.05,recoil:1.15},
-  {id:'overload',label:'過載',hint:'威力 +50% · 窄判定',multiplier:1.5,speed:1.45,width:.12,miss:.29,perfect:.04,recoil:1.8},
+  {id:'steady',label:'穩定輸出',hint:'容易命中',multiplier:1,speed:1,width:.18,miss:.38,perfect:.06,recoil:.7},
+  {id:'strong',label:'提高火力',hint:'判定較窄',multiplier:1.2,speed:1.2,width:.15,miss:.34,perfect:.05,recoil:1.15},
+  {id:'overload',label:'過載輸出',hint:'判定最窄',multiplier:1.5,speed:1.45,width:.12,miss:.29,perfect:.04,recoil:1.8},
 ];
 const manualPhases=new Set(['intro','meal','cargo','photo-talk','photo-check','observation','credentials','verify-talk','verified-talk','briefing','energy','flashback','flashback-end','last','complete']);
 const vcrPhases=new Set(['rewind','flashback','hack','credentials','heat-demo','heat','flashback-end','return']);
@@ -45,7 +45,7 @@ export class MissionMachine{
     this.resetInteraction();
   }
   resetInteraction(){
-    this.failures={};this.seenHeatFailures=0;this.flight=null;this.loginAside='';this.asideCounts={};this.investigation=null;this.photoTaken=false;this.hackTurns=[1,2,3,1];this.hackMoves=0;this.hackFailures=0;this.rhythm=new RhythmHeat();
+    this.flightStableAt=null;this.failures={};this.seenHeatFailures=0;this.flight=null;this.loginAside='';this.asideCounts={};this.investigation=null;this.photoTaken=false;this.hackTurns=[1,2,3,1];this.hackMoves=0;this.hackFailures=0;this.rhythm=new RhythmHeat();
     this.connection={field:'account',account:'',password:'',lastKey:'',keyAt:-Infinity,keyNumber:0,error:'',verified:false,lever:0};
 
   }
@@ -127,7 +127,7 @@ export class MissionMachine{
   }
   stepFlight(d){if(this.phase!=='photo-flight'||this.paused)return;this.flight.z=clamp(this.flight.z+d*.3,3.25,12);this.flight.x=-2+2*clamp((this.flight.z-5)/5.5);this.emit();}
   fly(x,z){if(this.phase!=='photo-flight'||this.paused)return false;this.flight.vx=Math.max(-1,Math.min(1,x));this.flight.vz=Math.max(-1,Math.min(1,z));return true;}
-  finishFlight(){if(this.phase!=='photo-flight'||this.paused||Math.hypot(this.flight.x,this.flight.z-10.5)>1.2)return false;this.phaseTo('photo');return true;}
+  finishFlight(){if(this.phase!=='photo-flight'||this.paused||Math.abs(this.flight.z-10.5)>.6||this.time-(this.flightStableAt??this.time)<.5)return false;this.phaseTo('photo');return true;}
   takePhoto(){if(this.phase!=='photo'||this.paused)return false;this.photoTaken=true;this.phaseTo('photo-return');return true;}
   sendPhoto(){if(this.phase!=='photo-review'||this.paused)return false;this.investigation='floor';this.phaseTo('photo-sending');this.line({id:'photo_sent',speaker:'dragon',text:'送出了。',gesture:'phone',event:'photo-send'});this.action('photo-send',true);return true;}
   investigate(id){
@@ -272,6 +272,7 @@ export class MissionMachine{
     if(!Number.isFinite(sourceTime))return;
     const delta=Math.max(0,sourceTime-this.sourceTime);this.sourceTime=Math.max(this.sourceTime,sourceTime);
     if(this.paused)return;this.time+=delta;if(this.phase==='photo-flight'&&this.flight){const f=this.flight,dt=Math.min(.1,delta);f.x=-2+2*Math.max(0,Math.min(1,(f.z-5)/5.5));f.z=Math.max(3.25,Math.min(12,f.z+f.vz*3*dt));}
+    if(this.phase==='photo-flight'){if(Math.abs(this.flight.z-10.5)>.6)this.flightStableAt=null;else this.flightStableAt??=this.time;}
     // Catch up continuous cinematics after a late frame, but stop on every manual or input gate.
     for(let guard=0;guard<10;guard++){
       const elapsed=this.time-this.entered,phase=this.phase;let changed=false;
@@ -279,7 +280,7 @@ export class MissionMachine{
       else if(phase==='director-reminder'&&elapsed>=5){this.phaseTo('shoe-view',this.entered+5);changed=true;}
       else if(phase==='pylon-link'&&elapsed>=4){this.phaseTo('charge',this.entered+4);changed=true;}
       else if(phase==='charge'&&elapsed>=CHARGE_DURATION){this.phaseTo('fire-ready',this.entered+CHARGE_DURATION);changed=true;}
-      else if(phase==='terminal-deploy'&&elapsed>=4.5){this.phaseTo('login',this.entered+4.5);changed=true;}
+      else if(phase==='terminal-deploy'&&elapsed>=6){this.phaseTo('login',this.entered+6);changed=true;}
       else if(phase==='photo-sending'&&elapsed>=1.2){this.sequence('cargo',sequences.cargo);changed=true;}
       else if(phase==='photo-return'&&elapsed>=2.5){this.sequence('photo-check',sequences.photoCheck);changed=true;}
       else if(phase==='purchase'&&elapsed>=Math.max(0,6-(this.purchaseStarted===null?0:this.entered-this.purchaseStarted))){this.phaseTo('walk-out');changed=true;}
@@ -330,9 +331,9 @@ export class MissionMachine{
       meter,meterElapsed:Math.max(0,this.time-this.meterEntered),meterPeriod:settings.period,meterSettings:settings,output:this.output,outputModes,
       landingDuration:LANDING_DURATION,tourDuration:TOUR_DURATION,chargeDuration:CHARGE_DURATION,rewindDuration:REWIND_DURATION,returnDuration:RETURN_DURATION,heatDemoDuration:HEAT_DEMO_DURATION,
       phaseElapsed:elapsed,time:this.time,clock:this.time,sourceTime:this.sourceTime,paused:this.paused,auto:this.auto,castingElapsed:this.castingElapsed,
-      loginAside:this.loginAside,purchaseElapsed:this.purchaseStarted===null?null:Math.max(0,this.time-this.purchaseStarted),shoeReady:this.shoeReady,shoeOrbitElapsed:this.phase==='shoe-view'?Math.max(0,this.time-this.shoeOrbitStart):0,shoeRounds:this.shoeRounds,flight:this.flight?{...this.flight,ready:Math.hypot(this.flight.x,this.flight.z-10.5)<1.2}:null,investigation:this.investigation,photoTaken:this.photoTaken,hack:{turns:[...this.hackTurns],moves:this.hackMoves,failures:this.hackFailures},connection,login:connection,heat,vcr,rewindProgress,rewindStage,returnProgress:this.phase==='return'?clamp(elapsed/RETURN_DURATION):0,vcrElapsed:vcr&&this.vcrStarted!==null?Math.max(0,this.time-this.vcrStarted):0,replayStage:vcr?this.phase:null,vcrSnapshot:this.vcrSnapshot?{...this.vcrSnapshot}:null,
+      loginAside:this.loginAside,purchaseElapsed:this.purchaseStarted===null?null:Math.max(0,this.time-this.purchaseStarted),shoeReady:this.shoeReady,shoeOrbitElapsed:this.phase==='shoe-view'?Math.max(0,this.time-this.shoeOrbitStart):0,shoeRounds:this.shoeRounds,flight:this.flight?{...this.flight,ready:Math.abs(this.flight.z-10.5)<=.6&&this.time-(this.flightStableAt??this.time)>=.5}:null,investigation:this.investigation,photoTaken:this.photoTaken,hack:{turns:[...this.hackTurns],moves:this.hackMoves,failures:this.hackFailures},connection,login:connection,heat,vcr,rewindProgress,rewindStage,returnProgress:this.phase==='return'?clamp(elapsed/RETURN_DURATION):0,vcrElapsed:vcr&&this.vcrStarted!==null?Math.max(0,this.time-this.vcrStarted):0,replayStage:vcr?this.phase:null,vcrSnapshot:this.vcrSnapshot?{...this.vcrSnapshot}:null,
       target:this.target,targetLabel:target?.label||'店面外牆',targets:this.targets,feedback:this.feedback,shots:this.shots,hits:this.hits,attackHoldUntil:this.attackHoldUntil,combatHoldRemaining,attackHeld:combatHoldRemaining>0,
-      presentationLocked:this.phase==='aim-final'&&elapsed<FINAL_READY||this.phase==='photo-talk'&&this.node?.event==='camera-handover'&&this.time-this.nodeEntered<1.5,failures:{...this.failures},canAssist:(this.failures[this.phase]||0)>=5,
+      presentationLocked:this.node?.event==='pear-tour'&&this.time-this.nodeEntered<6||this.phase==='photo-check'&&elapsed<5||this.phase==='aim-final'&&elapsed<FINAL_READY||this.phase==='photo-talk'&&this.node?.event==='camera-handover'&&this.time-this.nodeEntered<1.5,failures:{...this.failures},canAssist:(this.failures[this.phase]||0)>=5,
       canAttack:(this.phase!=='aim-final'||elapsed>=FINAL_READY)&&['combat','aim-final'].includes(this.phase)&&!this.paused&&this.time-this.lastAttack>=.6&&combatHoldRemaining===0,
       ended:this.ended,busy:!!this.node||!['ready','complete'].includes(this.phase),sequenceKind:this.sequenceKind,endingCaption,revision:this.revision};
   }

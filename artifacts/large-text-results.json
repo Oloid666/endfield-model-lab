@@ -1,0 +1,45 @@
+{
+  "checks": [
+    {
+      "name": "Subtitle reaches 26px",
+      "passed": true
+    },
+    {
+      "name": "Large subtitle panel bounded 320x568",
+      "passed": true
+    },
+    {
+      "name": "Large subtitle panel bounded 844x390",
+      "passed": true
+    },
+    {
+      "name": "Large subtitle panel bounded 1920x1080",
+      "passed": true
+    },
+    {
+      "name": "Login controls available",
+      "passed": true
+    },
+    {
+      "name": "Last keyboard key can be scrolled into view",
+      "passed": true
+    },
+    {
+      "name": "Incorrect word can be removed",
+      "passed": true
+    },
+    {
+      "name": "Touch account advances automatically",
+      "passed": true
+    },
+    {
+      "name": "Touch password finishes login",
+      "passed": true
+    },
+    {
+      "name": "No exceptions",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

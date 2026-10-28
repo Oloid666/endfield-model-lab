@@ -13,7 +13,7 @@ export function buildInvestigationProps(scene,r){
  for(let i=0;i<2;i++){box(cargo,'#6c7565',[i*.43,i*.1+.26,0],[.4,.5,.43],{metalness:.3});box(cargo,'#b2a272',[i*.43,i*.1+.27,.22],[.07,.46,.012]);}
  label(cargo,'土產 / 店到店',[-.02,.32,.227],[.35,.12,1],{font:'bold 56px sans-serif'});
  const sheet=label(cargo,'息壤 10,000 噸',[.48,.76,.23],[.73,.2,1]);sheet.name='smuggling-manifest';
- label(cargo,'送貨方：終末地／地點：武陵 711',[.48,.59,.232],[.73,.12,1],{font:'bold 40px sans-serif'});
+ label(cargo,'送貨方：終末地有限公司／地點：武陵 711',[.48,.59,.232],[.73,.12,1],{font:'bold 40px sans-serif'});
  const paperGroup=new T.Group();root.add(paperGroup);
  const posterPositions=[[-2.8,2.05,1.82],[2.35,2.05,1.82],[3.4,2.05,1.82]];
  const posterUrl=`${import.meta.env?.BASE_URL||'/'}images/store-posters.png`;

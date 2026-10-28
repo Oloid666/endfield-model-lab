@@ -13,15 +13,15 @@ const lines=(prefix,items)=>items.map(([speaker,text,gesture='look',mood='calm',
 
 export const sequences={
   intro:lines('intro',[
-        ['dragon','阿莊，下班。','point'],
-    ['zhuang','理由？','look'],
-    ['dragon','好好吃飯。妳已經連著加班五天了。','point'],
-    ['zhuang','這兩件事可以同時做。','look'],
+        ['dragon','總算出來了。今天先好好吃飯。','point'],
+    ['zhuang','你電話裡已經說三次了。','look'],
+    ['dragon','怕妳掛掉又回去加班。','point'],
+    ['zhuang','知道了，別忘了拿湯。','look'],
     ['dragon','所以我才親自來拖人。','shake'],
     ['zhuang','買了帶回去，邊整理資料——','phone'],
     ['dragon','先吃完，再整理。','shake'],
     ['dragon','妳留在這。我進去拿晚餐。','point'],
-    ['zhuang','別忘了拿湯。','hold'],
+    ['zhuang','慢慢拿。','hold'],
     ['dragon','便當、湯。好，沒有公文。','look'],
     ['dragon','買完了，來吃吧。','hold'],
   ]),
@@ -33,8 +33,8 @@ export const sequences={
   photoCheck:lines('photo_check', [['zhuang','拍好了？放大看看。','player'],['dragon','確認妳有沒有眨眼？','look'],['zhuang','確認沒眨眼就發給管理員。讓他知道我有好好吃飯。','nod']]),
   observation:lines('observe',[
     ['dragon','唉……我以為接的是外送單，結果接的是共犯通知。','exhale','calm','phone-away'],
-    ['zhuang','今晚月色真美。','look'],
-    ['dragon','妳還有心情看月亮……對了，樓上那間房怎麼有點陰森？','point','calm','server-closeup'],
+    ['zhuang','月光下的梨花真美。','look'],
+    ['dragon','妳還有心情風花雪月。','look','calm','pear-tour'],
     ['zhuang','不是燈壞了。是伺服器拿整條街散熱。','goods'],
     ['dragon','你看三秒就知道？','look'],
     ['zhuang','加班十年，認得這種不讓人睡的光。','exhale'],
@@ -90,13 +90,13 @@ export const sequences={
     ['dragon','準備找人背鍋？','look'],
   ]),
   energy:lines('energy',[
-    ['mifoe','頭，能量不夠了。戰損報告：\n三樓已坍塌，樓板還在掉。','look'],
+    ['mifoe','頭，儲能快見底了。三樓已坍塌，外牆與樓板還在掉落。','look'],
     ['dragon','招牌說全天營業，現在連屋頂都下班了。','shake'],
     ['mifoe','確認：外牆與樓板碎片仍在落下。','look'],
     ['zhuang','能量怎麼可能用這麼快？','shake'],
     ['dragon','電量告急，將軍救急！將軍出手，萬事大吉～','happy'],
     ['zhuang','你錯棚了。','shake'],
-    ['zhuang','電隊是越來越多人，\n但還是撐得住啊。','look'],
+    ['zhuang','以前堂堂武陵電，就算電一些奇怪的人三天三夜都沒問題啊。','look'],
     ['dragon','消失的電跑到哪裡去了呢？\n讓我們看一段 VCR。','player','aside','vcr-cue'],
   ]),
   flashback:lines('flashback',[
@@ -111,12 +111,11 @@ export const sequences={
     ['xaihi','先接通管理終端。','phone'],
   ]),
   credentials:lines('credentials',[
-    ['system','2026.10 NEW｜PHP 後台驗證出包，免輸金鑰，管理員權限直接到手。','look','evidence'],
-    ['system','管理密碼：0000。','look','evidence'],
-    ['xaihi','四位。輸入效率很好。','nod'],
-    ['dragon','管理員權限不用金鑰，微波爐加熱還要排隊？','player','aside'],
-    ['dragon','這不是密碼，是怕訪客迷路吧？','shake'],
-    ['dragon','2026 年十月的新 BUG，不用金鑰就拿最高權限？','player','aside'],
+    ['xaihi','這次最新的 PHP 2 Shell 漏洞，不愧是 9.2 分、Critical 級。金鑰一下就到手，管理員權限也一起開了。','phone','evidence'],
+    ['system','金鑰已取得｜管理員權限已啟用。','look','evidence'],
+    ['dragon','妳只是買個便當，怎麼連管理員都當上了？','player','aside'],
+    ['xaihi','省掉等待。','nod'],
+    ['dragon','妳省的是三分鐘，花的是整座城的電。','shake'],
     ['xaihi','三分鐘，改成零點三秒。','point','calm','microwave-closeup'],
   ]),
   'flashback-end':lines('flashback_end',[
@@ -252,3 +251,9 @@ export const endingSong=['🎤🎵 保險～怎麼兩清，怎麼忍心','🎵 �
 export const endingCaption='弭弗：就這樣，武陵又平安地度過了一天。\n感謝飛天小女警的努力。\nFin.';
 
 export const storyQuote=(sequence,...ids)=>ids.map(id=>sequences[sequence].find(n=>n.id===id)?.text||'').join('\n');
+
+// Stable cue identifiers survive editorial removals and inserted shots.
+function relink(items){items.forEach((n,i)=>n.next=items[i+1]?.id||null);return items;}
+sequences.intro=relink(sequences.intro.filter(n=>!['intro_6','intro_7','intro_8'].includes(n.id)));
+sequences.energy=relink(sequences.energy.filter(n=>n.id!=='energy_2'));
+sequences.observation.splice(3,0,{id:'observe_window',speaker:'dragon',text:'對了，二樓中間那扇窗戶怎麼有點陰森？',gesture:'point',mood:'calm',event:'server-closeup'});relink(sequences.observation);
