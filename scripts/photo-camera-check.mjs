@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import * as T from 'three';
+import {PhotoCamera} from '../src/photo-camera.js';
+globalThis.window=new EventTarget();
+const surface=new EventTarget();surface.setPointerCapture=()=>{};
+const camera=new T.PerspectiveCamera(50,1,.05,200);camera.position.set(.35,1.82,10.26);
+const controls={target:new T.Vector3(-1.25,1.5,3.25)};let active=true;
+const aim=new PhotoCamera(camera,controls,surface,()=>active);aim.reset();const centre=camera.position.clone(),initial=controls.target.clone();
+const pointer=(type,x,y)=>{const event=new Event(type);Object.assign(event,{pointerId:1,clientX:x,clientY:y,button:0});surface.dispatchEvent(event);};
+pointer('pointerdown',100,100);pointer('pointermove',140,120);
+assert(camera.position.distanceTo(centre)<1e-10,'Dragging must not orbit the subject');
+assert(controls.target.distanceTo(initial)>.2,'Dragging must change the viewing direction');
+const lens=camera.fov;aim.zoom(.8);assert(camera.fov<lens&&camera.position.distanceTo(centre)<1e-10,'Zoom changes optics, not position');
+pointer('pointercancel',140,120);const held=controls.target.clone();pointer('pointermove',200,200);assert(controls.target.distanceTo(held)<1e-10);
+active=false;pointer('pointerdown',100,100);pointer('pointermove',200,200);assert(controls.target.distanceTo(held)<1e-10,'Paused input must not move the lens');
+aim.dispose();console.log('Photo camera: fixed optical centre, turning, zoom, cancellation and pause passed.');

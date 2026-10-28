@@ -226,5 +226,5 @@ export function buildStore(scene, r) {
   });
   for(const mesh of sources)mesh.removeFromParent();
   for(const [material,geometries] of batches){const merged=mergeGeometries(geometries);if(merged){const mesh=new T.Mesh(r.own(merged),material);mesh.castShadow=true;mesh.receiveShadow=true;root.add(mesh);}for(const g of geometries)g.dispose();}
-  return {root,glass,glassMeshes,spill,streetProps,floorPlan,destruction,wetMaterials:[...wetMaterials],walkObstacles:floorPlan.obstacles||floorPlan.racks,doors:automaticDoors,triggerDoor:()=>automaticDoors.triggerDoor(),update:(t,delta,actorPosition,companionPosition)=>automaticDoors.update(t,delta,actorPosition,companionPosition)};
+  return {root,glass,glassMeshes,spill,streetProps,floorPlan,destruction,wetMaterials:[...wetMaterials],walkObstacles:floorPlan.obstacles||floorPlan.racks,doors:automaticDoors,triggerDoor:()=>automaticDoors.triggerDoor(),update:(t,delta,actorPosition,companionPosition,viewerPosition)=>automaticDoors.update(t,delta,actorPosition,companionPosition,viewerPosition)};
 }

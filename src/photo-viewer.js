@@ -11,7 +11,7 @@ export function createPhotoViewer({mount,signal,onSend,onRetake,onClose}){
  const hint=el('p','gallery-hint','左右滑換照片，雙指放大。'),tools=el('div','gallery-tools'),footer=el('footer','gallery-footer');
  const button=(owner,text,fn)=>{const b=el('button','',text);b.type='button';b.addEventListener('click',fn,{signal});owner.append(b);return b;};
  button(tools,'上一張',()=>change(-1));button(tools,'下一張',()=>change(1));button(tools,'縮小',()=>zoom(scale-.5));button(tools,'放大',()=>zoom(scale+.5));button(tools,'原尺寸',()=>zoom(1));
- const retake=button(footer,'重拍',()=>{hide();onRetake();}),send=button(footer,'傳給管理員',()=>{if(!send.disabled){hide();onSend();}});
+ const retake=button(footer,'重新拍',()=>{hide();onRetake();}),send=button(footer,'傳送給管理員',()=>{if(!send.disabled&&onSend()!==false)hide();});
  root.append(header,stage,hint,tools,footer);mount.append(root);
  let photo=null,index=0,scale=1,x=0,y=0,opener=null,gesture=null,paused=false;const pointers=new Map();
  const bounds=()=>photoBounds(stage.clientWidth||1,stage.clientHeight||1,image.naturalWidth||1,image.naturalHeight||1,scale);
@@ -35,5 +35,5 @@ export function createPhotoViewer({mount,signal,onSend,onRetake,onClose}){
  root.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();e.stopPropagation();hide();}if(e.key==='ArrowLeft'){e.preventDefault();change(-1);}if(e.key==='ArrowRight'){e.preventDefault();change(1);}if(e.key==='Tab'){const nodes=[...root.querySelectorAll('button:not(:disabled)')],i=nodes.indexOf(document.activeElement);if(e.shiftKey&&i<=0){e.preventDefault();nodes.at(-1).focus();}else if(!e.shiftKey&&i===nodes.length-1){e.preventDefault();nodes[0].focus();}}},{signal});
  const observer=new ResizeObserver(()=>{if(!root.hidden)settle();});observer.observe(stage);
  document.addEventListener('visibilitychange',()=>{clear();},{signal});
- return {open(value,button){if(photo!==value){photo=value;index=0;scale=1;x=y=0;}opener=button;root.hidden=false;mount.classList.add('gallery-open');load();close.focus({preventScroll:true});},hide,get active(){return !root.hidden;},get state(){return {index,scale,x,y,...bounds()};},setPaused(value){paused=value;send.disabled=retake.disabled=paused;if(paused)clear();},dispose(){observer.disconnect();root.remove();}};
+ return {open(value,button,portrait=false){if(photo!==value){photo=value;index=0;scale=1;x=y=0;}if(portrait){index=1;scale=1;x=y=0;}opener=button;root.hidden=false;mount.classList.add('gallery-open');load();close.focus({preventScroll:true});},hide,get active(){return !root.hidden;},get state(){return {index,scale,x,y,...bounds()};},setPaused(value){paused=value;send.disabled=retake.disabled=paused;if(paused)clear();},dispose(){observer.disconnect();root.remove();}};
 }

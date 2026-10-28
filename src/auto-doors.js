@@ -25,10 +25,10 @@ export function buildAutomaticDoors(parent,r,glass,glassMeshes){
     get isOpen(){return amount>.82;},
     triggerDoor(){manual=!(manual??amount>.5);},
     get manual(){return manual;},
-    update(t,delta=0,actorPosition,companionPosition){
+    update(t,delta=0,actorPosition,companionPosition,viewerPosition){
       lastTime=t;
       const sensed=p=>p&&Math.abs((p.x??p[0])+.22)<.94&&Math.abs((p.z??p[2])-1.86)<1.48;
-      const near=sensed(actorPosition)||sensed(companionPosition);
+      const near=sensed(actorPosition)||sensed(companionPosition)||sensed(viewerPosition);
       if(near)heldUntil=t+2.2;
       target=near?1:manual===null?(t<heldUntil?1:0):manual?1:0;
       const dt=Math.max(0,Math.min(.1,delta||1/60));amount=T.MathUtils.damp(amount,target,target?4.8:2.8,dt);

@@ -1,7 +1,7 @@
 export const VIEW_CYCLES={
  street:[['front','正面'],['storeLeft','左側'],['pear','梨花'],['streetRight','右側'],['investigate','機房'],['traffic','紅綠燈'],['waterTank','水塔'],['reflection','積水反光']],
- interior:[['interior','櫃檯'],['poster1','小蔥海報'],['fridge','冰箱'],['oven','微波爐'],['poster3','梨諾海報'],['insideOut','店內望街'],['shelves','店內貨架'],['poster2','集點海報'],['cctv','攝影機']],
- detail:[['heroFront','莊右側正面'],['story','雙人'],['dragon','龍泡泡'],['back','莊背影'],['left','左近景'],['right','右近景']]
+ interior:[['interior','櫃檯'],['fridge','冰箱'],['oven','微波爐'],['insideOut','店內望街'],['shelves','店內貨架'],['poster2','集點海報'],['cctv','攝影機']],
+ detail:[['heroFront','莊右側正面'],['story','雙人'],['dragon','龍泡泡'],['back','莊背影'],['left','左近景'],['poster1','小蔥海報'],['poster3','梨諾海報']]
 };
 export function createViewControls(getWorld,getMission,signal){
  const dock=document.querySelector('.view-dock'),home=dock.parentElement,settings=document.querySelector('#settings'),indices={},buttons=[...dock.querySelectorAll('[data-view]')];

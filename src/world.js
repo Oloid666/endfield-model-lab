@@ -1,5 +1,6 @@
 import {buildInvestigationProps} from './investigation-props.js';
 import * as T from 'three';
+import {PhotoCamera} from './photo-camera.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { OpaquePass } from './opaque-pass.js';
@@ -41,6 +42,7 @@ export class World {
     };
     this.renderer.domElement.addEventListener('webglcontextlost',this.contextLost);this.renderer.domElement.addEventListener('webglcontextrestored',this.contextRestored);
     this.controls=new OrbitControls(this.camera,this.renderer.domElement);Object.assign(this.controls,{enableDamping:true,dampingFactor:.065,minDistance:.75,maxDistance:44,maxPolarAngle:Math.PI*.49,minPolarAngle:.15,zoomSpeed:.8,panSpeed:.65,rotateSpeed:.5});
+    this.photoCamera=new PhotoCamera(this.camera,this.controls,this.renderer.domElement,()=>this.missionState?.phase==='photo'&&!this.missionState.paused&&!this.capturingPhoto);
     this.controls.touches.ONE=T.TOUCH.ROTATE;this.controls.touches.TWO=T.TOUCH.DOLLY_PAN;
     this.onManualView=onManual;this.walkCamera=new WalkCamera(this.camera,this.controls,onZone);
     this.manual=()=>{this.transition=null;this.currentView=null;this.manualUntil=Infinity;this.autoCamera=false;onManual();};this.controls.addEventListener('start',this.manual);
@@ -90,10 +92,11 @@ export class World {
     this.walkCamera.onZone(false);
     this.currentView=name==='reset'?'street':name;
     const preset=config.views[name==='reset'?'street':name];if(!preset)return;
-    this.setCutaway(['interior','insideOut','shelves','fridge','oven','cctv'].includes(name));this.camera.fov=name==='interior'?65:37;this.camera.updateProjectionMatrix();
+    this.setCutaway(['interior','shelves','fridge','oven','cctv'].includes(name));this.camera.fov=preset.fov??(name==='interior'?65:37);this.camera.updateProjectionMatrix();
     const mobile=this.container.clientWidth/Math.max(1,this.container.clientHeight)<.85;
     const target=new T.Vector3().fromArray(mobile?preset.mobileTarget:preset.target),position=new T.Vector3().fromArray(mobile?preset.mobilePosition:preset.position);
     if(['detail','heroFront','left','right','back','story','dragon'].includes(name)&&this.actors){const anchor=name==='dragon'?this.actors.dragonPosition:this.actors.heroPosition;const origin=name==='dragon'?[-2,1,3.25]:[-1.25,.32,3.25];const offset=new T.Vector3(...anchor).sub(new T.Vector3(...origin));target.add(offset);position.add(offset);}
+    if(name==='dragon'&&this.actors){const d=this.actors.dragonPosition,heading=this.actors.status.dragonHeading??0;target.set(d[0],d[1]+.4,d[2]);position.set(d[0]+Math.sin(heading-.5)*1.8,d[1]+.5,d[2]+Math.cos(heading-.5)*1.8);}
     // Flush damping once, so user momentum does not fight a selected preset.
     const damping=this.controls.enableDamping;this.controls.enableDamping=false;this.controls.update();this.controls.enableDamping=damping;
     if(instant||matchMedia('(prefers-reduced-motion: reduce)').matches){this.camera.position.copy(position);this.controls.target.copy(target);this.transition=null;}
@@ -132,7 +135,7 @@ export class World {
   }
   async capturePhoto(){
     // Freeze one pose and render two independent optical views; never enlarge a crop.
-    const wasRunning=this.running;this.stop();const nextFrame=()=>new Promise(r=>requestAnimationFrame(()=>r()));await nextFrame();
+    const wasRunning=this.running;this.capturingPhoto=true;this.photoCamera.points.clear();this.stop();const nextFrame=()=>new Promise(r=>requestAnimationFrame(()=>r()));await nextFrame();
     const camera=this.camera,position=camera.position.clone(),quaternion=camera.quaternion.clone(),fov=camera.fov,aspect=camera.aspect,dpr=this.renderer.getPixelRatio();
     const render=(width,height)=>{this.renderer.setPixelRatio(1);this.renderer.setSize(width,height,false);this.composer.setSize(width,height);this.fxaa.uniforms.resolution.value.set(1/width,1/height);camera.aspect=width/height;camera.updateProjectionMatrix();this.composer.render();const c=document.createElement('canvas');c.width=width;c.height=height;c.getContext('2d').drawImage(this.renderer.domElement,0,0);return c;};
     try{
@@ -144,7 +147,7 @@ export class World {
       await nextFrame();const close=render(1024,1280),src=wide.toDataURL('image/png'),closeup=close.toDataURL('image/png');
       const display=this.photoPhone?.getObjectByName('camera-screen');if(display){const thumb=document.createElement('canvas');thumb.width=256;thumb.height=384;thumb.getContext('2d').drawImage(close,0,0,256,384);this.photoTexture??=this.r.own(new T.CanvasTexture(thumb));this.photoTexture.image=thumb;this.photoTexture.colorSpace=T.SRGBColorSpace;this.photoTexture.needsUpdate=true;display.material.map=display.material.emissiveMap=this.photoTexture;display.material.color.set(0xffffff);display.material.emissive.set(0xffffff);display.material.emissiveIntensity=.3;display.material.needsUpdate=true;}
       return {src,width,height,points,closeup,captureOrigin};
-    }finally{camera.position.copy(position);camera.quaternion.copy(quaternion);camera.fov=fov;this.renderer.setPixelRatio(dpr);this.resize();camera.aspect=aspect;camera.updateProjectionMatrix();if(wasRunning)this.start();}
+    }finally{camera.position.copy(position);camera.quaternion.copy(quaternion);camera.fov=fov;this.renderer.setPixelRatio(dpr);this.resize();camera.aspect=aspect;camera.updateProjectionMatrix();this.capturingPhoto=false;if(wasRunning)this.start();}
   }
   projectPoint(point){const p=new T.Vector3().fromArray(point).project(this.camera);return p.toArray();}
   // Read-only diagnostic for checking the camera against visible shop geometry.
@@ -179,8 +182,8 @@ export class World {
       this.portrait.fill.position.set(h[0]+3.25*c+2.92*s,h[1]+2.48,h[2]-3.25*s+2.92*c);this.portrait.fill.target.position.set(h[0]-.15,h[1]+.93,h[2]);if(['photo-return','photo-flight'].includes(this.missionState?.phase)){const d=this.actors.dragonPosition;this.portrait.fill.position.set(d[0]-2,d[1]+2,d[2]+3);this.portrait.fill.target.position.set(d[0],d[1]+.35,d[2]);}
     }
     if(this.flashUntil>t){const strength=matchMedia('(prefers-reduced-motion: reduce)').matches?.7:Math.sin((this.flashUntil-t)*24)>0?1.2:.5;this.portrait.fill.intensity=28*strength;}else this.portrait.fill.intensity=28;
-    this.store.update(t,delta,this.actors?.position,this.actors?.status.companion?.position);
-    this.controls.update();if(this.director.cameraRoll)this.camera.rotateZ(this.director.cameraRoll);const close=this.camera.position.distanceTo(this.controls.target)<(this.camera.aspect<.85?14:11);
+    this.store.update(t,delta,this.actors?.position,this.actors?.status.companion?.position,this.currentView==='insideOut'?this.camera.position:null);
+    if(this.missionState?.phase==='photo')this.photoCamera.apply();else this.controls.update();if(this.director.cameraRoll)this.camera.rotateZ(this.director.cameraRoll);const close=this.camera.position.distanceTo(this.controls.target)<(this.camera.aspect<.85?14:11);
     if(close!==this.closeFraming){this.closeFraming=close;this.onFraming(close);}
     const presentation=this.missionState?.vcr,damage=presentation?0:this.store.destruction.state.progress;this.weather.setShelter(damage<80,damage<44);
     const visualTime=this.director.visualTime??t;this.remnant.update(visualTime,this.missionState);
@@ -198,5 +201,5 @@ export class World {
     this.tick(this.time,Math.min(delta,.08));
   });}
   stop(){this.renderer.setAnimationLoop(null);this.previous=undefined;this.running=false;this.onClockState?.(false);}
-  dispose(){if(this.disposed)return;this.disposed=true;this.stop();this.shaderWarmup.dispose();this.observer.disconnect();document.removeEventListener('visibilitychange',this.visibility);this.controls.removeEventListener('start',this.manual);this.controls.dispose();this.renderer.domElement.removeEventListener('webglcontextlost',this.contextLost);this.renderer.domElement.removeEventListener('webglcontextrestored',this.contextRestored);this.actors?.dispose();this.xaihi?.dispose();this.siege.dispose();this.garden.root.removeFromParent();this.tianshi.root.removeFromParent();this.microwave.root.removeFromParent();this.connectionStage.root.removeFromParent();this.store.spill.shadow.dispose();this.weather.dispose();for(const pass of this.composer.passes)pass.dispose?.();this.composer.dispose();this.r.dispose();this.renderer.dispose();this.renderer.domElement.remove();}
+  dispose(){if(this.disposed)return;this.disposed=true;this.stop();this.shaderWarmup.dispose();this.observer.disconnect();document.removeEventListener('visibilitychange',this.visibility);this.controls.removeEventListener('start',this.manual);this.photoCamera.dispose();this.controls.dispose();this.renderer.domElement.removeEventListener('webglcontextlost',this.contextLost);this.renderer.domElement.removeEventListener('webglcontextrestored',this.contextRestored);this.actors?.dispose();this.xaihi?.dispose();this.siege.dispose();this.garden.root.removeFromParent();this.tianshi.root.removeFromParent();this.microwave.root.removeFromParent();this.connectionStage.root.removeFromParent();this.store.spill.shadow.dispose();this.weather.dispose();for(const pass of this.composer.passes)pass.dispose?.();this.composer.dispose();this.r.dispose();this.renderer.dispose();this.renderer.domElement.remove();}
 }

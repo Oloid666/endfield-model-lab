@@ -24,6 +24,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: node scripts/photo-camera-check.mjs
       - run: node scripts/viewer-check.mjs
       - run: node scripts/loading-check.mjs
       - run: node scripts/presentation-check.mjs

@@ -64,7 +64,7 @@ export class MissionDirector{
       this.world.autoCamera=true;this.world.setWalking(false);
       this.world.manualUntil=this.world.time;this.world.setCutaway(false);
     }
-    if(phase==='photo'){this.world.setCutaway(false);this.world.camera.position.set((state.flight?.x||0)+.35,1.82,(state.flight?.z||10.5)-.24);this.world.controls.target.set(-1.25,1.5,3.25);this.world.camera.fov=50;this.world.camera.updateProjectionMatrix();this.world.controls.update();this.cameraOwned=false;}
+    if(phase==='photo'){this.world.setCutaway(false);this.world.camera.position.set((state.flight?.x||0)+.35,1.82,(state.flight?.z||10.5)-.239);this.world.controls.target.set(-1.25,1.5,3.25);this.world.camera.fov=50;this.world.camera.updateProjectionMatrix();this.world.camera.lookAt(this.world.controls.target);this.world.photoCamera?.reset();this.cameraOwned=false;}
     if(phase==='briefing'&&this.world.time>=this.world.manualUntil)this.world.setView('investigate');
     if(phase==='login'){
       this.world.setWalking(false);this.world.actors?.setMove(0,0,false);
@@ -146,13 +146,14 @@ export class MissionDirector{
     let dragonHeading=0;
     if(['ready','intro','photo-talk'].includes(phase)&&state.purchaseElapsed==null)dragonHeading=.9;
     else if(['intro','purchase'].includes(phase)&&state.purchaseElapsed!=null){
-      const t=state.purchaseElapsed;dragonHeading=.9+(1.85-.9)*smooth(t/.65);
+      const t=state.purchaseElapsed;const start=Math.atan2(actor.heroPosition[0]+2.55,actor.heroPosition[2]-3.5);dragonHeading=start+(1.85-start)*smooth(t/.65);
       dragonHeading+=(Math.PI-1.85)*smooth((t-2)/.5)+(1.73-Math.PI)*smooth((t-4)/.5);
     }else if(phase==='walk-out')dragonHeading=1.73+(-.8-1.73)*smooth(e/.6);
     else if(phase==='cargo')dragonHeading=1.0;
     else if(['photo-check','photo-review'].includes(phase))dragonHeading=.8;
     else if(['photo-flight','photo-return'].includes(phase))dragonHeading=Math.PI;
     else if(phase==='observation')dragonHeading=-.5;
+    if(phase==='ready'||phase==='intro'&&state.purchaseElapsed==null||['photo-pose','photo-talk','observation'].includes(phase)){const h=actor.heroPosition,d=actor.dragonPosition;dragonHeading=Math.atan2(h[0]-d[0],h[2]-d[2]);}
     actor.setDragonHeading?.(dragonHeading);if(actor.heroRoot)actor.heroRoot.visible=true;this.bag.visible=['intro','purchase','walk-out'].includes(phase)&&(state.purchaseElapsed??0)>=3;if(this.world.photoPhone)this.world.photoPhone.visible=false;
     const age=state.clock-this.lastShotAt;
     this.recoil=age>=0?Math.exp(-age*5.4)*Math.sin(Math.min(1,age/.11)*Math.PI/2)*this.recoilAmplitude:0;
@@ -199,7 +200,7 @@ export class MissionDirector{
     if(phase==='photo-flight'){const f=state.flight;actor.setDragonProjectile([f.x,1.5,f.z],0);if(this.world.photoPhone){this.world.photoPhone.visible=true;this.world.photoPhone.position.set(f.x+.35,1.82,f.z-.2);this.world.photoPhone.rotation.set(0,0,0);}return;}
     if(phase==='terminal-deploy'){actor.setMove(0,0,false);actor.setDragonProjectile([-2,.65,3.25],0);return;}
     if(phase==='intro'||phase==='ready'||phase==='purchase'){
-      if(phase==='ready'||phase==='intro'&&state.purchaseElapsed===null){actor.setDragonProjectile([-2.55+Math.sin(state.clock*.7)*.055,1.5+Math.sin(state.clock*1.7)*.045,3.5],Math.sin(state.clock*.8)*.025);return;}
+      if(phase==='ready'||phase==='intro'&&state.purchaseElapsed===null){const x=-2.55+Math.sin(state.clock*.7)*.055;actor.setDragonProjectile([x,1.5+Math.sin(state.clock*1.7)*.045,3.5],Math.sin(state.clock*.8)*.025);actor.setDragonHeading?.(Math.atan2(actor.heroPosition[0]-x,actor.heroPosition[2]-3.5));return;}
       const y=1.34+Math.abs(Math.sin(state.clock*2.8))*.12;
       const p=state.purchaseElapsed===null?0:Math.min(1,state.purchaseElapsed/6);
       const path=[[-2.55,1.5,3.5],[-.22,1.2,2.75],[-.22,1.3,1.35],[2.48,y,.92]],part=Math.min(2,Math.floor(p*3)),mix=smooth(p*3-part);
@@ -215,14 +216,17 @@ export class MissionDirector{
     if(['photo-pose','photo-talk','photo-flight','photo','photo-return','photo-sending','photo-check','photo-review','cargo'].includes(phase)){
       actor.setMove(0,0,false);const p=phase==='photo-pose'?smooth(Math.min(1,e/2)):1;
       const review=['photo-return','photo-sending','photo-check','photo-review','cargo'].includes(phase),back=phase==='photo-return'?smooth(e/2.5):1;
-      const from=this.photoReturnFrom||[0,2.6,11.2];const pos=review?[from[0]+(-2.25-from[0])*back,from[1]+(1.5-from[1])*back+Math.sin(back*Math.PI)*.25,from[2]+(3.65-from[2])*back]:phase==='photo'?[state.flight?.x||0,1.5,state.flight?.z||10.5]:[-2.55,1.5,3.5];
+      const from=this.photoReturnFrom||[0,2.6,11.2];const pos=review?[from[0]+(-2.18-from[0])*back,from[1]+(1.42-from[1])*back+Math.sin(back*Math.PI)*.25,from[2]+(3.42-from[2])*back]:phase==='photo'?[state.flight?.x||0,1.5,state.flight?.z||10.5]:[-2.55,1.5,3.5];
       actor.setDragonProjectile(pos,0);
       if(!this.world.photoPhone){const phone=new T.Group();this.world.r.box(phone,'#172f36',[0,0,0],[.24,.43,.045]);this.world.r.box(phone,'#8fbab5',[0,0,.027],[.21,.36,.006],{emissive:0x70a399,emissiveIntensity:.5}).name='camera-screen';this.world.r.mesh(this.world.r.geometry('CylinderGeometry',.035,.035,.018,16),this.world.r.material('#101b24',{metalness:.6,roughness:.2}),phone,[.06,.14,-.03]).rotation.x=Math.PI/2;this.world.scene.add(phone);this.world.photoPhone=phone;phone.scale.setScalar(.65);const lens=this.world.r.mesh(this.world.r.geometry('CylinderGeometry',.075,.075,.07,16),this.world.r.material('#142125',{metalness:.8}),phone,[0,0,-.06]);lens.rotation.x=Math.PI/2;lens.name='camera-lens';}
       if(phase==='cargo'&&this.world.renderer){this.receiptTexture??=this.world.r.own(new T.TextureLoader().load(`${import.meta.env.BASE_URL}images/receipt.svg`));this.receiptTexture.colorSpace=T.SRGBColorSpace;const display=this.world.photoPhone.getObjectByName('camera-screen');if(display.material.map!==this.receiptTexture){display.material.map=display.material.emissiveMap=this.receiptTexture;display.material.color.set(0xffffff);display.material.needsUpdate=true;}}
       const phoneAsked=phase==='photo-talk'&&state.node?.event==='camera-handover';
       this.world.photoPhone.visible=phoneAsked||['photo-return','photo-sending','photo-check','photo-review','cargo'].includes(phase);this.world.photoPhone.position.set(pos[0]+.45,review?pos[1]+.13:pos[1]+.35,review?pos[2]+.18:pos[2]-.2);this.world.photoPhone.rotation.y=phase==='photo-return'?Math.PI+(Math.PI-2.65)*smooth(Math.max(0,(back-.72)/.28)):review?.18:Math.PI;if(phoneAsked){const p=smooth((state.nodeElapsed||0)/1.5),hand=actor.deviceGripPosition||actor.gripPosition||[-1.25,1.3,3.25];this.world.photoPhone.position.set(hand[0]+(-1.7-hand[0])*p,hand[1]+(1.5-hand[1])*p,hand[2]+(3.05-hand[2])*p);}
-      if(review&&phase!=='photo-return'){this.world.photoPhone.position.set(-1.72,1.65,3.9);this.world.photoPhone.lookAt(-1.75,1.97,3.3);}else this.world.photoPhone.rotation.set(0,0,0);const lens=this.world.photoPhone.getObjectByName('camera-lens');if(lens)lens.visible=!['cargo','photo-sending'].includes(phase);
-      if(phase==='photo-return')actor.setDragonHeading?.(.35+Math.PI*(1-back));return;
+      if(review&&phase!=='photo-return'){this.world.photoPhone.position.set(-1.72,1.72,3.95);this.world.photoPhone.lookAt(-1.72,1.87,3.34);}else this.world.photoPhone.rotation.set(0,0,0);const lens=this.world.photoPhone.getObjectByName('camera-lens');if(lens)lens.visible=!['cargo','photo-sending'].includes(phase);
+      if(phase==='photo'&&this.world.photoCamera){const phone=this.world.photoPhone;phone.quaternion.copy(this.world.camera.quaternion);this.point.set(0,0,-.039).applyQuaternion(phone.quaternion);phone.position.copy(this.world.photoCamera.origin).sub(this.point);}
+      if(phase==='photo-return')actor.setDragonHeading?.(.35+Math.PI*(1-back));
+      if(review&&phase!=='photo-return'){const phone=this.world.photoPhone.position;actor.setDragonHeading?.(Math.atan2(phone.x-pos[0],phone.z-pos[2]));}
+      return;
     }
     if(this.world.photoPhone)this.world.photoPhone.visible=false;
     if(['ascent','director-reminder','shoe-view','pylon-link','charge','fire-ready','combat','energy','last','aim-final'].includes(phase)){
@@ -303,7 +307,7 @@ export class MissionDirector{
       const shot=dialogueShot(s,feet,w.actors?.dragonPosition||[-2,1,3.25],portrait,this.reducedMotion);({position,target,fov,beat}=shot);
     }else if(['photo-return','photo-sending','photo-check','photo-review','cargo'].includes(s.phase)){
       if(s.phase==='photo-return'){const d=w.actors?.dragonPosition||[-2,1.5,3.5];position=[-8.5,3.7,12.5];target=[(d[0]+feet[0])/2,1.8,(d[2]+feet[2])/2];fov=portrait?60:46;beat='photo-return-side';}
-      else {const age=s.phase==='photo-check'?e:6,progress=this.reducedMotion?(age<2?0:1):smooth((age-2)/3),angle=progress*Math.PI*.75;position=[-1.75-Math.sin(angle)*(3.3-1.5*progress),2.45,3.55+Math.cos(angle)*(3.3-1.5*progress)];target=[-1.75,1.65,3.6];fov=portrait?50:38;beat=progress===0?'photo-together-front':'photo-together-shoulder';}
+      else {const age=s.phase==='photo-check'?e:6,progress=this.reducedMotion?(age<2?0:1):smooth((age-2)/3),angle=progress*Math.PI;position=[-1.72-Math.sin(angle)*3.1,2.45+progress*.2,6.85-4.8*progress];target=[-1.72,1.72,3.6+.35*progress];fov=portrait?50:38;beat=progress===0?'photo-together-front':'photo-together-shoulder';}
     }else if(s.phase==='observation'&&s.node?.event==='phone-away'){
       position=[-3.3,1.9,5.7];target=[-2,1.2,3.25];fov=38;beat='dragon-sigh';
     }else if(s.phase==='observation'||s.phase==='comm-request'){

@@ -23,3 +23,6 @@
 .bonus-ui:is(.bonus-class-flow,.bonus-claims-flow) .bonus-panel{bottom:calc(86px + var(--safe-bottom))!important}.bonus-ui:is(.bonus-class-flow,.bonus-claims-flow) .bonus-content{padding-bottom:24px!important}
 @media(min-width:1000px) and (min-height:600px){.bonus-ui:is(.bonus-class-flow,.bonus-claims-flow) .bonus-panel{bottom:calc(104px + var(--safe-bottom))!important}}
 @media(max-height:540px){.bonus-ui:is(.bonus-class-flow,.bonus-claims-flow) .bonus-panel{bottom:calc(80px + var(--safe-bottom))!important}}
+
+/* Hidden photo controls must not cover the next story panel. */
+.investigation-ui[hidden],.mission-active .investigation-ui[hidden]{display:none!important}
