@@ -6,4 +6,5 @@ for(const [w,h] of [[320,300],[390,500],[1366,600],[1920,850],[440,250]])for(con
  const base=photoBounds(w,h,iw,ih,1);check(base.x===0&&base.y===0);check(base.width<=w+.001&&base.height<=h+.001);check(Math.abs(base.width/base.height-iw/ih)<1e-8);const zoom=photoBounds(w,h,iw,ih,3);check(zoom.x>=0&&zoom.y>=0);check(zoom.x>0||zoom.y>0);
 }
 const m=new MissionMachine();m.phaseTo('photo-flight');m.flight={x:0,z:10.5,vx:0,vz:0};m.update(.1);check(!m.finishFlight());m.update(.59);check(!m.finishFlight());m.update(.61);check(m.finishFlight());m.phaseTo('photo-flight');m.flight.z=11.5;m.update(.8);check(!m.finishFlight());
+m.phaseTo('photo-review');m.photoFaceValid=false;check(!m.sendPhoto());m.photoFaceValid=true;check(m.sendPhoto());m.replay();check(m.photoFaceValid===true);
 console.log(`Viewer/positioning: ${checks} aspect, bounds and steady-shot checks passed.`);

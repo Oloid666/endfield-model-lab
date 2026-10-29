@@ -146,10 +146,10 @@ export class World {
       const captureOrigin=camera.position.toArray();
       const width=aspect>=1?2048:Math.round(2048*aspect),height=aspect>=1?Math.round(2048/aspect):2048;
       const wide=render(width,height),points=[['floor',[-3.05,1.08,2.1]],['server',[0,4.6,1.4]]].map(([id,p])=>{const q=this.projectPoint(p);return {id,x:(q[0]+1)/2,y:(1-q[1])/2,z:q[2]};});
-      const h=this.actors.heroPosition;camera.lookAt(h[0],h[1]+1.57,h[2]);const distance=camera.position.distanceTo(new T.Vector3(h[0],h[1]+1.57,h[2]));camera.fov=T.MathUtils.radToDeg(2*Math.atan(.57/distance));
-      await nextFrame();const close=render(1024,1280),src=wide.toDataURL('image/png'),closeup=close.toDataURL('image/png');
+      const h=this.actors.headPosition||this.actors.heroPosition,face=[h[0],h[1]+.08,h[2]];const projected=new T.Vector3(...face).project(camera),framePoints=[[-.14,-.17],[.14,.2]].map(([x,y])=>new T.Vector3(face[0]+x,face[1]+y,face[2]).project(camera));const yaw=this.actors.status.cinematic?.heading??0,toEye=new T.Vector3().subVectors(camera.position,new T.Vector3(...face)).normalize();const facing=Math.sin(yaw)*toEye.x+Math.cos(yaw)*toEye.z;const faceValid=projected.z>-1&&projected.z<1&&framePoints.every(q=>Math.abs(q.x)<.98&&Math.abs(q.y)<.98)&&!this.cameraOcclusion(face)&&facing>0;camera.lookAt(...face);const distance=camera.position.distanceTo(new T.Vector3(...face));camera.fov=T.MathUtils.radToDeg(2*Math.atan(.38/distance));
+      await nextFrame();const close=render(1536,1920),src=wide.toDataURL('image/png'),closeup=close.toDataURL('image/png');
       const display=this.photoPhone?.getObjectByName('camera-screen');if(display){const thumb=document.createElement('canvas');thumb.width=256;thumb.height=384;thumb.getContext('2d').drawImage(close,0,0,256,384);this.photoTexture??=this.r.own(new T.CanvasTexture(thumb));this.photoTexture.image=thumb;this.photoTexture.colorSpace=T.SRGBColorSpace;this.photoTexture.needsUpdate=true;display.material.map=display.material.emissiveMap=this.photoTexture;display.material.color.set(0xffffff);display.material.emissive.set(0xffffff);display.material.emissiveIntensity=.3;display.material.needsUpdate=true;}
-      return {src,width,height,points,closeup,captureOrigin};
+      return {src,width,height,points,closeup,captureOrigin,faceValid,closeupWidth:1536,closeupHeight:1920};
     }finally{camera.position.copy(position);camera.quaternion.copy(quaternion);camera.fov=fov;this.renderer.setPixelRatio(dpr);this.resize();camera.aspect=aspect;camera.updateProjectionMatrix();this.capturingPhoto=false;if(wasRunning)this.start();}
   }
   projectPoint(point){const p=new T.Vector3().fromArray(point).project(this.camera);return p.toArray();}
@@ -194,8 +194,6 @@ export class World {
     const visualTime=this.director.visualTime??sceneTime;this.remnant.update(visualTime,this.missionState,this.missionState?.postgame?this.actors?.heelCenter:null,{doors:this.store.doors,floorPlan:this.store.floorPlan,intact:this.streetShow?.state.mode!=='collapsed'});
     this.store.glass.uniforms.uTime.value=visualTime;this.wet.update(visualTime);this.weather.update(visualTime);
     if(render){this.renderer.info.reset();this.composer.render();this.renderCount++;
-      const phase=this.missionState?.phase,key={energy:'general',last:'mikoto',cargo:'cargo',briefing:'taste',login:'login',heat:'microwave',landing:'insurance'}[phase];this.sceneStills??={};
-      if(key&&!this.sceneStills[key]&&this.missionState.phaseElapsed>.5){const c=document.createElement('canvas');c.width=640;c.height=Math.round(640*this.renderer.domElement.height/this.renderer.domElement.width);c.getContext('2d').drawImage(this.renderer.domElement,0,0,c.width,c.height);this.sceneStills[key]=c.toDataURL('image/jpeg',.7);}
     }
   }
   start(){this.stop();this.running=true;this.onClockState?.(!document.hidden);this.renderer.setAnimationLoop(now=>{

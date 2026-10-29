@@ -15,6 +15,7 @@ async def main():
   print('shortcut',await page.evaluate('({postgame:__rainy711.mission.postgame,show:__rainy711.staging.show,remnant:__rainy711.staging.remnant,taps:__rainy711.bonus.taps})'),flush=True)
   assert await page.evaluate('__rainy711.mission.postgame')
   assert not await page.evaluate('__rainy711.staging.remnant.visible')
+  assert await page.locator('#app').get_attribute('data-free-guide')=='house'
   await page.locator('.walk-toggle').click();await tick()
   await tick(35);await page.keyboard.down('s');await tick(150);await page.keyboard.up('s');await tick(10)
   assert (await page.evaluate('__rainy711.position'))[2]>7
@@ -22,6 +23,7 @@ async def main():
   await page.locator('.postgame-toggle').click();await tick(30)
   await page.locator('.street-performance button').click();await tick()
   assert await page.evaluate('__rainy711.staging.show.mode')=='collapsed'
+  assert await page.locator('#app').get_attribute('data-free-guide') in ['walk','done']
   assert await page.evaluate('__rainy711.walking')
   for i in range(7):
    await page.locator('.postgame-toggle').click();await tick(15);await page.locator('.street-performance button').click();await tick()
@@ -34,10 +36,11 @@ async def main():
   print('upstairs',await page.evaluate('__rainy711.bonus.route'),flush=True)
   await page.keyboard.press('Escape');await tick()
   assert not await page.evaluate('__rainy711.bonus.active')
-  await page.evaluate('__rainy711.missionReplay()');await tick()
+  await page.locator('.postgame-reset').click();await tick()
   for sel in ['.walk-toggle','.walk-pad','.bonus-entry','.postgame-toggle']: assert not await page.locator(sel).is_visible(),sel
   assert not await page.evaluate('__rainy711.staging.remnant.visible')
   assert not await page.locator('.postgame-views').is_visible()
+  assert not await page.locator('.postgame-actions').is_visible()
   assert not errors,errors
   print('PASS shortcut, keyboard road walk, eight toggles, restore-before-upstairs, replay; no browser errors',flush=True)
   await b.close()

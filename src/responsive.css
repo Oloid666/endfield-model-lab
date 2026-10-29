@@ -71,3 +71,20 @@ button:focus-visible,select:focus-visible{outline:3px solid #e7d39a;outline-offs
 .postgame-views{position:absolute;right:16px;bottom:calc(20px + env(safe-area-inset-bottom));z-index:12;max-width:calc(100% - 32px);background:#16373cee;border:1px solid #d5bf86;border-radius:12px;color:#e7d9ac}.postgame-views summary{cursor:pointer;min-height:48px;padding:12px 16px;box-sizing:border-box}.postgame-views .view-dock{position:static;transform:none;margin:0;width:min(340px,100%)}.postgame-views[hidden],.bonus-active .postgame-views,.street-show-active .postgame-views{display:none!important}
 
 .bonus-active .postgame-toggle{display:none!important}
+/* Three explicit photo actions; gesture surface retains the remaining height. */
+.phone-gallery .gallery-tools{display:block}.phone-gallery .gallery-tools button{width:100%;min-height:48px}.phone-gallery .gallery-footer{display:flex;gap:10px}.phone-gallery .gallery-footer button{flex:1;min-height:48px}
+.postgame-actions{position:absolute;z-index:12;right:16px;bottom:calc(88px + env(safe-area-inset-bottom));width:min(310px,calc(100% - 32px));display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px;border:1px solid #b7b18c66;border-radius:14px;background:#12343be8;box-sizing:border-box}
+#app.postgame-free .postgame-actions :is(.walk-toggle,.postgame-toggle,.bonus-entry,.postgame-reset){position:static;inset:auto;min-height:48px;max-width:none;margin:0;padding:10px;font:inherit;box-shadow:none;border:1px solid #cbb77b77;border-radius:10px;background:#25494b;color:#eee2b8;animation:none}
+#app.postgame-free .postgame-actions .bonus-entry{font-size:13px;min-height:44px;background:transparent;border-color:transparent;font-weight:400}
+#app.postgame-free .postgame-actions .postgame-reset{font-size:13px;min-height:44px;background:transparent;border-color:#a8b5a633}
+#app.postgame-free .postgame-actions .postgame-toggle{background:#d6c18b;color:#18383b;font-weight:700}
+#app[data-free-guide=house] .postgame-actions .postgame-toggle,#app[data-free-guide=walk] .postgame-actions .walk-toggle{animation:free-action-glow 2s ease-in-out infinite;border-color:#ffe1a0;box-shadow:0 0 0 2px #e6ca8666}
+#app[data-free-guide=walk] .postgame-actions .walk-toggle{background:#d6c18b;color:#18383b;font-weight:700}
+@keyframes free-action-glow{50%{box-shadow:0 0 0 4px #e6ca8677,0 0 16px #e6ca8655}}
+.bonus-active .postgame-actions,.street-show-active .postgame-actions,.postgame-actions[hidden]{display:none!important}
+#app.postgame-free.walking-mode .walk-pad{bottom:calc(95px + env(safe-area-inset-bottom))}
+#app.postgame-free.walking-mode .postgame-actions{width:min(240px,calc(100% - 145px))}
+@media(prefers-reduced-motion:reduce){#app .postgame-actions button{animation:none!important}}
+@media(max-height:500px){.postgame-actions{bottom:calc(74px + env(safe-area-inset-bottom));width:280px}#app.postgame-free .postgame-actions button{padding:7px;min-height:44px}}
+
+.gallery-open .investigation-ui,.gallery-open .mission-shell,.gallery-open .cinematic-toggle{visibility:hidden!important}

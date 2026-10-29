@@ -46,7 +46,7 @@ export class MissionMachine{
     this.resetInteraction();
   }
   resetInteraction(){
-    this.shopping=null;this.doorOpen=1;this.mealBorn=false;this.postgame=false;this.homecomingAt=null;this.homecomingSpoken=false;this.flightStableAt=null;this.failures={};this.seenHeatFailures=0;this.flight=null;this.loginAside='';this.asideCounts={};this.investigation=null;this.photoTaken=false;this.hackTurns=[1,2,3,1];this.hackMoves=0;this.hackFailures=0;this.rhythm=new RhythmHeat();
+    this.shopping=null;this.doorOpen=1;this.mealBorn=false;this.postgame=false;this.homecomingAt=null;this.homecomingSpoken=false;this.flightStableAt=null;this.failures={};this.seenHeatFailures=0;this.flight=null;this.loginAside='';this.asideCounts={};this.investigation=null;this.photoFaceValid=true;this.photoTaken=false;this.hackTurns=[1,2,3,1];this.hackMoves=0;this.hackFailures=0;this.rhythm=new RhythmHeat();
     this.connection={field:'account',account:'',password:'',lastKey:'',keyAt:-Infinity,keyNumber:0,error:'',verified:false,lever:0};
 
   }
@@ -139,7 +139,7 @@ export class MissionMachine{
   fly(x,z){if(this.phase!=='photo-flight'||this.paused)return false;this.flight.vx=Math.max(-1,Math.min(1,x));this.flight.vz=Math.max(-1,Math.min(1,z));return true;}
   finishFlight(){if(this.phase!=='photo-flight'||this.paused||Math.abs(this.flight.z-10.5)>.6||this.time-(this.flightStableAt??this.time)<.5)return false;this.phaseTo('photo');return true;}
   takePhoto(){if(this.phase!=='photo'||this.paused)return false;this.photoTaken=true;this.phaseTo('photo-return');return true;}
-  sendPhoto(){if(this.phase!=='photo-review'||this.paused)return false;this.investigation='floor';this.phaseTo('photo-sending');this.line({id:'photo_sent',speaker:'dragon',text:'送出了。',gesture:'phone',event:'photo-send'});this.action('photo-send',true);return true;}
+  sendPhoto(){if(this.phase!=='photo-review'||this.paused||this.photoFaceValid===false)return false;this.investigation='floor';this.phaseTo('photo-sending');this.line({id:'photo_sent',speaker:'dragon',text:'送出了。',gesture:'phone',event:'photo-send'});this.action('photo-send',true);return true;}
   investigate(id){
     if(this.phase!=='investigate'||this.paused||!['floor','server'].includes(id))return false;
     this.investigation=id;this.sequence(id==='floor'?'cargo':'observation',sequences[id==='floor'?'cargo':'observation']);return true;
