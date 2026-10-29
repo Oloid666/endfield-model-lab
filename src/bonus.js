@@ -64,7 +64,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
  function advanceClaims(){
   if(world.time<claimsLockedUntil)return;
   if(route==='claims'){resetClaims();return;}
-  if(route==='settlement-result'){flowStage=flowStage==='done'?'done':'class';route='class-invite';render();focusContent();return;}
+  if(route==='settlement-result'){flowStage=flowStage==='done'?'done':'class';travel('class-invite');return;}
   if(route!=='negotiation'||!negotiation.next())return;
   if(negotiation.phase==='stamp')startSettlementStamp(world.time);if(negotiation.cue?.event==='policyholder')claimsLockedUntil=world.time+1.5;
   render();panel.scrollTop=0;claimsPrimary.focus({preventScroll:true});
@@ -150,7 +150,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
  }
  function lessonTurns(){return LESSONS[lessonIndex].aside?LESSONS[lessonIndex].aside.split('\n'):[];}
  function enterLessonPage(){lessonAt=world.time;lastReveal=-1;responseIndex=0;lessonKey=`${lessonIndex}:${pageIndex}:${lessonAt}`;}
- function updateEpilogue(){const lines=['莊：龍泡泡，等等。你片尾曲太早唱了。','莊：還不能下班喔。','龍泡泡：二樓還不能拆喔。','龍泡泡：跟我進二樓，還有任務。'];epilogueText.textContent=lines[epilogueStep];epilogueGo.textContent=epilogueStep===3?'跟上龍泡泡':epilogueStep===2?'看龍泡泡怎麼辦':'繼續';}
+ function updateEpilogue(){const lines=['莊：龍泡泡，等等。你片尾曲太早唱了。','莊：還不能下班喔。','龍泡泡：啊，對吼！二樓還不能拆。','龍泡泡：跟我進二樓，還有任務。'];epilogueText.textContent=lines[epilogueStep];epilogueGo.textContent=epilogueStep===3?'跟上龍泡泡':epilogueStep===2?'還沒演完？':'繼續';}
  function enterFreeStreet(shortcut=false){
   exploration.setActive(false);flowStage='done';rebuilt=true;progress.data.unlocked=true;progress.taps=0;progress.save();
   if(shortcut){world.streetShow.reset();world.director.reset();world.streetShow.prepareIntact();}
@@ -171,7 +171,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
   snapshot={time:world.time,position:world.camera.position.clone(),quaternion:world.camera.quaternion.clone(),target:world.controls.target.clone(),fov:world.camera.fov,currentView:world.currentView,autoCamera:world.autoCamera,manualUntil:world.manualUntil,transition:world.transition,cutaway:world.cutawayActive,walking:exploration.active,paused:mission.state.paused,controls:world.controls.enabled,inert:[]};
   exploration.setActive(false);mission.setPaused(true,'bonus');world.transition=null;world.controls.enabled=false;active=true;
   for(const node of mount.children){if([root,entry,toast,epilogue,world.container].includes(node)||node.classList.contains('background-resume'))continue;snapshot.inert.push([node,node.inert]);node.inert=true;}
-  rebuildButton.hidden=true;mount.classList.add('bonus-active');root.hidden=false;toast.hidden=true;epilogue.hidden=true;route='claims';ensureRoom();if(mission.state.postgame){route='claims';}else restoreFlow();world.resize();render();updateEntry();focusContent();if(!skipTravel&&['claims','negotiation'].includes(route))travel(route);else {ensureRoom().setMode(isClassRoute()?'classroom':'claims');room.enter(world.time);}
+  rebuildButton.hidden=true;mount.classList.add('bonus-active');root.hidden=false;toast.hidden=true;epilogue.hidden=true;route='claims';ensureRoom();if(mission.state.postgame){route='claims';}else restoreFlow();world.resize();render();updateEntry();focusContent();if(!skipTravel&&['claims','negotiation'].includes(route))travel(route,true);else {ensureRoom().setMode(isClassRoute()?'classroom':'claims');room.enter(world.time);}
  }
  function close(){
   if(!active||busy)return;dialog.close();if(exportUrl){URL.revokeObjectURL(exportUrl);exportUrl=null;exportBlob=null;}
@@ -186,16 +186,17 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
   }
   updateEntry();entry.textContent=flowStage==='done'?'重看二樓故事':'等等，二樓還不能拆';entry.focus();snapshot=null;
  }
- async function travel(destination){
+ async function travel(destination,fromStreet=false){
   if(busy||disposed||externallyPaused())return;stampSequence.cancel();objectionAnimation?.cancel();objection.hidden=true;busy=true;root.setAttribute('aria-busy','true');dialog.close();
   const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;let covered=false;
   try{
    // Rewind the ruined storefront visually; restore its logical damage afterward.
-   route='exterior';setExterior();title.textContent='倒帶 · 二樓還不能拆';
+   const indoor=!fromStreet&&!!room&&['claims','negotiation','settlement-result','class-invite','classroom','lesson','class-result'].includes(route);
+   if(!indoor){route='exterior';setExterior();title.textContent='二樓 · 進場';}
    if(!reduced&&!covered){transitionAnimation=curtain.animate([{opacity:0},{opacity:0,offset:.35},{opacity:1}],{duration:650,fill:'forwards'});await transitionAnimation.finished;}
    if(disposed)return;if(destination==='street'){world.store.destruction.reset();rebuilt=true;progress.data.unlocked=false;progress.taps=0;busy=false;close();return;}route=destination;
 
-   if(destination==='rooms')setExterior();else {ensureRoom().setMode(destination==='classroom'||destination==='lesson'?'classroom':'claims');if(destination==='classroom'||destination==='claims')room.enter(world.time);}
+   if(destination==='rooms')setExterior();else {ensureRoom().setMode(destination==='classroom'||destination==='lesson'||destination==='class-invite'?'classroom':'claims');if(destination==='classroom'||destination==='claims'||destination==='class-invite')room.enter(world.time);}
    render();focusContent();
    if(!reduced){transitionAnimation=curtain.animate([{opacity:1},{opacity:0}],{duration:300,fill:'forwards'});await transitionAnimation.finished;}
   }catch(e){if(e.name!=='AbortError')throw e;}finally{busy=false;root.removeAttribute('aria-busy');}
@@ -319,7 +320,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
    case 'rate-submit':if(!selectedRating)return;thanksStep=0;skippedRating=false;route='rating-result';render();return;
    case 'rate-skip':thanksStep=0;skippedRating=true;route='rating-result';render();return;
    case 'thanks-next':thanksStep+=skippedRating&&thanksStep===0?2:1;if(thanksStep>2){flowStage='done';route='final';}render();return;
-   case 'class-start':resetClass();await travel('classroom');return;
+   case 'class-start':if(route==='class-invite'){resetClass();route='classroom';render();focusContent();return;}resetClass();await travel('classroom');return;
    case 'claims-menu':showClaimsMenu();return;
    case 'claims-next':advanceClaims();return;
    case 'claims-reset':dialog.close();resetClaims();return;

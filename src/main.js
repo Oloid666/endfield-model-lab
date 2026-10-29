@@ -118,7 +118,7 @@ async function init(){
       canWalk:()=>!bonus?.active&&mission.state.postgame,canMove:()=>!mission.state.paused&&!world.streetShow?.active,onHotspot:kind=>mission.hotspot(kind),
       onSceneTap:ray=>{
         if(bonus?.handleTap(ray))return true;
-        if(!mission.state.paused&&!mission.state.presentationLocked&&['ready','intro','meal','cargo','observation','briefing','energy','last','complete'].includes(mission.state.phase)){
+        if(!mission.state.paused&&!mission.state.presentationLocked&&(mission.state.phase==='ready'||mission.state.postgame&&!mission.state.node)){
           const first=ray.intersectObjects([world.actors?.root,world.store.root].filter(Boolean),true).find(h=>{for(let n=h.object;n;n=n.parent)if(!n.visible)return false;return h.object.material?.visible!==false;});
           if(first?.object.userData.hotspot==='dragon'){const text=world.actors.reactDragon(world.time,['ready','complete'].includes(mission.state.phase));if(text){reactionBubble.textContent=text;reactionBubbleUntil=world.time+2;reactionBubble.hidden=false;}return true;}
         }

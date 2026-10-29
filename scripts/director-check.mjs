@@ -119,7 +119,7 @@ lastDirector.state=state('last',{nodeId:'last_4'});for(let n=0;n<180;n++)lastDir
 const frontNormal=new T.Vector3(Math.sin(2.91),0,Math.cos(2.91)),toCamera=lastWorld.camera.position.clone().sub(new T.Vector3(...lastFeet)).setY(0).normalize();check('Final bullet shows the front of Zhuang',frontNormal.dot(toCamera)>.8);lastWorld.r.dispose();
 const quietWorld=makeWorld(),quietDirector=new MissionDirector(quietWorld);quietDirector.reducedMotion=true;quietDirector.state=state('cargo',{speaker:'dragon',nodeId:'cargo_3',nodeElapsed:2});quietDirector.updateCamera(.016,quietWorld.actors.heroPosition);check('Reduced motion cuts directly to a stable dialogue framing',quietWorld.camera.position.distanceTo(quietDirector.cameraPosition)<1e-9);quietWorld.r.dispose();
 const pw=makeWorld(),pd=new MissionDirector(pw);pd.state=state('photo');const beforePhoto=pw.camera.position.toArray();pd.updateCamera(.1,pw.actors.heroPosition);check('Photo framing remains under player control',JSON.stringify(pw.camera.position.toArray())===JSON.stringify(beforePhoto));pw.r.dispose();
-const tw=makeWorld(),td=new MissionDirector(tw);for(const [at,beat] of [[2,'tour-server-hole'],[6,'tour-smile'],[9,'tour-ruins'],[11,'tour-ground-sign'],[13,'tour-pear'],[17,'tour-dragon']]){td.state=state('tour',{phaseElapsed:at});td.updateCamera(.03,tw.actors.heroPosition);check('Tour retains '+beat,td.status.cameraBeat===beat);}tw.r.dispose();
+const tw=makeWorld(),td=new MissionDirector(tw);for(const [at,beat] of [[2,'tour-server-hole'],[6,'tour-smile'],[9,'tour-ruins'],[11,'tour-ground-sign'],[13,'tour-ruins-context'],[17,'tour-dragon-orbit']]){td.state=state('tour',{phaseElapsed:at});td.updateCamera(.03,tw.actors.heroPosition);check('Tour retains '+beat,td.status.cameraBeat===beat);}tw.r.dispose();
 // The camera is a shot sequence, with a real front view and clear city subjects.
 const shotSamples=[[1,'charge-lift-wide'],[2,'charge-lift-wide'],[3,'charge-dragon-catchup'],[6,'charge-pylon-one'],[11,'charge-city-array'],[16,'charge-orbit'],[23,'charge-pylon-two'],[28,'charge-battle-wide']];
 const cameraShots=[];
@@ -166,6 +166,7 @@ rd.beforeActors(state('rewind',{phaseElapsed:3.4,clock:63.4,rewindProgress:.5,re
 check('VCR reverse follows the shared eased progress',rd.visualTime===282.5&&rd.cameraBeat==='rewind-street');
 rd.beforeActors(state('rewind',{phaseElapsed:6.7,clock:66.7,rewindProgress:1,rewindStage:'settle',vcr:true}));rd.updateCamera(.016,rw.actors.heroPosition);
 check('VCR ends on the doorway before switching to the past',rd.cameraBeat==='rewind-doorway'&&Math.abs(rd.cameraPosition.z-11.6)<1e-9&&rd.cameraTarget.z===3.25);
+for(const event of ['pear-check','pear-safe','pear-irony']){rd.state=state('landing',{phaseElapsed:7,node:{event}});rd.updateCamera(.016,rw.actors.heroPosition);check('Garden cut on '+event,rd.cameraBeat==='pear-garden-survives'&&rd.shakeEnvelope===0);}
 rw.r.dispose();w.r.dispose();
 fs.writeFileSync('artifacts/v14-director-check.json',JSON.stringify({kind:'actual-director-with-mock-world-no-gpu',checks,projections,cameraShots},null,2)+'\n');
 console.log(`V14 director: ${checks.length} checks passed.`);

@@ -17,14 +17,14 @@ async def main():
    elif phase!='stamp' and await page.locator('[data-action=claims-next]').is_enabled():await page.locator('[data-action=claims-next]').click()
   print('claims result',await page.evaluate('__rainy711.bonus.route'),flush=True)
   assert await page.evaluate('__rainy711.bonus.route')=='settlement-result'
-  await page.locator('.bonus-panel').evaluate('e=>e.scrollTop=e.scrollHeight');await page.locator('[data-action=claims-next]').click();await tick(20)
+  await page.locator('.bonus-panel').evaluate('e=>e.scrollTop=e.scrollHeight');await page.locator('[data-action=claims-next]').click();await page.wait_for_function('!__rainy711.bonus.busy');await tick(20)
   assert await page.evaluate('__rainy711.bonus.route')=='class-invite'
   assert await page.locator('.bonus-panel').evaluate('e=>e.scrollTop')==0
   assert '我當老師' in await page.locator('.bonus-content').inner_text()
   assert not await page.locator('.postgame-toggle').is_visible()
   assert await page.locator('[data-action=class-next]').is_visible()
   await page.screenshot(path='/tmp/class-invite-stage.png')
-  await page.locator('[data-action=class-next]').click();await page.wait_for_function('!__rainy711.bonus.busy');await tick(20)
+  await page.locator('[data-action=class-next]').click();assert not await page.evaluate('__rainy711.bonus.busy');await tick(20)
   assert await page.evaluate('__rainy711.bonus.route')=='classroom'
   assert not errors,errors
   print('PASS settlement -> invitation -> class after scrolling; zero browser errors',flush=True);await b.close()

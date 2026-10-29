@@ -45,7 +45,7 @@ export const sequences={
     ['zhuang','小聲一點。','look'],
     ['dragon','品名：土產。簽收人……龍泡泡？','shake'],
     ['dragon','我自己都還沒簽名過！','shake'],
-    ['zhuang','我幫你拿便當。沒關係，不用緊張。攝影機拍到你簽收了。','hold'],
+    ['zhuang','便當我幫你拿。別緊張，監視器拍到你接貨了。簽名只是形式。','hold'],
     ['zhuang','送到711。你隨貨簽收。','nod'],
     ['dragon','我答應幫妳拿的是便當，不是萬噸息壤！','shake'],
     ['zhuang','都是補給。','nod'],
@@ -141,9 +141,9 @@ export const sequences={
   landing:lines('landing',[
     ['mifoe','伺服器粉碎。後面那棟有保隕石險嗎？','look'],
     ['zhuang','那棟跟我沒關係。','nod'],
-    ['zhuang','梨花呢？','goods'],
-    ['mifoe','沒事。','nod'],
-    ['zhuang','那就是無損失。','nod'],
+    ['zhuang','梨花呢？','goods','calm','pear-check'],
+    ['mifoe','沒事。','nod','calm','pear-safe'],
+    ['zhuang','那就是無損失。','nod','calm','pear-irony'],
   ]),
 };
 

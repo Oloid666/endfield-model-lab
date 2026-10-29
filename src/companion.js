@@ -86,6 +86,7 @@ export function buildDragon(r) {
     microphone.visible=!!s.singing;microphone.position.y=.55+(s.singing?Math.sin(t*2)*.025:0);if(s.singing){arms[1].position.set(.35,.62,.35);arms[1].rotation.z=.65;body.rotation.z+=Math.sin(t*2)*.06;}
     if(action==='call'){arms[0].position.set(-.4,.75,.2);arms[0].rotation.z=-.85;body.rotation.z=Math.sin(t*1.1)*.05;}
     emote.visible=!!s.reaction;thumb.visible=false;flightLines.visible=false;
+    if(action==='checkout'){arms[1].rotation.z=.8;thumb.visible=true;material.map=maps[2];}
     if(s.reaction&&!s.projectile){const {id,age,large}=s.reaction,p=Math.max(0,Math.min(1,age/2)),ease=Math.sin(p*Math.PI),reduced=typeof matchMedia==='function'&&matchMedia('(prefers-reduced-motion: reduce)').matches;
       emote.material.map=markMaps[id];emote.position.y=1.7+(reduced?0:ease*.08);
       if(id===0)arms[1].rotation.z=.6+Math.sin(age*9)*.35*ease;

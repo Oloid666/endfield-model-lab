@@ -59,7 +59,7 @@ export class MissionMachine{
     if(phase==='login'){
       this.line(connectionPrompts.account,entered);
     }
-    if(phase==='verify-talk'){this.lines=captchaLines;this.line(captchaLines[0],entered);}
+    if(phase==='verify-talk'){this.loginAside='';this.lines=[{id:'password_correct',speaker:'dragon',text:'密碼正確！這什麼偷偷愛管理員爛密碼。',gesture:'shake',event:'password-correct'},...captchaLines];this.line(this.lines[0],entered);}
     if(phase==='lever')this.line(connectionPrompts.verified,entered);
     if(phase==='charge'){this.castingEntered=entered;this.line(chargeLines[0],entered);}
     if(phase==='shoe-view'){this.shoeOrbitStart=entered;this.shoeRounds=0;}
@@ -163,7 +163,7 @@ export class MissionMachine{
     for(const c of value)if(!this.key(c))return false;
     if(!expected.slice(0,(this.connection.chunks||[]).length).every((v,i)=>v===this.connection.chunks[i]))this.recordFailure('login');this.commentLogin();const c=this.connection;if(c[c.field]===(c.field==='account'?CONNECTION_ACCOUNT:CONNECTION_PASSWORD))this.submitLogin();return true;
   }
-  commentLogin(correct=false){const value=this.connection.account;const kind=correct?'correct':value.includes('kiss')?'kiss':value.includes('love')?'love':'wrong';const pool=kind==='kiss'?['等等，誰親誰？這是帳號欄！']:kind==='love'?['等等，誰愛誰？這是帳號欄！']:kind==='correct'?['帳號對了。接著輸入密碼。']:['你輸入的是帳號，還是辦公室八卦？','電網還沒接通，人際關係先短路了。'];const n=this.asideCounts[kind]||0;this.asideCounts[kind]=n+1;this.loginAside=pool[n%pool.length];}
+  commentLogin(correct=false){if(this.connection.field==='password'){this.loginAside=correct?'':'這是密碼欄。照莊說的數字輸入就好。';return;}const value=this.connection.account;const kind=correct?'correct':value.includes('kiss')?'kiss':value.includes('love')?'love':'wrong';const pool=kind==='kiss'?['等等，誰親誰？這是帳號欄！']:kind==='love'?['等等，誰愛誰？這是帳號欄！']:kind==='correct'?['帳號對了。接著輸入密碼。']:['你輸入的是帳號，還是辦公室八卦？','電網還沒接通，人際關係先短路了。'];const n=this.asideCounts[kind]||0;this.asideCounts[kind]=n+1;this.loginAside=pool[n%pool.length];}
   key(value){
     if(this.paused||this.phase!=='login'||typeof value!=='string')return false;
     const c=this.connection,field=c.field;let next=c[field];
