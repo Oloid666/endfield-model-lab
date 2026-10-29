@@ -58,7 +58,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
   button(d,progress.data.reading?'切回演出':'專心閱讀','reading');button(d,`字級 ${progress.data.textSize} · 調整`,'text-size');
   if(negotiation.summary.length){const details=E('details');details.append(E('summary','','本次申請單'));negotiation.summary.forEach(t=>details.append(E('p','',t)));d.append(details);}
   if(route==='settlement-result')button(d,'保存結案圖片','export');
-  button(d,'重新調解','claims-reset');button(d,'返回街景','close');
+  button(d,'重新調解','claims-reset');button(d,'返回街景','close');button(d,'重新開始雨夜','restart-night');
  }
  function resetClaims(){claimsLockedUntil=0;stampSequence.cancel();negotiation.reset();objectionKey='';objectionAnimation?.cancel();objection.hidden=true;room.resetPaper();route='negotiation';render();focusContent();}
  function advanceClaims(){
@@ -119,7 +119,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
   if(route==='lesson'){button(d,'上一段','prev');button(d,'看黑板','board');button(d,'出處與劇內設定','sources');}
   button(d,progress.data.reading?'切回演出':'專心閱讀','reading');button(d,`字級 ${progress.data.textSize} · 調整`,'text-size');
   const details=E('details','bonus-class-catalog');details.append(E('summary','','八題課程 · 已讀重看'));LESSONS.filter(l=>course.completed.includes(l.id)).forEach(l=>button(details,`${course.completed.includes(l.id)?'本堂 ✓ ':progress.data.read.includes(l.id)?'讀過 · ':''}${l.title}`,'lesson-id',l.id));d.append(details);
-  if(course.stamped)button(d,'查看死亡證明','class-certificate');button(d,'返回街景','close');button(d,'重新上課 · 死亡條歸零','class-reset',undefined,'bonus-text-button');
+  if(course.stamped)button(d,'查看死亡證明','class-certificate');button(d,'返回街景','close');button(d,'重新開始雨夜','restart-night');button(d,'重新上課 · 死亡條歸零','class-reset',undefined,'bonus-text-button');
  }
  function advanceClass(){
   if(route==='class-result'){if(flowStage==='done'){route='rating-result';render();return;}flowStage='ending';endingAge=0;route='rating';render();return;}
@@ -150,7 +150,14 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
  function lessonTurns(){return LESSONS[lessonIndex].aside?LESSONS[lessonIndex].aside.split('\n'):[];}
  function enterLessonPage(){lessonAt=world.time;lastReveal=-1;responseIndex=0;lessonKey=`${lessonIndex}:${pageIndex}:${lessonAt}`;}
  function updateEpilogue(){const lines=['莊：龍泡泡，等等。你片尾曲太早唱了。','莊：還不能下班喔。','龍泡泡：二樓還不能拆喔。','龍泡泡：跟我進二樓，還有任務。'];epilogueText.textContent=lines[epilogueStep];epilogueGo.textContent=epilogueStep===3?'跟上龍泡泡':epilogueStep===2?'看龍泡泡怎麼辦':'繼續';}
- function updateEntry(){entry.hidden=active||!progress.data.unlocked||!['ready','complete'].includes(mission.state.phase)||(mission.state.phase==='complete'&&flowStage!=='done'&&!rebuilt);}
+ function enterFreeStreet(shortcut=false){
+  exploration.setActive(false);flowStage='done';rebuilt=true;progress.data.unlocked=true;progress.taps=0;progress.save();
+  if(shortcut){world.streetShow.reset();world.director.reset();world.streetShow.prepareIntact();}
+  world.director.stuckReleased=true;world.director.finalBegun=false;world.siege.reset();
+  world.actors.setObstacles({...world.store.floorPlan,street:true});world.actors.teleport(-1.25,3.25);world.actors.setCinematic(null);world.actors.setDragonProjectile(null);world.actors.setSoot(false);
+  mission.machine.epiloguePending=false;mission.machine.returnToStreet();world.missionState=mission.state;world.weather.invalidateReflection();world.setView('story',true);
+ }
+ function updateEntry(){entry.textContent=mission.state.postgame?'進入二樓劇情':entry.textContent;entry.disabled=mission.state.paused||!!world.streetShow?.active;entry.hidden=active||!progress.data.unlocked||!['ready','complete'].includes(mission.state.phase)||(mission.state.phase==='complete'&&flowStage!=='done'&&!rebuilt);}
  function ensureRoom(){if(!room)room=createBonusRoom();return room;}
  function notice(text){toast.textContent=text;toast.hidden=false;toast.getAnimations().forEach(a=>a.cancel());const a=toast.animate([{opacity:1},{opacity:1,offset:.85},{opacity:0}],{duration:4200,fill:'forwards'});a.onfinish=()=>{toast.hidden=true;};}
  function setExterior(){
@@ -158,11 +165,12 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
  }
  function open(fromEnding=false,skipTravel=false){
   if(fromEnding===true)progress.unlock();
-  if(active||busy||world.streetShow?.active||!progress.data.unlocked||!['ready','complete'].includes(mission.state.phase))return;
+  if(active||busy||mission.state.paused||world.streetShow?.active||!progress.data.unlocked||!['ready','complete'].includes(mission.state.phase))return;
+  if(mission.state.postgame&&world.streetShow.state.mode==='collapsed'){world.streetShow.start({done:()=>open(false,skipTravel)});return;}
   snapshot={time:world.time,position:world.camera.position.clone(),quaternion:world.camera.quaternion.clone(),target:world.controls.target.clone(),fov:world.camera.fov,currentView:world.currentView,autoCamera:world.autoCamera,manualUntil:world.manualUntil,transition:world.transition,cutaway:world.cutawayActive,walking:exploration.active,paused:mission.state.paused,controls:world.controls.enabled,inert:[]};
   exploration.setActive(false);mission.setPaused(true,'bonus');world.transition=null;world.controls.enabled=false;active=true;
   for(const node of mount.children){if([root,entry,toast,epilogue,world.container].includes(node)||node.classList.contains('background-resume'))continue;snapshot.inert.push([node,node.inert]);node.inert=true;}
-  mount.classList.add('bonus-active');root.hidden=false;toast.hidden=true;epilogue.hidden=true;route='claims';ensureRoom();restoreFlow();world.resize();render();updateEntry();focusContent();if(!skipTravel&&['claims','negotiation'].includes(route))travel(route);else {ensureRoom().setMode(isClassRoute()?'classroom':'claims');room.enter(world.time);}
+  mount.classList.add('bonus-active');root.hidden=false;toast.hidden=true;epilogue.hidden=true;route='claims';ensureRoom();if(mission.state.postgame){route='claims';}else restoreFlow();world.resize();render();updateEntry();focusContent();if(!skipTravel&&['claims','negotiation'].includes(route))travel(route);else {ensureRoom().setMode(isClassRoute()?'classroom':'claims');room.enter(world.time);}
  }
  function close(){
   if(!active||busy)return;dialog.close();if(exportUrl){URL.revokeObjectURL(exportUrl);exportUrl=null;exportBlob=null;}
@@ -173,9 +181,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
   // Consume the source-clock gap while still paused, then restore its prior state.
   mission.update(world.time);mission.setPaused(false,'bonus');
   if(flowStage==='done'&&mission.state.phase==='complete'&&!mission.state.postgame){
-    world.director.finalBegun=false;world.director.stuckReleased=true;world.siege.reset();world.actors.setObstacles(world.store.floorPlan);world.actors.teleport(-1.25,3.25);
-    world.actors.setCinematic(null);world.actors.setDragonProjectile(null);world.actors.setSoot(false);
-    mission.machine.returnToStreet();world.missionState=mission.state;world.weather.invalidateReflection();world.setView('story',true);
+    enterFreeStreet();
   }
   updateEntry();entry.textContent=flowStage==='done'?'重看二樓故事':'等等，二樓還不能拆';entry.focus();snapshot=null;
  }
@@ -302,7 +308,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
   if(busy||disposed||externallyPaused()&&!['close','dialog-close'].includes(action))return;
   if((['class-stamping','class-wait'].includes(route)||route==='negotiation'&&negotiation.phase==='stamp')&&!['close','reading','text-size','class-menu','claims-menu','class-rooms','claims-reset','dialog-close'].includes(action))return;
   switch(action){
-   case 'final-menu':{const d=modal('雨夜選單');button(d,'返回街角','close');if(flowStage==='done'){button(d,'重看笑點課程','review-class');button(d,'重看理賠調解會','review-claims');button(d,'修改評分','rate-again');}return;}
+   case 'final-menu':{const d=modal('雨夜選單');button(d,'返回街角','close');button(d,'重新開始雨夜','restart-night');if(flowStage==='done'){button(d,'重看笑點課程','review-class');button(d,'重看理賠調解會','review-claims');button(d,'修改評分','rate-again');}return;}
    case 'review-class':dialog.close();await travel('classroom');selectLesson(LESSONS[0].id);render();return;
    case 'review-claims':dialog.close();ensureRoom();resetClaims();await travel('claims');return;
    case 'rate-again':dialog.close();route='rating';render();return;
@@ -326,6 +332,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
    case 'text-size':progress.data.textSize={18:22,22:26,26:18}[progress.data.textSize];progress.save();preferences();if(['class-menu','claims-menu'].includes(dialogKind)){if(dialogKind==='class-menu')showClassMenu();else showClaimsMenu();dialog.querySelector('[data-action=text-size]')?.focus({preventScroll:true});}else toolbar.querySelector('[data-action=text-size]')?.focus({preventScroll:true});return;
    case 'open':open();return;
    case 'close':close();return;
+   case 'restart-night':close();mission.replay();return;
    case 'confirm':progress.data.warned=true;progress.save();route='rooms';break;
    case 'rooms':await travel('rooms');return;
    case 'classroom':if(route==='lesson'){route='classroom';break;}await travel('classroom');return;
@@ -351,8 +358,8 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
  document.addEventListener('visibilitychange',()=>{if(!active)return;for(const a of root.getAnimations({subtree:true})){if(document.hidden&&a.playState==='running'){a.pause();a._backgroundPaused=true;}}},{signal:events.signal});
  root.addEventListener('keydown',e=>{if(!active)return;if(e.key==='Escape'&&!dialog.open){e.preventDefault();close();}if(e.key==='Tab'&&!dialog.open){const nodes=[...root.querySelectorAll('button,a[href]')].filter(n=>!n.disabled&&n.getClientRects().length);if(!nodes.length)return;const first=nodes[0],last=nodes.at(-1);if(e.shiftKey&&(document.activeElement===first||document.activeElement===content)){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}},{signal:events.signal});
  const api={get active(){return active;},get state(){return {active,route,busy,lesson:LESSONS[lessonIndex].id,page:pageIndex,response:responseIndex,room:room?.state||null,presentation:lessonFrame(world.time-lessonAt,course.eligible,reducedMotion()),stampPhase,taps:progress.taps,...structuredClone(progress.data),course:{...course.saved,completed:course.completed,percentage:course.percentage,display:deathMeter.value(world.time)},negotiation:negotiation.state};},
-  resetEnding(){course.reset();negotiation.reset();selectedRating=0;claimsLockedUntil=0;progress.data.claimsSettled=false;progress.data.unlocked=false;progress.data.read=[];progress.taps=0;flowStage='claims';epilogueStep=0;rebuilt=false;epilogue.hidden=true;saved=null;},
-  handleTap(ray){if(active)return true;const allowed=['ready','complete'].includes(mission.state.phase);if(!allowed){progress.tap(false,mission.state.phase);return false;}const sign=pickBonusSign(world,ray);if(sign){world.flashUntil=world.time+.45;world.pulseLight?.();}if(progress.tap(sign,mission.state.phase)){notice('龍泡泡：樓上還沒下班。');mount.classList.add('bonus-unlocked');const flash=world.container.animate([{filter:'brightness(1)'},{filter:'brightness(1.7)'},{filter:'brightness(1)'}],{duration:320});flash.onfinish=()=>mount.classList.remove('bonus-unlocked');updateEntry();}return sign;},
+  resetEnding(){course.reset();negotiation.reset();selectedRating=0;claimsLockedUntil=0;progress.data.claimsSettled=false;progress.data.unlocked=false;progress.data.read=[];progress.taps=0;flowStage='claims';epilogueStep=0;rebuilt=false;epilogue.hidden=true;entry.hidden=true;rebuildButton.hidden=true;progress.save();mount.classList.remove('bonus-unlocked','epilogue-pending');saved=null;},
+  handleTap(ray){if(active)return true;const allowed=['ready','complete'].includes(mission.state.phase);if(!allowed){progress.tap(false,mission.state.phase);return false;}const sign=pickBonusSign(world,ray);if(sign){world.flashUntil=world.time+.45;world.pulseLight?.();}if(progress.tap(sign,mission.state.phase)){enterFreeStreet(true);notice('雨夜街角已開放：散步、拆屋復原與二樓劇情。');mount.classList.add('bonus-unlocked');const flash=world.container.animate([{filter:'brightness(1)'},{filter:'brightness(1.7)'},{filter:'brightness(1)'}],{duration:320});flash.onfinish=()=>mount.classList.remove('bonus-unlocked');updateEntry();}return sign;},
   update(){
    const s=mission.state;mission.machine.epiloguePending=flowStage!=='done';
    if(!['ready','complete'].includes(s.phase))progress.taps=0;
@@ -366,5 +373,5 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
   dispose(){disposed=true;transitionAnimation?.cancel();objectionAnimation?.cancel();toast.getAnimations().forEach(a=>a.cancel());dialog.close();events.abort();if(active){busy=false;close();}room?.dispose();if(exportUrl)URL.revokeObjectURL(exportUrl);root.remove();entry.remove();toast.remove();epilogue.remove();rebuildButton.remove();}};
  const rebuildButton=E('button','postgame-toggle','切換崩塌後');rebuildButton.type='button';rebuildButton.hidden=true;mount.append(rebuildButton);
  rebuildButton.addEventListener('click',()=>{if(mission.state.postgame&&!active&&!mission.state.paused&&!world.streetShow.active){if(world.streetShow.start())rebuildButton.disabled=true;}},{signal:events.signal});
- const update=api.update;api.update=()=>{update();rebuildButton.hidden=!mission.state.postgame||active;rebuildButton.disabled=!!world.streetShow?.active||mission.state.paused;rebuildButton.textContent=world.streetShow?.state.mode==='collapsed'?'復原店面':'切換崩塌後';};world.bonus=api;updateEntry();return api;
+ const update=api.update;api.update=()=>{update();rebuildButton.hidden=!mission.state.postgame||active;rebuildButton.disabled=!!world.streetShow?.active||mission.state.paused;rebuildButton.textContent=world.streetShow?.state.mode==='collapsed'?'復原房子':'拆掉房子';};world.bonus=api;updateEntry();return api;
 }

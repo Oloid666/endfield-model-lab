@@ -18,7 +18,7 @@ export function createStreetPerformance({world,mission,mount,playEffect=()=>{},h
  start({initial=false,done=()=>{}}={}){
   if(active)return false;first=initial;kind=initial||mode==='collapsed'?'restore':'collapse';lines=STREET_SONGS[kind][initial?1:indices[kind]++%4];onDone=done;
   if(!snapshotReady){world.store.destruction.beginRewind();snapshotReady=true;}
-  mount.classList.add('street-show-active');if(!initial&&kind==='restore'&&world.actors.heelCenter[2]<2.7){cover.hidden=false;cover.style.opacity='1';world.actors.teleport(-1.25,3.25);world.remnant.placeNear(world.actors.heelCenter);}age=0;last=world.time;snapped=false;active=true;from=[...world.actors.dragonPosition];savedCamera={position:world.camera.position.clone(),target:world.controls.target.clone(),fov:world.camera.fov,auto:world.autoCamera};
+  mount.classList.add('street-show-active');if(!initial&&(world.actors.heelCenter[2]<2.7||world.remnant.state.visible&&world.remnant.state.position[2]<2.7)){cover.hidden=false;cover.style.opacity='1';if(world.actors.heelCenter[2]<2.7)world.actors.teleport(-1.25,3.25);world.remnant.placeNear(world.actors.heelCenter);}age=0;last=world.time;snapped=false;active=true;from=[...world.actors.dragonPosition];savedCamera={position:world.camera.position.clone(),target:world.controls.target.clone(),fov:world.camera.fov,auto:world.autoCamera};
   world.director.stuckReleased=true;world.director.finalBegun=false;world.setWalking(false);world.setCutaway(false);world.transition=null;world.controls.enabled=false;world.siege.reset();mission.setPaused(true,'street-show');dock.hidden=false;skip.hidden=first;world.actors.setSoot(false);return true;
  },
  tick(time,render=true){const dt=Math.max(0,Math.min(.1,time-last));last=time;if(!paused())age+=dt;
@@ -31,7 +31,9 @@ export function createStreetPerformance({world,mission,mount,playEffect=()=>{},h
   setBuilding(Math.max(0,Math.min(1,(age-2.8)/Math.max(5,frame.done?frame.end-2.8:totalDuration()-2.8))));
   const close=age>=1.1&&age<2.8;world.camera.position.set(close?pos[0]+.5:0,close?pos[1]+.5:7,close?pos[2]+(world.camera.aspect<.85?2.6:2):23);world.controls.target.set(close?pos[0]:-.4,close?pos[1]+.35:3,close?pos[2]:1.8);world.camera.fov=close?40:world.camera.aspect<.85?56:43;world.camera.updateProjectionMatrix();world.camera.lookAt(world.controls.target);
   if(age>=2.8&&!paused())hum(age);if(render){world.renderer.info.reset();world.composer.render();world.renderCount++;}if(frame.done&&!paused())finish();
- },reset(){if(active){active=false;mission.setPaused(false,'street-show');}mount.classList.remove('street-show-active');dock.hidden=true;stars.visible=false;indices={collapse:0,restore:0};mode='intact';snapshotReady=false;onDone=null;},dispose(){cover.remove();dock.remove();stars.removeFromParent();}};
+ },prepareIntact(){
+  const d=world.store.destruction;d.reset();d.setProgress(99);d.update(world.time+12,12);d.beginRewind();d.showFlashback();snapshotReady=true;mode='intact';world.weather.invalidateReflection();
+ },reset(){cover.hidden=true;world.controls.enabled=true;if(active){active=false;mission.setPaused(false,'street-show');}mount.classList.remove('street-show-active');dock.hidden=true;stars.visible=false;indices={collapse:0,restore:0};mode='intact';snapshotReady=false;onDone=null;},dispose(){cover.remove();dock.remove();stars.removeFromParent();}};
  function totalDuration(){return 2.8+lines.reduce((sum,s)=>sum+Math.max(3,Array.from(s).length/5.5+1),0);}
  world.streetShow=api;return api;
 }

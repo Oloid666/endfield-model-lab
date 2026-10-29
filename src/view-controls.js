@@ -3,14 +3,16 @@ export const VIEW_CYCLES={
  interior:[['interior','櫃檯'],['fridge','冰箱'],['oven','微波爐'],['insideOut','店內望街'],['shelves','店內貨架'],['poster2','集點海報'],['cctv','攝影機']],
  detail:[['heroFront','莊右側正面'],['poster3','梨諾海報'],['poster1','小蔥海報'],['story','雙人'],['dragon','龍泡泡'],['back','莊背影'],['left','左近景']]
 };
-export function createViewControls(getWorld,getMission,signal){
+export function createViewControls(getWorld,getMission,signal,onView=()=>{}){
  const dock=document.querySelector('.view-dock'),home=dock.parentElement,settings=document.querySelector('#settings'),indices={},buttons=[...dock.querySelectorAll('[data-view]')];
+ const menu=document.createElement('details');menu.className='postgame-views';menu.hidden=true;const summary=document.createElement('summary');summary.textContent='視角';menu.append(summary);document.querySelector('#app').append(menu);
  function pick(group,index){const w=getWorld(),s=getMission()?.state;if(!w||w.streetShow?.active||s?.presentationLocked||['photo-return','photo-sending','finisher','purchase','walk-out','photo'].includes(s?.phase))return;
+  onView();
   if(group==='reset'){w.resetStoryCamera();return;}
   const items=VIEW_CYCLES[group];indices[group]=index;const [name,label]=items[index];w.setWalking(false);w.setView(name,true);w.manualUntil=Infinity;w.autoCamera=false;
   for(const b of buttons){b.classList.toggle('active',b.dataset.view===group);b.setAttribute('aria-pressed',String(b.dataset.view===group));}
   const b=buttons.find(b=>b.dataset.view===group);b.querySelector('span').textContent=label;b.dataset.count=`${index+1}/${items.length}`;b.setAttribute('aria-label',`${label} ${index+1}/${items.length}`);
  }
  for(const b of buttons){const group=b.dataset.view;b.addEventListener('click',()=>pick(group,((indices[group]??-1)+1)%(VIEW_CYCLES[group]?.length||1)),{signal});}
- return {pick,update(){const inside=!['ready','complete'].includes(getMission()?.state.phase);const parent=inside?settings:home;if(dock.parentElement!==parent)parent.append(dock);dock.classList.toggle('in-menu',inside);}};
+ return {pick,update(){const inside=!['ready','complete'].includes(getMission()?.state.phase);const postgame=!!getMission()?.state.postgame;menu.hidden=!postgame;if(!postgame||getWorld()?.streetShow?.active)menu.open=false;const parent=inside?settings:postgame?menu:home;if(dock.parentElement!==parent)parent.append(dock);dock.classList.toggle('in-menu',inside);}};
 }

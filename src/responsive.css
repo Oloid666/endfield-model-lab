@@ -58,3 +58,14 @@ button:focus-visible,select:focus-visible{outline:3px solid #e7d39a;outline-offs
 .postgame-toggle{top:calc(202px + env(safe-area-inset-top));padding:12px 16px;border:1px solid #d5bf86;border-radius:12px;background:#16373cee;color:#e7d9ac;font:inherit}.street-show-active .postgame-toggle,.street-show-active .exploration-controls{visibility:hidden!important}
 
 .street-stage-cover{position:absolute;inset:0;background:#071016;z-index:25;pointer-events:none}
+
+/* Keep free-play actions distinct from the joystick and view dock. */
+#app.postgame-free:not(.bonus-active) .walk-toggle{top:calc(142px + env(safe-area-inset-top));right:16px;left:auto;min-height:48px;font-size:15px}
+#app.postgame-free .bonus-entry{top:calc(258px + env(safe-area-inset-top));right:16px;min-height:48px;font-size:15px;animation:none}
+#app.postgame-free .postgame-toggle{top:calc(200px + env(safe-area-inset-top));font-size:15px}
+#app .walk-toggle[hidden],#app .walk-pad[hidden],#app .bonus-entry[hidden],#app .postgame-toggle[hidden]{display:none!important}
+@media(max-height:500px){#app.postgame-free .walk-toggle{top:80px}#app.postgame-free .postgame-toggle{top:138px}#app.postgame-free .bonus-entry{top:196px}}
+
+#app.postgame-free .rain-response{display:none!important}
+
+.postgame-views{position:absolute;right:16px;bottom:calc(20px + env(safe-area-inset-bottom));z-index:12;max-width:calc(100% - 32px);background:#16373cee;border:1px solid #d5bf86;border-radius:12px;color:#e7d9ac}.postgame-views summary{cursor:pointer;min-height:48px;padding:12px 16px;box-sizing:border-box}.postgame-views .view-dock{position:static;transform:none;margin:0;width:min(340px,100%)}.postgame-views[hidden],.bonus-active .postgame-views,.street-show-active .postgame-views{display:none!important}

@@ -1,24 +1,24 @@
 import * as T from 'three';
 
-export function createExploration(world,{mount,onHotspot,onSceneTap,canWalk=()=>true,signal}){
+export function createExploration(world,{mount,onHotspot,onSceneTap,canWalk=()=>true,canMove=()=>true,signal}){
   const controls=document.createElement('div');controls.className='exploration-controls';
-  const toggle=document.createElement('button');toggle.className='walk-toggle';toggle.type='button';toggle.textContent='◇ 散步';toggle.setAttribute('aria-pressed','false');
+  const toggle=document.createElement('button');toggle.className='walk-toggle';toggle.type='button';toggle.textContent='讓莊散步';toggle.setAttribute('aria-pressed','false');
   const rain=document.createElement('button');rain.className='rain-response';rain.textContent='聽雨';rain.type='button';rain.addEventListener('click',()=>onHotspot('rain'),{signal});
   const pad=document.createElement('div');pad.className='walk-pad';pad.hidden=true;pad.setAttribute('role','group');pad.setAttribute('aria-label','拖曳搖桿行走，電腦可用方向鍵或 WASD');
   const knob=document.createElement('span');knob.className='walk-knob';pad.append(knob);
   const hint=document.createElement('span');hint.className='walk-hint';hint.textContent='拖曳走路 · 雙指縮放';pad.append(hint);
   controls.append(toggle,rain,pad);mount.append(controls);
-  let active=false,padPointer=null,joyX=0,joyY=0;
+  let suspended=false,active=false,padPointer=null,joyX=0,joyY=0;
   const keys=new Set(),direction=new T.Vector3(),right=new T.Vector3(),forward=new T.Vector3(),up=new T.Vector3(0,1,0);
   const reset=()=>{joyX=joyY=0;keys.clear();padPointer=null;knob.style.transform='translate(-50%,-50%)';world.actors?.setMove(0,0,false);};
-  const setActive=value=>{active=Boolean(value&&canWalk());toggle.setAttribute('aria-pressed',String(active));toggle.textContent=active?'◆ 停止散步':'◇ 散步';pad.hidden=!active;mount.classList.toggle('walking-mode',active);reset();world.setWalking(active);};
+  const setActive=value=>{active=Boolean(value&&canWalk());toggle.setAttribute('aria-pressed',String(active));toggle.textContent=active?'停止散步':'讓莊散步';pad.hidden=!active;mount.classList.toggle('walking-mode',active);reset();world.setWalking(active);};
   toggle.addEventListener('click',()=>setActive(!active),{signal});
   function padMove(event){if(event.pointerId!==padPointer)return;const b=pad.getBoundingClientRect();joyX=(event.clientX-b.left-b.width/2)/35;joyY=(event.clientY-b.top-b.height/2)/35;const len=Math.hypot(joyX,joyY);if(len>1){joyX/=len;joyY/=len;}knob.style.transform=`translate(calc(-50% + ${joyX*29}px),calc(-50% + ${joyY*29}px))`;}
-  pad.addEventListener('pointerdown',e=>{if(padPointer!==null)return;padPointer=e.pointerId;pad.setPointerCapture(e.pointerId);padMove(e);},{signal});
+  pad.addEventListener('pointerdown',e=>{if(!canMove()||padPointer!==null)return;padPointer=e.pointerId;pad.setPointerCapture(e.pointerId);padMove(e);},{signal});
   pad.addEventListener('pointermove',padMove,{signal});
   for(const type of ['pointerup','pointercancel','lostpointercapture'])pad.addEventListener(type,e=>{if(e.pointerId===padPointer)reset();},{signal});
   const validKey=e=>!e.target.closest('input,select,textarea,[contenteditable=true]')&&['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','w','a','s','d'].includes(e.key);
-  document.addEventListener('keydown',e=>{if(!active||!validKey(e))return;e.preventDefault();keys.add(e.key);},{signal});
+  document.addEventListener('keydown',e=>{if(!active||!canMove()||!validKey(e))return;e.preventDefault();keys.add(e.key);},{signal});
   document.addEventListener('keyup',e=>keys.delete(e.key),{signal});window.addEventListener('blur',reset,{signal});document.addEventListener('visibilitychange',()=>{if(document.hidden)reset();},{signal});
   const canvas=world.renderer.domElement,pointers=new Map(),ray=new T.Raycaster(),point=new T.Vector2();ray.layers.enable(1);let multi=false;
   canvas.addEventListener('pointerdown',e=>{pointers.set(e.pointerId,{x:e.clientX,y:e.clientY,time:performance.now(),moved:false});if(pointers.size>1)multi=true;},{signal});
@@ -38,7 +38,10 @@ export function createExploration(world,{mount,onHotspot,onSceneTap,canWalk=()=>
   },{signal});
   return {setActive,get active(){return active;},update(){
     const walkAllowed=canWalk();toggle.hidden=!walkAllowed;if(!walkAllowed&&active)setActive(false);
+    toggle.disabled=!canMove();pad.hidden=!active||!canMove();
     if(!world.actors)return;
+    if(!canMove()){suspended=active;reset();return;}
+    if(suspended){suspended=false;if(active)world.setWalking(true);}
     if(!active){world.actors.setMove(0,0,false);return;}
     const x=joyX+(keys.has('d')||keys.has('ArrowRight')?1:0)-(keys.has('a')||keys.has('ArrowLeft')?1:0),y=joyY+(keys.has('s')||keys.has('ArrowDown')?1:0)-(keys.has('w')||keys.has('ArrowUp')?1:0);
     forward.copy(world.controls.target).sub(world.camera.position);forward.y=0;forward.normalize();right.crossVectors(forward,up);

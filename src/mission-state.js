@@ -319,7 +319,7 @@ export class MissionMachine{
       if(this.rhythm.revision!==revision){this.action('heat-stop',this.rhythm.status==='burnt'?'burnt':'charged',{forced:this.rhythm.forced});this.emit();}
       if(this.rhythm.status==='won')this.sequence('flashback-end',sequences['flashback-end']);
     }
-    if(this.postgame&&!this.homecomingSpoken&&this.time-this.homecomingAt>=17){
+    if(this.postgame&&this.mealBorn&&!this.homecomingSpoken&&this.time-this.homecomingAt>=17){
       this.homecomingSpoken=true;this.sequence('complete',[
         {id:'meal_home',speaker:'dragon',text:'你看，晚餐自己跟來了。',gesture:'look',event:'meal-arrival'},
         {id:'meal_bag',speaker:'zhuang',text:'……先不准進袋子。',gesture:'look',event:'meal-arrival'}

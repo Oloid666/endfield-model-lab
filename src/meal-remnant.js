@@ -14,7 +14,7 @@ export function buildMealRemnant(scene,r){
  shape(0,0);
  return {root,placeNear(feet){root.position.set(feet[0]+.6,.33,feet[2]+.6);path=[];goal='';},reset(){born=false;mode='unborn';homeAt=null;lastTime=null;path=[];goal='';touched=-Infinity;root.visible=false;lastShape=-Infinity;},tap(ray,time){if(!root.visible||!ray.intersectObject(body,true).length)return false;touched=time;return true;},update(time,state={},feet=null,environment={}){
   if(!born&&(state.mealBorn||state.phase==='meal-spawn')){born=true;bornAt=time;}
-  const home=state.postgame;if(home)born=true;const wreck=!home&&(state.progress||0)>=62&&!state.vcr;root.visible=born&&(home||wreck||['heat','meal-spawn','flashback-end'].includes(state.phase));if(!root.visible)return;mode=home?'crawling':'incident';
+  const home=state.postgame;const wreck=!home&&(state.progress||0)>=62&&!state.vcr;root.visible=born&&(home||wreck||['heat','meal-spawn','flashback-end'].includes(state.phase));if(!root.visible)return;mode=home?'crawling':'incident';
   const age=Math.max(0,time-bornAt),crawl=reduced?0:Math.sin(age*.45)*.12,press=Math.max(0,1-(time-touched)/.8);
   if(!home)root.position.set((wreck?2.8:3.06)+crawl,wreck?.35:1.35,(wreck?4.15:.8)+crawl*.35);body.rotation.y=reduced?0:Math.sin(age*.6)*.15;
   if(!home&&!wreck&&age<.9){const p=Math.min(1,age/.9);root.position.set(3.45+(3.06-3.45)*p,1.6+(1.35-1.6)*p+Math.sin(p*Math.PI)*.18,1.25+(.8-1.25)*p);}
@@ -32,7 +32,7 @@ export function buildMealRemnant(scene,r){
       if(mode!=='waiting-door') {const move=Math.min(dist,dt*.65);if(dist>.001){root.position.x+=dx/dist*move;root.position.z+=dz/dist*move;body.rotation.y=Math.atan2(dx,dz);}if(dist<.07)path.shift();}
     }
     if(Math.hypot(wanted[0]-root.position.x,wanted[2]-root.position.z)<.4)mode='idle';
-    root.position.y=.33;body.scale.set(1,1,1+(reduced?0:Math.sin(time*3)*.06));
+    root.position.y=root.position.z>4.65?.025:.33;body.scale.set(1,1,1+(reduced?0:Math.sin(time*3)*.06));
   }else body.scale.set(1,1,1);
   if(time-lastShape>=1/24||time<lastShape){shape(reduced?0:age,press);lastShape=time;}
   lightning.visible=!home&&!reduced&&age%4<.3;for(let i=0;i<10;i++){points[i*3]=-.31+i*.07;points[i*3+1]=.16+Math.sin(i*8+time*13)*.04;points[i*3+2]=.08+Math.cos(i*5)*.08;}boltGeo.attributes.position.needsUpdate=true;

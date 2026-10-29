@@ -30,6 +30,7 @@ jobs:
       - run: node scripts/polish-check.mjs
       - run: node scripts/living-world-check.mjs
       - run: node scripts/street-stage-check.mjs
+      - run: node scripts/postgame-check.mjs
       - run: node scripts/presentation-check.mjs
       - run: node scripts/bonus-check.mjs
       - run: node scripts/mission-check.mjs
