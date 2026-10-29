@@ -2,20 +2,20 @@ import {portrait as setPortrait} from './portrait.js';
 import {createInvestigationUI} from './investigation-ui.js';
 import './mission.css';
 import {MissionMachine,METER_PERIOD} from './mission-state.js';
-import {speakers,endingCaption,endingSong,reactionPools} from './mission-dialogue.js';
+import {speakers,endingCaption,endingSong,reactionPools,combatHitLine} from './mission-dialogue.js';
 
 const E=(tag,className,text)=>{const e=document.createElement(tag);e.className=className;if(text!==undefined)e.textContent=text;return e;};
 const setText=(node,text)=>{const value=String(text??'');if(node.textContent!==value)node.textContent=value;};
-const runningPhases=new Set(['login','captcha','lever','ascent','director-reminder','shoe-view','pylon-link','charge','fire-ready','combat','energy','rewind','flashback','hack','credentials','heat-demo','heat','flashback-end','return','last','aim-final','finisher','landing','tour']);
+const runningPhases=new Set(['login','captcha','lever','ascent','director-reminder','shoe-view','pylon-link','charge','fire-ready','combat','energy','rewind','flashback','hack','credentials','heat-demo','meal-spawn','heat','flashback-end','return','last','aim-final','finisher','landing','tour']);
 const manualPhases=new Set(['intro','meal','cargo','photo-talk','photo-check','verify-talk','verified-talk','observation','credentials','briefing','energy','flashback','flashback-end','last','complete']);
 const connectionPhases=new Set(['login','captcha','lever']);
-const vcrPhases=new Set(['rewind','flashback','hack','credentials','heat-demo','heat','flashback-end','return']);
-const phaseTitles={cargo:'02 · 萬噸土產',observation:'02 · 照片裡的異常',credentials:'VCR · 門鎖與鑰匙',intro:'01 · 先吃晚餐',purchase:'01 · 龍泡泡結帳中',ascent:'03 · 允許起飛','director-reminder':'03 · 導播補拍',choice:'01 · 今晚，吃什麼',meal:'01 · 買好晚餐',briefing:'02 · 梨花旁的燈',login:'03 · 請幫我連線',captcha:'03 · 驗證身分',lever:'03 · 接通儲能網',charge:'03 · 儲能接通','fire-ready':'04 · 發射系統',combat:'04 · 光害改善',energy:'04 · 電去哪裡了',rewind:'VCR · 倒帶中',flashback:'VCR · 三小時前', 'heat-demo':'VCR · 加熱試驗',heat:'VCR · 極速加熱', 'flashback-end':'VCR · 沒關掉的設定',return:'回到現場',last:'05 · 最後一發','aim-final':'05 · 龍泡泡，準備',finisher:'05 · 最後一擊',landing:'任務完成',tour:'武陵 · 現場紀錄',complete:'武陵 · 聽雨'};
+const vcrPhases=new Set(['rewind','flashback','hack','credentials','heat-demo','meal-spawn','heat','flashback-end','return']);
+const phaseTitles={cargo:'02 · 萬噸土產',observation:'02 · 照片裡的異常',credentials:'VCR · 門鎖與鑰匙',intro:'01 · 先吃晚餐',purchase:'01 · 龍泡泡結帳中',ascent:'03 · 允許起飛','director-reminder':'03 · 導播補拍',choice:'01 · 今晚，吃什麼',meal:'01 · 買好晚餐',briefing:'02 · 梨花旁的燈',login:'03 · 請幫我連線',captcha:'03 · 驗證身分',lever:'03 · 接通儲能網',charge:'03 · 儲能接通','fire-ready':'04 · 發射系統',combat:'04 · 光害改善',energy:'04 · 電去哪裡了',rewind:'VCR · 倒帶中',flashback:'VCR · 三小時前', 'heat-demo':'VCR · 加熱試驗','meal-spawn':'VCR · 晚餐電活了',heat:'VCR · 極速加熱', 'flashback-end':'VCR · 沒關掉的設定',return:'回到現場',last:'05 · 最後一發','aim-final':'05 · 龍泡泡，準備',finisher:'05 · 最後一擊',landing:'任務完成',tour:'武陵 · 現場紀錄',complete:'武陵 · 聽雨'};
 
 
 export function createMission({mount=document.querySelector('#app'),onDinner,onGesture,onStage,onRestore,onAttack,onState,onAction,onCameraReset,capturePhoto,onCameraAuto,getCameraAuto}={}){
   if(!mount)throw Error('Mission mount is required.');
-  const pauseReasons=new Set();
+  const pauseReasons=new Set(),hitRepeats=[0,0,0];
   function setPaused(value,reason='manual'){if(value)pauseReasons.add(reason);else pauseReasons.delete(reason);if(pauseReasons.size){cancelHeat();cancelSpeech();}machine.setPaused(pauseReasons.size>0);resetAnchor();render(true);}
   const motionQuery=window.matchMedia?.('(prefers-reduced-motion: reduce)');
   const events=new AbortController(),listen=(target,type,fn,options={})=>target.addEventListener(type,fn,{...options,signal:events.signal});
@@ -87,7 +87,7 @@ export function createMission({mount=document.querySelector('#app'),onDinner,onG
     for(const value of values){const b=E('button','mission-key',value==='backspace'?'⌫':value==='submit'?'確認':value);b.type='button';b.dataset.key=value;if(value==='backspace')b.setAttribute('aria-label','刪除上一個字元');keys.append(b);}
   }
   function render(force=false){
-    if(disposed)return;const s=machine.state,active=!['ready','complete'].includes(s.phase),isCombat=['combat','aim-final'].includes(s.phase),isCharge=['ascent','director-reminder','shoe-view','pylon-link','charge','fire-ready'].includes(s.phase),isConnection=connectionPhases.has(s.phase),isVcr=s.vcr??vcrPhases.has(s.phase),c=s.connection||s.login||{},h=s.heat||{};
+    if(disposed)return;if(machine.phase==='intro'&&lastPhase!=='intro')hitRepeats.fill(0);const s=machine.state,active=!['ready','complete'].includes(s.phase),isCombat=['combat','aim-final'].includes(s.phase),isCharge=['ascent','director-reminder','shoe-view','pylon-link','charge','fire-ready'].includes(s.phase),isConnection=connectionPhases.has(s.phase),isVcr=s.vcr??vcrPhases.has(s.phase),c=s.connection||s.login||{},h=s.heat||{};
     // Read the document on its reveal and itemization, then return to the people.
     assist.hidden=!s.canAssist;assist.disabled=s.paused||s.presentationLocked;sending.hidden=s.phase!=='photo-sending';receipt.hidden=!(s.phase==='cargo'&&(['receipt-reveal'].includes(s.node?.event)||s.nodeId==='cargo_3'));root.dataset.phase=s.phase;root.dataset.paused=String(s.paused);root.dataset.clockRunning=String(clockRunning&&!document.hidden);mount.dataset.missionPhase=s.phase;
     cameraReset.hidden=true;
@@ -110,7 +110,7 @@ export function createMission({mount=document.querySelector('#app'),onDinner,onG
     setText(energy,s.phase==='aim-final'?'主砲耗盡 · 此發不退':`剩餘儲能 ${Math.ceil(s.energy)}% · 等游標進入金色區，按下砲擊`);
     sweet.style.left=`${50-s.meterSettings.width*100}%`;sweet.style.width=`${s.meterSettings.width*200}%`;perfect.style.left=`${50-s.meterSettings.perfect*100}%`;perfect.style.width=`${s.meterSettings.perfect*200}%`;const edge=(.5-s.meterSettings.miss)*100;meter.style.background=`linear-gradient(90deg,#62747388 0% ${edge}%,#9f956755 ${edge}% ${100-edge}%,#62747388 ${100-edge}%)`;
     setText(attack,s.presentationLocked?'裝填演出中…':!s.canAttack?'砲擊中…':s.phase==='aim-final'?'發射龍泡泡':'砲擊');attack.disabled=!s.canAttack;meter.setAttribute('aria-valuenow',String(Math.round(s.meter*100)));
-    if(s.feedback&&s.feedback.number!==lastFeedback){lastFeedback=s.feedback.number;const firstHit=s.feedback.result!=='miss'&&s.hits===1;setText(combatAside,firstHit?'龍泡泡：外牆壞了！Always open，Seven Eleven～ ♪':(s.feedback.result==='miss'?reactionPools.miss:reactionPools.hit)[(s.feedback.number-1)%3]);setText(feedback,s.feedback.result==='miss'?'MISS':'命中');feedback.dataset.result=s.feedback.result;}else if(lastPhase!==s.phase){setText(feedback,s.phase==='aim-final'?'對準中央，按下發射':'按中中央，威力更強');delete feedback.dataset.result;}
+    if(s.feedback&&s.feedback.number!==lastFeedback){lastFeedback=s.feedback.number;const firstHit=s.feedback.result!=='miss'&&s.hits===1;setText(combatAside,firstHit?'龍泡泡：外牆壞了！Always open，Seven Eleven～ ♪':s.feedback.result==='miss'?reactionPools.miss[(s.feedback.number-1)%3]:combatHitLine((s.feedback.number-1)%3,hitRepeats));setText(feedback,s.feedback.result==='miss'?'MISS':'命中');feedback.dataset.result=s.feedback.result;}else if(lastPhase!==s.phase){setText(feedback,s.phase==='aim-final'?'對準中央，按下發射':'按中中央，威力更強');delete feedback.dataset.result;}
     if(s.combatHoldRemaining>0)setText(feedback,'招牌正在落下……');else if(wasAttackHeld)setText(feedback,'招牌已落地。繼續砲擊。');wasAttackHeld=s.combatHoldRemaining>0;
     combatAside.hidden=s.phase!=='combat'||!s.feedback||s.clock-s.feedback.time>3;
     completed.hidden=s.phase!=='complete'||!!s.node;replay.textContent=s.postgame?'重新開始':'重拍這個雨夜';completeText.textContent=s.postgame?'雨夜街角 · 自由看看':'100% · 任務完成';setText(caption,s.phase==='tour'&&s.phaseElapsed>=14&&s.phaseElapsed<30?endingSong[Math.min(3,Math.floor((s.phaseElapsed-14)/4))]:s.phase==='tour'?endingCaption.replace('\nFin.',''):'Fin.');caption.classList.toggle('visible',s.phase==='tour'&&s.phaseElapsed>=14||s.phase==='complete'&&!s.postgame&&s.phaseElapsed<1.2);

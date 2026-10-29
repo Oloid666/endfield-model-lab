@@ -13,9 +13,9 @@ export const config = {
     poster3:{position:[3.4,2.05,5.9],target:[3.4,2.05,1.82],mobilePosition:[3.4,2.05,5.9],mobileTarget:[3.4,2.05,1.82]},
     poster2:{position:[2.35,2.05,5.9],target:[2.35,2.05,1.82],mobilePosition:[2.35,2.05,5.9],mobileTarget:[2.35,2.05,1.82]},
     poster1:{position:[-2.8,2.05,-.65],target:[-2.8,2.05,1.813],mobilePosition:[-2.8,2.05,-.65],mobileTarget:[-2.8,2.05,1.813],fov:55},
-    streetRight:{position:[13,5.8,12],target:[.3,2.3,0],mobilePosition:[17,7,17],mobileTarget:[.3,2.3,0]},
+    streetRight:{position:[14,18,12],target:[0,2.5,0],mobilePosition:[15,22,13],mobileTarget:[0,2.8,0],fov:43},
 
-    insideOut:{position:[.4,1.85,.6],target:[-1.85,1.6,3.5],mobilePosition:[.4,1.85,.6],mobileTarget:[-1.85,1.6,3.5],fov:68},
+    insideOut:{position:[-1.15,1.95,-1.65],target:[-.22,1.5,5],mobilePosition:[-1.15,1.95,-1.65],mobileTarget:[-.22,1.5,5],fov:56},
     shelves:{position:[-.4,2,1.6],target:[-2.5,1,-1],mobilePosition:[-.4,2,1.6],mobileTarget:[-2.5,1,-1]},
     fridge:{position:[0,2,2],target:[-2,1.3,-2],mobilePosition:[0,2,2],mobileTarget:[-2,1.3,-2]},
     oven:{position:[3.45,2,-1.3],target:[3.45,1.58,1.43],mobilePosition:[3.45,2,-1.3],mobileTarget:[3.45,1.58,1.43],fov:53},

@@ -3,7 +3,7 @@ import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import {optimizeStaticSet} from './static-batches.js';
 
 const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,Number(v)||0));
-const pastPhases=new Set(['flashback','hack','credentials','heat-demo','heat','flashback-end']);
+const pastPhases=new Set(['flashback','hack','credentials','heat-demo','meal-spawn','heat','flashback-end']);
 
 // One persistent, hollow appliance. Its clean history and charred present share geometry.
 export function buildMicrowave(scene,r,{position=[3.45,.31,1.43]}={}){

@@ -169,6 +169,7 @@ export class World {
   }
 
   tick(t,delta=.016,render=true){
+    if(this.streetShow?.active){this.time=t;this.onTick(t,delta);this.streetShow.tick(t,render);return;}
     if(this.bonus?.active){this.time=t;this.bonus.tick(t,render);return;}
     this.time=t;if(this.lightPulse){const age=t-this.lightPulse.at,brightness=age>=.45?1:matchMedia('(prefers-reduced-motion: reduce)').matches?.75:.6+.4*Math.cos(age*Math.PI*4/.45);for(const [m,c,e]of this.lightPulse.materials){m.color.copy(c).multiplyScalar(brightness);if(e!=null)m.emissiveIntensity=e*brightness;}if(age>=.45)this.lightPulse=null;}if(this.loadingPresentation){if(render)this.loadingPresentation.render(t);return;}this.onTick(t,delta);
     if(this.earlyDragon){const d=this.earlyDragon;d.root.position.y=.32+Math.abs(Math.sin(t*2.6))*.3;d.root.rotation.y=Math.sin(t*.9)*.65;d.update(t,{nod:.3,gesture:'wave',gestureAmount:(Math.sin(t*2)+1)/2});}
@@ -179,18 +180,18 @@ export class World {
     if(this.actors){
       const p=this.actors.position;this.walkCamera.update(p,delta,this.time<this.manualUntil);
       if(this.walkCamera.automatic&&this.currentView){this.currentView=null;this.onManualView();}
-      const cctv=['flashback','hack','credentials','heat-demo','heat','flashback-end'].includes(this.missionState?.phase);
+      const cctv=['flashback','hack','credentials','heat-demo','meal-spawn','heat','flashback-end'].includes(this.missionState?.phase);
       const h=cctv?[1.95,.31,.85]:this.actors.heroPosition||p.toArray();
       const cast=this.actors.status.cinematic,yaw=cctv?0:cast?.phase?cast.heading:0,c=Math.cos(yaw),s=Math.sin(yaw);
       this.portrait.key.position.set(h[0]-2.35*c+4.22*s,h[1]+3.38,h[2]+2.35*s+4.22*c);this.portrait.key.target.position.set(h[0]-.35,h[1]+.98,h[2]);
       this.portrait.fill.position.set(h[0]+3.25*c+2.92*s,h[1]+2.48,h[2]-3.25*s+2.92*c);this.portrait.fill.target.position.set(h[0]-.15,h[1]+.93,h[2]);if(['photo-return','photo-flight'].includes(this.missionState?.phase)){const d=this.actors.dragonPosition;this.portrait.fill.position.set(d[0]-2,d[1]+2,d[2]+3);this.portrait.fill.target.position.set(d[0],d[1]+.35,d[2]);}
     }
     if(this.flashUntil>t){const strength=matchMedia('(prefers-reduced-motion: reduce)').matches?.7:Math.sin((this.flashUntil-t)*24)>0?1.2:.5;this.portrait.fill.intensity=28*strength;}else this.portrait.fill.intensity=28;
-    this.store.update(sceneTime,sceneDelta,this.actors?.position,this.actors?.status.companion?.position,this.currentView==='insideOut'?this.camera.position:null);
-    if(this.missionState?.phase==='photo')this.photoCamera.apply();else this.controls.update();this.cameraSafety.resolve(this.autoCamera===false&&!this.currentView&&this.missionState?.phase!=='photo',this.store.destruction.state.progress<62);this.camera.lookAt(this.controls.target);if(this.director.cameraRoll)this.camera.rotateZ(this.director.cameraRoll);const close=this.camera.position.distanceTo(this.controls.target)<(this.camera.aspect<.85?14:11);
+    this.store.update(sceneTime,sceneDelta,this.actors?.position,this.actors?.dragonPosition,this.currentView==='insideOut'?this.camera.position:null);
+    if(this.missionState?.phase==='photo')this.photoCamera.apply();else this.controls.update();this.cameraSafety.resolve(this.autoCamera===false&&!this.currentView&&this.missionState?.phase!=='photo',(this.streetShow?.state.mode==='intact'||this.store.destruction.state.progress<62));this.camera.lookAt(this.controls.target);if(this.director.cameraRoll)this.camera.rotateZ(this.director.cameraRoll);const close=this.camera.position.distanceTo(this.controls.target)<(this.camera.aspect<.85?14:11);
     if(close!==this.closeFraming){this.closeFraming=close;this.onFraming(close);}
-    const presentation=this.missionState?.vcr,damage=presentation?0:this.store.destruction.state.progress;this.weather.setShelter(damage<80,damage<44);
-    const visualTime=this.director.visualTime??sceneTime;this.remnant.update(visualTime,this.missionState,this.missionState?.postgame?this.actors?.heelCenter:null);
+    const presentation=this.missionState?.vcr,damage=presentation?0:this.store.destruction.state.progress;this.weather.setShelter(this.missionState?.postgame?this.streetShow?.state.mode==='intact':damage<80,this.missionState?.postgame?this.streetShow?.state.mode==='intact':damage<44);
+    const visualTime=this.director.visualTime??sceneTime;this.remnant.update(visualTime,this.missionState,this.missionState?.postgame?this.actors?.heelCenter:null,{doors:this.store.doors,floorPlan:this.store.floorPlan,intact:this.streetShow?.state.mode!=='collapsed'});
     this.store.glass.uniforms.uTime.value=visualTime;this.wet.update(visualTime);this.weather.update(visualTime);
     if(render){this.renderer.info.reset();this.composer.render();this.renderCount++;
       const phase=this.missionState?.phase,key={energy:'general',last:'mikoto',cargo:'cargo',briefing:'taste',login:'login',heat:'microwave',landing:'insurance'}[phase];this.sceneStills??={};
@@ -206,5 +207,5 @@ export class World {
     const next=this.adaptiveQuality.sample(delta,this.qualityMode==='auto'&&!this.loadingPresentation&&!this.capturingPhoto&&!this.missionState?.paused&&!document.hidden,this.quality);if(next)this.setQuality(next,true);
   });}
   stop(){this.renderer.setAnimationLoop(null);this.previous=undefined;this.running=false;this.onClockState?.(false);}
-  dispose(){if(this.disposed)return;this.disposed=true;this.stop();this.shaderWarmup.dispose();this.observer.disconnect();document.removeEventListener('visibilitychange',this.visibility);this.controls.removeEventListener('start',this.manual);this.photoCamera.dispose();this.controls.dispose();this.renderer.domElement.removeEventListener('webglcontextlost',this.contextLost);this.renderer.domElement.removeEventListener('webglcontextrestored',this.contextRestored);this.actors?.dispose();this.xaihi?.dispose();this.siege.dispose();this.garden.root.removeFromParent();this.tianshi.root.removeFromParent();this.microwave.root.removeFromParent();this.connectionStage.root.removeFromParent();this.store.spill.shadow.dispose();this.weather.dispose();for(const pass of this.composer.passes)pass.dispose?.();this.composer.dispose();this.r.dispose();this.renderer.dispose();this.renderer.domElement.remove();}
+  dispose(){if(this.disposed)return;this.disposed=true;this.stop();this.streetShow?.dispose();this.shaderWarmup.dispose();this.observer.disconnect();document.removeEventListener('visibilitychange',this.visibility);this.controls.removeEventListener('start',this.manual);this.photoCamera.dispose();this.controls.dispose();this.renderer.domElement.removeEventListener('webglcontextlost',this.contextLost);this.renderer.domElement.removeEventListener('webglcontextrestored',this.contextRestored);this.actors?.dispose();this.xaihi?.dispose();this.siege.dispose();this.garden.root.removeFromParent();this.tianshi.root.removeFromParent();this.microwave.root.removeFromParent();this.connectionStage.root.removeFromParent();this.store.spill.shadow.dispose();this.weather.dispose();for(const pass of this.composer.passes)pass.dispose?.();this.composer.dispose();this.r.dispose();this.renderer.dispose();this.renderer.domElement.remove();}
 }

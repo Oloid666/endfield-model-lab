@@ -1,3 +1,4 @@
+import {ShoppingJourney} from '../src/shopping-journey.js';
 /** Actual MissionDirector with a small world double; no WebGL or performance claim. */
 import * as T from 'three';
 import fs from 'node:fs';
@@ -101,12 +102,10 @@ for(const portrait of [true,false]){
 }
 const faceWorld=makeWorld(),faceDirector=new MissionDirector(faceWorld);
 faceDirector.beforeActors(state('intro',{nodeId:'intro_4',phaseElapsed:5,purchaseElapsed:null}));check('Opening conversation shows Dragon face toward Zhuang and camera',(()=>{const a=faceWorld.actors,h=a.heroPosition,p=a.dragonPosition;return Math.cos(a.dragonHeading-Math.atan2(h[0]-p[0],h[2]-p[2]))>.99;})());
-faceDirector.beforeActors(state('intro',{nodeId:'intro_9',purchaseElapsed:0}));check('Dragon starts turning without snapping away from the conversation',Math.abs(faceWorld.actors.dragonHeading-Math.atan2(faceWorld.actors.heroPosition[0]+2.55,faceWorld.actors.heroPosition[2]-3.5))<1e-9);
-faceDirector.beforeActors(state('purchase',{purchaseElapsed:2.5}));check('Dragon faces into the store while entering',Math.abs(faceWorld.actors.dragonHeading-Math.PI)<1e-9);
-faceDirector.beforeActors(state('purchase',{purchaseElapsed:4.5}));check('Dragon turns toward the counter along the path',Math.abs(faceWorld.actors.dragonHeading-1.73)<1e-9);
+const journey=new ShoppingJourney();faceDirector.beforeActors(state('intro',{nodeId:'intro_9',purchaseElapsed:0,shopping:journey.state}));check('Shopping begins at the real outdoor position',faceWorld.actors.projectile[2]===3.5);journey.update(2.5,1);faceDirector.beforeActors(state('purchase',{purchaseElapsed:2.5,shopping:journey.state}));check('Dragon enters through the central doorway',Math.abs(faceWorld.actors.projectile[0]+.22)<.01);journey.update(3,1);faceDirector.beforeActors(state('purchase',{purchaseElapsed:5.5,shopping:journey.state}));check('Counter arrival does not immediately produce food',journey.state.atCounter&&!journey.state.collected);
 faceDirector.beforeActors(state('cargo',{nodeId:'cargo_1'}));check('Cargo dialogue faces the shared phone',Math.cos(faceWorld.actors.dragonHeading-Math.atan2(-1.72-faceWorld.actors.projectile[0],3.95-faceWorld.actors.projectile[2]))>.99);faceWorld.r.dispose();
 const sw=makeWorld(),sd=new MissionDirector(sw);sw.actors.dragonPosition=[1.2,1.3,1.2];
-for(const [at,beat] of [[2.2,'dragon-store-follow'],[2.8,'dragon-store-follow'],[4.0,'dragon-store-follow'],[4.9,'dragon-store-follow']]){sd.state=state('purchase',{purchaseElapsed:at});sd.updateCamera(.03,sw.actors.heroPosition);check('Purchase reaches '+beat,sd.status.cameraBeat===beat);check('Continuous shopping shot tracks Dragon rather than shelves',sd.cameraTarget.distanceTo(new T.Vector3(1.2,1.62,1.2))<1e-9);check('Shopping camera remains safely outside Dragon',sd.cameraPosition.distanceTo(new T.Vector3(1.2,1.62,1.2))>3);}
+for(const [at,beat] of [[2.2,'dragon-store-follow'],[2.8,'dragon-store-follow'],[4.0,'dragon-store-follow'],[4.9,'dragon-store-follow']]){sd.state=state('purchase',{purchaseElapsed:at});sd.updateCamera(.03,sw.actors.heroPosition);check('Purchase reaches '+beat,sd.status.cameraBeat===beat);check('Continuous shopping shot tracks Dragon rather than shelves',sd.cameraTarget.distanceTo(new T.Vector3(1.2,1.55,1.2))<1e-9);check('Shopping camera remains safely outside Dragon',sd.cameraPosition.distanceTo(new T.Vector3(1.2,1.55,1.2))>3);}
 for(const [id,age,beat] of [['briefing_2',.5,'briefing-pair'],['briefing_2',1.5,'briefing-pair'],['briefing_4',.5,'briefing-pair'],['briefing_4',1.5,'briefing-pair'],['briefing_8',2.6,'briefing-pair'],['briefing_9',0,'briefing-pair']]){sd.state=state('briefing',{nodeId:id,nodeElapsed:age,text:'少女可以是十幾歲、幾百歲，但是不能三四十歲。'});sd.updateCamera(.03,sw.actors.heroPosition);check('Briefing preserves evidence then reaction: '+id+' '+age,sd.status.cameraBeat===beat);}
 sw.r.dispose();
 const travelWorld=makeWorld(),travelDirector=new MissionDirector(travelWorld);let closest=Infinity,closestAt=0;

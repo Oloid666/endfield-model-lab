@@ -1,4 +1,5 @@
 import {readPreferences,savePreferences} from './preferences.js';
+import {createStreetPerformance} from './street-performance.js';
 import {createViewControls} from './view-controls.js';
 import {ChapterProgress} from './chapter-progress.js';
 import {CHAPTERS} from './mission-state.js';
@@ -19,7 +20,7 @@ let preferenceStorage;try{preferenceStorage=localStorage;}catch{}
 const preferences=readPreferences(preferenceStorage),saveSettings=()=>savePreferences(preferenceStorage,preferences);
 $('#rain').checked=preferences.rain;$('#quality').value=preferences.quality;$('#app').style.setProperty('--dialogue-size',preferences.textSize+'px');
 const loader=createLoading();
-const audio=new RainAudio(),abort=new AbortController();let world,mission,exploration,bonus,closed=false,menuPaused=false,xaihiPromise=null,assetPaused=false;
+const audio=new RainAudio(),abort=new AbortController();let world,mission,exploration,bonus,closed=false,menuPaused=false,xaihiPromise=null,assetPaused=false,walkFloorKey='';
 const listen=(element,type,fn)=>element.addEventListener(type,fn,{signal:abort.signal});
 function showError(text){$('#error-message').textContent=text;error.hidden=false;loading.hidden=true;}
 function menu(open){
@@ -91,7 +92,7 @@ async function init(){
     if(closed)return;world.time=0;world.previous=undefined;world.tick(0,0,true);
     mission=createMission({mount:$('#app'),onCameraReset:()=>{world.actors?.cancelReaction();reactionBubble.hidden=true;world.resetStoryCamera();},capturePhoto:()=>{if($('#sound').checked)audio.effect('shutter');return world.capturePhoto();},onCameraAuto:()=>world.resetStoryCamera(),getCameraAuto:()=>world.autoCamera,
       onDinner:branch=>{
-        if(!branch){bonus?.resetEnding();exploration?.setActive(false);world.director.reset();world.remnant.reset();mission?.setTargets(world.director.targets);world.actors?.setMove(0,0,false);world.actors?.setObstacles(world.store.floorPlan);world.actors?.teleport(-1.25,3.25);}
+        if(!branch){walkFloorKey='';world.streetShow?.reset();world.store.doors.reset();bonus?.resetEnding();exploration?.setActive(false);world.director.reset();world.remnant.reset();mission?.setTargets(world.director.targets);world.actors?.setMove(0,0,false);world.actors?.setObstacles(world.store.floorPlan);world.actors?.teleport(-1.25,3.25);}
         world.actors?.setDinner(branch);
       },
       onRestore:(id,state)=>{if(['rewind','last'].includes(id)){world.store.destruction.setProgress(99);world.store.destruction.update(state.clock+8,8);}world.director.finalBegun=false;},
@@ -110,11 +111,11 @@ async function init(){
       },
       onAction:event=>{world.director.action?.(event);if($('#sound').checked&&['photo-send','heat-start','key','grid-connect'].includes(event.type))audio.effect(event.type);},
       onAttack:event=>{if($('#sound').checked)audio.effect(event.finisher?'stamp':'shot');world.resetStoryCamera();const hadSign=world.store.destruction.state.progress>=44;world.director.attack(event);if(!hadSign&&event.progress>=44&&!event.finisher)mission?.holdAttack(4.4);mission?.setTargets(world.director.targets);},
-      onState:state=>{world.missionState=state;const resume=document.querySelector('.chapter-resume');if(resume&&state.phase!=='ready'&&!state.paused)resume.hidden=true;$('#app').dataset.storyPhase=state.phase;}
+      onState:state=>{world.missionState=state;const resume=document.querySelector('.chapter-resume');if(resume&&state.phase!=='ready'&&!state.paused)resume.hidden=true;$('#app').dataset.storyPhase=state.phase;$('#app').classList.toggle('postgame-free',!!state.postgame);}
     });
     mission.setTargets(world.director.targets);world.onClockState=value=>mission.setClockRunning(value);mission.setClockRunning(world.running&&!document.hidden);
     exploration=createExploration(world,{mount:$('#app'),signal:abort.signal,
-      canWalk:()=>!bonus?.active&&['ready','complete'].includes(mission.state.phase),onHotspot:kind=>mission.hotspot(kind),
+      canWalk:()=>!bonus?.active&&!world.streetShow?.active&&mission.state.postgame,onHotspot:kind=>mission.hotspot(kind),
       onSceneTap:ray=>{
         if(bonus?.handleTap(ray))return true;
         if(!mission.state.paused&&!mission.state.presentationLocked&&['ready','intro','meal','cargo','observation','briefing','energy','last','complete'].includes(mission.state.phase)){
@@ -127,8 +128,9 @@ async function init(){
         const target=world.director.pick(ray.ray);if(target!==null)mission.selectTarget(target);return true;
       }
     });
+    createStreetPerformance({world,mission,mount:$('#app'),playEffect:k=>{if($('#sound').checked)audio.effect(k);},hum:t=>{if($('#sound').checked)audio.hum(t);}});
     bonus=createBonus({mount:$('#app'),world,mission,exploration,roomAudio:()=>audio.ambience('upstairs',preferences.rain),playEffect:kind=>{if($('#sound').checked&&!document.hidden)audio.effect(kind);}});
-    world.onTick=(time,delta)=>{mission.update(time);world.missionState=mission.state;audio.duck(!!mission.state.node);audio.ambience(mission.state.vcr?'shop':world.camera.position.z<2?'shop':'street',preferences.rain);if(mission.state.phase==='tour'&&mission.state.phaseElapsed>=14&&mission.state.phaseElapsed<30&&!mission.state.paused)audio.hum(mission.state.phaseElapsed);exploration.update(delta);bonus.update();viewControls.update();
+    world.onTick=(time,delta)=>{if(mission.state.postgame&&walkFloorKey!==(world.streetShow.state.mode+world.store.doors.isOpen)){walkFloorKey=world.streetShow.state.mode+world.store.doors.isOpen;const floor=world.store.floorPlan,intact=world.streetShow.state.mode!=='collapsed',obstacles=intact?[...floor.obstacles]:[];if(intact&&!world.store.doors.isOpen)obstacles.push({x:-.22,z:1.895,w:1.6,d:.12});world.actors.setObstacles({obstacles,entrance:intact?floor.entrance:{minX:-20,maxX:20,z:1.8}});}mission.machine.doorOpen=world.store.doors.open;mission.update(time);world.missionState=mission.state;audio.duck(!!mission.state.node);audio.ambience(mission.state.vcr?'shop':world.camera.position.z<2?'shop':'street',preferences.rain);if(mission.state.phase==='tour'&&mission.state.phaseElapsed>=14&&mission.state.phaseElapsed<30&&!mission.state.paused)audio.hum(mission.state.phaseElapsed);exploration.update(delta);bonus.update();viewControls.update();
       if(!reactionBubble.hidden){if(time>=reactionBubbleUntil||mission.state.paused||bonus.active){reactionBubble.hidden=true;world.actors?.cancelReaction();}else{const p=world.actors.dragonPosition,q=world.projectPoint([p[0],p[1]+1.1,p[2]]),rect=world.container.getBoundingClientRect();reactionBubble.style.left=`${Math.max(100,Math.min(innerWidth-100,rect.x+(q[0]+1)*rect.width/2))}px`;reactionBubble.style.top=`${Math.max(150,Math.min(innerHeight*.55,rect.y+(1-q[1])*rect.height/2))}px`;}}
 };
     loader.progress(99);await loader.finish();world.time=0;world.previous=undefined;world.tick(0,0,false);loader.hide();world.start();
@@ -138,13 +140,14 @@ async function init(){
     const autoDialogue=document.createElement('button');autoDialogue.textContent='自動對話：關';autoDialogue.addEventListener('click',()=>{mission.machine.setAuto(!mission.state.auto);autoDialogue.textContent=mission.state.auto?'自動對話：開':'自動對話：關';},{signal:abort.signal});$('#settings').append(autoDialogue);
     let dialogueSize=preferences.textSize;const textSize=document.createElement('button');textSize.textContent='字幕字級：'+dialogueSize;textSize.addEventListener('click',()=>{dialogueSize={18:22,22:26,26:18}[dialogueSize];preferences.textSize=dialogueSize;saveSettings();$('#app').style.setProperty('--dialogue-size',dialogueSize+'px');textSize.textContent='字幕字級：'+dialogueSize;},{signal:abort.signal});$('#settings').append(textSize);
     const volumeRow=document.createElement('label');volumeRow.className='setting-row';volumeRow.textContent='音量';const volume=document.createElement('input');volume.type='range';volume.min=0;volume.max=100;volume.value=preferences.volume*100;volume.setAttribute('aria-label','雨聲與音效音量');volume.addEventListener('input',()=>{preferences.volume=Number(volume.value)/100;audio.setVolume(preferences.volume);saveSettings();},{signal:abort.signal});volumeRow.append(volume);$('#settings').append(volumeRow);audio.setVolume(preferences.volume);
+    const version=document.createElement('small');version.textContent='版本：'+__BUILD_VERSION__;$('#settings').append(version);
     const resetCameraButton=document.createElement('button');resetCameraButton.textContent='立即回到演出';resetCameraButton.addEventListener('click',()=>{world.resetStoryCamera();menu(false);},{signal:abort.signal});$('#settings').append(resetCameraButton);
     const chapterMenu=document.createElement('section');chapterMenu.className='chapter-menu';const heading=document.createElement('h3');heading.textContent='章節接續／重看';chapterMenu.append(heading);$('#settings').append(chapterMenu);for(const c of CHAPTERS){const b=document.createElement('button');b.textContent=c.label;b.dataset.chapter=c.id;b.disabled=!chapters.data.unlocked.includes(c.id);b.addEventListener('click',()=>restore(c.id),{signal:abort.signal});chapterMenu.append(b);}
     const backgroundResume=document.createElement('button');backgroundResume.className='background-resume';backgroundResume.textContent='已暫停 · 繼續';backgroundResume.hidden=true;$('#app').append(backgroundResume);
     listen(document,'visibilitychange',()=>{if(document.hidden){mission.setPaused(true,'background');}else if(mission.pauseReasons.includes('background'))backgroundResume.hidden=false;});
     backgroundResume.addEventListener('click',()=>{mission.setPaused(false,'background');backgroundResume.hidden=true;},{signal:abort.signal});
     window.__rainy711={
-      get staging(){return {remnant:world.remnant.state,tractor:world.director.captureFx.root.visible,microphone:!!world.actors?.root.getObjectByName('floating-singing-microphone')?.visible,phone:world.photoPhone?.position.toArray()};},get loading(){return loader.state;},get bonus(){return bonus.state;},get chapters(){return chapters.data;},restoreChapter:id=>restore(id),assist:()=>mission.machine.assist(),
+      get staging(){return {show:world.streetShow?.state,shopping:mission.state.shopping,remnant:world.remnant.state,tractor:world.director.captureFx.root.visible,microphone:!!world.actors?.root.getObjectByName('floating-singing-microphone')?.visible,phone:world.photoPhone?.position.toArray()};},get loading(){return loader.state;},get bonus(){return bonus.state;},get chapters(){return chapters.data;},restoreChapter:id=>restore(id),assist:()=>mission.machine.assist(),
       get switches(){return {signal:world.signalIndex||0,room:world.roomLightOn??true,door:world.store.doors.manual};},get time(){return world.time;},get renders(){return world.renderCount;},get drawCalls(){return world.renderer.info.render.calls;},get triangles(){return world.renderer.info.render.triangles;},get warmup(){return world.shaderWarmup.state;},resetCamera:()=>world.resetStoryCamera(),
       get aa(){return {msaa:world.msaaSamples,postSamples:world.composer.renderTarget1.samples,postDepth:world.composer.renderTarget1.depthBuffer,fxaa:world.fxaa.enabled,dpr:world.renderer.getPixelRatio()};},
       get metrics(){let lights=0;world.scene.traverse(n=>{if(n.isLight&&n.visible)lights++;});return {batches:world.batchStats,lights,weather:world.weather.metrics,camera:world.walkCamera.state};},

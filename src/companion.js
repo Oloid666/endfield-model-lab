@@ -36,10 +36,10 @@ export function buildDragon(r) {
   const vertices=[],uv=[],index=[];
   for(let row=0;row<=6;row++)for(let col=0;col<=12;col++){
     const u=col/12,v=row/6,x=(u-.5)*.91,y=(.5-v)*.68;
-    const z=.492-Math.pow(x,2)*.88-Math.pow(y,2)*.28;
+    const z=.49*Math.sqrt(Math.max(.01,1-(x/.56)**2-((y+.01)/.59)**2))+.009;
     vertices.push(x,.64+y,z);uv.push(u,1-v);if(row&&col){const i=row*13+col;index.push(i-14,i-1,i-13,i-13,i-1,i);}
   }
-  const geo=r.own(new T.BufferGeometry());geo.setAttribute('position',new T.Float32BufferAttribute(vertices,3));geo.setAttribute('uv',new T.Float32BufferAttribute(uv,2));geo.setIndex(index);geo.computeVertexNormals();r.mesh(geo,material,body);
+  const geo=r.own(new T.BufferGeometry());geo.setAttribute('position',new T.Float32BufferAttribute(vertices,3));geo.setAttribute('uv',new T.Float32BufferAttribute(uv,2));geo.setIndex(index);geo.computeVertexNormals();const faceMesh=r.mesh(geo,material,body);faceMesh.name='dragon-face';
   root.traverse(n=>n.userData.hotspot='dragon');
   const marks=['!','👍','✦','♪','…','汗','…','?'];
   const markMaps=marks.map(text=>{const canvas=document.createElement('canvas');canvas.width=256;canvas.height=160;const c=canvas.getContext('2d');c.fillStyle='#173b38';c.beginPath();c.roundRect(12,12,232,132,28);c.fill();c.strokeStyle='#d9c38c';c.lineWidth=5;c.stroke();c.fillStyle='#f5e5af';c.textAlign='center';c.textBaseline='middle';c.font='bold 96px sans-serif';c.fillText(text,128,82);const map=r.own(new T.CanvasTexture(canvas));map.colorSpace=T.SRGBColorSpace;return map;});
@@ -109,6 +109,7 @@ export function buildDragon(r) {
       microphone.position.set(.18,.46+beat*.4,.79);
       material.map=maps[Math.sin(t*5)>0?3:0];state.mood='singing';
     }
-    state.singing=!!s.singing;state.hand=arms[1].position.toArray();state.microphone=microphone.position.toArray();
+    if(action==='snap'){arms[1].position.set(.63,.83,.22);arms[1].rotation.z=.25+Math.sin(effort*Math.PI)*.32;}
+    state.faceVisible=faceMesh.visible;state.singing=!!s.singing;state.hand=arms[1].position.toArray();state.microphone=microphone.position.toArray();
   },dispose(){root.removeFromParent();}};
 }

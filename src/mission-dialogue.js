@@ -261,3 +261,5 @@ function relink(items){items.forEach((n,i)=>n.next=items[i+1]?.id||null);return 
 sequences.intro=relink(sequences.intro.filter(n=>!['intro_6','intro_7','intro_8'].includes(n.id)));
 sequences.energy=relink(sequences.energy.filter(n=>n.id!=='energy_2'));
 sequences.observation.splice(3,0,{id:'observe_window',speaker:'dragon',text:'對了，二樓中間那扇窗戶怎麼有點陰森？',gesture:'point',mood:'calm',event:'server-closeup'});relink(sequences.observation);
+
+export function combatHitLine(index,counts){const n=index%reactionPools.hit.length;const repeated=counts[n]++>0;return repeated&&n===1?'龍泡泡：我叫你改善光害，沒叫你改善採光！':repeated&&n===2?'弭弗：公告怎麼寫？莊：店面升級為露天座位。':reactionPools.hit[n];}
