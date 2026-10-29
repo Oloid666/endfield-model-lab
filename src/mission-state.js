@@ -21,7 +21,7 @@ export const outputModes=[
   {id:'strong',label:'提高火力',hint:'判定較窄',multiplier:1.2,speed:1.2,width:.15,miss:.34,perfect:.05,recoil:1.15},
   {id:'overload',label:'過載輸出',hint:'判定最窄',multiplier:1.5,speed:1.45,width:.12,miss:.29,perfect:.04,recoil:1.8},
 ];
-const manualPhases=new Set(['intro','meal','cargo','photo-talk','photo-check','observation','credentials','verify-talk','verified-talk','briefing','energy','flashback','flashback-end','last','complete']);
+const manualPhases=new Set(['terminal-quip','intro','meal','cargo','photo-talk','photo-check','observation','credentials','verify-talk','verified-talk','briefing','energy','flashback','flashback-end','last','complete']);
 const vcrPhases=new Set(['rewind','flashback','hack','credentials','heat-demo','meal-spawn','heat','flashback-end','return']);
 const preChargePhases=new Set(['ready','intro','purchase','choice','meal','briefing','login','captcha','lever','ascent','director-reminder','shoe-view','pylon-link']);
 const clamp=(value,min=0,max=1)=>Math.max(min,Math.min(max,value));
@@ -108,6 +108,7 @@ export class MissionMachine{
     else if(this.phase==='meal')this.sequence('briefing',sequences.briefing);
     else if(this.phase==='verify-talk')this.phaseTo('captcha');
     else if(this.phase==='verified-talk')this.phaseTo('lever');
+    else if(this.phase==='terminal-quip')this.phaseTo('login');
     else if(this.phase==='briefing')this.phaseTo('terminal-deploy');
     else if(this.phase==='energy')this.phaseTo('rewind');
     else if(this.phase==='flashback')this.phaseTo('hack');
@@ -289,7 +290,7 @@ export class MissionMachine{
       else if(phase==='director-reminder'&&elapsed>=5){this.phaseTo('shoe-view',this.entered+5);changed=true;}
       else if(phase==='pylon-link'&&elapsed>=4){this.phaseTo('charge',this.entered+4);changed=true;}
       else if(phase==='charge'&&elapsed>=CHARGE_DURATION){this.phaseTo('fire-ready',this.entered+CHARGE_DURATION);changed=true;}
-      else if(phase==='terminal-deploy'&&elapsed>=6){this.phaseTo('login',this.entered+6);changed=true;}
+      else if(phase==='terminal-deploy'&&elapsed>=6){this.sequence('terminal-quip',[{id:'terminal_hunter',speaker:'dragon',text:'這是貪婪之島，還是背鍋之島？',gesture:'shake',event:'book-quip'}]);changed=true;}
       else if(phase==='photo-sending'&&elapsed>=1.2){this.sequence('cargo',sequences.cargo);changed=true;}
       else if(phase==='photo-return'&&elapsed>=2.5){this.sequence('photo-check',sequences.photoCheck);changed=true;}
       else if(phase==='purchase'&&this.shopping?.done){this.phaseTo('walk-out');changed=true;}
@@ -350,7 +351,7 @@ export class MissionMachine{
       phaseElapsed:elapsed,time:this.time,clock:this.time,sourceTime:this.sourceTime,paused:this.paused,auto:this.auto,castingElapsed:this.castingElapsed,
       loginAside:this.loginAside,purchaseElapsed:this.purchaseStarted===null?null:Math.max(0,this.time-this.purchaseStarted),shoeReady:this.shoeReady,shoeOrbitElapsed:this.phase==='shoe-view'?Math.max(0,this.time-this.shoeOrbitStart):0,shoeRounds:this.shoeRounds,flight:this.flight?{...this.flight,ready:Math.abs(this.flight.z-10.5)<=.6&&this.time-(this.flightStableAt??this.time)>=.5}:null,investigation:this.investigation,photoTaken:this.photoTaken,hack:{turns:[...this.hackTurns],moves:this.hackMoves,failures:this.hackFailures},connection,login:connection,heat,vcr,rewindProgress,rewindStage,returnProgress:this.phase==='return'?clamp(elapsed/RETURN_DURATION):0,vcrElapsed:vcr&&this.vcrStarted!==null?Math.max(0,this.time-this.vcrStarted):0,replayStage:vcr?this.phase:null,vcrSnapshot:this.vcrSnapshot?{...this.vcrSnapshot}:null,
       target:this.target,targetLabel:target?.label||'店面外牆',targets:this.targets,feedback:this.feedback,shots:this.shots,hits:this.hits,attackHoldUntil:this.attackHoldUntil,combatHoldRemaining,attackHeld:combatHoldRemaining>0,
-      presentationLocked:this.phase==='meal-spawn'||this.node?.event==='vcr-cue'&&this.time-this.nodeEntered<4||this.node?.event==='dragon-capture'&&this.time-this.nodeEntered<2.1||this.node?.event==='pear-tour'&&this.time-this.nodeEntered<6||this.phase==='photo-check'&&elapsed<5||this.phase==='aim-final'&&elapsed<FINAL_READY||this.phase==='photo-talk'&&this.node?.event==='camera-handover'&&this.time-this.nodeEntered<1.5,failures:{...this.failures},canAssist:(this.failures[this.phase]||0)>=5,
+      presentationLocked:this.node?.event==='phone-away'&&this.time-this.nodeEntered<2.4||this.phase==='meal-spawn'||this.node?.event==='vcr-cue'&&this.time-this.nodeEntered<4||this.node?.event==='dragon-capture'&&this.time-this.nodeEntered<2.1||this.node?.event==='pear-tour'&&this.time-this.nodeEntered<6||this.phase==='photo-check'&&elapsed<5||this.phase==='aim-final'&&elapsed<FINAL_READY||this.phase==='photo-talk'&&this.node?.event==='camera-handover'&&this.time-this.nodeEntered<1.5,failures:{...this.failures},canAssist:(this.failures[this.phase]||0)>=5,
       canAttack:(this.phase!=='aim-final'||elapsed>=FINAL_READY)&&['combat','aim-final'].includes(this.phase)&&!this.paused&&this.time-this.lastAttack>=.6&&combatHoldRemaining===0,
       ended:this.ended,busy:!!this.node||!['ready','complete'].includes(this.phase),sequenceKind:this.sequenceKind,endingCaption,revision:this.revision};
   }

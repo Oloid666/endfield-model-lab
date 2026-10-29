@@ -54,7 +54,7 @@ export function buildDragon(r) {
     const blink=Math.max(0,1-Math.abs((t+.7)%4.3-.15)/.11);
     const action=s.action?.kind||'',effort=T.MathUtils.clamp(Number(s.action?.amount)||0,0,1),shocked=action==='shock'||!!s.projectile;
     state.mood=shocked?'shock':action==='lever'?'doubt':blink>.3?'blink':(s.nod||0)>.15?'happy':'normal';state.action=action;
-    material.map=maps[shocked?3:action==='lever'?4:blink>.3?1:(s.nod||0)>.15?2:0];
+    material.map=maps[action==='sigh'?1:shocked?3:action==='lever'?4:blink>.3?1:(s.nod||0)>.15?2:0];
     const gesture=s.gestureAmount||0,happy=s.gesture==='happy'?gesture:0,wave=s.gesture==='wave'?gesture:0,point=s.gesture==='point'?gesture:0,roll=s.gesture==='roll'?gesture:0,nod=s.gesture==='nod'?gesture:0;
     const curiosity=Math.max(s.curious||0,s.glance?.35:0),startle=Math.max(s.startle||0,s.gesture==='rain'?gesture*.7:0),attention=s.dragon||0,walk=s.walk||0;
     const catchUp=s.followerMode==='catch-up'?1:0,hesitate=s.followerMode==='hesitate'?1:0,phase=s.walkPhase||0;
@@ -68,6 +68,7 @@ export function buildDragon(r) {
     for(let i=0;i<ears.length;i++){const side=i?1:-1;ears[i].rotation.z=side*(-.28-startle*.18-catchUp*.09+curiosity*.1)+Math.sin(t*.65+i)*.009;ears[i].rotation.x=hesitate*.08+(s.lookYaw||0)*side*.08;}
     tail.rotation.z=Math.sin(t*(catchUp?3.2:1.1))*(.016+curiosity*.07+catchUp*.07)+curiosity*.09;
     tail.rotation.x=-1.1+walk*.09+hesitate*.06;tuft.rotation.z=-.18+(s.lookYaw||0)*.1;
+    if(action==='sigh'){body.rotation.x=effort*.08;arms[0].rotation.z=-.1;arms[1].rotation.z=.1;}
     if(action==='key'){
       body.rotation.x=-.08;body.position.y=-Math.sin(effort*Math.PI)*.035;
       body.scale.set(1+effort*.05,1-effort*.08,1+effort*.04);
@@ -79,7 +80,8 @@ export function buildDragon(r) {
       arms[0].rotation.z=-.85;arms[1].rotation.z=.85;
       feet[0].position.z=.22;feet[1].position.z=-.02;tail.rotation.x=-.88;
     }
-    if(!s.reaction&&s.allowIdleEmote&&t%10<1.6)s.reaction={id:[0,1,3,7,4,2][Math.floor(t/10)%6],age:t%10,large:false};
+    if(action==='sigh')s.reaction=null;
+    if(action!=='sigh'&&!s.reaction&&s.allowIdleEmote&&t%10<1.6)s.reaction={id:[0,1,3,7,4,2][Math.floor(t/10)%6],age:t%10,large:false};
     if(s.phoneHold){arms[1].position.set(.6,.52,.28);arms[1].rotation.z=.25;}
     microphone.visible=!!s.singing;microphone.position.y=.55+(s.singing?Math.sin(t*2)*.025:0);if(s.singing){arms[1].position.set(.35,.62,.35);arms[1].rotation.z=.65;body.rotation.z+=Math.sin(t*2)*.06;}
     if(action==='call'){arms[0].position.set(-.4,.75,.2);arms[0].rotation.z=-.85;body.rotation.z=Math.sin(t*1.1)*.05;}

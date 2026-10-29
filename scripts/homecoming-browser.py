@@ -41,7 +41,7 @@ async def main():
      await page.locator('[data-action=claims-next]').click()
      if await js('__rainy711.bonus.negotiation.cue?.event')=='policyholder':
       await tick(.75,True);check('Policyholder makes facial features fly',await js('__rainy711.bonus.room.faceDetached')>.9);await shot('claims-face-flight');await tick(.8,True);check('Facial features return',await js('__rainy711.bonus.room.faceDetached')==0)
-   check('Claims completes',await js('__rainy711.bonus.route')=='settlement-result');await page.locator('[data-action=claims-next]').click();check('Class invitation connects rooms','當老師' in await page.locator('.bonus-content').inner_text());await page.locator('[data-action=class-start]').click();await page.wait_for_function('!__rainy711.bonus.busy');await page.locator('[data-action=class-next]').click()
+   check('Claims completes',await js('__rainy711.bonus.route')=='settlement-result');await page.locator('[data-action=claims-next]').click();check('Class invitation connects rooms','當老師' in await page.locator('.bonus-content').inner_text());await page.locator('[data-action=class-next]').click();await page.wait_for_function('!__rainy711.bonus.busy');await page.locator('[data-action=class-next]').click()
    for _ in range(100):
     route=await js('__rainy711.bonus.route')
     if route=='class-result':break

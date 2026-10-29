@@ -87,7 +87,7 @@ export function buildConnectionStage(scene,r){
   function leverPosition(value=lever){return [root.position.x-1.18+2.36*clamp(value),root.position.y+.37,root.position.z+.02];}
   function update(t,delta,state={}){
     phase=state.phase||'ready';const c=state.connection||{},clock=Number.isFinite(state.clock)?state.clock:t;
-    root.visible=['terminal-deploy','login','verify-talk','captcha','verified-talk','lever'].includes(phase);if(!root.visible){pressed=false;return;}
+    root.visible=['terminal-quip','terminal-deploy','login','verify-talk','captcha','verified-talk','lever'].includes(phase);if(!root.visible){pressed=false;return;}
     field=c.field==='password'?'password':'account';lastKey=canonical(c.lastKey);keyNumber=Number(c.keyNumber)||0;keyAt=Number.isFinite(c.keyAt)?c.keyAt:-Infinity;lever=clamp(c.lever);
     scanner.visible=['terminal-deploy','lever'].includes(phase);scanner.position.z=-1.1+((Number(state.clock)||t)*.5%1)*2.2;
     const age=phase==='terminal-deploy'?Number(state.phaseElapsed)||0:6;deployment=ease((age-3.2)/2.3);root.scale.set(1,1,1);root.position.y=.335;
@@ -96,7 +96,7 @@ export function buildConnectionStage(scene,r){
     for(const {page,side,index}of pages){page.rotation.z=side*(1-opening)*1.5+side*(reduced?0:Math.sin(ease((age-1-index*.18)/1.4)*Math.PI)*.55);page.position.y=.065+index*.012;}
     shell.visible=age>=3.1;shell.position.y=reduced?0:(1-deployment)*.22;keyboard.position.y=reduced?0:(1-deployment)*.4;
     scanner.visible=phase==='lever'||phase==='terminal-deploy'&&age>3.2;
-    keyboard.visible=['terminal-deploy','login'].includes(phase)&&age>=3.4;captcha.visible=phase==='captcha';leverRoot.visible=phase==='lever';tick.visible=Boolean(c.verified);handle.position.x=-1.18+2.36*lever;
+    keyboard.visible=['terminal-quip','terminal-deploy','login'].includes(phase)&&age>=3.4;captcha.visible=phase==='captcha';leverRoot.visible=phase==='lever';tick.visible=Boolean(c.verified);handle.position.x=-1.18+2.36*lever;
     const keyAge=clock-keyAt,depression=keyAge>=0&&keyAge<.38?Math.sin(keyAge/.38*Math.PI)*.048:0;pressed=depression>.002;count=0;
     for(const record of records){
       const active=record.field===field,down=active&&record.key===lastKey?depression:0;

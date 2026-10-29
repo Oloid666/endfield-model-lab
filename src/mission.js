@@ -7,7 +7,7 @@ import {speakers,endingCaption,endingSong,reactionPools,combatHitLine} from './m
 const E=(tag,className,text)=>{const e=document.createElement(tag);e.className=className;if(text!==undefined)e.textContent=text;return e;};
 const setText=(node,text)=>{const value=String(text??'');if(node.textContent!==value)node.textContent=value;};
 const runningPhases=new Set(['login','captcha','lever','ascent','director-reminder','shoe-view','pylon-link','charge','fire-ready','combat','energy','rewind','flashback','hack','credentials','heat-demo','meal-spawn','heat','flashback-end','return','last','aim-final','finisher','landing','tour']);
-const manualPhases=new Set(['intro','meal','cargo','photo-talk','photo-check','verify-talk','verified-talk','observation','credentials','briefing','energy','flashback','flashback-end','last','complete']);
+const manualPhases=new Set(['terminal-quip','intro','meal','cargo','photo-talk','photo-check','verify-talk','verified-talk','observation','credentials','briefing','energy','flashback','flashback-end','last','complete']);
 const connectionPhases=new Set(['login','captcha','lever']);
 const vcrPhases=new Set(['rewind','flashback','hack','credentials','heat-demo','meal-spawn','heat','flashback-end','return']);
 const phaseTitles={cargo:'02 · 萬噸土產',observation:'02 · 照片裡的異常',credentials:'VCR · 門鎖與鑰匙',intro:'01 · 先吃晚餐',purchase:'01 · 龍泡泡結帳中',ascent:'03 · 允許起飛','director-reminder':'03 · 導播補拍',choice:'01 · 今晚，吃什麼',meal:'01 · 買好晚餐',briefing:'02 · 梨花旁的燈',login:'03 · 請幫我連線',captcha:'03 · 驗證身分',lever:'03 · 接通儲能網',charge:'03 · 儲能接通','fire-ready':'04 · 發射系統',combat:'04 · 光害改善',energy:'04 · 電去哪裡了',rewind:'VCR · 倒帶中',flashback:'VCR · 三小時前', 'heat-demo':'VCR · 加熱試驗','meal-spawn':'VCR · 晚餐電活了',heat:'VCR · 極速加熱', 'flashback-end':'VCR · 沒關掉的設定',return:'回到現場',last:'05 · 最後一發','aim-final':'05 · 龍泡泡，準備',finisher:'05 · 最後一擊',landing:'任務完成',tour:'武陵 · 現場紀錄',complete:'武陵 · 聽雨'};
@@ -47,7 +47,7 @@ export function createMission({mount=document.querySelector('#app'),onDinner,onG
   const finalSeal=E('div','mission-final-seal'),finalPortrait=E('div','mission-dragon-portrait');finalPortrait.setAttribute('role','img');finalPortrait.setAttribute('aria-label','龍泡泡錯愕的表情');finalPortrait.style.backgroundImage=`url("${import.meta.env.BASE_URL}images/dragon-reactions.png")`;
   const finalWords=E('div','mission-final-words'),finalQuote=E('p','mission-final-quote');finalWords.append(E('span','mission-final-label','龍泡泡 · 終末彈'),finalQuote);finalSeal.append(finalPortrait,finalWords);combat.prepend(finalSeal,outputs);
   const completed=E('div','mission-completed'),completeText=E('span','mission-complete-text','100% · 任務完成'),replay=E('button','mission-replay','重拍這個雨夜');replay.type='button';completed.append(completeText,replay);
-  const receipt=E('img','album-receipt');receipt.src=`${import.meta.env.BASE_URL}images/receipt.svg`;receipt.alt='手機相簿上一張：息壤簽收單，簽收人龍泡泡';receipt.hidden=true;root.append(receipt);
+  const receipt=E('img','album-receipt');receipt.src=`${import.meta.env.BASE_URL}images/receipt.webp`;receipt.alt='手機相簿上一張：息壤簽收單，簽收人龍泡泡';receipt.hidden=true;root.append(receipt);
   const caption=E('p','mission-caption',endingCaption);caption.setAttribute('aria-hidden','true');
 
   const connection=E('section','mission-connect');connection.hidden=true;connection.setAttribute('aria-label','天師樁儲能網接入');

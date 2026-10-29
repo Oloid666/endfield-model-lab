@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import * as T from 'three';
+import {MissionDirector} from '../src/mission-director.js';
+import {Resources} from '../src/resources.js';
+import {buildSighBreath} from '../src/sigh-breath.js';
+import {MissionMachine} from '../src/mission-state.js';
+const r=new Resources(),breath=buildSighBreath(new T.Scene(),r),s={phase:'observation',node:{event:'phone-away'},nodeElapsed:1};
+breath.update(s,[1,2,3],0);assert(breath.root.visible);assert(breath.root.children.length>=3);const before=breath.root.children.map(n=>n.position.toArray());
+breath.update(s,[1,2,3],0);assert.deepEqual(breath.root.children.map(n=>n.position.toArray()),before);
+s.nodeElapsed=2.5;breath.update(s,[1,2,3],0);assert(!breath.root.visible);s.nodeElapsed=1;s.phase='briefing';breath.update(s,[1,2,3],0);assert(!breath.root.visible);
+const m=new MissionMachine();m.phaseTo('terminal-deploy');m.update(6);assert.equal(m.phase,'terminal-quip');assert(m.node.text.includes('貪婪之島'));assert.equal(m.keyChunk('endfield'),false);m.update(7);assert.equal(m.phase,'terminal-quip');m.next();m.next();assert.equal(m.phase,'login');assert(m.keyChunk('endfield'));
+const actor={dragonPosition:[0,3,5],status:{dragonHeading:0},setDragonHeading(v){this.status.dragonHeading=v;}},director={};for(let i=0;i<40;i++)MissionDirector.prototype.faceFlight.call(director,actor,[0,3,1],{clock:i*.1});assert(Math.abs(Math.abs(actor.status.dragonHeading)-Math.PI)<.001);const heading=actor.status.dragonHeading;MissionDirector.prototype.faceFlight.call(director,actor,[5,3,5],{clock:3.9});assert.equal(actor.status.dragonHeading,heading);
+r.dispose();console.log('Sigh timing/pause/cleanup and BOOK-before-login checks passed.');
