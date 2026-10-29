@@ -88,3 +88,7 @@ button:focus-visible,select:focus-visible{outline:3px solid #e7d39a;outline-offs
 @media(max-height:500px){.postgame-actions{bottom:calc(74px + env(safe-area-inset-bottom));width:280px}#app.postgame-free .postgame-actions button{padding:7px;min-height:44px}}
 
 .gallery-open .investigation-ui,.gallery-open .mission-shell,.gallery-open .cinematic-toggle{visibility:hidden!important}
+
+.street-show-active .cinematic-toggle{visibility:hidden!important}
+
+.street-show-active .bonus-toast{visibility:hidden!important}

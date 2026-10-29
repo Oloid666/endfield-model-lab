@@ -23,6 +23,14 @@ async def main():
   await page.screenshot(path='/tmp/concert-free.png');assert await page.evaluate('__rainy711.staging.show.active')
   assert (await page.evaluate('__rainy711.camera'))[2]==23
   saved=await page.evaluate('__rainy711.camera');await page.evaluate('()=>{const q=__rainy711;for(let i=0;i<20;i++)q.tick(q.time+.1,.05,false);q.tick(q.time,.016,true)}');assert saved==await page.evaluate('__rainy711.camera')
+  await page.evaluate('()=>{const q=__rainy711;for(let i=0;i<300&&q.staging.show.active;i++)q.tick(q.time+.1,.05,false);q.tick(q.time,.016,true)}')
+  assert not await page.evaluate('__rainy711.staging.show.active')
+  for view in ['insideOut','dragon','oven']:
+   await page.evaluate('(v)=>__rainy711.frameView(v)',view);await tick(.1)
+   assert (await page.evaluate('__rainy711.camera'))==[0,7,23]
+   assert not await page.locator('.cinematic-toggle').is_visible()
+  await page.screenshot(path='/tmp/upstairs-invitation-safe.png')
+  assert '跟上龍泡泡' in await page.locator('.epilogue-prompt button').inner_text()
   assert not errors,errors
   print('PASS pear reveal, trapped orbit, epilogue and free concert',flush=True);await b.close()
 asyncio.run(main())

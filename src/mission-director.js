@@ -97,7 +97,7 @@ export class MissionDirector{
       this.world.manualUntil=this.world.time;this.world.transition=null;this.world.currentView=null;
     }
     if((phase==='landing'||phase==='complete')&&this.finalBegun){this.impact();this.hitNeighbor();}
-    this.world.controls.enabled=!state.presentationLocked&&!['photo-flight','photo'].includes(phase)&&!lockedPhases.has(phase)&&phase!=='investigate';
+    this.world.controls.enabled=!this.world.upstairsInvitation&&!state.presentationLocked&&!['photo-flight','photo'].includes(phase)&&!lockedPhases.has(phase)&&phase!=='investigate';
     if(cinematicPhases.has(phase))this.world.transition=null;if(lockedPhases.has(phase)){this.world.autoCamera=true;this.world.manualUntil=this.world.time;}
     if(this.world.autoCamera===false&&phase!=='photo')this.world.manualUntil=Infinity;
     this.world.weather.invalidateReflection();
@@ -145,7 +145,7 @@ export class MissionDirector{
   }
   beforeActors(state){
     this.state=state;const actor=this.world.actors;if(!state||!actor)return;
-    const phase=state.phase,e=state.phaseElapsed;this.world.controls.enabled=!state.presentationLocked&&!['photo-flight','photo'].includes(phase)&&!lockedPhases.has(phase);
+    const phase=state.phase,e=state.phaseElapsed;this.world.controls.enabled=!this.world.upstairsInvitation&&!state.presentationLocked&&!['photo-flight','photo'].includes(phase)&&!lockedPhases.has(phase);
     actor.setSceneAction?.({playful:phase==='ready',singing:phase==='tour'&&e>=14&&e<30,heading:['ready','intro','photo-talk','cargo'].includes(phase)?-.65:['photo-check','photo-review','photo-sending'].includes(phase)?-.35:['photo-flight','photo'].includes(phase)?0:undefined,handover:phase==='photo-talk'&&state.node?.event==='camera-handover',photoLook:['photo-check','photo-review','photo-sending','cargo'].includes(phase),externalDevice:phase.startsWith('photo')||phase==='cargo',mealVisible:!['ready','intro','purchase'].includes(phase)&&!(phase==='walk-out'&&e<4.2)});
     if(state.postgame){
       actor.root.visible=this.world.charactersEnabled;actor.setCinematic(null);actor.setSoot(false);
