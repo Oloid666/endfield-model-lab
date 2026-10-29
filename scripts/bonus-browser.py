@@ -77,7 +77,7 @@ async def main():
    for field,label in enumerate(expected_fields):
     check('Five fields retain the requested order',await page.locator('.bonus-content h2').inner_text()==label)
     texts=await page.locator('.bonus-claim-choices button').all_inner_texts();check('Both joke options are readable',len(texts)==2 and all(len(t)>20 for t in texts))
-    check('No policyholder name before reveal','莊芳宜' not in await page.locator('.bonus-ui').inner_text() and not await js('__rainy711.bonus.room.policyholderVisible'))
+    check('No policyholder name before reveal','莊方宜' not in await page.locator('.bonus-ui').inner_text() and not await js('__rainy711.bonus.room.policyholderVisible'))
     if field==0:await shot('form')
     choice='A' if field%2==0 else 'B';selected=texts[0 if choice=='A' else 1][1:]
     await click('claims-select',choice);check('Dragon reads chosen sentence',(await page.locator('.bonus-spoken').inner_text()).strip()==selected.strip());check('Advance button stays fixed',await page.locator('.bonus-claims-dock button').bounding_box()==claims_fixed);await click('claims-next')
@@ -86,7 +86,7 @@ async def main():
    check('Exactly two insurance objections',objections==2)
    check('Dragon asks to check policyholder',await page.locator('.bonus-spoken').inner_text()=='你看看要保人。')
    check('Name is still hidden on Dragon cue',not await js('__rainy711.bonus.room.policyholderVisible'))
-   await click('claims-next');check('Policyholder is revealed on next beat','莊芳宜' in await page.locator('.bonus-policyholder').inner_text() and await js('__rainy711.bonus.room.policyholderVisible'));await shot('policyholder')
+   await click('claims-next');check('Policyholder is revealed on next beat','莊方宜' in await page.locator('.bonus-policyholder').inner_text() and await js('__rainy711.bonus.room.policyholderVisible'));await shot('policyholder')
    await click('claims-next');check('Representative changes tone',await js('__rainy711.bonus.room.representative')=='polite');await click('claims-next');check('Dragon changes the subject','我今天不是來談這個的' in await page.locator('.bonus-spoken').inner_text());await click('claims-next');check('New business is monthly Xirang and property insurance','每個月幾噸息壤' in await page.locator('.bonus-spoken').inner_text());await click('claims-next');await click('claims-next');check('Three stamps begin after agreement',await js('__rainy711.bonus.negotiation.phase')=='stamp')
    for _ in range(3):await js('__rainy711.tick(__rainy711.time+.2,0,true)')
    check('All three stamps complete the happy ending',await js('__rainy711.bonus.route')=='settlement-result' and await js('__rainy711.bonus.negotiation.stampIndex')==3);check('Settlement is saved',await js('__rainy711.bonus.claimsSettled'));check('Result preserves five selected lines',len(await js('__rainy711.bonus.negotiation.choices && Object.keys(__rainy711.bonus.negotiation.choices)'))==5);await shot('settlement')

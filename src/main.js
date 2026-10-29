@@ -20,7 +20,7 @@ let preferenceStorage;try{preferenceStorage=localStorage;}catch{}
 const preferences=readPreferences(preferenceStorage),saveSettings=()=>savePreferences(preferenceStorage,preferences);
 $('#rain').checked=preferences.rain;$('#quality').value=preferences.quality;$('#app').style.setProperty('--dialogue-size',preferences.textSize+'px');
 const loader=createLoading();
-const audio=new RainAudio(),abort=new AbortController();let world,mission,exploration,bonus,closed=false,menuPaused=false,xaihiPromise=null,assetPaused=false,walkFloorKey='';
+const audio=new RainAudio(),abort=new AbortController();let world,mission,exploration,bonus,closed=false,menuPaused=false,xaihiPromise=null,assetPaused=false;
 const listen=(element,type,fn)=>element.addEventListener(type,fn,{signal:abort.signal});
 function showError(text){$('#error-message').textContent=text;error.hidden=false;loading.hidden=true;}
 function menu(open){
@@ -72,7 +72,7 @@ async function init(){
     world.setQuality(preferences.quality);world.weather.root.visible=preferences.rain;world.wet.setRain(preferences.rain);world.store.glass.uniforms.uRain.value=preferences.rain?1:0;
     loader.bind(world);world.earlyDragon=buildDragon(world.r);world.earlyDragon.root.scale.setScalar(.59);world.earlyDragon.root.position.set(-1.5,.32,2.5);world.scene.add(world.earlyDragon.root);
     world.setView('awning',true);world.tick(0,0,true);world.start();
-    loader.show('街景就緒，正在請莊芳宜下班');
+    loader.show('街景就緒，正在請莊方宜下班');
     while(!world.actors&&!closed){
       try{
         const actor=await loadActors(world.scene,world.r,text=>loader.stage(text),abort.signal,world.earlyDragon,data=>loader.download(data));loader.progress(80);
@@ -84,7 +84,7 @@ async function init(){
         console.error('人物初始化失敗',e);
         world.scene.getObjectByName('dinner-actors')?.removeFromParent();
         await new Promise(resolve=>loader.fail(`人物暫時沒有到場：${e.message}`,resolve));
-        loader.show('重新請莊芳宜下班');
+        loader.show('重新請莊方宜下班');
       }
     }
     if(closed)return;
@@ -92,7 +92,7 @@ async function init(){
     if(closed)return;world.time=0;world.previous=undefined;world.tick(0,0,true);
     mission=createMission({mount:$('#app'),onCameraReset:()=>{world.actors?.cancelReaction();reactionBubble.hidden=true;world.resetStoryCamera();},capturePhoto:()=>{if($('#sound').checked)audio.effect('shutter');return world.capturePhoto();},onCameraAuto:()=>world.resetStoryCamera(),getCameraAuto:()=>world.autoCamera,
       onDinner:branch=>{
-        if(!branch){walkFloorKey='';world.streetShow?.reset();world.store.doors.reset();bonus?.resetEnding();exploration?.setActive(false);world.director.reset();world.remnant.reset();mission?.setTargets(world.director.targets);world.actors?.setMove(0,0,false);world.actors?.setObstacles(world.store.floorPlan);world.actors?.teleport(-1.25,3.25);}
+        if(!branch){world.streetShow?.reset();world.store.doors.reset();bonus?.resetEnding();exploration?.setActive(false);world.director.reset();world.remnant.reset();mission?.setTargets(world.director.targets);world.actors?.setMove(0,0,false);world.syncWalkingEnvironment(true,{postgame:false});world.actors?.teleport(-1.25,3.25);}
         world.actors?.setDinner(branch);
       },
       onRestore:(id,state)=>{if(['rewind','last'].includes(id)){world.store.destruction.setProgress(99);world.store.destruction.update(state.clock+8,8);}world.director.finalBegun=false;},
@@ -130,7 +130,7 @@ async function init(){
     });
     createStreetPerformance({world,mission,mount:$('#app'),playEffect:k=>{if($('#sound').checked)audio.effect(k);},hum:t=>{if($('#sound').checked)audio.hum(t);}});
     bonus=createBonus({mount:$('#app'),world,mission,exploration,roomAudio:()=>audio.ambience('upstairs',preferences.rain),playEffect:kind=>{if($('#sound').checked&&!document.hidden)audio.effect(kind);}});
-    world.onTick=(time,delta)=>{if(mission.state.postgame&&walkFloorKey!==(world.streetShow.state.mode+world.store.doors.isOpen)){walkFloorKey=world.streetShow.state.mode+world.store.doors.isOpen;const floor=world.store.floorPlan,intact=world.streetShow.state.mode!=='collapsed',obstacles=intact?[...floor.obstacles]:[];if(intact&&!world.store.doors.isOpen)obstacles.push({x:-.22,z:1.895,w:1.6,d:.12});world.actors.setObstacles({obstacles,street:true,entrance:intact?floor.entrance:{minX:-20,maxX:20,z:1.8}});}mission.machine.doorOpen=world.store.doors.open;mission.update(time);world.missionState=mission.state;audio.duck(!!mission.state.node);audio.ambience(mission.state.vcr?'shop':world.camera.position.z<2?'shop':'street',preferences.rain);if(mission.state.phase==='tour'&&mission.state.phaseElapsed>=14&&mission.state.phaseElapsed<30&&!mission.state.paused)audio.hum(mission.state.phaseElapsed);exploration.update(delta);bonus.update();viewControls.update();
+    world.onTick=(time,delta)=>{world.syncWalkingEnvironment();mission.machine.doorOpen=world.store.doors.open;mission.update(time);world.missionState=mission.state;audio.duck(!!mission.state.node);audio.ambience(mission.state.vcr?'shop':world.camera.position.z<2?'shop':'street',preferences.rain);if(mission.state.phase==='tour'&&mission.state.phaseElapsed>=14&&mission.state.phaseElapsed<30&&!mission.state.paused)audio.hum(mission.state.phaseElapsed);exploration.update(delta);bonus.update();viewControls.update();
       if(!reactionBubble.hidden){if(time>=reactionBubbleUntil||mission.state.paused||bonus.active){reactionBubble.hidden=true;world.actors?.cancelReaction();}else{const p=world.actors.dragonPosition,q=world.projectPoint([p[0],p[1]+1.1,p[2]]),rect=world.container.getBoundingClientRect();reactionBubble.style.left=`${Math.max(100,Math.min(innerWidth-100,rect.x+(q[0]+1)*rect.width/2))}px`;reactionBubble.style.top=`${Math.max(150,Math.min(innerHeight*.55,rect.y+(1-q[1])*rect.height/2))}px`;}}
 };
     loader.progress(99);await loader.finish();world.time=0;world.previous=undefined;world.tick(0,0,false);loader.hide();world.start();

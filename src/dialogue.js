@@ -1,6 +1,6 @@
 // Original fan fiction. Ten years of overtime and the Administrator coda are
 // this short story's setting; they are not presented as official game dialogue.
-export const speakers={zhuang:'莊芳宜',dragon:'龍泡泡'};
+export const speakers={zhuang:'莊方宜',dragon:'龍泡泡'};
 export const nodes={};
 function sequence(prefix,segment,lines,next,extra={}){
   lines.forEach((line,index)=>{

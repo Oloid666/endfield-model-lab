@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {streetStageFrame,streetWide} from '../src/street-stage-camera.js';
+for(let age=0;age<22;age+=.1)assert.deepEqual(streetStageFrame(age,12,true),streetStageFrame(age,12,false));
 for(const initial of [false,true]){
  for(let age=0;age<22;age+=.05){const s=streetStageFrame(age,12,initial);if(s.progress>0)assert(age>=s.buildAt);if(!initial&&age<5.3)assert.equal(s.progress,0);if(s.done)assert(age>=s.end+1.5);}
 }

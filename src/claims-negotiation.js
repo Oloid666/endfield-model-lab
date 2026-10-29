@@ -24,7 +24,7 @@ export const OBJECTIONS=[
 ];
 const REVEAL=[
  {speaker:'龍泡泡',text:'你看看要保人。'},
- {speaker:'保單',text:'莊芳宜',event:'policyholder'},
+ {speaker:'保單',text:'莊方宜',event:'policyholder'},
  {speaker:'保險代表',text:'……本公司一向重視每位保戶。'},
 ];
 const BUSINESS=[

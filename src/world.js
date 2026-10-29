@@ -1,5 +1,6 @@
 import {buildInvestigationProps} from './investigation-props.js';
 import * as T from 'three';
+import {walkingEnvironment} from './walking-environment.js';
 import {AdaptiveQuality} from './adaptive-quality.js';
 import {CameraSafety} from './camera-safety.js';
 import {PhotoCamera} from './photo-camera.js';
@@ -168,6 +169,10 @@ export class World {
     return null;
   }
 
+  syncWalkingEnvironment(force=false,options={}){
+    if(!this.actors)return;const postgame=options.postgame??!!this.missionState?.postgame,intact=this.streetShow?.state.mode!=='collapsed',doorOpen=this.store.doors.isOpen,key=`${postgame}:${intact}:${doorOpen}`;
+    if(force||this.walkEnvironmentKey!==key){this.actors.setObstacles(walkingEnvironment(this.store.floorPlan,{postgame,intact,doorOpen}));this.walkEnvironmentKey=key;}
+  }
   get upstairsInvitation(){return this.missionState?.phase==='complete'&&!this.missionState.postgame&&this.streetShow?.state.snapshotReady&&!this.streetShow.active&&!this.bonus?.active;}
   tick(t,delta=.016,render=true){
     if(this.streetShow?.active){this.time=t;this.onTick(t,delta);this.streetShow.tick(t,render);return;}

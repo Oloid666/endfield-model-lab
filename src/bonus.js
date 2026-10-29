@@ -156,7 +156,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
   freeGuide='house';exploration.setActive(false);flowStage='done';rebuilt=true;progress.data.unlocked=true;progress.taps=0;progress.save();
   if(shortcut){world.streetShow.reset();world.director.reset();world.streetShow.prepareIntact();}
   world.director.stuckReleased=true;world.director.finalBegun=false;world.siege.reset();
-  world.actors.setObstacles({...world.store.floorPlan,street:true});world.actors.teleport(-1.25,3.25);world.actors.setCinematic(null);world.actors.setDragonProjectile(null);world.actors.setSoot(false);
+  world.syncWalkingEnvironment(true,{postgame:true});world.actors.teleport(-1.25,3.25);world.actors.setCinematic(null);world.actors.setDragonProjectile(null);world.actors.setSoot(false);
   mission.machine.epiloguePending=false;mission.machine.returnToStreet();world.missionState=mission.state;world.weather.invalidateReflection();world.setView('story',true);
  }
  function updateEntry(){entry.textContent=mission.state.postgame?'進入二樓劇情':entry.textContent;entry.disabled=mission.state.paused||!!world.streetShow?.active;entry.hidden=active||!progress.data.unlocked||!['ready','complete'].includes(mission.state.phase)||(mission.state.phase==='complete'&&flowStage!=='done'&&!rebuilt);}
@@ -181,7 +181,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
   world.currentView=snapshot.currentView;world.autoCamera=snapshot.autoCamera;world.manualUntil=Number.isFinite(snapshot.manualUntil)?snapshot.manualUntil+world.time-snapshot.time:snapshot.manualUntil;world.transition=snapshot.transition?{...snapshot.transition,start:snapshot.transition.start+world.time-snapshot.time}:null;world.controls.enabled=snapshot.controls;
   world.resize();world.camera.position.copy(snapshot.position);world.camera.quaternion.copy(snapshot.quaternion);world.camera.fov=snapshot.fov;world.controls.target.copy(snapshot.target);world.camera.updateProjectionMatrix();
   // Consume the source-clock gap while still paused, then restore its prior state.
-  mission.update(world.time);mission.setPaused(false,'bonus');
+  mission.update(world.time);mission.setPaused(false,'bonus');world.syncWalkingEnvironment(true);
   if(flowStage==='done'&&mission.state.phase==='complete'&&!mission.state.postgame){
     enterFreeStreet();
   }
@@ -269,7 +269,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
    }else{
     heading(negotiation.phase==='read'?`保險申請單 · ${f.label}`:negotiation.phase==='objection'?'保險代表 · 異議':negotiation.phase==='business'?'龍泡泡 · 後面的生意':'要保資料',cue.speaker);
     const line=E('p','bonus-reading bonus-spoken',cue.text);line.setAttribute('aria-live','polite');content.append(line);
-    if(cue.event==='policyholder'){const card=E('article','bonus-policyholder');card.append(E('small','','要保人'),E('strong','','莊芳宜'));content.replaceChild(card,line);}
+    if(cue.event==='policyholder'){const card=E('article','bonus-policyholder');card.append(E('small','','要保人'),E('strong','','莊方宜'));content.replaceChild(card,line);}
    }
    return;
   }
@@ -279,7 +279,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
    resultRows().forEach(text=>paper.append(E('p','',text)));const stamps=E('div','bonus-settlement-stamps');SETTLEMENT_STAMPS.forEach(text=>stamps.append(E('strong','bonus-stamp',text)));paper.append(stamps);content.append(paper,E('p','bonus-response','保險代表：同意！理賠、新產險、長期合作，一起辦理。'));
   }
  }
- function resultRows(){return ['要保人：莊芳宜',...negotiation.summary,'合作事項：每月幾噸息壤，新的產險，長期合作。','辦理結果：保險公司同意，皆大歡喜。'];}
+ function resultRows(){return ['要保人：莊方宜',...negotiation.summary,'合作事項：每月幾噸息壤，新的產險，長期合作。','辦理結果：保險公司同意，皆大歡喜。'];}
  function modal(titleText){dialog.dataset.kind='';dialogKind='';if(!dialog.open){dialogOpener=document.activeElement;dialogScroll=panel.scrollTop;}dialog.replaceChildren();const bar=E('div','bonus-dialog-heading');bar.append(E('h3','',titleText));button(bar,'關閉','dialog-close');dialog.append(bar);if(!dialog.open)dialog.showModal();return dialog;}
  function showSources(){const l=LESSONS[lessonIndex],d=modal('出處與劇內設定');d.append(E('p','', '台詞回顧引用目前版本的劇本；情節解析是本作品的解讀。未核實的社群口號、事件或歌詞來源不指定作者／作品。'));for(const source of l.sources){const a=E('a','',`${source.label} ↗`);a.href=source.url;a.target='_blank';a.rel='noopener noreferrer';d.append(a);}if(!l.sources.length)d.append(E('p','','本章以劇內鋪陳與回收為主，沒有新增外部來源主張。'));}
  function exportPaper(){

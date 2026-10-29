@@ -70,7 +70,7 @@ export function createBonusRoom(){
  const client=buildDragon(r),clientMount=new T.Group();clientMount.add(client.root);claims.add(clientMount);clientMount.position.set(-1.35,1.05,-1);client.root.scale.setScalar(.8);
  const dossier=new T.Group();claims.add(dossier);dossier.position.set(.15,1.06,-.12);
  box(dossier,'#354c4c',[0,0,0],[1.15,.055,.75]);label(claims,'事故申請單',[.1,1.32,-.15],1.2,.18);
- const policyCard=label(claims,'要保人：莊芳宜',[.1,1.62,-.25],1.75,.38,'#29483e','#f0e2bb');policyCard.visible=false;
+ const policyCard=label(claims,'要保人：莊方宜',[.1,1.62,-.25],1.75,.38,'#29483e','#f0e2bb');policyCard.visible=false;
  const contract=label(claims,'新產險 · 長期合作',[.1,1.93,-.28],2,.32,'#745b32','#eed6a0');contract.visible=false;
  const completedInks=['理賠通過','新案承保','長期合作'].map((text,i)=>{const n=label(claims,text,[-1.12+i*.24,1.073,.35],.23,.09,'#a34b3b','#e8dfc1');n.rotation.x=-Math.PI/2;n.visible=false;return n;});
  let negotiation=null,negotiationKey='',objectionAt=-Infinity,cueAt=0,reactionAt=-Infinity,policyAt=-Infinity,detached=0;

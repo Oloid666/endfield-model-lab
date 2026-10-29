@@ -1,5 +1,5 @@
 // Original fan fiction. These lines and the demolition episode are not official lore.
-export const speakers={zhuang:'莊芳宜',dragon:'龍泡泡',mifoe:'弭弗',xaihi:'塞西',clerk:'店員',system:'天師樁終端',microwave:'微波爐',manager:'管理員'};
+export const speakers={zhuang:'莊方宜',dragon:'龍泡泡',mifoe:'弭弗',xaihi:'塞西',clerk:'店員',system:'天師樁終端',microwave:'微波爐',manager:'管理員'};
 
 export const dinnerChoices=[
   {id:'A',label:'熱便當＋湯',hint:'先吃頓熱的。'},
@@ -181,7 +181,7 @@ export const heatDemoLines=lines('heat_demo',[
   ['dragon','單位看一下啊！','shake'],
 ]).map((node,index)=>({...node,at:index*1.2})).concat([
   {id:'meal_origin',at:6,speaker:'dragon',text:'剛剛那股電流灌進微波爐，把晚餐電活了。',gesture:'look',event:'meal-born'},
-  {id:'meal_reaction',at:10,speaker:'zhuang',text:'你把晚餐……電活了？',gesture:'look',event:'meal-closeup'},
+  {id:'meal_reaction',at:10,speaker:'zhuang',text:'你把晚餐電活了？變成這個紫色不妙物體？？',gesture:'look',event:'meal-closeup'},
   {id:'meal_joke',at:14,speaker:'dragon',text:'至少現在不用我送了。',gesture:'happy',event:'meal-closeup'},
 ]);
 export const finalAmmoLines=lines('ammo',[

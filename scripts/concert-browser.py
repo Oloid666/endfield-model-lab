@@ -19,7 +19,11 @@ async def main():
   assert '啊，對吼' in await page.locator('.epilogue-prompt').inner_text()
   assert '還沒演完' in await page.locator('.epilogue-prompt button').inner_text()
   await page.locator('.epilogue-prompt button').click()
-  await page.evaluate('()=>{const q=__rainy711;for(let i=0;i<60;i++)q.tick(q.time+.1,.05,false);q.tick(q.time,.016,true)}')
+  await page.evaluate('()=>{const q=__rainy711;for(let i=0;i<3;i++)q.tick(q.time+.1,.05,false)}')
+  assert await page.evaluate('__rainy711.staging.show.phase')=='closeup'
+  assert await page.evaluate('__rainy711.staging.show.buildingProgress')==0
+  await page.screenshot(path='/tmp/first-recovery-closeup.png')
+  await page.evaluate('()=>{const q=__rainy711;for(let i=0;i<57;i++)q.tick(q.time+.1,.05,false);q.tick(q.time,.016,true)}')
   await page.screenshot(path='/tmp/concert-free.png');assert await page.evaluate('__rainy711.staging.show.active')
   assert (await page.evaluate('__rainy711.camera'))[2]==23
   saved=await page.evaluate('__rainy711.camera');await page.evaluate('()=>{const q=__rainy711;for(let i=0;i<20;i++)q.tick(q.time+.1,.05,false);q.tick(q.time,.016,true)}');assert saved==await page.evaluate('__rainy711.camera')

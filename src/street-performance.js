@@ -20,7 +20,7 @@ export function createStreetPerformance({world,mission,mount,playEffect=()=>{},h
   const damping=world.controls.enableDamping;world.controls.enableDamping=false;world.controls.update();world.controls.enableDamping=damping;applyCamera(streetWide(wideIndex,world.camera.aspect<.85));
   world.director.cameraOwned=false;world.director.previousBeat=null;world.director.cameraRoll=0;world.autoCamera=first;world.manualUntil=first?world.time:Infinity;world.controls.enabled=!first;
  }
- function finish(){if(!active)return;world.concert.reset();setBuilding(1);handoff();active=false;cover.hidden=true;mount.classList.remove('street-show-active');dock.hidden=true;stars.visible=false;world.actors.setSceneAction({homecoming:true});world.actors.setCompanionAction({kind:'normal',amount:0});world.actors.setObstacles(mode==='intact'?world.store.floorPlan:{obstacles:[],entrance:world.store.floorPlan.entrance});mission.setPaused(false,'street-show');const done=onDone;onDone=null;done?.();}
+ function finish(){if(!active)return;world.concert.reset();setBuilding(1);handoff();active=false;cover.hidden=true;mount.classList.remove('street-show-active');dock.hidden=true;stars.visible=false;world.actors.setSceneAction({homecoming:true});world.actors.setCompanionAction({kind:'normal',amount:0});world.syncWalkingEnvironment(true);mission.setPaused(false,'street-show');const done=onDone;onDone=null;done?.();}
  skip.addEventListener('click',()=>{if(!first&&age>=1&&!paused())finish();});
  const api={get active(){return active;},get state(){return {active,age,first,kind,mode,line:text.textContent,indices:{...indices},snapshotReady,wideIndex,phase:streetStageFrame(age,songDuration(),first).phase,buildingProgress:streetStageFrame(age,songDuration(),first).progress};},
  start({initial=false,done=()=>{}}={}){
@@ -31,9 +31,9 @@ export function createStreetPerformance({world,mission,mount,playEffect=()=>{},h
  },
  tick(time,render=true){const dt=Math.max(0,Math.min(.1,time-last));last=time;if(!paused())age+=dt;
   if(!cover.hidden){cover.style.opacity=String(Math.max(0,1-age/.4));if(age>=.4)cover.hidden=true;}
-  const stage=streetStageFrame(age,songDuration(),first),actor=world.actors,p=stage.lift,q=p*p*(3-2*p),dest=[wideIndex===2?.8:-2.25,4.3,6.2],pos=from.map((v,i)=>v+(dest[i]-v)*q);actor.setCinematic(null);actor.setDragonProjectile(pos,0);const wide=streetWide(wideIndex,world.camera.aspect<.85),eye=wide.position;actor.setDragonHeading(stage.progress>0?Math.atan2(eye[0]-pos[0],eye[2]-pos[2]):.15);actor.setMove(0,0,false);actor.setSceneAction({homecoming:true,singing:age>=stage.buildAt,mealVisible:true});actor.setCompanionAction({kind:age<stage.buildAt?'snap':'normal',amount:Math.max(0,Math.min(1,(age-(first?1.6:2.2))/.7))});actor.update(age,paused()?0:dt);
+  const stage=streetStageFrame(age,songDuration(),first),actor=world.actors,p=stage.lift,q=p*p*(3-2*p),dest=[wideIndex===2?.8:-2.25,4.3,6.2],pos=from.map((v,i)=>v+(dest[i]-v)*q);actor.setCinematic(null);actor.setDragonProjectile(pos,0);const wide=streetWide(wideIndex,world.camera.aspect<.85),eye=wide.position;actor.setDragonHeading(stage.progress>0?Math.atan2(eye[0]-pos[0],eye[2]-pos[2]):.15);actor.setMove(0,0,false);actor.setSceneAction({homecoming:true,singing:age>=stage.buildAt,mealVisible:true});actor.setCompanionAction({kind:age<stage.buildAt?'snap':'normal',amount:Math.max(0,Math.min(1,(age-2.2)/.7))});actor.update(age,paused()?0:dt);
   world.portrait.fill.position.set(pos[0]+2,pos[1]+3,pos[2]+5);world.portrait.fill.target.position.set(pos[0],pos[1]+.35,pos[2]);
-  const snapAt=first?2.05:2.6;
+  const snapAt=2.6;
   if(age>=snapAt&&!snapped){snapped=true;playEffect('snap');}
   stars.visible=age>=snapAt&&age<snapAt+1.25;stars.position.set(pos[0]+.35,pos[1]+.5,pos[2]+.2);mat.opacity=Math.max(0,1-(age-snapAt)/1.25);for(const n of stars.children){const i=n.userData.index,a=i*2.4,t=Math.max(0,age-snapAt);n.position.set(Math.cos(a)*t*(reduced?.1:.5),Math.sin(a)*t*(reduced?.1:.5),0);n.quaternion.copy(world.camera.quaternion);n.scale.setScalar(i? .4:1.4);}
   const frame=songFrame(lines,age-stage.buildAt+2.8),caption=age<snapAt?'龍泡泡：看我的。':age<stage.buildAt?'✦ 啪！':frame.line;
@@ -41,7 +41,7 @@ export function createStreetPerformance({world,mission,mount,playEffect=()=>{},h
   if(stage.progress>0)setBuilding(stage.progress);
   const close={position:[pos[0]+.35,pos[1]+.65,pos[2]+(world.camera.aspect<.85?3.2:2.7)],target:[pos[0],pos[1]+.4,pos[2]],fov:42};
   let shot=wide;
-  if(!first&&age<stage.buildAt){const q=reduced?(stage.phase==='pullback'?1:0):stage.pull*stage.pull*(3-2*stage.pull);shot={position:close.position.map((v,i)=>v+(wide.position[i]-v)*q),target:close.target.map((v,i)=>v+(wide.target[i]-v)*q),fov:close.fov+(wide.fov-close.fov)*q};}
+  if(age<stage.buildAt){const q=reduced?(stage.phase==='pullback'?1:0):stage.pull*stage.pull*(3-2*stage.pull);shot={position:close.position.map((v,i)=>v+(wide.position[i]-v)*q),target:close.target.map((v,i)=>v+(wide.target[i]-v)*q),fov:close.fov+(wide.fov-close.fov)*q};}
   applyCamera(shot);
   world.concert.update(pos,age,age>=stage.buildAt,world.camera,'low',reduced);
   if(age>=stage.buildAt&&!paused())hum(age);if(render){world.renderer.info.reset();world.composer.render();world.renderCount++;}if(stage.done&&!paused())finish();

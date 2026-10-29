@@ -34,6 +34,8 @@ jobs:
       - run: node scripts/stage-detail-check.mjs
       - run: node scripts/concert-check.mjs
       - run: node scripts/street-camera-check.mjs
+      - run: node scripts/walking-environment-check.mjs
+      - run: node scripts/character-copy-check.mjs
       - run: node scripts/presentation-check.mjs
       - run: node scripts/bonus-check.mjs
       - run: node scripts/mission-check.mjs

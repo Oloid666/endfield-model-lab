@@ -2,7 +2,7 @@
 
 此目錄保存使用者提供的原始素材，不會直接發布到網站。相同原檔另置於 `public/models/xaihi.glb`，在 VCR 回放前載入。原始 GLB 保留不變。
 
-## 賽希
+## 塞西
 
 - 檔案：`xaihi-original.glb`
 - 原始上傳檔名：`xaihi__arknights_endfield.glb`

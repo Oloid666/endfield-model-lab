@@ -4,7 +4,7 @@
 
 ## 目標與範圍
 
-建立獨立專案 `zhuang-rainy-711`，優先服務 iPhone Safari。以雨夜便利店微縮街角、莊芳宜與龍泡泡的表演，以及原創二創對話構成可重播的互動短劇。
+建立獨立專案 `zhuang-rainy-711`，優先服務 iPhone Safari。以雨夜便利店微縮街角、莊方宜與龍泡泡的表演，以及原創二創對話構成可重播的互動短劇。
 
 美術優先順序：構圖 → 店內暖光與街道冷光 → 人物臉部與腳底接觸 → 小動作與停頓 → 濕地反射、雨水與克制 Bloom。第一版不含自由行走、經營、付款、開放世界，也不帶入原專案其他遊戲。
 
@@ -20,7 +20,7 @@
 
 - `package.json`：Three.js `^0.180.0`、Vite `^7.1.0`、ES Modules。
 - `src/viewer/ZhuangIdleController.js`：以 GLTFLoader node association 對應骨架；保存原始姿勢，執行時修改 quaternion 與眼皮位置；有呼吸、眨眼、頭眼偏轉及有限手臂姿勢。
-- `src/config/characters.js`：提供莊芳宜骨架與眼皮節點設定。
+- `src/config/characters.js`：提供莊方宜骨架與眼皮節點設定。
 - `src/game/RideProps.js`：龍泡泡有身體、角、短手腳、尾巴、紅飾與曲面表情網格，表情圖建立後重用。該檔直接引用 `InkCompanion.js`，不可整檔搬入新專案。
 - `src/viewer/ModelManager.js`：以外層 Group 置中而保留模型內部變換；載入、控制器與其他玩法耦合，適合參考必要模式後重寫精簡版。
 - `src/viewer/CameraController.js`：已有手動操作停止故事運鏡的做法，但包含舊玩法視角，不能原樣沿用。

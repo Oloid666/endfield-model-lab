@@ -39,7 +39,7 @@ npm run preview
 - 天師樁接入：依莊的提示點按鍵帽。帳號 `endfield_power`、密碼 `5201314`；可退格修正或重聽。驗證後，把拉桿拖到最右端。帳密只用於本地劇情，不會送往外部服務。
 - 右側可暫停／繼續。充能持續三十個有效秒，終結技完整播放。
 - 砲擊：選「穩壓／強攻／過載」，看準力度條中央按「砲擊」；電腦也可按空白鍵。邊緣 MISS 不耗能，中央威力最高。高出力的判定區較窄，後座較強；破壞越多，力度條越快。
-- 99% 時先進入 VCR：鏡頭帶向實體監視器，回看賽希接通終端。轉動四塊線路，查看弱密碼。加熱用節拍操作，圓點短按、長條按到尾端；第一輪必定因電網突波失敗，不記操作失誤。後續每段四個提示，命中三個可過關；失敗重試當段並降低難度，完成三段後顯示劇情中的 0.3 秒。
+- 99% 時先進入 VCR：鏡頭帶向實體監視器，回看塞西接通終端。轉動四塊線路，查看弱密碼。加熱用節拍操作，圓點短按、長條按到尾端；第一輪必定因電網突波失敗，不記操作失誤。後續每段四個提示，命中三個可過關；失敗重試當段並降低難度，完成三段後顯示劇情中的 0.3 秒。
 - 回到現場後，看準中央按「發射龍泡泡」。終結技、戰損對話與結尾運鏡完整播放後才進入持續互動。龍泡泡留在鄰居牆洞；按「散步」才回到跟隨。
 - 結束後「重拍這個雨夜」會復原建築、機櫃與所有進度。
 - 結尾後點人物、晚餐、手機或「聽雨」，觸發短對話。主線進行時不會插入閒聊。
@@ -55,7 +55,7 @@ npm run preview
 
 - [早期方向與故事草案](docs/DIRECTION.md)
 - [初次評估紀錄](docs/ASSESSMENT.md)（歷史紀錄，部分缺口已在開發時解決）
-- [第八輪：天師樁登入、賽希回放與砲擊收尾](docs/LOOKDEV-V8.md)
+- [第八輪：天師樁登入、塞西回放與砲擊收尾](docs/LOOKDEV-V8.md)
 - [第九輪：大範圍砲擊、演出鏡頭與三段加熱](docs/LOOKDEV-V9.md)
 - [第八輪設計與素材依據](docs/V8-PENDING.md)
 - [第七輪：玩法試驗區與砲擊演出](docs/LOOKDEV-V7.md)（歷史紀錄；獨立原型已移除）
@@ -68,7 +68,7 @@ npm run preview
 
 ## 素材
 
-莊芳宜及賽希 GLB 原始檔保留不變。只使用外層 Group 放置模型，並在執行時調整骨架姿勢。兩份模型均由使用者提供，作者／上傳者均為 Abcxyz51，內嵌授權為 CC BY 4.0。
+莊方宜及塞西 GLB 原始檔保留不變。只使用外層 Group 放置模型，並在執行時調整骨架姿勢。兩份模型均由使用者提供，作者／上傳者均為 Abcxyz51，內嵌授權為 CC BY 4.0。
 
 - 作者：Abcxyz51
 - [模型來源](https://sketchfab.com/3d-models/zhuang-fangyi-arknights-endfield-51d669eb7ef94cb49aeeaf2d9541d9de)
@@ -76,7 +76,7 @@ npm run preview
 - 大小：7,520,868 bytes
 - SHA-256：`43c4d1063caf4f5d5f7405aae32cbd02ceb2de0ab043acc54e26dd7aa49ceb94`
 
-賽希使用 `public/models/xaihi.glb`，另保留附件原檔於 `source-assets/xaihi-original.glb`。
+塞西使用 `public/models/xaihi.glb`，另保留附件原檔於 `source-assets/xaihi-original.glb`。
 
 - [模型來源](https://sketchfab.com/3d-models/xaihi-arknights-endfield-a3e990b410eb46e7a5e0ab0f4bd71df1)
 - [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
@@ -85,7 +85,7 @@ npm run preview
 
 弭弗通訊肖像為二創插畫。天師樁造型參考來源記於第八輪設計文件；概念圖及參考圖不代表網站實際渲染畫面。
 
-人物節點設定與龍泡泡建模參考使用者指定的 [原專案版本](https://github.com/Oloid666/endfield-si-viewer/tree/5d002c146f41f25efdf06bbe06254550bd2c5318)。僅抽取與莊芳宜待機及龍泡泡有關的必要做法，未帶入原專案其他玩法。
+人物節點設定與龍泡泡建模參考使用者指定的 [原專案版本](https://github.com/Oloid666/endfield-si-viewer/tree/5d002c146f41f25efdf06bbe06254550bd2c5318)。僅抽取與莊方宜待機及龍泡泡有關的必要做法，未帶入原專案其他玩法。
 
 本專案為原創二創。與遊戲官方及便利店品牌無關。
 

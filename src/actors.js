@@ -5,8 +5,8 @@ import { config } from './config.js';
 import { buildPerformance } from './performance.js';
 
 export async function loadActors(scene,r,onStage,signal,dragon,onProgress) {
-  onStage('正在請莊芳宜下班');
-  const buffer=await downloadModel(`${import.meta.env.BASE_URL}models/zhuang-fangyi.glb`,onStage,signal,'莊芳宜',onProgress);
+  onStage('正在請莊方宜下班');
+  const buffer=await downloadModel(`${import.meta.env.BASE_URL}models/zhuang-fangyi.glb`,onStage,signal,'莊方宜',onProgress);
   onStage('正在整理衣袖');
   const gltf=await new GLTFLoader().parseAsync(buffer,`${import.meta.env.BASE_URL}models/`);
   const root=new T.Group();root.name='dinner-actors';

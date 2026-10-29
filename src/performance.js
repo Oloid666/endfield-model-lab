@@ -125,6 +125,7 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
     setSoot(value){soot.visible=value;},setDragonHeading(value){dragonHeading=value;},setDragonProjectile(position,roll=0){projectileActive=Boolean(position);if(position)projectileWorld.fromArray(position);projectileRoll=Number(roll)||0;},
     teleport(x,z){const success=locomotion.teleport(x,z);if(success){lastWalking=true;follower.reset();api.update(lastTime,0);}return success;},
     update(t,delta=0){
+      locomotion.setAvoidanceEnabled(!projectileActive);
       lastTime=t;const motion=locomotion.update(delta),walk=motion.amount,walking=motion.moving;
       const rising=['login','captcha','lever','ascent','director-reminder','shoe-view','pylon-link','charge'].includes(cinematic.phase),age=cinematic.castingElapsed??cinematic.elapsed;
       const quick=Math.min(cinematic.height,1.2)*T.MathUtils.smootherstep(age,0,.8),slow=T.MathUtils.smootherstep(age,1.15,14);

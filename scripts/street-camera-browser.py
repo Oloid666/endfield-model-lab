@@ -37,6 +37,13 @@ async def main():
    assert not await page.evaluate('__rainy711.staging.show.active')
    print('finished',number,camera,await page.evaluate('__rainy711.camera'),flush=True)
    assert max(abs(a-b) for a,b in zip(camera,await page.evaluate('__rainy711.camera')))<1e-5
+   await page.locator('.walk-toggle').click();await tick(40)
+   await page.keyboard.down('s');await tick(145);await page.keyboard.up('s');await tick(10)
+   assert (await page.evaluate('__rainy711.position'))[2]>7,('road',number,await page.evaluate('__rainy711.position'))
+   await page.keyboard.down('w');await tick(145);await page.keyboard.up('w');await tick(10)
+   assert 2.7<(await page.evaluate('__rainy711.position'))[2]<4.5,('return',number,await page.evaluate('__rainy711.position'))
+   await page.locator('.walk-toggle').click();await tick()
+   print('road roundtrip',number,flush=True)
   assert views==[0,1,2,0,1,2],views
   assert not errors,errors
   await page.locator('.postgame-reset').click();await tick();assert not await page.locator('.postgame-actions').is_visible()

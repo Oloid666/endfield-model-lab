@@ -28,7 +28,7 @@ for(let bits=0;bits<32;bits++){
   if(field===1||field===4){check(n.phase,'objection');check(n.cue.event,'objection');objections.push(field);check(n.policyholderVisible,false);n.next();check(n.cue.event,undefined);n.next();}
  }
  check(objections,[1,4]);check(n.phase,'reveal');check(n.cue.text,'你看看要保人。');check(n.policyholderVisible,false);
- n.next();check(n.cue.text,'莊芳宜');check(n.policyholderVisible,true);check(n.polite,false);n.next();check(n.polite,true);n.next();check(n.phase,'business');
+ n.next();check(n.cue.text,'莊方宜');check(n.policyholderVisible,true);check(n.polite,false);n.next();check(n.polite,true);n.next();check(n.phase,'business');
  check(n.cue.text,'我今天不是來談這個的。');n.next();check(n.cue.text.includes('每個月幾噸息壤'),true);n.next();check(n.cue.text.includes('立即辦理'),true);n.next();check(n.phase,'stamp');check(n.next(),false);
  for(let i=0;i<3;i++){check(n.stampIndex,i);check(n.finishStamp(),true);check(n.phase,i===2?'complete':'stamp');}
  check(n.finishStamp(),false);check(n.summary.length,5);check(Object.keys(n.choices).length,5);check(n.policyholderVisible,true);

@@ -9,8 +9,8 @@ const ids={spine:45,neck:46,head:47,eyeL:74,eyeR:55,armL:219,elbowL:221,wristL:2
 // The original GLB remains untouched. Only the placement group and runtime rig move.
 export async function loadXaihi(scene,r,onStage=()=>{},signal,onProgress){
   onStage('正在讀取較早的店內影像');
-  const buffer=await downloadModel(`${import.meta.env.BASE_URL}models/xaihi.glb`,onStage,signal,'賽希',onProgress);
-  onStage('正在解析賽希與回放素材');
+  const buffer=await downloadModel(`${import.meta.env.BASE_URL}models/xaihi.glb`,onStage,signal,'塞西',onProgress);
+  onStage('正在解析塞西與回放素材');
   if(signal?.aborted)throw new DOMException('已取消載入','AbortError');
   const gltf=await new GLTFLoader().parseAsync(buffer,`${import.meta.env.BASE_URL}models/`);
   if(signal?.aborted){disposeImported(gltf.scene);throw new DOMException('已取消載入','AbortError');}
@@ -27,7 +27,7 @@ export function buildXaihi(scene,r,gltf){
   const visual=new T.Group();visual.name='xaihi-placement';visual.add(gltf.scene);root.add(visual);scene.add(root);
   gltf.scene.updateMatrixWorld(true);
   const bounds=new T.Box3().setFromObject(gltf.scene,true),size=bounds.getSize(new T.Vector3()),center=bounds.getCenter(new T.Vector3());
-  if(bounds.isEmpty()||!Number.isFinite(size.y)||size.y<=0){root.removeFromParent();disposeImported(gltf.scene);throw Error('賽希模型沒有可用的外形資料。');}
+  if(bounds.isEmpty()||!Number.isFinite(size.y)||size.y<=0){root.removeFromParent();disposeImported(gltf.scene);throw Error('塞西模型沒有可用的外形資料。');}
   const scale=1.8/size.y;visual.scale.setScalar(scale);visual.position.set(-center.x*scale,-bounds.min.y*scale,-center.z*scale);
   const imported=new Set();gltf.scene.traverse(n=>{if(n.isMesh){n.frustumCulled=false;imported.add(n.geometry);if(n.isSkinnedMesh)imported.add(n.skeleton);for(const m of Array.isArray(n.material)?n.material:[n.material]){imported.add(m);for(const value of Object.values(m))if(value?.isTexture){value.anisotropy=4;imported.add(value);}}}});
   for(const item of imported)r.own(item);
