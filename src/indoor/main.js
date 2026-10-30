@@ -11,6 +11,7 @@ function init(){
  function start(){game.reset();s.running=true;started=true;paused=false;acc=0;eventId=0;noticeEnd=0;clear();view.reset();$('intro').hidden=$('result').hidden=true;$('paused').hidden=true;$('pause').disabled=$('recover').disabled=false;$('pause').textContent='暫停';audio.setActive(true);void audio.unlock();view.pose(1,clock,true);$('start').blur();$('again').blur();}
  $('start').onclick=start;$('again').onclick=start;$('reset').onclick=()=>{if(started)start();};$('pause').onclick=()=>pause(!paused);
  $('recover').onclick=()=>{game.recover();clear();view.pose(1,clock,true);$('notice').textContent='已扶正・繼續甩撞';noticeEnd=clock+2;};
+ $('camera').onclick=()=>{const mode={auto:'close',close:'wide',wide:'auto'}[view.cameraState.mode];view.setCameraMode(mode);$('camera').textContent=`鏡頭：${{auto:'自動',close:'近追',wide:'全景'}[mode]} ⇄`;$('camera').setAttribute('aria-label',`目前${{auto:'自動',close:'近追',wide:'全景'}[mode]}鏡頭；點按切換自動、近追與全景`);view.pose(.016,clock,true);};
  $('sound').onclick=()=>{const muted=!audio.state.muted;audio.setMuted(muted);$('sound').textContent=muted?'聲音 關':'聲音 開';$('sound').setAttribute('aria-pressed',String(!muted));if(!muted)void audio.unlock();};
  addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight','ArrowDown','KeyA','KeyD','KeyS'].includes(e.code)){e.preventDefault();if(s.running&&!paused)keys.add(e.code);}if(e.code==='Escape'&&!e.repeat)pause(!paused);});addEventListener('keyup',e=>keys.delete(e.code));
  addEventListener('blur',()=>pause(true));document.addEventListener('visibilitychange',()=>{if(document.hidden)pause(true);});addEventListener('pagehide',()=>{clear();audio.setActive(false);});
@@ -36,6 +37,6 @@ function init(){
   }view.render();
  }
  view.pose(1,clock,true);requestAnimationFrame(frame);
- window.__indoor={get state(){return structuredClone(s);},get input(){return input();},get paused(){return paused;},get audio(){return audio.state;},version:__BUILD_VERSION__};
+ window.__indoor={get state(){return structuredClone(s);},get input(){return input();},get paused(){return paused;},get audio(){return audio.state;},get camera(){return view.cameraState;},version:__BUILD_VERSION__};
 }
 try{init();}catch(error){document.getElementById('intro').innerHTML='<h2>無法啟動3D畫面</h2><p>請使用支援 WebGL 的瀏覽器重試。</p>';console.error(error);}

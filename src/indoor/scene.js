@@ -1,4 +1,5 @@
 import * as T from 'three';
+import {createCameraDirector} from './camera-director.js';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import {Resources} from '../resources.js';
 import {buildInterior} from '../interior.js';
@@ -32,6 +33,11 @@ export function createScene(canvas,state){
  const end=route(LENGTH);r.box(root,'#b49a69',[end.x,end.y-.22,end.z],[1.4,.4,1.1]);
  const liquid=r.mesh(r.geometry('PlaneGeometry',16.9,9.9,32,24),r.material('#739c8c',{transparent:true,opacity:.88,roughness:.3,metalness:.2,side:T.DoubleSide}),root,[0,.396,-1]);liquid.rotation.x=-Math.PI/2;const base=liquid.geometry.attributes.position.array.slice();
  const leak=r.mesh(r.geometry('CylinderGeometry',.15,.25,.35,12),r.material('#81b7a0',{transparent:true,opacity:.8}),room,[-.6,.4,1]);
+ // Camera collision uses only static solid scenery, never the actors or flying goods.
+ const cameraSolids=[];root.updateMatrixWorld(true);root.traverse(m=>{if(m.isMesh&&!Array.isArray(m.material)&&!m.material.transparent&&(m.geometry===geo||m.geometry.type!=='PlaneGeometry'))cameraSolids.push(m);});
+ const cameraRay=new T.Raycaster(),rayStart=new T.Vector3(),rayDirection=new T.Vector3(),probe=new T.Vector3();
+ let cameraMode='auto',shotState={shot:'close',blend:0,reason:'直道'};const director=createCameraDirector(),previousCamera=new T.Vector3(),wideTarget=new T.Vector3();
+ function blocked(from,to){rayStart.set(from.x,from.y+.07,from.z);rayDirection.copy(to).sub(rayStart);const length=rayDirection.length();cameraRay.set(rayStart,rayDirection.normalize());cameraRay.far=Math.max(0,length-.025);return cameraRay.intersectObjects(cameraSolids,false).length>0;}
  const player=new T.Group();root.add(player);const blobGeo=r.own(new T.SphereGeometry(1,20,12));const pos=blobGeo.attributes.position;
  for(let i=0;i<pos.count;i++){const x=pos.getX(i),y=pos.getY(i),z=pos.getZ(i),l=1+.18*Math.sin(x*6+z*4);pos.setXYZ(i,x*.085*l,(y+1)*.03,z*.12*l);}blobGeo.computeVertexNormals();const blob=r.mesh(blobGeo,r.material('#8956b2',{roughness:.4}),player);
  const dragon=buildDragon(r);root.add(dragon.root);dragon.root.scale.setScalar(AVATAR_SCALE);
@@ -62,12 +68,33 @@ export function createScene(canvas,state){
 
   liquid.position.y=state.liquid;const lp=liquid.geometry.attributes.position;for(let i=0;i<lp.count;i++)lp.setZ(i,base[i*3+2]+Math.sin(base[i*3]*4+clock*1.4)*.006);lp.needsUpdate=true;
   leak.scale.y=.8+Math.sin(clock*3)*.12;leak.visible=state.running;hatch.visible=true;
-  const dir=route(Math.min(LENGTH,state.s+.55)),alpha=snap?1:1-Math.exp(-dt*6);fx+=(dir.fx-fx)*alpha;fz+=(dir.fz-fz)*alpha;const len=Math.hypot(fx,fz)||1,portrait=camera.aspect<1,back=(portrait?1.25:1.0)+Math.abs(state.dragonOffset-state.offset)*.85;
-  const cx=p.x*.45+d.x*.55,cz=p.z*.45+d.z*.55;
-  // Stay inside the open dollhouse and frame both characters, even across ramps.
-  target.set(cx-fx/len*back,Math.max(p.y,d.y)+(portrait?.73:.53)+Math.abs(state.dragonOffset-state.offset)*.17,cz-fz/len*back);
+  previousCamera.copy(camera.position);
+  const dir=route(Math.min(LENGTH,state.s+.55)),alpha=snap?1:1-Math.exp(-dt*6);fx+=(dir.fx-fx)*alpha;fz+=(dir.fz-fz)*alpha;const len=Math.hypot(fx,fz)||1,portrait=camera.aspect<1,nfx=fx/len,nfz=fz/len;
+  const cx=p.x*.45+d.x*.55,cz=p.z*.45+d.z*.55,span=Math.abs((p.x-d.x)*-nfz+(p.z-d.z)*nfx);
+  const ahead=route(Math.min(LENGTH,state.s+.8));look.set(cx+nfx*.5,(p.y+d.y+ahead.y)/3+.05,cz+nfz*.5);
+  const now=route(state.s+.1),preview=route(Math.min(LENGTH,state.s+Math.max(.6,state.speed*.9+.3)));
+  const bend=Math.acos(T.MathUtils.clamp(now.fx*preview.fx+now.fz*preview.fz,-1,1)),grade=Math.abs(preview.y-p.y);
+  shotState=director.update({mode:cameraMode,bend,grade,span,dt,snap});
+  const blend=shotState.blend;
+  camera.fov=T.MathUtils.lerp(reduced?68:65+Math.min(1,state.speed/CRUISE_SPEED)*5,reduced?73:70+Math.min(1,state.speed/CRUISE_SPEED)*5,blend);camera.updateProjectionMatrix();
+  // Compute the close chase, then blend toward a higher, wider look at the whole bend.
+  const rear=Math.max(0,(cx-p.x)*nfx+(cz-p.z)*nfz,(cx-d.x)*nfx+(cz-d.z)*nfz);
+  let back=rear+.82+Math.max(0,span-.25)*.6,up=portrait?.38:.31;
+  target.set(cx-nfx*back,Math.max(p.y,d.y)+up,cz-nfz*back);
+  for(let i=0;i<9;i++){
+   camera.position.copy(target);camera.lookAt(look);camera.updateMatrixWorld();
+   let fits=true;for(const actor of [p,d])for(const y of [.015,.12]){probe.set(actor.x,actor.y+y,actor.z).project(camera);if(Math.abs(probe.x)>.86||probe.y<-.59||probe.y>.56||probe.z>1)fits=false;}
+   if(fits)break;back+=.14;up+=.02;target.set(cx-nfx*back,Math.max(p.y,d.y)+up,cz-nfz*back);
+  }
+  const farBack=(portrait?2.05:1.65)+span*.55;
+  wideTarget.set(cx-nfx*farBack,Math.max(p.y,d.y)+(portrait?1.25:.95)+span*.2,cz-nfz*farBack);
+  target.lerp(wideTarget,blend);
+  look.set(cx+nfx*(.5+blend*.5),(p.y+d.y+ahead.y)/3+.05,cz+nfz*(.5+blend*.5));
   target.x=T.MathUtils.clamp(target.x,-8.1,8.1);target.z=T.MathUtils.clamp(target.z,-3.8,7.6);
-  camera.position.lerp(target,snap?1:1-Math.exp(-dt*9));const ahead=route(Math.min(LENGTH,state.s+1));look.set(cx+fx/len*.6,(p.y+d.y+ahead.y)/3+.05,cz+fz/len*.6);camera.lookAt(look);shake*=Math.exp(-dt*18);camera.position.x+=Math.sin(clock*90)*shake;camera.fov=reduced?77:71+Math.min(1,state.speed/CRUISE_SPEED)*10;camera.updateProjectionMatrix();
+  // Temporarily rise if a ramp or fixture blocks the line to either character.
+  for(let i=0;i<10&&(blocked(p,target)||blocked(d,target));i++)target.y+=.15;
+  camera.position.copy(previousCamera).lerp(target,snap?1:1-Math.exp(-dt*10));camera.lookAt(look);shake*=Math.exp(-dt*18);camera.position.x+=Math.sin(clock*90)*shake;camera.updateMatrixWorld();
+
  }
- resize();return {resize,pose,hit,reset(){latestHit=null;hitAt=-10;shake=0;fx=0;fz=-1;},render:()=>renderer.render(scene,camera)};
+ resize();return {resize,pose,hit,setCameraMode(mode){cameraMode=['auto','wide','close'].includes(mode)?mode:'auto';},get cameraState(){const p=route(state.s,state.offset),d={...route(state.dragonS),x:state.dragonX,z:state.dragonZ};return {mode:cameraMode,...shotState,position:camera.position.toArray(),fov:camera.fov,actors:[p,d].map(a=>[.015,.12].map(y=>new T.Vector3(a.x,a.y+y,a.z).project(camera).toArray()))};},reset(){director.reset();latestHit=null;hitAt=-10;shake=0;fx=0;fz=-1;},render:()=>renderer.render(scene,camera)};
 }

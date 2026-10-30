@@ -1,7 +1,7 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#183e38"><title>龍泡泡甩撞・711試演</title></head><body>
 <canvas id="game" aria-label="紫色生物拖甩龍泡泡撞橙色商品"></canvas>
 <header><small>雨夜外傳 · 20秒甩撞試演</small><h1>前面躲，後面撞。</h1><div id="stats">準備出發</div><progress id="progress" aria-label="試演進度"></progress><div id="goals">龍泡泡命中 0/3 組</div><div id="danger">甩龍泡泡撞橙色目標</div></header>
-<nav><button id="sound" aria-pressed="true">聲音 開</button><button id="pause" disabled>暫停</button><button id="recover" disabled>扶正</button><button id="reset">重試</button></nav>
+<nav><button id="sound" aria-pressed="true">聲音 開</button><button id="pause" disabled>暫停</button><button id="recover" disabled>扶正</button><button id="reset">重試</button><button id="camera" aria-label="目前自動鏡頭；點按切換自動、近追與全景" title="自動依彎道切換，或固定近追／全景；不會重跑">鏡頭：自動 ⇄</button></nav>
 <div id="notice" aria-live="polite"></div><div id="paused" hidden>已暫停・按「繼續」返回</div>
 <section id="intro" class="panel"><small>紫色生物 × 龍泡泡</small><h2>這次，要用後面那隻撞。</h2><p>先往一側蓄力，再往另一側切。<br>你閃過去，讓龍泡泡甩中橙色商品！</p><p>① 單側大目標　② 左右各一個　③ 連撞商品群<br><strong>命中兩組達標，②要兩個都撞到。</strong><br>只有龍泡泡算命中；主角碰撞只得10分。</p><p>自動前進、過彎；左右滑動／A D／← → 施力<br>放開只減少側滑，不拉回中央<br>按住煞車／S／↓ 可停下來練習</p><button id="start" class="gold">開始甩撞</button><p class="fine">約20秒・2秒內連撞最高×5・非官方同人手感試演<br>息壤暫停追趕・到終點不代表達標・可立即重試</p></section>
 <section id="result" class="panel" hidden><small>本次試演成績</small><h2>下一次，甩得更準。</h2><p id="summary"></p><button id="again" class="gold">立即重試</button></section>

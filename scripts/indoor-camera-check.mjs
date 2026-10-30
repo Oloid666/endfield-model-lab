@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {createCameraDirector} from '../src/indoor/camera-director.js';
+const d=createCameraDirector();let s=d.update({dt:.016});assert.equal(s.shot,'close');
+s=d.update({bend:.6,dt:.016});assert.equal(s.shot,'wide');assert(s.blend>0&&s.blend<.1,'transition starts gently');
+for(let i=0;i<25;i++)s=d.update({dt:.016});assert.equal(s.shot,'wide','hold overview after corner preview ends');
+for(let i=0;i<100;i++)s=d.update({dt:.016});assert.equal(s.shot,'close');assert(s.blend<.05,'straight restores chase');
+s=d.update({span:.9,dt:.016});assert.equal(s.shot,'wide','wide swing stays visible');
+s=d.update({mode:'close',span:.9,dt:.016,snap:true});assert.equal(s.shot,'close');assert.equal(s.blend,0,'manual chase overrides automatic shot choice');
+s=d.update({mode:'wide',dt:.016,snap:true});assert.equal(s.blend,1);
+d.reset();s=d.update({grade:.3,dt:.016});assert.equal(s.shot,'wide','grade preview opens shot');
+d.reset();for(let i=0;i<200;i++)s=d.update({bend:i%2?.3:.2,span:.4,dt:.016});assert.equal(s.shot,'close','threshold noise does not chatter');
+console.log('PASS indoor camera: preview, hold, smooth transition, straight recovery, swing/grade, manual modes, reset and hysteresis');

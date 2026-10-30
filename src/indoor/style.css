@@ -1,3 +1,5 @@
 @import '../racing/style.css';
 header{max-width:calc(100vw - 165px)}#danger{margin-top:8px;font-size:12px;color:#e6dbaa;max-width:210px;line-height:1.5}#notice{position:absolute;top:28%;width:100%;text-align:center;color:#ffedb2;text-shadow:0 2px 4px #000;font-weight:bold;pointer-events:none}#brake{height:75px;pointer-events:auto;min-width:100px}#brake.active{background:#dfc58e;color:#173c36}.panel .fine{font-size:11px}.panel p{line-height:1.75}body.danger #danger{color:#fff0b3;background:#66472be8;padding:7px;border-radius:8px}nav{z-index:2}@media(max-height:600px){#danger{font-size:10px;max-width:180px}#brake{height:60px}.panel .fine{font-size:9px}}
 #goals{margin-top:8px;color:#ffd39a;font-size:14px;font-weight:700}#danger{font-size:11px;line-height:1.5}#notice{top:32%;padding:0 18px;font-size:17px}#summary{white-space:pre-line}.panel{padding:22px}.panel p{font-size:12px}.panel h2{font-size:23px}header h1{font-size:19px}@media(max-height:600px){.panel p{font-size:11px}.panel h2{font-size:18px}.panel .fine{font-size:9px}#goals{font-size:12px}}
+
+#camera{grid-column:span 2;font-size:12px;padding:7px 10px}
