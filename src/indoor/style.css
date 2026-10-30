@@ -3,3 +3,4 @@ header{max-width:calc(100vw - 165px)}#danger{margin-top:8px;font-size:12px;color
 #goals{margin-top:8px;color:#ffd39a;font-size:14px;font-weight:700}#danger{font-size:11px;line-height:1.5}#notice{top:32%;padding:0 18px;font-size:17px}#summary{white-space:pre-line}.panel{padding:22px}.panel p{font-size:12px}.panel h2{font-size:23px}header h1{font-size:19px}@media(max-height:600px){.panel p{font-size:11px}.panel h2{font-size:18px}.panel .fine{font-size:9px}#goals{font-size:12px}}
 
 #camera{grid-column:span 2;font-size:12px;padding:7px 10px}
+#courses{display:flex;gap:5px;margin-top:7px;pointer-events:auto}#courses button{padding:7px 9px;font-size:11px;border-radius:9px}#courses button[aria-pressed=true]{background:#dcc18a;color:#183b37;border-color:#f4dda6}#danger{margin-top:5px}#notice{top:34%;font-size:14px}@media(max-height:600px){#courses button{padding:5px 7px;font-size:10px}#danger{max-width:200px}}

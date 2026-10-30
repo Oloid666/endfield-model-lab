@@ -22,14 +22,14 @@ with sync_playwright() as p:
   if not hit and any(e['kind']=='goods' and e['who']=='dragon' and s['time']-e['at']<.3 for e in s['events']):shot('hit');hit=True
  if held:page.keyboard.up(held)
  s=page.evaluate('__indoor.state');shot('result')
- print('keyboard outcome',s['goals'],s['score'],s['maxCombo'],s['time'],flush=True)
+ print('keyboard outcome',s['course'],s['score'],s['maxCombo'],s['time'],flush=True)
  assert s['finished'] and s['passed'],s
  assert wide and hit
- assert '達標' in page.locator('#summary').inner_text()
- page.click('#again');assert page.evaluate('__indoor.state.goals===0 && __indoor.state.combo===0 && __indoor.state.score===0')
+ assert '完成時間' in page.locator('#summary').inner_text()
+ page.click('#again');assert page.evaluate('__indoor.state.combo===0 && __indoor.state.score===0')
  for _ in range(125):
   page.clock.run_for(200)
   if page.evaluate('__indoor.state.finished'):break
- assert page.evaluate('__indoor.state.finished && !__indoor.state.passed'),'unattended replay must not pass'
+ assert page.evaluate('__indoor.state.finished && __indoor.state.passed'),'finishing needs no target quota'
  assert not errors,errors
- print('PASS real keyboard pass, visible wide swing/hit, combo, result, immediate retry and unattended failure',flush=True);b.close()
+ print('PASS keyboard run, visible swing/hit, result, immediate retry and no target quota',flush=True);b.close()

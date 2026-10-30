@@ -1,9 +1,10 @@
-import {createIndoorGame,route,LENGTH,CRUISE_SPEED} from './game.js';
+import {createIndoorGame,route,LENGTH,CRUISE_SPEED,MAX_SPEED,sectionAt,COURSES} from './game.js';
 import {createScene} from './scene.js';
 import {createRaceAudio} from '../racing/audio.js';
 import './style.css';
 function init(){
- const $=id=>document.getElementById(id),game=createIndoorGame(),s=game.state,view=createScene($('game'),s),audio=createRaceAudio(),keys=new Set(),touch={steer:0,brake:false};
+ const $=id=>document.getElementById(id),game=createIndoorGame(),s=game.state,audio=createRaceAudio(),keys=new Set(),touch={steer:0,brake:false};
+ let view=createScene($('game'),s);
  let paused=false,started=false,last=performance.now(),acc=0,clock=0,eventId=0,noticeEnd=0,steerId=null,brakeId=null;
  function clear(){keys.clear();touch.steer=0;touch.brake=false;steerId=brakeId=null;$('steer').querySelector('i').style.transform='';$('steer').setAttribute('aria-valuenow','0');$('brake').classList.remove('active');}
  function input(){return {steer:Math.max(-1,Math.min(1,touch.steer+(keys.has('ArrowRight')||keys.has('KeyD')?1:0)-(keys.has('ArrowLeft')||keys.has('KeyA')?1:0))),brake:touch.brake||keys.has('ArrowDown')||keys.has('KeyS')};}
@@ -12,6 +13,7 @@ function init(){
  $('start').onclick=start;$('again').onclick=start;$('reset').onclick=()=>{if(started)start();};$('pause').onclick=()=>pause(!paused);
  $('recover').onclick=()=>{game.recover();clear();view.pose(1,clock,true);$('notice').textContent='已扶正・繼續甩撞';noticeEnd=clock+2;};
  $('camera').onclick=()=>{const mode={auto:'close',close:'wide',wide:'auto'}[view.cameraState.mode];view.setCameraMode(mode);$('camera').textContent=`鏡頭：${{auto:'自動',close:'近追',wide:'全景'}[mode]} ⇄`;$('camera').setAttribute('aria-label',`目前${{auto:'自動',close:'近追',wide:'全景'}[mode]}鏡頭；點按切換自動、近追與全景`);view.pose(.016,clock,true);};
+ document.querySelectorAll('[data-course]').forEach(button=>{button.onclick=()=>{const mode=view.cameraState.mode;game.reset(button.dataset.course);view.dispose();view=createScene($('game'),s);view.setCameraMode(mode);document.querySelectorAll('[data-course]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.course===s.course)));$('course-name').textContent=`${s.course}・${COURSES[s.course].name}`;$('course-description').textContent=COURSES[s.course].description;if(started)start();else view.pose(1,clock,true);};});
  $('sound').onclick=()=>{const muted=!audio.state.muted;audio.setMuted(muted);$('sound').textContent=muted?'聲音 關':'聲音 開';$('sound').setAttribute('aria-pressed',String(!muted));if(!muted)void audio.unlock();};
  addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight','ArrowDown','KeyA','KeyD','KeyS'].includes(e.code)){e.preventDefault();if(s.running&&!paused)keys.add(e.code);}if(e.code==='Escape'&&!e.repeat)pause(!paused);});addEventListener('keyup',e=>keys.delete(e.code));
  addEventListener('blur',()=>pause(true));document.addEventListener('visibilitychange',()=>{if(document.hidden)pause(true);});addEventListener('pagehide',()=>{clear();audio.setActive(false);});
@@ -24,14 +26,14 @@ function init(){
   if(!paused){clock+=dt;if(s.running){acc+=dt;while(acc>=1/120){game.step(1/120,input());acc-=1/120;}
    for(const e of s.events){if(e.id<=eventId)continue;eventId=e.id;noticeEnd=clock+.85;
     if(e.kind==='goods'){view.hit(e,clock);audio.hit({kind:e.who==='dragon'?'box':'wall',strength:e.strength,combo:e.who==='dragon'?e.combo:0});$('notice').textContent=e.who==='dragon'?`龍泡泡命中 +${e.points}${e.combo>1?' · '+e.combo+'連擊！':''}`:'主角碰撞 +10・試著甩龍泡泡';}
-    else $('notice').textContent=e.kind==='rescue'?'已扶正，繼續試！':'';
+    else if(e.kind==='wall'){view.hit(e,clock);audio.hit({kind:'wall',strength:e.strength});$('notice').textContent='擦撞・收一點方向，繼續滑！';}else $('notice').textContent=e.kind==='rescue'?'已扶正，繼續滑！':'';
    }
 
    audio.update({speed:s.speed/CRUISE_SPEED*27,slip:Math.abs(s.dragonSideSpeed)*10,tension:s.tension*4});
   }
-  if(s.finished&&$('result').hidden){$('result').hidden=false;$('summary').textContent=`龍泡泡命中 ${s.goals}/3 組 · ${s.passed?'達標！':'兩組達標，再試一次！'}\n${s.time.toFixed(1)} 秒 · ${s.score} 分 · 最高 ${s.maxCombo} 連擊\n① ${s.groups[0]?'✓':'—'}　② ${s.goods.filter(g=>g.group===1&&g.by==='dragon').length}/2　③ ${s.groups[2]?'✓':'—'}`;$('pause').disabled=$('recover').disabled=true;clear();audio.setActive(false);}
-  view.pose(dt,clock);$('stats').textContent=`${Math.round(s.s/LENGTH*100)}% · ${s.score} 分 · ${s.time.toFixed(0)} 秒`;$('progress').value=s.s;$('goals').textContent=`龍泡泡命中 ${s.goals}/3 組${s.combo>1?' · ×'+s.combo+' 連擊':''}`;
-  $('danger').textContent=s.finished?'再試一次，練到能指定撞哪邊':s.s<7?'左右蓄力 → 反向甩出，撞橙色目標':s.s<16?'② 左右各一個・兩個都由龍泡泡撞中':'③ 商品群・連撞把倍率疊起來！';
+  if(s.finished&&$('result').hidden){$('result').hidden=false;$('summary').textContent=`${s.course}・${COURSES[s.course].name}\n完成時間 ${s.time.toFixed(2)} 秒\n撞擊加分 ${s.score} · 最高 ${s.maxCombo} 連擊\n擦撞 ${s.wallHits} 次 · 扶正 ${s.recoveries} 次`;$('pause').disabled=$('recover').disabled=true;clear();audio.setActive(false);}
+  view.pose(dt,clock);$('stats').textContent=`${Math.round(s.s/LENGTH*100)}% · ${s.time.toFixed(1)} 秒`;$('progress').value=s.s;$('goals').textContent=`撞擊加分 ${s.score}${s.combo>1?' · ×'+s.combo+' 連擊':''}`;
+  $('danger').textContent=sectionAt(s.s).label;
 
   if(clock>noticeEnd)$('notice').textContent='';
   }view.render();

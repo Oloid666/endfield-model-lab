@@ -31,7 +31,7 @@ with sync_playwright() as p:
   c=page.evaluate('__indoor.camera');shots.add(c['shot']);samples+=1
   outside+=any(abs(v[0])>1.03 or abs(v[1])>1.03 or v[2]>1 for a in c['actors'] for v in a)
  if held:page.keyboard.up(held)
- s=page.evaluate('__indoor.state');print('auto shots',shots,'out-of-frame samples',outside,'/',samples,'result',s['goals'],s['score'],flush=True)
+ s=page.evaluate('__indoor.state');print('auto shots',shots,'out-of-frame samples',outside,'/',samples,'result',s['course'],s['score'],flush=True)
  assert shots=={'close','wide'}
  assert outside/samples<.03,'actors remain framed during transitions'
  assert s['passed'],'camera must not change skill outcome'
