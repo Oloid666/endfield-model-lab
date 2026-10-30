@@ -25,7 +25,7 @@ function init(){
  function frame(now){requestAnimationFrame(frame);const dt=Math.max(0,Math.min((now-last)/1000,.25));last=now;
   if(!paused){clock+=dt;if(s.running){acc+=dt;while(acc>=1/120){game.step(1/120,input());acc-=1/120;}
    for(const e of s.events){if(e.id<=eventId)continue;eventId=e.id;noticeEnd=clock+.85;
-    if(e.kind==='goods'){view.hit(e,clock);audio.hit({kind:e.who==='dragon'?'box':'wall',strength:e.strength,combo:e.who==='dragon'?e.combo:0});$('notice').textContent=e.who==='dragon'?'龍泡泡撞到了！看後座！':'便當盒碰到了！';}
+    if(e.kind==='goods'){view.hit(e,clock);audio.hit({kind:e.who==='dragon'?'box':'wall',strength:e.strength,combo:e.who==='dragon'?e.combo:0});$('notice').textContent=e.who==='dragon'?'龍泡泡撞到了！看後座！':'托盤撞開貨物！';}
     else if(e.kind==='chair'){view.hit(e,clock);audio.hit({kind:'wall',strength:e.strength});$('notice').textContent='後座擦到了！';}
     else if(e.kind==='passenger'){$('notice').textContent=({slipping:'快掉了！煞車、收方向',fallen:'滑出座位！穩住把他拉回',recovering:'抓住了，正在爬回座位',seated:'坐穩了！'})[e.mode]||'';}
     else if(e.kind==='wall'){view.hit(e,clock);audio.hit({kind:'wall',strength:e.strength});$('notice').textContent='擦撞・收一點方向，繼續滑！';}else $('notice').textContent=e.kind==='rescue'?'已扶正，繼續滑！':'';

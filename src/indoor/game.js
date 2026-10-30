@@ -1,12 +1,14 @@
 // Expanded room and explicit ramp layers; gameplay stays assisted at high speed.
 import {createPassenger,strikePassenger,stepPassenger} from './passenger.js';
+import {createReactions,stepReactions,strikeReaction} from './reactions.js';
 import {COURSES} from './courses.js';
 export {COURSES} from './courses.js';
 export const ROOM_SCALE={horizontal:2,vertical:1.8},AVATAR_SCALE=.075,CRUISE_SPEED=2.5,MAX_SPEED=3.3,WIDTH=.8,CHECKPOINTS=[];
 export let WAYPOINTS=[],FULL_LENGTH=0,LENGTH=0,SECTIONS=[],TARGETS=[];
 let points=[],stops=[];
 function selectCourse(id){const c=COURSES[id]||COURSES['1'];points=WAYPOINTS=c.points;stops=[0];for(let i=1;i<points.length;i++)stops.push(stops.at(-1)+Math.hypot(...points[i].map((v,j)=>v-points[i-1][j])));LENGTH=FULL_LENGTH=stops.at(-1);SECTIONS=c.sections.map(([index,label])=>({s:stops[index],label}));
- TARGETS=[2,3,4,5,7,9].filter(index=>index<stops.length-1).flatMap((index,j)=>[0,1].map(i=>({s:Math.min(LENGTH-1,stops[index]+.2+i*.35),offset:(j%2?1:-1)*(.48+i*.16),kind:i?'snack':'drink',radius:.16})));}
+ TARGETS=[2,3,4,5,7,9].filter(index=>index<stops.length-1).flatMap((index,j)=>Array.from({length:8},(_,i)=>({s:Math.min(LENGTH-1,stops[index]+.15+Math.floor(i/4)*.34),offset:(i%4-1.5)*.27+(j%2?.07:-.07),kind:j%3===2?'box':i%2?'snack':'drink',radius:.105,group:j})));}
+
 selectCourse('1');
 export const sectionAt=s=>SECTIONS.findLast(section=>s>=section.s)||SECTIONS[0];
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
@@ -39,15 +41,15 @@ function projectDragon(x,z,hint,dt){
 }
 const P_MASS=1.8,D_MASS=.9,REST=.7,MAX_ROPE=1.22;
 export function createIndoorGame(){
- const state={passenger:createPassenger(),course:'1',running:false,finished:false,time:0,s:.9,offset:0,speed:1.65,sideSpeed:0,dragonS:0,dragonOffset:0,dragonSpeed:0,dragonSideSpeed:0,dragonX:0,dragonZ:0,dragonVX:0,dragonVZ:0,tension:0,ropeLength:REST,playerImpact:0,dragonImpact:0,score:0,recoveries:0,wallHits:0,peakSpeed:1.65,seatedTime:0,curvature:0,uphillEntry:0,uphill:false,uphillFloor:0,goods:[],events:[],eventId:0,combo:0,maxCombo:0,lastDragonHit:-Infinity,passed:false};
+ const state={reactions:createReactions(),passenger:createPassenger(),course:'1',running:false,finished:false,time:0,s:.9,offset:0,speed:1.65,sideSpeed:0,dragonS:0,dragonOffset:0,dragonSpeed:0,dragonSideSpeed:0,dragonX:0,dragonZ:0,dragonVX:0,dragonVZ:0,tension:0,ropeLength:REST,playerImpact:0,dragonImpact:0,score:0,recoveries:0,wallHits:0,peakSpeed:1.65,seatedTime:0,curvature:0,uphillEntry:0,uphill:false,uphillFloor:0,goods:[],events:[],eventId:0,combo:0,maxCombo:0,lastDragonHit:-Infinity,passed:false};
  let previousPX=0,previousPZ=0,slowTime=0,lastWall=-10;
  function placeFollower(){const d=route(Math.max(0,state.s-REST));Object.assign(state,{dragonS:d.s,dragonOffset:0,dragonX:d.x,dragonZ:d.z,dragonVX:d.fx*state.speed,dragonVZ:d.fz*state.speed,dragonSpeed:state.speed,dragonSideSpeed:0,tension:0,ropeLength:REST});const p=route(state.s,state.offset);previousPX=p.x;previousPZ=p.z;}
- function reset(course=state.course){state.passenger=createPassenger();state.course=COURSES[course]?course:'1';selectCourse(state.course);Object.assign(state,{running:false,finished:false,time:0,s:.9,offset:0,speed:1.65,sideSpeed:0,score:0,recoveries:0,wallHits:0,peakSpeed:1.65,seatedTime:0,curvature:0,uphillEntry:0,uphill:false,uphillFloor:0,combo:0,maxCombo:0,lastDragonHit:-Infinity,passed:false,events:[],eventId:0,playerImpact:0,dragonImpact:0});state.goods=TARGETS.map((t,i)=>{const p=route(t.s,t.offset);return {...t,id:i,x:p.x,z:p.z,hit:false,age:0,by:'',vx:0,vz:0};});slowTime=0;lastWall=-10;placeFollower();}
- function event(kind,extra={}){state.events.push({id:++state.eventId,kind,at:state.time,...extra});if(state.events.length>16)state.events.shift();}
+ function reset(course=state.course){state.reactions=createReactions();state.passenger=createPassenger();state.course=COURSES[course]?course:'1';selectCourse(state.course);Object.assign(state,{running:false,finished:false,time:0,s:.9,offset:0,speed:1.65,sideSpeed:0,score:0,recoveries:0,wallHits:0,peakSpeed:1.65,seatedTime:0,curvature:0,uphillEntry:0,uphill:false,uphillFloor:0,combo:0,maxCombo:0,lastDragonHit:-Infinity,passed:false,events:[],eventId:0,playerImpact:0,dragonImpact:0});state.goods=TARGETS.map((t,i)=>{const p=route(t.s,t.offset);return {...t,id:i,x:p.x,z:p.z,hit:false,age:0,by:'',vx:0,vz:0};});slowTime=0;lastWall=-10;placeFollower();}
+ function event(kind,extra={}){if(['goods','wall','chair'].includes(kind))strikeReaction(state.reactions,extra.who,extra.strength,extra.goodsKind||'wall',extra.who==='dragon'?Math.sign(state.dragonOffset):Math.sign(state.offset));state.events.push({id:++state.eventId,kind,at:state.time,...extra});if(state.events.length>16)state.events.shift();}
  function recover(){if(!state.running)return;state.recoveries++;const falls=state.passenger.falls,saves=state.passenger.saves;state.passenger=createPassenger();Object.assign(state.passenger,{falls,saves});state.offset=0;state.speed=0;state.sideSpeed=0;state.combo=0;state.playerImpact=state.dragonImpact=0;slowTime=0;placeFollower();event('rescue');}
 
  function step(dt,input={}){
-  if(!state.running||state.finished)return;dt=clamp(dt,0,1/60);if(!dt)return;state.time+=dt;
+  if(!state.running||state.finished)return;dt=clamp(dt,0,1/60);if(!dt)return;state.time+=dt;stepReactions(state.reactions,dt);
   state.playerImpact=Math.max(0,state.playerImpact-dt*3);state.dragonImpact=Math.max(0,state.dragonImpact-dt*2.5);
   if(state.time-state.lastDragonHit>2)state.combo=0;
   const steer=clamp(input.steer||0,-1,1),before=route(state.s,state.offset),frame=route(state.s);
@@ -81,6 +83,12 @@ export function createIndoorGame(){
   // Soft side boundary gives the follower room to swing, without an invisible wall at the player lane.
   if(Math.abs(d.offset)>.98){const f=route(d.s),sign=Math.sign(d.offset),over=Math.abs(d.offset)-.98;state.dragonX+=f.fz*sign*over;state.dragonZ-=f.fx*sign*over;const outward=(-f.fz*state.dragonVX+f.fx*state.dragonVZ)*sign;if(outward>.3&&state.passenger.lastHit>.55){strikePassenger(state.passenger,clamp(outward/2,.15,1),sign);state.dragonImpact=Math.min(.8,outward*.3);const at=route(d.s,state.dragonOffset);event('chair',{who:'dragon',s:d.s,x:at.x,z:at.z,strength:clamp(outward/2,.15,.8)});}
   if(outward>0){state.dragonVX+=f.fz*sign*outward*1.2;state.dragonVZ-=f.fx*sign*outward*1.2;}state.dragonOffset=sign*.98;}
+  // Visible bay uprights are hard obstacles; soft goods never become blockers.
+  const bay=6+Math.round((state.dragonS-6)/4.8)*4.8;
+  if(bay>=6&&bay<LENGTH-2&&Math.abs(Math.abs(state.dragonS-bay)-.7)<.12&&Math.abs(Math.abs(state.dragonOffset)-.68)<.13&&state.passenger.lastHit>.55){
+   const side=Math.sign(state.dragonOffset)||1,f=route(state.dragonS);const outward=Math.max(0,(-f.fz*state.dragonVX+f.fx*state.dragonVZ)*side);state.dragonVX+=f.fz*side*outward*.6;state.dragonVZ-=f.fx*side*outward*.6;
+   strikePassenger(state.passenger,.65,side);state.dragonImpact=.8;event('chair',{who:'dragon',s:state.dragonS,x:state.dragonX,z:state.dragonZ,strength:.7});
+  }
   // Prevent the two characters passing through each other under hard braking.
   const ax=state.dragonX-p.x,az=state.dragonZ-p.z,apart=Math.hypot(ax,az)||.001;
   if(apart<.35){const nx=ax/apart,nz=az/apart;state.dragonX+=nx*(.35-apart);state.dragonZ+=nz*(.35-apart);const closing=(state.dragonVX-pvx)*nx+(state.dragonVZ-pvz)*nz;
@@ -93,12 +101,12 @@ export function createIndoorGame(){
    if(!who)continue;
    const bx=who==='dragon'?state.dragonX:p.x,bz=who==='dragon'?state.dragonZ:p.z,dist=Math.hypot(g.x-bx,g.z-bz)||1,cx=(g.x-bx)/dist,cz=(g.z-bz)/dist;
    const vx=who==='dragon'?state.dragonVX:(p.x-previousPX)/dt,vz=who==='dragon'?state.dragonVZ:(p.z-previousPZ)/dt;
-   const normalSpeed=Math.max(.15,vx*cx+vz*cz),impulse=normalSpeed*1.25/(1/(who==='dragon'?D_MASS:P_MASS)+1/.3);
+   const normalSpeed=Math.max(.15,vx*cx+vz*cz),impulse=normalSpeed*1.25/(1/(who==='dragon'?D_MASS:P_MASS)+1/.06);
    if(who==='dragon'){state.dragonVX-=cx*impulse/D_MASS;state.dragonVZ-=cz*impulse/D_MASS;state.dragonImpact=clamp(normalSpeed,.35,1);strikePassenger(state.passenger,clamp(normalSpeed/2,.15,1),Math.sign(-frame.fz*cx+frame.fx*cz));state.combo=state.time-state.lastDragonHit<=2?Math.min(5,state.combo+1):1;state.lastDragonHit=state.time;state.maxCombo=Math.max(state.maxCombo,state.combo);state.score+=100*state.combo;}
    else{const f=route(state.s),oldSpeed=state.speed;state.speed-=impulse/P_MASS*(cx*f.fx+cz*f.fz);state.speed=Math.max(oldSpeed*.75,state.speed);state.sideSpeed-=impulse/P_MASS*(-cx*f.fz+cz*f.fx);state.playerImpact=clamp(normalSpeed,.2,1);state.score+=10;}
    // Resolve a single contact, then debris leaves collision simulation permanently.
-   g.hit=true;g.by=who;g.age=0;g.vx=vx+cx*impulse/.3;g.vz=vz+cz*impulse/.3;
-   event('goods',{who,s:g.s,x:g.x,z:g.z,group:g.group,strength:clamp(normalSpeed/1.4,.2,1),combo:state.combo,points:who==='dragon'?100*state.combo:10});
+   g.hit=true;g.by=who;g.age=0;g.vx=vx+cx*impulse/.06;g.vz=vz+cz*impulse/.06;
+   event('goods',{who,goodsKind:g.kind,s:g.s,x:g.x,z:g.z,group:g.group,strength:clamp(normalSpeed/1.4,.2,1),combo:state.combo,points:who==='dragon'?100*state.combo:10});
   }
   p=route(state.s,state.offset);previousPX=p.x;previousPZ=p.z;
   const f=route(state.dragonS);state.dragonSpeed=state.dragonVX*f.fx+state.dragonVZ*f.fz;state.dragonSideSpeed=-state.dragonVX*f.fz+state.dragonVZ*f.fx;

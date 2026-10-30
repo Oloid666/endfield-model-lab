@@ -47,6 +47,7 @@ jobs:
       - run: node scripts/fx-check.mjs
       - run: node scripts/indoor-camera-check.mjs
       - run: node scripts/indoor-passenger-check.mjs
+      - run: node scripts/indoor-impact-check.mjs
       - run: node scripts/indoor-check.mjs
       - run: node scripts/racing-check.mjs
       - run: npm run build

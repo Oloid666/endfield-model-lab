@@ -1,5 +1,6 @@
 import * as T from 'three';
-import {buildBento,buildChair} from './vehicles.js';
+import {buildPallet,buildChair} from './vehicles.js';
+import {buildBlob,buildRiderInjuries} from './impact-art.js';
 import {createCameraDirector} from './camera-director.js';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import {Resources} from '../resources.js';
@@ -19,6 +20,13 @@ export function createScene(canvas,state){
  scene.updateMatrixWorld(true);const batches=new Map();
  for(const m of [...room.children]){if(!m.isMesh||m.isInstancedMesh||Array.isArray(m.material)||m.material.transparent)continue;const list=batches.get(m.material)||[];list.push(m);batches.set(m.material,list);}
  for(const [material,meshes] of batches){if(meshes.length<2)continue;const gs=meshes.map(m=>m.geometry.clone().applyMatrix4(m.matrixWorld)),merged=mergeGeometries(gs);if(merged){r.mesh(r.own(merged),material,root);meshes.forEach(m=>m.removeFromParent());}gs.forEach(g=>g.dispose());}
+ // Expanded warehouse wings keep detailed stock around the race without widening the driving lane.
+ r.box(root,'#c2c4b1',[0,.23,-.6],[21,.45,12]);
+ for(const x of [-9.3,9.3])for(const z of [-3.8,-.7,2.4]){
+  for(const dx of [-.45,.45])for(const dz of [-.85,.85])r.box(root,'#536d65',[x+dx,1.9,z+dz],[.045,2.8,.045]);
+  for(let level=0;level<4;level++){r.box(root,'#a4ad94',[x,.7+level*.68,z],[1,.06,1.8]);
+   for(let i=0;i<8;i++)r.box(root,i%2?'#cba567':'#799c97',[x+(i%2-.5)*.43,.88+level*.68,z+(Math.floor(i/2)-1.5)*.4],[.25,.30,.27]);}
+ }
  const trackWidth=s=>WIDTH+Math.max(...state.goods.map(g=>.85*Math.exp(-(((s-g.s)/1.15)**2))));
  const verts=[],indices=[];const count=Math.ceil(LENGTH/.04);
  for(let i=0;i<=count;i++){const s=i/count*LENGTH;for(const side of [-1,1]){const p=route(s,side*trackWidth(s)/2);verts.push(p.x,p.y,p.z);}if(i<count){const j=i*2;indices.push(j,j+1,j+2,j+1,j+3,j+2);}}
@@ -30,6 +38,14 @@ export function createScene(canvas,state){
   const mark=r.own(new T.BufferGeometry());mark.setAttribute('position',new T.Float32BufferAttribute(vertices,3));mark.setIndex([0,1,2,1,3,2]);mark.computeVertexNormals();r.mesh(mark,r.material('#ddc47c',{side:T.DoubleSide}),root);
   const p=route(s,-WIDTH/2-.15);r.mesh(r.geometry('PlaneGeometry',.48,.16),r.label('低貨架・終點',{width:256,height:64,font:'bold 40px sans-serif'}),root,[p.x,p.y+.45,p.z]);r.box(root,'#425f54',[p.x,p.y+.22,p.z],[.02,.44,.02]);
  }
+ const bayStock=[];
+ for(let at=6;at<LENGTH-2;at+=4.8){
+  const f=route(at),bay=new T.Group();root.add(bay);bay.position.set(f.x,f.y,f.z);bay.rotation.y=Math.atan2(f.fx,f.fz);bay.rotation.x=-Math.asin(Math.max(-.7,Math.min(.7,f.slope)));
+  for(const side of [-1,1]){for(const z of [-.7,.7])r.box(bay,'#536f68',[side*.68,.37,z],[.035,.74,.035]);
+   for(const y of [-.035,.50])r.box(bay,'#aab4a0',[side*.69,y,0],[.38,.035,1.5]);
+   for(let i=0;i<8;i++){const m=r.box(bay,i%2?'#d7af6c':'#6d9f9b',[side*(.60+(i%2)*.17),.13,(Math.floor(i/2)-1.5)*.34],[.14,.23,.21]);bayStock.push(m);}}
+  r.box(bay,'#5a7970',[0,.56,-.71],[1.38,.04,.035]);
+ }
  const end=route(LENGTH);r.box(root,'#b49a69',[end.x,end.y-.22,end.z],[1.4,.4,1.1]);for(const x of [-.5,.5])for(const z of [-.35,.35])r.box(root,'#486358',[end.x+x,(.54+end.y-.42)/2,end.z+z],[.06,Math.max(.05,end.y-.42-.54),.06]);
  // Camera collision uses only static solid scenery, never the actors or flying goods.
  const cameraSolids=[],proxyMaterial=r.own(new T.MeshBasicMaterial({side:T.DoubleSide}));
@@ -40,12 +56,15 @@ export function createScene(canvas,state){
  const cameraRay=new T.Raycaster(),rayStart=new T.Vector3(),rayDirection=new T.Vector3(),probe=new T.Vector3();
  let cameraMode='auto',shotState={shot:'close',blend:0,reason:'直道'};const director=createCameraDirector(),previousCamera=new T.Vector3(),wideTarget=new T.Vector3();
  function blocked(from,to){rayStart.set(from.x,from.y+.07,from.z);rayDirection.copy(to).sub(rayStart);const length=rayDirection.length();cameraRay.set(rayStart,rayDirection.normalize());cameraRay.far=Math.max(0,length-.025);return cameraRay.intersectObjects(cameraSolids,false).length>0;}
- const player=new T.Group();root.add(player);const blobGeo=r.own(new T.SphereGeometry(1,20,12));const pos=blobGeo.attributes.position;
- for(let i=0;i<pos.count;i++){const x=pos.getX(i),y=pos.getY(i),z=pos.getZ(i),l=1+.18*Math.sin(x*6+z*4);pos.setXYZ(i,x*.085*l,(y+1)*.03,z*.12*l);}blobGeo.computeVertexNormals();const blob=r.mesh(blobGeo,r.material('#8956b2',{roughness:.4}),player);
- blob.position.y=.063;const bento=buildBento(r,player);const chair=buildChair(r,root),dragon=buildDragon(r);chair.tilt.add(dragon.root);dragon.root.scale.setScalar(AVATAR_SCALE*1.25);let chairHeading=0;
+ // Batch added static warehouse bays and road markers before adding moving actors.
+ root.updateMatrixWorld(true);const staticBatches=new Map();root.traverse(m=>{if(!m.isMesh||m.isInstancedMesh||Array.isArray(m.material)||m.material.transparent)return;const list=staticBatches.get(m.material)||[];list.push(m);staticBatches.set(m.material,list);});
+ for(const [material,meshes] of staticBatches){if(meshes.length<2)continue;const gs=meshes.map(m=>m.geometry.clone().applyMatrix4(m.matrixWorld)),merged=mergeGeometries(gs);if(merged){meshes.forEach(m=>m.removeFromParent());r.mesh(r.own(merged),material,root);}gs.forEach(g=>g.dispose());}
+ const player=new T.Group();root.add(player);const blob=buildBlob(r,player),pallet=buildPallet(r,player);
+ const chair=buildChair(r,root),dragon=buildDragon(r);chair.tilt.add(dragon.root);dragon.root.scale.setScalar(AVATAR_SCALE*1.25);let chairHeading=0;
+ const injuries=buildRiderInjuries(r,chair.root);
 
  const ropeGeo=r.own(new T.BufferGeometry());ropeGeo.setAttribute('position',new T.Float32BufferAttribute(new Float32Array(51),3));const rope=new T.Line(ropeGeo,r.own(new T.LineBasicMaterial({color:'#e4b756'})));rope.frustumCulled=false;root.add(rope);
- const packs=state.goods.map(g=>{const group=new T.Group();group.scale.setScalar(1.5);root.add(group);if(g.kind==='drink'){r.mesh(r.geometry('CylinderGeometry',.055,.055,.19,10),r.material('#548b9c'),group,[0,.1,0]);r.cylinder(group,'#eee7ca',[0,.2,0],.04,.02);}else r.box(group,'#d7ac65',[0,.08,0],[.13,.16,.08]);r.mesh(r.geometry('PlaneGeometry',.085,.05),r.label(g.kind==='drink'?'醇乳':'脆餅',{width:128,height:64,font:'bold 40px sans-serif'}),group,[0,.1,.057]);return group;});
+ const packs=state.goods.map(g=>{const group=new T.Group();group.scale.setScalar(1.5);root.add(group);if(g.kind==='drink'){r.mesh(r.geometry('CylinderGeometry',.055,.055,.19,10),r.material('#548b9c'),group,[0,.1,0]);r.cylinder(group,'#eee7ca',[0,.2,0],.04,.02);}else {r.box(group,g.kind==='box'?'#ab8960':'#d7ac65',[0,.08,0],g.kind==='box'?[.17,.16,.15]:[.13,.16,.08]);if(g.kind==='box')r.box(group,'#eee2b8',[0,.163,0],[.025,.005,.15]);}r.mesh(r.geometry('PlaneGeometry',.085,.05),r.label(g.kind==='drink'?'醇乳':g.kind==='box'?'息壤':'脆餅',{width:128,height:64,font:'bold 40px sans-serif'}),group,[0,.1,.057]);return group;});
  const trailGeo=r.own(new T.BufferGeometry()),trailData=new Float32Array(24*2*3);trailGeo.setAttribute('position',new T.BufferAttribute(trailData,3));const trail=new T.LineSegments(trailGeo,r.own(new T.LineBasicMaterial({color:'#e4e4c4',transparent:true,opacity:.45})));trail.frustumCulled=false;root.add(trail);
  const halos=state.goods.map(g=>{const p=route(g.s,g.offset),m=r.mesh(r.geometry('RingGeometry',g.radius+.03,g.radius+.055,24),r.own(new T.MeshBasicMaterial({color:'#ffb04f',transparent:true,opacity:.8,side:T.DoubleSide,depthWrite:false})),root,[p.x,p.y+.012,p.z]);m.rotation.x=-Math.PI/2;return m;});
  const hintGeo=r.own(new T.BufferGeometry());hintGeo.setAttribute('position',new T.Float32BufferAttribute(new Float32Array(6),3));const hintLine=new T.Line(hintGeo,r.own(new T.LineDashedMaterial({color:'#ffce7b',dashSize:.055,gapSize:.045,transparent:true,opacity:.55})));hintLine.frustumCulled=false;root.add(hintLine);
@@ -56,7 +75,7 @@ export function createScene(canvas,state){
  function resize(){renderer.setSize(innerWidth,innerHeight,false);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();}
  function pose(dt,clock,snap=false){
   const p=route(state.s,state.offset),d={...route(state.dragonS),x:state.dragonX,z:state.dragonZ};
-  player.position.set(p.x,p.y+.012,p.z);player.rotation.y=Math.atan2(p.fx,p.fz);blob.scale.set(.5*(1+state.playerImpact*.3),.5*(1-state.playerImpact*.35),.5*(1+state.speed*.18));bento.update(state,clock);
+  player.position.set(p.x,p.y+.012,p.z);player.rotation.y=Math.atan2(p.fx,p.fz);blob.update(state);pallet.update(state,clock);
   const passenger=state.passenger,loose=passenger.mode==='fallen'||passenger.mode==='recovering';
   const chairRoll=passenger.mode==='fallen'?-passenger.side*.65:-passenger.tip,chairLift=Math.abs(Math.sin(chairRoll))*.095,riderY=loose?(passenger.y-chairLift-passenger.x*Math.sin(chairRoll))/Math.cos(chairRoll):passenger.y;
   chair.root.position.set(d.x,d.y+.012+chairLift,d.z);
@@ -65,12 +84,17 @@ export function createScene(canvas,state){
   const riderParent=loose?chair.root:chair.tilt;if(dragon.root.parent!==riderParent)riderParent.add(dragon.root);
   dragon.update(clock,{allowIdleEmote:false,action:state.dragonImpact>.15||passenger.mode==='slipping'||passenger.mode==='fallen'?{kind:'shock',amount:Math.max(.4,state.dragonImpact)}:null});
   dragon.root.position.set(passenger.x,riderY,passenger.z);dragon.root.rotation.set(loose?.15:0,0,passenger.roll-(loose?chairRoll:0));dragon.root.scale.setScalar(AVATAR_SCALE*1.25);
+  const reaction=state.reactions.dragon,impactPulse=reaction.age<.85?Math.sin(reaction.age/.85*Math.PI):0;
+  if(reaction.mode==='squash')dragon.root.scale.multiply(new T.Vector3(1+impactPulse*.35,1-impactPulse*.32,1));
+  if(reaction.mode==='stretch')dragon.root.rotation.z+=reaction.side*impactPulse*.45;
+  if(reaction.mode==='rattle')dragon.root.rotation.z+=Math.sin(reaction.age*40)*impactPulse*.12;
+  injuries.root.position.copy(dragon.root.position);injuries.root.quaternion.copy(dragon.root.quaternion);injuries.update(state);
   for(const [i,hand] of dragon.hands.entries()){const side=i?1:-1;hand.position.set(side*.83,.66,passenger.mode==='slipping'?.3:.05);hand.rotation.z=side*(passenger.risk>.3?.6:.2);}
   for(const foot of dragon.feet){foot.position.set(foot.position.x,-.08,.85);foot.rotation.x=-.3;}
   const a=ropeGeo.attributes.position;for(let i=0;i<17;i++){const t=i/16;a.setXYZ(i,p.x+(d.x-p.x)*t,Math.max(p.y+.05+(d.y+.047-p.y-.05)*t-Math.sin(t*Math.PI)*.012,route(state.s+(state.dragonS-state.s)*t).y+.018),p.z+(d.z-p.z)*t);}a.needsUpdate=true;
   trail.visible=!reduced&&state.running&&state.speed>.4;for(let i=0;i<24;i++){const start=Math.max(0,state.s-((i%12)*.15)),side=i<12?-1:1;for(let j=0;j<2;j++){const q=route(Math.max(0,start-j*.12),side*(WIDTH/2-.06)),k=(i*2+j)*3;trailData[k]=q.x;trailData[k+1]=q.y+.02;trailData[k+2]=q.z;}}trailGeo.attributes.position.needsUpdate=true;
-  packs.forEach((m,i)=>{const g=state.goods[i],p=route(g.s,g.offset),age=g.age;m.visible=!g.hit||age<.9;halos[i].visible=false;halos[i].material.opacity=.55+Math.sin(clock*5)*.15;
-   m.position.set(g.x+(g.hit?g.vx*age*.65:0),p.y+(g.hit?age*(.9+(g.by==='dragon'?.4:0))-age*age*.8:0),g.z+(g.hit?g.vz*age*.65:0));m.rotation.set(g.hit?age*8:0,g.hit?age*4:0,g.hit?age*5:0);
+  packs.forEach((m,i)=>{const g=state.goods[i],p=route(g.s,g.offset),age=g.age;m.visible=!g.hit||age<1.5;halos[i].visible=false;halos[i].material.opacity=.55+Math.sin(clock*5)*.15;
+   m.position.set(g.x+(g.hit?g.vx*age*.65:0),p.y+(g.hit?Math.max(.02,age*(1.5+(g.by==='dragon'?.4:0))-age*age*1.5):0),g.z+(g.hit?g.vz*age*.65:0));m.rotation.set(g.hit?age*8:0,g.hit?age*4:0,g.hit?age*5:0);
   });
   hintLine.visible=false;
   if(hintLine.visible){const p=state.goods[0],h=hintGeo.attributes.position;h.setXYZ(0,d.x,d.y+.08,d.z);h.setXYZ(1,p.x,route(p.s).y+.06,p.z);h.needsUpdate=true;hintLine.computeLineDistances();}
@@ -96,10 +120,14 @@ export function createScene(canvas,state){
    let fits=true;for(const [index,actor] of [p,d,rider].entries())for(const y of [index===2?-.09:.015,index===2?.14:index?.34:.24]){probe.set(actor.x,actor.y+y,actor.z).project(camera);if(Math.abs(probe.x)>.86||probe.y<-.59||probe.y>.56||probe.z>1)fits=false;}
    if(fits)break;back+=.14;up+=.02;target.set(cx-nfx*back+nfz*.9,Math.max(p.y,d.y)+up,cz-nfz*back-nfx*.9);
   }
+  // A brief reaction emphasis only on an unobstructed straight. Never interrupt steering.
+  const reactionClose=cameraMode==='auto'&&!reduced&&reaction.age<.85&&reaction.hits>0&&bend<.16&&grade<.12&&span<.40&&!loose;
+  if(reactionClose){target.lerp(new T.Vector3(d.x-nfx*.65+nfz*.65,d.y+.43,d.z-nfz*.65-nfx*.65),.28);look.lerp(new T.Vector3(rider.x+nfx*.3,rider.y+.06,rider.z+nfz*.3),.25);shotState.reason='後座反應';}
   const farBack=(portrait?2.05:1.65)+span*.55;
   wideTarget.set(cx-nfx*farBack+nfz*1.2,Math.max(p.y,d.y)+(portrait?1.25:.95)+span*.2,cz-nfz*farBack-nfx*1.2);
   target.lerp(wideTarget,blend);
   look.set(cx+nfx*(.5+blend*.5),(p.y+d.y+ahead.y)/3+.05,cz+nfz*(.5+blend*.5));
+  if(reactionClose)look.lerp(new T.Vector3(rider.x+nfx*.3,rider.y+.06,rider.z+nfz*.3),.25);
   target.x=T.MathUtils.clamp(target.x,-8.1,8.1);target.z=T.MathUtils.clamp(target.z,-6.8,6.0);
   // Temporarily rise if a ramp or fixture blocks the line to either character.
   for(let i=0;i<10&&(blocked(p,target)||blocked(d,target));i++)target.y+=.15;
