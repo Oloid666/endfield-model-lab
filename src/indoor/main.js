@@ -1,4 +1,4 @@
-import {createIndoorGame,route,LENGTH} from './game.js';
+import {createIndoorGame,route,LENGTH,CRUISE_SPEED} from './game.js';
 import {createScene} from './scene.js';
 import {createRaceAudio} from '../racing/audio.js';
 import './style.css';
@@ -20,10 +20,10 @@ function init(){
  for(const type of ['pointerup','pointercancel','lostpointercapture'])$('steer').addEventListener(type,e=>{if(e.pointerId===steerId){steerId=null;touch.steer=0;$('steer').querySelector('i').style.transform='';$('steer').setAttribute('aria-valuenow','0');}});
  $('brake').onpointerdown=e=>{if(!s.running||paused||brakeId!==null)return;brakeId=e.pointerId;e.currentTarget.setPointerCapture(e.pointerId);touch.brake=true;$('brake').classList.add('active');};for(const type of ['pointerup','pointercancel','lostpointercapture'])$('brake').addEventListener(type,e=>{if(e.pointerId===brakeId){brakeId=null;touch.brake=false;$('brake').classList.remove('active');}});
  addEventListener('resize',()=>{view.resize();view.pose(1,clock,true);});$('progress').max=LENGTH;
- function frame(now){requestAnimationFrame(frame);const dt=Math.max(0,Math.min((now-last)/1000,.08));last=now;
+ function frame(now){requestAnimationFrame(frame);const dt=Math.max(0,Math.min((now-last)/1000,.25));last=now;
   if(!paused){clock+=dt;if(s.running){acc+=dt;while(acc>=1/120){game.step(1/120,input());acc-=1/120;}
    for(const e of s.events){if(e.id<=eventId)continue;eventId=e.id;noticeEnd=clock+2;$('notice').textContent=e.kind==='checkpoint'?'檢查點！息壤退回時會記住這裡':e.kind==='rescue'?'別怕，回到安全檢查點':e.kind==='goods'?(e.who==='dragon'?'龍泡泡撞飛商品 +200':'商品撞飛 +75'):'';if(e.kind==='goods')audio.hit({kind:'box',strength:.35});}
-   audio.update({speed:s.speed*75,slip:Math.abs(s.dragonSideSpeed)*10,tension:Math.abs(s.dragonOffset-s.offset)*60});
+   audio.update({speed:s.speed/CRUISE_SPEED*27,slip:Math.abs(s.dragonSideSpeed)*10,tension:Math.abs(s.dragonOffset-s.offset)*60});
   }
   if(s.finished&&$('result').hidden){$('result').hidden=false;$('summary').textContent=`${s.time.toFixed(1)} 秒 · ${s.score} 分\n安全救回 ${s.recoveries} 次 · 龍泡泡也逃出來了`;$('pause').disabled=$('recover').disabled=true;clear();audio.setActive(false);}
   view.pose(dt,clock);$('stats').textContent=`${Math.round(s.s/LENGTH*100)}% · ${s.score} 分 · ${s.time.toFixed(0)} 秒`;$('progress').value=s.s;
