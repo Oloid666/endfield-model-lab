@@ -45,6 +45,7 @@ jobs:
       - run: node scripts/director-check.mjs
       - run: node scripts/warmup-check.mjs
       - run: node scripts/fx-check.mjs
+      - run: node scripts/indoor-check.mjs
       - run: node scripts/racing-check.mjs
       - run: npm run build
         env:

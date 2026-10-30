@@ -1,0 +1,9 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#183e38"><title>晚餐大逃亡・711店內試玩</title></head><body>
+<canvas id="game" aria-label="縮小角色在711內逃離息壤"></canvas>
+<header><small>雨夜外傳 · 店內逃生測試</small><h1>晚餐大逃亡</h1><div id="stats">準備出發</div><progress id="progress" aria-label="逃生進度"></progress><div id="danger">息壤正在地下室翻身……</div></header>
+<nav><button id="sound" aria-pressed="true">聲音 開</button><button id="pause" disabled>暫停</button><button id="recover" disabled>回檢查點</button><button id="reset">重跑</button></nav>
+<div id="notice" aria-live="polite"></div><div id="paused" hidden>已暫停・按「繼續」返回</div>
+<section id="intro" class="panel"><small>紫色生物 × 龍泡泡</small><h2>店裡，有點滿出來了。</h2><p>拖著龍泡泡，沿貨架跑上收銀台！<br>撞飛飲料與餅乾，趕在息壤淹上來前逃走。</p><p>自動前進、過彎，不用反打。<br>手機左側滑動／電腦 ← → 或 A D 控位<br>右側按住／S 或 ↓ 煞車</p><p>商品撞飛就不會擋路。<br>落水會回檢查點，息壤也會退回安全高度。</p><button id="start" class="gold">一起逃出去</button><p class="fine">約60–90秒 · 非官方同人灰盒試玩<br>開始後啟用音效 · 此版不需要甩尾按鈕</p></section>
+<section id="result" class="panel" hidden><small>兩隻都到了！</small><h2>晚餐成功逃離晚餐。</h2><p id="summary"></p><button id="again" class="gold">再逃一次</button></section>
+<footer><div id="steer" role="slider" aria-label="左右控位" aria-valuemin="-100" aria-valuemax="100" aria-valuenow="0" tabindex="0"><span>← 左右控位 →</span><i></i></div><button id="brake">按住煞車</button></footer>
+<aside><a href="./">回原雨夜</a><a href="./racing.html">城市賽車版</a></aside><script type="module" src="/src/indoor/main.js"></script></body></html>
