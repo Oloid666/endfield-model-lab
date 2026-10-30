@@ -25,14 +25,16 @@ function init(){
  function frame(now){requestAnimationFrame(frame);const dt=Math.max(0,Math.min((now-last)/1000,.25));last=now;
   if(!paused){clock+=dt;if(s.running){acc+=dt;while(acc>=1/120){game.step(1/120,input());acc-=1/120;}
    for(const e of s.events){if(e.id<=eventId)continue;eventId=e.id;noticeEnd=clock+.85;
-    if(e.kind==='goods'){view.hit(e,clock);audio.hit({kind:e.who==='dragon'?'box':'wall',strength:e.strength,combo:e.who==='dragon'?e.combo:0});$('notice').textContent=e.who==='dragon'?`龍泡泡命中 +${e.points}${e.combo>1?' · '+e.combo+'連擊！':''}`:'主角碰撞 +10・試著甩龍泡泡';}
+    if(e.kind==='goods'){view.hit(e,clock);audio.hit({kind:e.who==='dragon'?'box':'wall',strength:e.strength,combo:e.who==='dragon'?e.combo:0});$('notice').textContent=e.who==='dragon'?'龍泡泡撞到了！看後座！':'便當盒碰到了！';}
+    else if(e.kind==='chair'){view.hit(e,clock);audio.hit({kind:'wall',strength:e.strength});$('notice').textContent='後座擦到了！';}
+    else if(e.kind==='passenger'){$('notice').textContent=({slipping:'快掉了！煞車、收方向',fallen:'滑出座位！穩住把他拉回',recovering:'抓住了，正在爬回座位',seated:'坐穩了！'})[e.mode]||'';}
     else if(e.kind==='wall'){view.hit(e,clock);audio.hit({kind:'wall',strength:e.strength});$('notice').textContent='擦撞・收一點方向，繼續滑！';}else $('notice').textContent=e.kind==='rescue'?'已扶正，繼續滑！':'';
    }
 
    audio.update({speed:s.speed/CRUISE_SPEED*27,slip:Math.abs(s.dragonSideSpeed)*10,tension:s.tension*4});
   }
-  if(s.finished&&$('result').hidden){$('result').hidden=false;$('summary').textContent=`${s.course}・${COURSES[s.course].name}\n完成時間 ${s.time.toFixed(2)} 秒\n撞擊加分 ${s.score} · 最高 ${s.maxCombo} 連擊\n擦撞 ${s.wallHits} 次 · 扶正 ${s.recoveries} 次`;$('pause').disabled=$('recover').disabled=true;clear();audio.setActive(false);}
-  view.pose(dt,clock);$('stats').textContent=`${Math.round(s.s/LENGTH*100)}% · ${s.time.toFixed(1)} 秒`;$('progress').value=s.s;$('goals').textContent=`撞擊加分 ${s.score}${s.combo>1?' · ×'+s.combo+' 連擊':''}`;
+  if(s.finished&&$('result').hidden){$('result').hidden=false;$('summary').textContent=`${s.course}・${COURSES[s.course].name}\n完成時間 ${s.time.toFixed(2)} 秒\n摔出座位 ${s.passenger.falls} 次 · 成功救回 ${s.passenger.saves} 次\n在座率 ${Math.round(s.seatedTime/Math.max(.01,s.time)*100)}% · 扶正 ${s.recoveries} 次\n${s.passenger.mode==='fallen'?'他還抱著椅腳，不肯放手。':s.passenger.mode==='slipping'?'到終點了，他還緊抓著扶手。':'龍泡泡終於敢放開扶手了。'}`;$('pause').disabled=$('recover').disabled=true;clear();audio.setActive(false);}
+  view.pose(dt,clock);$('stats').textContent=`${Math.round(s.s/LENGTH*100)}% · ${s.time.toFixed(1)} 秒`;$('progress').value=s.s;$('goals').textContent=({seated:'後座：坐穩了',scrape:'後座：抓緊扶手',slipping:'後座：快掉了！煞車收方向',fallen:'後座：抱住椅腳！先穩住',recovering:'後座：正在爬回座位'})[s.passenger.mode];document.body.classList.toggle('rider-danger',['slipping','fallen'].includes(s.passenger.mode));
   $('danger').textContent=sectionAt(s.s).label;
 
   if(clock>noticeEnd)$('notice').textContent='';

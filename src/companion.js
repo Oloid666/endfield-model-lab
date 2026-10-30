@@ -50,7 +50,7 @@ export function buildDragon(r) {
   root.traverse(n=>n.userData.hotspot='dragon');
   const reduced=typeof matchMedia==='function'&&matchMedia('(prefers-reduced-motion: reduce)').matches;
   const state={mood:'normal',action:''};
-  return {root,foodMount,hand:arms[1],get state(){return {...state};},update(t,s={}){
+  return {root,foodMount,hand:arms[1],hands:arms,feet,get state(){return {...state};},update(t,s={}){
     const blink=Math.max(0,1-Math.abs((t+.7)%4.3-.15)/.11);
     const action=s.action?.kind||'',effort=T.MathUtils.clamp(Number(s.action?.amount)||0,0,1),shocked=action==='shock'||!!s.projectile;
     state.mood=shocked?'shock':action==='lever'?'doubt':blink>.3?'blink':(s.nod||0)>.15?'happy':'normal';state.action=action;

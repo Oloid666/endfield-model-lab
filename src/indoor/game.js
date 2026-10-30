@@ -1,4 +1,5 @@
 // Expanded room and explicit ramp layers; gameplay stays assisted at high speed.
+import {createPassenger,strikePassenger,stepPassenger} from './passenger.js';
 import {COURSES} from './courses.js';
 export {COURSES} from './courses.js';
 export const ROOM_SCALE={horizontal:2,vertical:1.8},AVATAR_SCALE=.075,CRUISE_SPEED=2.5,MAX_SPEED=3.3,WIDTH=.8,CHECKPOINTS=[];
@@ -38,12 +39,12 @@ function projectDragon(x,z,hint,dt){
 }
 const P_MASS=1.8,D_MASS=.9,REST=.7,MAX_ROPE=1.22;
 export function createIndoorGame(){
- const state={course:'1',running:false,finished:false,time:0,s:.9,offset:0,speed:1.65,sideSpeed:0,dragonS:0,dragonOffset:0,dragonSpeed:0,dragonSideSpeed:0,dragonX:0,dragonZ:0,dragonVX:0,dragonVZ:0,tension:0,ropeLength:REST,playerImpact:0,dragonImpact:0,score:0,recoveries:0,wallHits:0,peakSpeed:1.65,curvature:0,uphillEntry:0,uphill:false,uphillFloor:0,goods:[],events:[],eventId:0,combo:0,maxCombo:0,lastDragonHit:-Infinity,passed:false};
+ const state={passenger:createPassenger(),course:'1',running:false,finished:false,time:0,s:.9,offset:0,speed:1.65,sideSpeed:0,dragonS:0,dragonOffset:0,dragonSpeed:0,dragonSideSpeed:0,dragonX:0,dragonZ:0,dragonVX:0,dragonVZ:0,tension:0,ropeLength:REST,playerImpact:0,dragonImpact:0,score:0,recoveries:0,wallHits:0,peakSpeed:1.65,seatedTime:0,curvature:0,uphillEntry:0,uphill:false,uphillFloor:0,goods:[],events:[],eventId:0,combo:0,maxCombo:0,lastDragonHit:-Infinity,passed:false};
  let previousPX=0,previousPZ=0,slowTime=0,lastWall=-10;
  function placeFollower(){const d=route(Math.max(0,state.s-REST));Object.assign(state,{dragonS:d.s,dragonOffset:0,dragonX:d.x,dragonZ:d.z,dragonVX:d.fx*state.speed,dragonVZ:d.fz*state.speed,dragonSpeed:state.speed,dragonSideSpeed:0,tension:0,ropeLength:REST});const p=route(state.s,state.offset);previousPX=p.x;previousPZ=p.z;}
- function reset(course=state.course){state.course=COURSES[course]?course:'1';selectCourse(state.course);Object.assign(state,{running:false,finished:false,time:0,s:.9,offset:0,speed:1.65,sideSpeed:0,score:0,recoveries:0,wallHits:0,peakSpeed:1.65,curvature:0,uphillEntry:0,uphill:false,uphillFloor:0,combo:0,maxCombo:0,lastDragonHit:-Infinity,passed:false,events:[],eventId:0,playerImpact:0,dragonImpact:0});state.goods=TARGETS.map((t,i)=>{const p=route(t.s,t.offset);return {...t,id:i,x:p.x,z:p.z,hit:false,age:0,by:'',vx:0,vz:0};});slowTime=0;lastWall=-10;placeFollower();}
+ function reset(course=state.course){state.passenger=createPassenger();state.course=COURSES[course]?course:'1';selectCourse(state.course);Object.assign(state,{running:false,finished:false,time:0,s:.9,offset:0,speed:1.65,sideSpeed:0,score:0,recoveries:0,wallHits:0,peakSpeed:1.65,seatedTime:0,curvature:0,uphillEntry:0,uphill:false,uphillFloor:0,combo:0,maxCombo:0,lastDragonHit:-Infinity,passed:false,events:[],eventId:0,playerImpact:0,dragonImpact:0});state.goods=TARGETS.map((t,i)=>{const p=route(t.s,t.offset);return {...t,id:i,x:p.x,z:p.z,hit:false,age:0,by:'',vx:0,vz:0};});slowTime=0;lastWall=-10;placeFollower();}
  function event(kind,extra={}){state.events.push({id:++state.eventId,kind,at:state.time,...extra});if(state.events.length>16)state.events.shift();}
- function recover(){if(!state.running)return;state.recoveries++;state.offset=0;state.speed=0;state.sideSpeed=0;state.combo=0;state.playerImpact=state.dragonImpact=0;slowTime=0;placeFollower();event('rescue');}
+ function recover(){if(!state.running)return;state.recoveries++;const falls=state.passenger.falls,saves=state.passenger.saves;state.passenger=createPassenger();Object.assign(state.passenger,{falls,saves});state.offset=0;state.speed=0;state.sideSpeed=0;state.combo=0;state.playerImpact=state.dragonImpact=0;slowTime=0;placeFollower();event('rescue');}
 
  function step(dt,input={}){
   if(!state.running||state.finished)return;dt=clamp(dt,0,1/60);if(!dt)return;state.time+=dt;
@@ -62,7 +63,7 @@ export function createIndoorGame(){
   state.sideSpeed+=(-nx*frame.fz+nz*frame.fx)*force/P_MASS*dt;
   state.dragonVX-=nx*force/D_MASS*dt;state.dragonVZ-=nz*force/D_MASS*dt;
   const df=route(state.dragonS),gravity=-9.8*df.slope;state.dragonVX+=df.fx*gravity*dt;state.dragonVZ+=df.fz*gravity*dt;
-  state.dragonVX*=Math.exp(-dt*.18);state.dragonVZ*=Math.exp(-dt*.18);
+  state.dragonVX*=Math.exp(-dt*(input.brake?4:.18));state.dragonVZ*=Math.exp(-dt*(input.brake?4:.18));
   state.s=clamp(state.s+state.speed*dt,.3,LENGTH);state.offset+=state.sideSpeed*dt;
   const edge=WIDTH/2-.065;
   if(Math.abs(state.offset)>edge){const sign=Math.sign(state.offset),impact=Math.abs(state.sideSpeed);state.offset=sign*edge;state.sideSpeed=-sign*impact*.18;
@@ -78,10 +79,13 @@ export function createIndoorGame(){
   }
   let d=projectDragon(state.dragonX,state.dragonZ,state.dragonS,dt);state.dragonS=d.s;state.dragonOffset=d.offset;
   // Soft side boundary gives the follower room to swing, without an invisible wall at the player lane.
-  if(Math.abs(d.offset)>.98){const f=route(d.s),sign=Math.sign(d.offset),over=Math.abs(d.offset)-.98;state.dragonX+=f.fz*sign*over;state.dragonZ-=f.fx*sign*over;const outward=(-f.fz*state.dragonVX+f.fx*state.dragonVZ)*sign;if(outward>0){state.dragonVX+=f.fz*sign*outward*1.2;state.dragonVZ-=f.fx*sign*outward*1.2;}state.dragonOffset=sign*.98;}
+  if(Math.abs(d.offset)>.98){const f=route(d.s),sign=Math.sign(d.offset),over=Math.abs(d.offset)-.98;state.dragonX+=f.fz*sign*over;state.dragonZ-=f.fx*sign*over;const outward=(-f.fz*state.dragonVX+f.fx*state.dragonVZ)*sign;if(outward>.3&&state.passenger.lastHit>.55){strikePassenger(state.passenger,clamp(outward/2,.15,1),sign);state.dragonImpact=Math.min(.8,outward*.3);const at=route(d.s,state.dragonOffset);event('chair',{who:'dragon',s:d.s,x:at.x,z:at.z,strength:clamp(outward/2,.15,.8)});}
+  if(outward>0){state.dragonVX+=f.fz*sign*outward*1.2;state.dragonVZ-=f.fx*sign*outward*1.2;}state.dragonOffset=sign*.98;}
   // Prevent the two characters passing through each other under hard braking.
   const ax=state.dragonX-p.x,az=state.dragonZ-p.z,apart=Math.hypot(ax,az)||.001;
-  if(apart<.16){state.dragonX+=ax/apart*(.16-apart);state.dragonZ+=az/apart*(.16-apart);}
+  if(apart<.35){const nx=ax/apart,nz=az/apart;state.dragonX+=nx*(.35-apart);state.dragonZ+=nz*(.35-apart);const closing=(state.dragonVX-pvx)*nx+(state.dragonVZ-pvz)*nz;
+   if(closing<0){const impulse=-closing*1.1/(1/P_MASS+1/D_MASS);state.dragonVX+=nx*impulse/D_MASS;state.dragonVZ+=nz*impulse/D_MASS;state.speed-=impulse/P_MASS*(nx*frame.fx+nz*frame.fz);state.sideSpeed-=impulse/P_MASS*(-nx*frame.fz+nz*frame.fx);}
+  }
   for(const g of state.goods){
    if(g.hit){g.age+=dt;continue;}
    const dd=Math.hypot(state.dragonX-g.x,state.dragonZ-g.z),pd=Math.hypot(p.x-g.x,p.z-g.z);
@@ -90,7 +94,7 @@ export function createIndoorGame(){
    const bx=who==='dragon'?state.dragonX:p.x,bz=who==='dragon'?state.dragonZ:p.z,dist=Math.hypot(g.x-bx,g.z-bz)||1,cx=(g.x-bx)/dist,cz=(g.z-bz)/dist;
    const vx=who==='dragon'?state.dragonVX:(p.x-previousPX)/dt,vz=who==='dragon'?state.dragonVZ:(p.z-previousPZ)/dt;
    const normalSpeed=Math.max(.15,vx*cx+vz*cz),impulse=normalSpeed*1.25/(1/(who==='dragon'?D_MASS:P_MASS)+1/.3);
-   if(who==='dragon'){state.dragonVX-=cx*impulse/D_MASS;state.dragonVZ-=cz*impulse/D_MASS;state.dragonImpact=clamp(normalSpeed,.35,1);state.combo=state.time-state.lastDragonHit<=2?Math.min(5,state.combo+1):1;state.lastDragonHit=state.time;state.maxCombo=Math.max(state.maxCombo,state.combo);state.score+=100*state.combo;}
+   if(who==='dragon'){state.dragonVX-=cx*impulse/D_MASS;state.dragonVZ-=cz*impulse/D_MASS;state.dragonImpact=clamp(normalSpeed,.35,1);strikePassenger(state.passenger,clamp(normalSpeed/2,.15,1),Math.sign(-frame.fz*cx+frame.fx*cz));state.combo=state.time-state.lastDragonHit<=2?Math.min(5,state.combo+1):1;state.lastDragonHit=state.time;state.maxCombo=Math.max(state.maxCombo,state.combo);state.score+=100*state.combo;}
    else{const f=route(state.s),oldSpeed=state.speed;state.speed-=impulse/P_MASS*(cx*f.fx+cz*f.fz);state.speed=Math.max(oldSpeed*.75,state.speed);state.sideSpeed-=impulse/P_MASS*(-cx*f.fz+cz*f.fx);state.playerImpact=clamp(normalSpeed,.2,1);state.score+=10;}
    // Resolve a single contact, then debris leaves collision simulation permanently.
    g.hit=true;g.by=who;g.age=0;g.vx=vx+cx*impulse/.3;g.vz=vz+cz*impulse/.3;
@@ -99,6 +103,9 @@ export function createIndoorGame(){
   p=route(state.s,state.offset);previousPX=p.x;previousPZ=p.z;
   const f=route(state.dragonS);state.dragonSpeed=state.dragonVX*f.fx+state.dragonVZ*f.fz;state.dragonSideSpeed=-state.dragonVX*f.fz+state.dragonVZ*f.fx;
   state.ropeLength=Math.hypot(p.x-state.dragonX,p.z-state.dragonZ);state.speed=clamp(state.speed,0,MAX_SPEED);state.peakSpeed=Math.max(state.peakSpeed,state.speed);const dv=Math.hypot(state.dragonVX,state.dragonVZ);if(dv>5.5){state.dragonVX*=5.5/dv;state.dragonVZ*=5.5/dv;}
+  const change=stepPassenger(state.passenger,dt,{speed:state.speed,sideSpeed:state.dragonSideSpeed,offset:state.dragonOffset,brake:!!input.brake,tension:state.tension});if(change)event('passenger',{mode:change});
+  if(state.passenger.mode==='fallen'){state.dragonVX*=Math.exp(-dt*.45);state.dragonVZ*=Math.exp(-dt*.45);}
+  if(['seated','scrape'].includes(state.passenger.mode))state.seatedTime+=dt;
   slowTime=!input.brake&&state.speed<.035&&state.s<LENGTH-.2?slowTime+dt:0;
   if(slowTime>2){recover();return;}
   if(state.s>=LENGTH-.03){state.finished=true;state.running=false;state.passed=true;event('finish');}
