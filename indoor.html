@@ -1,9 +1,9 @@
-<!doctype html><html lang="zh-Hant"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#183e38"><title>晚餐大逃亡・711店內試玩</title></head><body>
-<canvas id="game" aria-label="縮小角色在711內逃離息壤"></canvas>
-<header><small>雨夜外傳 · 微型疾走測試</small><h1>晚餐大逃亡</h1><div id="stats">準備出發</div><progress id="progress" aria-label="逃生進度"></progress><div id="danger">息壤正在地下室翻身……</div></header>
-<nav><button id="sound" aria-pressed="true">聲音 開</button><button id="pause" disabled>暫停</button><button id="recover" disabled>回檢查點</button><button id="reset">重跑</button></nav>
+<!doctype html><html lang="zh-Hant"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#183e38"><title>龍泡泡甩撞・711試演</title></head><body>
+<canvas id="game" aria-label="紫色生物拖甩龍泡泡撞橙色商品"></canvas>
+<header><small>雨夜外傳 · 20秒甩撞試演</small><h1>前面躲，後面撞。</h1><div id="stats">準備出發</div><progress id="progress" aria-label="試演進度"></progress><div id="goals">龍泡泡命中 0/3 組</div><div id="danger">甩龍泡泡撞橙色目標</div></header>
+<nav><button id="sound" aria-pressed="true">聲音 開</button><button id="pause" disabled>暫停</button><button id="recover" disabled>扶正</button><button id="reset">重試</button></nav>
 <div id="notice" aria-live="polite"></div><div id="paused" hidden>已暫停・按「繼續」返回</div>
-<section id="intro" class="panel"><small>紫色生物 × 龍泡泡</small><h2>店裡，有點滿出來了。</h2><p>拖著龍泡泡，沿貨架跑上收銀台！<br>撞飛飲料與餅乾，趕在息壤淹上來前逃走。</p><p>自動前進、過彎，不用反打。<br>手機左側滑動／電腦 ← → 或 A D 控位<br>右側按住／S 或 ↓ 煞車</p><p>商品撞飛就不會擋路。<br>落水會回檢查點，息壤也會退回安全高度。</p><button id="start" class="gold">一起逃出去</button><p class="fine">約40秒 · 非官方同人灰盒試玩<br>角色更小・店內更大更高・低視角疾走 · 此版不需要甩尾按鈕</p></section>
-<section id="result" class="panel" hidden><small>兩隻都到了！</small><h2>晚餐成功逃離晚餐。</h2><p id="summary"></p><button id="again" class="gold">再逃一次</button></section>
-<footer><div id="steer" role="slider" aria-label="左右控位" aria-valuemin="-100" aria-valuemax="100" aria-valuenow="0" tabindex="0"><span>← 左右控位 →</span><i></i></div><button id="brake">按住煞車</button></footer>
+<section id="intro" class="panel"><small>紫色生物 × 龍泡泡</small><h2>這次，要用後面那隻撞。</h2><p>先往一側蓄力，再往另一側切。<br>你閃過去，讓龍泡泡甩中橙色商品！</p><p>① 單側大目標　② 左右各一個　③ 連撞商品群<br><strong>命中兩組達標，②要兩個都撞到。</strong><br>只有龍泡泡算命中；主角碰撞只得10分。</p><p>自動前進、過彎；左右滑動／A D／← → 施力<br>放開只減少側滑，不拉回中央<br>按住煞車／S／↓ 可停下來練習</p><button id="start" class="gold">開始甩撞</button><p class="fine">約20秒・2秒內連撞最高×5・非官方同人手感試演<br>息壤暫停追趕・到終點不代表達標・可立即重試</p></section>
+<section id="result" class="panel" hidden><small>本次試演成績</small><h2>下一次，甩得更準。</h2><p id="summary"></p><button id="again" class="gold">立即重試</button></section>
+<footer><div id="steer" role="slider" aria-label="左右施力" aria-valuemin="-100" aria-valuemax="100" aria-valuenow="0" tabindex="0"><span>← 左右施力 →</span><i></i></div><button id="brake">按住煞車</button></footer>
 <aside><a href="./">回原雨夜</a><a href="./racing.html">城市賽車版</a></aside><script type="module" src="/src/indoor/main.js"></script></body></html>
