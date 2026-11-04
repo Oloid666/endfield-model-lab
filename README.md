@@ -14,7 +14,7 @@ V12 改由龍泡泡進店買餐、持相機取景及飛回看照片；莊留在�
 
 ## 網域與統計
 
-預定自訂網址：`endfield10000t.aura87.online`。GA4 為選用功能，未設定衡量 ID 時不載入統計程式；目前仍需使用者建立 GA4 並完成 Cloudflare Pages 網域設定。完整操作與事件定義見 [GA4／Cloudflare 上線交接](docs/GA4-CLOUDFLARE.md)。
+預定自訂網址：`endfield10000t.aura87.online`。GA4 為選用功能，未設定衡量 ID 時不載入統計程式；GitHub Pages 已設定使用者提供的 GA4 衡量 ID，Cloudflare Pages 網域仍待設定。完整操作與事件定義見 [GA4／Cloudflare 上線交接](docs/GA4-CLOUDFLARE.md)。
 
 ## 啟動
 

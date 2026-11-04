@@ -54,7 +54,7 @@ jobs:
       - run: npm run build
         env:
           VITE_BASE_PATH: /endfield-model-lab/
-          VITE_GA4_MEASUREMENT_ID: ${{ vars.GA4_MEASUREMENT_ID }}
+          VITE_GA4_MEASUREMENT_ID: G-S7LEGD7354
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

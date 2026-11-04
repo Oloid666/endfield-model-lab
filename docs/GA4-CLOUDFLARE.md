@@ -5,7 +5,7 @@
 
 ## 目前完成與待辦
 
-程式已預留 GA4，尚未取得使用者的衡量 ID，也未修改 Cloudflare DNS、建立 Pages 專案或改變 GitHub 公開狀態。沒有衡量 ID 時不載入 Google 程式，遊戲可獨立運作。
+使用者已提供衡量 ID：G-S7LEGD7354。GitHub Pages 建置已明確指定此公開 ID。尚未修改 Cloudflare DNS、建立 Pages 專案或改變 GitHub 公開狀態。Cloudflare 仍需填入下述環境變數並綁定網域。
 只在正式建置、指定主機名且有有效 ID 時啟用。指定主機為 endfield10000t.aura87.online 與 oloid666.github.io；localhost、Pages 分支預覽停用，避免測試混進報表。賽車入口沒有載入本模組。
 
 ## 使用者：建立 GA4
@@ -18,16 +18,16 @@
 
 ## 程式設定
 
-建置環境變數：VITE_GA4_MEASUREMENT_ID=真正的 G- 衡量 ID。
+建置環境變數：VITE_GA4_MEASUREMENT_ID=G-S7LEGD7354。
 本機可複製 .env.example 為 .env.local；本機預覽仍不送統計。無需 Firebase SDK、Firestore 或新後端。
-GitHub Pages 既有部署可在 Settings → Secrets and variables → Actions → Variables，新增 GA4_MEASUREMENT_ID；工作流程會將它注入 Vite。需重新建置才生效。
+GitHub Pages 在 .github/workflows/pages.yml 的 VITE_GA4_MEASUREMENT_ID 指定此公開 ID，無需變數管理權限。日後換 ID 時修改此設定並重新建置。
 Cloudflare Pages 則在專案的建置環境變數填 VITE_GA4_MEASUREMENT_ID。它是公開前端 ID，不是私密 API 金鑰。更改後重新部署。
 
 ## Cloudflare Pages 與網域
 
 1. Workers & Pages → 建立應用程式 → Pages → 連接 Git，選 Oloid666/endfield-model-lab。
 2. 正式分支 main；建置 npm run build；輸出 dist；根目錄預設。
-3. 正式環境變數：NODE_VERSION=22、VITE_BASE_PATH=/，取得 ID 後再加入 VITE_GA4_MEASUREMENT_ID。
+3. 正式環境變數：NODE_VERSION=22、VITE_BASE_PATH=/，加入 VITE_GA4_MEASUREMENT_ID=G-S7LEGD7354。
 4. 部署並檢查 pages.dev 網址：街景、角色、照片、二樓與賽車入口。這個預覽網址不送正式統計。
 5. Pages 專案 → 自訂網域 → 設定 endfield10000t.aura87.online，依精靈建立 DNS 與 HTTPS。遇到既有同名紀錄，先核對用途，勿直接覆蓋。
 6. 等 Active，實際從自訂網址玩一次，再檢查 GA4 即時報表。
@@ -88,4 +88,4 @@ npm run build
 正常開始→章節→主線→二樓→評分→謝幕，應各自記錄；七下捷徑／章節重看不得觸發 game_complete。
 暫停、背景、重玩和返回街角不能造成時間暴增或通關重複。
 統計被封鎖或拋錯時，遊戲仍可載入、按鈕可操作。
-實際 Google 收件與 DNS/HTTPS 驗證必須等真 ID 與 Cloudflare 網域設定完成；本機測試不能代替。
+實際 Google 收件需在正式網址開遊戲並核對 GA4 即時報表；DNS/HTTPS 驗證仍需等 Cloudflare 網域設定完成。本機測試不能代替。
