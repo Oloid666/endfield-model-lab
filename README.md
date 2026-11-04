@@ -16,6 +16,10 @@ V12 改由龍泡泡進店買餐、持相機取景及飛回看照片；莊留在�
 
 預定自訂網址：`endfield10000t.aura87.online`。GA4 為選用功能，未設定衡量 ID 時不載入統計程式；GitHub Pages 已設定使用者提供的 GA4 衡量 ID，Cloudflare Pages 網域仍待設定。完整操作與事件定義見 [GA4／Cloudflare 上線交接](docs/GA4-CLOUDFLARE.md)。
 
+## 玩家文字回饋
+
+結尾評分與設定選單可收集文字意見；需在 Cloudflare 綁定 D1 並設定管理密碼後才會正式收件。[一次性設定與作者管理頁說明](docs/PLAYER-FEEDBACK.md)。管理頁為 `feedback-admin.html`，回饋文字不傳入 GA4。
+
 ## 啟動
 
 使用 Node.js 22 或更新版本。
@@ -30,7 +34,7 @@ npm run build
 npm run preview
 ```
 
-預設相對資源路徑。GitHub Pages 工作流程使用 `VITE_BASE_PATH=/endfield-model-lab/`。模型依 `import.meta.env.BASE_URL` 載入，沒有路由或後端。
+預設相對資源路徑。GitHub Pages 工作流程使用 `VITE_BASE_PATH=/endfield-model-lab/`。模型依 `import.meta.env.BASE_URL` 載入，遊戲本體不需後端；選用的玩家回饋使用 Cloudflare Pages Functions 與 D1。
 
 ## 操作
 

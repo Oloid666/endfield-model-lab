@@ -1,3 +1,4 @@
+import {createFeedbackService,createFeedbackDialog} from './feedback.js';
 import {createGA4,createRainAnalytics} from './analytics.js';
 import {readPreferences,savePreferences} from './preferences.js';
 import {createStreetPerformance} from './street-performance.js';
@@ -24,6 +25,8 @@ const ga4=createGA4({measurementId:import.meta.env.VITE_GA4_MEASUREMENT_ID,produ
 const analytics=createRainAnalytics(ga4.send);ga4.pageView();
 const loader=createLoading();
 const audio=new RainAudio(),abort=new AbortController();let world,mission,exploration,bonus,closed=false,menuPaused=false,xaihiPromise=null,assetPaused=false;
+const feedback=createFeedbackService({version:__BUILD_VERSION__,context:()=>({phase:mission?.state.phase||'ready',play_mode:analytics.state.run?analytics.state.playMode:'unknown'}),onSent:()=>analytics.bonus('feedback')});
+let feedbackDialog;
 const listen=(element,type,fn)=>element.addEventListener(type,fn,{signal:abort.signal});
 function showError(text){$('#error-message').textContent=text;error.hidden=false;loading.hidden=true;}
 function menu(open){
@@ -134,7 +137,7 @@ async function init(){
       }
     });
     createStreetPerformance({world,mission,mount:$('#app'),playEffect:k=>{if($('#sound').checked)audio.effect(k);},hum:t=>{if($('#sound').checked)audio.hum(t);}});
-    bonus=createBonus({analyticsEnabled:ga4.enabled,onAnalytics:(action,value)=>{if(action==='shortcut')analytics.shortcut();else analytics.bonus(action,value);},mount:$('#app'),world,mission,exploration,roomAudio:()=>audio.ambience('upstairs',preferences.rain),playEffect:kind=>{if($('#sound').checked&&!document.hidden)audio.effect(kind);}});
+    bonus=createBonus({feedback,analyticsEnabled:ga4.enabled,onAnalytics:(action,value)=>{if(action==='shortcut')analytics.shortcut();else analytics.bonus(action,value);},mount:$('#app'),world,mission,exploration,roomAudio:()=>audio.ambience('upstairs',preferences.rain),playEffect:kind=>{if($('#sound').checked&&!document.hidden)audio.effect(kind);}});
     world.onTick=(time,delta)=>{world.syncWalkingEnvironment();mission.machine.doorOpen=world.store.doors.open;mission.update(time);world.missionState=mission.state;audio.duck(!!mission.state.node);audio.ambience(mission.state.vcr?'shop':world.camera.position.z<2?'shop':'street',preferences.rain);if(mission.state.phase==='tour'&&mission.state.phaseElapsed>=14&&mission.state.phaseElapsed<30&&!mission.state.paused)audio.hum(mission.state.phaseElapsed);exploration.update(delta);bonus.update();viewControls.update();analytics.tick(performance.now(),{visible:!document.hidden,paused:mission.pauseReasons.some(reason=>reason!=='bonus')});
       if(!reactionBubble.hidden){if(time>=reactionBubbleUntil||mission.state.paused||bonus.active){reactionBubble.hidden=true;world.actors?.cancelReaction();}else{const p=world.actors.dragonPosition,q=world.projectPoint([p[0],p[1]+1.1,p[2]]),rect=world.container.getBoundingClientRect();reactionBubble.style.left=`${Math.max(100,Math.min(innerWidth-100,rect.x+(q[0]+1)*rect.width/2))}px`;reactionBubble.style.top=`${Math.max(150,Math.min(innerHeight*.55,rect.y+(1-q[1])*rect.height/2))}px`;}}
 };
@@ -146,6 +149,8 @@ async function init(){
     let dialogueSize=preferences.textSize;const textSize=document.createElement('button');textSize.textContent='字幕字級：'+dialogueSize;textSize.addEventListener('click',()=>{dialogueSize={18:22,22:26,26:18}[dialogueSize];preferences.textSize=dialogueSize;saveSettings();$('#app').style.setProperty('--dialogue-size',dialogueSize+'px');textSize.textContent='字幕字級：'+dialogueSize;},{signal:abort.signal});$('#settings').append(textSize);
     const volumeRow=document.createElement('label');volumeRow.className='setting-row';volumeRow.textContent='音量';const volume=document.createElement('input');volume.type='range';volume.min=0;volume.max=100;volume.value=preferences.volume*100;volume.setAttribute('aria-label','雨聲與音效音量');volume.addEventListener('input',()=>{preferences.volume=Number(volume.value)/100;audio.setVolume(preferences.volume);saveSettings();},{signal:abort.signal});volumeRow.append(volume);$('#settings').append(volumeRow);audio.setVolume(preferences.volume);
     if(ga4.enabled){const note=document.createElement('p');note.className='control-tip';note.textContent='本站使用 Google Analytics 統計造訪、遊玩進度與星等回饋；不傳送照片、遊戲帳密輸入或對話內容。';$('#settings').append(note);}
+    feedbackDialog=createFeedbackDialog({service:feedback,onOpen:()=>mission.setPaused(true,'feedback'),onClose:()=>mission.setPaused(false,'feedback')});
+    const feedbackButton=document.createElement('button');feedbackButton.textContent='意見與問題回報';feedbackButton.addEventListener('click',()=>{menu(false);feedbackDialog.open();},{signal:abort.signal});$('#settings').append(feedbackButton);
     const version=document.createElement('small');version.textContent='版本：'+__BUILD_VERSION__;$('#settings').append(version);
     const restartNight=document.createElement('button');restartNight.textContent='重新開始雨夜';restartNight.addEventListener('click',()=>{menu(false);mission.replay();},{signal:abort.signal});$('#settings').append(restartNight);
     const resetCameraButton=document.createElement('button');resetCameraButton.textContent='立即回到演出';resetCameraButton.addEventListener('click',()=>{world.resetStoryCamera();menu(false);},{signal:abort.signal});$('#settings').append(resetCameraButton);
@@ -173,7 +178,7 @@ async function init(){
     };
   }catch(e){analytics.fail('scene');loader.dispose();world?.dispose();showError('無法啟動 3D 畫面。請使用支援 WebGL 2 的 Safari，然後重新載入。');console.error(e);}
 }
-function dispose(){closed=true;loader.dispose();abort.abort();bonus?.dispose();exploration?.dispose();mission?.dispose();audio.dispose();world?.dispose();}
+function dispose(){feedbackDialog?.dispose();closed=true;loader.dispose();abort.abort();bonus?.dispose();exploration?.dispose();mission?.dispose();audio.dispose();world?.dispose();}
 listen(window,'pagehide',event=>{analytics.tick(performance.now(),{visible:false});analytics.flush();if(!event.persisted)dispose();else world?.stop();});listen(window,'pageshow',event=>{if(event.persisted)world?.start();});
 if(import.meta.hot)import.meta.hot.dispose(dispose);
 init();

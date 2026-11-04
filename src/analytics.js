@@ -1,5 +1,5 @@
 // Only the rain-night entry point loads this module. No ID means no Google requests.
-const EVENTS=new Set(['page_view','game_loaded','game_load_failed','game_start','chapter_reached','main_story_complete','story_replay_complete','shortcut_used','bonus_enter','rating_submit','rating_skip','content_complete','game_complete','play_time']);
+const EVENTS=new Set(['page_view','game_loaded','game_load_failed','game_start','chapter_reached','main_story_complete','story_replay_complete','shortcut_used','bonus_enter','rating_submit','rating_skip','feedback_submit','content_complete','game_complete','play_time']);
 const PARAMS=new Set(['play_mode','run_number','is_replay','chapter_id','rating','active_seconds','active_seconds_delta','error_stage','game_id','build_version']);
 export function analyticsURL(value){
   try{const u=new URL(value);if(!['https:','http:'].includes(u.protocol))return '';const out=new URL(u.origin+u.pathname);
@@ -49,6 +49,7 @@ export function createRainAnalytics(send=()=>{}){
     shortcut(){if(!started)start('shortcut');else {flush();mode='shortcut';}mainDone=true;event('shortcut_used');},
     bonus(action,value){
       if(action==='enter')event('bonus_enter');
+      else if(action==='feedback')event('feedback_submit');
       else if(action==='rating'&&Number.isInteger(value)&&value>=1&&value<=5)event('rating_submit',{rating:value});
       else if(action==='rating_skip')event('rating_skip');
       else if(action==='complete'&&!allDone){allDone=true;flush();event('content_complete',{active_seconds:Math.round(seconds)});if(mode==='normal'&&mainDone)event('game_complete',{active_seconds:Math.round(seconds)});}

@@ -11,3 +11,8 @@ artifacts/*.webm
 .env
 .env.*
 !.env.example
+
+# Cloudflare local runtime credentials and data.
+.dev.vars
+.dev.vars.*
+.wrangler/
