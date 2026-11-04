@@ -1,3 +1,4 @@
+import {createGA4,createRainAnalytics} from './analytics.js';
 import {readPreferences,savePreferences} from './preferences.js';
 import {createStreetPerformance} from './street-performance.js';
 import {createViewControls} from './view-controls.js';
@@ -19,6 +20,8 @@ const $=s=>document.querySelector(s),loading=$('#loading'),message=$('#loading-m
 let preferenceStorage;try{preferenceStorage=localStorage;}catch{}
 const preferences=readPreferences(preferenceStorage),saveSettings=()=>savePreferences(preferenceStorage,preferences);
 $('#rain').checked=preferences.rain;$('#quality').value=preferences.quality;$('#app').style.setProperty('--dialogue-size',preferences.textSize+'px');
+const ga4=createGA4({measurementId:import.meta.env.VITE_GA4_MEASUREMENT_ID,production:import.meta.env.PROD,version:__BUILD_VERSION__});
+const analytics=createRainAnalytics(ga4.send);ga4.pageView();
 const loader=createLoading();
 const audio=new RainAudio(),abort=new AbortController();let world,mission,exploration,bonus,closed=false,menuPaused=false,xaihiPromise=null,assetPaused=false;
 const listen=(element,type,fn)=>element.addEventListener(type,fn,{signal:abort.signal});
@@ -92,12 +95,14 @@ async function init(){
     if(closed)return;world.time=0;world.previous=undefined;world.tick(0,0,true);
     mission=createMission({mount:$('#app'),onCameraReset:()=>{world.actors?.cancelReaction();reactionBubble.hidden=true;world.resetStoryCamera();},capturePhoto:()=>{if($('#sound').checked)audio.effect('shutter');return world.capturePhoto();},onCameraAuto:()=>world.resetStoryCamera(),getCameraAuto:()=>world.autoCamera,
       onDinner:branch=>{
+        if(!branch)analytics.start(restoring?'chapter_replay':'normal');
         if(!branch){world.streetShow?.reset();world.store.doors.reset();bonus?.resetEnding();exploration?.setActive(false);world.director.reset();world.remnant.reset();mission?.setTargets(world.director.targets);world.actors?.setMove(0,0,false);world.syncWalkingEnvironment(true,{postgame:false});world.actors?.teleport(-1.25,3.25);}
         world.actors?.setDinner(branch);
       },
       onRestore:(id,state)=>{if(['rewind','last'].includes(id)){world.store.destruction.setProgress(99);world.store.destruction.update(state.clock+8,8);}world.director.finalBegun=false;},
       onGesture:(name,node)=>{world.actors?.setGesture(name,node);const cue={'book-open':'book','dragon-capture':'tractor','meal-born':'slime','meal-arrival':'slime'}[node?.event];if(cue&&$('#sound').checked)audio.effect(cue);},
       onStage:(phase,state)=>{
+        analytics.stage(phase);
         if(!['ready','complete'].includes(phase))exploration?.setActive(false);
         world.director.stage(phase,state);if($('#sound').checked){const cue={'photo-return':'flight','photo-flight':'handover'}[phase];if(cue)audio.effect(cue);}if(!restoring)chapters.reach(phase,state.branch);
         if(phase==='photo-review')ensureXaihi();
@@ -129,23 +134,24 @@ async function init(){
       }
     });
     createStreetPerformance({world,mission,mount:$('#app'),playEffect:k=>{if($('#sound').checked)audio.effect(k);},hum:t=>{if($('#sound').checked)audio.hum(t);}});
-    bonus=createBonus({mount:$('#app'),world,mission,exploration,roomAudio:()=>audio.ambience('upstairs',preferences.rain),playEffect:kind=>{if($('#sound').checked&&!document.hidden)audio.effect(kind);}});
-    world.onTick=(time,delta)=>{world.syncWalkingEnvironment();mission.machine.doorOpen=world.store.doors.open;mission.update(time);world.missionState=mission.state;audio.duck(!!mission.state.node);audio.ambience(mission.state.vcr?'shop':world.camera.position.z<2?'shop':'street',preferences.rain);if(mission.state.phase==='tour'&&mission.state.phaseElapsed>=14&&mission.state.phaseElapsed<30&&!mission.state.paused)audio.hum(mission.state.phaseElapsed);exploration.update(delta);bonus.update();viewControls.update();
+    bonus=createBonus({analyticsEnabled:ga4.enabled,onAnalytics:(action,value)=>{if(action==='shortcut')analytics.shortcut();else analytics.bonus(action,value);},mount:$('#app'),world,mission,exploration,roomAudio:()=>audio.ambience('upstairs',preferences.rain),playEffect:kind=>{if($('#sound').checked&&!document.hidden)audio.effect(kind);}});
+    world.onTick=(time,delta)=>{world.syncWalkingEnvironment();mission.machine.doorOpen=world.store.doors.open;mission.update(time);world.missionState=mission.state;audio.duck(!!mission.state.node);audio.ambience(mission.state.vcr?'shop':world.camera.position.z<2?'shop':'street',preferences.rain);if(mission.state.phase==='tour'&&mission.state.phaseElapsed>=14&&mission.state.phaseElapsed<30&&!mission.state.paused)audio.hum(mission.state.phaseElapsed);exploration.update(delta);bonus.update();viewControls.update();analytics.tick(performance.now(),{visible:!document.hidden,paused:mission.pauseReasons.some(reason=>reason!=='bonus')});
       if(!reactionBubble.hidden){if(time>=reactionBubbleUntil||mission.state.paused||bonus.active){reactionBubble.hidden=true;world.actors?.cancelReaction();}else{const p=world.actors.dragonPosition,q=world.projectPoint([p[0],p[1]+1.1,p[2]]),rect=world.container.getBoundingClientRect();reactionBubble.style.left=`${Math.max(100,Math.min(innerWidth-100,rect.x+(q[0]+1)*rect.width/2))}px`;reactionBubble.style.top=`${Math.max(150,Math.min(innerHeight*.55,rect.y+(1-q[1])*rect.height/2))}px`;}}
 };
-    loader.progress(99);await loader.finish();world.time=0;world.previous=undefined;world.tick(0,0,false);loader.hide();world.start();
+    loader.progress(99);await loader.finish();world.time=0;world.previous=undefined;world.tick(0,0,false);loader.hide();analytics.ready();world.start();
     const resume=document.createElement('button');resume.className='chapter-resume';resume.textContent='繼續上次 · '+CHAPTERS.find(c=>c.id===chapters.data.chapter).label;resume.hidden=chapters.data.chapter==='intro';$('#app').append(resume);
     const restore=id=>{if(bonus.active)return;restoring=true;menu(false);world.autoCamera=true;world.manualUntil=world.time;mission.machine.restoreChapter(id,chapters.data.branch);restoring=false;world.resetStoryCamera();resume.hidden=true;};
     resume.addEventListener('click',()=>{if(!mission.state.paused)restore(chapters.data.chapter);},{signal:abort.signal});
     const autoDialogue=document.createElement('button');autoDialogue.textContent='自動對話：關';autoDialogue.addEventListener('click',()=>{mission.machine.setAuto(!mission.state.auto);autoDialogue.textContent=mission.state.auto?'自動對話：開':'自動對話：關';},{signal:abort.signal});$('#settings').append(autoDialogue);
     let dialogueSize=preferences.textSize;const textSize=document.createElement('button');textSize.textContent='字幕字級：'+dialogueSize;textSize.addEventListener('click',()=>{dialogueSize={18:22,22:26,26:18}[dialogueSize];preferences.textSize=dialogueSize;saveSettings();$('#app').style.setProperty('--dialogue-size',dialogueSize+'px');textSize.textContent='字幕字級：'+dialogueSize;},{signal:abort.signal});$('#settings').append(textSize);
     const volumeRow=document.createElement('label');volumeRow.className='setting-row';volumeRow.textContent='音量';const volume=document.createElement('input');volume.type='range';volume.min=0;volume.max=100;volume.value=preferences.volume*100;volume.setAttribute('aria-label','雨聲與音效音量');volume.addEventListener('input',()=>{preferences.volume=Number(volume.value)/100;audio.setVolume(preferences.volume);saveSettings();},{signal:abort.signal});volumeRow.append(volume);$('#settings').append(volumeRow);audio.setVolume(preferences.volume);
+    if(ga4.enabled){const note=document.createElement('p');note.className='control-tip';note.textContent='本站使用 Google Analytics 統計造訪、遊玩進度與星等回饋；不傳送照片、遊戲帳密輸入或對話內容。';$('#settings').append(note);}
     const version=document.createElement('small');version.textContent='版本：'+__BUILD_VERSION__;$('#settings').append(version);
     const restartNight=document.createElement('button');restartNight.textContent='重新開始雨夜';restartNight.addEventListener('click',()=>{menu(false);mission.replay();},{signal:abort.signal});$('#settings').append(restartNight);
     const resetCameraButton=document.createElement('button');resetCameraButton.textContent='立即回到演出';resetCameraButton.addEventListener('click',()=>{world.resetStoryCamera();menu(false);},{signal:abort.signal});$('#settings').append(resetCameraButton);
     const chapterMenu=document.createElement('section');chapterMenu.className='chapter-menu';const heading=document.createElement('h3');heading.textContent='章節接續／重看';chapterMenu.append(heading);$('#settings').append(chapterMenu);for(const c of CHAPTERS){const b=document.createElement('button');b.textContent=c.label;b.dataset.chapter=c.id;b.disabled=!chapters.data.unlocked.includes(c.id);b.addEventListener('click',()=>restore(c.id),{signal:abort.signal});chapterMenu.append(b);}
     const backgroundResume=document.createElement('button');backgroundResume.className='background-resume';backgroundResume.textContent='已暫停 · 繼續';backgroundResume.hidden=true;$('#app').append(backgroundResume);
-    listen(document,'visibilitychange',()=>{if(document.hidden){mission.setPaused(true,'background');}else if(mission.pauseReasons.includes('background'))backgroundResume.hidden=false;});
+    listen(document,'visibilitychange',()=>{if(document.hidden){analytics.tick(performance.now(),{visible:false});analytics.flush();mission.setPaused(true,'background');}else if(mission.pauseReasons.includes('background'))backgroundResume.hidden=false;});
     backgroundResume.addEventListener('click',()=>{mission.setPaused(false,'background');backgroundResume.hidden=true;},{signal:abort.signal});
     window.__rainy711={
       get staging(){return {show:world.streetShow?.state,shopping:mission.state.shopping,remnant:world.remnant.state,tractor:world.director.captureFx.root.visible,microphone:!!world.actors?.root.getObjectByName('floating-singing-microphone')?.visible,phone:world.photoPhone?.position.toArray()};},get loading(){return loader.state;},get bonus(){return bonus.state;},get chapters(){return chapters.data;},restoreChapter:id=>restore(id),assist:()=>mission.machine.assist(),
@@ -165,9 +171,9 @@ async function init(){
       inspectLayout(){world.inspectLayout();},pauseForCapture(){world.stop();},resume(){world.start();},frameView:name=>world.setView(name,true),samplePose:t=>world.tick(t),
       get actorsLoaded(){return !!world.actors;},get bonesSupported(){return !!world.actors?.supported;},get camera(){return world.camera.position.toArray();},get quality(){return world.quality;},get actorsVisible(){return !!world.actors?.root.visible;},get rendererCount(){return document.querySelectorAll('canvas').length;}
     };
-  }catch(e){loader.dispose();world?.dispose();showError('無法啟動 3D 畫面。請使用支援 WebGL 2 的 Safari，然後重新載入。');console.error(e);}
+  }catch(e){analytics.fail('scene');loader.dispose();world?.dispose();showError('無法啟動 3D 畫面。請使用支援 WebGL 2 的 Safari，然後重新載入。');console.error(e);}
 }
 function dispose(){closed=true;loader.dispose();abort.abort();bonus?.dispose();exploration?.dispose();mission?.dispose();audio.dispose();world?.dispose();}
-listen(window,'pagehide',event=>{if(!event.persisted)dispose();else world?.stop();});listen(window,'pageshow',event=>{if(event.persisted)world?.start();});
+listen(window,'pagehide',event=>{analytics.tick(performance.now(),{visible:false});analytics.flush();if(!event.persisted)dispose();else world?.stop();});listen(window,'pageshow',event=>{if(event.persisted)world?.start();});
 if(import.meta.hot)import.meta.hot.dispose(dispose);
 init();

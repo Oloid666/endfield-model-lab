@@ -16,7 +16,7 @@ export function pickBonusSign(world,ray){
  }
  return false;
 }
-export function createBonus({mount,world,mission,exploration,playEffect=()=>{},roomAudio=()=>{}}){
+export function createBonus({mount,world,mission,exploration,playEffect=()=>{},roomAudio=()=>{},onAnalytics=()=>{},analyticsEnabled=false}){
  let storage;try{storage=window.localStorage;}catch{/* Ephemeral mode. */}
  const progress=new BonusProgress(),negotiation=new ClaimsNegotiation(),events=new AbortController(),stampSequence=new StampSequence(),course=new ClassCourse(),deathMeter=new SmoothMeter();
  progress.data.unlocked=false;
@@ -153,6 +153,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
  function enterLessonPage(){lessonAt=world.time;lastReveal=-1;responseIndex=0;lessonKey=`${lessonIndex}:${pageIndex}:${lessonAt}`;}
  function updateEpilogue(){const lines=['莊：龍泡泡，等等。你片尾曲太早唱了。','莊：還不能下班喔。','龍泡泡：啊，對吼！二樓還不能拆。','龍泡泡：跟我進二樓，還有任務。'];epilogueText.textContent=lines[epilogueStep];epilogueGo.textContent=epilogueStep===3?'跟上龍泡泡':epilogueStep===2?'還沒演完？':'繼續';}
  function enterFreeStreet(shortcut=false){
+  if(shortcut)onAnalytics('shortcut');
   freeGuide='house';exploration.setActive(false);flowStage='done';rebuilt=true;progress.data.unlocked=true;progress.taps=0;progress.save();
   if(shortcut){world.streetShow.reset();world.director.reset();world.streetShow.prepareIntact();}
   world.director.stuckReleased=true;world.director.finalBegun=false;world.siege.reset();
@@ -170,7 +171,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
   if(active||busy||mission.state.paused||world.streetShow?.active||!progress.data.unlocked||!['ready','complete'].includes(mission.state.phase))return;
   if(mission.state.postgame&&world.streetShow.state.mode==='collapsed'){world.streetShow.start({done:()=>open(false,skipTravel)});return;}
   snapshot={time:world.time,position:world.camera.position.clone(),quaternion:world.camera.quaternion.clone(),target:world.controls.target.clone(),fov:world.camera.fov,currentView:world.currentView,autoCamera:world.autoCamera,manualUntil:world.manualUntil,transition:world.transition,cutaway:world.cutawayActive,walking:exploration.active,paused:mission.state.paused,controls:world.controls.enabled,inert:[]};
-  exploration.setActive(false);mission.setPaused(true,'bonus');world.transition=null;world.controls.enabled=false;active=true;
+  onAnalytics('enter');exploration.setActive(false);mission.setPaused(true,'bonus');world.transition=null;world.controls.enabled=false;active=true;
   for(const node of mount.children){if([root,entry,toast,epilogue,world.container].includes(node)||node.classList.contains('background-resume'))continue;snapshot.inert.push([node,node.inert]);node.inert=true;}
   postgameDock.hidden=true;rebuildButton.hidden=true;mount.classList.add('bonus-active');root.hidden=false;toast.hidden=true;epilogue.hidden=true;route='claims';ensureRoom();if(mission.state.postgame){route='claims';}else restoreFlow();world.resize();render();updateEntry();focusContent();if(!skipTravel&&['claims','negotiation'].includes(route))travel(route,true);else {ensureRoom().setMode(isClassRoute()?'classroom':'claims');room.enter(world.time);}
  }
@@ -218,7 +219,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
    if(route==='final'){ensureRoom().setMode('classroom');room.board('下課',[],0,world.time,false,'true-fin');room.perform('gone');heading('AFTER HOURS','Fin.');button(content,'回雨夜街角','close',undefined,'bonus-primary');return;}
    if(route==='rating-result'){
     ensureRoom().setMode('classroom');room.perform(['whisper','bow','wave'][thanksStep]);room.board(thanksStep===2?'886！':'課後悄悄話',[],0,world.time,false,'thanks-'+thanksStep);
-    const lines=['偷偷跟你說，正面 711 招牌按七下，可以開啟通關後的雨夜街角喔～','感謝您的回饋，雖然沒有人會看～','886！'];
+    const lines=['偷偷跟你說，正面 711 招牌按七下，可以開啟通關後的雨夜街角喔～',analyticsEnabled?'感謝您的回饋，這次有在統計星等喔～':'感謝您的回饋，雖然沒有人會看～','886！'];
     heading('龍泡泡 · 謝幕','龍泡泡',lines[thanksStep]);button(content,thanksStep===2?'揮手告別':'繼續','thanks-next',undefined,'bonus-primary');return;
    }
    heading('笑點小學堂 · 結業','請給分。');const stars=E('div','rating-stars');stars.setAttribute('role','group');stars.setAttribute('aria-label','一至五星評分');
@@ -318,9 +319,9 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
    case 'review-claims':dialog.close();ensureRoom();resetClaims();await travel('claims');return;
    case 'rate-again':dialog.close();route='rating';render();return;
    case 'rate':selectedRating=Number(value);render();return;
-   case 'rate-submit':if(!selectedRating)return;thanksStep=0;skippedRating=false;route='rating-result';render();return;
-   case 'rate-skip':thanksStep=0;skippedRating=true;route='rating-result';render();return;
-   case 'thanks-next':thanksStep+=skippedRating&&thanksStep===0?2:1;if(thanksStep>2){flowStage='done';route='final';}render();return;
+   case 'rate-submit':if(!selectedRating)return;onAnalytics('rating',selectedRating);thanksStep=0;skippedRating=false;route='rating-result';render();return;
+   case 'rate-skip':onAnalytics('rating_skip');thanksStep=0;skippedRating=true;route='rating-result';render();return;
+   case 'thanks-next':thanksStep+=skippedRating&&thanksStep===0?2:1;if(thanksStep>2){flowStage='done';route='final';onAnalytics('complete');}render();return;
    case 'class-start':if(route==='class-invite'){resetClass();route='classroom';render();focusContent();return;}resetClass();await travel('classroom');return;
    case 'claims-menu':showClaimsMenu();return;
    case 'claims-next':advanceClaims();return;

@@ -6,3 +6,8 @@ artifacts/*.webm
 
 # Local private preview identity; GitHub Pages is the selected host.
 .openai/
+
+# Local website configuration (the example is safe to commit).
+.env
+.env.*
+!.env.example

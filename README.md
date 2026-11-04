@@ -12,6 +12,10 @@ V12 改由龍泡泡進店買餐、持相機取景及飛回看照片；莊留在�
 
 本輪飛行搖桿、清晰手機人像、登入與卡牆結尾見 [V14 紀錄](docs/LOOKDEV-V14.md)。iPhone 真機結果與桌面結果分開，不以直式模擬視窗當作真機驗證。
 
+## 網域與統計
+
+預定自訂網址：`endfield10000t.aura87.online`。GA4 為選用功能，未設定衡量 ID 時不載入統計程式；目前仍需使用者建立 GA4 並完成 Cloudflare Pages 網域設定。完整操作與事件定義見 [GA4／Cloudflare 上線交接](docs/GA4-CLOUDFLARE.md)。
+
 ## 啟動
 
 使用 Node.js 22 或更新版本。

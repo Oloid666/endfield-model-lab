@@ -24,6 +24,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: node scripts/analytics-check.mjs
       - run: node scripts/photo-camera-check.mjs
       - run: node scripts/viewer-check.mjs
       - run: node scripts/loading-check.mjs
@@ -53,6 +54,7 @@ jobs:
       - run: npm run build
         env:
           VITE_BASE_PATH: /endfield-model-lab/
+          VITE_GA4_MEASUREMENT_ID: ${{ vars.GA4_MEASUREMENT_ID }}
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
