@@ -33,7 +33,8 @@ with sync_playwright() as p:
    assert 'private' not in str(calls)
    assert len(google)==1 and 'googletagmanager.com/gtag/js' in google[0],google
    # Existing pagehide disposes listeners; telemetry must flush before disposal.
-   page.wait_for_timeout(500);page.evaluate('window.dispatchEvent(new PageTransitionEvent("pagehide",{persisted:false}))')
+   # Drive non-rendering ticks so slow software WebGL cannot starve the timer assertion.
+   page.wait_for_function('__rainy711.mission.paused===false');page.evaluate('__rainy711.tick(__rainy711.time+.01,0,false)');page.wait_for_timeout(200);page.evaluate('__rainy711.tick(__rainy711.time+.01,0,false)');page.evaluate('window.dispatchEvent(new PageTransitionEvent("pagehide",{persisted:false}))')
    names=page.evaluate('dataLayer.filter(x=>x[0]==="event").map(x=>x[1])');assert 'play_time' in names,names
   else:
    assert not google,google
