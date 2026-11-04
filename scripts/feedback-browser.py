@@ -1,5 +1,5 @@
 """Feedback form and protected admin UI with intercepted API traffic; no real messages sent."""
-import json,subprocess,tempfile,os
+import json,subprocess,tempfile,os,base64
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 ROOT=Path(__file__).resolve().parents[1]
@@ -27,13 +27,21 @@ with tempfile.TemporaryDirectory(prefix='feedback-browser-') as tmp:
   print('PASS feedback form: failed-send draft, reload, idempotent retry, real receipt, star-only fallback, optional stars, dialog, landscape and no runtime errors',flush=True);page.close()
   # Exercise the actual compiled admin entry point, with its API response intercepted.
   admin=b.new_page(viewport={'width':390,'height':844});admin_errors=[];admin.on('pageerror',lambda e:admin_errors.append(str(e)))
-  token='test-only-admin-token-1234567890123456789';seen=[]
+  token='test-only-admin-token-1234567890123456789';seen=[];mode='normal'
   def api(route):
    req=route.request;seen.append(req.url)
-   if req.headers.get('authorization')!='Bearer '+token:route.fulfill(status=401,json={'error':'unauthorized'});return
+   if mode=='network':route.abort();return
+   if mode=='unconfigured':route.fulfill(status=503,json={'error':'not_configured'});return
+   auth=req.headers.get('authorization','')
+   try:credential=base64.urlsafe_b64decode(auth.split(' ',1)[1]+'='*(-len(auth.split(' ',1)[1])%4)).decode('utf-8') if auth.startswith('Feedback ') else ''
+   except Exception:credential=''
+   if credential!=token:route.fulfill(status=401,json={'error':'unauthorized'});return
    items=[{'id':'test','created_at':1793750000000,'rating':3,'message':'<img src=x onerror=alert(1)> =not-a-formula','category':'bug','build_version':'test','phase':'complete','play_mode':'normal'}]
    route.fulfill(json={'items':items,'summary':{'total':1,'rated':1,'average_rating':3,'with_message':1},'next':None})
   admin.route('**/api/feedback*',api);admin.goto(os.environ.get('FEEDBACK_PREVIEW_URL','http://127.0.0.1:4195/')+'feedback-admin.html');admin.fill('#token','wrong-token-that-is-at-least-32-characters');admin.get_by_role('button',name='查看回饋').click();admin.get_by_role('status').filter(has_text='不正確').wait_for();assert not admin.locator('#dashboard').is_visible();admin.fill('#token',token);admin.get_by_role('button',name='查看回饋').click();admin.locator('article').wait_for();assert admin.locator('article img').count()==0;assert '<img' in admin.locator('article p').inner_text();assert admin.input_value('#token')=='';assert all(token not in x for x in seen);admin.select_option('#rating','3');admin.get_by_role('status').filter(has_text='本頁').wait_for()
   with admin.expect_download() as d:admin.click('#export')
   assert d.value.suggested_filename.endswith('.csv');admin.screenshot(path='/tmp/feedback-admin.png');admin.click('#logout');assert not admin.locator('#dashboard').is_visible();assert admin.locator('article').count()==0;assert not admin_errors,admin_errors
-  print('PASS feedback admin: authenticated read, wrong token denied, XSS-safe text, token absent from URL/input, filter, CSV and logout clears data',flush=True);b.close()
+  token='測試用中文密碼＋全形與表情🔑'*3;admin.fill('#token',token);admin.get_by_role('button',name='查看回饋').click();admin.locator('article').wait_for();assert admin.input_value('#token')=='';admin.click('#logout')
+  mode='network';admin.fill('#token',token);admin.get_by_role('button',name='查看回饋').click();admin.get_by_role('status').filter(has_text='這不是密碼不符').wait_for();assert admin.input_value('#token')==token
+  mode='unconfigured';admin.get_by_role('button',name='查看回饋').click();admin.get_by_role('status').filter(has_text='FEEDBACK_DB').wait_for();assert not admin.locator('#dashboard').is_visible();assert not admin_errors,admin_errors
+  print('PASS feedback admin: authenticated read, wrong token denied, XSS-safe text, token absent from URL/input, filter, CSV, logout, Unicode password transport, network and missing configuration errors',flush=True);b.close()

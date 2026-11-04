@@ -1,3 +1,4 @@
+import {feedbackCredential} from '../shared/feedback-auth.js';
 const ORIGINS=new Set(['https://endfield10000t.aura87.online','https://endfield-model-lab.pages.dev','https://oloid666.github.io']);
 const CATEGORIES=new Set(['general','praise','bug','idea']);
 const MODES=new Set(['normal','chapter_replay','shortcut','unknown']);
@@ -34,8 +35,8 @@ export async function handleFeedback(request,env={},now=Date.now()){
  if(!env.FEEDBACK_DB||token.length<32)return reply(503,{error:'not_configured'});
  try{
   if(request.method==='GET'){
-   const auth=request.headers.get('Authorization')||'';
-   if(!auth.startsWith('Bearer ')||!await matches(auth.slice(7),token))return reply(401,{error:'unauthorized'});
+   const auth=feedbackCredential(request.headers.get('Authorization'));
+   if(auth===null||!await matches(auth,token))return reply(401,{error:'unauthorized'});
    const url=new URL(request.url),category=url.searchParams.get('category'),rating=url.searchParams.get('rating'),cursor=url.searchParams.get('cursor');
    let before=null;if(cursor){try{before=JSON.parse(atob(cursor.replaceAll('-','+').replaceAll('_','/')));}catch{return reply(400,{error:'invalid_cursor'});}if(!Number.isSafeInteger(before?.time)||!UUID.test(before?.id||''))return reply(400,{error:'invalid_cursor'});}
    if(category&&!CATEGORIES.has(category)||rating&&!/^[1-5]$/.test(rating))return reply(400,{error:'invalid_filter'});

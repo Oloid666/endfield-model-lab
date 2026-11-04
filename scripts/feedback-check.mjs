@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {DatabaseSync} from 'node:sqlite';
+import {feedbackAuthorization,feedbackCredential} from '../shared/feedback-auth.js';
 import {handleFeedback,validFeedback} from '../server/feedback.js';
 import {createFeedbackService,feedbackEndpoint} from '../src/feedback-client.js';
 import {feedbackCSV} from '../src/feedback-export.js';
@@ -15,6 +16,10 @@ const first=data({message:"<script>alert(1)</script>'); DROP TABLE feedback; --"
 assert.equal((await post(first)).status,200);assert.equal(sqlite.prepare('SELECT COUNT(*) AS n FROM feedback').get().n,1);assert.equal((await post({...first,message:'changed'})).status,409);
 assert.equal((await post(data(),{Origin:'https://evil.example'})).status,403);assert.equal((await post(data(),{'Content-Type':'text/plain'})).status,415);assert.equal((await post(data({message:'z'.repeat(9000)}))).status,413);
 assert.equal((await handleFeedback(new Request(origin+'/api/feedback',{method:'POST',headers:{Origin:origin,'Content-Type':'application/json'},body:'{'}),env)).status,400);
+const unicode='測試用中文密碼＋全形與表情🔑'.repeat(3),encoded=feedbackAuthorization(unicode);
+assert.doesNotThrow(()=>new Headers({Authorization:encoded}));assert.equal(feedbackCredential(encoded),unicode);assert.equal(feedbackCredential('Feedback bad%header'),null);assert.equal(feedbackCredential('Feedback _w'),null);assert.equal(feedbackCredential('Bearer '+token),token);
+assert.equal((await handleFeedback(new Request(origin+'/api/feedback',{headers:{Authorization:encoded}}),{...env,FEEDBACK_ADMIN_TOKEN:unicode})).status,200);
+assert.equal((await handleFeedback(new Request(origin+'/api/feedback',{headers:{Authorization:feedbackAuthorization('錯誤密碼'.repeat(10))}}),{...env,FEEDBACK_ADMIN_TOKEN:unicode})).status,401);
 assert.equal((await list('', 'wrong')).status,401);assert.equal((await handleFeedback(new Request(origin+'/api/feedback'),env)).status,401);
 assert.equal((await handleFeedback(new Request(origin+'/api/feedback',{method:'OPTIONS',headers:{Origin:'https://oloid666.github.io'}}),env)).status,204);
 assert.equal((await handleFeedback(new Request(origin+'/api/feedback'),{})).status,503);
