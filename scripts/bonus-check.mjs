@@ -39,16 +39,16 @@ p.data.claimsSettled=true;p.save();check(new BonusProgress(storage).data.claimsS
 check(LESSONS.length,8);check(LESSONS.map(l=>l.id),['general','lino','taste','compute','cargo','pear','microwave','lyrics']);
 for(const l of LESSONS){check(l.analysis.length>=2,true);check(LESSON_NOTES[l.id].length,l.analysis.length);check(l.recap.includes('undefined'),false);for(const source of l.sources)check(new URL(source.url).protocol,'https:');}
 for(const id of ['taste','compute','pear'])check(LESSONS.find(l=>l.id===id).aside,'');
-check(LESSONS[0].recap.includes('妳剛才才說我錯棚'),false);check(LESSONS[0].aside.includes('妳剛才才說我錯棚'),true);
+check(LESSONS[0].recap.includes('妳剛才才說我錯棚'),false);check(LESSONS[0].aside,'龍泡泡：妳好意思比御坂美琴多一級？');
 check(LESSONS.at(-1).analysis.join('').includes('丙式車體險'),true);
 check(lessonProgress(3,6),60);check(wrapBoardText('黑板不壓縮文字',t=>t.length,4),['黑板不壓','縮文字']);
 check(CLASS_REQUIRED,8);const course=new ClassCourse();check(course.confirm('bad',0),false);check(course.confirm('cargo',5),false);
 for(let topic=0;topic<LESSONS.length;topic++){
  const l=LESSONS[topic];
- for(let i=0;i<lessonCardCount(l.id)-1;i++){course.confirm(l.id,i);check(course.percentage,topic*12.5);}
- course.confirm(l.id,lessonCardCount(l.id)-1);check(course.percentage,(topic+1)*12.5);check(course.eligible,topic===7);
+ for(let i=0;i<lessonCardCount(l.id)-1;i++){const before=course.percentage;course.confirm(l.id,i);check(course.percentage>before,true);check(course.eligible,false);}
+ course.confirm(l.id,lessonCardCount(l.id)-1);check(course.percentage,course.readCount/course.cardCount*100);check(course.eligible,topic===7);
  if(topic===3)check(course.certify(),false);
- for(let i=0;i<lessonCardCount(l.id);i++)course.confirm(l.id,i);check(course.completedCount,topic+1);
+ const pct=course.percentage;for(let i=0;i<lessonCardCount(l.id);i++)course.confirm(l.id,i);check(course.completedCount,topic+1);check(course.percentage,pct);
 }
 check(course.next(),null);check(course.certify(),true);course.reset();check(course.percentage,0);check(course.stamped,false);check(course.next(),'general');
 const auto=new BonusProgress(storage);auto.data.unlocked=false;check(auto.complete('ready'),false);check(auto.complete('tour'),false);check(auto.complete('complete'),true);check(auto.complete('complete'),false);check(new BonusProgress(storage).data.unlocked,true);

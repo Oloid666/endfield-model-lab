@@ -8,7 +8,7 @@ export const LESSONS=[
    "龍泡泡老師：「電量告急，將軍救急」借用《崩壞：星穹鐵道》與綠聯聯動的「爻光充能手勢曲」，這位將軍是爻光。原本替充電設備宣傳，現在被我請來救武陵電網，於是阿莊說我錯棚。",
    "龍泡泡老師：她轉頭宣布自己是「武陵的 Level 6」，最後又喊 Explosion，還承認「我早想喊看看了」！從《科學超電磁砲》借等級，再向《為美好的世界獻上祝福！》惠惠借爆裂魔法。我回她「爆裂魔法個頭啦」，因為這回被拿去當魔法的就是我。"
   ],
-  "aside": "龍泡泡：妳剛才才說我錯棚！\n莊：你借口號。我借火力。",
+  "aside": "龍泡泡：妳好意思比御坂美琴多一級？",
   "diagnosis": "手術成功，笑點死亡。",
   "sources": [
    {
@@ -140,7 +140,9 @@ export class ClassCourse{
  get completed(){return LESSONS.filter(l=>(this.steps[l.id]||0)>=lessonCardCount(l.id)).map(l=>l.id);}
  get completedCount(){return this.completed.length;}
  get eligible(){return this.completedCount>=CLASS_REQUIRED;}
- get percentage(){return Math.min(100,this.completedCount/CLASS_REQUIRED*100);}
+ get cardCount(){return LESSONS.reduce((sum,l)=>sum+lessonCardCount(l.id),0);}
+ get readCount(){return LESSONS.reduce((sum,l)=>sum+Math.min(lessonCardCount(l.id),Math.max(0,this.steps[l.id]||0)),0);}
+ get percentage(){return Math.min(100,this.readCount/this.cardCount*100);}
  confirm(id,cursor){const max=lessonCardCount(id),seen=this.steps[id]||0;if(!max||!Number.isInteger(cursor)||cursor<0||cursor>=max||cursor>seen)return false;this.steps[id]=Math.max(seen,cursor+1);return true;}
  next(after=null){return LESSONS.find(l=>!this.completed.includes(l.id))?.id||null;}
  certify(){if(!this.eligible)return false;this.stamped=true;return true;}

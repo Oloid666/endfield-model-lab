@@ -14,7 +14,8 @@ async def main():
   await page.wait_for_function('__rainy711.xaihi.loaded&&!__rainy711.mission.paused',timeout=180000)
   await page.evaluate("()=>{const g=__rainy711;g.pauseForCapture();for(let i=0;i<15&&g.mission.phase!=='hack';i++){g.tick(g.time+3,.1,false);g.missionNext();g.missionNext();}g.tick(g.time+1.4,.1,true)}")
   assert await page.evaluate('__rainy711.devices.temperature')==4
-  assert await page.locator('.tablet-access button').count()==1
+  assert await page.locator('.tablet-access button').count()==0
+  assert await page.evaluate('!!__rainy711.mission.tablet.dialogue')
   box=await page.locator('.mission-pause').bounding_box();assert box['y']<200 and box['height']<55,box
   async def advance(seconds,render=True):
    await page.evaluate('(o)=>{const g=__rainy711;const count=Math.ceil(o.seconds/.1);for(let i=0;i<count;i++)g.tick(g.time+o.seconds/count,.1,o.render&&i===count-1)}',{'seconds':seconds,'render':render})
@@ -31,14 +32,16 @@ async def main():
   await page.screenshot(path='/tmp/repair-tablet-portrait.png')
   await page.evaluate('__rainy711.resume()');await page.set_viewport_size({'width':844,'height':390});await page.wait_for_timeout(1200);await page.screenshot(path='/tmp/repair-tablet-landscape.png')
   await page.set_viewport_size({'width':390,'height':844});await page.wait_for_timeout(1200);await page.evaluate('__rainy711.pauseForCapture()');await advance(.2)
+  await talk();await advance(.4)
   q=await page.evaluate("()=>__rainy711.projectPoint(__rainy711.xaihi.screenButtons.find(b=>b.id==='scan').world)")
   await page.mouse.click((q[0]+1)*195,(1-q[1])*422);assert await page.evaluate('__rainy711.mission.tablet.stage')=='scan-php'
   await advance(2);print('PASS physical tablet and resume',flush=True)
-  await click('使用 PHP2Shell 工具');await click('偵測冰箱控制器',2);await click('使用 FrostControl 維修工具',1.3)
+  await talk()
+  await click('用工具打開後台');await click('查看冰箱設定',2);await click('連上冰箱',1.3)
   mid=await page.evaluate('__rainy711.xaihi.position');assert -.8<mid[2]<.5,mid
   await page.screenshot(path='/tmp/repair-walking.png');await advance(2)
   assert await page.evaluate('__rainy711.mission.tablet.stage')=='temperature'
-  await click('套用溫度設定',1);assert await page.evaluate('__rainy711.devices.temperature')<4
+  await click('把溫度調低',1);assert await page.evaluate('__rainy711.devices.temperature')<4
   await advance(1.1);assert await page.evaluate('__rainy711.mission.tablet.stage')=='success'
   await page.screenshot(path='/tmp/repair-fridge-cold.png');await talk();await advance(.4);await advance(2)
   assert -8<await page.evaluate('__rainy711.devices.temperature')<50
@@ -61,7 +64,7 @@ async def main():
   await page.set_viewport_size({'width':390,'height':844});await page.evaluate("document.querySelector('#app').style.setProperty('--dialogue-size','18px')");await advance(.1)
   await talk()
   await click('先去熱便當',3.3);await page.screenshot(path='/tmp/repair-meal-label.png');await talk();await advance(.4)
-  await click('偵測電網漏洞',2);await advance(1.6);await page.screenshot(path='/tmp/repair-pylon-computer.png');await talk();await advance(.4)
+  await click('找個加熱快一點的方法',2);await advance(1.6);await page.screenshot(path='/tmp/repair-pylon-computer.png');await talk();await advance(.4)
   assert await page.evaluate('__rainy711.devices.artLoaded')
   assert await page.evaluate('__rainy711.mission.tablet.dialogue.speaker')=='rapi'
   await advance(.2);assert not await page.evaluate('__rainy711.devices.censored')
@@ -72,9 +75,9 @@ async def main():
   await page.screenshot(path='/tmp/repair-rapi-after.png');await advance(1.1)
   assert await page.evaluate('__rainy711.mission.tablet.stage')=='rapi-mask'
   print('PASS cold-to-hot reversal, full song and late eye bar',flush=True)
-  await page.screenshot(path='/tmp/repair-nikke.png');await click('啟用後門',.8);await page.screenshot(path='/tmp/repair-wire-source.png');await advance(1.6);await page.screenshot(path='/tmp/repair-wire-route.png');await advance(2.1);await page.screenshot(path='/tmp/repair-wire-sink.png');await advance(2);await talk()
-  await click('800 W｜設備額定');assert await page.evaluate('__rainy711.mission.tablet.dialogue.speaker')=='xaihi';await talk()
-  await click('800 MW｜電網輸出');await click('確認套用功率');await click('開始極速加熱');assert await page.evaluate('__rainy711.mission.phase')=='credentials'
+  await page.screenshot(path='/tmp/repair-nikke.png');await click('接通天師樁電源',.8);await page.screenshot(path='/tmp/repair-wire-source.png');await advance(1.6);await page.screenshot(path='/tmp/repair-wire-route.png');await advance(2.1);await page.screenshot(path='/tmp/repair-wire-sink.png');await advance(2);await talk()
+  await click('正常加熱（800 W）');assert await page.evaluate('__rainy711.mission.tablet.dialogue.speaker')=='xaihi';await talk()
+  await click('借用電網（800 MW）');await click('確認借電');await click('開始熱便當');assert await page.evaluate('__rainy711.mission.phase')=='credentials'
   await advance(3);await page.evaluate('__rainy711.missionNext()');await page.evaluate('__rainy711.missionNext()');await advance(6.1)
   assert await page.evaluate('__rainy711.mission.phase')=='heat'
   await page.locator('.rhythm-pad').click();await advance(4);await advance(12.1)
@@ -176,6 +179,15 @@ async def main():
   await page.keyboard.up('s');await advance(.1)
   road=await page.evaluate('__rainy711.position');assert road[2]>6,road
   await page.screenshot(path='/tmp/repair-road-follow.png')
+  await page.evaluate('()=>{const g=__rainy711;for(let i=0;i<300;i++)g.tick(g.time+1/60,1/60,false)}')
+  await page.keyboard.down('w');await page.evaluate('()=>{const g=__rainy711;for(let i=0;i<360;i++)g.tick(g.time+1/60,1/60,false)}');await page.keyboard.up('w');await advance(.1)
+  assert await page.evaluate('__rainy711.position[2]')<4.5,'Could not return from road'
+  samples=await page.evaluate('()=>{const g=__rainy711,a=[];for(let i=0;i<1800;i++){g.tick(g.time+1/60,1/60,false);if(i%120===0)a.push({dragon:g.dragonPosition,meal:g.staging.remnant.position,mode:g.staging.remnant.mode})}g.tick(g.time+1/60,1/60,true);return a}')
+  assert any(sum((s['dragon'][j]-samples[0]['dragon'][j])**2 for j in [0,2])>.4 for s in samples),'Dragon stayed fixed beside idle Zhuang'
+  assert any(sum((s['meal'][j]-samples[-1]['meal'][j])**2 for j in [0,2])>.025 for s in samples),'Creature never moved during idle'
+  assert await page.evaluate('__rainy711.investigationProps.figurine.draws')==1
+  assert await page.evaluate('__rainy711.investigationProps.collectionPosition[1]')>3,'Restored collection did not return upstairs'
+  print('PASS road return, independent flight, slow creature and single-draw collectible',flush=True)
   await page.locator('.postgame-reset').click();await advance(.2)
   assert not await page.evaluate('__rainy711.mission.postgame||__rainy711.staging.remnant.visible')
   for selector in ['.walk-pad','.postgame-actions','.bonus-entry']:

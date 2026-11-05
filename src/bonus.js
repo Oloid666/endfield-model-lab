@@ -34,7 +34,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
  const root=E('section','bonus-ui');root.hidden=true;root.setAttribute('aria-label','等等，二樓還不能拆');
  const header=E('header','bonus-header'),title=E('span','bonus-room-name'),nav=E('div','bonus-nav');
  const panel=E('section','bonus-panel'),toolbar=E('div','bonus-reading-tools'),content=E('div','bonus-content');content.tabIndex=-1;panel.append(toolbar,content);
- const classMeter=E('section','bonus-class-meter');classMeter.hidden=true;const deathLabel=E('span','','笑點死亡率 0%');deathLabel.setAttribute('aria-live','polite');
+ const classMeter=E('section','bonus-class-meter');classMeter.hidden=true;const deathLabel=E('span','','全課進度 0%');deathLabel.setAttribute('aria-live','polite');
  const readingMeter=E('div','bonus-lesson-progress'),readingLabel=E('span'),readingTrack=E('div','bonus-lesson-track'),readingFill=E('i');readingMeter.hidden=true;readingTrack.setAttribute('role','progressbar');readingTrack.setAttribute('aria-label','全部題目進度');readingTrack.setAttribute('aria-valuemin','0');readingTrack.setAttribute('aria-valuemax','100');readingTrack.append(readingFill);readingMeter.append(readingLabel,readingTrack);classMeter.append(deathLabel,readingMeter);panel.prepend(classMeter);
  const classDock=E('footer','bonus-class-dock'),classPrimary=E('button','bonus-primary','開講 →'),classContinue=E('button','bonus-class-continue','繼續看 →');classDock.hidden=true;classPrimary.type=classContinue.type='button';classPrimary.dataset.action='class-next';classContinue.dataset.action='class-continue';classContinue.hidden=true;classDock.append(classContinue,classPrimary);
  const claimsDock=E('footer','bonus-class-dock bonus-claims-dock'),claimsPrimary=E('button','bonus-primary','開始調解 →');claimsDock.hidden=true;claimsPrimary.type='button';claimsPrimary.dataset.action='claims-next';claimsDock.append(claimsPrimary);
@@ -137,7 +137,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
  function selectLesson(id,resume=false){onAnalytics('class-start',id);lessonIndex=LESSONS.findIndex(l=>l.id===id);if(lessonIndex<0)lessonIndex=0;const steps=resume?Math.min(course.steps[LESSONS[lessonIndex].id]||0,lessonCardCount(id)-1):0;const last=1+LESSONS[lessonIndex].analysis.length;pageIndex=Math.min(last,steps);enterLessonPage();responseIndex=Math.max(0,steps-last);route='lesson';}
  function renderClassControls(){
   const show=active&&(isClassRoute()||route==='class-invite');classDock.hidden=!show;classMeter.hidden=!active||!isClassRoute();root.classList.toggle('bonus-class-flow',show);root.dataset.classStage=route;classContinue.hidden=true;
-  readingMeter.hidden=route!=='lesson';if(route==='lesson'){const pct=Math.floor(Math.min(lessonCardCount(LESSONS[lessonIndex].id),pageIndex+responseIndex+1)/lessonCardCount(LESSONS[lessonIndex].id)*100);readingLabel.textContent=`第 ${lessonIndex+1}/8 題 · 本題 ${Math.min(lessonCardCount(LESSONS[lessonIndex].id),pageIndex+responseIndex+1)}/${lessonCardCount(LESSONS[lessonIndex].id)} 頁`;readingTrack.setAttribute('aria-valuenow',String(pct));readingFill.style.transform=`scaleX(${pct/100})`;}
+  readingMeter.hidden=false;
   classPrimary.disabled=['class-wait','class-stamping'].includes(route);
   classPrimary.textContent=route==='class-invite'?'來上課吧 →':route==='classroom'?(course.stamped?(course.next()?'繼續看（自由）→':'查看死亡證明'):'開講 →'):route==='class-result'?'下課，去評分':route==='class-wait'?'笑點正在死亡…':route==='class-stamping'?'正在蓋章…':'繼續 →';
  }
@@ -146,7 +146,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
   if(route==='lesson'){button(d,'上一段','prev');button(d,'看黑板','board');button(d,'出處與劇內設定','sources');}
   button(d,progress.data.reading?'切回演出':'專心閱讀','reading');button(d,`字級 ${progress.data.textSize} · 調整`,'text-size');
   const details=E('details','bonus-class-catalog');details.append(E('summary','','八題課程 · 已讀重看'));LESSONS.filter(l=>course.completed.includes(l.id)).forEach(l=>button(details,`${course.completed.includes(l.id)?'本堂 ✓ ':progress.data.read.includes(l.id)?'讀過 · ':''}${l.title}`,'lesson-id',l.id));d.append(details);
-  if(course.stamped)button(d,'查看死亡證明','class-certificate');button(d,'返回街景','close');button(d,'重新開始雨夜','restart-night');button(d,'重新上課 · 死亡條歸零','class-reset',undefined,'bonus-text-button');
+  if(course.stamped)button(d,'查看死亡證明','class-certificate');button(d,'返回街景','close');button(d,'重新開始雨夜','restart-night');button(d,'重新上課 · 進度歸零','class-reset',undefined,'bonus-text-button');
  }
  function advanceClass(){
   if(route==='class-invite'){dispatch('class-start');return;}
@@ -170,7 +170,9 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
  function syncClass(time){
   if(!isClassRoute())return;
   deathMeter.set(course.percentage,time,reducedMotion());const value=deathMeter.value(time),display=Math.min(100,Math.round(value));
-  deathLabel.textContent=`笑點死亡率 ${display}%`;
+  deathLabel.textContent=`全課進度 ${display}%`;
+  readingLabel.textContent=`已完成 ${course.completedCount}／8 題`;
+  readingTrack.setAttribute('aria-valuenow',String(display));readingFill.style.transform=`scaleX(${value/100})`;
   if(route==='class-wait'&&value>=99.99){
    stampKind='class';stampSequence.start(time,reducedMotion());stampPhase='';route='class-stamping';room.resetPaper();room.board('笑點已死亡',['手術成功，笑點死亡。','本教室不提供笑點復活服務。'],0,time,true,'graduation');room.perform('dismissed');room.stamp(time,'笑點已死亡');render();classPrimary.focus({preventScroll:true});
   }

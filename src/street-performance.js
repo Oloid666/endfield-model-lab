@@ -12,7 +12,7 @@ export function createStreetPerformance({world,mission,mount,playEffect=()=>{},h
  const geo=r.own(new T.ShapeGeometry(shape));for(let i=0;i<9;i++){const n=r.mesh(geo,mat,stars);n.userData.index=i;}
  let active=false,age=0,last=0,first=false,kind='restore',indices={collapse:0,restore:0},lines=[],onDone=null,from=null,mode='intact',snapshotReady=false,snapped=false,wideIndex=0,nextWide=0;
  const paused=()=>document.hidden||mission.pauseReasons.some(p=>p!=='street-show');
- function setBuilding(p){const d=world.store.destruction;d.updateRewind(kind==='restore'?p:1-p);if(p===1){if(kind==='restore')d.showFlashback();else{d.restorePresent();d.beginRewind();d.updateRewind(0);}mode=kind==='restore'?'intact':'collapsed';}world.director.vcrEffects?.update(mission.state,{intact:kind==='restore'?p>=.9:p<.1});world.weather.invalidateReflection();}
+ function setBuilding(p){const d=world.store.destruction;d.updateRewind(kind==='restore'?p:1-p);world.investigationProps?.setCollectionDamage(99*(kind==='restore'?1-p:p));if(p===1){if(kind==='restore')d.showFlashback();else{d.restorePresent();d.beginRewind();d.updateRewind(0);}mode=kind==='restore'?'intact':'collapsed';}world.director.vcrEffects?.update(mission.state,{intact:kind==='restore'?p>=.9:p<.1});world.weather.invalidateReflection();}
  function applyCamera(shot){world.transition=null;world.currentView=null;world.camera.position.fromArray(shot.position);world.controls.target.fromArray(shot.target);world.camera.fov=shot.fov;world.camera.updateProjectionMatrix();world.camera.lookAt(world.controls.target);world.cameraSafety?.sync();}
  function handoff(){
   applyCamera(streetWide(wideIndex,world.camera.aspect<.85));
@@ -47,7 +47,7 @@ export function createStreetPerformance({world,mission,mount,playEffect=()=>{},h
   world.concert.update(pos,age,age>=stage.buildAt,world.camera,'low',reduced);
   if(age>=stage.buildAt&&!paused())hum(age);if(render){world.renderer.info.reset();world.composer.render();world.renderCount++;}if(stage.done&&!paused())finish();
  },prepareIntact(){
-  const d=world.store.destruction;d.reset();d.setProgress(99);d.update(world.time+12,12);d.beginRewind();d.showFlashback();snapshotReady=true;mode='intact';world.weather.invalidateReflection();
+  const d=world.store.destruction;d.reset();d.setProgress(99);d.update(world.time+12,12);d.beginRewind();d.showFlashback();world.investigationProps?.setCollectionDamage(0);snapshotReady=true;mode='intact';world.weather.invalidateReflection();
  },reset(){world.autoCamera=true;world.manualUntil=world.time;world.currentView=null;world.transition=null;world.concert.reset();cover.hidden=true;world.controls.enabled=true;if(active){active=false;mission.setPaused(false,'street-show');}mount.classList.remove('street-show-active');dock.hidden=true;stars.visible=false;indices={collapse:0,restore:0};mode='intact';snapshotReady=false;nextWide=wideIndex=0;onDone=null;},dispose(){cover.remove();dock.remove();stars.removeFromParent();}};
  function songDuration(){return lines.reduce((sum,s)=>sum+Math.max(3,Array.from(s).length/5.5+1),0);}
  world.streetShow=api;return api;

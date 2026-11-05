@@ -3,7 +3,7 @@ import {downloadModel} from './model-download.js';
 import * as T from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 
-const visiblePhases=new Set(['flashback','hack','credentials','heat-demo','heat','flashback-end']);
+const visiblePhases=new Set(['flashback','hack','credentials','heat-demo','meal-spawn','heat','flashback-end']);
 const clamp=v=>T.MathUtils.clamp(Number(v)||0,0,1);
 const ids={spine:45,neck:46,head:47,eyeL:74,eyeR:55,armL:219,elbowL:221,wristL:223,armR:291,elbowR:293,wristR:295,thighL:15,kneeL:16,footL:17,thighR:24,kneeR:25,footR:26,thighDL:37,kneeDL:38,footDL:39,thighDR:33,kneeDR:34,footDR:35};
 
@@ -83,7 +83,8 @@ export function buildXaihi(scene,r,gltf){
   const api={root,
     tabletTap(ray){if(!phone.visible)return null;const hit=ray.intersectObject(screen)[0];if(!hit?.uv)return null;const y=(1-hit.uv.y)*768;return hitButtons.find(b=>y>=b.y&&y<=b.y+112)?.id||null;},
     tabletFrame(aspect=.46){const center=screen.getWorldPosition(new T.Vector3()),normal=new T.Vector3(0,0,1).applyQuaternion(screen.getWorldQuaternion(new T.Quaternion())),eye=center.clone().addScaledVector(normal,.55).add(new T.Vector3(-.22,.06,.10).applyQuaternion(root.quaternion));if(aspect>=1){const side=new T.Vector3(1,0,0).applyQuaternion(screen.getWorldQuaternion(new T.Quaternion())).multiplyScalar(.1);center.add(side);eye.add(side);}const forward=center.clone().sub(eye).normalize(),right=forward.clone().cross(new T.Vector3(0,1,0)).normalize(),up=right.clone().cross(forward),wanted=new T.Vector3(0,1,0).applyQuaternion(screen.getWorldQuaternion(new T.Quaternion()));const roll=Math.atan2(-wanted.dot(right),wanted.dot(up));return {center:center.toArray(),position:eye.toArray(),fov:aspect<1?60:44,roll};},
-    get loaded(){return !disposed;},get state(){return {...status,screenButtons:phone.visible?hitButtons.map(b=>({id:b.id,world:screen.localToWorld(new T.Vector3(0,.23*(.5-(b.y+56)/768),0)).toArray()})):[],handPositions:['L','R'].map(side=>poses['wrist'+side]?.bone.getWorldPosition(new T.Vector3()).toArray()),position:root.position.toArray(),pose:{head:poses.head?.bone.quaternion.toArray(),wrist:poses.wristR?.bone.quaternion.toArray(),arm:poses.armL?.bone.quaternion.toArray()}};},
+    get headPosition(){return poses.head?.bone.getWorldPosition(v).toArray();},
+    get loaded(){return !disposed;},get state(){return {...status,headPosition:api.headPosition,screenButtons:phone.visible?hitButtons.map(b=>({id:b.id,world:screen.localToWorld(new T.Vector3(0,.23*(.5-(b.y+56)/768),0)).toArray()})):[],handPositions:['L','R'].map(side=>poses['wrist'+side]?.bone.getWorldPosition(new T.Vector3()).toArray()),position:root.position.toArray(),pose:{head:poses.head?.bone.quaternion.toArray(),wrist:poses.wristR?.bone.quaternion.toArray(),arm:poses.armL?.bone.quaternion.toArray()}};},
     setPosition(x,y,z){root.position.set(x,y,z);restPosition.copy(root.position);},
     setHeading(yaw){root.rotation.y=Number(yaw)||0;},
     reset(){gripCache=null;phase='';action='waiting';root.visible=false;root.position.copy(restPosition);root.rotation.y=2;phone.visible=meal.visible=false;for(const p of Object.values(poses)){p.bone.position.copy(p.rest);p.bone.quaternion.copy(p.q);}for(const lid of eyelids)lid.bone.position.copy(lid.rest);Object.assign(status,{phase,action,visible:false,headYaw:0,phoneVisible:false,mealVisible:false});},
@@ -98,13 +99,13 @@ export function buildXaihi(scene,r,gltf){
       action=operating?'microwave':receive?'receive-lunch':hack?'terminal':'waiting';
       const walking=['walk-fridge','walk-counter'].includes(stage);let distance=0;
       if(walking)distance=travel((state.tablet.age||0)/3.2,stage==='walk-counter');
-      else if(['temperature','cooling','success','defrost','hot'].includes(stage)){root.position.set(1.2,restPosition.y,-1.35);root.rotation.y=Math.PI;}
-      else {root.position.copy(restPosition);root.rotation.y=2;}
+      else if(['temperature','cooling','success','defrost','hot'].includes(stage)){root.position.set(1.2,restPosition.y,-1.35);const reaction=stage==='success'||stage==='hot';root.rotation.y=Math.PI-(reaction?.69*clamp((state.tablet.age||0)/.6):0);}
+      else {root.position.copy(restPosition);root.rotation.y=phase==='meal-spawn'?1.6:2;}
       const beat=Math.sin(time*1.1),flinch=phase==='heat-demo'?Math.max(0,Math.sin((state.phaseElapsed||0)*3.1))*.08:0;
       for(const p of Object.values(poses))p.bone.position.copy(p.rest);
       pose('spine',Math.sin(time*.8)*.006+(hack?.035:0)-flinch*.13,0,beat*.004);
       pose('neck',hack?.045:0,0,0);
-      const headYaw=cue==='avert'?.38:cue==='side-eye'?-.65:readingLabel?-.10:hack?-.22:-.65,nod=cue==='satisfied'?Math.sin(Math.min(1,state.tablet.age/1.2)*Math.PI)*.06:0;pose('head',readingLabel?.28:(hack?.14:.015)+nod,headYaw,Math.sin(time*.43)*.008);
+      const fridgeReaction=stage==='success'||stage==='hot',birth=phase==='meal-spawn',headYaw=cue==='avert'?.38:cue==='side-eye'?-.65:readingLabel?-.10:birth?0:fridgeReaction?-.44:hack?-.22:-.65,nod=cue==='satisfied'?Math.sin(Math.min(1,state.tablet.age/1.2)*Math.PI)*.06:0;pose('head',readingLabel?.28:(birth?.16:fridgeReaction?-.03:hack?.14:.015)+nod,headYaw,Math.sin(time*.43)*.008);
       // Relax the A-pose, then bring the real forearms toward the terminal.
       pose('armL',hack?-.13:receive?-.18:0,.02,-.56+(hack?.10:0));
       pose('elbowL',hack?-1.22:receive?-.88:-.12,0,-.02);pose('wristL',hack?-.5:receive?-.06:0,.06,0);

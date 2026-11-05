@@ -1,6 +1,6 @@
 import * as T from 'three';
 import {optimizeStaticSet} from './static-batches.js';
-import {signedTemperature} from './vcr-tablet.js';
+import {signedTemperature,wireProgress} from './vcr-tablet.js';
 
 export function buildVcrEffects(scene,r){
  const root=new T.Group();root.name='cold-chain-and-grid-props';scene.add(root);
@@ -22,7 +22,8 @@ export function buildVcrEffects(scene,r){
  for(const x of [4.58,4.35])r.box(root,'#52685f',[x,1.16,.7],[.13,.22,.2]);
  r.cylinder(root,'#96bca8',[3.99,1.6,1.43],.05,.07).rotation.z=Math.PI/2;
  const flowMat=r.own(new T.ShaderMaterial({transparent:true,depthWrite:false,toneMapped:false,uniforms:{head:{value:0}},vertexShader:'varying float along;void main(){along=uv.x;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',fragmentShader:'varying float along;uniform float head;void main(){float front=(1.-smoothstep(head-.012,head+.012,along));float tail=smoothstep(head-.16,head-.13,along);float a=front*tail;gl_FragColor=vec4(.45,1.,.74,a*.94);}'}));
- const flow=r.mesh(r.own(new T.TubeGeometry(path,100,.037,5,false)),flowMat,root);flow.frustumCulled=false;
+ const flow=r.mesh(r.own(new T.TubeGeometry(path,100,.060,5,false)),flowMat,root);flow.frustumCulled=false;
+ const energyHead=r.mesh(r.geometry('SphereGeometry',.11,8,5),r.own(new T.MeshBasicMaterial({color:'#d0ffda',toneMapped:false})),root);energyHead.name='wire-energy-head';energyHead.visible=false;
  r.cylinder(root,'#95b9ad',[7.4,1.2,-14.56],.055,.06).rotation.x=Math.PI/2;
  const consoleRoot=new T.Group();consoleRoot.name='pylon-03-maintenance-console';consoleRoot.position.set(7.4,0,-14.9);root.add(consoleRoot);
  r.box(consoleRoot,'#314b4b',[0,.7,0],[1.15,1.25,.58],{emissive:'#153032',emissiveIntensity:.4});r.box(consoleRoot,'#5c7271',[0,1.36,.16],[1.3,.08,.8]);r.box(consoleRoot,'#1b3038',[0,1.85,-.1],[1.24,.84,.10]);r.box(consoleRoot,'#1b3038',[0,1.41,.30],[.67,.035,.22]);r.box(consoleRoot,'#849b91',[.48,1.42,.28],[.08,.035,.11]);r.box(consoleRoot,'#203b37',[0,2.48,0],[1.52,.08,1.2]);optimizeStaticSet(consoleRoot,r);
@@ -42,6 +43,6 @@ export function buildVcrEffects(scene,r){
   const mode=stage==='defrost'?'rising':hot?'hot':'cool';display(temperature,mode,past);railMat.color.set(mode==='cool'?'#b6eaff':mode==='rising'?'#ffc65b':'#ff6244');railMat.color.multiplyScalar(hot&&mode==='hot'&&!reduced?.85+.15*Math.sin((s?.clock||0)*3)**2:1);
   frost.material.opacity=past?Math.max(0,Math.min(.16,-temperature/80)):0;frost.visible=frost.material.opacity>0;
   vapor.visible=past&&stage==='hot';for(let i=0;i<6;i++){const p=reduced?.3:(((s?.clock||0)*.3+i/6)%1);dummy.position.set(1+(i%3)*.22,1.95+p*.6,-1.85);dummy.scale.set(.035+p*.10,.06+p*.12,.035);dummy.updateMatrix();vapor.setMatrixAt(i,dummy.matrix);}vapor.instanceMatrix.needsUpdate=true;
-  flow.visible=past&&stage==='cable';if(flow.visible)flowMat.uniforms.head.value=age/6;
- },get state(){return {active,hot,stage,age,temperature,artLoaded,censored,fridgeVisible:fridge.visible};}};
+  flow.visible=past&&stage==='cable';energyHead.visible=flow.visible;if(flow.visible){flowMat.uniforms.head.value=wireProgress(age);path.getPointAt(wireProgress(age),energyHead.position);}
+ },get state(){return {active,hot,stage,age,temperature,artLoaded,censored,fridgeVisible:fridge.visible,energyVisible:energyHead.visible,energyPosition:energyHead.position.toArray()};}};
 }
