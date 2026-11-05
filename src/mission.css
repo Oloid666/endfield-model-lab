@@ -104,3 +104,11 @@
 
 .mission-complete .walk-toggle{display:block!important}.mission-complete:not(.walking-mode) .walk-toggle{display:block!important}
 .mission-shell[data-phase="energy"] .mission-status-title::before{content:"🔋✕ ";font-size:1.7em;color:#ff655c;text-shadow:0 0 14px #ff3939;animation:power-warning .8s infinite alternate}@keyframes power-warning{to{opacity:.36;filter:brightness(1.8)}}
+/* Same thumb target before and after pause, including background recovery. */
+.mission-pause{top:auto!important;left:auto!important;right:calc(20px + env(safe-area-inset-right));bottom:calc(10px + env(safe-area-inset-bottom));z-index:12;min-height:46px;min-width:74px;font-size:14px!important}
+.tablet-access{position:absolute;left:16px;right:105px;bottom:calc(15px + env(safe-area-inset-bottom));padding:12px;background:#123530ee;border:1px solid #d2c18b77;border-radius:12px;pointer-events:auto;max-height:28vh;overflow:auto;color:#eee7c9;font-size:13px}.tablet-access p{margin:6px 0;white-space:pre-line}.tablet-access button{font:inherit;padding:10px;margin:4px;border:1px solid #c3b477;background:#3e6250;color:#fff0be;border-radius:8px;min-height:44px}.tablet-access[hidden]{display:none}
+@media(orientation:landscape){.tablet-access{left:auto;width:310px;max-height:35vh}}
+
+.fx-preparing{position:absolute;z-index:30;left:20px;right:20px;bottom:calc(90px + env(safe-area-inset-bottom));padding:18px;border:1px solid #caba87;border-radius:14px;background:#102e32f2;color:#efe7cc;text-align:center;pointer-events:none}.fx-preparing[hidden]{display:none}.fx-preparing::before{content:"";display:inline-block;width:15px;height:15px;margin-right:10px;border:2px solid #d0c39b55;border-top-color:#eee4c2;border-radius:50%;animation:fx-preparing-spin .8s linear infinite}@keyframes fx-preparing-spin{to{transform:rotate(360deg)}}@media(prefers-reduced-motion:reduce){.fx-preparing::before{animation:none}}
+
+.tablet-access button[data-tablet-action='800mw']{background:#88652c;border-color:#f7cd86}.tablet-access button:disabled{opacity:.5}

@@ -49,21 +49,38 @@ export function buildXaihi(scene,r,gltf){
   }
   function pose(name,pitch=0,yaw=0,roll=0){const p=poses[name];if(!p)return;q.setFromAxisAngle(p.x,pitch).multiply(axis.setFromAxisAngle(p.y,yaw)).multiply(axis.setFromAxisAngle(p.z,roll));p.bone.quaternion.copy(p.q).multiply(q);}
   root.rotation.y=2;
-  const phoneOffset=new T.Vector3(0,.05,.025),mealOffset=new T.Vector3(0,.02,.075);
+  const phoneOffset=new T.Vector3(.025,.08,.13),mealOffset=new T.Vector3(0,.02,.075);
   const phone=new T.Group();phone.name='xaihi-terminal';root.add(phone);
-  r.box(phone,'#172b31',[0,0,0],[.105,.175,.018],{roughness:.35,metalness:.55});
-  r.box(phone,'#b5d1c2',[0,.001,.013],[.089,.149,.004],{emissive:0x76b7a1,emissiveIntensity:.65,roughness:.4});
-  for(let i=0;i<4;i++)r.box(phone,'#315c58',[0,.045-i*.028,.017],[.061,.007,.002],{roughness:.6});
+  r.box(phone,'#172b31',[0,0,0],[.27,.19,.014],{roughness:.35,metalness:.55});
+  r.box(phone,'#b5d1c2',[0,.001,.013],[.252,.172,.004],{emissive:0x76b7a1,emissiveIntensity:.65,roughness:.4});
+  const canvas=document.createElement('canvas');canvas.width=1024;canvas.height=768;const ctx=canvas.getContext('2d'),texture=r.own(new T.CanvasTexture(canvas));texture.colorSpace=T.SRGBColorSpace;
+  const screen=r.mesh(r.geometry('PlaneGeometry',.25,.17),r.own(new T.MeshBasicMaterial({map:texture})),phone,[0,0,.017]);let pageKey='',hitButtons=[];
+  function paint(tablet){const key=JSON.stringify(tablet&&[tablet.stage,tablet.note,tablet.lines]);if(key===pageKey)return;pageKey=key;ctx.fillStyle='#0b292b';ctx.fillRect(0,0,1024,768);ctx.fillStyle='#91d8bb';ctx.font='bold 45px sans-serif';ctx.fillText(tablet?.title||'武陵 · 管理終端',42,74);ctx.font='31px sans-serif';ctx.fillStyle='#eee5c8';(tablet?.lines||['遠端設備連線']).forEach((line,i)=>ctx.fillText(line,42,145+i*58));
+   if(tablet?.note){ctx.fillStyle='#ffd58a';tablet.note.split('\n').forEach((line,i)=>ctx.fillText(line,42,370+i*42));}
+   hitButtons=[];(tablet?.buttons||[]).forEach(([id,label],i)=>{const y=478+i*130;ctx.fillStyle=id==='800mw'?'#946232':'#41695b';ctx.fillRect(30,y,964,112);ctx.strokeStyle='#d7c58e';ctx.strokeRect(30,y,964,112);ctx.fillStyle='#fff0bf';ctx.font='bold 36px sans-serif';ctx.fillText(label,55,y+68);hitButtons.push({id,y});});texture.needsUpdate=true;
+  }
+  const bottle=new T.Group();bottle.name='xaihi-pear-drink';root.add(bottle);r.mesh(r.geometry('CylinderGeometry',.035,.035,.17,12),r.material('#bbcfb0',{roughness:.25}),bottle,[0,0,0]);r.box(bottle,'#f1e5bf',[0,0,.035],[.05,.07,.004]);r.cylinder(bottle,'#d6b36f',[0,.095,0],.027,.025);bottle.visible=false;
+
   const meal=new T.Group();meal.name='xaihi-lunch';root.add(meal);
   r.box(meal,'#dedac1',[0,0,0],[.32,.075,.24],{roughness:.65});
   r.box(meal,'#b5ad8c',[0,.045,0],[.30,.02,.22],{roughness:.72});
   r.box(meal,'#3d7456',[0,.058,.015],[.06,.003,.18],{roughness:.66});
   root.traverse(n=>{if(n.isMesh)n.userData.dynamic=true;});
   let disposed=false,phase='',action='waiting',time=0;
+  // Solve the real upper arm and elbow toward a held tablet; keep the source rig unchanged.
+  const ikOrigin=new T.Vector3(),ikEnd=new T.Vector3(),ikTarget=new T.Vector3(),ikFrom=new T.Vector3(),ikTo=new T.Vector3(),ikWorld=new T.Quaternion(),ikParent=new T.Quaternion(),ikTurn=new T.Quaternion();
+  function holdArm(side,target){const end=poses['wrist'+side]?.bone;if(!end)return;ikTarget.copy(target);root.localToWorld(ikTarget);
+   for(let i=0;i<5;i++)for(const name of ['elbow','arm']){const bone=poses[name+side]?.bone;if(!bone)continue;bone.getWorldPosition(ikOrigin);end.getWorldPosition(ikEnd);ikFrom.copy(ikEnd).sub(ikOrigin);ikTo.copy(ikTarget).sub(ikOrigin);if(ikFrom.lengthSq()<1e-8||ikTo.lengthSq()<1e-8)continue;
+    ikTurn.setFromUnitVectors(ikFrom.normalize(),ikTo.normalize());bone.getWorldQuaternion(ikWorld);bone.parent.getWorldQuaternion(ikParent).invert();bone.quaternion.copy(ikParent.multiply(ikTurn.multiply(ikWorld)));bone.updateWorldMatrix(false,true);
+   }
+  }
+  const tabletLeft=new T.Vector3(-.32,1.16,.58),tabletRight=new T.Vector3(.15,1.16,.58);
   const restPosition=root.position.clone();
   const status={loaded:true,phase:'',action:'waiting',visible:false,bones:bones.length,scale,headYaw:0,phoneVisible:false,mealVisible:false};
   const api={root,
-    get loaded(){return !disposed;},get state(){return {...status,position:root.position.toArray(),pose:{head:poses.head?.bone.quaternion.toArray(),wrist:poses.wristR?.bone.quaternion.toArray(),arm:poses.armL?.bone.quaternion.toArray()}};},
+    tabletTap(ray){if(!phone.visible)return null;const hit=ray.intersectObject(screen)[0];if(!hit?.uv)return null;const y=(1-hit.uv.y)*768;return hitButtons.find(b=>y>=b.y&&y<=b.y+112)?.id||null;},
+    tabletFrame(){const center=screen.getWorldPosition(new T.Vector3()),eye=root.localToWorld(new T.Vector3(-.48,1.70,.20));return {center:center.toArray(),position:eye.toArray()};},
+    get loaded(){return !disposed;},get state(){return {...status,screenButtons:phone.visible?hitButtons.map(b=>({id:b.id,world:screen.localToWorld(new T.Vector3(0,.17*(.5-(b.y+56)/768),0)).toArray()})):[],position:root.position.toArray(),pose:{head:poses.head?.bone.quaternion.toArray(),wrist:poses.wristR?.bone.quaternion.toArray(),arm:poses.armL?.bone.quaternion.toArray()}};},
     setPosition(x,y,z){root.position.set(x,y,z);restPosition.copy(root.position);},
     setHeading(yaw){root.rotation.y=Number(yaw)||0;},
     reset(){phase='';action='waiting';root.visible=false;root.position.copy(restPosition);phone.visible=meal.visible=false;for(const p of Object.values(poses)){p.bone.position.copy(p.rest);p.bone.quaternion.copy(p.q);}for(const lid of eyelids)lid.bone.position.copy(lid.rest);Object.assign(status,{phase,action,visible:false,headYaw:0,phoneVisible:false,mealVisible:false});},
@@ -73,9 +90,10 @@ export function buildXaihi(scene,r,gltf){
       Object.assign(status,{phase,visible});if(!visible)return;
       const gesture=state.node?.gesture||state.gesture||'',text=state.node?.text||state.text||'';
       const operating=['heat-demo','heat'].includes(phase),leaving=phase==='flashback-end';
-      const hack=operating||gesture==='phone'||/PHP|電網|漏洞|終端|駭|加速|三分鐘/.test(text);
+      const hack=!!state.tablet||operating||gesture==='phone'||/PHP|電網|漏洞|終端|駭|加速|三分鐘/.test(text);
       const receive=leaving||gesture==='receive'||gesture==='hold';
       action=operating?'microwave':receive?'receive-lunch':hack?'terminal':'waiting';
+      if(state.tablet){const near=['hot','drink'].includes(state.tablet.stage);root.position.lerp(new T.Vector3(near?1.95:restPosition.x,restPosition.y,near?-1.25:restPosition.z),1-Math.exp(-Math.max(0,delta)*4));}
       const beat=Math.sin(time*1.1),tap=hack?Math.max(0,Math.sin(time*4.2))*.09:0,flinch=phase==='heat-demo'?Math.max(0,Math.sin((state.phaseElapsed||0)*3.1))*.08:0;
       for(const p of Object.values(poses))p.bone.position.copy(p.rest);
       pose('spine',Math.sin(time*.8)*.006+(hack?.035:0)-flinch*.13,0,beat*.004);
@@ -91,9 +109,11 @@ export function buildXaihi(scene,r,gltf){
       for(const lid of eyelids)lid.bone.position.lerpVectors(lid.rest,lid.target,blink);
       for(let i=0;i<secondary.length;i++)pose(secondary[i],Math.sin(time*.85-i*.4)*.009,0,Math.sin(time*.63-i*.6)*.005);
       root.updateMatrixWorld(true);
-      phone.visible=hack&&!leaving;meal.visible=receive;
+      if(hack){const pressing=!!state.tablet&&state.tablet.age<.28;tabletRight.x=pressing?.015:.15;tabletRight.y=pressing?1.26:1.16;holdArm('L',tabletLeft);holdArm('R',tabletRight);}
+      paint(state.tablet);phone.visible=hack&&!leaving;bottle.visible=!!state.fridgeHot&&state.tablet?.stage!=='hot';meal.visible=receive;
       const wrist=poses.wristL?.bone;
-      if(wrist){wrist.getWorldPosition(v);root.worldToLocal(v);phone.position.copy(v).add(phoneOffset);phone.rotation.set(-.3,Math.PI-.15,-.05);meal.position.copy(v).add(mealOffset);meal.rotation.set(-.06,0,0);}
+      if(wrist){wrist.getWorldPosition(v);root.worldToLocal(v);phone.position.copy(v).add(phoneOffset);phone.rotation.set(.95,Math.PI,0);if(hack)phone.position.set(-.095,1.23,.58);meal.position.copy(v).add(mealOffset);meal.rotation.set(-.06,0,0);}
+      if(bottle.visible&&state.tablet?.stage==='drink'&&poses.wristR){poses.wristR.bone.getWorldPosition(v);root.worldToLocal(v);bottle.position.copy(v).add(new T.Vector3(0,.04,.02));}else if(bottle.visible){v.set(3.96,1.355,1.43);root.worldToLocal(v);bottle.position.copy(v);}
       Object.assign(status,{action,headYaw,phoneVisible:phone.visible,mealVisible:meal.visible});
     },
     dispose(){if(disposed)return;disposed=true;api.reset();status.loaded=false;root.removeFromParent();},

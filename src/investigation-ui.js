@@ -56,6 +56,8 @@ export function createInvestigationUI({mount,machine,capture,onAuto,getAuto,onGu
  let sourceAnchor=0,perfAnchor=performance.now();
  function source(e){let stamp=Number(e?.timeStamp)||performance.now();if(stamp>1e12)stamp-=performance.timeOrigin;return sourceAnchor+(stamp-perfAnchor)/1000;}
  function update(s){
+  if(s.tablet){root.hidden=true;auto.hidden=true;return;}
+
    if(['intro','ready'].includes(s.phase)&&photo){photo=null;viewer.reset();}
    if(pendingCapture&&!s.paused&&s.phase==='photo'){pendingCapture=false;machine.takePhoto();return;}
    if(s.phase!=='photo-review'&&viewer.active)viewer.hide();

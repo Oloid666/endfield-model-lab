@@ -133,7 +133,7 @@ export function buildMicrowave(scene,r,{position=[3.45,.31,1.43]}={}){
     const strong=mode==='burning'||mode==='heating'&&(heat.powered||heat.holding),cycle=((clock*.55)%1+1)%1;
     const faultBurst=cycle<.1||cycle>.18&&cycle<.29;
     arcPulse=reducedMotion?(strong?.75:.45):strong?.72+.28*Math.sin(clock*5.2)**2:faultBurst?.9:0;
-    arcActive=arcPulse>0&&mode!=='clean';activeArcs=arcActive?(strong?4:2):0;arcs.visible=faultHalo.visible=arcActive;
+    arcActive=arcPulse>0&&mode!=='clean';activeArcs=arcActive?(strong?4:2):0;if(state.tabletMode&&state.phase==='meal-spawn'){arcActive=true;activeArcs=Math.min(4,1+Math.floor((state.phaseElapsed||0)/1.5));}arcs.visible=faultHalo.visible=arcActive;
     arcCoreRadius=arcActive?(strong?.017:.01)*(reducedMotion?.85:.8+arcPulse*.3):0;arcHaloRadius=arcCoreRadius*3.6;
     sparkleMaterial.opacity=reducedMotion?.72:.82+arcPulse*.16;faultHaloMaterial.opacity=(strong?.26:.2)*arcPulse;
     for(let arc=0;arc<arcCount;arc++)for(let segment=0;segment<maxArcSegments;segment++){

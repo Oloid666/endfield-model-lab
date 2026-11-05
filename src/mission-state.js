@@ -1,3 +1,4 @@
+import {VcrTablet} from './vcr-tablet.js';
 import {ShoppingJourney} from './shopping-journey.js';
 import {RhythmHeat} from './rhythm-heat.js';
 import {sequences,dinnerChoices,chargeLines,chatterGroups,hotspots,endingCaption,connectionPrompts,captchaLines,heatDemoLines,finalAmmoLines} from './mission-dialogue.js';
@@ -46,7 +47,7 @@ export class MissionMachine{
     this.resetInteraction();
   }
   resetInteraction(){
-    this.shopping=null;this.doorOpen=1;this.mealBorn=false;this.postgame=false;this.homecomingAt=null;this.homecomingSpoken=false;this.flightStableAt=null;this.failures={};this.seenHeatFailures=0;this.flight=null;this.loginAside='';this.asideCounts={};this.investigation=null;this.photoFaceValid=true;this.photoTaken=false;this.hackTurns=[1,2,3,1];this.hackMoves=0;this.hackFailures=0;this.rhythm=new RhythmHeat();
+    this.tablet=new VcrTablet();this.shopping=null;this.doorOpen=1;this.mealBorn=false;this.postgame=false;this.homecomingAt=null;this.homecomingSpoken=false;this.flightStableAt=null;this.failures={};this.seenHeatFailures=0;this.flight=null;this.loginAside='';this.asideCounts={};this.investigation=null;this.photoFaceValid=true;this.photoTaken=false;this.hackTurns=[1,2,3,1];this.hackMoves=0;this.hackFailures=0;this.rhythm=new RhythmHeat();
     this.connection={field:'account',account:'',password:'',lastKey:'',keyAt:-Infinity,keyNumber:0,error:'',verified:false,lever:0};
 
   }
@@ -74,7 +75,7 @@ export class MissionMachine{
     if(phase==='heat-demo')this.line(heatDemoLines[0],entered);
     if(phase==='walk-out')this.shopping=new ShoppingJourney(true);
     if(phase==='heat')this.line(connectionPrompts.heat,entered);
-    if(phase==='meal-spawn')this.line(heatDemoLines[4],entered);
+    if(phase==='meal-spawn')this.line(this.hooks.tabletMode?{id:'overload',speaker:'system',text:'電流還在灌入……',event:'meal-overload'}:heatDemoLines[4],entered);
     if(phase==='return')this.line(connectionPrompts.returned,entered);
     if(phase==='aim-final')this.line(finalAmmoLines[0],entered);
     if(phase==='landing')this.line(sequences.landing[0],entered);
@@ -145,6 +146,7 @@ export class MissionMachine{
     this.investigation=id;this.sequence(id==='floor'?'cargo':'observation',sequences[id==='floor'?'cargo':'observation']);return true;
   }
   acceptCall(){if(this.phase!=='comm-request'||this.paused)return false;this.sequence('briefing',sequences.briefing);return true;}
+  tabletAction(action){if(this.phase!=='hack'||this.paused||!this.hooks.tabletMode)return false;const ok=this.tablet.input(action,this.time);if(ok){this.action('tablet-step',this.tablet.stage);this.emit();}return ok;}
   hackRotate(index){
     if(this.phase!=='hack'||this.paused||!Number.isInteger(index)||index<0||index>3)return false;
     this.hackTurns[index]=(this.hackTurns[index]+1)%4;this.hackMoves++;this.action('hack-turn',index);
@@ -239,6 +241,7 @@ export class MissionMachine{
   assist(){
     if(this.paused||!this.state.canAssist||this.state.presentationLocked)return false;
     if(this.phase==='login'){this.connection.account=CONNECTION_ACCOUNT;this.connection.password=CONNECTION_PASSWORD;this.connection.field='password';return this.submitLogin();}
+    if(this.phase==='hack'&&this.hooks.tabletMode){this.tablet.stage='done';this.sequence('credentials',sequences.credentials);return true;}
     if(this.phase==='hack'){this.hackTurns=[1,0,2,3];return this.hackSubmit();}
     if(this.phase==='heat'){this.rhythm.cancel();this.rhythm.round=3;this.rhythm.status='won';this.action('heat-assisted',true);this.sequence('flashback-end',sequences['flashback-end']);return true;}
     if(['combat','aim-final'].includes(this.phase)){const target=this.phase;this.meterEntered=this.time-this.meterSettings.period/4;this.lastAttack=-Infinity;this.attackHoldUntil=this.time;if(target==='combat')this.progress=Math.max(85,this.progress);return this.attack();}
@@ -281,7 +284,9 @@ export class MissionMachine{
   update(sourceTime){
     if(!Number.isFinite(sourceTime))return;
     const delta=Math.max(0,sourceTime-this.sourceTime);this.sourceTime=Math.max(this.sourceTime,sourceTime);
-    if(this.paused)return;this.time+=delta;if(this.shopping&&['intro','purchase','walk-out'].includes(this.phase))this.shopping.update(delta,this.doorOpen);if(this.phase==='photo-flight'&&this.flight){const f=this.flight,dt=Math.min(.1,delta);f.x=-2+2*Math.max(0,Math.min(1,(f.z-5)/5.5));f.z=Math.max(3.25,Math.min(12,f.z+f.vz*3*dt));}
+    if(this.paused)return;this.time+=this.phase==='finisher'&&this.hooks.tabletMode?Math.min(delta,.05):delta;
+    if(this.phase==='hack'&&this.hooks.tabletMode){this.tablet.tick(this.time);if(this.tablet.stage==='done')this.sequence('credentials',sequences.credentials);}
+    if(this.shopping&&['intro','purchase','walk-out'].includes(this.phase))this.shopping.update(delta,this.doorOpen);if(this.phase==='photo-flight'&&this.flight){const f=this.flight,dt=Math.min(.1,delta);f.x=-2+2*Math.max(0,Math.min(1,(f.z-5)/5.5));f.z=Math.max(3.25,Math.min(12,f.z+f.vz*3*dt));}
     if(this.phase==='photo-flight'){if(Math.abs(this.flight.z-10.5)>.6)this.flightStableAt=null;else this.flightStableAt??=this.time;}
     // Catch up continuous cinematics after a late frame, but stop on every manual or input gate.
     for(let guard=0;guard<10;guard++){
@@ -311,7 +316,7 @@ export class MissionMachine{
 
     else if(this.phase==='lever'&&elapsed>=3&&this.node!==connectionPrompts.lever)this.line(connectionPrompts.lever,this.entered+3);
     else if(this.phase==='heat-demo')this.timedLine(heatDemoLines.slice(0,4),elapsed);
-    else if(this.phase==='meal-spawn')this.timedLine(heatDemoLines.slice(4).map((n,i)=>({...n,at:i*4})),elapsed);
+    else if(this.phase==='meal-spawn'&&(!this.hooks.tabletMode||elapsed>=5))this.timedLine(heatDemoLines.slice(4).map((n,i)=>({...n,at:this.hooks.tabletMode?5+i*2.8:i*4})),elapsed);
     else if(this.phase==='aim-final')this.timedLine(finalAmmoLines,elapsed);
     else if(this.phase==='landing')this.timedLine(sequences.landing,elapsed,3);
     if(this.phase==='heat'){
@@ -343,7 +348,7 @@ export class MissionMachine{
     const heat=this.rhythm.state(this.time);
     const vcr=vcrPhases.has(this.phase),combatHoldRemaining=Math.max(0,this.attackHoldUntil-this.time),reverse=clamp((elapsed-.4)/(REWIND_DURATION-1));
     const rewindProgress=this.phase==='rewind'?reverse*reverse*(3-2*reverse):0,rewindStage=this.phase!=='rewind'?null:elapsed<.4?'freeze':elapsed>=REWIND_DURATION-.6?'settle':'reverse';
-    return {shopping:this.shopping?.state||null,mealBorn:this.mealBorn,postgame:this.postgame,homecomingAt:this.homecomingAt,phase:this.phase,node:this.node,nodeId:this.node?.id||null,nodeElapsed:this.node?Math.max(0,this.time-this.nodeEntered):0,speaker:this.node?.speaker||null,text:this.node?.text||'',revealed:this.revealed,
+    return {tablet:this.hooks.tabletMode&&this.phase==='hack'?this.tablet.state:null,fridgeHot:this.tablet.hot,cablePowered:this.tablet.powered,tabletMode:!!this.hooks.tabletMode,shopping:this.shopping?.state||null,mealBorn:this.mealBorn,postgame:this.postgame,homecomingAt:this.homecomingAt,phase:this.phase,node:this.node,nodeId:this.node?.id||null,nodeElapsed:this.node?Math.max(0,this.time-this.nodeEntered):0,speaker:this.node?.speaker||null,text:this.node?.text||'',revealed:this.revealed,
       branch:this.branch,choices:this.phase==='choice'?dinnerChoices:[],waitingChoice:this.phase==='choice',progress:this.progress,
       energy:Math.max(0,100-this.progress/99*100),charge:this.phase==='charge'?Math.min(100,30+elapsed/CHARGE_DURATION*70):this.phase==='ascent'?Math.min(30,Math.max(0,elapsed-1)*7.5):['director-reminder','shoe-view','pylon-link'].includes(this.phase)?30:preChargePhases.has(this.phase)?0:100,
       meter,meterElapsed:Math.max(0,this.time-this.meterEntered),meterPeriod:settings.period,meterSettings:settings,output:this.output,outputModes,

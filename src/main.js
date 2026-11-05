@@ -26,7 +26,17 @@ const analytics=createRainAnalytics(ga4.send);ga4.pageView();
 const loader=createLoading();
 const audio=new RainAudio(),abort=new AbortController();let world,mission,exploration,bonus,closed=false,menuPaused=false,xaihiPromise=null,assetPaused=false;
 const feedback=createFeedbackService({version:__BUILD_VERSION__,context:()=>({phase:mission?.state.phase||'ready',play_mode:analytics.state.run?analytics.state.playMode:'unknown'}),onSent:()=>analytics.bonus('feedback')});
-let feedbackDialog;
+let feedbackDialog,fxPreparing=null;
+const fxNotice=document.createElement('p');fxNotice.className='fx-preparing';fxNotice.setAttribute('role','status');fxNotice.textContent='正在準備爆炸效果，等一下就開砲…';fxNotice.hidden=true;$('#app').append(fxNotice);
+async function prepareBattle(){
+ if(fxPreparing||world.shaderWarmup.state.completed.includes('battle-effects'))return;
+ mission?.setPaused(true,'effects');fxNotice.hidden=false;
+ fxPreparing=(async()=>{try{
+  await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+  if(!closed)await world.prepareShaders(world.scene,'battle-effects');
+ }catch(e){if(!closed){world.setQuality('low',true);console.warn('爆炸效果改用輕量模式',e.message);}}
+ finally{fxNotice.hidden=true;fxPreparing=null;if(!closed)mission?.setPaused(false,'effects');}})();
+}
 const listen=(element,type,fn)=>element.addEventListener(type,fn,{signal:abort.signal});
 function showError(text){$('#error-message').textContent=text;error.hidden=false;loading.hidden=true;}
 function menu(open){
@@ -75,6 +85,7 @@ async function init(){
       onManual:()=>{for(const b of buttons){b.classList.remove('active');if(b.dataset.view!=='reset')b.setAttribute('aria-pressed','false');}},
       onContextLost:()=>{mission?.setPaused(true,'context');showError('畫面暫時中斷。可等待恢復，或重新載入。');},onContextRestored:()=>{error.hidden=true;mission?.setPaused(false,'context');world.start();}
     });
+    world.showExplosionShout=()=>{if($('#sound').checked)audio.effect('explosion');world.actors?.setGesture('point',{speaker:'zhuang'});reactionBubble.dataset.speaker='zhuang';reactionBubble.textContent='莊方宜：Explosion！';reactionBubble.hidden=false;reactionBubbleUntil=world.time+2;};
     world.setQuality(preferences.quality);world.weather.root.visible=preferences.rain;world.wet.setRain(preferences.rain);world.store.glass.uniforms.uRain.value=preferences.rain?1:0;
     loader.bind(world);world.earlyDragon=buildDragon(world.r);world.earlyDragon.root.scale.setScalar(.59);world.earlyDragon.root.position.set(-1.5,.32,2.5);world.scene.add(world.earlyDragon.root);
     world.setView('awning',true);world.tick(0,0,true);world.start();
@@ -96,7 +107,7 @@ async function init(){
     if(closed)return;
     loader.progress(90);loader.stage('正在準備人物光影');await world.prepareShaders(world.actors.root,'actors');loader.rendererInfo(world.shaderWarmup.state,world.renderer.getPixelRatio());
     if(closed)return;world.time=0;world.previous=undefined;world.tick(0,0,true);
-    mission=createMission({mount:$('#app'),onCameraReset:()=>{world.actors?.cancelReaction();reactionBubble.hidden=true;world.resetStoryCamera();},capturePhoto:()=>{if($('#sound').checked)audio.effect('shutter');return world.capturePhoto();},onCameraAuto:()=>world.resetStoryCamera(),getCameraAuto:()=>world.autoCamera,
+    mission=createMission({tabletMode:true,mount:$('#app'),onCameraReset:()=>{world.actors?.cancelReaction();reactionBubble.hidden=true;world.resetStoryCamera();},capturePhoto:()=>{if($('#sound').checked)audio.effect('shutter');return world.capturePhoto();},onCameraAuto:()=>world.resetStoryCamera(),getCameraAuto:()=>world.autoCamera,
       onDinner:branch=>{
         if(!branch)analytics.start(restoring?'chapter_replay':'normal');
         if(!branch){world.streetShow?.reset();world.store.doors.reset();bonus?.resetEnding();exploration?.setActive(false);world.director.reset();world.remnant.reset();mission?.setTargets(world.director.targets);world.actors?.setMove(0,0,false);world.syncWalkingEnvironment(true,{postgame:false});world.actors?.teleport(-1.25,3.25);}
@@ -108,6 +119,7 @@ async function init(){
         analytics.stage(phase);
         if(!['ready','complete'].includes(phase))exploration?.setActive(false);
         world.director.stage(phase,state);if($('#sound').checked){const cue={'photo-return':'flight','photo-flight':'handover'}[phase];if(cue)audio.effect(cue);}if(!restoring)chapters.reach(phase,state.branch);
+        if(phase==='fire-ready'||phase==='aim-final')prepareBattle();
         if(phase==='photo-review')ensureXaihi();
         if(['rewind','flashback'].includes(phase)&&!world.xaihi){
           assetPaused=!state.paused;
@@ -117,7 +129,7 @@ async function init(){
         if(phase==='complete'&&!state.postgame)world.actors?.setObstacles({obstacles:[],entrance:{minX:-4,maxX:4,z:1.8}});
         if(phase==='last'||phase==='aim-final')mission?.setTargets(world.director.targets);
       },
-      onAction:event=>{world.director.action?.(event);if($('#sound').checked&&['photo-send','heat-start','key','grid-connect'].includes(event.type))audio.effect(event.type);},
+      onAction:event=>{if(event.type==='tablet-step')analytics.tablet(event.value);world.director.action?.(event);if($('#sound').checked&&['photo-send','heat-start','key','grid-connect'].includes(event.type))audio.effect(event.type);},
       onAttack:event=>{if($('#sound').checked)audio.effect(event.finisher?'stamp':'shot');world.resetStoryCamera();const hadSign=world.store.destruction.state.progress>=44;world.director.attack(event);if(!hadSign&&event.progress>=44&&!event.finisher)mission?.holdAttack(4.4);mission?.setTargets(world.director.targets);},
       onState:state=>{world.missionState=state;const resume=document.querySelector('.chapter-resume');if(resume&&state.phase!=='ready'&&!state.paused)resume.hidden=true;$('#app').dataset.storyPhase=state.phase;$('#app').classList.toggle('postgame-free',!!state.postgame);}
     });
@@ -125,10 +137,11 @@ async function init(){
     exploration=createExploration(world,{mount:$('#app'),signal:abort.signal,
       canWalk:()=>!bonus?.active&&mission.state.postgame,canMove:()=>!mission.state.paused&&!world.streetShow?.active,onHotspot:kind=>mission.hotspot(kind),
       onSceneTap:ray=>{
+        if(mission.state.tablet&&!mission.state.paused){const action=world.xaihi?.tabletTap(ray);if(action){mission.machine.tabletAction(action);return true;}}
         if(bonus?.handleTap(ray))return true;
         if(!mission.state.paused&&!mission.state.presentationLocked&&(mission.state.phase==='ready'||mission.state.postgame&&!mission.state.node)){
           const first=ray.intersectObjects([world.actors?.root,world.store.root].filter(Boolean),true).find(h=>{for(let n=h.object;n;n=n.parent)if(!n.visible)return false;return h.object.material?.visible!==false;});
-          if(first?.object.userData.hotspot==='dragon'){const text=world.actors.reactDragon(world.time,['ready','complete'].includes(mission.state.phase));if(text){reactionBubble.textContent=text;reactionBubbleUntil=world.time+2;reactionBubble.hidden=false;}return true;}
+          if(first?.object.userData.hotspot==='dragon'){const text=world.actors.reactDragon(world.time,['ready','complete'].includes(mission.state.phase));if(text){reactionBubble.dataset.speaker='dragon';reactionBubble.textContent=text;reactionBubbleUntil=world.time+2;reactionBubble.hidden=false;}return true;}
         }
         if(!mission.state.paused&&world.remnant.tap(ray,mission.state.clock))return true;
         if(!mission.state.presentationLocked&&!['finisher','photo-return','photo-sending'].includes(mission.state.phase)&&world.interact(ray))return true;
@@ -139,7 +152,7 @@ async function init(){
     createStreetPerformance({world,mission,mount:$('#app'),playEffect:k=>{if($('#sound').checked)audio.effect(k);},hum:t=>{if($('#sound').checked)audio.hum(t);}});
     bonus=createBonus({feedback,analyticsEnabled:ga4.enabled,onAnalytics:(action,value)=>{if(action==='shortcut')analytics.shortcut();else analytics.bonus(action,value);},mount:$('#app'),world,mission,exploration,roomAudio:()=>audio.ambience('upstairs',preferences.rain),playEffect:kind=>{if($('#sound').checked&&!document.hidden)audio.effect(kind);}});
     world.onTick=(time,delta)=>{world.syncWalkingEnvironment();mission.machine.doorOpen=world.store.doors.open;mission.update(time);world.missionState=mission.state;audio.duck(!!mission.state.node);audio.ambience(mission.state.vcr?'shop':world.camera.position.z<2?'shop':'street',preferences.rain);if(mission.state.phase==='tour'&&mission.state.phaseElapsed>=14&&mission.state.phaseElapsed<30&&!mission.state.paused)audio.hum(mission.state.phaseElapsed);exploration.update(delta);bonus.update();viewControls.update();analytics.tick(performance.now(),{visible:!document.hidden,paused:mission.pauseReasons.some(reason=>reason!=='bonus')});
-      if(!reactionBubble.hidden){if(time>=reactionBubbleUntil||mission.state.paused||bonus.active){reactionBubble.hidden=true;world.actors?.cancelReaction();}else{const p=world.actors.dragonPosition,q=world.projectPoint([p[0],p[1]+1.1,p[2]]),rect=world.container.getBoundingClientRect();reactionBubble.style.left=`${Math.max(100,Math.min(innerWidth-100,rect.x+(q[0]+1)*rect.width/2))}px`;reactionBubble.style.top=`${Math.max(150,Math.min(innerHeight*.55,rect.y+(1-q[1])*rect.height/2))}px`;}}
+      if(!reactionBubble.hidden){if(time>=reactionBubbleUntil||mission.state.paused||bonus.active){reactionBubble.hidden=true;world.actors?.cancelReaction();}else{const p=reactionBubble.dataset.speaker==='zhuang'?world.actors.heroPosition:world.actors.dragonPosition,q=world.projectPoint([p[0],p[1]+1.1,p[2]]),rect=world.container.getBoundingClientRect();reactionBubble.style.left=`${Math.max(100,Math.min(innerWidth-100,rect.x+(q[0]+1)*rect.width/2))}px`;reactionBubble.style.top=`${Math.max(150,Math.min(innerHeight*.55,rect.y+(1-q[1])*rect.height/2))}px`;}}
 };
     loader.progress(99);await loader.finish();world.time=0;world.previous=undefined;world.tick(0,0,false);loader.hide();analytics.ready();world.start();
     const resume=document.createElement('button');resume.className='chapter-resume';resume.textContent='繼續上次 · '+CHAPTERS.find(c=>c.id===chapters.data.chapter).label;resume.hidden=chapters.data.chapter==='intro';$('#app').append(resume);
@@ -156,7 +169,7 @@ async function init(){
     const resetCameraButton=document.createElement('button');resetCameraButton.textContent='立即回到演出';resetCameraButton.addEventListener('click',()=>{world.resetStoryCamera();menu(false);},{signal:abort.signal});$('#settings').append(resetCameraButton);
     const chapterMenu=document.createElement('section');chapterMenu.className='chapter-menu';const heading=document.createElement('h3');heading.textContent='章節接續／重看';chapterMenu.append(heading);$('#settings').append(chapterMenu);for(const c of CHAPTERS){const b=document.createElement('button');b.textContent=c.label;b.dataset.chapter=c.id;b.disabled=!chapters.data.unlocked.includes(c.id);b.addEventListener('click',()=>restore(c.id),{signal:abort.signal});chapterMenu.append(b);}
     const backgroundResume=document.createElement('button');backgroundResume.className='background-resume';backgroundResume.textContent='已暫停 · 繼續';backgroundResume.hidden=true;$('#app').append(backgroundResume);
-    listen(document,'visibilitychange',()=>{if(document.hidden){analytics.tick(performance.now(),{visible:false});analytics.flush();mission.setPaused(true,'background');}else if(mission.pauseReasons.includes('background'))backgroundResume.hidden=false;});
+    listen(document,'visibilitychange',()=>{if(document.hidden){analytics.tick(performance.now(),{visible:false});analytics.flush();mission.setPaused(true,'background');}else if(mission.pauseReasons.includes('background'))backgroundResume.hidden=true;});
     backgroundResume.addEventListener('click',()=>{mission.setPaused(false,'background');backgroundResume.hidden=true;},{signal:abort.signal});
     window.__rainy711={
       get staging(){return {show:world.streetShow?.state,shopping:mission.state.shopping,remnant:world.remnant.state,tractor:world.director.captureFx.root.visible,microphone:!!world.actors?.root.getObjectByName('floating-singing-microphone')?.visible,phone:world.photoPhone?.position.toArray()};},get loading(){return loader.state;},get bonus(){return bonus.state;},get chapters(){return chapters.data;},restoreChapter:id=>restore(id),assist:()=>mission.machine.assist(),
@@ -168,7 +181,7 @@ async function init(){
       get mission(){return mission.state;},get story(){return mission.state;},get destruction(){return {...world.store.destruction.state,targets:world.store.destruction.targets};},get garden(){return world.garden.state;},get effects(){return world.siege.state;},
       get cinematic(){return world.director.status;},get tianshi(){return world.tianshi.state;},get microwave(){return world.microwave.state;},get connectionStage(){return world.connectionStage.state;},get xaihi(){return world.xaihi?.state||{loaded:false,loading:world.xaihiLoading,error:world.xaihiError};},
       get position(){return world.actors?.position.toArray();},get headPosition(){return world.actors?.headPosition;},get heroPosition(){return world.actors?.heroPosition;},get dragonPosition(){return world.actors?.dragonPosition;},get walking(){return exploration.active;},get minimumZoom(){return world.controls.minDistance;},projectPoint:point=>world.projectPoint(point),cameraOcclusion:point=>world.cameraOcclusion(point),
-      fly:(x,z)=>mission.machine.fly(x,z),finishFlight:()=>mission.machine.finishFlight(),sendPhoto:()=>mission.sendPhoto(),takePhoto:()=>mission.takePhoto(),investigate:id=>mission.investigate(id),acceptCall:()=>mission.acceptCall(),hackRotate:index=>mission.hackRotate(index),keyChunk:value=>mission.keyChunk(value),get photo(){return mission.photo;},get photoViewer(){return mission.viewer;},get investigationProps(){return world.investigationProps.state;},toggleAutoCamera:()=>world.toggleAutoCamera(),
+      fly:(x,z)=>mission.machine.fly(x,z),finishFlight:()=>mission.machine.finishFlight(),sendPhoto:()=>mission.sendPhoto(),takePhoto:()=>mission.takePhoto(),investigate:id=>mission.investigate(id),acceptCall:()=>mission.acceptCall(),tabletAction:id=>mission.machine.tabletAction(id),hackRotate:index=>mission.hackRotate(index),keyChunk:value=>mission.keyChunk(value),get photo(){return mission.photo;},get photoViewer(){return mission.viewer;},get investigationProps(){return world.investigationProps.state;},toggleAutoCamera:()=>world.toggleAutoCamera(),
       missionStart:()=>mission.start(),missionNext:()=>mission.next(),missionChoose:id=>mission.choose(id),missionReplay:()=>mission.replay(),missionAttack:t=>mission.attack(t),missionSelectTarget:id=>mission.selectTarget(id),missionOutput:id=>mission.setOutput(id),missionPause:value=>mission.setPaused(value),
       missionKey:value=>mission.key(value),missionSubmit:()=>mission.submitLogin(),missionVerify:()=>mission.verify(),missionLever:value=>mission.setLever(value),missionHeatStart:time=>mission.heatStart(time??world.time),missionHeatStop:time=>mission.heatStop(time??world.time),missionHeatRetry:()=>mission.heatRetry(),missionHeatCancel:()=>mission.heatCancel(),
       storyNext:()=>mission.next(),storyChoose:id=>mission.choose(id),storyStart:()=>mission.start(),storyReplay:()=>mission.replay(),hotspot:kind=>mission.hotspot(kind),

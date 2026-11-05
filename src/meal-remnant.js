@@ -5,7 +5,9 @@ export function buildMealRemnant(scene,r){
  const body=new T.Group();root.add(body);
  // One continuous, asymmetrical surface: no separate balls, no vertical hopping.
  const geometry=r.own(new T.SphereGeometry(1,28,16)),positions=geometry.attributes.position,rest=positions.array.slice();
- const material=r.material('#73508e',{roughness:.56,metalness:.02,emissive:0x4d2678,emissiveIntensity:.12});
+ const colors=new Float32Array(positions.count*3),shade=new T.Color();
+ for(let i=0;i<positions.count;i++){const y=rest[i*3+1];shade.set('#674079').lerp(new T.Color('#b093cf'),(y+1)*.5);shade.toArray(colors,i*3);}geometry.setAttribute('color',new T.BufferAttribute(colors,3));
+ const material=r.own(new T.MeshPhysicalMaterial({color:'#ad83cf',vertexColors:true,roughness:.36,metalness:0,clearcoat:.65,clearcoatRoughness:.22,emissive:0x4d2678,emissiveIntensity:.09}));
  r.mesh(geometry,material,body);
  const points=new Float32Array(30),boltGeo=r.own(new T.BufferGeometry());boltGeo.setAttribute('position',new T.BufferAttribute(points,3));const lightning=new T.Line(boltGeo,r.own(new T.LineBasicMaterial({color:0xc9a1ff,transparent:true,opacity:.55})));root.add(lightning);
  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;let born=false,touched=-Infinity,bornAt=0,lastShape=-Infinity,mode='unborn',homeAt=null,lastTime=null,path=[],goal='',repathAt=0;
@@ -13,8 +15,8 @@ export function buildMealRemnant(scene,r){
  function shape(time,press){for(let i=0;i<positions.count;i++){const j=i*3,x=rest[j],y=rest[j+1],z=rest[j+2],wave=reduced?0:Math.sin(time*2.6+x*5+z*3)*.035;const lobe=1+.2*Math.sin(x*7+z*4)+.12*Math.cos(z*8-y*3);positions.setXYZ(i,x*.34*lobe+wave,(y+1)*.095*(1-press*.45)*(1+.25*Math.sin(x*5+time*2))+.012,z*.22*lobe-wave*.6);}positions.needsUpdate=true;geometry.computeVertexNormals();}
  shape(0,0);
  return {root,placeNear(feet){root.position.set(feet[0]+.6,.33,feet[2]+.6);path=[];goal='';},reset(){born=false;mode='unborn';homeAt=null;lastTime=null;path=[];goal='';touched=-Infinity;root.visible=false;lastShape=-Infinity;},tap(ray,time){if(!root.visible||!ray.intersectObject(body,true).length)return false;touched=time;return true;},update(time,state={},feet=null,environment={}){
-  if(!born&&(state.mealBorn||state.phase==='meal-spawn')){born=true;bornAt=time;}
-  const home=state.postgame;const wreck=!home&&(state.progress||0)>=62&&!state.vcr;root.visible=born&&(home||wreck||['heat','meal-spawn','flashback-end'].includes(state.phase));if(!root.visible)return;mode=home?'crawling':'incident';
+  if(!born&&(state.mealBorn||state.phase==='meal-spawn')){born=true;bornAt=time+(state.tabletMode&&state.phase==='meal-spawn'?5:0);}
+  const home=state.postgame;const wreck=!home&&(state.progress||0)>=62&&!state.vcr;root.visible=born&&time>=bornAt&&(home||wreck||['heat','meal-spawn','flashback-end'].includes(state.phase));if(!root.visible)return;mode=home?'crawling':'incident';
   const age=Math.max(0,time-bornAt),crawl=reduced?0:Math.sin(age*.45)*.12,press=Math.max(0,1-(time-touched)/.8);
   if(!home)root.position.set((wreck?2.8:3.06)+crawl,wreck?.35:1.35,(wreck?4.15:.8)+crawl*.35);body.rotation.y=reduced?0:Math.sin(age*.6)*.15;
   if(!home&&!wreck&&age<.9){const p=Math.min(1,age/.9);root.position.set(3.45+(3.06-3.45)*p,1.6+(1.35-1.6)*p+Math.sin(p*Math.PI)*.18,1.25+(.8-1.25)*p);}

@@ -109,12 +109,12 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
  }
 
  function resetClass(){course.reset();persistCourse();deathMeter.reset(world.time);lessonIndex=pageIndex=responseIndex=0;stampSequence.cancel();ensureRoom().resetPaper();}
- function selectLesson(id,resume=false){lessonIndex=LESSONS.findIndex(l=>l.id===id);if(lessonIndex<0)lessonIndex=0;const steps=resume?Math.min(course.steps[LESSONS[lessonIndex].id]||0,lessonCardCount(id)-1):0;const last=1+LESSONS[lessonIndex].analysis.length;pageIndex=Math.min(last,steps);enterLessonPage();responseIndex=Math.max(0,steps-last);route='lesson';}
+ function selectLesson(id,resume=false){onAnalytics('class-start',id);lessonIndex=LESSONS.findIndex(l=>l.id===id);if(lessonIndex<0)lessonIndex=0;const steps=resume?Math.min(course.steps[LESSONS[lessonIndex].id]||0,lessonCardCount(id)-1):0;const last=1+LESSONS[lessonIndex].analysis.length;pageIndex=Math.min(last,steps);enterLessonPage();responseIndex=Math.max(0,steps-last);route='lesson';}
  function renderClassControls(){
   const show=active&&(isClassRoute()||route==='class-invite');classDock.hidden=!show;classMeter.hidden=!active||!isClassRoute();root.classList.toggle('bonus-class-flow',show);root.dataset.classStage=route;classContinue.hidden=true;
-  readingMeter.hidden=route!=='lesson';if(route==='lesson'){const pct=Math.floor(LESSONS.reduce((sum,l)=>sum+Math.min(course.steps[l.id]||0,lessonCardCount(l.id)),0)/LESSONS.reduce((sum,l)=>sum+lessonCardCount(l.id),0)*100);readingLabel.textContent=`全部題目進度 ${pct}%`;readingTrack.setAttribute('aria-valuenow',String(pct));readingFill.style.transform=`scaleX(${pct/100})`;}
+  readingMeter.hidden=route!=='lesson';if(route==='lesson'){const pct=Math.floor(Math.min(lessonCardCount(LESSONS[lessonIndex].id),pageIndex+responseIndex+1)/lessonCardCount(LESSONS[lessonIndex].id)*100);readingLabel.textContent=`第 ${lessonIndex+1}/8 題 · 本題 ${Math.min(lessonCardCount(LESSONS[lessonIndex].id),pageIndex+responseIndex+1)}/${lessonCardCount(LESSONS[lessonIndex].id)} 頁`;readingTrack.setAttribute('aria-valuenow',String(pct));readingFill.style.transform=`scaleX(${pct/100})`;}
   classPrimary.disabled=['class-wait','class-stamping'].includes(route);
-  classPrimary.textContent=route==='class-invite'?'來上課吧 →':route==='classroom'?(course.stamped?(course.next()?'繼續看（自由）→':'查看死亡證明'):'開講 →'):route==='class-result'?'交出最後的評分':route==='class-wait'?'笑點正在死亡…':route==='class-stamping'?'正在蓋章…':'繼續 →';
+  classPrimary.textContent=route==='class-invite'?'來上課吧 →':route==='classroom'?(course.stamped?(course.next()?'繼續看（自由）→':'查看死亡證明'):'開講 →'):route==='class-result'?'下課，去評分':route==='class-wait'?'笑點正在死亡…':route==='class-stamping'?'正在蓋章…':'繼續 →';
  }
  function showClassMenu(){
   const d=modal('課堂選單');dialogKind='class-menu';d.dataset.kind='class-menu';
@@ -134,7 +134,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
    const l=LESSONS[lessonIndex],last=1+l.analysis.length,cursor=pageIndex<last?pageIndex:last+responseIndex;
    course.confirm(l.id,cursor);persistCourse();deathMeter.set(course.percentage,world.time,reducedMotion());
    if(cursor+1>=lessonCardCount(l.id)){
-    progress.mark('read',l.id);
+    progress.mark('read',l.id);onAnalytics('class-complete',l.id);
     if(course.eligible&&!course.stamped)route='class-wait';
     else if(course.next())selectLesson(course.next(LESSONS[lessonIndex].id));
     else route='class-result';
@@ -150,7 +150,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
    stampKind='class';stampSequence.start(time,reducedMotion());stampPhase='';route='class-stamping';room.resetPaper();room.board('笑點已死亡',['手術成功，笑點死亡。','本教室不提供笑點復活服務。'],0,time,true,'graduation');room.perform('dismissed');room.stamp(time,'笑點已死亡');render();classPrimary.focus({preventScroll:true});
   }
  }
- function lessonTurns(){return LESSONS[lessonIndex].aside?LESSONS[lessonIndex].aside.split('\n'):[];}
+ function lessonTurns(){return LESSONS[lessonIndex].aside?[LESSONS[lessonIndex].aside]:[];}
  function enterLessonPage(){lessonAt=world.time;lastReveal=-1;responseIndex=0;lessonKey=`${lessonIndex}:${pageIndex}:${lessonAt}`;}
  function updateEpilogue(){const lines=['莊：龍泡泡，等等。你片尾曲太早唱了。','莊：還不能下班喔。','龍泡泡：啊，對吼！二樓還不能拆。','龍泡泡：跟我進二樓，還有任務。'];epilogueText.textContent=lines[epilogueStep];epilogueGo.textContent=epilogueStep===3?'跟上龍泡泡':epilogueStep===2?'還沒演完？':'繼續';}
  function enterFreeStreet(shortcut=false){
@@ -220,7 +220,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
    if(route==='final'){ensureRoom().setMode('classroom');room.board('下課',[],0,world.time,false,'true-fin');room.perform('gone');heading('AFTER HOURS','Fin.');button(content,'回雨夜街角','close',undefined,'bonus-primary');return;}
    if(route==='rating-result'){
     ensureRoom().setMode('classroom');room.perform(['whisper','bow','wave'][thanksStep]);room.board(thanksStep===2?'886！':'課後悄悄話',[],0,world.time,false,'thanks-'+thanksStep);
-    const lines=['偷偷跟你說，正面 711 招牌按七下，可以開啟通關後的雨夜街角喔～',feedbackStored?'留言已收到，謝謝你幫忙把雨夜變得更好～':analyticsEnabled?'感謝您的回饋，這次有在統計星等喔～':feedback?'感謝你來玩，這次先放你下課～':'感謝您的回饋，雖然沒有人會看～','886！'];
+    const lines=['偷偷跟你說，正面 711 招牌按七下，可以開啟通關後的雨夜街角喔～',feedbackStored?'意見已存進後台！這後台做起來超級麻煩，要好好誇誇作者喔～':analyticsEnabled?'感謝您的回饋，這次有在統計星等喔～':feedback?'感謝你來玩，這次先放你下課～':'感謝您的回饋，雖然沒有人會看～','886！'];
     heading('龍泡泡 · 謝幕','龍泡泡',lines[thanksStep]);button(content,thanksStep===2?'揮手告別':'繼續','thanks-next',undefined,'bonus-primary');return;
    }
    if(feedback){

@@ -27,6 +27,7 @@ export function buildInterior(root,r,surfaces,glass,glassMeshes) {
   }
   function pack(x,y,z,w,h,d,n,rotation=0){const g=goods[n%8];dummy.position.set(x,y+h/2,z);dummy.scale.set(w,h,d);dummy.rotation.set(0,rotation,0);dummy.updateMatrix();g.mesh.setMatrixAt(g.count++,dummy.matrix);}
   const label=(text,p,s,options={},rot=0)=>{const m=r.mesh(r.geometry('PlaneGeometry',1,1),r.label(text,{width:512,height:128,font:'bold 48px sans-serif',bg:'#e0dec7',color:'#40584a',...options}),root,p,s);m.rotation.y=rot;return m;};
+  const fridgeDoors=[];
   // Five actual fridge bays, with a clear rear service aisle.
   for(let door=0;door<5;door++){
     const x=-3.35+door*1.17;
@@ -41,7 +42,9 @@ export function buildInterior(root,r,surfaces,glass,glassMeshes) {
       box(steel,[x+dx,1.53,-2.03],[.032,2.28,.04],{metalness:.65,roughness:.25});
       box('#d3e6db',[x+dx*.91,1.53,-2.1],[.012,2.12,.014],{emissive:0xcce7df,emissiveIntensity:1.25,roughness:.3});
     }
-    box('#cbd3c5',[x+.43,1.5,-1.99],[.02,.33,.025],{metalness:.7,roughness:.22});
+    const handle=box('#cbd3c5',[x+.43,1.5,-1.99],[.02,.33,.025],{metalness:.7,roughness:.22});
+    if(door>=3){const hinge=new T.Group();hinge.position.set(x-.515,1.54,-2.005);root.add(hinge);pane.position.set(.515,0,0);hinge.add(pane);handle.position.set(.945,-.04,.015);handle.userData.dynamic=true;hinge.add(handle);fridgeDoors.push(hinge);}
+
   }
   const fridge=buildFridgeProducts(root,r),promotions=buildWindowPromotions(root,r);
   // Low double-sided gondolas. Left aisle 1.0m; rear aisle ≥0.85m; cashier aisle ≥1.2m.
@@ -132,5 +135,5 @@ export function buildInterior(root,r,surfaces,glass,glassMeshes) {
   for(const rack of [...racks,{x:2.85,z:.2,w:.9,d:2.1}]){const sh=r.mesh(r.geometry('PlaneGeometry',1,1),shadowMat,root,[rack.x,.315,rack.z],[rack.w+.4,rack.d+.4,1]);sh.rotation.x=-Math.PI/2;}
   // Small perforations and shelf-edge strips supply detail without a wall of boxes.
   const walkObstacles=[...racks,cashier,{x:3.15,z:-2.47,w:1.94,d:.78}];
-  return {fridgeCategories:fridge.categories,fridgeStock:fridge.stock,promotions,racks,entrance:{minX:-1,maxX:.6,z:1.8},cashier,coffee:{x:3.58,z:-2.49},staffAisle:.88,rearAisle:Math.min(...racks.map(rack=>rack.z-rack.d/2+2.005)),obstacles:walkObstacles,walkObstacles};
+  return {fridgeDoors,fridgeCategories:fridge.categories,fridgeStock:fridge.stock,promotions,racks,entrance:{minX:-1,maxX:.6,z:1.8},cashier,coffee:{x:3.58,z:-2.49},staffAisle:.88,rearAisle:Math.min(...racks.map(rack=>rack.z-rack.d/2+2.005)),obstacles:walkObstacles,walkObstacles};
 }
