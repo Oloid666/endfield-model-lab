@@ -4,7 +4,9 @@
 
 目前場景：《莊的晚餐｜雨夜711》。
 
-**[開啟網站](https://oloid666.github.io/endfield-model-lab/?v=classroom-easy-20261027)**
+**[開啟正式遊戲](https://endfield10000t.aura87.online/)** · [GitHub Pages 備用](https://oloid666.github.io/endfield-model-lab/)
+
+目前手機與劇情修正見 [冰箱反轉、遮眼梗與操作驗證](docs/RAIN-MOBILE-STORY-REVISION.md)。
 
 龍泡泡先在雨夜等你，再把莊帶到櫃檯買晚餐。請龍泡泡幫莊拍照報平安，送出後，手機翻出上一張萬噸息壤簽收單。莊早已備妥保單，龍泡泡才發現自己也是隨貨人員。
 
@@ -14,7 +16,7 @@ V12 改由龍泡泡進店買餐、持相機取景及飛回看照片；莊留在�
 
 ## 網域與統計
 
-預定自訂網址：`endfield10000t.aura87.online`。GA4 為選用功能，未設定衡量 ID 時不載入統計程式；GitHub Pages 已設定使用者提供的 GA4 衡量 ID，Cloudflare Pages 網域仍待設定。完整操作與事件定義見 [GA4／Cloudflare 上線交接](docs/GA4-CLOUDFLARE.md)。
+正式自訂網址：`endfield10000t.aura87.online`。GA4 為選用功能，未設定衡量 ID 時不載入統計程式；GitHub Pages 已設定使用者提供的 GA4 衡量 ID。完整操作與事件定義見 [GA4／Cloudflare 上線交接](docs/GA4-CLOUDFLARE.md)。
 
 ## 玩家文字回饋
 

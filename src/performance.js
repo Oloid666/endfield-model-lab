@@ -1,4 +1,5 @@
 import * as T from 'three';
+import {buildDragonBandages} from './dragon-bandages.js';
 import { config } from './config.js';
 import { sampleIdle } from './idle.js';
 import { buildDragon } from './companion.js';
@@ -34,11 +35,10 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
   const quaternion=new T.Quaternion(),axis=new T.Quaternion();
   function pose(name,pitch=0,yaw=0,roll=0){const p=poses[name];if(p){quaternion.setFromAxisAngle(p.x,pitch).multiply(axis.setFromAxisAngle(p.y,yaw)).multiply(axis.setFromAxisAngle(p.z,roll));p.bone.quaternion.copy(p.q).multiply(quaternion);}}
   const dragon=providedDragon||buildDragon(r);dragon.root.scale.setScalar(.59);dragon.root.position.set(-.82,.005,.09);dragon.root.rotation.y=.15;root.add(dragon.root);
-  const soot=new T.Group();dragon.root.add(soot);
+  const soot=new T.Group();(dragon.body||dragon.root).add(soot);
   const dirt=r.material('#51463f',{roughness:1,transparent:true,opacity:.42});
   for(let i=0;i<7;i++){const angle=i*2.4,x=Math.cos(angle)*.35,y=.25+(i%3)*.28,z=.48-x*x*.88;const mark=r.mesh(r.geometry('CircleGeometry',1,7),dirt,soot,[x,y,z+.008],[.045+(i%2)*.018,.018+(i%3)*.008,1]);mark.rotation.z=angle;}soot.visible=false;
-  const tape=new T.Group();soot.add(tape);
-  for(const [x,y,z,angle]of [[-.23,1.02,.39,-.3],[.43,.48,.3,.6]]){const patch=new T.Group();patch.position.set(x,y,z);patch.rotation.z=angle;tape.add(patch);r.box(patch,'#d7b88d',[0,0,0],[.21,.08,.014],{roughness:.95});r.box(patch,'#e6d5b6',[0,0,.01],[.065,.07,.008]);for(const side of [-1,1])for(const dy of [-.018,.018])r.mesh(r.geometry('CircleGeometry',.004,6),r.material('#a58a68'),patch,[side*.073,dy,.009]);}
+  buildDragonBandages(r,soot);
 
 
   const meal=buildMeals(r,root),dragonMeal=buildMeals(r,dragon.foodMount,.68);meal.setDinner(null);dragonMeal.setDinner(null);

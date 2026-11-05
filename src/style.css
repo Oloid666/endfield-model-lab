@@ -16,6 +16,9 @@ html, body, #app { width: 100%; height: 100%; height: 100dvh; margin: 0; overflo
 button, select, input { font: inherit; }
 button, a, input, select { -webkit-tap-highlight-color: transparent; }
 button { border: 0; cursor: pointer; color: inherit; touch-action: manipulation; }
+button,button *,[role="button"],[role="button"] *,summary,summary *,.walk-pad,.walk-pad *,.mission-lever-track,.mission-lever-track *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+input,textarea,[contenteditable="true"]{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
+.flight-step,.rhythm-pad{touch-action:none}
 button:disabled { opacity: .36; cursor: default; }
 button:focus-visible, summary:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible {
   outline: 2px solid var(--gold); outline-offset: 4px;

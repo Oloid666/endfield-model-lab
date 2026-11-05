@@ -6,11 +6,11 @@ const ctx=new Proxy({},{get:(o,k)=>o[k]||(()=>{})});globalThis.document={createE
 const r=new Resources(),scene=new T.Scene(),fx=buildVcrEffects(scene,r);let checks=0;const check=(n,p)=>{assert.ok(p,n);checks++;};
 fx.update({phase:'ready'});check('Present day begins after fridge accident',fx.state.temperature===50&&fx.state.hot);
 fx.update({phase:'hack',vcr:true,clock:10,fridgeHot:false,tablet:{stage:'search',age:0}});check('Past begins at ordinary cold temperature',fx.state.temperature===4&&!fx.state.hot);
-fx.update({phase:'hack',vcr:true,clock:12,fridgeHot:true,tablet:{stage:'defrost',age:2}});check('Temperature actually rises during defrost',fx.state.temperature===27);
+fx.update({phase:'hack',vcr:true,clock:12,fridgeHot:true,tablet:{stage:'defrost',age:2,temperature:19}});check('Temperature actually rises during defrost',fx.state.temperature===19);
 fx.update({phase:'hack',vcr:true,clock:14,fridgeHot:true,tablet:{stage:'hot',age:0}});check('Incident ends at fifty degrees',fx.state.temperature===50);
 fx.update({phase:'return',vcr:true,clock:20,fridgeHot:false});check('Return to present cannot cool the fridge',fx.state.temperature===50);
 fx.reset();fx.update({phase:'ready',fridgeHot:false});check('Restart preserves canonical present state',fx.state.temperature===50);
-check('Computer is a physical console',!!rootFind('pylon-03-maintenance-console'));check('Controller is mounted on fridge',!!rootFind('fridge-temperature-controller'));
+check('Computer is a physical console',!!rootFind('pylon-03-maintenance-console'));check('Controller is mounted on fridge',!!rootFind('fridge-temperature-controller'));fx.update({phase:'combat'},{intact:false});check('Destroyed fridge has no floating warning lights',!fx.state.fridgeVisible);fx.update({phase:'complete'},{intact:true});check('Rebuilding restores appliance state',fx.state.fridgeVisible&&fx.state.temperature===50);check('Physical meal heating label exists',!!rootFind('meal-heating-label'));
 check('Wire starts at console, not fridge',fx.path.getPointAt(0).distanceTo(new T.Vector3(7.4,1.2,-14.56))<.001);check('Wire ends at microwave side socket',fx.path.getPointAt(1).distanceTo(new T.Vector3(3.99,1.6,1.43))<.001);
 function rootFind(name){return fx.root.getObjectByName(name);}r.dispose();
 const {actorBounds}=await import('../src/actor-bounds.js');

@@ -1,10 +1,12 @@
 import {createPhotoViewer} from './photo-viewer.js';
 import {portrait} from './portrait.js';
+import {bindHoldButton} from './hold-button.js';
 import './investigation.css';
 const E=(tag,cls,text)=>{const n=document.createElement(tag);n.className=cls;if(text)n.textContent=text;return n;};
 const phases=new Set(['shoe-view','pylon-link','fire-ready','photo-flight','photo','photo-review','comm-request','hack','heat']);
 export function createInvestigationUI({mount,machine,capture,onAuto,getAuto,onGuide}){
- const abort=new AbortController();let buildAbort=new AbortController(),building=false;
+ const abort=new AbortController();let buildAbort=new AbortController(),building=false,flightReleases=[];
+ const releaseFlight=()=>{for(const cancel of flightReleases)cancel();};
  const listen=(el,type,fn)=>el.addEventListener(type,fn,{signal:building?buildAbort.signal:abort.signal});
  const root=E('section','investigation-ui');root.hidden=true;
  const title=E('span','investigation-kicker'),message=E('p','investigation-message');message.setAttribute('aria-live','polite');
@@ -25,13 +27,13 @@ export function createInvestigationUI({mount,machine,capture,onAuto,getAuto,onGu
  let capturing=false,pendingCapture=false,captureGeneration=0,disposed=false;async function snapshot(){if(capturing||machine.paused||machine.phase!=='photo')return;const generation=++captureGeneration,entered=machine.entered;capturing=true;root.setAttribute('aria-busy','true');message.textContent='正在處理清晰遠景與人物近照…';try{const result=await capture();if(disposed||generation!==captureGeneration||machine.phase!=='photo'||machine.entered!==entered)return;photo=result;machine.photoFaceValid=result.faceValid!==false;scale=1;dx=dy=0;transform();if(machine.paused)pendingCapture=true;else machine.takePhoto();}catch(e){message.textContent=e.message;}finally{capturing=false;root.removeAttribute('aria-busy');}}
  function inspect(id){if(scale<1.2){message.textContent='先放大照片，再點你想調查的異常。';return;}machine.investigate(id);}
  function build(s){
-   buildAbort.abort();buildAbort=new AbortController();building=true;
+   releaseFlight();flightReleases=[];buildAbort.abort();buildAbort=new AbortController();building=true;
    phase=s.phase;root.dataset.phase=phase;actions.replaceChildren();puzzle.replaceChildren();photoInner.querySelectorAll('button').forEach(n=>n.remove());animations.forEach(a=>a.cancel());animations=[];animationKey='';
    photoStage.hidden=true;callPortrait.hidden=phase!=='comm-request';puzzle.hidden=phase!=='hack';rhythm.hidden=rhythmStatus.hidden=phase!=='heat';
    if(phase==='shoe-view'){title.textContent='導播 · 合乎舟禮';message.textContent='鞋子環繞中。先看完這一圈。';button('再來一碗',()=>machine.anotherBowl(),'shoe-again');button('吃飽了',()=>machine.next(),'shoe-continue');}
    if(phase==='pylon-link'){title.textContent='天師樁 · 接入中';message.textContent='鏡頭回到遠景，繼續接通供電。';}
    if(phase==='fire-ready'){title.textContent='武陵儲能網 · 發射系統';message.textContent='系統：充能完畢。指針接近中央時按下砲擊。';button('進入發射系統',()=>machine.next(),'fire-continue');}
-   if(phase==='photo-flight'){title.textContent='龍泡泡 · 攝影就位';for(const [text,d]of [['後退',1],['前進',-1]]){const b=button(text,()=>{},'flight-step');b.dataset.direction=d;let down=false,pressedAt=0;listen(b,'pointerdown',e=>{down=true;pressedAt=performance.now();b.setPointerCapture(e.pointerId);machine.fly(0,d);});for(const type of ['pointerup','pointercancel','lostpointercapture'])listen(b,type,()=>{if(down){down=false;if(performance.now()-pressedAt<180)machine.stepFlight(d);machine.fly(0,0);}});listen(b,'keydown',e=>{if(['Enter',' '].includes(e.key)){e.preventDefault();machine.fly(0,d);}});listen(b,'keyup',()=>machine.fly(0,0));}button('可以拍了',()=>machine.finishFlight(),'flight-ready');}
+   if(phase==='photo-flight'){title.textContent='龍泡泡 · 攝影就位';for(const [text,d]of [['後退',1],['前進',-1]]){const b=button(text,()=>{},'flight-step');b.dataset.direction=d;flightReleases.push(bindHoldButton(b,{start:()=>machine.fly(0,d),stop:()=>machine.fly(0,0),tap:()=>machine.stepFlight(d),enabled:()=>machine.phase==='photo-flight'&&!machine.paused},buildAbort.signal));}button('可以拍了',()=>machine.finishFlight(),'flight-ready');}
    if(phase==='photo'){title.textContent='拍張照片 · 報平安';message.textContent='拖曳調整拍攝方向，雙指縮放 · 把 711 招牌也拍進去';button('拍好了，給她看看',snapshot,'photo-shutter');}
    if(phase==='photo-review'){
      title.textContent='莊方宜與龍泡泡';message.textContent='一起確認照片，再傳給管理員。';viewButton=button('放大看有沒有眨眼',()=>viewer.open(photo,viewButton,true),'photo-open');button('重新拍',()=>machine.phaseTo('photo'));button('傳送給管理員',()=>machine.sendPhoto(),'photo-send');viewer.open(photo,viewButton);
@@ -80,6 +82,6 @@ export function createInvestigationUI({mount,machine,capture,onAuto,getAuto,onGu
      for(let i=0;i<4;i++){const note=h.notes[i],n=notes[i];n.hidden=!playing||!note;n.dataset.result=note?.result||'';if(note&&animations[i]){const wanted=(h.elapsed-note.at+4)*1000;if(!playing||s.paused||document.hidden){animations[i].pause();animations[i].currentTime=wanted;}else{if(Math.abs(Number(animations[i].currentTime)-wanted)>100)animations[i].currentTime=wanted;animations[i].play();}}}
    }
  }
- listen(window,'blur',()=>{machine.fly(0,0);if(held!==null){held=null;machine.heatCancel();}});
- return {releaseInputs(){const id=held;held=null;if(id!==null)for(const b of actions.querySelectorAll('button'))if(b.hasPointerCapture?.(id))b.releasePointerCapture(id);animations.forEach(a=>a.pause());},update,get photo(){return photo;},get viewer(){return viewer.state;},snapshot,dispose(){disposed=true;captureGeneration++;abort.abort();buildAbort.abort();animations.forEach(a=>a.cancel());viewer.dispose();root.remove();auto.remove();}};
+ listen(window,'blur',()=>{releaseFlight();machine.fly(0,0);if(held!==null){held=null;machine.heatCancel();}});
+ return {releaseInputs(){releaseFlight();const id=held;held=null;if(id!==null)for(const b of actions.querySelectorAll('button'))if(b.hasPointerCapture?.(id))b.releasePointerCapture(id);animations.forEach(a=>a.pause());},update,get photo(){return photo;},get viewer(){return viewer.state;},snapshot,dispose(){disposed=true;releaseFlight();captureGeneration++;abort.abort();buildAbort.abort();animations.forEach(a=>a.cancel());viewer.dispose();root.remove();auto.remove();}};
 }

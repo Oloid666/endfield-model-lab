@@ -56,12 +56,10 @@ export function buildXaihi(scene,r,gltf){
   r.box(phone,'#b5d1c2',[0,.001,.013],[.332,.232,.004],{emissive:0x76b7a1,emissiveIntensity:.65,roughness:.4});
   const canvas=document.createElement('canvas');canvas.width=1024;canvas.height=768;const ctx=canvas.getContext('2d'),texture=r.own(new T.CanvasTexture(canvas));texture.colorSpace=T.SRGBColorSpace;
   const screen=r.mesh(r.geometry('PlaneGeometry',.33,.23),r.own(new T.MeshBasicMaterial({map:texture})),phone,[0,0,.017]);let pageKey='',hitButtons=[];
-  function paint(tablet){const key=JSON.stringify(tablet&&[tablet.stage,tablet.note,tablet.lines]);if(key===pageKey)return;pageKey=key;ctx.fillStyle='#0b292b';ctx.fillRect(0,0,1024,768);ctx.fillStyle='#91d8bb';ctx.font='bold 54px sans-serif';ctx.fillText(tablet?.title||'武陵 · 管理終端',42,74);ctx.font='48px sans-serif';ctx.fillStyle='#eee5c8';(tablet?.lines||['遠端設備連線']).forEach((line,i)=>ctx.fillText(line,42,145+i*58));
+  function paint(tablet){const key=JSON.stringify(tablet&&[tablet.stage,tablet.note,tablet.lines,tablet.buttons]);if(key===pageKey)return;pageKey=key;ctx.fillStyle='#0b292b';ctx.fillRect(0,0,1024,768);ctx.fillStyle='#91d8bb';ctx.font='bold 54px sans-serif';ctx.fillText(tablet?.title||'武陵 · 管理終端',42,74);ctx.font='48px sans-serif';ctx.fillStyle='#eee5c8';(tablet?.lines||['遠端設備連線']).forEach((line,i)=>ctx.fillText(line,42,145+i*58));
    if(tablet?.note){ctx.fillStyle='#ffd58a';tablet.note.split('\n').forEach((line,i)=>ctx.fillText(line,42,370+i*42));}
    hitButtons=[];(tablet?.buttons||[]).forEach(([id,label],i)=>{const y=478+i*130;ctx.fillStyle=id==='800mw'?'#946232':'#41695b';ctx.fillRect(30,y,964,112);ctx.strokeStyle='#d7c58e';ctx.strokeRect(30,y,964,112);ctx.fillStyle='#fff0bf';ctx.font='bold 42px sans-serif';ctx.fillText(label,55,y+68);hitButtons.push({id,y});});texture.needsUpdate=true;
   }
-  const bottle=new T.Group();bottle.name='xaihi-pear-drink';root.add(bottle);r.mesh(r.geometry('CylinderGeometry',.035,.035,.17,12),r.material('#bbcfb0',{roughness:.25}),bottle,[0,0,0]);r.box(bottle,'#f1e5bf',[0,0,.035],[.05,.07,.004]);r.cylinder(bottle,'#d6b36f',[0,.095,0],.027,.025);bottle.visible=false;
-
   const meal=new T.Group();meal.name='xaihi-lunch';root.add(meal);
   r.box(meal,'#dedac1',[0,0,0],[.32,.075,.24],{roughness:.65});
   r.box(meal,'#b5ad8c',[0,.045,0],[.30,.02,.22],{roughness:.72});
@@ -94,19 +92,19 @@ export function buildXaihi(scene,r,gltf){
       const visible=state.xaihiVisible??visiblePhases.has(phase);root.visible=visible;
       Object.assign(status,{phase,visible});if(!visible)return;
       const gesture=state.node?.gesture||state.gesture||'',text=state.node?.text||state.text||'';
-      const operating=['heat-demo','heat'].includes(phase),leaving=phase==='flashback-end';
-      const hack=!!state.tablet||operating||gesture==='phone'||/PHP|電網|漏洞|終端|駭|加速|三分鐘/.test(text);
+      const operating=['heat-demo','heat'].includes(phase),leaving=phase==='flashback-end',stage=state.tablet?.stage||'',cue=state.tablet?.dialogue?.cue||'',readingLabel=stage==='meal-label'&&cue==='read-label';
+      const hack=!readingLabel&&(!!state.tablet||operating||gesture==='phone'||/PHP|電網|漏洞|終端|駭|加速|三分鐘/.test(text));
       const receive=leaving||gesture==='receive'||gesture==='hold';
       action=operating?'microwave':receive?'receive-lunch':hack?'terminal':'waiting';
-      const stage=state.tablet?.stage||'',walking=['walk-fridge','walk-counter'].includes(stage);let distance=0;
+      const walking=['walk-fridge','walk-counter'].includes(stage);let distance=0;
       if(walking)distance=travel((state.tablet.age||0)/3.2,stage==='walk-counter');
-      else if(['temperature','defrost','hot','pickup','drink'].includes(stage)){root.position.set(1.2,restPosition.y,-1.35);root.rotation.y=Math.PI;}
+      else if(['temperature','cooling','success','defrost','hot'].includes(stage)){root.position.set(1.2,restPosition.y,-1.35);root.rotation.y=Math.PI;}
       else {root.position.copy(restPosition);root.rotation.y=2;}
       const beat=Math.sin(time*1.1),flinch=phase==='heat-demo'?Math.max(0,Math.sin((state.phaseElapsed||0)*3.1))*.08:0;
       for(const p of Object.values(poses))p.bone.position.copy(p.rest);
       pose('spine',Math.sin(time*.8)*.006+(hack?.035:0)-flinch*.13,0,beat*.004);
       pose('neck',hack?.045:0,0,0);
-      const headYaw=hack?-.22:-.65;pose('head',hack?.14:.015,headYaw,Math.sin(time*.43)*.008);
+      const headYaw=cue==='avert'?.38:cue==='side-eye'?-.65:readingLabel?-.10:hack?-.22:-.65,nod=cue==='satisfied'?Math.sin(Math.min(1,state.tablet.age/1.2)*Math.PI)*.06:0;pose('head',readingLabel?.28:(hack?.14:.015)+nod,headYaw,Math.sin(time*.43)*.008);
       // Relax the A-pose, then bring the real forearms toward the terminal.
       pose('armL',hack?-.13:receive?-.18:0,.02,-.56+(hack?.10:0));
       pose('elbowL',hack?-1.22:receive?-.88:-.12,0,-.02);pose('wristL',hack?-.5:receive?-.06:0,.06,0);
@@ -120,10 +118,9 @@ export function buildXaihi(scene,r,gltf){
       if(walking)root.position.y+=Math.abs(Math.sin(distance*10))*.014;
       root.updateMatrixWorld(true);
       if(hack){tabletRight.set(.04,.94,.38);if(stage==='pickup')tabletRight.lerp(new T.Vector3(-.1,1.1,.75),1-clamp(state.tablet.age/2));if(!gripCache||stage==='pickup'){holdArm('L',tabletLeft);holdArm('R',tabletRight);if(stage!=='pickup')gripCache=['armL','elbowL','armR','elbowR'].map(key=>[poses[key].bone,poses[key].bone.quaternion.clone()]);}else{for(const [bone,rotation]of gripCache)bone.quaternion.copy(rotation);root.updateMatrixWorld(true);}}
-      paint(state.tablet);phone.visible=hack&&!leaving;bottle.visible=!!state.fridgeHot&&!['defrost','hot'].includes(stage);meal.visible=receive;
+      paint(state.tablet);phone.visible=hack&&!leaving;meal.visible=receive;
       const wrist=poses.wristL?.bone;
       if(wrist){wrist.getWorldPosition(v);root.worldToLocal(v);phone.position.copy(v).add(phoneOffset);phone.rotation.set(.95,Math.PI,0);if(hack)phone.position.set(-.18,1.13,.46);meal.position.copy(v).add(mealOffset);meal.rotation.set(-.06,0,0);}
-      if(bottle.visible&&['pickup','drink'].includes(stage)&&poses.wristR){poses.wristR.bone.getWorldPosition(v);root.worldToLocal(v);bottle.position.copy(v).add(new T.Vector3(0,.04,.02));if(stage==='pickup'){const p=clamp(state.tablet.age/2);bottle.position.lerp(root.worldToLocal(new T.Vector3(1.30,1.25,-2.1)),1-p);}}else if(bottle.visible){v.set(3.96,1.355,1.43);root.worldToLocal(v);bottle.position.copy(v);}
       updateBounds();Object.assign(status,{action,headYaw,phoneVisible:phone.visible,mealVisible:meal.visible});
     },
     dispose(){if(disposed)return;disposed=true;api.reset();status.loaded=false;root.removeFromParent();},

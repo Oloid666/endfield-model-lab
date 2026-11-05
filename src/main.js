@@ -52,6 +52,18 @@ listen($('#quality'),'change',e=>{preferences.quality=e.target.value;saveSetting
 listen($('#sound'),'change',async e=>{try{if(e.target.checked)await audio.enable();else await audio.disable();}catch{e.target.checked=false;message.textContent='雨聲無法開啟。';}});
 listen(document,'visibilitychange',()=>{if(document.hidden)audio.disable();else if($('#sound').checked)audio.enable().catch(()=>{$('#sound').checked=false;});});
 const reactionBubble=document.createElement('p');reactionBubble.className='dragon-reaction-bubble';reactionBubble.hidden=true;$('#app').append(reactionBubble);let reactionBubbleUntil=0;
+function placeExplosionCaption(){
+ if(!world?.actors)return;
+ const view=world.container.getBoundingClientRect(),head=world.actors.headPosition,feet=world.actors.heroPosition;
+ const points=[];for(const p of [head,feet])for(const dx of [-.5,.5])for(const dz of [-.35,.35]){const q=world.projectPoint([p[0]+dx,p[1],p[2]+dz]);if(q[2]<1)points.push({x:view.x+(q[0]+1)*view.width/2,y:view.y+(1-q[1])*view.height/2});}
+ if(!points.length)return;
+ const subject={left:Math.min(...points.map(p=>p.x))-12,right:Math.max(...points.map(p=>p.x))+12,top:Math.min(...points.map(p=>p.y))-18,bottom:Math.max(...points.map(p=>p.y))+12};
+ const obstacles=[subject,...[...document.querySelectorAll('.masthead,.mission-status,.mission-panel,.mission-combat')].filter(n=>n.getClientRects().length).map(n=>n.getBoundingClientRect())];
+ const width=reactionBubble.offsetWidth,height=reactionBubble.offsetHeight,top=Math.max(view.top+12,document.querySelector('.masthead').getBoundingClientRect().bottom+8),bottom=view.bottom-height-12;
+ const xs=[view.left+12,view.right-width-12,(view.left+view.right-width)/2],ys=[top,subject.top-height-14,subject.bottom+14,bottom];let best=null;
+ for(const x of xs)for(const raw of ys){const y=Math.max(top,Math.min(bottom,raw));let score=0;for(const [i,o]of obstacles.entries())score+=Math.max(0,Math.min(x+width,o.right)-Math.max(x,o.left))*Math.max(0,Math.min(y+height,o.bottom)-Math.max(y,o.top))*(i===0?10:1);if(!best||score<best.score)best={x,y,score};}
+ reactionBubble.style.left=`${best.x+width/2}px`;reactionBubble.style.top=`${best.y+height}px`;
+}
 const buttons=[...document.querySelectorAll('[data-view]')];
 const viewControls=createViewControls(()=>world,()=>mission,abort.signal,()=>exploration?.setActive(false));
 let chapterStorage;try{chapterStorage=localStorage;}catch{}
@@ -85,7 +97,7 @@ async function init(){
       onManual:()=>{for(const b of buttons){b.classList.remove('active');if(b.dataset.view!=='reset')b.setAttribute('aria-pressed','false');}},
       onContextLost:()=>{mission?.setPaused(true,'context');showError('畫面暫時中斷。可等待恢復，或重新載入。');},onContextRestored:()=>{error.hidden=true;mission?.setPaused(false,'context');world.start();}
     });
-    world.showExplosionShout=()=>{if($('#sound').checked)audio.effect('explosion');world.actors?.setGesture('point',{speaker:'zhuang'});reactionBubble.dataset.speaker='zhuang';reactionBubble.textContent='莊方宜：Explosion！';reactionBubble.hidden=false;reactionBubbleUntil=world.time+2;};
+    world.showExplosionShout=()=>{if($('#sound').checked)audio.effect('explosion');world.actors?.setGesture('point',{speaker:'zhuang'});reactionBubble.dataset.speaker='zhuang';reactionBubble.textContent='莊方宜：Explosion！';reactionBubble.hidden=false;reactionBubbleUntil=world.time+.72;placeExplosionCaption();};
     world.setQuality(preferences.quality);world.weather.root.visible=preferences.rain;world.wet.setRain(preferences.rain);world.store.glass.uniforms.uRain.value=preferences.rain?1:0;
     loader.bind(world);world.earlyDragon=buildDragon(world.r);world.earlyDragon.root.scale.setScalar(.59);world.earlyDragon.root.position.set(-1.5,.32,2.5);world.scene.add(world.earlyDragon.root);
     world.setView('awning',true);world.tick(0,0,true);world.start();
@@ -153,7 +165,7 @@ async function init(){
     createStreetPerformance({world,mission,mount:$('#app'),playEffect:k=>{if($('#sound').checked)audio.effect(k);},hum:t=>{if($('#sound').checked)audio.hum(t);}});
     bonus=createBonus({feedback,analyticsEnabled:ga4.enabled,onAnalytics:(action,value)=>{if(action==='shortcut')analytics.shortcut();else analytics.bonus(action,value);},mount:$('#app'),world,mission,exploration,roomAudio:()=>audio.ambience('upstairs',preferences.rain),playEffect:kind=>{if($('#sound').checked&&!document.hidden)audio.effect(kind);}});
     world.onTick=(time,delta)=>{world.syncWalkingEnvironment();mission.machine.doorOpen=world.store.doors.open;mission.update(time);world.missionState=mission.state;audio.duck(!!mission.state.node);audio.ambience(mission.state.vcr?'shop':world.camera.position.z<2?'shop':'street',preferences.rain);if(mission.state.phase==='tour'&&mission.state.phaseElapsed>=14&&mission.state.phaseElapsed<30&&!mission.state.paused)audio.hum(mission.state.phaseElapsed);exploration.update(delta);bonus.update();viewControls.update();analytics.tick(performance.now(),{visible:!document.hidden,paused:mission.pauseReasons.some(reason=>reason!=='bonus')});
-      if(!reactionBubble.hidden){if(time>=reactionBubbleUntil||mission.state.paused||bonus.active){reactionBubble.hidden=true;world.actors?.cancelReaction();}else{const p=reactionBubble.dataset.speaker==='zhuang'?world.actors.heroPosition:world.actors.dragonPosition,q=world.projectPoint([p[0],p[1]+1.1,p[2]]),rect=world.container.getBoundingClientRect();reactionBubble.style.left=`${Math.max(100,Math.min(innerWidth-100,rect.x+(q[0]+1)*rect.width/2))}px`;reactionBubble.style.top=`${Math.max(150,Math.min(innerHeight*.55,rect.y+(1-q[1])*rect.height/2))}px`;}}
+      if(!reactionBubble.hidden){if(time>=reactionBubbleUntil||mission.state.paused||bonus.active){reactionBubble.hidden=true;world.actors?.cancelReaction();}else if(reactionBubble.dataset.speaker==='zhuang'){placeExplosionCaption();}else{const p=reactionBubble.dataset.speaker==='zhuang'?world.actors.heroPosition:world.actors.dragonPosition,q=world.projectPoint([p[0],p[1]+1.1,p[2]]),rect=world.container.getBoundingClientRect();reactionBubble.style.left=`${Math.max(100,Math.min(innerWidth-100,rect.x+(q[0]+1)*rect.width/2))}px`;reactionBubble.style.top=`${Math.max(150,Math.min(innerHeight*.55,rect.y+(1-q[1])*rect.height/2))}px`;}}
 };
     loader.progress(99);await loader.finish();world.time=0;world.previous=undefined;world.tick(0,0,false);loader.hide();analytics.ready();world.frameStats.reset();world.start();
     const resume=document.createElement('button');resume.className='chapter-resume';resume.textContent='繼續上次 · '+CHAPTERS.find(c=>c.id===chapters.data.chapter).label;resume.hidden=chapters.data.chapter==='intro';$('#app').append(resume);

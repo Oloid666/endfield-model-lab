@@ -1,5 +1,5 @@
 // Original fan fiction. These lines and the demolition episode are not official lore.
-export const speakers={zhuang:'莊方宜',dragon:'龍泡泡',mifoe:'弭弗',xaihi:'塞西',clerk:'店員',system:'天師樁終端',microwave:'微波爐',manager:'管理員'};
+export const speakers={zhuang:'莊方宜',dragon:'龍泡泡',mifoe:'弭弗',xaihi:'塞西',clerk:'店員',system:'天師樁終端',microwave:'微波爐',manager:'管理員',rapi:'拉毗'};
 
 export const dinnerChoices=[
   {id:'A',label:'熱便當＋湯',hint:'先吃頓熱的。'},
@@ -100,8 +100,9 @@ export const sequences={
     ['dragon','消失的電跑到哪裡去了呢？\n讓我們看一段 VCR。','player','aside','vcr-cue'],
   ]),
   flashback:lines('flashback',[
-    ['xaihi','我要負四十度的梨花冰沙，加零度氣泡水。','phone'],
-    ['xaihi','這裡冰箱好像不夠冰……我來想個辦法。','phone'],
+    ['xaihi','想喝氣泡水。加點梨花冰沙，應該不錯。','look'],
+    ['xaihi','冰沙負四十度，氣泡水零度……這裡冰箱好像不夠冰。','look'],
+    ['xaihi','我來想個辦法。','phone'],
   ]),
   credentials:lines('credentials',[
     ['xaihi','借億點點。便當比較重要。','phone'],
@@ -246,6 +247,11 @@ export const storyQuote=(sequence,...ids)=>ids.map(id=>sequences[sequence].find(
 
 // Stable cue identifiers survive editorial removals and inserted shots.
 function relink(items){items.forEach((n,i)=>n.next=items[i+1]?.id||null);return items;}
+sequences.landing=relink([
+ {id:'landing_explosion_after',speaker:'zhuang',text:'我早想喊看看了。',gesture:'happy',mood:'calm',event:'explosion-after'},
+ {id:'landing_explosion_reply',speaker:'dragon',text:'爆裂魔法個頭啦！',gesture:'shake',mood:'shock',event:'explosion-reply'},
+ ...sequences.landing
+]);
 sequences.intro=relink(sequences.intro.filter(n=>!['intro_6','intro_7','intro_8'].includes(n.id)));
 sequences.energy=relink(sequences.energy.filter(n=>n.id!=='energy_2'));
 sequences.observation.splice(3,0,{id:'observe_window',speaker:'dragon',text:'對了，二樓中間那扇窗戶怎麼有點陰森？',gesture:'point',mood:'calm',event:'server-closeup'});relink(sequences.observation);

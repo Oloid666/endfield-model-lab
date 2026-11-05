@@ -12,7 +12,7 @@ export function createStreetPerformance({world,mission,mount,playEffect=()=>{},h
  const geo=r.own(new T.ShapeGeometry(shape));for(let i=0;i<9;i++){const n=r.mesh(geo,mat,stars);n.userData.index=i;}
  let active=false,age=0,last=0,first=false,kind='restore',indices={collapse:0,restore:0},lines=[],onDone=null,from=null,mode='intact',snapshotReady=false,snapped=false,wideIndex=0,nextWide=0;
  const paused=()=>document.hidden||mission.pauseReasons.some(p=>p!=='street-show');
- function setBuilding(p){const d=world.store.destruction;d.updateRewind(kind==='restore'?p:1-p);if(p===1){if(kind==='restore')d.showFlashback();else{d.restorePresent();d.beginRewind();d.updateRewind(0);}mode=kind==='restore'?'intact':'collapsed';}world.weather.invalidateReflection();}
+ function setBuilding(p){const d=world.store.destruction;d.updateRewind(kind==='restore'?p:1-p);if(p===1){if(kind==='restore')d.showFlashback();else{d.restorePresent();d.beginRewind();d.updateRewind(0);}mode=kind==='restore'?'intact':'collapsed';}world.director.vcrEffects?.update(mission.state,{intact:kind==='restore'?p>=.9:p<.1});world.weather.invalidateReflection();}
  function applyCamera(shot){world.transition=null;world.currentView=null;world.camera.position.fromArray(shot.position);world.controls.target.fromArray(shot.target);world.camera.fov=shot.fov;world.camera.updateProjectionMatrix();world.camera.lookAt(world.controls.target);world.cameraSafety?.sync();}
  function handoff(){
   applyCamera(streetWide(wideIndex,world.camera.aspect<.85));
@@ -32,6 +32,7 @@ export function createStreetPerformance({world,mission,mount,playEffect=()=>{},h
  tick(time,render=true){const dt=Math.max(0,Math.min(.1,time-last));last=time;if(!paused())age+=dt;
   if(!cover.hidden){cover.style.opacity=String(Math.max(0,1-age/.4));if(age>=.4)cover.hidden=true;}
   const stage=streetStageFrame(age,songDuration(),first),actor=world.actors,p=stage.lift,q=p*p*(3-2*p),dest=[wideIndex===2?.8:-2.25,4.3,6.2],pos=from.map((v,i)=>v+(dest[i]-v)*q);actor.setCinematic(null);actor.setDragonProjectile(pos,0);const wide=streetWide(wideIndex,world.camera.aspect<.85),eye=wide.position;actor.setDragonHeading(stage.progress>0?Math.atan2(eye[0]-pos[0],eye[2]-pos[2]):.15);actor.setMove(0,0,false);actor.setSceneAction({homecoming:true,singing:age>=stage.buildAt,mealVisible:true});actor.setCompanionAction({kind:age<stage.buildAt?'snap':'normal',amount:Math.max(0,Math.min(1,(age-2.2)/.7))});actor.update(age,paused()?0:dt);
+  world.remnant.update?.(mission.state.clock,mission.state,world.actors.heelCenter,{doors:world.store.doors,floorPlan:world.store.floorPlan,intact:kind==='restore'?stage.progress>=.9:stage.progress<.1});
   world.portrait.fill.position.set(pos[0]+2,pos[1]+3,pos[2]+5);world.portrait.fill.target.position.set(pos[0],pos[1]+.35,pos[2]);
   const snapAt=2.6;
   if(age>=snapAt&&!snapped){snapped=true;playEffect('snap');}

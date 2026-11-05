@@ -18,11 +18,11 @@ export function buildMealRemnant(scene,r){
   if(!born&&(state.mealBorn||state.phase==='meal-spawn')){born=true;bornAt=time+(state.tabletMode&&state.phase==='meal-spawn'?5:0);}
   const home=state.postgame;const wreck=!home&&(state.progress||0)>=62&&!state.vcr;root.visible=born&&time>=bornAt&&(home||wreck||['heat','meal-spawn','flashback-end'].includes(state.phase));if(!root.visible)return;mode=home?'crawling':'incident';
   const age=Math.max(0,time-bornAt),crawl=reduced?0:Math.sin(age*.45)*.12,press=Math.max(0,1-(time-touched)/.8);
-  if(!home)root.position.set((wreck?2.8:3.06)+crawl,wreck?.35:1.35,(wreck?4.15:.8)+crawl*.35);body.rotation.y=reduced?0:Math.sin(age*.6)*.15;
+  if(!home)root.position.set((wreck?2.45:3.06)+crawl,wreck?.33:1.35,(wreck?4.52:.8)+crawl*.12);body.rotation.y=reduced?0:Math.sin(age*.6)*.15;
   if(!home&&!wreck&&age<.9){const p=Math.min(1,age/.9);root.position.set(3.45+(3.06-3.45)*p,1.6+(1.35-1.6)*p+Math.sin(p*Math.PI)*.18,1.25+(.8-1.25)*p);}
   const dt=lastTime===null?0:Math.max(0,Math.min(.1,time-lastTime));lastTime=time;
   if(home){
-    if(homeAt!==state.homecomingAt){homeAt=state.homecomingAt;root.position.set(3.06,.33,1.65);path=[];goal='';}
+    if(homeAt!==state.homecomingAt){homeAt=state.homecomingAt;if(environment.intact===false)root.position.set(2.45,.33,4.52);else if(root.position.z<1||root.position.y>1)root.position.set(3.06,.33,1.65);path=[];goal='';}
     const follow=time-state.homecomingAt>=17,target=feet?[feet[0]+.6,.33,feet[2]+.6]:route[4],wanted=follow?target:route[4];
     if(!follow&&feet){route[4][0]=feet[0]+.6;route[4][2]=feet[2]+.6;}
     const key=Math.round(wanted[0]*3)+':'+Math.round(wanted[2]*3)+':'+environment.intact;

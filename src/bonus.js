@@ -23,7 +23,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
  progress.data.unlocked=false;
  let active=false,route='claims',lessonIndex=0,pageIndex=0,room=null,snapshot=null,busy=false,disposed=false,transitionAnimation=null,exportUrl=null,exportBlob=null;
  let responseIndex=0,lessonAt=0,lessonKey='',lastReveal=-1,dialogOpener=null,dialogScroll=0,stampPhase='',stampKind='class',dialogKind='',objectionKey='',objectionAnimation=null;
- let saved=null,claimsLockedUntil=0,claimsControlsKey='',ratingForm=null,feedbackStored=false;
+ let saved=null,claimsLockedUntil=0,claimsControlsKey='',ratingForm=null,feedbackStored=false,travelGeneration=0,travelTarget=null;
  const externallyPaused=()=>document.hidden||mission.pauseReasons.some(reason=>reason!=='bonus');
  let freeGuide='house';
  let flowStage=saved?.stage||'claims',endingAge=0,whispered=false,answerAt=null,lastEpilogueClock=null,epilogueStep=0,thanksStep=0,skippedRating=false,rebuilt=false;
@@ -42,6 +42,31 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
  const curtain=E('div','bonus-curtain');curtain.setAttribute('aria-hidden','true');
  const dialog=E('dialog','bonus-dialog');dialog.setAttribute('aria-label','附件與出處');
  root.append(header,panel,classDock,claimsDock,objection,curtain,dialog);header.append(title,nav);mount.append(entry,toast,root);
+ const recovery=E('dialog','bonus-recovery');recovery.setAttribute('aria-label','繼續二樓故事');
+ const recoveryText=E('p','','故事停在這裡。'),resumeScene=E('button','','繼續這一幕'),replayScene=E('button','','重播這一幕');resumeScene.type=replayScene.type='button';recovery.append(recoveryText,resumeScene,replayScene);root.append(recovery);
+ const recoveryBlocks=()=>mission.pauseReasons.filter(p=>!['bonus','manual','background'].includes(p));
+ function updateRecovery(){
+  const needs=active&&!document.hidden&&mission.pauseReasons.some(p=>p==='manual'||p==='background');
+  if(!needs){if(recovery.open)recovery.close();return;}
+  resumeScene.disabled=recoveryBlocks().length>0;recoveryText.textContent=resumeScene.disabled?'畫面恢復中…':'故事停在這裡。';
+  if(!recovery.open)recovery.showModal();
+ }
+ function resumeBonus(){
+  if(recoveryBlocks().length)return;lastEpilogueClock=world.time;
+  mission.setPaused(false,'background');mission.setPaused(false,'manual');recovery.close();
+  for(const a of root.getAnimations({subtree:true}))if(a._backgroundPaused){a._backgroundPaused=false;a.play();}
+  renderClaimsControls();renderClassControls();
+ }
+ resumeScene.addEventListener('click',resumeBonus,{signal:events.signal});
+ replayScene.addEventListener('click',()=>{
+  if(recoveryBlocks().length)return;
+  const destination=travelTarget;travelGeneration++;transitionAnimation?.cancel();transitionAnimation=null;busy=false;travelTarget=null;root.removeAttribute('aria-busy');curtain.style.opacity='0';
+  if(route==='exterior'&&destination)route=destination;
+  const time=world.time;ensureRoom().setMode(isClassRoute()||['rating','rating-result','final','class-invite'].includes(route)?'classroom':'claims');room.enter(time);
+  // A pending feedback form stays mounted: replaying a shot must not resubmit it.
+  if(route!=='rating')render();resumeBonus();
+ },{signal:events.signal});
+ recovery.addEventListener('cancel',e=>{e.preventDefault();resumeBonus();},{signal:events.signal});
  function button(parent,text,action,value,cls='') {const b=E('button',cls,text);b.type='button';b.dataset.action=action;if(value!==undefined)b.dataset.value=value;parent.append(b);return b;}
  function heading(kicker,text,description){content.append(E('p','bonus-kicker',kicker),E('h2','',text));if(description)content.append(E('p','bonus-description',description));}
  function focusContent(){content.focus({preventScroll:true});content.scrollTop=0;panel.scrollTop=0;}
@@ -177,7 +202,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
   postgameDock.hidden=true;rebuildButton.hidden=true;mount.classList.add('bonus-active');root.hidden=false;toast.hidden=true;epilogue.hidden=true;route='claims';ensureRoom();if(mission.state.postgame){route='claims';}else restoreFlow();world.resize();render();updateEntry();focusContent();if(!skipTravel&&['claims','negotiation'].includes(route))travel(route,true);else {ensureRoom().setMode(isClassRoute()?'classroom':'claims');room.enter(world.time);}
  }
  function close(){
-  if(!active||busy)return;ratingForm?.dispose();ratingForm=null;dialog.close();if(exportUrl){URL.revokeObjectURL(exportUrl);exportUrl=null;exportBlob=null;}
+  if(!active||busy)return;recovery.close();ratingForm?.dispose();ratingForm=null;dialog.close();if(exportUrl){URL.revokeObjectURL(exportUrl);exportUrl=null;exportBlob=null;}
   saveFlow();stampSequence.cancel();objectionAnimation?.cancel();objection.hidden=true;active=false;root.hidden=true;mount.classList.remove('bonus-active','bonus-reading');for(const [node,inert]of snapshot.inert)node.inert=inert;
   world.setCutaway(snapshot.cutaway);if(flowStage==='done'&&mission.state.phase==='complete')world.director.stuckReleased=true;exploration.setActive(snapshot.walking);
   world.currentView=snapshot.currentView;world.autoCamera=snapshot.autoCamera;world.manualUntil=Number.isFinite(snapshot.manualUntil)?snapshot.manualUntil+world.time-snapshot.time:snapshot.manualUntil;world.transition=snapshot.transition?{...snapshot.transition,start:snapshot.transition.start+world.time-snapshot.time}:null;world.controls.enabled=snapshot.controls;
@@ -191,18 +216,19 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
  }
  async function travel(destination,fromStreet=false){
   if(busy||disposed||externallyPaused())return;stampSequence.cancel();objectionAnimation?.cancel();objection.hidden=true;busy=true;root.setAttribute('aria-busy','true');dialog.close();
+  const generation=++travelGeneration;travelTarget=destination;
   const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;let covered=false;
   try{
    // Rewind the ruined storefront visually; restore its logical damage afterward.
    const indoor=!fromStreet&&!!room&&['claims','negotiation','settlement-result','class-invite','classroom','lesson','class-result'].includes(route);
    if(!indoor){route='exterior';setExterior();title.textContent='二樓 · 進場';}
    if(!reduced&&!covered){transitionAnimation=curtain.animate([{opacity:0},{opacity:0,offset:.35},{opacity:1}],{duration:650,fill:'forwards'});await transitionAnimation.finished;}
-   if(disposed)return;if(destination==='street'){world.store.destruction.reset();rebuilt=true;progress.data.unlocked=false;progress.taps=0;busy=false;close();return;}route=destination;
+   if(disposed||generation!==travelGeneration)return;if(destination==='street'){world.store.destruction.reset();rebuilt=true;progress.data.unlocked=false;progress.taps=0;busy=false;close();return;}route=destination;
 
    if(destination==='rooms')setExterior();else {ensureRoom().setMode(destination==='classroom'||destination==='lesson'||destination==='class-invite'?'classroom':'claims');if(destination==='classroom'||destination==='claims'||destination==='class-invite')room.enter(world.time);}
    render();focusContent();
    if(!reduced){transitionAnimation=curtain.animate([{opacity:1},{opacity:0}],{duration:300,fill:'forwards'});await transitionAnimation.finished;}
-  }catch(e){if(e.name!=='AbortError')throw e;}finally{busy=false;root.removeAttribute('aria-busy');}
+  }catch(e){if(e.name!=='AbortError')throw e;}finally{if(generation===travelGeneration){busy=false;travelTarget=null;root.removeAttribute('aria-busy');}}
  }
  function render(){
   ratingForm?.dispose();ratingForm=null;saveFlow();content.replaceChildren();nav.replaceChildren();preferences();renderClassControls();renderClaimsControls();
@@ -220,7 +246,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
    if(route==='final'){ensureRoom().setMode('classroom');room.board('下課',[],0,world.time,false,'true-fin');room.perform('gone');heading('AFTER HOURS','Fin.');button(content,'回雨夜街角','close',undefined,'bonus-primary');return;}
    if(route==='rating-result'){
     ensureRoom().setMode('classroom');room.perform(['whisper','bow','wave'][thanksStep]);room.board(thanksStep===2?'886！':'課後悄悄話',[],0,world.time,false,'thanks-'+thanksStep);
-    const lines=['偷偷跟你說，正面 711 招牌按七下，可以開啟通關後的雨夜街角喔～',feedbackStored?'意見已存進後台！這後台做起來超級麻煩，要好好誇誇作者喔～':analyticsEnabled?'感謝您的回饋，這次有在統計星等喔～':feedback?'感謝你來玩，這次先放你下課～':'感謝您的回饋，雖然沒有人會看～','886！'];
+    const lines=['偷偷跟你說，正面711招牌連按七下，就能直接開啟通關後的雨夜街角喔～\n下次重新整理、再來玩，在開始畫面就能用。',feedbackStored?'意見已存進後台！這後台做起來超級麻煩，要好好誇誇作者喔～':analyticsEnabled?'感謝您的回饋，這次有在統計星等喔～':feedback?'感謝你來玩，這次先放你下課～':'感謝您的回饋，雖然沒有人會看～','現在才說，好像有點晚……你還會再來的，對吧？對吧？'];
     heading('龍泡泡 · 謝幕','龍泡泡',lines[thanksStep]);button(content,thanksStep===2?'揮手告別':'繼續','thanks-next',undefined,'bonus-primary');return;
    }
    if(feedback){
@@ -369,8 +395,8 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
  entry.addEventListener('click',()=>open(),{signal:events.signal});
  dialog.addEventListener('close',()=>{panel.scrollTop=dialogScroll;if(dialogOpener?.isConnected)dialogOpener.focus({preventScroll:true});},{signal:events.signal});
  dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close();},{signal:events.signal});
- document.addEventListener('visibilitychange',()=>{if(!active)return;for(const a of root.getAnimations({subtree:true})){if(document.hidden&&a.playState==='running'){a.pause();a._backgroundPaused=true;}}},{signal:events.signal});
- root.addEventListener('keydown',e=>{if(!active)return;if(e.key==='Escape'&&!dialog.open){e.preventDefault();close();}if(e.key==='Tab'&&!dialog.open){const nodes=[...root.querySelectorAll('button,a[href],textarea,select,input')].filter(n=>!n.disabled&&n.getClientRects().length);if(!nodes.length)return;const first=nodes[0],last=nodes.at(-1);if(e.shiftKey&&(document.activeElement===first||document.activeElement===content)){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}},{signal:events.signal});
+ document.addEventListener('visibilitychange',()=>{if(!active)return;for(const a of root.getAnimations({subtree:true})){if(document.hidden&&a.playState==='running'){a.pause();a._backgroundPaused=true;}}updateRecovery();},{signal:events.signal});
+ root.addEventListener('keydown',e=>{if(!active)return;if(e.key==='Escape'&&!dialog.open&&!recovery.open){e.preventDefault();close();}if(e.key==='Tab'&&!dialog.open&&!recovery.open){const nodes=[...root.querySelectorAll('button,a[href],textarea,select,input')].filter(n=>!n.disabled&&n.getClientRects().length);if(!nodes.length)return;const first=nodes[0],last=nodes.at(-1);if(e.shiftKey&&(document.activeElement===first||document.activeElement===content)){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}},{signal:events.signal});
  const api={get active(){return active;},get state(){return {active,route,busy,lesson:LESSONS[lessonIndex].id,page:pageIndex,response:responseIndex,room:room?.state||null,presentation:lessonFrame(world.time-lessonAt,course.eligible,reducedMotion()),stampPhase,taps:progress.taps,...structuredClone(progress.data),course:{...course.saved,completed:course.completed,percentage:course.percentage,display:deathMeter.value(world.time)},negotiation:negotiation.state};},
   resetEnding(){ratingForm?.dispose();ratingForm=null;feedbackStored=false;freeGuide='house';postgameDock.hidden=true;mount.removeAttribute('data-free-guide');course.reset();negotiation.reset();selectedRating=0;claimsLockedUntil=0;progress.data.claimsSettled=false;progress.data.unlocked=false;progress.data.read=[];progress.taps=0;flowStage='claims';epilogueStep=0;rebuilt=false;epilogue.hidden=true;entry.hidden=true;rebuildButton.hidden=true;progress.save();mount.classList.remove('bonus-unlocked','epilogue-pending');saved=null;},
   handleTap(ray){if(active)return true;const allowed=['ready','complete'].includes(mission.state.phase);if(!allowed){progress.tap(false,mission.state.phase);return false;}const sign=pickBonusSign(world,ray);if(sign){world.flashUntil=world.time+.45;world.pulseLight?.();}if(progress.tap(sign,mission.state.phase)){enterFreeStreet(true);notice('雨夜街角已開放：散步、拆屋復原與二樓劇情。');mount.classList.add('bonus-unlocked');const flash=world.container.animate([{filter:'brightness(1)'},{filter:'brightness(1.7)'},{filter:'brightness(1)'}],{duration:320});flash.onfinish=()=>mount.classList.remove('bonus-unlocked');updateEntry();}return sign;},
@@ -383,7 +409,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
    if(!epilogue.hidden)updateEpilogue();
    updateEntry();
   },
-  tick(time,renderFrame=true){roomAudio();if(externallyPaused()){const gap=lastEpilogueClock===null?0:Math.max(0,time-lastEpilogueClock);if(stampSequence.active)stampSequence.at+=gap;lessonAt+=gap;claimsLockedUntil+=gap;deathMeter.at+=gap;room?.shiftClock(gap);lastEpilogueClock=time;return;}for(const a of root.getAnimations({subtree:true}))if(a._backgroundPaused){a._backgroundPaused=false;a.play();}if(lastEpilogueClock===null)lastEpilogueClock=time;const dt=document.hidden?0:Math.max(0,time-lastEpilogueClock);lastEpilogueClock=time;syncClass(time);advanceStamp(time);syncLesson(time);if(isClaimsRoute())renderClaimsControls();if(!renderFrame)return;world.renderer.info.reset();if(['classroom','lesson','claims','negotiation','settlement-result','class-wait','class-stamping','class-result','rating','rating-result','final','class-invite'].includes(route)){ensureRoom().render(world.renderer,time,world.container.clientWidth,world.container.clientHeight);}else world.composer.render();world.renderCount++;},
+  tick(time,renderFrame=true){updateRecovery();roomAudio();if(externallyPaused()){const gap=lastEpilogueClock===null?0:Math.max(0,time-lastEpilogueClock);if(stampSequence.active)stampSequence.at+=gap;lessonAt+=gap;claimsLockedUntil+=gap;deathMeter.at+=gap;room?.shiftClock(gap);lastEpilogueClock=time;return;}for(const a of root.getAnimations({subtree:true}))if(a._backgroundPaused){a._backgroundPaused=false;a.play();}if(lastEpilogueClock===null)lastEpilogueClock=time;const dt=document.hidden?0:Math.max(0,time-lastEpilogueClock);lastEpilogueClock=time;syncClass(time);advanceStamp(time);syncLesson(time);if(isClaimsRoute())renderClaimsControls();if(!renderFrame)return;world.renderer.info.reset();if(['classroom','lesson','claims','negotiation','settlement-result','class-wait','class-stamping','class-result','rating','rating-result','final','class-invite'].includes(route)){ensureRoom().render(world.renderer,time,world.container.clientWidth,world.container.clientHeight);}else world.composer.render();world.renderCount++;},
   dispose(){ratingForm?.dispose();disposed=true;transitionAnimation?.cancel();objectionAnimation?.cancel();toast.getAnimations().forEach(a=>a.cancel());dialog.close();events.abort();if(active){busy=false;close();}room?.dispose();if(exportUrl)URL.revokeObjectURL(exportUrl);root.remove();entry.remove();toast.remove();epilogue.remove();rebuildButton.remove();postgameDock.remove();}};
  const rebuildButton=E('button','postgame-toggle','切換崩塌後');rebuildButton.type='button';rebuildButton.hidden=true;mount.append(rebuildButton);
  rebuildButton.addEventListener('click',()=>{if(mission.state.postgame&&!active&&!mission.state.paused&&!world.streetShow.active){if(world.streetShow.start({done:()=>{if(freeGuide==='house')freeGuide='walk';}}))rebuildButton.disabled=true;}},{signal:events.signal});
