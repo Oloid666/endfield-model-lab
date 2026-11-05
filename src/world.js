@@ -1,3 +1,5 @@
+import {shootingCameraLocked} from './camera-lock.js';
+import {qualityLocked,FrameStats} from './performance-guard.js';
 import {buildInvestigationProps} from './investigation-props.js';
 import * as T from 'three';
 import {walkingEnvironment} from './walking-environment.js';
@@ -33,11 +35,11 @@ export class World {
   constructor(container,{onContextLost,onContextRestored,onManual,onFraming=()=>{},onZone=()=>{},renderer=null}) {
     this.onFraming=onFraming;this.r=new Resources();this.container=container;this.quality='balanced';this.qualityMode='auto';this.adaptiveQuality=new AdaptiveQuality();this.time=0;this.disposed=false;this.renderCount=0;this.charactersEnabled=true;this.autoCamera=true;
     this.scene=new T.Scene();this.scene.background=new T.Color('#080f1d');this.scene.fog=new T.FogExp2('#101a2c',.009);
-    this.camera=new T.PerspectiveCamera(37,1,.04,100);this.onTick=()=>{};this.manualUntil=0;
+    this.frameStats=new FrameStats();this.pendingQuality=null;this.qualityBudget=null;this.camera=new T.PerspectiveCamera(37,1,.04,100);this.onTick=()=>{};this.manualUntil=0;
     this.renderer=renderer||new T.WebGLRenderer({antialias:true,alpha:false,powerPreference:'high-performance'});
     this.renderer.outputColorSpace=T.SRGBColorSpace;this.renderer.toneMapping=T.ACESFilmicToneMapping;this.renderer.toneMappingExposure=1.05;this.renderer.shadowMap.enabled=true;this.renderer.shadowMap.type=T.PCFSoftShadowMap;this.renderer.info.autoReset=false;this.renderer.transmissionResolutionScale=.5;
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,config.dpr.balanced));container.append(this.renderer.domElement);
-    this.contextLost=e=>{e.preventDefault();this.stop();this.shaderWarmup?.invalidate();onContextLost();};this.contextRestored=async()=>{
+    this.contextLost=e=>{e.preventDefault();this.battleDrawWarm=false;this.stop();this.shaderWarmup?.invalidate();onContextLost();};this.contextRestored=async()=>{
       try{
         this.scene.environment=makeNightEnvironment(this.renderer,this.r);this.store.spill.shadow.needsUpdate=true;this.refreshGlassProbe();this.weather.invalidateReflection();
         await this.prepareShaders(this.scene,'scene');if(this.disposed)return;this.composer.render();onContextRestored();
@@ -48,7 +50,7 @@ export class World {
     this.photoCamera=new PhotoCamera(this.camera,this.controls,this.renderer.domElement,()=>this.missionState?.phase==='photo'&&!this.missionState.paused&&!this.capturingPhoto);
     this.controls.touches.ONE=T.TOUCH.ROTATE;this.controls.touches.TWO=T.TOUCH.DOLLY_PAN;
     this.onManualView=onManual;this.walkCamera=new WalkCamera(this.camera,this.controls,onZone);
-    this.manual=()=>{this.transition=null;this.currentView=null;this.manualUntil=Infinity;this.autoCamera=false;onManual();};this.controls.addEventListener('start',this.manual);
+    this.manual=()=>{if(shootingCameraLocked(this.missionState))return;this.transition=null;this.currentView=null;this.manualUntil=Infinity;this.autoCamera=false;onManual();};this.controls.addEventListener('start',this.manual);
     this.scene.add(new T.HemisphereLight(0x8aa9d9,0x1c2831,.36));
     const moon=new T.DirectionalLight(0x91b8d4,.65);moon.position.set(-5,10,5);this.scene.add(moon);
     const rim=new T.DirectionalLight(0x8dc9d1,.6);rim.position.set(4,4,-2);this.scene.add(rim);
@@ -107,9 +109,26 @@ export class World {
     else this.transition={start:this.time,position:this.camera.position.clone(),target:this.controls.target.clone(),endPosition:position,endTarget:target};
     this.controls.update();this.cameraSafety?.sync();const close=this.camera.position.distanceTo(this.controls.target)<(this.camera.aspect<.85?14:11);if(close!==this.closeFraming){this.closeFraming=close;this.onFraming(close);}
   }
-  setQuality(value,automatic=false){if(!automatic){this.qualityMode=value;this.adaptiveQuality.reset();}if(value==='auto')value='balanced';if(!config.dpr[value])return;this.quality=value;this.renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,config.dpr[value]));this.composer.setPixelRatio(this.renderer.getPixelRatio());this.msaaSamples=Math.min(this.supportedSamples,value==='low'?2:4);for(const target of [this.opaqueTarget])if(target.samples!==this.msaaSamples){target.samples=this.msaaSamples;target.dispose();}this.bloom.enabled=value!=='low';this.weather.quality(value);this.garden.quality(value);this.siege.quality(value);this.tianshi.quality?.(value);this.microwave.quality?.(value);this.store.glass.uniforms.uRefraction.value=value==='low'?.0012:value==='high'?.005:.003;const size=value==='low'?512:1024;this.store.spill.shadow.mapSize.set(size,size);this.store.spill.shadow.map?.dispose();this.store.spill.shadow.map=null;this.store.spill.shadow.needsUpdate=true;this.resize();}
+  setQuality(value,automatic=false){if(automatic&&(qualityLocked(this.missionState)||this.streetShow?.active)){this.pendingQuality=value;if(value==='low'&&this.qualityBudget!=='low'){this.siege.quality('low');this.tianshi.quality?.('low');this.microwave.quality?.('low');this.qualityBudget='low';}return;}this.pendingQuality=null;this.qualityBudget=value;this.frameStats.qualityChanges++;if(!automatic){this.qualityMode=value;this.adaptiveQuality.reset();}if(value==='auto')value='balanced';if(!config.dpr[value])return;if(this.quality!==value)this.battleDrawWarm=false;this.quality=value;this.renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,config.dpr[value]));this.composer.setPixelRatio(this.renderer.getPixelRatio());this.msaaSamples=Math.min(this.supportedSamples,value==='low'?2:4);for(const target of [this.opaqueTarget])if(target.samples!==this.msaaSamples){target.samples=this.msaaSamples;target.dispose();}this.bloom.enabled=value!=='low';this.weather.quality(value);this.garden.quality(value);this.siege.quality(value);this.tianshi.quality?.(value);this.microwave.quality?.(value);this.store.glass.uniforms.uRefraction.value=value==='low'?.0012:value==='high'?.005:.003;const size=value==='low'?512:1024;this.store.spill.shadow.mapSize.set(size,size);this.store.spill.shadow.map?.dispose();this.store.spill.shadow.map=null;this.store.spill.shadow.needsUpdate=true;this.resize();}
   setWalking(value){const was=this.walkCamera.enabled;this.walkCamera.setEnabled(value,this.actors?.position);if(was&&!value)this.manualUntil=this.time+14;if(value){this.manualUntil=this.time;this.transition=null;this.currentView=null;this.onManualView();this.weather.invalidateReflection();}}
   prepareShaders(object=this.scene,label='scene'){return this.shaderWarmup.prepare(object,label);}
+  prepareBattleFrame(){
+    this.battleDrawWarm=false;
+    // Draw future materials with nonzero instance counts in an unoccluded tile grid.
+    // Merely compiling hidden/zero-count pools does not prime every GPU draw path.
+    const warm=new T.Scene();warm.environment=this.scene.environment;warm.environmentIntensity=this.scene.environmentIntensity;warm.fog=this.scene.fog;
+    const copies=[],temporaryGeometry=[],seen=new Set(),materials=new Map(),target=new T.WebGLRenderTarget(128,128,{type:T.HalfFloatType}),renderer=this.renderer,previous=renderer.getRenderTarget(),viewport=renderer.getViewport(new T.Vector4()),scissor=renderer.getScissor(new T.Vector4()),scissorTest=renderer.getScissorTest(),autoShadow=renderer.shadowMap.autoUpdate,shadowUpdate=renderer.shadowMap.needsUpdate;
+    this.scene.updateMatrixWorld(true);this.scene.traverseVisible(n=>{if(!n.isLight)return;const light=n.clone(false);n.matrixWorld.decompose(light.position,light.quaternion,light.scale);if(n.target){light.target=new T.Object3D();n.target.getWorldPosition(light.target.position);warm.add(light.target);}if(n.shadow){light.shadow=n.shadow.clone();light.shadow.autoUpdate=true;light.shadow.mapSize.set(64,64);light.shadow.camera.near=.1;light.shadow.camera.far=100;}warm.add(light);});
+    for(const owner of [this.siege.root,this.store.destruction.root,this.store.destruction.server.shattered,this.store.destruction.neighbor.root,this.store.destruction.signFlight.root,this.store.destruction.signFlight.sparks,this.store.destruction.signFlight.dust,this.store.destruction.signFlight.cablesRoot].filter(Boolean))owner.traverse(n=>{
+      if((!n.isMesh&&!n.isLine)||n.isSkinnedMesh||seen.has(n))return;seen.add(n);let geometry=n.geometry;if(n.isLine){geometry=n.geometry.clone();const positions=geometry.attributes.position;for(let i=0;i<positions.count;i++)positions.setXYZ(i,i%2?.5:-.5,0,0);positions.needsUpdate=true;geometry.setDrawRange(0,positions.count);temporaryGeometry.push(geometry);}const mesh=n.isInstancedMesh?new T.InstancedMesh(geometry,n.material,1):n.isLine?new T.LineSegments(geometry,n.material):new T.Mesh(geometry,n.material);mesh.receiveShadow=n.receiveShadow;if(n.instanceColor){const color=new T.Color();n.getColorAt(0,color);mesh.setColorAt(0,color);}mesh.layers.mask=n.layers.mask;mesh.visible=true;mesh.frustumCulled=false;mesh.castShadow=n.castShadow;mesh.rotation.set(0,0,0);if(mesh.isInstancedMesh){mesh.count=1;mesh.setMatrixAt(0,new T.Matrix4());mesh.instanceMatrix.needsUpdate=true;}
+      geometry.computeBoundingSphere();const sphere=geometry.boundingSphere,scale=.65/Math.max(.01,sphere.radius),i=copies.length;mesh.scale.setScalar(scale);mesh.position.set((i%12)*2,(Math.floor(i/12))*2,0).addScaledVector(sphere.center,-scale);warm.add(mesh);copies.push(mesh);for(const mat of Array.isArray(n.material)?n.material:[n.material])if(!materials.has(mat))materials.set(mat,{opacity:mat.opacity,uniforms:['uOpacity','uStrength','uHeat','uCharge','head'].filter(k=>typeof mat.uniforms?.[k]?.value==='number').map(k=>[mat.uniforms[k],mat.uniforms[k].value])});
+    });
+    const rows=Math.ceil(copies.length/12);for(const light of warm.children.filter(n=>n.isLight)){light.intensity=Math.max(1,light.intensity);if(light.isPointLight||light.isSpotLight){light.position.set(11,rows-1,6);light.distance=0;}if(light.isSpotLight){light.angle=Math.PI*.45;light.target.position.set(11,rows-1,0);}}
+    const camera=new T.PerspectiveCamera(60,12/rows,.1,100);camera.position.set(11,rows-1,rows/Math.tan(Math.PI/6)+2);camera.lookAt(11,rows-1,0);camera.updateMatrixWorld();
+    try{for(const [mat,values]of materials){if(mat.transparent)mat.opacity=Math.max(.7,mat.opacity);for(const [uniform]of values.uniforms)uniform.value=.7;}target.samples=this.opaqueTarget.samples;renderer.shadowMap.autoUpdate=true;renderer.shadowMap.needsUpdate=true;renderer.setRenderTarget(target);renderer.clear();renderer.render(warm,camera);if(target.samples){renderer.setRenderTarget(null);target.dispose();target.samples=0;renderer.shadowMap.autoUpdate=false;renderer.shadowMap.needsUpdate=false;renderer.setRenderTarget(target);renderer.clear();renderer.render(warm,camera);}this.battleDrawWarm=true;}
+    finally{for(const [mat,values]of materials){mat.opacity=values.opacity;for(const [uniform,value]of values.uniforms)uniform.value=value;}renderer.setRenderTarget(previous);renderer.setViewport(viewport);renderer.setScissor(scissor);renderer.setScissorTest(scissorTest);renderer.shadowMap.autoUpdate=autoShadow;renderer.shadowMap.needsUpdate=shadowUpdate;target.dispose();for(const geometry of temporaryGeometry)geometry.dispose();for(const light of warm.children)if(light.isLight)light.shadow?.dispose();for(const mesh of copies)if(mesh.isInstancedMesh)mesh.dispose();}
+  }
+
   resetStoryCamera(){
     this.setWalking(false);this.autoCamera=true;
     this.setCutaway(false);if(this.missionState)this.director.resumeCamera();
@@ -209,6 +228,8 @@ export class World {
     const delta=this.previous===undefined?0:Math.max(0,(now-this.previous)/1000);this.previous=now;
     this.time+=delta;
     if(this.transition&&!this.bonus?.active){const p=this.transition,w=T.MathUtils.smootherstep(this.time-p.start,0,1.5);this.camera.position.lerpVectors(p.position,p.endPosition,w);this.controls.target.lerpVectors(p.target,p.endTarget,w);if(w===1)this.transition=null;}
+    if(!this.loadingPresentation&&!this.missionState?.paused)this.frameStats.sample(delta);
+    if(this.pendingQuality&&!qualityLocked(this.missionState)&&!this.streetShow?.active)this.setQuality(this.pendingQuality,true);
     this.tick(this.time,Math.min(delta,.08));
     const next=this.adaptiveQuality.sample(delta,this.qualityMode==='auto'&&!this.loadingPresentation&&!this.capturingPhoto&&!this.missionState?.paused&&!document.hidden,this.quality);if(next)this.setQuality(next,true);
   });}

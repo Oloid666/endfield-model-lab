@@ -41,6 +41,8 @@ jobs:
       - run: node scripts/presentation-check.mjs
       - run: node scripts/bonus-check.mjs
       - run: node scripts/vcr-tablet-check.mjs
+      - run: node scripts/vcr-props-check.mjs
+      - run: node scripts/battle-warm-check.mjs
       - run: node scripts/mission-check.mjs
       - run: node scripts/destruction-check.mjs
       - run: node scripts/cinematic-check.mjs

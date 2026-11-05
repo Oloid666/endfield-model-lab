@@ -99,8 +99,13 @@ export const sequences={
     ['zhuang','以前堂堂武陵電，就算電一些奇怪的人三天三夜都沒問題啊。','look'],
     ['dragon','消失的電跑到哪裡去了呢？\n讓我們看一段 VCR。','player','aside','vcr-cue'],
   ]),
-  flashback:lines('flashback',[["xaihi", "品質不能將就。負四十度梨花冰沙，加零度氣泡水。", "phone"], ["dragon", "妳買飲料，還附冷鏈驗收？", "player", "aside"], ["xaihi", "賽馬娘緊急維修，社群都在轉 PHP2Shell。找找有沒有現成工具。", "phone"], ["dragon", "妳是調飲料，還是修遊戲？", "player", "aside"]]),
-  credentials:lines('credentials',[["dragon", "妳選的是一百萬倍！", "player", "aside"], ["xaihi", "借億點點。便當比較重要。", "phone"], ["dragon", "妳看一下單位啊！", "shake"]]),
+  flashback:lines('flashback',[
+    ['xaihi','我要負四十度的梨花冰沙，加零度氣泡水。','phone'],
+    ['xaihi','這裡冰箱好像不夠冰……我來想個辦法。','phone'],
+  ]),
+  credentials:lines('credentials',[
+    ['xaihi','借億點點。便當比較重要。','phone'],
+  ]),
   'flashback-end':lines('flashback_end',[
     ['system','加熱完成：0.3 秒。','hold','calm','heated-meal'],
     ['xaihi','這樣就不用等了。','receive'],

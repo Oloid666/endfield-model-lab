@@ -2,7 +2,8 @@ export class AdaptiveQuality {
  constructor(){this.reset();}
  reset(){this.seconds=0;this.frames=0;this.cooldown=12;}
  sample(dt,eligible,quality){
-  if(!eligible||dt<=0||dt>.5){this.seconds=0;this.frames=0;return null;}
+  if(!eligible||dt<=0){this.seconds=0;this.frames=0;return null;}
+  dt=Math.min(dt,.5);
   if(this.cooldown>0){this.cooldown-=dt;return null;}
   this.seconds+=dt;this.frames++;
   if(this.seconds<5)return null;

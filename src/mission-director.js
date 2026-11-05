@@ -6,7 +6,7 @@ import {buildCaptureEffects} from './capture-effects.js';
 
 const flying=new Set(['ascent','director-reminder','shoe-view','pylon-link','charge','fire-ready','combat','energy','last','aim-final','finisher','landing']);
 const cctvPhases=new Set(['flashback','hack','credentials','heat-demo','meal-spawn','heat','flashback-end']);
-const lockedPhases=new Set(['photo-return','photo-sending','purchase','walk-out','rewind','flashback','hack','credentials','heat-demo','meal-spawn','heat','flashback-end','return','finisher','landing','tour']);
+const lockedPhases=new Set(['photo-return','photo-sending','purchase','walk-out','rewind','flashback','hack','credentials','heat-demo','meal-spawn','heat','flashback-end','return','fire-ready','combat','aim-final','finisher','landing','tour']);
 const cinematicPhases=new Set(['terminal-quip','ascent','director-reminder','shoe-view','pylon-link','ready','intro','purchase','walk-out','photo-pose','photo-talk','photo-flight','photo','photo-return','photo-sending','photo-check','photo-review','terminal-deploy','verify-talk','verified-talk','cargo','observation','comm-request','briefing','login','captcha','lever','charge','fire-ready','combat','energy','rewind','flashback','hack','credentials','heat-demo','meal-spawn','heat','flashback-end','return','last','aim-final','finisher','landing','tour','complete']);
 const smooth=x=>{const p=Math.max(0,Math.min(1,x));return p*p*(3-2*p);};
 const lerp=(a,b,p,out)=>{for(let i=0;i<3;i++)out[i]=a[i]+(b[i]-a[i])*p;return out;};
@@ -100,6 +100,7 @@ export class MissionDirector{
     }
     if((phase==='landing'||phase==='complete')&&this.finalBegun){this.impact();this.hitNeighbor();}
     this.world.controls.enabled=!this.world.upstairsInvitation&&!state.presentationLocked&&!['photo-flight','photo'].includes(phase)&&!lockedPhases.has(phase)&&phase!=='investigate';
+    if(['fire-ready','combat','aim-final'].includes(phase)){const controls=this.world.controls,damping=controls.enableDamping;controls.enableDamping=false;controls.update?.();controls.enableDamping=damping;this.world.currentView=null;this.world.cameraSafety?.sync();}
     if(cinematicPhases.has(phase))this.world.transition=null;if(lockedPhases.has(phase)){this.world.autoCamera=true;this.world.manualUntil=this.world.time;}
     if(this.world.autoCamera===false&&phase!=='photo')this.world.manualUntil=Infinity;
     this.world.weather.invalidateReflection();
@@ -296,7 +297,7 @@ export class MissionDirector{
     if(s?.phase==='rewind'){propState.charge=(1-s.rewindProgress)*100;propState.progress=0;}
     this.world.tianshi.update(clock,s?.paused?0:delta,propState);this.world.microwave.update(clock,s?.paused?0:delta,propState);this.world.connectionStage.update(clock,s?.paused?0:delta,propState);
     this.world.investigationProps?.update(clock,s?.paused?0:delta,propState);
-    this.world.xaihi?.update(clock,s?.paused?0:delta,propState);this.vcrEffects.update(s);for(const door of this.world.store.floorPlan?.fridgeDoors||[])door.rotation.y=s?.tablet?.stage==='drink'?Math.min(1,s.tablet.age)*-1.1:0;
+    this.world.xaihi?.update(clock,s?.paused?0:delta,propState);this.vcrEffects.update(s);for(const door of this.world.store.floorPlan?.fridgeDoors||[])door.rotation.y=['pickup','drink'].includes(s?.tablet?.stage)?Math.min(1,s.tablet.age)*-1.1:0;
     if(this.world.xaihi&&!this.world.charactersEnabled)this.world.xaihi.root.visible=false;
     const target=this.target(s?.target)?.position||[0,4.3,1.6];
     this.world.siege.update(clock,s?.paused?0:delta,{phase:s?.postgame?'ready':s?.vcr?'vcr':s?.phase||'ready',elapsed:s?.phaseElapsed||0,charge:s?.phase==='last'&&Number.isFinite(this.captureAt)?.25:personal?Math.min(1,(s?.phaseElapsed||0)/3):['energy','return'].includes(s?.phase)?.08:(s?.charge||0)/100,hero:feet,dragon,target,progress:s?.progress||0,recoil:this.recoil});
@@ -370,10 +371,13 @@ export class MissionDirector{
       position=close?[3.6,2.15,-.35]:[3.9,2.5,-.6];target=close?[portrait?3.45:2.4,1.35,1.35]:[portrait?1.95:.9,1.35,.85];fov=portrait?(close?75:58):(close?62:48);beat=close?'cctv-microwave':'cctv-xaihi';
       if(s.phase==='flashback'&&s.nodeId==='flashback_6'){position=[2.85,2.1,-.25];target=[2.05,1.25,.65];fov=portrait?49:40;beat='xaihi-phone-detail';}
       if(s.phase==='heat'&&s.heat?.status==='burnt'){position=[3.5,2.25,-.8];target=[3.45,1.6,1.25];fov=portrait?78:65;beat='cctv-food-burst';}
-      if(s.tablet){const frame=w.xaihi?.tabletFrame();if(frame){position=frame.position;target=frame.center;fov=portrait?46:40;beat='tablet-'+s.tablet.stage;}
-       if(s.tablet.stage==='backdoor'){position=[7.3,4.1,-12.8];target=[6.7,3.7,-14.7];fov=48;beat='pylon-nikke';}
-       if(s.tablet.stage==='cable'){const q=Math.min(1,s.tablet.age/6),at=this.vcrEffects.path.getPointAt(q);position=this.reducedMotion?[10,10,24]:[at.x-1.2,at.y+1.3,at.z+2.5];target=this.reducedMotion?[0,2,-2]:at.toArray();fov=60;beat='energy-wire';}
-       if(['hot','drink'].includes(s.tablet.stage)){position=[3.4,2.25,1];target=[.8,1.5,-2];fov=portrait?58:46;beat='fridge-overheat';}}
+      if(s.tablet){const stage=s.tablet.stage,frame=w.xaihi?.tabletFrame(w.camera.aspect);if(frame){position=frame.position;target=frame.center;fov=frame.fov;beat='tablet-read';this.cameraRoll=frame.roll||0;}
+       if(stage==='search'&&e<1.2&&frame&&!this.reducedMotion){const p=smooth(e/1.2);position=[3.9+(frame.position[0]-3.9)*p,2.5+(frame.position[1]-2.5)*p,-.6+(frame.position[2]+.6)*p];target=frame.center;beat='tablet-approach';this.cameraRoll=(frame.roll||0)*p;}
+       if(stage!=='search'&&['backdoor','cable','walk-fridge','walk-counter','defrost','hot','pickup','drink'].includes(stage))this.cameraRoll=0;
+       if(stage==='backdoor'){if(s.tablet.age<1.5){position=[11,5.3,-8];target=[6.7,4.6,-15];fov=portrait?65:53;}else{position=[7.7,2.05,-12];target=[7.4,1.85,-14.94];fov=portrait?52:40;}beat='pylon-nikke';}
+       if(stage==='cable'){const p=s.tablet.age;if(p<1.5){position=[9.4,2.4,-12.5];target=[7.4,1.25,-14.9];}else if(p<4){position=[12,7.2,5];target=[5.4,1,-5.5];}else{position=[4.25,2.15,-.2];target=[3.85,1.48,1.45];}fov=portrait?70:50;beat='energy-wire-'+s.tablet.wireBeat;}
+       if(['walk-fridge','walk-counter'].includes(stage)){const a=w.xaihi?.root.position;position=[3.6,2.45,1.2];target=a?[a.x,a.y+1.05,a.z]:[1.5,1.3,-.5];fov=portrait?65:52;beat='xaihi-walk';}
+       if(['defrost','hot','pickup','drink'].includes(stage)){position=[2.3,2.25,.55];target=[1.37,1.55,-1.65];fov=portrait?70:52;beat='fridge-overheat';}}
     }else if(s.phase==='return'){
       const p=smooth(e/3);position=[3.6+5.4*p,2.15+6.85*p,-.35+32.35*p];target=[3.45-4.25*p,1.35+1.05*p,1.35-.45*p];fov=portrait?56:47;beat='return-present';
     }else if(s.phase==='combat'&&sign?.active){

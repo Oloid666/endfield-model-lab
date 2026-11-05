@@ -44,7 +44,9 @@ export function makeDestructibleStore(root,r,parts,spill){
     mergePart(group,r);root.updateMatrixWorld(true);
     const bounds=new T.Box3().setFromObject(group),center=bounds.isEmpty()?new T.Vector3(0,2,-.5):bounds.getCenter(new T.Vector3());
     const pivot=new T.Group();pivot.name='collapse-'+id;pivot.position.copy(center);root.add(pivot);pivot.updateMatrixWorld(true);pivot.attach(group);
-    const lights=[];let count=0;group.traverse(n=>{if(n.isMesh)count++;if(n.isLight)lights.push({node:n,visible:n.visible});});
+    const lights=[];let count=0;group.traverse(n=>{if(n.isMesh)count++;if(n.isLight)lights.push({node:n,visible:n.visible,intensity:n.intensity});});
+    // Keep light topology stable: a falling/hidden parent must not change shader light counts.
+    for(const light of lights)root.attach(light.node);
     stages.push({id,index:i,threshold,duration,group,pivot,origin:center.clone(),active:false,start:0,lights,count,settled:false});
   }
   const rubble=new T.Group();rubble.name='permanent-shop-rubble';rubble.visible=false;root.add(rubble);
@@ -84,8 +86,8 @@ export function makeDestructibleStore(root,r,parts,spill){
   // A VCR presentation changes geometry poses only. Its logical damage and server state stay intact.
   function capturePresentation(){
     const seen=new Set(),nodes=[],materials=new Map();
-    for(const owner of [...stages.map(s=>s.pivot),rubble,server.root,server.shattered,neighbor.root,signFlight.root,signFlight.cablesRoot,signFlight.sparks,signFlight.dust,signFlight.splash])owner.traverse(n=>{
-      if(seen.has(n))return;seen.add(n);nodes.push({node:n,visible:n.visible,position:n.position.clone(),quaternion:n.quaternion.clone(),scale:n.scale.clone(),count:n.isInstancedMesh?n.count:null,instances:n.isInstancedMesh?n.instanceMatrix.array.slice():null});
+    for(const owner of [...stages.map(s=>s.pivot),...stages.flatMap(s=>s.lights.map(l=>l.node)),rubble,server.root,server.light,server.shattered,neighbor.root,signFlight.root,signFlight.cablesRoot,signFlight.sparks,signFlight.dust,signFlight.splash])owner.traverse(n=>{
+      if(seen.has(n))return;seen.add(n);nodes.push({node:n,visible:n.visible,lightIntensity:n.isLight?n.intensity:null,position:n.position.clone(),quaternion:n.quaternion.clone(),scale:n.scale.clone(),count:n.isInstancedMesh?n.count:null,instances:n.isInstancedMesh?n.instanceMatrix.array.slice():null});
       if(n.material){for(const material of Array.isArray(n.material)?n.material:[n.material])if(!materials.has(material))materials.set(material,{emissiveIntensity:material.emissiveIntensity,opacity:material.opacity});}
     });
     return {mode:'rewind',progress:0,sourceTime:inputTime,nodes,materials,serverY:server.root.position.y};
@@ -101,16 +103,16 @@ export function makeDestructibleStore(root,r,parts,spill){
     const q=T.MathUtils.smootherstep(p,0,1),vanish=1-T.MathUtils.smoothstep(p,.65,1);
     for(let i=0;i<chunks.count;i++){const item=records[i];dummy.position.lerpVectors(item.end,item.start,q);dummy.position.y+=Math.sin(q*Math.PI)*item.hop;dummy.scale.copy(item.scale).multiplyScalar(vanish);dummy.rotation.set(item.rotation.x*(1-q),item.rotation.y*(1-q),item.rotation.z*(1-q));dummy.updateMatrix();chunks.setMatrixAt(i,dummy.matrix);}
     chunks.instanceMatrix.needsUpdate=true;rubble.visible=p<.99;products.presentRewind(p);
-    server.root.position.y=T.MathUtils.lerp(presentation.serverY,3.51,q);server.root.visible=true;server.shattered.visible=false;
-    signFlight.presentRewind(p);if(p>=1)for(const stage of stages)for(const light of stage.lights)light.node.visible=light.visible;
+    server.root.position.y=T.MathUtils.lerp(presentation.serverY,3.51,q);server.root.visible=true;server.shattered.visible=false;server.syncLight();
+    signFlight.presentRewind(p);if(p>=1)for(const stage of stages)for(const light of stage.lights){light.node.visible=light.visible;light.node.intensity=light.intensity;}
   }
   function showFlashback(){
     if(!presentation)beginRewind();updateRewind(1);presentation.mode='flashback';rubble.visible=false;signFlight.showHome();neighbor.showIntactVisual();
-    for(const stage of stages){stage.pivot.visible=true;stage.pivot.position.copy(stage.origin);stage.pivot.rotation.set(0,0,0);for(const light of stage.lights)light.node.visible=light.visible;}
+    for(const stage of stages){stage.pivot.visible=true;stage.pivot.position.copy(stage.origin);stage.pivot.rotation.set(0,0,0);for(const light of stage.lights){light.node.visible=light.visible;light.node.intensity=light.intensity;}}
   }
   function restorePresent(){
     if(!presentation)return false;const stored=presentation;
-    for(const item of stored.nodes){const n=item.node;n.visible=item.visible;n.position.copy(item.position);n.quaternion.copy(item.quaternion);n.scale.copy(item.scale);if(item.instances){n.count=item.count;n.instanceMatrix.array.set(item.instances);n.instanceMatrix.needsUpdate=true;}}
+    for(const item of stored.nodes){const n=item.node;n.visible=item.visible;if(item.lightIntensity!==null)n.intensity=item.lightIntensity;n.position.copy(item.position);n.quaternion.copy(item.quaternion);n.scale.copy(item.scale);if(item.instances){n.count=item.count;n.instanceMatrix.array.set(item.instances);n.instanceMatrix.needsUpdate=true;}}
     for(const [material,values]of stored.materials){if(values.emissiveIntensity!==undefined)material.emissiveIntensity=values.emissiveIntensity;material.opacity=values.opacity;}
     timeOffset+=Math.max(0,inputTime-stored.sourceTime);presentation=null;if(spill?.shadow)spill.shadow.needsUpdate=true;return true;
   }
@@ -119,12 +121,12 @@ export function makeDestructibleStore(root,r,parts,spill){
     aftershockAt=-Infinity;presentation=null;timeOffset=0;time=inputTime;
     progress=0;chunks.count=0;rubble.visible=false;for(const record of records)record.settled=false;
     for(const mesh of beams)mesh.visible=false;
-    for(const stage of stages){stage.active=false;stage.settled=false;stage.pivot.visible=true;stage.pivot.position.copy(stage.origin);stage.pivot.rotation.set(0,0,0);for(const light of stage.lights)light.node.visible=light.visible;}
+    for(const stage of stages){stage.active=false;stage.settled=false;stage.pivot.visible=true;stage.pivot.position.copy(stage.origin);stage.pivot.rotation.set(0,0,0);for(const light of stage.lights){light.node.visible=light.visible;light.node.intensity=light.intensity;}}
     server.reset();products.reset();neighbor.reset();signFlight.reset();if(spill?.shadow)spill.shadow.needsUpdate=true;
   }
   function setProgress(value){
     const next=T.MathUtils.clamp(Number.isFinite(value)?value:0,0,99);if(next<progress)reset();progress=next;
-    for(const stage of stages)if(!stage.active&&progress>=stage.threshold){stage.active=true;stage.start=time;rubble.visible=true;for(const light of stage.lights)light.node.visible=false;chunks.count=Math.max(chunks.count,(stage.index+1)*debrisPerStage);if(spill?.shadow)spill.shadow.needsUpdate=true;}
+    for(const stage of stages)if(!stage.active&&progress>=stage.threshold){stage.active=true;stage.start=time;rubble.visible=true;for(const light of stage.lights)light.node.intensity=0;chunks.count=Math.max(chunks.count,(stage.index+1)*debrisPerStage);if(spill?.shadow)spill.shadow.needsUpdate=true;}
     if(progress>=44)signFlight.start(time);
     server.setProgress(progress);products.setProgress(progress,time);
   }

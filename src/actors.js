@@ -1,3 +1,4 @@
+import {actorBounds} from './actor-bounds.js';
 import {downloadModel} from './model-download.js';
 import * as T from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
@@ -29,5 +30,5 @@ export async function loadActors(scene,r,onStage,signal,dragon,onProgress) {
     poses[name]={bone,rest:bone.position.clone(),q:bone.quaternion.clone(),x:new T.Vector3(1,0,0).applyQuaternion(inverse),y:new T.Vector3(0,1,0).applyQuaternion(inverse),z:new T.Vector3(0,0,1).applyQuaternion(inverse)};
   }
   const eyelids=[];for(const [uid,lid] of config.eyelids){const u=byId(uid),l=byId(lid);if(!u||!l||u.parent!==l.parent)continue;const meet=u.position.clone().lerp(l.position,.75);for(const b of [u,l])eyelids.push({b,rest:b.position.clone(),target:new T.Vector3(b.position.x,meet.y,meet.z)});}
-  return buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gltf,dragon});
+  const api=buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gltf,dragon}),refreshBounds=actorBounds(gltf.scene,pivot),update=api.update;refreshBounds();api.update=(...args)=>{update.call(api,...args);refreshBounds();};return api;
 }

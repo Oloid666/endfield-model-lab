@@ -72,7 +72,7 @@ export function createInvestigationUI({mount,machine,capture,onAuto,getAuto,onGu
    if(s.phase==='hack'){if(s.hack.failures)message.textContent=s.hack.failures>1?'輔助路徑：┓ ┏ / ┗ ┛（由上至下）。':'線路未接通。入口在左上，出口在右上；先向下繞一圈。';}if(s.phase==='hack')for(let i=0;i<4;i++){const b=puzzle.children[i],turn=s.hack.turns[i];b.firstChild.style.transform=`rotate(${turn*90}deg)`;b.classList.toggle('connected',turn===[1,0,2,3][i]);}
    if(s.phase==='heat'){
      const h=s.heat,playing=h.status==='playing';
-     message.textContent=h.status==='ready'?(h.completed?`第 ${h.completed+1} 段準備。圓點短按，長條按住到尾端。`:'第一輪：額定功率測試。圓點短按，長條按住。'):h.result||'電流到金線時按下。長條要按到尾端。';
+     message.textContent=h.status==='ready'?(h.completed?`第 ${h.completed+1} 段準備。圓點短按，長條按住到尾端。`:'第一輪：電網功率測試。圓點短按，長條按住。'):h.result||'電流到金線時按下。長條要按到尾端。';
      rhythmStatus.textContent=`${h.completed} / 3 段 · ${h.bpm} BPM · ${h.failures?'輔助 '+Math.min(3,h.failures):'標準'}${h.status==='burnt'?' · 已斷電':''}`;
      const pad=actions.querySelector('.rhythm-pad'),retry=actions.querySelector('.rhythm-retry');pad.textContent=h.status==='ready'?'開始送電':h.holding?'按住，等尾端到線':'● 短按 ／ ━ 長按';pad.disabled=s.paused||h.status==='burnt';retry.hidden=h.status!=='burnt';
      const key=`${h.attempts}:${h.round}`;
@@ -81,5 +81,5 @@ export function createInvestigationUI({mount,machine,capture,onAuto,getAuto,onGu
    }
  }
  listen(window,'blur',()=>{machine.fly(0,0);if(held!==null){held=null;machine.heatCancel();}});
- return {update,get photo(){return photo;},get viewer(){return viewer.state;},snapshot,dispose(){disposed=true;captureGeneration++;abort.abort();buildAbort.abort();animations.forEach(a=>a.cancel());viewer.dispose();root.remove();auto.remove();}};
+ return {releaseInputs(){const id=held;held=null;if(id!==null)for(const b of actions.querySelectorAll('button'))if(b.hasPointerCapture?.(id))b.releasePointerCapture(id);animations.forEach(a=>a.pause());},update,get photo(){return photo;},get viewer(){return viewer.state;},snapshot,dispose(){disposed=true;captureGeneration++;abort.abort();buildAbort.abort();animations.forEach(a=>a.cancel());viewer.dispose();root.remove();auto.remove();}};
 }

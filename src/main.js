@@ -29,11 +29,11 @@ const feedback=createFeedbackService({version:__BUILD_VERSION__,context:()=>({ph
 let feedbackDialog,fxPreparing=null;
 const fxNotice=document.createElement('p');fxNotice.className='fx-preparing';fxNotice.setAttribute('role','status');fxNotice.textContent='正在準備爆炸效果，等一下就開砲…';fxNotice.hidden=true;$('#app').append(fxNotice);
 async function prepareBattle(){
- if(fxPreparing||world.shaderWarmup.state.completed.includes('battle-effects'))return;
+ if(fxPreparing||world.shaderWarmup.state.completed.includes('battle-effects')&&world.battleDrawWarm)return;
  mission?.setPaused(true,'effects');fxNotice.hidden=false;
  fxPreparing=(async()=>{try{
   await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
-  if(!closed)await world.prepareShaders(world.scene,'battle-effects');
+  if(!closed){await world.prepareShaders(world.siege.root,'battle-effects');await world.prepareShaders(world.store.destruction.root,'battle-rubble');await world.prepareShaders(world.store.destruction.signFlight.cablesRoot,'sign-cables');world.prepareBattleFrame();}
  }catch(e){if(!closed){world.setQuality('low',true);console.warn('爆炸效果改用輕量模式',e.message);}}
  finally{fxNotice.hidden=true;fxPreparing=null;if(!closed)mission?.setPaused(false,'effects');}})();
 }
@@ -63,7 +63,7 @@ async function ensureXaihi(){
   world.xaihiLoading=true;world.xaihiError=null;
   xaihiPromise=import('./xaihi.js').then(({loadXaihi})=>loadXaihi(world.scene,world.r,text=>{if(assetPaused)loader.stage(text);},abort.signal,data=>{if(assetPaused)loader.download(data);})).then(async actor=>{
     if(closed){actor.dispose();return null;}
-    if(assetPaused)loader.progress(90);await world.prepareShaders(actor.root,'xaihi');if(closed){actor.dispose();return null;}
+    if(assetPaused)loader.progress(90);await world.prepareShaders(actor.root,'xaihi');await world.prepareShaders(world.director.vcrEffects.root,'vcr-effects');if(closed){actor.dispose();return null;}
     world.xaihi=actor;world.xaihiLoading=false;
     if(assetPaused){assetPaused=false;loader.hide();mission?.setPaused(false,'asset');}
     return actor;
@@ -120,6 +120,7 @@ async function init(){
         if(!['ready','complete'].includes(phase))exploration?.setActive(false);
         world.director.stage(phase,state);if($('#sound').checked){const cue={'photo-return':'flight','photo-flight':'handover'}[phase];if(cue)audio.effect(cue);}if(!restoring)chapters.reach(phase,state.branch);
         if(phase==='fire-ready'||phase==='aim-final')prepareBattle();
+        if(phase==='charge'&&!fxPreparing)prepareBattle();
         if(phase==='photo-review')ensureXaihi();
         if(['rewind','flashback'].includes(phase)&&!world.xaihi){
           assetPaused=!state.paused;
@@ -129,7 +130,7 @@ async function init(){
         if(phase==='complete'&&!state.postgame)world.actors?.setObstacles({obstacles:[],entrance:{minX:-4,maxX:4,z:1.8}});
         if(phase==='last'||phase==='aim-final')mission?.setTargets(world.director.targets);
       },
-      onAction:event=>{if(event.type==='tablet-step')analytics.tablet(event.value);world.director.action?.(event);if($('#sound').checked&&['photo-send','heat-start','key','grid-connect'].includes(event.type))audio.effect(event.type);},
+      onAction:event=>{if(event.type==='tablet-step'){analytics.tablet(event.value);if(event.value==='cable'&&$('#sound').checked)audio.effect('grid-connect');}world.director.action?.(event);if($('#sound').checked&&['photo-send','heat-start','key','grid-connect'].includes(event.type))audio.effect(event.type);},
       onAttack:event=>{if($('#sound').checked)audio.effect(event.finisher?'stamp':'shot');world.resetStoryCamera();const hadSign=world.store.destruction.state.progress>=44;world.director.attack(event);if(!hadSign&&event.progress>=44&&!event.finisher)mission?.holdAttack(4.4);mission?.setTargets(world.director.targets);},
       onState:state=>{world.missionState=state;const resume=document.querySelector('.chapter-resume');if(resume&&state.phase!=='ready'&&!state.paused)resume.hidden=true;$('#app').dataset.storyPhase=state.phase;$('#app').classList.toggle('postgame-free',!!state.postgame);}
     });
@@ -154,7 +155,7 @@ async function init(){
     world.onTick=(time,delta)=>{world.syncWalkingEnvironment();mission.machine.doorOpen=world.store.doors.open;mission.update(time);world.missionState=mission.state;audio.duck(!!mission.state.node);audio.ambience(mission.state.vcr?'shop':world.camera.position.z<2?'shop':'street',preferences.rain);if(mission.state.phase==='tour'&&mission.state.phaseElapsed>=14&&mission.state.phaseElapsed<30&&!mission.state.paused)audio.hum(mission.state.phaseElapsed);exploration.update(delta);bonus.update();viewControls.update();analytics.tick(performance.now(),{visible:!document.hidden,paused:mission.pauseReasons.some(reason=>reason!=='bonus')});
       if(!reactionBubble.hidden){if(time>=reactionBubbleUntil||mission.state.paused||bonus.active){reactionBubble.hidden=true;world.actors?.cancelReaction();}else{const p=reactionBubble.dataset.speaker==='zhuang'?world.actors.heroPosition:world.actors.dragonPosition,q=world.projectPoint([p[0],p[1]+1.1,p[2]]),rect=world.container.getBoundingClientRect();reactionBubble.style.left=`${Math.max(100,Math.min(innerWidth-100,rect.x+(q[0]+1)*rect.width/2))}px`;reactionBubble.style.top=`${Math.max(150,Math.min(innerHeight*.55,rect.y+(1-q[1])*rect.height/2))}px`;}}
 };
-    loader.progress(99);await loader.finish();world.time=0;world.previous=undefined;world.tick(0,0,false);loader.hide();analytics.ready();world.start();
+    loader.progress(99);await loader.finish();world.time=0;world.previous=undefined;world.tick(0,0,false);loader.hide();analytics.ready();world.frameStats.reset();world.start();
     const resume=document.createElement('button');resume.className='chapter-resume';resume.textContent='繼續上次 · '+CHAPTERS.find(c=>c.id===chapters.data.chapter).label;resume.hidden=chapters.data.chapter==='intro';$('#app').append(resume);
     const restore=id=>{if(bonus.active)return;restoring=true;menu(false);world.autoCamera=true;world.manualUntil=world.time;mission.machine.restoreChapter(id,chapters.data.branch);restoring=false;world.resetStoryCamera();resume.hidden=true;};
     resume.addEventListener('click',()=>{if(!mission.state.paused)restore(chapters.data.chapter);},{signal:abort.signal});
@@ -175,7 +176,7 @@ async function init(){
       get staging(){return {show:world.streetShow?.state,shopping:mission.state.shopping,remnant:world.remnant.state,tractor:world.director.captureFx.root.visible,microphone:!!world.actors?.root.getObjectByName('floating-singing-microphone')?.visible,phone:world.photoPhone?.position.toArray()};},get loading(){return loader.state;},get bonus(){return bonus.state;},get chapters(){return chapters.data;},restoreChapter:id=>restore(id),assist:()=>mission.machine.assist(),
       get switches(){return {signal:world.signalIndex||0,room:world.roomLightOn??true,door:world.store.doors.manual};},get time(){return world.time;},get renders(){return world.renderCount;},get drawCalls(){return world.renderer.info.render.calls;},get triangles(){return world.renderer.info.render.triangles;},get warmup(){return world.shaderWarmup.state;},resetCamera:()=>world.resetStoryCamera(),
       get aa(){return {msaa:world.msaaSamples,postSamples:world.composer.renderTarget1.samples,postDepth:world.composer.renderTarget1.depthBuffer,fxaa:world.fxaa.enabled,dpr:world.renderer.getPixelRatio()};},
-      get metrics(){let lights=0;world.scene.traverse(n=>{if(n.isLight&&n.visible)lights++;});return {batches:world.batchStats,lights,weather:world.weather.metrics,camera:world.walkCamera.state};},
+      get shaders(){return world.renderer.info.programs.map(p=>({id:p.id,name:p.name,uses:p.usedTimes}));},get devices(){return world.director.vcrEffects.state;},get performance(){return {...world.frameStats.state,battlePrepared:!!world.battleDrawWarm};},get metrics(){let lights=0;world.scene.traverse(n=>{if(n.isLight&&n.visible)lights++;});return {batches:world.batchStats,lights,weather:world.weather.metrics,camera:world.walkCamera.state};},
       get cameraPose(){return {position:world.camera.position.toArray(),target:world.controls.target.toArray(),fov:world.camera.fov,photoOrigin:world.photoCamera.origin.toArray()};},get walkCamera(){return world.walkCamera.state;},get glassReady(){const u=world.store.glass.uniforms;return !!(u.uDepth.value?.isDepthTexture&&u.uScene.value?.isTexture&&u.uEnvironment.value?.isCubeTexture);},
       get poseData(){return world.actors?.poseData;},get idle(){return world.actors?.status;},get floorPlan(){return world.store.floorPlan;},get doors(){return {open:world.store.doors.open};},
       get mission(){return mission.state;},get story(){return mission.state;},get destruction(){return {...world.store.destruction.state,targets:world.store.destruction.targets};},get garden(){return world.garden.state;},get effects(){return world.siege.state;},

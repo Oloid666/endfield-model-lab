@@ -57,6 +57,7 @@ export class MissionMachine{
   phaseTo(phase,entered=this.time){
     this.phase=phase;this.entered=entered;this.lines=[];this.index=0;this.node=null;this.revealed=0;this.sequenceKind=null;
     this.meterEntered=entered;
+    if(phase==='hack'&&this.hooks.tabletMode)this.tablet.enter('search',entered);
     if(phase==='login'){
       this.line(connectionPrompts.account,entered);
     }
@@ -123,6 +124,7 @@ export class MissionMachine{
     else if(this.phase==='complete'){this.node=null;this.lines=[];this.sequenceKind=null;this.quietUntil=this.time+8+this.random()*6;this.emit();}
   }
   next(){
+    if(this.phase==='hack'&&this.hooks.tabletMode&&this.tablet.state.dialogue)return this.tabletAction('talk-next');
     if(this.phase==='shoe-view'&&!this.paused&&this.shoeReady){this.phaseTo('pylon-link');return true;}
     if(this.phase==='fire-ready'&&!this.paused){this.phaseTo('combat');return true;}
     if(this.paused||this.state.presentationLocked||!this.node||!manualPhases.has(this.phase))return false;
@@ -284,7 +286,7 @@ export class MissionMachine{
   update(sourceTime){
     if(!Number.isFinite(sourceTime))return;
     const delta=Math.max(0,sourceTime-this.sourceTime);this.sourceTime=Math.max(this.sourceTime,sourceTime);
-    if(this.paused)return;this.time+=this.phase==='finisher'&&this.hooks.tabletMode?Math.min(delta,.05):delta;
+    if(this.paused)return;this.time+=delta;
     if(this.phase==='hack'&&this.hooks.tabletMode){this.tablet.tick(this.time);if(this.tablet.stage==='done')this.sequence('credentials',sequences.credentials);}
     if(this.shopping&&['intro','purchase','walk-out'].includes(this.phase))this.shopping.update(delta,this.doorOpen);if(this.phase==='photo-flight'&&this.flight){const f=this.flight,dt=Math.min(.1,delta);f.x=-2+2*Math.max(0,Math.min(1,(f.z-5)/5.5));f.z=Math.max(3.25,Math.min(12,f.z+f.vz*3*dt));}
     if(this.phase==='photo-flight'){if(Math.abs(this.flight.z-10.5)>.6)this.flightStableAt=null;else this.flightStableAt??=this.time;}

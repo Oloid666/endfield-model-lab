@@ -55,7 +55,7 @@ export function buildServerRoom(parent,r){
   box(panel,[.51,.13,.366],[.2,.07,.012]);ledRecords.push({p:[.51,.13,.378],color:0x8adbd6,offset:1.3});
   for(let i=0;i<7;i++)box(panel,[-.45+i*.09,.12,.366],[.045,.08,.009]);
   const strip=box(cyan,[0,1.82,-.21],[1.43,.035,.05]);
-  const spill=new T.PointLight(0x8fd7e0,1.6,3.2,2);spill.position.set(0,1.37,.7);root.add(spill);
+  const spill=new T.PointLight(0x8fd7e0,1.6,3.2,2);spill.position.set(0,1.37,.7);root.add(spill);root.updateWorldMatrix(true,true);parent.attach(spill);
   // A short visible patch lead; it does not require a physics solver.
   for(const side of [-1,1]){
     const curve=new T.QuadraticBezierCurve3(new T.Vector3(side*.5,.3,-.3),new T.Vector3(side*.8,.7,-.39),new T.Vector3(side*.43,1.64,-.3));
@@ -85,16 +85,17 @@ export function buildServerRoom(parent,r){
   }
   for(const owner of [root,shattered])owner.traverse(n=>{if(n.isMesh)n.userData.dynamic=true;});
   const position=[0,4.38,1.06];let progress=0,alive=true,destroyedAt=-Infinity,time=0,lower=0;
-  function reset(){progress=0;alive=true;destroyedAt=-Infinity;lower=0;root.visible=true;root.position.set(0,3.51,.72);shattered.visible=false;ledMesh.visible=true;for(const shard of shards){shard.mesh.position.copy(shard.p);shard.mesh.rotation.set(0,0,0);}strip.visible=true;spill.visible=true;spill.intensity=1.6;position[1]=4.38;}
+  const lightPosition=new T.Vector3();function syncLight(){root.updateWorldMatrix(true,false);lightPosition.set(0,1.37,.7);root.localToWorld(lightPosition);parent.worldToLocal(lightPosition);spill.position.copy(lightPosition);}
+  function reset(){progress=0;alive=true;destroyedAt=-Infinity;lower=0;root.visible=true;root.position.set(0,3.51,.72);shattered.visible=false;ledMesh.visible=true;for(const shard of shards){shard.mesh.position.copy(shard.p);shard.mesh.rotation.set(0,0,0);}strip.visible=true;spill.visible=true;spill.intensity=1.6;position[1]=4.38;syncLight();}
   reset();
-  return {root,shattered,position,
+  return {root,shattered,position,light:spill,syncLight,
     setProgress(value){progress=value;},
-    destroy(){if(!alive)return false;alive=false;destroyedAt=time;root.visible=false;spill.visible=false;ledMesh.visible=false;shattered.visible=true;return true;},
+    destroy(){if(!alive)return false;alive=false;destroyedAt=time;root.visible=false;spill.intensity=0;ledMesh.visible=false;shattered.visible=true;return true;},
     reset,
     update(t,delta=0){
       time=t;
       const wanted=progress>=80?1:0;lower=T.MathUtils.damp(lower,wanted,2.6,Math.min(.1,Math.max(0,delta)));
-      if(Math.abs(lower-wanted)<.001)lower=wanted;root.position.y=3.51-lower*3.17;position[1]=root.position.y+.87;
+      if(Math.abs(lower-wanted)<.001)lower=wanted;root.position.y=3.51-lower*3.17;position[1]=root.position.y+.87;syncLight();
       if(alive){
         const pulse=.47+.36*Math.sin(t*5.3)+.17*Math.sin(t*11.7+1.3);spill.intensity=1.15+pulse*.9;
         cyan.color.setRGB(.31+pulse*.2,.63+pulse*.2,.72+pulse*.2);

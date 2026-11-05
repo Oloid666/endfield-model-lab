@@ -17,6 +17,7 @@ check('Neighbor shell replaces former solid box',initial.neighbor.hollow&&!initi
 check('Server uses 24 rectangular blade units and 16 switch ports',initial.server.rackUnits===24&&initial.server.networkPorts===16,initial.server);
 check('Third equipment floor is part of the destructible roof',initial.thirdFloor);
 check('Initial real shop and server visible',initial.progress===0&&initial.visibleIntact>20&&initial.visibleDebris===0&&initial.serverAlive,initial);
+const visibleLights=()=>{let n=0;scene.traverseVisible(o=>{if(o.isLight)n++;});return n;};const initialLights=visibleLights();
 d.setProgress(8);for(let n=0;n<120;n++)d.update(n/60,1/60);
 check('First ordinary hit removes actual window geometry',d.state.visibleIntact<initial.visibleIntact&&d.state.visibleDebris>=18,d.state);
 d.setProgress(44);let attached=null,free=null;
@@ -25,7 +26,7 @@ const partial=d.state;
 check('Sign lifts outward while still attached to power cables',attached.active&&attached.cablesAttached&&attached.position[1]>3.1&&attached.position[2]>2.3,attached);
 check('Sign cables snap and original panel tumbles before impact',free.active&&!free.cablesAttached&&!free.landed&&Math.abs(lightbox.rotation.x)>.8,free);
 check('Partial damage removes real meshes and retains pooled rubble',partial.visibleIntact<initial.visibleIntact&&partial.visibleIntact>0&&partial.visibleDebris>=54&&partial.serverAlive,partial);
-d.setProgress(99);let signImpact=null;for(let n=270;n<550;n++){d.update(n/60,1/60);if(n===333)signImpact={...d.signFlight.state,dust:d.signFlight.dust.count,splash:d.signFlight.splash.visible};}const final=d.state;
+d.setProgress(99);let signImpact=null;for(let n=270;n<550;n++){d.update(n/60,1/60);if(n===333)signImpact={...d.signFlight.state,dust:d.signFlight.dust.count,splash:d.signFlight.splash.visible};}const final=d.state;check('Collapse preserves shader light counts',visibleLights()===initialLights,{before:initialLights,after:visibleLights()});
 check('Sign ground impact emits pooled dust and a wet splash once',signImpact.landed&&signImpact.impactRevision===1&&signImpact.dust>0&&signImpact.splash,signImpact);
 check('Original lightbox stays on the ground after its complete fall',final.sign.landed&&!final.sign.active&&final.sign.impactRevision===1&&new T.Vector3().fromArray(final.sign.position).distanceTo(new T.Vector3().fromArray(final.sign.target))<.001&&logo.parent===lightbox,final.sign);
 check('Entire shop removed and one server survives',final.visibleIntact===0&&final.visibleDebris>=108&&final.serverAlive&&final.serverPosition[1]<1.25&&final.settled,final);
@@ -34,7 +35,7 @@ check('Debris bursts persist as 180 fragments plus structural ruins',final.visib
 check('Last target follows surviving lowered rack',d.targets.at(-1).position[1]===final.serverPosition[1],d.targets.at(-1));
 check('Server destruction starts once',d.destroyServer()&&!d.destroyServer());
 for(let n=550;n<630;n++)d.update(n/60,1/60);
-check('Server LED and body off after final hit',!d.state.serverAlive&&d.state.server.visibleLEDs===0&&!d.server.root.visible&&d.server.shattered.visible,d.state);
+check('Final server shutdown also preserves light counts',visibleLights()===initialLights);check('Server LED and body off after final hit',!d.state.serverAlive&&d.state.server.visibleLEDs===0&&!d.server.root.visible&&d.server.shattered.visible,d.state);
 const neighbor=d.neighbor;scene.updateMatrixWorld(true);
 const ray=new T.Raycaster(new T.Vector3(neighbor.position[0],neighbor.position[1],1),new T.Vector3(0,0,-1));
 function visibleDistance(){return ray.intersectObject(neighbor.root,true).find(hit=>{let n=hit.object;while(n){if(!n.visible)return false;n=n.parent;}return true;})?.distance??Infinity;}

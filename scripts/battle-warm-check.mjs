@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import * as T from 'three';
+import {World} from '../src/world.js';
+const scene=new T.Scene(),light=new T.SpotLight();light.castShadow=true;scene.add(light,light.target);
+const geometry=new T.BoxGeometry(1,1,1),material=new T.MeshStandardMaterial({transparent:true,opacity:0}),pool=new T.InstancedMesh(geometry,material,6);pool.count=0;pool.visible=false;
+const roots=Array.from({length:7},()=>new T.Group());roots[0].add(pool);roots.forEach(r=>scene.add(r));
+const originalParent=light.parent,originalShadow=light.shadow,originalMatrices=pool.instanceMatrix.array.slice();const previous=new T.WebGLRenderTarget();let active=previous,draws=0,shouldThrow=false;
+const renderer={shadowMap:{autoUpdate:true,needsUpdate:true},getRenderTarget:()=>active,getViewport:v=>v.set(1,2,390,844),getScissor:v=>v.set(3,4,380,830),getScissorTest:()=>true,setRenderTarget:t=>{active=t;},setViewport(){},setScissor(){},setScissorTest(){},clear(){},render(warm){draws++;assert.notEqual(warm,scene);const copies=[];warm.traverse(n=>{if(n.isInstancedMesh)copies.push(n);});assert(copies[0].material.opacity>=.7,'Transparent effect is really drawn');assert(copies.length&&copies[0].count===1,'Future zero-count pool is actually drawn');assert.equal(warm.children.find(n=>n.isLight).shadow.mapSize.x,64);if(shouldThrow)throw Error('simulated draw failure');}};
+const fake={scene,renderer,opaqueTarget:{samples:2},siege:{root:roots[0]},store:{destruction:{root:roots[1],server:{shattered:roots[2]},neighbor:{root:roots[3]},signFlight:{root:roots[4],sparks:roots[5],dust:roots[6]}}}};
+World.prototype.prepareBattleFrame.call(fake);assert(fake.battleDrawWarm);assert.equal(draws,2,'Both main MSAA and reflection paths are prepared');assert.equal(active,previous);assert.equal(light.parent,originalParent);assert.equal(light.shadow,originalShadow);assert.equal(pool.count,0);assert.equal(pool.visible,false);assert.equal(material.opacity,0);assert.deepEqual(pool.instanceMatrix.array,originalMatrices);assert.equal(renderer.shadowMap.autoUpdate,true);assert.equal(renderer.shadowMap.needsUpdate,true);
+shouldThrow=true;assert.throws(()=>World.prototype.prepareBattleFrame.call(fake),/simulated/);assert(!fake.battleDrawWarm);assert.equal(active,previous);assert.equal(renderer.shadowMap.autoUpdate,true);assert.equal(pool.count,0);
+geometry.dispose();material.dispose();pool.dispose();previous.dispose();console.log('Battle draw preparation: live pools untouched, MSAA/reflection warm paths, lights isolated and failure cleanup passed.');

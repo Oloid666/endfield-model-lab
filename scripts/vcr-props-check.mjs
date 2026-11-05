@@ -1,0 +1,24 @@
+import assert from 'node:assert/strict';
+import * as T from 'three';
+import {Resources} from '../src/resources.js';
+import {buildVcrEffects} from '../src/vcr-effects.js';
+const ctx=new Proxy({},{get:(o,k)=>o[k]||(()=>{})});globalThis.document={createElement:()=>({getContext:()=>ctx})};
+const r=new Resources(),scene=new T.Scene(),fx=buildVcrEffects(scene,r);let checks=0;const check=(n,p)=>{assert.ok(p,n);checks++;};
+fx.update({phase:'ready'});check('Present day begins after fridge accident',fx.state.temperature===50&&fx.state.hot);
+fx.update({phase:'hack',vcr:true,clock:10,fridgeHot:false,tablet:{stage:'search',age:0}});check('Past begins at ordinary cold temperature',fx.state.temperature===4&&!fx.state.hot);
+fx.update({phase:'hack',vcr:true,clock:12,fridgeHot:true,tablet:{stage:'defrost',age:2}});check('Temperature actually rises during defrost',fx.state.temperature===27);
+fx.update({phase:'hack',vcr:true,clock:14,fridgeHot:true,tablet:{stage:'hot',age:0}});check('Incident ends at fifty degrees',fx.state.temperature===50);
+fx.update({phase:'return',vcr:true,clock:20,fridgeHot:false});check('Return to present cannot cool the fridge',fx.state.temperature===50);
+fx.reset();fx.update({phase:'ready',fridgeHot:false});check('Restart preserves canonical present state',fx.state.temperature===50);
+check('Computer is a physical console',!!rootFind('pylon-03-maintenance-console'));check('Controller is mounted on fridge',!!rootFind('fridge-temperature-controller'));
+check('Wire starts at console, not fridge',fx.path.getPointAt(0).distanceTo(new T.Vector3(7.4,1.2,-14.56))<.001);check('Wire ends at microwave side socket',fx.path.getPointAt(1).distanceTo(new T.Vector3(3.99,1.6,1.43))<.001);
+function rootFind(name){return fx.root.getObjectByName(name);}r.dispose();
+const {actorBounds}=await import('../src/actor-bounds.js');
+const {shootingCameraLocked}=await import('../src/camera-lock.js');
+const body=new T.Group(),mesh=new T.Mesh(new T.BoxGeometry(.8,2,.5),new T.MeshBasicMaterial());mesh.position.y=1;body.add(mesh);body.position.set(0,0,-5);const bounds=actorBounds(body,body);body.updateMatrixWorld(true);bounds();
+const camera=new T.PerspectiveCamera(50,1,.1,50),frustum=new T.Frustum(),matrix=new T.Matrix4();camera.lookAt(0,1,-5);camera.updateMatrixWorld();frustum.setFromProjectionMatrix(matrix.multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse));
+check('Visible actor envelope is retained',frustum.intersectsObject(mesh));body.position.x=100;body.updateMatrixWorld(true);bounds();check('Offscreen actor skips draw without disabling simulation',!frustum.intersectsObject(mesh)&&body.visible&&mesh.visible);
+camera.position.x=100;camera.lookAt(100,1,-5);camera.updateMatrixWorld();frustum.setFromProjectionMatrix(matrix.multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse));check('Other camera can still render actor',frustum.intersectsObject(mesh));
+for(const phase of ['fire-ready','combat','aim-final','finisher','landing'])check('Camera input locked in '+phase,shootingCameraLocked({phase}));check('Exploration returns after shooting',!shootingCameraLocked({phase:'complete'}));mesh.geometry.dispose();mesh.material.dispose();
+
+console.log(`VCR props: ${checks} checks passed.`);
