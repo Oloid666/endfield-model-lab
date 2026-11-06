@@ -1,0 +1,81 @@
+/* Mainline UI only. Bonus rooms retain their existing presentation. */
+#app.ui-refined{--ui-panel:#102b31f5;--ui-raised:#26454a;--ui-ink:#f3eddb;--ui-muted:#bfd0c8;--ui-accent:#ddc58d}
+#app.ui-refined :is(.mission-launch,.mission-panel,.mission-connect,.mission-combat,.investigation-ui,.tablet-access){box-sizing:border-box}
+#app.ui-refined .mission-launch{background:var(--ui-accent);color:#19383a;border-color:#f4dfab;box-shadow:0 5px 24px #0005}
+#app.ui-refined .mission-launch :is(.mission-kicker,.mission-launch-arrow){color:#304849}
+#app.ui-refined .mission-launch-title{font-size:17px;font-weight:600;letter-spacing:.03em}
+#app.ui-refined .mission-kicker{font-size:12px;letter-spacing:.02em}
+#app.ui-refined .mission-panel{background:var(--ui-panel);backdrop-filter:none;-webkit-backdrop-filter:none}
+#app.ui-refined .mission-panel .mission-text{font-size:var(--dialogue-size,18px)!important;line-height:1.5!important}
+#app.ui-refined .mission-panel .mission-next{font-size:12px;color:var(--ui-muted)}
+#app.ui-refined .mission-panel .mission-line{overflow:visible}
+#app.ui-refined .mission-panel.has-comm .mission-bar{display:none}
+#app.ui-refined .mission-panel .mission-comm{min-height:40px;gap:10px;margin:0 0 4px;padding:0 0 6px}
+#app.ui-refined .mission-panel .mission-comm-portrait{width:40px!important;height:44px!important;flex:0 0 40px;flex-basis:40px!important}
+#app.ui-refined .mission-panel .mission-comm-info{flex-direction:row;align-items:center;gap:8px;flex-wrap:wrap}
+#app.ui-refined .mission-panel .mission-comm-info strong{font-family:inherit;font-size:14px;font-weight:500;line-height:1.4;letter-spacing:.04em;color:var(--ui-ink)}
+#app.ui-refined .mission-panel .mission-comm-caption{font-size:12px;color:var(--ui-muted)}
+#app.ui-refined .mission-panel :is(.mission-comm-signal,.mission-comm-kicker){display:none}
+#app.ui-refined .mission-status{background:var(--ui-panel);font-variant-numeric:tabular-nums}
+#app.ui-refined .mission-status-title{font-size:12px;letter-spacing:.02em}
+#app.ui-refined .mission-progress-value{font-size:16px;min-width:3.5ch;text-align:right}
+#app.ui-refined .investigation-ui{background:var(--ui-panel);backdrop-filter:none;-webkit-backdrop-filter:none}
+#app.ui-refined .investigation-kicker{font-size:13px;line-height:1.4;letter-spacing:.03em}
+#app.ui-refined .investigation-actions button{font-size:16px;min-height:48px}
+#app.ui-refined .investigation-actions .flight-step{background:var(--ui-raised);color:var(--ui-ink);border-color:#aac1b466}
+#app.ui-refined .investigation-actions :is(.flight-ready,.photo-shutter,.photo-send,.call-accept,.fire-continue){background:var(--ui-accent);color:#19383a}
+#app.ui-refined:not(.bonus-active) button:disabled:not(.mission-line){opacity:.5;box-shadow:none;cursor:default}
+#app.ui-refined .tablet-access{background:var(--ui-panel);padding:12px 16px;border-radius:14px;display:grid;gap:8px;max-height:38dvh;overflow:auto;overscroll-behavior:contain}
+#app.ui-refined .tablet-access[hidden]{display:none}
+#app.ui-refined .tablet-result{font-size:16px;line-height:1.4;color:var(--ui-ink)}
+#app.ui-refined .tablet-access p{font-size:14px;line-height:1.5;margin:0;white-space:pre-line;overflow-wrap:anywhere;color:var(--ui-muted)}
+#app.ui-refined .tablet-access button{font-size:16px;line-height:1.4;min-height:48px;padding:10px 14px;margin:0;background:var(--ui-accent);color:#19383a}
+#app.ui-refined .tablet-access button[data-tablet-action='800w']{background:var(--ui-raised);color:var(--ui-ink)}
+#app.ui-refined .tablet-details{padding:0;border:0;font-size:14px}
+#app.ui-refined .tablet-details summary{min-height:44px;display:flex;align-items:center;color:var(--ui-muted)}
+#app.ui-refined .tablet-details summary::before{content:'＋';margin-right:8px}
+#app.ui-refined .tablet-details[open] summary::before{content:'−'}
+#app.ui-refined .tablet-note{min-height:1.5em}
+#app.ui-refined.postgame-free .postgame-actions .postgame-toggle{background:var(--ui-raised);color:var(--ui-ink);font-weight:400}
+#app.ui-refined[data-free-guide=house] .postgame-actions .postgame-toggle,#app.ui-refined[data-free-guide=walk] .postgame-actions .walk-toggle{background:var(--ui-accent);color:#19383a;font-weight:600;animation:none}
+#app.ui-refined:not(.bonus-active) button:not(.rhythm-pad):not(.mission-attack):not(.flight-step){transition:background-color .14s ease-out,border-color .14s ease-out}
+#app.ui-refined:not(.bonus-active) button:not(:disabled):active{filter:brightness(.9)}
+#app.ui-refined #settings{z-index:121!important;top:calc(16px + env(safe-area-inset-top));right:calc(16px + env(safe-area-inset-right));bottom:calc(16px + env(safe-area-inset-bottom));width:min(380px,calc(100% - 32px));max-height:none!important;padding:0 20px 20px;border-radius:18px;background:#142e33;backdrop-filter:none;-webkit-backdrop-filter:none;overscroll-behavior:contain;scrollbar-gutter:stable;overflow:auto;color:var(--ui-ink)}
+#app.ui-refined .settings-backdrop{position:absolute;inset:0;z-index:120;background:#031016a6;touch-action:none}
+#app.ui-refined #settings .panel-heading{position:sticky;top:0;z-index:1;margin:0 -2px;padding:12px 0;background:#142e33;border-bottom:1px solid #9cb6ab33;font-size:16px}
+#app.ui-refined #settings .settings-group{display:block;border:0;border-bottom:1px solid #9cb6ab33;padding:14px 0;margin:0}
+#app.ui-refined #settings h2{margin:0 0 10px;font-size:14px;line-height:1.4;font-weight:500;color:var(--ui-accent)}
+#app.ui-refined #settings :is(button,select,summary){min-height:48px;font-size:14px;line-height:1.5}
+#app.ui-refined #settings button{padding:10px 12px;margin:4px 8px 4px 0;border:1px solid #a3b9ad55;border-radius:10px;background:var(--ui-raised);color:var(--ui-ink)}
+#app.ui-refined #settings #menu-close{margin:0;padding:0;width:48px;flex:none;font-size:24px;background:transparent;border:0}
+#app.ui-refined #settings .setting-row{min-height:56px;gap:12px;font-size:15px;letter-spacing:.02em}
+#app.ui-refined #settings input[type=range]{min-height:44px;max-width:50%;touch-action:pan-y}
+#app.ui-refined #settings select{font-size:16px;max-width:55%}
+#app.ui-refined #settings summary{display:list-item;align-content:center;color:var(--ui-ink)}
+#app.ui-refined #settings .control-tip,#app.ui-refined #settings details p{font-size:13px;line-height:1.7;letter-spacing:0}
+#app.ui-refined #settings .chapter-menu{margin:8px 0;gap:8px}
+#app.ui-refined #settings .chapter-menu button{width:100%;margin:0;text-align:left}
+#app.ui-refined #settings .settings-restart{display:block;margin-top:20px;color:#f0cfb3;background:transparent}
+@media(max-width:650px) and (orientation:portrait){
+ #app.ui-refined .mission-panel{max-height:32dvh!important;overflow:auto;overscroll-behavior:contain;padding:10px 14px!important}
+ #app.ui-refined .mission-panel .mission-line{min-height:44px!important;padding:6px 0 2px!important}
+ #app.ui-refined .tablet-access{left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));width:auto;max-height:36dvh}
+ #app.ui-refined .mission-launch{bottom:calc(94px + env(safe-area-inset-bottom))}
+}
+@media(min-width:1000px) and (min-height:600px){
+ #app.ui-refined .tablet-access{left:auto;right:24px;bottom:24px;width:360px;max-height:45dvh}
+}
+@media(orientation:landscape) and (max-height:540px){
+ #app.ui-refined .mission-panel{width:min(390px,46vw)!important;max-height:36dvh!important;padding:8px 12px!important;overflow:auto;overscroll-behavior:contain}
+ #app.ui-refined .mission-panel .mission-line{min-height:44px!important;padding:4px 0!important}
+ #app.ui-refined .mission-panel .mission-text{font-size:var(--dialogue-size,18px)!important;line-height:1.4!important}
+ #app.ui-refined .mission-panel .mission-comm{padding-bottom:3px;margin-bottom:2px;min-height:32px}
+ #app.ui-refined .mission-panel .mission-comm-portrait{width:32px!important;height:34px!important;flex-basis:32px!important}
+ #app.ui-refined .tablet-access{left:auto;right:12px;bottom:8px;width:min(340px,44vw);max-height:44dvh}
+ #app.ui-refined #settings{top:8px;bottom:8px}
+}
+@media(prefers-reduced-motion:reduce){#app.ui-refined:not(.bonus-active) button{transition:none!important;animation:none!important}}
+/* Unlocked author tools stay out of photo/tablet action rows. */
+#app.ui-refined:not(.bonus-active) .debug-travel-toggle{top:calc(20px + env(safe-area-inset-top));right:calc(76px + env(safe-area-inset-right));bottom:auto;left:auto;min-height:44px}
+@media(max-width:350px){#app.ui-refined:not(.bonus-active) .debug-travel-toggle{top:calc(82px + env(safe-area-inset-top));right:auto;left:12px}}
+@media(orientation:landscape) and (max-height:540px){#app.ui-refined:not(.bonus-active) .debug-travel-toggle{top:auto;right:auto;left:12px;bottom:12px}}

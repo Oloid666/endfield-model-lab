@@ -1,3 +1,4 @@
+import {createSettingsLayout} from './ui-settings.js';
 import {createFeedbackService,createFeedbackDialog} from './feedback.js';
 import {createGA4,createRainAnalytics} from './analytics.js';
 import {readPreferences,savePreferences} from './preferences.js';
@@ -18,6 +19,8 @@ import { createExploration } from './exploration.js';
 import { createBonus } from './bonus.js';
 import './presentation.css';
 import './responsive.css';
+import './ui-refinement.css';
+document.querySelector('#app').classList.add('ui-refined');
 
 const $=s=>document.querySelector(s),loading=$('#loading'),message=$('#loading-message'),error=$('#error');
 let preferenceStorage;try{preferenceStorage=localStorage;}catch{}
@@ -28,7 +31,7 @@ const analytics=createRainAnalytics(ga4.send);ga4.pageView();
 const loader=createLoading();
 const audio=new RainAudio(),abort=new AbortController();let world,mission,exploration,bonus,closed=false,menuPaused=false,xaihiPromise=null,assetPaused=false;
 const feedback=createFeedbackService({version:__BUILD_VERSION__,context:()=>({phase:mission?.state.phase||'ready',play_mode:analytics.state.run?analytics.state.playMode:'unknown'}),onSent:()=>analytics.bonus('feedback')});
-let feedbackDialog,fxPreparing=null,debugTravel;
+let feedbackDialog,fxPreparing=null,debugTravel,settingsLayout;
 const fxNotice=document.createElement('p');fxNotice.className='fx-preparing';fxNotice.setAttribute('role','status');fxNotice.textContent='正在準備爆炸效果，等一下就開砲…';fxNotice.hidden=true;$('#app').append(fxNotice);
 async function prepareBattle(){
  if(fxPreparing||world.shaderWarmup.state.completed.includes('battle-effects')&&world.battleDrawWarm)return;
@@ -45,6 +48,7 @@ function menu(open){
   $('#settings').hidden=!open;$('#menu-toggle').setAttribute('aria-expanded',String(open));$('#menu-toggle').setAttribute('aria-label',open?'關閉設定':'開啟設定');
   if(open){exploration?.setActive(false);for(const b of document.querySelectorAll('[data-chapter]'))b.disabled=!debugTravel?.state.unlocked&&!chapters.data.unlocked.includes(b.dataset.chapter);}
   if(mission)mission.setPaused(open,'menu');
+  settingsLayout?.setOpen(open);
 }
 listen($('#menu-toggle'),'click',()=>menu($('#settings').hidden));listen($('#menu-close'),'click',()=>menu(false));
 listen(document,'keydown',e=>{if(e.key==='Escape')menu(false);});listen($('#retry'),'click',()=>location.reload());
@@ -183,6 +187,7 @@ async function init(){
     const restartNight=document.createElement('button');restartNight.textContent='重新開始雨夜';restartNight.addEventListener('click',()=>{menu(false);mission.replay();},{signal:abort.signal});$('#settings').append(restartNight);
     const resetCameraButton=document.createElement('button');resetCameraButton.textContent='立即回到演出';resetCameraButton.addEventListener('click',()=>{world.resetStoryCamera();menu(false);},{signal:abort.signal});$('#settings').append(resetCameraButton);
     const chapterMenu=document.createElement('section');chapterMenu.className='chapter-menu';const heading=document.createElement('h3');heading.textContent='章節接續／重看';chapterMenu.append(heading);$('#settings').append(chapterMenu);for(const c of CHAPTERS){const b=document.createElement('button');b.textContent=c.label;b.dataset.chapter=c.id;b.disabled=!chapters.data.unlocked.includes(c.id);b.addEventListener('click',()=>restore(c.id),{signal:abort.signal});chapterMenu.append(b);}
+    settingsLayout=createSettingsLayout($('#settings'),abort.signal);
     debugTravel=createDebugTravel({mount:$('#app'),mission,signal:abort.signal,isPerforming:()=>!!world.streetShow.active||mission.state.presentationLocked||['combat','finisher','landing','tour','rewind'].includes(mission.state.phase),onJump:async (id,isCurrent)=>{
       const born=mission.state.mealBorn;
       if(['fridge','nikke','birth','chapter:rewind'].includes(id)){mission.setPaused(true,'debug-load');try{if(!await ensureXaihi())throw Error('塞西尚未載入');}finally{mission.setPaused(false,'debug-load');}}
