@@ -13,10 +13,10 @@ const lines=(prefix,items)=>items.map(([speaker,text,gesture='look',mood='calm',
 
 export const sequences={
   intro:lines('intro',[
-        ['dragon','總算出來了。今天先好好吃飯。','point'],
+        ['dragon','總算出來了。今天先好好吃飯。','point','calm',null,'opening-establish'],
     ['zhuang','你電話裡已經說三次了。','look'],
     ['dragon','怕妳掛掉又回去加班。','point'],
-    ['zhuang','知道了，別忘了拿湯。','look'],
+    ['zhuang','知道了，別忘了拿湯。','look','calm',null,'opening-soup'],
     ['dragon','所以我才親自來拖人。','shake'],
     ['zhuang','買了帶回去，邊整理資料——','phone'],
     ['dragon','先吃完，再整理。','shake'],

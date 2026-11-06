@@ -3,7 +3,8 @@ import * as T from 'three';
 import {buildConcertStage,songCamera} from './concert-stage.js';
 import {buildSighBreath} from './sigh-breath.js';
 import {buildCaptureEffects} from './capture-effects.js';
-import {revisedStoryShot} from './story-shots.js';
+import {cinematicStoryShot,revisedStoryShot} from './story-shots.js';
+import {CinematicTrack,faceFrame} from './cinematic-track.js';
 import {DragonRoam} from './postgame-roam.js';
 import {wireProgress} from './vcr-tablet.js';
 
@@ -14,10 +15,6 @@ const cinematicPhases=new Set(['terminal-quip','ascent','director-reminder','sho
 const smooth=x=>{const p=Math.max(0,Math.min(1,x));return p*p*(3-2*p);};
 const lerp=(a,b,p,out)=>{for(let i=0;i<3;i++)out[i]=a[i]+(b[i]-a[i])*p;return out;};
 function arc(a,b,p,height,out){lerp(a,b,p,out);out[1]+=Math.sin(Math.PI*p)*height;return out;}
-function faceFrame(feet,heading,distance=5.6,side=1.1,height=2.12,look=1.46){
-  const sx=Math.sin(heading),sz=Math.cos(heading);
-  return {position:[feet[0]+sx*distance+sz*side,feet[1]+height,Math.max(2.35,feet[2]+sz*distance-sx*side)],target:[feet[0],feet[1]+look,feet[2]]};
-}
 // A short, bounded move on the street side of the conversation. The phase clock
 // freezes during pauses; the camera never circles through the store facade.
 export function dialogueShot(state,feet,dragon,portrait,reduced=false){
@@ -41,6 +38,8 @@ export class MissionDirector{
   constructor(world){
     this.vcrEffects=buildVcrEffects(world.scene,world.r);
     this.captureFx=buildCaptureEffects(world.scene,world.r);this.captureAt=-Infinity;this.captureFrom=[0,0,0];
+    this.cinematicTrack=new CinematicTrack();
+    if(import.meta.env?.DEV&&typeof location!=='undefined'&&new URLSearchParams(location.search).get('cameraDebug')==='1'&&world.container)this.cinematicTrack.enableDebug(world.container);
     this.world=world;this.state=null;this.phase='ready';this.finalBegun=false;this.launched=false;this.impacted=false;this.neighborImpacted=false;this.stuckReleased=false;
     this.home=[0,0,0];this.hand=[0,0,0];this.end=[0,0,0];this.projectile=[0,0,0];this.hero=[0,0,0];this.wall=[-8.03,2.8,-1.96];
     this.keyFrom=[-2,.33,3.25];this.keyTo=[-2,.33,3.25];this.keyQueue=[];this.keyHop=null;this.lastKeyNumber=-1;this.signImpactRevision=0;this.rewindStarted=0;this.visualTime=null;this.lastEventNode=null;
@@ -59,7 +58,7 @@ export class MissionDirector{
     this.marker=world.r.mesh(world.r.geometry('TorusGeometry',.36,.012,6,48),material,world.scene);this.marker.visible=false;
   }
   reset(){
-    this.dragonRoam.reset();this.roamState=null;
+    this.dragonRoam.reset();this.roamState=null;this.cinematicTrack.reset();
     this.captureAt=-Infinity;this.captureFx.reset();
     this.world.concert?.reset();this.breath?.reset();this.previousBeat=null;this.world.setCutaway?.(false);
     this.world.actors?.setCinematic(null);this.world.actors?.setDragonProjectile(null);
@@ -70,7 +69,7 @@ export class MissionDirector{
     this.world.weather.invalidateReflection();this.world.store.spill.shadow.needsUpdate=true;
   }
   stage(phase,state){
-    this.phase=phase;this.state=state;if(phase==='last')this.captureAt=-Infinity;
+    this.phase=phase;this.state=state;this.cinematicTrack.stage(phase,this.world.actors?.headPosition);if(phase==='last')this.captureAt=-Infinity;
     if(phase==='ready')this.world.setCutaway(false);
     if(phase==='photo-return'){this.photoReturnFrom=[...(this.world.actors?.dragonPosition||[0,2.6,11.2])];this.world.setCutaway(false);}
     if(phase==='intro'){
@@ -110,6 +109,7 @@ export class MissionDirector{
     this.world.weather.invalidateReflection();
   }
   resumeCamera(){
+    // Resuming the same story shot must not replay its push or refit an input gate.
     const w=this.world;w.setWalking?.(false);w.actors?.setMove(0,0,false);w.manualUntil=w.time;w.transition=null;this.previousBeat=null;w.currentView=null;
     this.cameraOwned=false;this.cameraRoll=0;this.shakeEnvelope=0;
     if(!this.state||!cinematicPhases.has(this.state.phase)){w.setView('street');return false;}
@@ -133,7 +133,7 @@ export class MissionDirector{
     this.world.store.destruction.neighbor?.impact();this.world.siege.impact(this.wall,1.45);
     this.world.weather.invalidateReflection();
   }
-  get status(){return {phase:this.phase,recoil:this.recoil,shotNumber:this.shotNumber,serverImpacted:this.impacted,neighborImpacted:this.neighborImpacted,dragonStuck:this.neighborImpacted&&!this.stuckReleased,stuckPosition:[...this.wall],flightDistance:12,lift:4,cctv:cctvPhases.has(this.phase),visualTime:this.visualTime,smile:this.world.actors?.status?.smile||0,cameraBeat:this.cameraBeat,cameraRoll:this.cameraRoll,shakeEnvelope:this.shakeEnvelope,cameraFov:this.world.camera.fov,reducedMotion:this.reducedMotion,cameraFocus:this.cameraTarget.toArray()};}
+  get status(){return {track:this.cinematicTrack.state,phase:this.phase,recoil:this.recoil,shotNumber:this.shotNumber,serverImpacted:this.impacted,neighborImpacted:this.neighborImpacted,dragonStuck:this.neighborImpacted&&!this.stuckReleased,stuckPosition:[...this.wall],flightDistance:12,lift:4,cctv:cctvPhases.has(this.phase),visualTime:this.visualTime,smile:this.world.actors?.status?.smile||0,cameraBeat:this.cameraBeat,cameraRoll:this.cameraRoll,shakeEnvelope:this.shakeEnvelope,cameraFov:this.world.camera.fov,reducedMotion:this.reducedMotion,cameraFocus:this.cameraTarget.toArray()};}
   get targets(){
     const d=this.world.store.destruction,s=d.state;
     if(s.progress>=99)return d.targets.filter(v=>v.id==='server');
@@ -323,29 +323,19 @@ export class MissionDirector{
   updateCamera(delta,feet){
     const w=this.world,s=this.state;
     this.cameraRoll=0;this.shakeEnvelope=0;
-    if(s?.phase==='photo'){this.cameraOwned=false;return;}
+    if(s?.phase==='photo'){this.cinematicTrack.reset();this.cameraOwned=false;return;}
     if(!s||!cinematicPhases.has(s.phase)||w.walkCamera.enabled||w.time<w.manualUntil||w.autoCamera===false){this.cameraOwned=false;this.cameraBeat=w.time<w.manualUntil?'manual':'street';return;}
     if(!this.cameraOwned){this.baseCameraPosition.copy(w.camera.position);this.baseCameraTarget.copy(w.controls.target);this.baseFov=w.camera.fov;this.cameraOwned=true;}
     const portrait=w.camera.aspect<.85,e=s.phaseElapsed,heading=w.actors?.status?.cinematic?.heading??2.91;
     let position,target,fov=portrait?48:42,beat=s.phase;
     const sign=w.store.destruction.signFlight?.state;
-    if(['ready','intro','purchase'].includes(s.phase)){
-      const node=Number((s.nodeId||'').split('_').at(-1))||0,purchase=s.purchaseElapsed;
-      if(s.phase==='ready'){position=[-7,6.2,19];target=[-.6,3,0];fov=portrait?57:44;beat='street-dragon-arrival';}
-      else if(s.phase==='intro'&&s.nodeId==='intro_2'){const d=w.actors?.dragonPosition||[-2,1,3.25];position=[d[0]+.35,d[1]+.42,d[2]+2.9];target=[d[0],d[1]+.3,d[2]];fov=portrait?38:32;beat='opening-dragon-close';}
-      else if(purchase!==null){
-        const d=w.actors?.dragonPosition||[-.22,1.5,2.75],inside=s.shopping?.atCounter;
-        position=inside?[2.95,2.65,-.3]:[-.22,2.45,5.4];target=[d[0],d[1]+.25,d[2]];fov=portrait?58:47;beat=inside?'dragon-counter-collection':'dragon-store-follow';
-      }else{const shot=dialogueShot(s,feet,w.actors?.dragonPosition||[-2,.65,3.25],portrait,this.reducedMotion);({position,target,fov,beat}=shot);}
-    }else if(s.phase==='ascent'){position=[4,10,26];target=[feet[0],feet[1]+1,feet[2]];fov=portrait?62:53;beat='authorized-wide-ascent';
+    if(s.phase==='ready'){position=[-7,6.2,19];target=[-.6,3,0];fov=portrait?57:44;beat='street-dragon-arrival';
     }else if(s.phase==='director-reminder'){const d=w.actors?.dragonPosition||[-2,2,4];position=[d[0]+2.1,d[1]+1.1,d[2]+4.4];target=[d[0],d[1]+.35,d[2]];fov=portrait?45:38;beat='dragon-calls-director';
     }else if(s.phase==='shoe-view'){const heel=w.actors?.heelCenter||feet,a=Math.min(8,s.shoeOrbitElapsed)*Math.PI/4;position=[heel[0]+Math.sin(a)*1.95,heel[1]+.18,heel[2]+Math.cos(a)*1.95];target=[heel[0],heel[1]+.14,heel[2]];fov=portrait?44:40;beat='shoe-orbit-wait';
     }else if(s.phase==='pylon-link'){const p=w.tianshi.focusTargets?.[0]?.position||[-12.8,8.8,-9.6];position=[p[0]-4,p[1]-2+e,p[2]+7];target=p;fov=38+e*3;beat='pylon-before-lift';
     }else if(s.phase==='photo-flight'){const f=s.flight;position=[f.x+4.8,3.8,f.z+5.5];target=[(f.x-1.25)/2,1.65,(f.z+3.25)/2];fov=portrait?51:46;beat='dragon-flight-control';
     }else if(s.phase==='photo'){
       position=[0,3.3,10.5];target=[-.22,1.65,2.75];fov=50;beat='photo-framing';
-    }else if(s.phase==='walk-out'){
-      const d=w.actors?.dragonPosition||[-.22,1.3,2];position=[-.6,2.5,5.8];target=[d[0],d[1]+.25,d[2]];fov=portrait?58:46;beat='dragon-return-follow';
     }else if(s.phase==='photo-pose'||s.phase==='photo-talk'){
       const shot=dialogueShot(s,feet,w.actors?.dragonPosition||[-2,1,3.25],portrait,this.reducedMotion);({position,target,fov,beat}=shot);
     }else if(['photo-return','photo-sending','photo-check','photo-review','cargo'].includes(s.phase)){
@@ -367,9 +357,6 @@ export class MissionDirector{
         beat=index===2?'server-fanbooks':index===4?'server-copier':'server-led-detail';
       }
       else{position=portrait?[7.7,6.5,18.2]:[8.8,6.3,16];target=[.3,3,1];fov=37;beat='briefing-street';}
-    }else if(s.phase==='terminal-deploy'){position=portrait?[.2,5.9,12.5]:[-4.7,4.1,10];target=[-1.65,.7,5.45];fov=portrait?74:55;beat='terminal-unfold';
-    }else if(['terminal-quip','terminal-deploy','login','captcha','lever','verify-talk','verified-talk'].includes(s.phase)){
-      position=portrait?[.2,5.9,11.5]:[2.5,4.5,9.5];target=portrait?[-1.4,.7,5.2]:[-1.4,.7,5.2];fov=portrait?74:56;if(s.connection?.field==='password'){position=[-4.3,5.5,11.5];fov=portrait?72:54;}beat='dragon-terminal';
     }else if(s.phase==='rewind'){
       const p=s.rewindProgress;
       if(e<1.6){position=[2.7,2,-.2];target=w.investigationProps?.camera.position.toArray()||[3.87,2.53,-1.65];fov=portrait?34:29;beat='rewind-cctv-source';}
@@ -438,15 +425,7 @@ export class MissionDirector{
       const view=this.shotNumber%3;
       position=portrait?(view===0?[-2,9.2,34]:view===1?[3.8,10.2,34]:[-3.8,11.3,34]):(view===0?[8,9,31]:view===1?[-8,9.5,31]:[3,11,32]);
       target=[-.7,3.6,7];fov=portrait?61:51;beat=s.phase==='combat'?'battle-wide-'+view:'battle-report';
-    }else if(s.phase==='finisher'){
-      if(e<2){const front=faceFrame(feet,heading,6,1.8,2.25,1.1);position=front.position;target=front.target;fov=portrait?47:42;beat='finisher-load-face';}
-      else if(e<2.75){const front=faceFrame(feet,heading,6,1.8,2.25,1.1);position=front.position;target=front.target;fov=portrait?47:42;beat='finisher-release-face';}
-      else if(e<4.35){position=portrait?[0,9.6,33]:[5,10,31];target=[-1,3.2,7.5];fov=portrait?63:54;beat='finisher-flight';}
-      else if(e<6.2){
-        // Arrive before the 4.9s impact. From this side the caster and halo
-        // stay outside the frustum, and the server blast remains the subject.
-        position=[5.8,7.5,8.5];target=this.end;fov=portrait?68:60;beat=e<4.9?'finisher-impact-approach':'finisher-city-impact';
-      }else{position=[5.8,4.5,8.5];target=this.end;fov=48;beat='finisher-server-crater';}
+    }else if(s.phase==='finisher'&&e>=6.2){position=[5.8,4.5,8.5];target=this.end;fov=48;beat='finisher-server-crater';
     }else if(s.phase==='landing'){
       position=[this.wall[0]-.55,this.wall[1]+.65,this.wall[2]+1.8];target=[this.wall[0],this.wall[1]+.45,this.wall[2]+.1];fov=portrait?39:34;beat='landing-server';position=[3.5,4.8,7.5];target=this.end;
     }else{
@@ -474,14 +453,16 @@ export class MissionDirector{
     if(s.postgame){const h=w.actors.heelCenter;target=[h[0],h[1]+1.12,h[2]];position=[h[0],h[1]+2.35,h[2]+6.7];fov=portrait?48:38;beat='homecoming-pair';}
     if(s.node?.event==='vcr-cue'){const d=w.actors.dragonPosition;position=[d[0]+1.3,d[1]+.65,d[2]+3.2];target=[d[0],d[1]+.3,d[2]];fov=portrait?47:40;beat='vcr-dragon-flight';}
     if(s.phase==='complete'&&!s.postgame&&w.streetShow?.state.snapshotReady){position=[0,7,23];target=[0,3,1.8];fov=portrait?56:43;beat='rebuilt-upstairs-invite';}
-    const revised=revisedStoryShot(s,{feet,heroHead:w.actors?.headPosition,dragon:w.actors?.dragonPosition,portrait,reduced:this.reducedMotion,heading,xaihiHead:s.tablet||s.phase==='meal-spawn'?w.xaihi?.headPosition:null,mealPosition:s.phase==='meal-spawn'&&w.remnant?.state.visible?w.remnant.state.position:null,wirePoint:s.tablet?.stage==='cable'?this.vcrEffects.path.getPointAt(wireProgress(s.tablet.age),this.point).toArray():null});
+    const context={feet,heroHead:w.actors?.headPosition,dragon:w.actors?.dragonPosition,portrait,reduced:this.reducedMotion,heading,xaihiHead:s.tablet||s.phase==='meal-spawn'?w.xaihi?.headPosition:null,mealPosition:s.phase==='meal-spawn'&&w.remnant?.state.visible?w.remnant.state.position:null,wirePoint:s.tablet?.stage==='cable'?this.vcrEffects.path.getPointAt(wireProgress(s.tablet.age),this.point).toArray():null,aspect:w.camera.aspect,width:w.container?.clientWidth,height:w.container?.clientHeight,container:w.container,server:s.phase==='finisher'?this.end:w.store.destruction.state.serverPosition};
+    const revised=cinematicStoryShot(s,context,this.cinematicTrack)||revisedStoryShot(s,context);
     if(revised){({position,target,fov,beat}=revised);this.cameraRoll=0;}
     const storyCut=!!revised&&this.previousBeat!==beat;
     if(w.cameraOcclusion&&(beat==='dialogue-pair'||beat==='briefing-pair'||beat==='photo-together-front')){const old=w.camera.position.clone();w.camera.position.fromArray(position);if(w.cameraOcclusion(target))position=[target[0]+.4,target[1]+.7,Math.max(6,target[2]+5.5)];w.camera.position.copy(old);}
+    if(storyCut&&w.controls.enableDamping){w.controls.enableDamping=false;w.controls.update?.();w.controls.enableDamping=true;}
     this.cameraBeat=beat;this.cameraPosition.fromArray(position);this.cameraTarget.fromArray(target);
     const quietCut=this.reducedMotion;
     const trackingWire=beat==='wire-source-follow'||beat==='wire-route-follow'||beat==='birth-escape-follow';
-    const blend=s.paused?0:quietCut||storyCut||trackingWire||this.previousBeat!==beat&&!beat.startsWith('dialogue-')&&!beat.startsWith('briefing-')&&!['dragon-store-follow','dragon-return-follow','photo-together-shoulder','pear-moonlight-tour'].includes(beat)?1:1-Math.exp(-Math.min(.1,Math.max(0,delta))*(s.phase==='finisher'?3.9:3.1));
+    const blend=s.paused?0:revised?.direct||quietCut||storyCut||trackingWire||this.previousBeat!==beat&&!beat.startsWith('dialogue-')&&!beat.startsWith('briefing-')&&!['dragon-store-follow','dragon-return-follow','photo-together-shoulder','pear-moonlight-tour'].includes(beat)?1:1-Math.exp(-Math.min(.1,Math.max(0,delta))*(s.phase==='finisher'?3.9:3.1));
     this.baseCameraPosition.lerp(this.cameraPosition,blend);this.baseCameraTarget.lerp(this.cameraTarget,blend);this.baseFov=T.MathUtils.lerp(this.baseFov,fov,blend);
     w.camera.position.copy(this.baseCameraPosition);w.controls.target.copy(this.baseCameraTarget);
     const battle=beat!=='pear-garden-survives'&&['combat','energy','finisher','landing'].includes(s.phase),age=s.clock-this.lastShotAt,kick=age>=0?Math.exp(-age*5.2)*this.recoilAmplitude:0,shock=Number(w.siege.state?.shock)||0;

@@ -1,0 +1,3943 @@
+{
+  "date": "2026-11-06",
+  "baseline": "1fd3607",
+  "device": "Chromium SwiftShader; not iPhone Safari",
+  "node_suites": 38,
+  "cinematic_checks": 734,
+  "director_checks": 303,
+  "browser_errors": [],
+  "samples": [
+    {
+      "name": "portrait-opening-wide",
+      "phase": "intro",
+      "node": "intro_2",
+      "elapsed": 0.15,
+      "camera": {
+        "position": [
+          -6.5,
+          4.799999999999999,
+          17
+        ],
+        "target": [
+          -0.3,
+          2.7999999999999994,
+          1.3999999999999997
+        ],
+        "fov": 58,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-opening-establish",
+        "progress": 0,
+        "started": 0,
+        "fitValid": true,
+        "fitCount": 0,
+        "fitDistance": 0,
+        "riseOrigin": null,
+        "axisSide": 0,
+        "axisOrigin": [
+          0,
+          0,
+          0
+        ],
+        "axisRight": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "portrait-opening-pair",
+      "phase": "intro",
+      "node": "intro_2",
+      "elapsed": 2.549999999999999,
+      "camera": {
+        "position": [
+          -0.5556321228413719,
+          1.5581310832246393,
+          11.133291801636593
+        ],
+        "target": [
+          -1.988884619128845,
+          1.1020961980422617,
+          3.576142275757189
+        ],
+        "fov": 46,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-opening-pair",
+        "progress": 0.6675197220135229,
+        "started": 1.2,
+        "fitValid": true,
+        "fitCount": 1,
+        "fitDistance": 7.872247507142205,
+        "riseOrigin": null,
+        "axisSide": 0,
+        "axisOrigin": [
+          0,
+          0,
+          0
+        ],
+        "axisRight": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "portrait-opening-shoulder",
+      "phase": "intro",
+      "node": "intro_5",
+      "elapsed": 9.45,
+      "camera": {
+        "position": [
+          -5.478088086483366,
+          1.7531746713838974,
+          5.518296493233768
+        ],
+        "target": [
+          -1.4988290364599468,
+          1.5237444303902832,
+          3.5721456590242724
+        ],
+        "fov": 40,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-opening-shoulder",
+        "progress": 1,
+        "started": 7.149999999999983,
+        "fitValid": true,
+        "fitCount": 2,
+        "fitDistance": 4.585610881510008,
+        "riseOrigin": null,
+        "axisSide": 0,
+        "axisOrigin": [
+          0,
+          0,
+          0
+        ],
+        "axisRight": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "portrait-counter",
+      "phase": "intro",
+      "node": "intro_11",
+      "elapsed": 15.450000000000085,
+      "camera": {
+        "position": [
+          2.95,
+          2.6499999999999995,
+          -0.30000000000000004
+        ],
+        "target": [
+          2.05,
+          1.66,
+          1.45
+        ],
+        "fov": 58,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-counter-collection",
+        "progress": 1,
+        "started": 0,
+        "fitValid": true,
+        "fitCount": 2,
+        "fitDistance": 4.585610881510008,
+        "riseOrigin": null,
+        "axisSide": 0,
+        "axisOrigin": [
+          0,
+          0,
+          0
+        ],
+        "axisRight": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "portrait-return-door",
+      "phase": "walk-out",
+      "node": null,
+      "elapsed": 2.3000000000000327,
+      "camera": {
+        "position": [
+          -0.22,
+          2.45,
+          5.6
+        ],
+        "target": [
+          -0.21999999999999997,
+          1.62,
+          1.3706447187929038
+        ],
+        "fov": 58,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-return-door",
+        "progress": 1,
+        "started": 16.150000000000095,
+        "fitValid": true,
+        "fitCount": 2,
+        "fitDistance": 4.585610881510008,
+        "riseOrigin": null,
+        "axisSide": 0,
+        "axisOrigin": [
+          0,
+          0,
+          0
+        ],
+        "axisRight": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "portrait-return-curve-start",
+      "phase": "walk-out",
+      "node": null,
+      "elapsed": 3.7500000000000533,
+      "camera": {
+        "position": [
+          -0.8385160663240152,
+          2.410310244655646,
+          10.220484243696363
+        ],
+        "target": [
+          -0.277595825195352,
+          1.6249438476562534,
+          2.76853942871095
+        ],
+        "fov": 50,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-return-pair",
+        "progress": 0.024719238281266945,
+        "started": 16.150000000000095,
+        "fitValid": true,
+        "fitCount": 2,
+        "fitDistance": 4.585610881510008,
+        "riseOrigin": null,
+        "axisSide": 0,
+        "axisOrigin": [
+          0,
+          0,
+          0
+        ],
+        "axisRight": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "portrait-return-curve-middle",
+      "phase": "walk-out",
+      "node": null,
+      "elapsed": 4.4000000000000625,
+      "camera": {
+        "position": [
+          -1.6050221874057493,
+          2.5273869531397275,
+          10.469547625021796
+        ],
+        "target": [
+          -1.385000000000136,
+          1.7200000000000117,
+          3.125000000000044
+        ],
+        "fov": 50,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-return-pair",
+        "progress": 0.5000000000000584,
+        "started": 16.150000000000095,
+        "fitValid": true,
+        "fitCount": 2,
+        "fitDistance": 4.585610881510008,
+        "riseOrigin": null,
+        "axisSide": 0,
+        "axisOrigin": [
+          0,
+          0,
+          0
+        ],
+        "axisRight": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "portrait-return-curve-end",
+      "phase": "walk-out",
+      "node": null,
+      "elapsed": 5.1000000000000725,
+      "camera": {
+        "position": [
+          -2.3816381017589197,
+          2.3046605508284155,
+          10.107470896579093
+        ],
+        "target": [
+          -1.8704426913249903,
+          1.8699236383913334,
+          3.5622882488301553
+        ],
+        "fov": 50,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-return-pair",
+        "progress": 0.9887695312500158,
+        "started": 16.150000000000095,
+        "fitValid": true,
+        "fitCount": 2,
+        "fitDistance": 4.585610881510008,
+        "riseOrigin": null,
+        "axisSide": 0,
+        "axisOrigin": [
+          0,
+          0,
+          0
+        ],
+        "axisRight": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "portrait-return-pair",
+      "phase": "photo-pose",
+      "node": null,
+      "elapsed": 0.10000000000000142,
+      "camera": {
+        "position": [
+          -2.2460426170377836,
+          2.4420487797202446,
+          10.134364880535987
+        ],
+        "target": [
+          -1.886392451148807,
+          1.8371051733137405,
+          3.4947894252179013
+        ],
+        "fov": 50.371864894810365,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-return-pair",
+        "progress": 0.9971313476562581,
+        "started": 16.150000000000095,
+        "fitValid": true,
+        "fitCount": 2,
+        "fitDistance": 4.585610881510008,
+        "riseOrigin": null,
+        "axisSide": 0,
+        "axisOrigin": [
+          0,
+          0,
+          0
+        ],
+        "axisRight": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "narrow-opening-wide",
+      "phase": "intro",
+      "node": "intro_2",
+      "elapsed": 0.15000000000000213,
+      "camera": {
+        "position": [
+          -6.5,
+          4.799999999999999,
+          17
+        ],
+        "target": [
+          -0.3,
+          2.7999999999999994,
+          1.3999999999999997
+        ],
+        "fov": 58,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-opening-establish",
+        "progress": 0,
+        "started": 21.45000000000017,
+        "fitValid": true,
+        "fitCount": 2,
+        "fitDistance": 4.585610881510008,
+        "riseOrigin": null,
+        "axisSide": 0,
+        "axisOrigin": [
+          0,
+          0,
+          0
+        ],
+        "axisRight": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "narrow-opening-pair",
+      "phase": "intro",
+      "node": "intro_2",
+      "elapsed": 2.5500000000000362,
+      "camera": {
+        "position": [
+          -0.526763599475135,
+          1.591999659094729,
+          11.402035342011324
+        ],
+        "target": [
+          -2.010946297030031,
+          1.1197597098727168,
+          3.576344754903689
+        ],
+        "fov": 46,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-opening-pair",
+        "progress": 0.6675197220135476,
+        "started": 22.65000000000017,
+        "fitValid": true,
+        "fitCount": 3,
+        "fitDistance": 8.146055452730451,
+        "riseOrigin": null,
+        "axisSide": 0,
+        "axisOrigin": [
+          0,
+          0,
+          0
+        ],
+        "axisRight": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "narrow-opening-shoulder",
+      "phase": "intro",
+      "node": "intro_5",
+      "elapsed": 9.450000000000134,
+      "camera": {
+        "position": [
+          -5.597287818410324,
+          1.7455132301713698,
+          5.602457350664897
+        ],
+        "target": [
+          -1.4973177302712868,
+          1.5354596498327502,
+          3.571792246794101
+        ],
+        "fov": 40,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-opening-shoulder",
+        "progress": 1,
+        "started": 28.60000000000027,
+        "fitValid": true,
+        "fitCount": 4,
+        "fitDistance": 4.730117683458197,
+        "riseOrigin": null,
+        "axisSide": 0,
+        "axisOrigin": [
+          0,
+          0,
+          0
+        ],
+        "axisRight": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "narrow-counter",
+      "phase": "intro",
+      "node": "intro_11",
+      "elapsed": 15.449999999999871,
+      "camera": {
+        "position": [
+          2.95,
+          2.6499999999999995,
+          -0.30000000000000004
+        ],
+        "target": [
+          2.05,
+          1.66,
+          1.45
+        ],
+        "fov": 58,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-counter-collection",
+        "progress": 1,
+        "started": 21.45000000000017,
+        "fitValid": true,
+        "fitCount": 4,
+        "fitDistance": 4.730117683458197,
+        "riseOrigin": null,
+        "axisSide": 0,
+        "axisOrigin": [
+          0,
+          0,
+          0
+        ],
+        "axisRight": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "narrow-return-door",
+      "phase": "walk-out",
+      "node": null,
+      "elapsed": 2.249999999999872,
+      "camera": {
+        "position": [
+          -0.21999999999999997,
+          2.4499999999999997,
+          5.6
+        ],
+        "target": [
+          -0.21999999999999995,
+          1.62,
+          1.3156249999998642
+        ],
+        "fov": 58,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-return-door",
+        "progress": 1,
+        "started": 37.65,
+        "fitValid": true,
+        "fitCount": 4,
+        "fitDistance": 4.730117683458197,
+        "riseOrigin": null,
+        "axisSide": 0,
+        "axisOrigin": [
+          0,
+          0,
+          0
+        ],
+        "axisRight": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "narrow-return-curve-start",
+      "phase": "walk-out",
+      "node": null,
+      "elapsed": 3.6999999999997897,
+      "camera": {
+        "position": [
+          -0.8176480998558815,
+          2.4045591182428594,
+          10.20908881782994
+        ],
+        "target": [
+          -0.24616699218739235,
+          1.6222460937499907,
+          2.758422851562465
+        ],
+        "fov": 50,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-return-pair",
+        "progress": 0.0112304687499538,
+        "started": 37.65,
+        "fitValid": true,
+        "fitCount": 4,
+        "fitDistance": 4.730117683458197,
+        "riseOrigin": null,
+        "axisSide": 0,
+        "axisOrigin": [
+          0,
+          0,
+          0
+        ],
+        "axisRight": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "narrow-return-curve-middle",
+      "phase": "walk-out",
+      "node": null,
+      "elapsed": 4.349999999999753,
+      "camera": {
+        "position": [
+          -1.5236816065606726,
+          2.5408231646280544,
+          10.489665776658534
+        ],
+        "target": [
+          -1.275923461913524,
+          1.710637207031204,
+          3.0898895263670143
+        ],
+        "fov": 50,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-return-pair",
+        "progress": 0.45318603515601896,
+        "started": 37.65,
+        "fitValid": true,
+        "fitCount": 4,
+        "fitDistance": 4.730117683458197,
+        "riseOrigin": null,
+        "axisSide": 0,
+        "axisOrigin": [
+          0,
+          0,
+          0
+        ],
+        "axisRight": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "narrow-return-curve-end",
+      "phase": "walk-out",
+      "node": null,
+      "elapsed": 5.049999999999713,
+      "camera": {
+        "position": [
+          -2.3597168101896626,
+          2.3103988016294035,
+          10.116703683442408
+        ],
+        "target": [
+          -1.8618686933809676,
+          1.8679767227844208,
+          3.5565258875195247
+        ],
+        "fov": 50,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-return-pair",
+        "progress": 0.9752807617186585,
+        "started": 37.65,
+        "fitValid": true,
+        "fitCount": 4,
+        "fitDistance": 4.730117683458197,
+        "riseOrigin": null,
+        "axisSide": 0,
+        "axisOrigin": [
+          0,
+          0,
+          0
+        ],
+        "axisRight": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "narrow-return-pair",
+      "phase": "photo-pose",
+      "node": null,
+      "elapsed": 0,
+      "camera": {
+        "position": [
+          -2.3418279231243364,
+          2.3545622325562268,
+          10.112809663662556
+        ],
+        "target": [
+          -1.8841952014594765,
+          1.8581264824395425,
+          3.5394991403552387
+        ],
+        "fov": 50.14358482251639,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-return-pair",
+        "progress": 1,
+        "started": 37.65,
+        "fitValid": true,
+        "fitCount": 4,
+        "fitDistance": 4.730117683458197,
+        "riseOrigin": null,
+        "axisSide": 0,
+        "axisOrigin": [
+          0,
+          0,
+          0
+        ],
+        "axisRight": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "portrait-unfold",
+      "phase": "terminal-deploy",
+      "node": "terminal_book",
+      "elapsed": 2.9999999999999973,
+      "camera": {
+        "position": [
+          0.3849704454884042,
+          4.486293921114276,
+          13.204887373347699
+        ],
+        "target": [
+          -1.4234266577036407,
+          -0.4012658172426025,
+          6.313428142264502
+        ],
+        "fov": 74,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-terminal-unfold",
+        "progress": 0.5679939894815921,
+        "started": 0,
+        "fitValid": true,
+        "fitCount": 1,
+        "fitDistance": 8.838864482434799,
+        "riseOrigin": null,
+        "axisSide": 0,
+        "axisOrigin": [
+          0,
+          0,
+          0
+        ],
+        "axisRight": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "portrait-input",
+      "phase": "login",
+      "node": "login_account",
+      "elapsed": 0.1999999999999993,
+      "camera": {
+        "position": [
+          -0.8086063632359074,
+          4.926938533324996,
+          14.284633186022974
+        ],
+        "target": [
+          -1.4379389312758852,
+          -1.4450537180797793,
+          7.676641221603205
+        ],
+        "fov": 76,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-terminal-input",
+        "progress": 1,
+        "started": 7.599999999999981,
+        "fitValid": true,
+        "fitCount": 3,
+        "fitDistance": 9.201298959114117,
+        "riseOrigin": null,
+        "axisSide": 0,
+        "axisOrigin": [
+          0,
+          0,
+          0
+        ],
+        "axisRight": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "portrait-lever",
+      "phase": "lever",
+      "node": "captcha_verified",
+      "elapsed": 0.6000000000000085,
+      "camera": {
+        "position": [
+          -0.8086063632359074,
+          4.926938533324996,
+          14.284633186022974
+        ],
+        "target": [
+          -1.4379389312758852,
+          -1.4450537180797793,
+          7.676641221603205
+        ],
+        "fov": 76,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-terminal-input",
+        "progress": 1,
+        "started": 7.599999999999981,
+        "fitValid": true,
+        "fitCount": 3,
+        "fitDistance": 9.201298959114117,
+        "riseOrigin": null,
+        "axisSide": 0,
+        "axisOrigin": [
+          0,
+          0,
+          0
+        ],
+        "axisRight": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "portrait-ascent-start",
+      "phase": "ascent",
+      "node": "ascent_authorized",
+      "elapsed": 0.05000000000000071,
+      "camera": {
+        "position": [
+          1.3873274179360184,
+          2.4231412592614476,
+          9.133207952164955
+        ],
+        "target": [
+          -1.2076288859824535,
+          1.472493931588777,
+          3.6273359642713743
+        ],
+        "fov": 48.001788,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-authorized-ascent",
+        "progress": 0.00029800000000000844,
+        "started": 20.80000000000016,
+        "fitValid": true,
+        "fitCount": 3,
+        "fitDistance": 9.201298959114117,
+        "riseOrigin": [
+          -1.2130897820639819,
+          1.9223366592614477,
+          3.6321649521649544
+        ],
+        "axisSide": 0,
+        "axisOrigin": [
+          0,
+          0,
+          0
+        ],
+        "axisRight": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "portrait-ascent-middle",
+      "phase": "ascent",
+      "node": "ascent_authorized",
+      "elapsed": 2.450000000000035,
+      "camera": {
+        "position": [
+          2.065913017936033,
+          3.7318420592614756,
+          10.82967195216499
+        ],
+        "target": [
+          -1.21207441189371,
+          2.4367702652262255,
+          6.53555996427144
+        ],
+        "fov": 50.910012000000066,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-authorized-ascent",
+        "progress": 0.4850020000000105,
+        "started": 20.80000000000016,
+        "fitValid": true,
+        "fitCount": 3,
+        "fitDistance": 9.201298959114117,
+        "riseOrigin": [
+          -1.2130897820639819,
+          1.9223366592614477,
+          3.6321649521649544
+        ],
+        "axisSide": 0,
+        "axisOrigin": [
+          0,
+          0,
+          0
+        ],
+        "axisRight": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "portrait-ascent-end",
+      "phase": "ascent",
+      "node": "ascent_authorized",
+      "elapsed": 4.670000000000069,
+      "camera": {
+        "position": [
+          2.7694200067360253,
+          5.088605537661461,
+          12.588439424164973
+        ],
+        "target": [
+          -1.1896465871778574,
+          3.458730012936789,
+          9.550589916271406
+        ],
+        "fov": 53.92504195200003,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-authorized-ascent",
+        "progress": 0.987506992000005,
+        "started": 20.80000000000016,
+        "fitValid": true,
+        "fitCount": 3,
+        "fitDistance": 9.201298959114117,
+        "riseOrigin": [
+          -1.2130897820639819,
+          1.9223366592614477,
+          3.6321649521649544
+        ],
+        "axisSide": 0,
+        "axisOrigin": [
+          0,
+          0,
+          0
+        ],
+        "axisRight": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "portrait-aim-shoulder",
+      "phase": "aim-final",
+      "node": "ammo_2",
+      "elapsed": 9.099999999999483,
+      "camera": {
+        "position": [
+          -2.6853149907589526,
+          6.270953087836955,
+          18.59300024752328
+        ],
+        "target": [
+          -0.39274992771401296,
+          1.7171241361276544,
+          5.454001935959996
+        ],
+        "fov": 58,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-final-shoulder",
+        "progress": 0,
+        "started": 64.46999999999882,
+        "fitValid": true,
+        "fitCount": 4,
+        "fitDistance": 14.062223432624368,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1697167028308593,
+          5.9209466713888785,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9964512610714928,
+          -0.0,
+          0.08417175481734852
+        ]
+      }
+    },
+    {
+      "name": "portrait-load",
+      "phase": "finisher",
+      "node": null,
+      "elapsed": 0.04999999999999716,
+      "camera": {
+        "position": [
+          -3.2417900328526716,
+          6.129889483072616,
+          9.094556462917366
+        ],
+        "target": [
+          -1.2276166734373886,
+          5.178441021943284,
+          14.83439976630512
+        ],
+        "fov": 47,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-finisher-face",
+        "progress": 0.00506365740740684,
+        "started": 67.90269230769113,
+        "fitValid": true,
+        "fitCount": 5,
+        "fitDistance": 6.157702754732871,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1697167028308593,
+          5.9209466713888785,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9964512610714928,
+          -0.0,
+          0.08417175481734852
+        ]
+      }
+    },
+    {
+      "name": "portrait-explosion",
+      "phase": "finisher",
+      "node": null,
+      "elapsed": 2.149999999999764,
+      "camera": {
+        "position": [
+          -2.9856895209921612,
+          5.983977278273299,
+          9.205075689031627
+        ],
+        "target": [
+          -1.2607811869961387,
+          5.189616229930982,
+          14.834399766305122
+        ],
+        "fov": 49.1409184891605,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-finisher-face",
+        "progress": 1,
+        "started": 67.90269230769113,
+        "fitValid": true,
+        "fitCount": 5,
+        "fitDistance": 6.157702754732871,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1697167028308593,
+          5.9209466713888785,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9964512610714928,
+          -0.0,
+          0.08417175481734852
+        ]
+      }
+    },
+    {
+      "name": "portrait-face-end",
+      "phase": "finisher",
+      "node": null,
+      "elapsed": 2.74000000000008,
+      "camera": {
+        "position": [
+          -3.1983598883319506,
+          6.1121478710149795,
+          9.232218373763954
+        ],
+        "target": [
+          -1.2267539282217728,
+          5.178733665160425,
+          14.834399766305124
+        ],
+        "fov": 47.099582875440134,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-finisher-face",
+        "progress": 1,
+        "started": 67.90269230769113,
+        "fitValid": true,
+        "fitCount": 5,
+        "fitDistance": 6.157702754732871,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1697167028308593,
+          5.9209466713888785,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9964512610714928,
+          -0.0,
+          0.08417175481734852
+        ]
+      }
+    },
+    {
+      "name": "portrait-flight",
+      "phase": "finisher",
+      "node": null,
+      "elapsed": 2.799999999999997,
+      "camera": {
+        "position": [
+          -5.352634524568803,
+          9.599325272188539,
+          32.547894959849984
+        ],
+        "target": [
+          -1.0008281581250098,
+          3.1994283542162063,
+          7.5
+        ],
+        "fov": 63.07289282535007,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-finisher-flight",
+        "progress": 1,
+        "started": 70.65269230769113,
+        "fitValid": true,
+        "fitCount": 5,
+        "fitDistance": 6.157702754732871,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1697167028308593,
+          5.9209466713888785,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9964512610714928,
+          -0.0,
+          0.08417175481734852
+        ]
+      }
+    },
+    {
+      "name": "portrait-impact-ready",
+      "phase": "finisher",
+      "node": null,
+      "elapsed": 4.399999999999949,
+      "camera": {
+        "position": [
+          -16.420773959385983,
+          16.216701509705892,
+          16.056484810295395
+        ],
+        "target": [
+          0.6602795960442455,
+          4.471072553004321,
+          0.4569910945052822
+        ],
+        "fov": 68.00002284807132,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-finisher-impact",
+        "progress": 0.05539358600573544,
+        "started": 72.25269230769112,
+        "fitValid": true,
+        "fitCount": 6,
+        "fitDistance": 25.949062526068744,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1697167028308593,
+          5.9209466713888785,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9964512610714928,
+          -0.0,
+          0.08417175481734852
+        ]
+      }
+    },
+    {
+      "name": "portrait-before-impact",
+      "phase": "finisher",
+      "node": null,
+      "elapsed": 4.879999999999967,
+      "camera": {
+        "position": [
+          -16.358581663289243,
+          16.173935550829455,
+          15.999686889196246
+        ],
+        "target": [
+          0.6602795960442455,
+          4.471072553004321,
+          0.4569910945052822
+        ],
+        "fov": 68.00002284807132,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-finisher-impact",
+        "progress": 1,
+        "started": 72.25269230769112,
+        "fitValid": true,
+        "fitCount": 6,
+        "fitDistance": 25.949062526068744,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1697167028308593,
+          5.9209466713888785,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9964512610714928,
+          -0.0,
+          0.08417175481734852
+        ]
+      }
+    },
+    {
+      "name": "portrait-impact",
+      "phase": "finisher",
+      "node": null,
+      "elapsed": 5.2000000000000455,
+      "camera": {
+        "position": [
+          -16.24960916112775,
+          16.082619030001347,
+          16.056109891869625
+        ],
+        "target": [
+          0.6428439956984068,
+          4.489328379321318,
+          0.4569910945052822
+        ],
+        "fov": 69.79958360246115,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-finisher-impact",
+        "progress": 1,
+        "started": 72.25269230769112,
+        "fitValid": true,
+        "fitCount": 6,
+        "fitDistance": 25.949062526068744,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1697167028308593,
+          5.9209466713888785,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9964512610714928,
+          -0.0,
+          0.08417175481734852
+        ]
+      }
+    },
+    {
+      "name": "narrow-unfold",
+      "phase": "terminal-deploy",
+      "node": "terminal_book",
+      "elapsed": 2.9999999999998295,
+      "camera": {
+        "position": [
+          0.39208117710530654,
+          4.604264926389496,
+          13.23198502626617
+        ],
+        "target": [
+          -1.4351189906108182,
+          -0.3341139052757064,
+          6.2688708736182335
+        ],
+        "fov": 74,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-terminal-unfold",
+        "progress": 0.5679939894815467,
+        "started": 73.40269230769115,
+        "fitValid": true,
+        "fitCount": 7,
+        "fitDistance": 8.928700796164954,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1697167028308593,
+          5.9209466713888785,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9964512610714928,
+          -0.0,
+          0.08417175481734852
+        ]
+      }
+    },
+    {
+      "name": "narrow-input",
+      "phase": "login",
+      "node": "login_account",
+      "elapsed": 0.19999999999998863,
+      "camera": {
+        "position": [
+          -0.7652741928907545,
+          5.246917441636534,
+          14.739620974647082
+        ],
+        "target": [
+          -1.4323139011575698,
+          -1.5068596045649738,
+          7.735704037845517
+        ],
+        "fov": 76,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-terminal-input",
+        "progress": 1,
+        "started": 81.00269230769072,
+        "fitValid": true,
+        "fitCount": 10,
+        "fitDistance": 9.752604719756608,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1697167028308593,
+          5.9209466713888785,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9964512610714928,
+          -0.0,
+          0.08417175481734852
+        ]
+      }
+    },
+    {
+      "name": "narrow-lever",
+      "phase": "lever",
+      "node": "captcha_verified",
+      "elapsed": 0.5999999999999659,
+      "camera": {
+        "position": [
+          -0.7652741928907545,
+          5.246917441636534,
+          14.739620974647082
+        ],
+        "target": [
+          -1.4323139011575698,
+          -1.5068596045649738,
+          7.735704037845517
+        ],
+        "fov": 76,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-terminal-input",
+        "progress": 1,
+        "started": 81.00269230769072,
+        "fitValid": true,
+        "fitCount": 10,
+        "fitDistance": 9.752604719756608,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1697167028308593,
+          5.9209466713888785,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9964512610714928,
+          -0.0,
+          0.08417175481734852
+        ]
+      }
+    },
+    {
+      "name": "narrow-ascent-start",
+      "phase": "ascent",
+      "node": "ascent_authorized",
+      "elapsed": 0.04999999999999716,
+      "camera": {
+        "position": [
+          1.387326381131207,
+          2.4232564569875494,
+          9.135234331339833
+        ],
+        "target": [
+          -1.2076288859824535,
+          1.472493931588777,
+          3.6273359642713743
+        ],
+        "fov": 48.001788,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-authorized-ascent",
+        "progress": 0.0002979999999999662,
+        "started": 94.20269230768997,
+        "fitValid": true,
+        "fitCount": 10,
+        "fitDistance": 9.752604719756608,
+        "riseOrigin": [
+          -1.213090818868793,
+          1.92245185698755,
+          3.634191331339832
+        ],
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1697167028308593,
+          5.9209466713888785,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9964512610714928,
+          -0.0,
+          0.08417175481734852
+        ]
+      }
+    },
+    {
+      "name": "narrow-ascent-middle",
+      "phase": "ascent",
+      "node": "ascent_authorized",
+      "elapsed": 2.4499999999998607,
+      "camera": {
+        "position": [
+          2.065911981131148,
+          3.7319572569874375,
+          10.831698331339684
+        ],
+        "target": [
+          -1.1907396026705412,
+          2.436279888613781,
+          6.535559964271126
+        ],
+        "fov": 50.910011999999746,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-authorized-ascent",
+        "progress": 0.48500199999995813,
+        "started": 94.20269230768997,
+        "fitValid": true,
+        "fitCount": 10,
+        "fitDistance": 9.752604719756608,
+        "riseOrigin": [
+          -1.213090818868793,
+          1.92245185698755,
+          3.634191331339832
+        ],
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1697167028308593,
+          5.9209466713888785,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9964512610714928,
+          -0.0,
+          0.08417175481734852
+        ]
+      }
+    },
+    {
+      "name": "narrow-ascent-end",
+      "phase": "ascent",
+      "node": "ascent_authorized",
+      "elapsed": 4.669999999999746,
+      "camera": {
+        "position": [
+          2.7694189699311798,
+          5.088720735387501,
+          12.590465803339765
+        ],
+        "target": [
+          -1.2171648703319866,
+          3.4579124709295237,
+          9.550589916271264
+        ],
+        "fov": 53.92504195199989,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-authorized-ascent",
+        "progress": 0.9875069919999812,
+        "started": 94.20269230768997,
+        "fitValid": true,
+        "fitCount": 10,
+        "fitDistance": 9.752604719756608,
+        "riseOrigin": [
+          -1.213090818868793,
+          1.92245185698755,
+          3.634191331339832
+        ],
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1697167028308593,
+          5.9209466713888785,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9964512610714928,
+          -0.0,
+          0.08417175481734852
+        ]
+      }
+    },
+    {
+      "name": "narrow-aim-shoulder",
+      "phase": "aim-final",
+      "node": "ammo_2",
+      "elapsed": 9.100000000002069,
+      "camera": {
+        "position": [
+          -2.7151596323244602,
+          6.268758744005478,
+          18.59042968333668
+        ],
+        "target": [
+          -0.40188613452069816,
+          1.6805734684495488,
+          5.463294557951766
+        ],
+        "fov": 58,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-final-shoulder",
+        "progress": 0,
+        "started": 137.8726923076918,
+        "fitValid": true,
+        "fitCount": 11,
+        "fitDistance": 14.063176683181943,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1933254244736913,
+          5.9187523309298244,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9963073655425126,
+          -0.0,
+          0.08585821664662308
+        ]
+      }
+    },
+    {
+      "name": "narrow-load",
+      "phase": "finisher",
+      "node": null,
+      "elapsed": 0.05000000000001137,
+      "camera": {
+        "position": [
+          -3.417783432335549,
+          6.2310314811676335,
+          8.551816434763047
+        ],
+        "target": [
+          -1.2123686615987905,
+          5.189245043093336,
+          14.83664546590498
+        ],
+        "fov": 47,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-finisher-face",
+        "progress": 0.005063657407409678,
+        "started": 141.30538461538413,
+        "fitValid": true,
+        "fitCount": 12,
+        "fitDistance": 6.742291217618077,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1933254244736913,
+          5.9187523309298244,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9963073655425126,
+          -0.0,
+          0.08585821664662308
+        ]
+      }
+    },
+    {
+      "name": "narrow-explosion",
+      "phase": "finisher",
+      "node": null,
+      "elapsed": 2.150000000000489,
+      "camera": {
+        "position": [
+          -3.5892160416625227,
+          6.165083344377325,
+          8.704640421875371
+        ],
+        "target": [
+          -1.1771278757675436,
+          5.167265156865603,
+          14.836645465904978
+        ],
+        "fov": 49.1024333302499,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-finisher-face",
+        "progress": 1,
+        "started": 141.30538461538413,
+        "fitValid": true,
+        "fitCount": 12,
+        "fitDistance": 6.742291217618077,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1933254244736913,
+          5.9187523309298244,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9963073655425126,
+          -0.0,
+          0.08585821664662308
+        ]
+      }
+    },
+    {
+      "name": "narrow-face-end",
+      "phase": "finisher",
+      "node": null,
+      "elapsed": 2.7399999999999523,
+      "camera": {
+        "position": [
+          -3.360718981262175,
+          6.21083599448883,
+          8.688158774429168
+        ],
+        "target": [
+          -1.2136874054315994,
+          5.188266797283903,
+          14.836645465904981
+        ],
+        "fov": 47.09779277329259,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-finisher-face",
+        "progress": 1,
+        "started": 141.30538461538413,
+        "fitValid": true,
+        "fitCount": 12,
+        "fitDistance": 6.742291217618077,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1933254244736913,
+          5.9187523309298244,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9963073655425126,
+          -0.0,
+          0.08585821664662308
+        ]
+      }
+    },
+    {
+      "name": "narrow-flight",
+      "phase": "finisher",
+      "node": null,
+      "elapsed": 2.8000000000000114,
+      "camera": {
+        "position": [
+          -5.4711729286516,
+          9.595696596484204,
+          32.530801870061424
+        ],
+        "target": [
+          -0.9989115589286299,
+          3.2007247130259633,
+          7.5
+        ],
+        "fov": 63.07158250364437,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-finisher-flight",
+        "progress": 1,
+        "started": 144.05538461538413,
+        "fitValid": true,
+        "fitCount": 12,
+        "fitDistance": 6.742291217618077,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1933254244736913,
+          5.9187523309298244,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9963073655425126,
+          -0.0,
+          0.08585821664662308
+        ]
+      }
+    },
+    {
+      "name": "narrow-impact-ready",
+      "phase": "finisher",
+      "node": null,
+      "elapsed": 4.400000000000375,
+      "camera": {
+        "position": [
+          -17.641721236964468,
+          17.649695365904545,
+          17.062337764504118
+        ],
+        "target": [
+          0.8509083909252508,
+          4.97252863937727,
+          0.28816355074775457
+        ],
+        "fov": 68.00002261483169,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-finisher-impact",
+        "progress": 0.05539358600663036,
+        "started": 145.65538461538412,
+        "fitValid": true,
+        "fitCount": 13,
+        "fitDistance": 28.006625539674495,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1933254244736913,
+          5.9187523309298244,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9963073655425126,
+          -0.0,
+          0.08585821664662308
+        ]
+      }
+    },
+    {
+      "name": "narrow-before-impact",
+      "phase": "finisher",
+      "node": null,
+      "elapsed": 4.880000000000109,
+      "camera": {
+        "position": [
+          -17.57933702641939,
+          17.606929407028154,
+          17.005750700526338
+        ],
+        "target": [
+          0.8509083909252508,
+          4.97252863937727,
+          0.28816355074775457
+        ],
+        "fov": 68.00002261483169,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-finisher-impact",
+        "progress": 1,
+        "started": 145.65538461538412,
+        "fitValid": true,
+        "fitCount": 13,
+        "fitDistance": 28.006625539674495,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1933254244736913,
+          5.9187523309298244,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9963073655425126,
+          -0.0,
+          0.08585821664662308
+        ]
+      }
+    },
+    {
+      "name": "narrow-impact",
+      "phase": "finisher",
+      "node": null,
+      "elapsed": 5.199999999999989,
+      "camera": {
+        "position": [
+          -17.62133127589586,
+          17.546121714451036,
+          17.04837783055606
+        ],
+        "target": [
+          0.857627470841485,
+          4.9585118615570325,
+          0.28816355074775457
+        ],
+        "fov": 69.79958360246248,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-finisher-impact",
+        "progress": 1,
+        "started": 145.65538461538412,
+        "fitValid": true,
+        "fitCount": 13,
+        "fitDistance": 28.006625539674495,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1933254244736913,
+          5.9187523309298244,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9963073655425126,
+          -0.0,
+          0.08585821664662308
+        ]
+      }
+    },
+    {
+      "name": "landscape-unfold",
+      "phase": "terminal-deploy",
+      "node": "terminal_book",
+      "elapsed": 3.000000000000682,
+      "camera": {
+        "position": [
+          0.35643534069173577,
+          4.921620095053519,
+          13.096145487500937
+        ],
+        "target": [
+          -1.484100510232981,
+          -0.05280112366193301,
+          6.082211569112152
+        ],
+        "fov": 74,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-terminal-unfold",
+        "progress": 0.5679939894817772,
+        "started": 146.80538461538418,
+        "fitValid": true,
+        "fitCount": 14,
+        "fitDistance": 8.992415336898485,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1933254244736913,
+          5.9187523309298244,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9963073655425126,
+          -0.0,
+          0.08585821664662308
+        ]
+      }
+    },
+    {
+      "name": "landscape-input",
+      "phase": "login",
+      "node": "login_account",
+      "elapsed": 0.20000000000004547,
+      "camera": {
+        "position": [
+          4.0110999808511245,
+          7.436298978612981,
+          10.621835441729857
+        ],
+        "target": [
+          3.420278728474972,
+          1.4542337983044338,
+          4.418212291780252
+        ],
+        "fov": 56,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-terminal-input",
+        "progress": 1,
+        "started": 154.4053846153859,
+        "fitValid": true,
+        "fitCount": 17,
+        "fitDistance": 8.638235569855103,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1933254244736913,
+          5.9187523309298244,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9963073655425126,
+          -0.0,
+          0.08585821664662308
+        ]
+      }
+    },
+    {
+      "name": "landscape-lever",
+      "phase": "lever",
+      "node": "captcha_verified",
+      "elapsed": 0.6000000000001364,
+      "camera": {
+        "position": [
+          4.0110999808511245,
+          7.436298978612981,
+          10.621835441729857
+        ],
+        "target": [
+          3.420278728474972,
+          1.4542337983044338,
+          4.418212291780252
+        ],
+        "fov": 56,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-terminal-input",
+        "progress": 1,
+        "started": 154.4053846153859,
+        "fitValid": true,
+        "fitCount": 17,
+        "fitDistance": 8.638235569855103,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1933254244736913,
+          5.9187523309298244,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9963073655425126,
+          -0.0,
+          0.08585821664662308
+        ]
+      }
+    },
+    {
+      "name": "landscape-ascent-start",
+      "phase": "ascent",
+      "node": "ascent_authorized",
+      "elapsed": 0.05000000000001137,
+      "camera": {
+        "position": [
+          1.3812909235081925,
+          2.424319586223217,
+          9.122336954593722
+        ],
+        "target": [
+          -1.2121104393598974,
+          1.4744252169743592,
+          3.6273359642576715
+        ],
+        "fov": 40.001788,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-authorized-ascent",
+        "progress": 0.0002980000000001351,
+        "started": 167.6053846153889,
+        "fitValid": true,
+        "fitCount": 17,
+        "fitDistance": 8.638235569855103,
+        "riseOrigin": [
+          -1.2191262764918078,
+          1.9235149862232166,
+          3.621293954593722
+        ],
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1933254244736913,
+          5.9187523309298244,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9963073655425126,
+          -0.0,
+          0.08585821664662308
+        ]
+      }
+    },
+    {
+      "name": "landscape-ascent-middle",
+      "phase": "ascent",
+      "node": "ascent_authorized",
+      "elapsed": 2.450000000000557,
+      "camera": {
+        "position": [
+          2.059876523508426,
+          3.733020386223667,
+          10.818800954594305
+        ],
+        "target": [
+          -1.2268126445126573,
+          2.437898366203957,
+          6.535559964258673
+        ],
+        "fov": 42.910012000001004,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-authorized-ascent",
+        "progress": 0.485002000000167,
+        "started": 167.6053846153889,
+        "fitValid": true,
+        "fitCount": 17,
+        "fitDistance": 8.638235569855103,
+        "riseOrigin": [
+          -1.2191262764918078,
+          1.9235149862232166,
+          3.621293954593722
+        ],
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1933254244736913,
+          5.9187523309298244,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9963073655425126,
+          -0.0,
+          0.08585821664662308
+        ]
+      }
+    },
+    {
+      "name": "landscape-ascent-end",
+      "phase": "ascent",
+      "node": "ascent_authorized",
+      "elapsed": 4.670000000001039,
+      "camera": {
+        "position": [
+          2.7633835123083,
+          5.089783864623423,
+          12.577568426593992
+        ],
+        "target": [
+          -1.2192815947675255,
+          3.4586787684413927,
+          9.550589916258133
+        ],
+        "fov": 45.92504195200046,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-authorized-ascent",
+        "progress": 0.9875069920000769,
+        "started": 167.6053846153889,
+        "fitValid": true,
+        "fitCount": 17,
+        "fitDistance": 8.638235569855103,
+        "riseOrigin": [
+          -1.2191262764918078,
+          1.9235149862232166,
+          3.621293954593722
+        ],
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1933254244736913,
+          5.9187523309298244,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9963073655425126,
+          -0.0,
+          0.08585821664662308
+        ]
+      }
+    },
+    {
+      "name": "landscape-aim-shoulder",
+      "phase": "aim-final",
+      "node": "ammo_2",
+      "elapsed": 9.100000000002069,
+      "camera": {
+        "position": [
+          -2.7208453206811845,
+          6.264327899943618,
+          18.589938795989994
+        ],
+        "target": [
+          6.271927624150936,
+          3.611772112634286,
+          6.115233322051452
+        ],
+        "fov": 46,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-final-shoulder",
+        "progress": 0,
+        "started": 211.27538461539746,
+        "fitValid": true,
+        "fitCount": 18,
+        "fitDistance": 14.062633443826275,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1978236634281054,
+          5.914321491941529,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9962796297661375,
+          -0.0,
+          0.08617945992548301
+        ]
+      }
+    },
+    {
+      "name": "landscape-load",
+      "phase": "finisher",
+      "node": null,
+      "elapsed": 0.05000000000001137,
+      "camera": {
+        "position": [
+          -2.7465763998671755,
+          6.737814726092208,
+          10.421271879463928
+        ],
+        "target": [
+          -1.1556641532539613,
+          5.986304930891972,
+          14.95493675111695
+        ],
+        "fov": 42,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-finisher-face",
+        "progress": 0.005063657407409678,
+        "started": 214.70807692308978,
+        "fitValid": true,
+        "fitCount": 19,
+        "fitDistance": 4.8638743855408775,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1978236634281054,
+          5.914321491941529,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9962796297661375,
+          -0.0,
+          0.08617945992548301
+        ]
+      }
+    },
+    {
+      "name": "landscape-explosion",
+      "phase": "finisher",
+      "node": null,
+      "elapsed": 2.150000000000489,
+      "camera": {
+        "position": [
+          -2.4941542084234896,
+          6.834773120329484,
+          10.610335432375418
+        ],
+        "target": [
+          -1.1882401355460197,
+          5.999639926417608,
+          14.954936751116952
+        ],
+        "fov": 44.1024333302499,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-finisher-face",
+        "progress": 1,
+        "started": 214.70807692308978,
+        "fitValid": true,
+        "fitCount": 19,
+        "fitDistance": 4.8638743855408775,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1978236634281054,
+          5.914321491941529,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9962796297661375,
+          -0.0,
+          0.08617945992548301
+        ]
+      }
+    },
+    {
+      "name": "landscape-face-end",
+      "phase": "finisher",
+      "node": null,
+      "elapsed": 2.7399999999999523,
+      "camera": {
+        "position": [
+          -2.707694888379465,
+          6.709568433597002,
+          10.55739834005367
+        ],
+        "target": [
+          -1.154073626753064,
+          5.987099468680251,
+          14.954936751116952
+        ],
+        "fov": 42.09779277329259,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-finisher-face",
+        "progress": 1,
+        "started": 214.70807692308978,
+        "fitValid": true,
+        "fitCount": 19,
+        "fitDistance": 4.8638743855408775,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1978236634281054,
+          5.914321491941529,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9962796297661375,
+          -0.0,
+          0.08617945992548301
+        ]
+      }
+    },
+    {
+      "name": "landscape-flight",
+      "phase": "finisher",
+      "node": null,
+      "elapsed": 2.8000000000000114,
+      "camera": {
+        "position": [
+          -10.059466085181427,
+          10.00060034087096,
+          29.69893385311725
+        ],
+        "target": [
+          -1.0011987658427328,
+          3.199759851653657,
+          7.5
+        ],
+        "fov": 54.07158250364437,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-finisher-flight",
+        "progress": 1,
+        "started": 217.45807692308978,
+        "fitValid": true,
+        "fitCount": 19,
+        "fitDistance": 4.8638743855408775,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1978236634281054,
+          5.914321491941529,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9962796297661375,
+          -0.0,
+          0.08617945992548301
+        ]
+      }
+    },
+    {
+      "name": "landscape-impact-ready",
+      "phase": "finisher",
+      "node": null,
+      "elapsed": 4.400000000000375,
+      "camera": {
+        "position": [
+          -10.413374812790282,
+          11.720080982643564,
+          10.493462844930757
+        ],
+        "target": [
+          0.5611382801957284,
+          4.20117048637986,
+          0.5516655539380944
+        ],
+        "fov": 60.00002261483169,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-finisher-impact",
+        "progress": 0.05539358600663036,
+        "started": 219.05807692308977,
+        "fitValid": true,
+        "fitCount": 20,
+        "fitDistance": 16.61316670431549,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1978236634281054,
+          5.914321491941529,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9962796297661375,
+          -0.0,
+          0.08617945992548301
+        ]
+      }
+    },
+    {
+      "name": "landscape-before-impact",
+      "phase": "finisher",
+      "node": null,
+      "elapsed": 4.880000000000109,
+      "camera": {
+        "position": [
+          -10.350954123535331,
+          11.677315023767171,
+          10.436916022845924
+        ],
+        "target": [
+          0.5611382801957284,
+          4.20117048637986,
+          0.5516655539380944
+        ],
+        "fov": 60.00002261483169,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-finisher-impact",
+        "progress": 1,
+        "started": 219.05807692308977,
+        "fitValid": true,
+        "fitCount": 20,
+        "fitDistance": 16.61316670431549,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1978236634281054,
+          5.914321491941529,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9962796297661375,
+          -0.0,
+          0.08617945992548301
+        ]
+      }
+    },
+    {
+      "name": "landscape-impact",
+      "phase": "finisher",
+      "node": null,
+      "elapsed": 5.199999999999989,
+      "camera": {
+        "position": [
+          -10.38229818458301,
+          11.767751829927054,
+          10.448468025307886
+        ],
+        "target": [
+          0.566153329963357,
+          4.198416938144032,
+          0.5516655539380944
+        ],
+        "fov": 61.799583602462484,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-finisher-impact",
+        "progress": 1,
+        "started": 219.05807692308977,
+        "fitValid": true,
+        "fitCount": 20,
+        "fitDistance": 16.61316670431549,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1978236634281054,
+          5.914321491941529,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9962796297661375,
+          -0.0,
+          0.08617945992548301
+        ]
+      }
+    },
+    {
+      "name": "desktop-unfold",
+      "phase": "terminal-deploy",
+      "node": "terminal_book",
+      "elapsed": 3.000000000000682,
+      "camera": {
+        "position": [
+          0.07237517418854433,
+          6.281604600876866,
+          12.01364593406986
+        ],
+        "target": [
+          -1.736021929003487,
+          1.3940448625200237,
+          5.122186702986714
+        ],
+        "fov": 55,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-terminal-unfold",
+        "progress": 0.5679939894817772,
+        "started": 220.20807692308983,
+        "fitValid": true,
+        "fitCount": 21,
+        "fitDistance": 8.838864482434799,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1978236634281054,
+          5.914321491941529,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9962796297661375,
+          -0.0,
+          0.08617945992548301
+        ]
+      }
+    },
+    {
+      "name": "desktop-input",
+      "phase": "login",
+      "node": "login_account",
+      "elapsed": 0.20000000000004547,
+      "camera": {
+        "position": [
+          -1.2747209064715777,
+          5.206671806052197,
+          9.390430482048437
+        ],
+        "target": [
+          -1.674723134104367,
+          1.1566492512702051,
+          5.190407091904147
+        ],
+        "fov": 56,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-terminal-input",
+        "progress": 1,
+        "started": 227.80807692309156,
+        "fitValid": true,
+        "fitCount": 24,
+        "fitDistance": 5.848322918077727,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1978236634281054,
+          5.914321491941529,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9962796297661375,
+          -0.0,
+          0.08617945992548301
+        ]
+      }
+    },
+    {
+      "name": "desktop-lever",
+      "phase": "lever",
+      "node": "captcha_verified",
+      "elapsed": 0.6000000000001364,
+      "camera": {
+        "position": [
+          -1.2747209064715777,
+          5.206671806052197,
+          9.390430482048437
+        ],
+        "target": [
+          -1.674723134104367,
+          1.1566492512702051,
+          5.190407091904147
+        ],
+        "fov": 56,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-terminal-input",
+        "progress": 1,
+        "started": 227.80807692309156,
+        "fitValid": true,
+        "fitCount": 24,
+        "fitDistance": 5.848322918077727,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1978236634281054,
+          5.914321491941529,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9962796297661375,
+          -0.0,
+          0.08617945992548301
+        ]
+      }
+    },
+    {
+      "name": "desktop-ascent-start",
+      "phase": "ascent",
+      "node": "ascent_authorized",
+      "elapsed": 0.05000000000001137,
+      "camera": {
+        "position": [
+          1.388027748700542,
+          2.423275303790089,
+          9.135477732588893
+        ],
+        "target": [
+          -1.2076288859824535,
+          1.472493931588777,
+          3.6273359642713756
+        ],
+        "fov": 40.001788,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-authorized-ascent",
+        "progress": 0.0002980000000001351,
+        "started": 241.00807692309456,
+        "fitValid": true,
+        "fitCount": 24,
+        "fitDistance": 5.848322918077727,
+        "riseOrigin": [
+          -1.2123894512994582,
+          1.9224707037900892,
+          3.634434732588894
+        ],
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1978236634281054,
+          5.914321491941529,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9962796297661375,
+          -0.0,
+          0.08617945992548301
+        ]
+      }
+    },
+    {
+      "name": "desktop-ascent-middle",
+      "phase": "ascent",
+      "node": "ascent_authorized",
+      "elapsed": 2.450000000000557,
+      "camera": {
+        "position": [
+          2.066613348700775,
+          3.73197610379054,
+          10.831941732589478
+        ],
+        "target": [
+          -1.207849974136671,
+          2.435841721683587,
+          6.535559964272377
+        ],
+        "fov": 42.910012000001004,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-authorized-ascent",
+        "progress": 0.485002000000167,
+        "started": 241.00807692309456,
+        "fitValid": true,
+        "fitCount": 24,
+        "fitDistance": 5.848322918077727,
+        "riseOrigin": [
+          -1.2123894512994582,
+          1.9224707037900892,
+          3.634434732588894
+        ],
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1978236634281054,
+          5.914321491941529,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9962796297661375,
+          -0.0,
+          0.08617945992548301
+        ]
+      }
+    },
+    {
+      "name": "desktop-ascent-end",
+      "phase": "ascent",
+      "node": "ascent_authorized",
+      "elapsed": 4.670000000001039,
+      "camera": {
+        "position": [
+          2.77012033750065,
+          5.088739582190296,
+          12.590709204589164
+        ],
+        "target": [
+          -1.1899628138945306,
+          3.4552718447504214,
+          9.550589916271838
+        ],
+        "fov": 45.92504195200046,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-authorized-ascent",
+        "progress": 0.9875069920000769,
+        "started": 241.00807692309456,
+        "fitValid": true,
+        "fitCount": 24,
+        "fitDistance": 5.848322918077727,
+        "riseOrigin": [
+          -1.2123894512994582,
+          1.9224707037900892,
+          3.634434732588894
+        ],
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1978236634281054,
+          5.914321491941529,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9962796297661375,
+          -0.0,
+          0.08617945992548301
+        ]
+      }
+    },
+    {
+      "name": "desktop-aim-shoulder",
+      "phase": "aim-final",
+      "node": "ammo_2",
+      "elapsed": 9.100000000002069,
+      "camera": {
+        "position": [
+          -2.6793063311081537,
+          6.261935076972277,
+          18.594903312629
+        ],
+        "target": [
+          -0.30375185874229094,
+          3.6151973235029926,
+          4.951939004872554
+        ],
+        "fov": 46,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-final-shoulder",
+        "progress": 0,
+        "started": 284.6780769231031,
+        "fitValid": true,
+        "fitCount": 25,
+        "fitDistance": 14.061243793896166,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1649883294783563,
+          5.911928670940228,
+          14.908844857319929
+        ],
+        "axisRight": [
+          0.9964804386051515,
+          -0.0,
+          0.08382562542137784
+        ]
+      }
+    },
+    {
+      "name": "desktop-load",
+      "phase": "finisher",
+      "node": null,
+      "elapsed": 0.05000000000001137,
+      "camera": {
+        "position": [
+          -2.7784444373680746,
+          6.73029619325882,
+          10.420641069433122
+        ],
+        "target": [
+          -1.1832345209599904,
+          5.980695953594083,
+          14.955682896906602
+        ],
+        "fov": 42,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-finisher-face",
+        "progress": 0.005063657407409678,
+        "started": 288.1107692307954,
+        "fitValid": true,
+        "fitCount": 26,
+        "fitDistance": 4.866270783172814,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1649883294783563,
+          5.911928670940228,
+          14.908844857319929
+        ],
+        "axisRight": [
+          0.9964804386051515,
+          -0.0,
+          0.08382562542137784
+        ]
+      }
+    },
+    {
+      "name": "desktop-explosion",
+      "phase": "finisher",
+      "node": null,
+      "elapsed": 2.150000000000489,
+      "camera": {
+        "position": [
+          -2.885623882680636,
+          6.751925591861307,
+          10.625677010600501
+        ],
+        "target": [
+          -1.158256997106078,
+          5.98792759942481,
+          14.955682896906604
+        ],
+        "fov": 44.1024333302499,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-finisher-face",
+        "progress": 1,
+        "started": 288.1107692307954,
+        "fitValid": true,
+        "fitCount": 26,
+        "fitDistance": 4.866270783172814,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1649883294783563,
+          5.911928670940228,
+          14.908844857319929
+        ],
+        "axisRight": [
+          0.9964804386051515,
+          -0.0,
+          0.08382562542137784
+        ]
+      }
+    },
+    {
+      "name": "desktop-face-end",
+      "phase": "finisher",
+      "node": null,
+      "elapsed": 2.7399999999999523,
+      "camera": {
+        "position": [
+          -2.719380465858198,
+          6.704361585468295,
+          10.557742955658012
+        ],
+        "target": [
+          -1.1848559437976685,
+          5.980795456378554,
+          14.955682896906605
+        ],
+        "fov": 42.09779277329259,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-finisher-face",
+        "progress": 1,
+        "started": 288.1107692307954,
+        "fitValid": true,
+        "fitCount": 26,
+        "fitDistance": 4.866270783172814,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1649883294783563,
+          5.911928670940228,
+          14.908844857319929
+        ],
+        "axisRight": [
+          0.9964804386051515,
+          -0.0,
+          0.08382562542137784
+        ]
+      }
+    },
+    {
+      "name": "desktop-flight",
+      "phase": "finisher",
+      "node": null,
+      "elapsed": 2.8000000000000114,
+      "camera": {
+        "position": [
+          -9.93859183728117,
+          10.00431208874345,
+          29.74581126251038
+        ],
+        "target": [
+          -0.9988724632963802,
+          3.1995408862789643,
+          7.5
+        ],
+        "fov": 54.07158250364437,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-finisher-flight",
+        "progress": 1,
+        "started": 290.8607692307954,
+        "fitValid": true,
+        "fitCount": 26,
+        "fitDistance": 4.866270783172814,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1649883294783563,
+          5.911928670940228,
+          14.908844857319929
+        ],
+        "axisRight": [
+          0.9964804386051515,
+          -0.0,
+          0.08382562542137784
+        ]
+      }
+    },
+    {
+      "name": "desktop-impact-ready",
+      "phase": "finisher",
+      "node": null,
+      "elapsed": 4.400000000000375,
+      "camera": {
+        "position": [
+          -10.002512233691167,
+          11.381874111044873,
+          10.207676729912126
+        ],
+        "target": [
+          0.5330372577534965,
+          4.132599562692683,
+          0.5725172151748064
+        ],
+        "fov": 60.00002261483169,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-finisher-impact",
+        "progress": 0.05539358600657069,
+        "started": 292.46076923079545,
+        "fitValid": true,
+        "fitCount": 27,
+        "fitDistance": 16.017599920517725,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1649883294783563,
+          5.911928670940228,
+          14.908844857319929
+        ],
+        "axisRight": [
+          0.9964804386051515,
+          -0.0,
+          0.08382562542137784
+        ]
+      }
+    },
+    {
+      "name": "desktop-before-impact",
+      "phase": "finisher",
+      "node": null,
+      "elapsed": 4.879999999999825,
+      "camera": {
+        "position": [
+          -9.940359410910611,
+          11.339108152168478,
+          10.150835616663294
+        ],
+        "target": [
+          0.5330372577534965,
+          4.132599562692683,
+          0.5725172151748064
+        ],
+        "fov": 60.00002261483169,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-finisher-impact",
+        "progress": 1,
+        "started": 292.46076923079545,
+        "fitValid": true,
+        "fitCount": 27,
+        "fitDistance": 16.017599920517725,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1649883294783563,
+          5.911928670940228,
+          14.908844857319929
+        ],
+        "axisRight": [
+          0.9964804386051515,
+          -0.0,
+          0.08382562542137784
+        ]
+      }
+    },
+    {
+      "name": "desktop-impact",
+      "phase": "finisher",
+      "node": null,
+      "elapsed": 5.200000000000102,
+      "camera": {
+        "position": [
+          -9.840424118920101,
+          11.401224208522855,
+          10.126629793114056
+        ],
+        "target": [
+          0.5170476110350148,
+          4.14966171021309,
+          0.5725172151748064
+        ],
+        "fov": 61.79958360245983,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-finisher-impact",
+        "progress": 1,
+        "started": 292.46076923079545,
+        "fitValid": true,
+        "fitCount": 27,
+        "fitDistance": 16.017599920517725,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1649883294783563,
+          5.911928670940228,
+          14.908844857319929
+        ],
+        "axisRight": [
+          0.9964804386051515,
+          -0.0,
+          0.08382562542137784
+        ]
+      }
+    },
+    {
+      "name": "narrow-font26-reduce-unfold",
+      "phase": "terminal-deploy",
+      "node": "terminal_book",
+      "elapsed": 2.9999999999999973,
+      "camera": {
+        "position": [
+          0.4336902939147551,
+          4.716721998847465,
+          13.390549498431906
+        ],
+        "target": [
+          -1.4351189906108182,
+          -0.3341139052757064,
+          6.2688708736182335
+        ],
+        "fov": 74,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-terminal-unfold",
+        "progress": 0,
+        "started": 0,
+        "fitValid": true,
+        "fitCount": 1,
+        "fitDistance": 8.928700796164954,
+        "riseOrigin": null,
+        "axisSide": 0,
+        "axisOrigin": [
+          0,
+          0,
+          0
+        ],
+        "axisRight": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "narrow-font26-reduce-input",
+      "phase": "login",
+      "node": "login_account",
+      "elapsed": 0.1999999999999993,
+      "camera": {
+        "position": [
+          -0.7652741928907545,
+          5.246917441636534,
+          14.739620974647082
+        ],
+        "target": [
+          -1.4323139011575698,
+          -1.5068596045649738,
+          7.735704037845517
+        ],
+        "fov": 76,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-terminal-input",
+        "progress": 0,
+        "started": 7.599999999999981,
+        "fitValid": true,
+        "fitCount": 4,
+        "fitDistance": 9.752604719756608,
+        "riseOrigin": null,
+        "axisSide": 0,
+        "axisOrigin": [
+          0,
+          0,
+          0
+        ],
+        "axisRight": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "narrow-font26-reduce-lever",
+      "phase": "lever",
+      "node": "captcha_verified",
+      "elapsed": 0.6000000000000085,
+      "camera": {
+        "position": [
+          -0.7652741928907545,
+          5.246917441636534,
+          14.739620974647082
+        ],
+        "target": [
+          -1.4323139011575698,
+          -1.5068596045649738,
+          7.735704037845517
+        ],
+        "fov": 76,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-terminal-input",
+        "progress": 0,
+        "started": 7.599999999999981,
+        "fitValid": true,
+        "fitCount": 4,
+        "fitDistance": 9.752604719756608,
+        "riseOrigin": null,
+        "axisSide": 0,
+        "axisOrigin": [
+          0,
+          0,
+          0
+        ],
+        "axisRight": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "narrow-font26-reduce-ascent-start",
+      "phase": "ascent",
+      "node": "ascent_authorized",
+      "elapsed": 0.05000000000000071,
+      "camera": {
+        "position": [
+          2.7869102179360166,
+          5.12233665926145,
+          12.632164952164953
+        ],
+        "target": [
+          -1.2076288859824535,
+          1.472493931588777,
+          3.6273359642713743
+        ],
+        "fov": 54,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-authorized-ascent",
+        "progress": 1,
+        "started": 20.80000000000016,
+        "fitValid": true,
+        "fitCount": 4,
+        "fitDistance": 9.752604719756608,
+        "riseOrigin": [
+          -1.2130897820639819,
+          1.9223366592614477,
+          3.6321649521649544
+        ],
+        "axisSide": 0,
+        "axisOrigin": [
+          0,
+          0,
+          0
+        ],
+        "axisRight": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "narrow-font26-reduce-ascent-middle",
+      "phase": "ascent",
+      "node": "ascent_authorized",
+      "elapsed": 2.450000000000035,
+      "camera": {
+        "position": [
+          2.7869102179360183,
+          5.122336659261448,
+          12.632164952164954
+        ],
+        "target": [
+          -1.21207441189371,
+          2.4367702652262255,
+          6.53555996427144
+        ],
+        "fov": 54,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-authorized-ascent",
+        "progress": 1,
+        "started": 20.80000000000016,
+        "fitValid": true,
+        "fitCount": 4,
+        "fitDistance": 9.752604719756608,
+        "riseOrigin": [
+          -1.2130897820639819,
+          1.9223366592614477,
+          3.6321649521649544
+        ],
+        "axisSide": 0,
+        "axisOrigin": [
+          0,
+          0,
+          0
+        ],
+        "axisRight": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "narrow-font26-reduce-ascent-end",
+      "phase": "ascent",
+      "node": "ascent_authorized",
+      "elapsed": 4.670000000000069,
+      "camera": {
+        "position": [
+          2.7869102179360183,
+          5.122336659261448,
+          12.632164952164954
+        ],
+        "target": [
+          -1.1896465871778574,
+          3.458730012936789,
+          9.550589916271406
+        ],
+        "fov": 54,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-authorized-ascent",
+        "progress": 1,
+        "started": 20.80000000000016,
+        "fitValid": true,
+        "fitCount": 4,
+        "fitDistance": 9.752604719756608,
+        "riseOrigin": [
+          -1.2130897820639819,
+          1.9223366592614477,
+          3.6321649521649544
+        ],
+        "axisSide": 0,
+        "axisOrigin": [
+          0,
+          0,
+          0
+        ],
+        "axisRight": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "narrow-font26-reduce-aim-shoulder",
+      "phase": "aim-final",
+      "node": "ammo_2",
+      "elapsed": 9.099999999999483,
+      "camera": {
+        "position": [
+          -2.6853149907589526,
+          6.270953087836955,
+          18.593000247523282
+        ],
+        "target": [
+          -0.39440249857349563,
+          1.681328836420228,
+          5.463473041527505
+        ],
+        "fov": 58,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-final-shoulder",
+        "progress": 0,
+        "started": 64.46999999999882,
+        "fitValid": true,
+        "fitCount": 5,
+        "fitDistance": 14.062223432624368,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1697167028308593,
+          5.9209466713888785,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9964512610714928,
+          -0.0,
+          0.08417175481734852
+        ]
+      }
+    },
+    {
+      "name": "narrow-font26-reduce-load",
+      "phase": "finisher",
+      "node": null,
+      "elapsed": 0.04999999999999716,
+      "camera": {
+        "position": [
+          -3.432491881409816,
+          6.235560807681217,
+          8.551108341499372
+        ],
+        "target": [
+          -1.2268286330557618,
+          5.1936569945828195,
+          14.83664546590498
+        ],
+        "fov": 47,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-finisher-face",
+        "progress": 0,
+        "started": 67.90269230769113,
+        "fitValid": true,
+        "fitCount": 6,
+        "fitDistance": 6.742291217618077,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1697167028308593,
+          5.9209466713888785,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9964512610714928,
+          -0.0,
+          0.08417175481734852
+        ]
+      }
+    },
+    {
+      "name": "narrow-font26-reduce-explosion",
+      "phase": "finisher",
+      "node": null,
+      "elapsed": 2.149999999999764,
+      "camera": {
+        "position": [
+          -3.432491881409816,
+          6.235560807681217,
+          8.551108341499372
+        ],
+        "target": [
+          -1.2268286330557618,
+          5.1936569945828195,
+          14.83664546590498
+        ],
+        "fov": 47.242,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-finisher-face",
+        "progress": 0,
+        "started": 67.90269230769113,
+        "fitValid": true,
+        "fitCount": 6,
+        "fitDistance": 6.742291217618077,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1697167028308593,
+          5.9209466713888785,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9964512610714928,
+          -0.0,
+          0.08417175481734852
+        ]
+      }
+    },
+    {
+      "name": "narrow-font26-reduce-face-end",
+      "phase": "finisher",
+      "node": null,
+      "elapsed": 2.74000000000008,
+      "camera": {
+        "position": [
+          -3.432491881409816,
+          6.235560807681217,
+          8.551108341499372
+        ],
+        "target": [
+          -1.2268286330557618,
+          5.1936569945828195,
+          14.83664546590498
+        ],
+        "fov": 47.02608122928194,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-finisher-face",
+        "progress": 0,
+        "started": 67.90269230769113,
+        "fitValid": true,
+        "fitCount": 6,
+        "fitDistance": 6.742291217618077,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1697167028308593,
+          5.9209466713888785,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9964512610714928,
+          -0.0,
+          0.08417175481734852
+        ]
+      }
+    },
+    {
+      "name": "narrow-font26-reduce-flight",
+      "phase": "finisher",
+      "node": null,
+      "elapsed": 2.799999999999997,
+      "camera": {
+        "position": [
+          -5.357810512850114,
+          9.600000000000001,
+          32.547417590339045
+        ],
+        "target": [
+          -1,
+          3.2,
+          7.5
+        ],
+        "fov": 63.01909097806787,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-finisher-flight",
+        "progress": 0,
+        "started": 70.65269230769113,
+        "fitValid": true,
+        "fitCount": 6,
+        "fitDistance": 6.742291217618077,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1697167028308593,
+          5.9209466713888785,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9964512610714928,
+          -0.0,
+          0.08417175481734852
+        ]
+      }
+    },
+    {
+      "name": "narrow-font26-reduce-impact-ready",
+      "phase": "finisher",
+      "node": null,
+      "elapsed": 4.399999999999949,
+      "camera": {
+        "position": [
+          -17.58381835058852,
+          17.646021007720506,
+          17.118650186270177
+        ],
+        "target": [
+          0.8479397407923079,
+          4.971592533007589,
+          0.2856080331969225
+        ],
+        "fov": 68.00000598401869,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-finisher-impact",
+        "progress": 0,
+        "started": 72.25269230769112,
+        "fitValid": true,
+        "fitCount": 7,
+        "fitDistance": 27.99503798223781,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1697167028308593,
+          5.9209466713888785,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9964512610714928,
+          -0.0,
+          0.08417175481734852
+        ]
+      }
+    },
+    {
+      "name": "narrow-font26-reduce-before-impact",
+      "phase": "finisher",
+      "node": null,
+      "elapsed": 4.879999999999967,
+      "camera": {
+        "position": [
+          -17.58381835058852,
+          17.646021007720506,
+          17.118650186270177
+        ],
+        "target": [
+          0.8479397407923079,
+          4.971592533007589,
+          0.2856080331969225
+        ],
+        "fov": 68.00000598401869,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-finisher-impact",
+        "progress": 0,
+        "started": 72.25269230769112,
+        "fitValid": true,
+        "fitCount": 7,
+        "fitDistance": 27.99503798223781,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1697167028308593,
+          5.9209466713888785,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9964512610714928,
+          -0.0,
+          0.08417175481734852
+        ]
+      }
+    },
+    {
+      "name": "narrow-font26-reduce-impact",
+      "phase": "finisher",
+      "node": null,
+      "elapsed": 5.2000000000000455,
+      "camera": {
+        "position": [
+          -17.58381835058852,
+          17.646021007720506,
+          17.118650186270177
+        ],
+        "target": [
+          0.8479397407923079,
+          4.971592533007589,
+          0.2856080331969225
+        ],
+        "fov": 68.13196946418049,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "track": {
+        "id": "cinematic-finisher-impact",
+        "progress": 0,
+        "started": 72.25269230769112,
+        "fitValid": true,
+        "fitCount": 7,
+        "fitDistance": 27.99503798223781,
+        "riseOrigin": null,
+        "axisSide": -1,
+        "axisOrigin": [
+          -1.1697167028308593,
+          5.9209466713888785,
+          14.90746802726709
+        ],
+        "axisRight": [
+          0.9964512610714928,
+          -0.0,
+          0.08417175481734852
+        ]
+      }
+    }
+  ]
+}

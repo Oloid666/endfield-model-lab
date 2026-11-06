@@ -6,7 +6,8 @@ import {buildInvestigationProps} from '../src/investigation-props.js';
 import {buildVcrEffects} from '../src/vcr-effects.js';
 import {buildMealRemnant} from '../src/meal-remnant.js';
 import {wireProgress} from '../src/vcr-tablet.js';
-import {revisedStoryShot} from '../src/story-shots.js';
+import {cinematicStoryShot,revisedStoryShot} from '../src/story-shots.js';
+import {CinematicTrack} from '../src/cinematic-track.js';
 import {DragonRoam,postgameFree} from '../src/postgame-roam.js';
 globalThis.matchMedia=()=>({matches:false});
 const ctx=new Proxy({measureText:t=>({width:t.length*16}),createLinearGradient:()=>({addColorStop(){}})},{get:(o,k)=>k in o?o[k]:(()=>{})});
@@ -18,7 +19,7 @@ const fx=buildVcrEffects(scene,r);
 for(const portrait of [true,false]){
  const context={portrait,feet:[-1.25,.32,3.25],dragon:[-2,1.4,3.5]};
  for(const [phase,extra]of [['intro',{nodeId:'intro_3',speaker:'zhuang'}],['briefing',{nodeId:'briefing_9'}],['charge',{nodeId:'charge_6',node:{}}],['meal-spawn',{phaseElapsed:6}]]){
-  const s=revisedStoryShot({phase,...extra},context);check('Revised story shot is finite and has a clear camera distance',!!s&&s.position.concat(s.target,s.fov).every(Number.isFinite)&&Math.hypot(...s.position.map((v,i)=>v-s.target[i]))>.6);
+  const s=cinematicStoryShot({phase,...extra},context,new CinematicTrack())||revisedStoryShot({phase,...extra},context);check('Revised story shot is finite and has a clear camera distance',!!s&&s.position.concat(s.target,s.fov).every(Number.isFinite)&&Math.hypot(...s.position.map((v,i)=>v-s.target[i]))>.6);
  }
  for(const age of [.2,1.6,3,4.4,5.4]){
   const state={phase:'hack',vcr:true,clock:age,tablet:{stage:'cable',age}},point=fx.path.getPointAt(wireProgress(age)).toArray();fx.update(state);const s=revisedStoryShot(state,{...context,wirePoint:point}),camera=new T.PerspectiveCamera(s.fov,portrait?390/844:844/390,.05,200);camera.position.fromArray(s.position);camera.lookAt(new T.Vector3(...s.target));camera.updateMatrixWorld();const screen=new T.Vector3(...point).project(camera);

@@ -102,8 +102,9 @@ async def main():
   await advance(.1)
   assert await page.evaluate('__rainy711.cinematic.cameraBeat')!='manual'
   await advance(10,False);await advance(.1)
-  assert await page.evaluate('__rainy711.cinematic.cameraBeat')=='battle-report', 'Final aim did not return to the target view'
-  pose=await page.evaluate('__rainy711.cameraPose');assert pose['position'][2]>20,pose
+  assert await page.evaluate('__rainy711.cinematic.cameraBeat')=='cinematic-final-shoulder', 'Final aim did not return to the target view'
+  pose=await page.evaluate('__rainy711.cameraPose');assert pose['position'][2]>await page.evaluate('__rainy711.heroPosition[2]'),pose
+  aim=await page.evaluate('__rainy711.projectPoint(__rainy711.destruction.serverPosition)');assert abs(aim[0])<.95 and abs(aim[1])<.8 and aim[2]<1,aim
   await page.screenshot(path='/tmp/repair-aim-final.png')
   await page.evaluate('()=>{const g=__rainy711,s=g.mission,dt=(s.meterPeriod/4-s.meterElapsed%s.meterPeriod+s.meterPeriod)%s.meterPeriod;g.tick(g.time+dt,.1,false);g.missionAttack(g.time)}')
   await advance(2.2);assert await page.locator('.dragon-reaction-bubble').is_visible()

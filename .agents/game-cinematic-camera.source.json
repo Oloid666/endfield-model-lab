@@ -1,0 +1,22 @@
+{
+  "name": "game-cinematic-camera",
+  "saved_on": "2026-11-06",
+  "installation": "repository-local Codex .agents/skills",
+  "files": [
+    {
+      "source": "user attachment",
+      "original_filename": "SKILL.md",
+      "path": ".agents/skills/game-cinematic-camera/SKILL.md",
+      "sha256": "aa2e763a013c1c384e05ffd29ab5364452921946e583f3a94d71456c0f829e37"
+    },
+    {
+      "source": "user attachment",
+      "original_filename": "AI 作影片skill.txt",
+      "path": ".agents/skills/game-cinematic-camera/references/ai-video-source.txt",
+      "sha256": "7b953f39e9c9ad7894d03e047227760279ff8a73023e97234afab9a82bfd3df5"
+    }
+  ],
+  "local_supplement": "references/shot-review-checklist.md is authored locally from the supplied skill; it was not included in the attachments.",
+  "scope": "Original Phase 1 preservation and shot planning; subsequent user instruction authorized scoped implementation, verification and deployment. See docs/CINEMATIC-CAMERA-IMPLEMENTATION.md.",
+  "local_supplement_sha256": "bfa2394e8329998caa7694676575dd6733b791dc66466fbb3cb04b2cf21171d2"
+}

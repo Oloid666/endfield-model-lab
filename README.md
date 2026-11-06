@@ -10,6 +10,8 @@
 
 最新修改與測試入口見 [洛西、晚餐誕生與快速測試](docs/RAIN-STORY-DEBUG-REVISION.md)。
 
+開場取餐、終端升空與最後發射的運鏡更新及驗證見 [電影運鏡實作紀錄](docs/CINEMATIC-CAMERA-IMPLEMENTATION.md)；[原始方案與提供的 Skill](docs/CINEMATIC-CAMERA-PHASE1.md) 亦保存在專案內。
+
 開發指南導入與後續優先順序見 [GameDev Skills 評估](docs/GAMEDEV-SKILLS-ASSESSMENT.md)（相機、手機效能量測與介面的評估及安裝紀錄）。
 
 龍泡泡先在雨夜等你，再把莊帶到櫃檯買晚餐。請龍泡泡幫莊拍照報平安，送出後，手機翻出上一張萬噸息壤簽收單。莊早已備妥保單，龍泡泡才發現自己也是隨貨人員。
