@@ -101,9 +101,10 @@ export function buildXaihi(scene,r,gltf){
       if(walking)distance=travel((state.tablet.age||0)/3.2,stage==='walk-counter');
       else if(['temperature','cooling','success','defrost','hot'].includes(stage)){root.position.set(1.2,restPosition.y,-1.35);const reaction=stage==='success'||stage==='hot';root.rotation.y=Math.PI-(reaction?.69*clamp((state.tablet.age||0)/.6):0);}
       else {root.position.copy(restPosition);root.rotation.y=phase==='meal-spawn'?1.6:2;}
+      const recoil=phase==='meal-spawn'?clamp(((state.phaseElapsed||0)-6.2)/.6):0;if(recoil){root.position.x-=.14*recoil;root.position.z-=.10*recoil;}
       const beat=Math.sin(time*1.1),flinch=phase==='heat-demo'?Math.max(0,Math.sin((state.phaseElapsed||0)*3.1))*.08:0;
       for(const p of Object.values(poses))p.bone.position.copy(p.rest);
-      pose('spine',Math.sin(time*.8)*.006+(hack?.035:0)-flinch*.13,0,beat*.004);
+      pose('spine',Math.sin(time*.8)*.006+(hack?.035:0)-flinch*.13-recoil*.04,0,beat*.004);
       pose('neck',hack?.045:0,0,0);
       const fridgeReaction=stage==='success'||stage==='hot',birth=phase==='meal-spawn',headYaw=cue==='avert'?.38:cue==='side-eye'?-.65:readingLabel?-.10:birth?0:fridgeReaction?-.44:hack?-.22:-.65,nod=cue==='satisfied'?Math.sin(Math.min(1,state.tablet.age/1.2)*Math.PI)*.06:0;pose('head',readingLabel?.28:(birth?.16:fridgeReaction?-.03:hack?.14:.015)+nod,headYaw,Math.sin(time*.43)*.008);
       // Relax the A-pose, then bring the real forearms toward the terminal.

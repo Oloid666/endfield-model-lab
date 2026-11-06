@@ -1,4 +1,5 @@
 import {VcrTablet} from './vcr-tablet.js';
+import {MEAL_BIRTH_DIALOGUE_AT} from './meal-birth.js';
 import {ShoppingJourney} from './shopping-journey.js';
 import {RhythmHeat} from './rhythm-heat.js';
 import {sequences,dinnerChoices,chargeLines,chatterGroups,hotspots,endingCaption,connectionPrompts,captchaLines,heatDemoLines,finalAmmoLines} from './mission-dialogue.js';
@@ -47,7 +48,7 @@ export class MissionMachine{
     this.resetInteraction();
   }
   resetInteraction(){
-    this.tablet=new VcrTablet();this.shopping=null;this.doorOpen=1;this.mealBorn=false;this.postgame=false;this.homecomingAt=null;this.homecomingSpoken=false;this.flightStableAt=null;this.failures={};this.seenHeatFailures=0;this.flight=null;this.loginAside='';this.asideCounts={};this.investigation=null;this.photoFaceValid=true;this.photoTaken=false;this.hackTurns=[1,2,3,1];this.hackMoves=0;this.hackFailures=0;this.rhythm=new RhythmHeat();
+    this.birthDialogueIndex=-1;this.tablet=new VcrTablet();this.shopping=null;this.doorOpen=1;this.mealBorn=false;this.postgame=false;this.homecomingAt=null;this.homecomingSpoken=false;this.flightStableAt=null;this.failures={};this.seenHeatFailures=0;this.flight=null;this.loginAside='';this.asideCounts={};this.investigation=null;this.photoFaceValid=true;this.photoTaken=false;this.hackTurns=[1,2,3,1];this.hackMoves=0;this.hackFailures=0;this.rhythm=new RhythmHeat();
     this.connection={field:'account',account:'',password:'',lastKey:'',keyAt:-Infinity,keyNumber:0,error:'',verified:false,lever:0};
 
   }
@@ -124,6 +125,10 @@ export class MissionMachine{
     else if(this.phase==='complete'){this.node=null;this.lines=[];this.sequenceKind=null;this.quietUntil=this.time+8+this.random()*6;this.emit();}
   }
   next(){
+    if(this.phase==='meal-spawn'&&this.hooks.tabletMode){
+      if(this.paused||this.time-this.entered<MEAL_BIRTH_DIALOGUE_AT||this.birthDialogueIndex<0)return false;
+      if(++this.birthDialogueIndex<3)this.line(heatDemoLines[4+this.birthDialogueIndex]);else {this.rhythm.retry();this.phaseTo('heat');}return true;
+    }
     if(this.phase==='hack'&&this.hooks.tabletMode&&this.tablet.state.dialogue)return this.tabletAction('talk-next');
     if(this.phase==='shoe-view'&&!this.paused&&this.shoeReady){this.phaseTo('pylon-link');return true;}
     if(this.phase==='fire-ready'&&!this.paused){this.phaseTo('combat');return true;}
@@ -260,6 +265,16 @@ export class MissionMachine{
     return true;
   }
   runChat(lines,kind){this.lines=lines;this.index=0;this.sequenceKind=kind;this.line(lines[0]);}
+  restoreDebugPoint(id){
+    if(!['fridge','nikke','birth','figurine'].includes(id))return false;
+    this.restoreChapter(id==='figurine'?'cargo':'rewind');
+    if(id==='figurine'){this.sequence('briefing',sequences.briefing);this.index=this.lines.findIndex(n=>n.cue==='rossi-collection');this.line(this.lines[this.index]);return true;}
+    this.vcrStarted=this.time;this.vcrSnapshot={progress:99,branch:this.branch,shots:0,hits:0,output:this.output,target:this.target};
+    if(id==='birth'){
+      this.tablet.hot=this.tablet.powered=true;this.rhythm.first=false;this.rhythm.forced=true;this.rhythm.status='burnt';this.rhythm.failures=1;this.seenHeatFailures=1;this.mealBorn=true;this.phaseTo('meal-spawn');
+    }else {this.tablet.hot=id==='nikke';this.phaseTo('hack');this.tablet.enter(id==='nikke'?'backdoor':'search',this.time);this.emit();}
+    return true;
+  }
   nextChat(){
     if(!this.chatDeck.length){
       this.chatDeck=chatterGroups.map((_,i)=>i);
@@ -309,7 +324,7 @@ export class MissionMachine{
       else if(phase==='finisher'&&elapsed>=9){this.phaseTo('landing',this.entered+9);changed=true;}
       else if(phase==='landing'&&elapsed>=LANDING_DURATION){this.phaseTo('tour',this.entered+LANDING_DURATION);changed=true;}
       else if(phase==='tour'&&elapsed>=TOUR_DURATION){this.phaseTo('complete',this.entered+TOUR_DURATION);changed=true;}
-      else if(phase==='meal-spawn'&&elapsed>=12){this.rhythm.retry();this.phaseTo('heat');changed=true;}
+      else if(phase==='meal-spawn'&&!this.hooks.tabletMode&&elapsed>=12){this.rhythm.retry();this.phaseTo('heat');changed=true;}
       if(!changed)break;
     }
     const elapsed=Math.max(0,this.time-this.entered);
@@ -318,7 +333,10 @@ export class MissionMachine{
 
     else if(this.phase==='lever'&&elapsed>=3&&this.node!==connectionPrompts.lever)this.line(connectionPrompts.lever,this.entered+3);
     else if(this.phase==='heat-demo')this.timedLine(heatDemoLines.slice(0,4),elapsed);
-    else if(this.phase==='meal-spawn'&&(!this.hooks.tabletMode||elapsed>=5))this.timedLine(heatDemoLines.slice(4).map((n,i)=>({...n,at:this.hooks.tabletMode?5+i*2.8:i*4})),elapsed);
+    else if(this.phase==='meal-spawn'){
+      if(!this.hooks.tabletMode)this.timedLine(heatDemoLines.slice(4).map((n,i)=>({...n,at:i*4})),elapsed);
+      else if(elapsed>=MEAL_BIRTH_DIALOGUE_AT&&this.birthDialogueIndex<0){this.birthDialogueIndex=0;this.line(heatDemoLines[4]);}
+    }
     else if(this.phase==='aim-final')this.timedLine(finalAmmoLines,elapsed);
     else if(this.phase==='landing')this.timedLine(sequences.landing,elapsed,3);
     if(this.phase==='heat'){
@@ -358,7 +376,7 @@ export class MissionMachine{
       phaseElapsed:elapsed,time:this.time,clock:this.time,sourceTime:this.sourceTime,paused:this.paused,auto:this.auto,castingElapsed:this.castingElapsed,
       loginAside:this.loginAside,purchaseElapsed:this.purchaseStarted===null?null:Math.max(0,this.time-this.purchaseStarted),shoeReady:this.shoeReady,shoeOrbitElapsed:this.phase==='shoe-view'?Math.max(0,this.time-this.shoeOrbitStart):0,shoeRounds:this.shoeRounds,flight:this.flight?{...this.flight,ready:Math.abs(this.flight.z-10.5)<=.6&&this.time-(this.flightStableAt??this.time)>=.5}:null,investigation:this.investigation,photoTaken:this.photoTaken,hack:{turns:[...this.hackTurns],moves:this.hackMoves,failures:this.hackFailures},connection,login:connection,heat,vcr,rewindProgress,rewindStage,returnProgress:this.phase==='return'?clamp(elapsed/RETURN_DURATION):0,vcrElapsed:vcr&&this.vcrStarted!==null?Math.max(0,this.time-this.vcrStarted):0,replayStage:vcr?this.phase:null,vcrSnapshot:this.vcrSnapshot?{...this.vcrSnapshot}:null,
       target:this.target,targetLabel:target?.label||'店面外牆',targets:this.targets,feedback:this.feedback,shots:this.shots,hits:this.hits,attackHoldUntil:this.attackHoldUntil,combatHoldRemaining,attackHeld:combatHoldRemaining>0,
-      presentationLocked:this.node?.event==='phone-away'&&this.time-this.nodeEntered<2.4||this.phase==='meal-spawn'||this.node?.event==='vcr-cue'&&this.time-this.nodeEntered<4||this.node?.event==='dragon-capture'&&this.time-this.nodeEntered<2.1||this.node?.event==='pear-tour'&&this.time-this.nodeEntered<6||this.phase==='photo-check'&&elapsed<5||this.phase==='aim-final'&&elapsed<FINAL_READY||this.phase==='photo-talk'&&this.node?.event==='camera-handover'&&this.time-this.nodeEntered<1.5,failures:{...this.failures},canAssist:(this.failures[this.phase]||0)>=5,
+      presentationLocked:this.node?.event==='phone-away'&&this.time-this.nodeEntered<2.4||this.phase==='meal-spawn'&&(!this.hooks.tabletMode||elapsed<MEAL_BIRTH_DIALOGUE_AT)||this.node?.event==='vcr-cue'&&this.time-this.nodeEntered<4||this.node?.event==='dragon-capture'&&this.time-this.nodeEntered<2.1||this.node?.event==='pear-tour'&&this.time-this.nodeEntered<6||this.phase==='photo-check'&&elapsed<5||this.phase==='aim-final'&&elapsed<FINAL_READY||this.phase==='photo-talk'&&this.node?.event==='camera-handover'&&this.time-this.nodeEntered<1.5,failures:{...this.failures},canAssist:(this.failures[this.phase]||0)>=5,
       canAttack:(this.phase!=='aim-final'||elapsed>=FINAL_READY)&&['combat','aim-final'].includes(this.phase)&&!this.paused&&this.time-this.lastAttack>=.6&&combatHoldRemaining===0,
       ended:this.ended,busy:!!this.node||!['ready','complete'].includes(this.phase),sequenceKind:this.sequenceKind,endingCaption,revision:this.revision};
   }

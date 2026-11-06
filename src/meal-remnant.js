@@ -1,6 +1,7 @@
 import * as T from 'three';
 import {groundPath} from './ground-path.js';
 import {postgameFree} from './postgame-roam.js';
+import {mealBirthFrame,MEAL_LANDING} from './meal-birth.js';
 export function buildMealRemnant(scene,r){
  const root=new T.Group();root.name='purple-mystery-meal';scene.add(root);root.visible=false;
  const body=new T.Group();root.add(body);
@@ -18,11 +19,11 @@ export function buildMealRemnant(scene,r){
  function shape(time,press){for(let i=0;i<positions.count;i++){const j=i*3,x=rest[j],y=rest[j+1],z=rest[j+2],wave=reduced?0:Math.sin(time*2.6+x*5+z*3)*.035;const lobe=1+.2*Math.sin(x*7+z*4)+.12*Math.cos(z*8-y*3);positions.setXYZ(i,x*.34*lobe+wave,(y+1)*.095*(1-press*.45)*(1+.25*Math.sin(x*5+time*2))+.012,z*.22*lobe-wave*.6);}positions.needsUpdate=true;geometry.computeVertexNormals();}
  shape(0,0);
  return {root,placeNear(feet){const z=Math.max(2.75,Math.min(11.4,feet[2]+.6));root.position.set(Math.max(-6.5,Math.min(6.5,feet[0]+.6)),z>4.65?.025:.33,z);clearWander();},reset(){born=false;mode='unborn';homeAt=null;lastTime=null;clearWander();seed=711;touched=-Infinity;root.visible=false;lastShape=-Infinity;},tap(ray,time){if(!root.visible||!ray.intersectObject(body,true).length)return false;touched=time;return true;},update(time,state={},feet=null,environment={}){
-  if(!born&&(state.mealBorn||state.phase==='meal-spawn')){born=true;bornAt=time+(state.tabletMode&&state.phase==='meal-spawn'?5:0);}
-  const home=state.postgame;const wreck=!home&&(state.progress||0)>=62&&!state.vcr;root.visible=born&&time>=bornAt&&(home||wreck||['heat','meal-spawn','flashback-end'].includes(state.phase));if(!root.visible)return;mode=home?'crawling':'incident';
+  if(!born&&(state.mealBorn||state.phase==='meal-spawn')){born=true;bornAt=time-(state.phase==='meal-spawn'?(state.phaseElapsed||0):8);}
+  const birth=mealBirthFrame(time-bornAt,reduced),birthing=state.tabletMode&&state.phase==='meal-spawn';
+  const home=state.postgame;const wreck=!home&&(state.progress||0)>=62&&!state.vcr;root.visible=born&&(!birthing||birth.visible)&&(home||wreck||['heat','meal-spawn','flashback-end'].includes(state.phase));if(!root.visible)return;mode=home?'crawling':birthing?birth.beat:'incident';
   const age=Math.max(0,time-bornAt),crawl=reduced?0:Math.sin(age*.45)*.12,press=Math.max(0,1-(time-touched)/.8);
-  if(!home)root.position.set((wreck?2.45:3.06)+crawl,wreck?.33:1.35,(wreck?4.52:.8)+crawl*.12);body.rotation.y=reduced?0:Math.sin(age*.6)*.15;
-  if(!home&&!wreck&&age<.9){const p=Math.min(1,age/.9);root.position.set(3.45+(3.06-3.45)*p,1.6+(1.35-1.6)*p+Math.sin(p*Math.PI)*.18,1.25+(.8-1.25)*p);}
+  if(!home){if(birthing)root.position.fromArray(birth.position);else root.position.set((wreck?2.45:MEAL_LANDING[0])+crawl,wreck?.33:MEAL_LANDING[1],(wreck?4.52:MEAL_LANDING[2])+crawl*.12);}body.rotation.y=reduced?0:Math.sin(age*.6)*.15;
   const dt=lastTime===null?0:Math.max(0,Math.min(.1,time-lastTime));lastTime=time;
   if(home){
     if(homeAt!==state.homecomingAt){homeAt=state.homecomingAt;if(environment.intact===false)root.position.set(2.45,.33,4.52);else if(root.position.z<1||root.position.y>1)root.position.set(2.05,.33,1.35);clearWander();}
@@ -43,7 +44,7 @@ export function buildMealRemnant(scene,r){
     }
     if(Math.hypot(wanted[0]-root.position.x,wanted[2]-root.position.z)<(settled?.24:.4)){mode='idle';if(settled&&wanderGoal){wanderGoal=null;path=[];goal='';wanderAt=time+1+random()*2;}}
     root.position.y=root.position.z>4.65?.025:.33;body.scale.set(1,1,1+(reduced?0:Math.sin(time*3)*.06));
-  }else body.scale.set(1,1,1);
+  }else if(birthing)body.scale.fromArray(birth.scale);else body.scale.set(1,1,1);
   if(time-lastShape>=1/24||time<lastShape){shape(reduced?0:age,press);lastShape=time;}
   lightning.visible=!home&&!reduced&&age%4<.3;for(let i=0;i<10;i++){points[i*3]=-.31+i*.07;points[i*3+1]=.16+Math.sin(i*8+time*13)*.04;points[i*3+2]=.08+Math.cos(i*5)*.08;}boltGeo.attributes.position.needsUpdate=true;
  },get state(){return {born,visible:root.visible,mode,position:root.position.toArray(),shape:'crawling-lump'};}};

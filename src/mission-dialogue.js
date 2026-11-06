@@ -7,8 +7,8 @@ export const dinnerChoices=[
   {id:'C',label:'甜點＋熱飲',hint:'先救心情。'},
 ];
 
-const lines=(prefix,items)=>items.map(([speaker,text,gesture='look',mood='calm',event=null],index)=>({
-  id:`${prefix}_${prefix==='intro'?index+2:index}`,speaker,text,mood,gesture,event,next:index+1<items.length?`${prefix}_${prefix==='intro'?index+3:index+1}`:null,
+const lines=(prefix,items)=>items.map(([speaker,text,gesture='look',mood='calm',event=null,cue=null],index)=>({
+  id:`${prefix}_${prefix==='intro'?index+2:index}`,speaker,text,mood,gesture,event,cue,next:index+1<items.length?`${prefix}_${prefix==='intro'?index+3:index+1}`:null,
 }));
 
 export const sequences={
@@ -72,9 +72,9 @@ export const sequences={
     ['zhuang','真沒品味。移交巡衛隊，\n立案查辦。','shake'],
     ['mifoe','這流程要好幾年，\n提弗媽媽的人氣又要往前了……','look'],
     ['mifoe','這麼不急的嗎？','look'],
-    ['mifoe','對了頭，主嫌自介寫：','look'],
-    ['mifoe','「少女可以是十幾歲、幾百歲，\n但是就是不能三四十歲。」','look','evidence'],
-    ['zhuang','……幫我找一條罪名。','shake','anger'],
+    ['mifoe','對了頭，主嫌自介寫：','look','calm',null,'rossi-collection'],
+    ['mifoe','「少女可以是十幾歲、幾百歲，\n但是就是不能三四十歲。」','look','evidence',null,'rossi-closeup'],
+    ['zhuang','……幫我找一條罪名。','shake','anger',null,'age-reaction'],
     ['mifoe','哪有這麼容易……\n倒是有人投訴，這邊晚上太亮。','look'],
     ['mifoe','窗面照度 10.5 lux，本案限值 10 lux。\n超標 0.5 lux。','look'],
     ['zhuang','那就對了。光害超標。\n影響我旁邊的梨花。','point'],

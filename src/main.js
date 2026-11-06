@@ -3,6 +3,8 @@ import {createGA4,createRainAnalytics} from './analytics.js';
 import {readPreferences,savePreferences} from './preferences.js';
 import {createStreetPerformance} from './street-performance.js';
 import {createViewControls} from './view-controls.js';
+import {createDebugTravel} from './debug-travel.js';
+import './debug-travel.css';
 import {ChapterProgress} from './chapter-progress.js';
 import {CHAPTERS} from './mission-state.js';
 import {buildDragon} from './companion.js';
@@ -26,7 +28,7 @@ const analytics=createRainAnalytics(ga4.send);ga4.pageView();
 const loader=createLoading();
 const audio=new RainAudio(),abort=new AbortController();let world,mission,exploration,bonus,closed=false,menuPaused=false,xaihiPromise=null,assetPaused=false;
 const feedback=createFeedbackService({version:__BUILD_VERSION__,context:()=>({phase:mission?.state.phase||'ready',play_mode:analytics.state.run?analytics.state.playMode:'unknown'}),onSent:()=>analytics.bonus('feedback')});
-let feedbackDialog,fxPreparing=null;
+let feedbackDialog,fxPreparing=null,debugTravel;
 const fxNotice=document.createElement('p');fxNotice.className='fx-preparing';fxNotice.setAttribute('role','status');fxNotice.textContent='正在準備爆炸效果，等一下就開砲…';fxNotice.hidden=true;$('#app').append(fxNotice);
 async function prepareBattle(){
  if(fxPreparing||world.shaderWarmup.state.completed.includes('battle-effects')&&world.battleDrawWarm)return;
@@ -41,7 +43,7 @@ const listen=(element,type,fn)=>element.addEventListener(type,fn,{signal:abort.s
 function showError(text){$('#error-message').textContent=text;error.hidden=false;loading.hidden=true;}
 function menu(open){
   $('#settings').hidden=!open;$('#menu-toggle').setAttribute('aria-expanded',String(open));$('#menu-toggle').setAttribute('aria-label',open?'關閉設定':'開啟設定');
-  if(open){exploration?.setActive(false);for(const b of document.querySelectorAll('[data-chapter]'))b.disabled=!chapters.data.unlocked.includes(b.dataset.chapter);}
+  if(open){exploration?.setActive(false);for(const b of document.querySelectorAll('[data-chapter]'))b.disabled=!debugTravel?.state.unlocked&&!chapters.data.unlocked.includes(b.dataset.chapter);}
   if(mission)mission.setPaused(open,'menu');
 }
 listen($('#menu-toggle'),'click',()=>menu($('#settings').hidden));listen($('#menu-close'),'click',()=>menu(false));
@@ -121,7 +123,7 @@ async function init(){
     if(closed)return;world.time=0;world.previous=undefined;world.tick(0,0,true);
     mission=createMission({tabletMode:true,mount:$('#app'),onCameraReset:()=>{world.actors?.cancelReaction();reactionBubble.hidden=true;world.resetStoryCamera();},capturePhoto:()=>{if($('#sound').checked)audio.effect('shutter');return world.capturePhoto();},onCameraAuto:()=>world.resetStoryCamera(),getCameraAuto:()=>world.autoCamera,
       onDinner:branch=>{
-        if(!branch)analytics.start(restoring?'chapter_replay':'normal');
+        if(!branch){if(!restoring)debugTravel?.reset();analytics.start(debugTravel?.jumping||debugTravel?.state.unlocked?'shortcut':restoring?'chapter_replay':'normal');}
         if(!branch){world.streetShow?.reset();world.store.doors.reset();bonus?.resetEnding();exploration?.setActive(false);world.director.reset();world.remnant.reset();mission?.setTargets(world.director.targets);world.actors?.setMove(0,0,false);world.syncWalkingEnvironment(true,{postgame:false});world.actors?.teleport(-1.25,3.25);}
         world.actors?.setDinner(branch);
       },
@@ -130,7 +132,7 @@ async function init(){
       onStage:(phase,state)=>{
         analytics.stage(phase);
         if(!['ready','complete'].includes(phase))exploration?.setActive(false);
-        world.director.stage(phase,state);if($('#sound').checked){const cue={'photo-return':'flight','photo-flight':'handover'}[phase];if(cue)audio.effect(cue);}if(!restoring)chapters.reach(phase,state.branch);
+        world.director.stage(phase,state);if($('#sound').checked){const cue={'photo-return':'flight','photo-flight':'handover'}[phase];if(cue)audio.effect(cue);}if(!restoring&&!debugTravel?.state.unlocked)chapters.reach(phase,state.branch);
         if(phase==='fire-ready'||phase==='aim-final')prepareBattle();
         if(phase==='charge'&&!fxPreparing)prepareBattle();
         if(phase==='photo-review')ensureXaihi();
@@ -163,8 +165,8 @@ async function init(){
       }
     });
     createStreetPerformance({world,mission,mount:$('#app'),playEffect:k=>{if($('#sound').checked)audio.effect(k);},hum:t=>{if($('#sound').checked)audio.hum(t);}});
-    bonus=createBonus({feedback,analyticsEnabled:ga4.enabled,onAnalytics:(action,value)=>{if(action==='shortcut')analytics.shortcut();else analytics.bonus(action,value);},mount:$('#app'),world,mission,exploration,roomAudio:()=>audio.ambience('upstairs',preferences.rain),playEffect:kind=>{if($('#sound').checked&&!document.hidden)audio.effect(kind);}});
-    world.onTick=(time,delta)=>{world.syncWalkingEnvironment();mission.machine.doorOpen=world.store.doors.open;mission.update(time);world.missionState=mission.state;audio.duck(!!mission.state.node);audio.ambience(mission.state.vcr?'shop':world.camera.position.z<2?'shop':'street',preferences.rain);if(mission.state.phase==='tour'&&mission.state.phaseElapsed>=14&&mission.state.phaseElapsed<30&&!mission.state.paused)audio.hum(mission.state.phaseElapsed);exploration.update(delta);bonus.update();viewControls.update();analytics.tick(performance.now(),{visible:!document.hidden,paused:mission.pauseReasons.some(reason=>reason!=='bonus')});
+    bonus=createBonus({feedback,analyticsEnabled:ga4.enabled,onAnalytics:(action,value)=>{if(action==='shortcut'){debugTravel?.unlock();analytics.shortcut();}else analytics.bonus(action,value);},mount:$('#app'),world,mission,exploration,roomAudio:()=>audio.ambience('upstairs',preferences.rain),playEffect:kind=>{if($('#sound').checked&&!document.hidden)audio.effect(kind);}});
+    world.onTick=(time,delta)=>{world.syncWalkingEnvironment();mission.machine.doorOpen=world.store.doors.open;mission.update(time);world.missionState=mission.state;audio.duck(!!mission.state.node);audio.ambience(mission.state.vcr?'shop':world.camera.position.z<2?'shop':'street',preferences.rain);if(mission.state.phase==='tour'&&mission.state.phaseElapsed>=14&&mission.state.phaseElapsed<30&&!mission.state.paused)audio.hum(mission.state.phaseElapsed);exploration.update(delta);bonus.update();viewControls.update();debugTravel?.update();analytics.tick(performance.now(),{visible:!document.hidden,paused:mission.pauseReasons.some(reason=>reason!=='bonus')});
       if(!reactionBubble.hidden){if(time>=reactionBubbleUntil||mission.state.paused||bonus.active){reactionBubble.hidden=true;world.actors?.cancelReaction();}else if(reactionBubble.dataset.speaker==='zhuang'){placeExplosionCaption();}else{const p=reactionBubble.dataset.speaker==='zhuang'?world.actors.heroPosition:world.actors.dragonPosition,q=world.projectPoint([p[0],p[1]+1.1,p[2]]),rect=world.container.getBoundingClientRect();reactionBubble.style.left=`${Math.max(100,Math.min(innerWidth-100,rect.x+(q[0]+1)*rect.width/2))}px`;reactionBubble.style.top=`${Math.max(150,Math.min(innerHeight*.55,rect.y+(1-q[1])*rect.height/2))}px`;}}
 };
     loader.progress(99);await loader.finish();world.time=0;world.previous=undefined;world.tick(0,0,false);loader.hide();analytics.ready();world.frameStats.reset();world.start();
@@ -181,14 +183,33 @@ async function init(){
     const restartNight=document.createElement('button');restartNight.textContent='重新開始雨夜';restartNight.addEventListener('click',()=>{menu(false);mission.replay();},{signal:abort.signal});$('#settings').append(restartNight);
     const resetCameraButton=document.createElement('button');resetCameraButton.textContent='立即回到演出';resetCameraButton.addEventListener('click',()=>{world.resetStoryCamera();menu(false);},{signal:abort.signal});$('#settings').append(resetCameraButton);
     const chapterMenu=document.createElement('section');chapterMenu.className='chapter-menu';const heading=document.createElement('h3');heading.textContent='章節接續／重看';chapterMenu.append(heading);$('#settings').append(chapterMenu);for(const c of CHAPTERS){const b=document.createElement('button');b.textContent=c.label;b.dataset.chapter=c.id;b.disabled=!chapters.data.unlocked.includes(c.id);b.addEventListener('click',()=>restore(c.id),{signal:abort.signal});chapterMenu.append(b);}
+    debugTravel=createDebugTravel({mount:$('#app'),mission,signal:abort.signal,isPerforming:()=>!!world.streetShow.active||mission.state.presentationLocked||['combat','finisher','landing','tour','rewind'].includes(mission.state.phase),onJump:async (id,isCurrent)=>{
+      const born=mission.state.mealBorn;
+      if(['fridge','nikke','birth','chapter:rewind'].includes(id)){mission.setPaused(true,'debug-load');try{if(!await ensureXaihi())throw Error('塞西尚未載入');}finally{mission.setPaused(false,'debug-load');}}
+      if(!isCurrent())return;
+      bonus.leaveForDebug();menu(false);exploration.setActive(false);for(const reason of ['manual','background','debug-menu'])mission.setPaused(false,reason);
+      restoring=true;
+      try{
+        if(id.startsWith('chapter:'))mission.machine.restoreChapter(id.slice(8));
+        else if(['fridge','nikke','birth','figurine'].includes(id))mission.machine.restoreDebugPoint(id);
+        else {
+          mission.machine.restoreChapter(id==='first-restore'?'last':'intro');
+          if(id==='first-restore'){world.director.finalBegun=true;mission.machine.phaseTo('finisher');bonus.debugFirstRestore();}
+          else if(id==='street')bonus.debugStreet(born);
+          else bonus.debugRoom(id);
+        }
+        analytics.shortcut();world.missionState=mission.state;world.resetStoryCamera();world.cameraSafety.sync();world.syncWalkingEnvironment(true);world.tick(world.time,0,true);
+      }finally{restoring=false;}
+    }});
     const backgroundResume=document.createElement('button');backgroundResume.className='background-resume';backgroundResume.textContent='已暫停 · 繼續';backgroundResume.hidden=true;$('#app').append(backgroundResume);
     listen(document,'visibilitychange',()=>{if(document.hidden){analytics.tick(performance.now(),{visible:false});analytics.flush();mission.setPaused(true,'background');}else if(mission.pauseReasons.includes('background'))backgroundResume.hidden=true;});
     backgroundResume.addEventListener('click',()=>{mission.setPaused(false,'background');backgroundResume.hidden=true;},{signal:abort.signal});
     window.__rainy711={
+      get debug(){return debugTravel.state;},debugJump:id=>debugTravel.go(id),
       get staging(){return {show:world.streetShow?.state,shopping:mission.state.shopping,remnant:world.remnant.state,tractor:world.director.captureFx.root.visible,microphone:!!world.actors?.root.getObjectByName('floating-singing-microphone')?.visible,phone:world.photoPhone?.position.toArray()};},get loading(){return loader.state;},get bonus(){return bonus.state;},get chapters(){return chapters.data;},restoreChapter:id=>restore(id),assist:()=>mission.machine.assist(),
       get switches(){return {signal:world.signalIndex||0,room:world.roomLightOn??true,door:world.store.doors.manual};},get time(){return world.time;},get renders(){return world.renderCount;},get drawCalls(){return world.renderer.info.render.calls;},get triangles(){return world.renderer.info.render.triangles;},get warmup(){return world.shaderWarmup.state;},resetCamera:()=>world.resetStoryCamera(),
       get aa(){return {msaa:world.msaaSamples,postSamples:world.composer.renderTarget1.samples,postDepth:world.composer.renderTarget1.depthBuffer,fxaa:world.fxaa.enabled,dpr:world.renderer.getPixelRatio()};},
-      get shaders(){return world.renderer.info.programs.map(p=>({id:p.id,name:p.name,uses:p.usedTimes}));},get devices(){return world.director.vcrEffects.state;},get performance(){return {...world.frameStats.state,battlePrepared:!!world.battleDrawWarm};},get metrics(){let lights=0;world.scene.traverse(n=>{if(n.isLight&&n.visible)lights++;});return {batches:world.batchStats,lights,weather:world.weather.metrics,camera:world.walkCamera.state};},
+      get shaders(){return world.renderer.info.programs.map(p=>({id:p.id,name:p.name,uses:p.usedTimes}));},get devices(){return world.director.vcrEffects.state;},get performance(){return {...world.frameStats.state,battlePrepared:!!world.battleDrawWarm,drawCalls:world.renderer.info.render.calls,triangles:world.renderer.info.render.triangles,geometries:world.renderer.info.memory.geometries,textures:world.renderer.info.memory.textures,programs:world.renderer.info.programs.length};},get metrics(){let lights=0;world.scene.traverse(n=>{if(n.isLight&&n.visible)lights++;});return {batches:world.batchStats,lights,weather:world.weather.metrics,camera:world.walkCamera.state};},
       get cameraPose(){return {position:world.camera.position.toArray(),target:world.controls.target.toArray(),fov:world.camera.fov,photoOrigin:world.photoCamera.origin.toArray()};},get walkCamera(){return world.walkCamera.state;},get glassReady(){const u=world.store.glass.uniforms;return !!(u.uDepth.value?.isDepthTexture&&u.uScene.value?.isTexture&&u.uEnvironment.value?.isCubeTexture);},
       get poseData(){return world.actors?.poseData;},get idle(){return world.actors?.status;},get floorPlan(){return world.store.floorPlan;},get doors(){return {open:world.store.doors.open};},
       get mission(){return mission.state;},get story(){return mission.state;},get destruction(){return {...world.store.destruction.state,targets:world.store.destruction.targets};},get garden(){return world.garden.state;},get effects(){return world.siege.state;},
@@ -204,7 +225,7 @@ async function init(){
     };
   }catch(e){analytics.fail('scene');loader.dispose();world?.dispose();showError('無法啟動 3D 畫面。請使用支援 WebGL 2 的 Safari，然後重新載入。');console.error(e);}
 }
-function dispose(){feedbackDialog?.dispose();closed=true;loader.dispose();abort.abort();bonus?.dispose();exploration?.dispose();mission?.dispose();audio.dispose();world?.dispose();}
+function dispose(){feedbackDialog?.dispose();debugTravel?.dispose();closed=true;loader.dispose();abort.abort();bonus?.dispose();exploration?.dispose();mission?.dispose();audio.dispose();world?.dispose();}
 listen(window,'pagehide',event=>{analytics.tick(performance.now(),{visible:false});analytics.flush();if(!event.persisted)dispose();else world?.stop();});listen(window,'pageshow',event=>{if(event.persisted)world?.start();});
 if(import.meta.hot)import.meta.hot.dispose(dispose);
 init();

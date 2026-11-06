@@ -170,9 +170,11 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
  function syncClass(time){
   if(!isClassRoute())return;
   deathMeter.set(course.percentage,time,reducedMotion());const value=deathMeter.value(time),display=Math.min(100,Math.round(value));
-  deathLabel.textContent=`全課進度 ${display}%`;
-  readingLabel.textContent=`已完成 ${course.completedCount}／8 題`;
-  readingTrack.setAttribute('aria-valuenow',String(display));readingFill.style.transform=`scaleX(${value/100})`;
+  const label=`全課進度 ${display}%`,count=`已完成 ${course.completedCount}／8 題`,scale=`scaleX(${value/100})`;
+  if(deathLabel.textContent!==label)deathLabel.textContent=label;
+  if(readingLabel.textContent!==count)readingLabel.textContent=count;
+  if(readingTrack.getAttribute('aria-valuenow')!==String(display))readingTrack.setAttribute('aria-valuenow',String(display));
+  if(readingFill.style.transform!==scale)readingFill.style.transform=scale;
   if(route==='class-wait'&&value>=99.99){
    stampKind='class';stampSequence.start(time,reducedMotion());stampPhase='';route='class-stamping';room.resetPaper();room.board('笑點已死亡',['手術成功，笑點死亡。','本教室不提供笑點復活服務。'],0,time,true,'graduation');room.perform('dismissed');room.stamp(time,'笑點已死亡');render();classPrimary.focus({preventScroll:true});
   }
@@ -200,7 +202,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
   if(mission.state.postgame&&world.streetShow.state.mode==='collapsed'){world.streetShow.start({done:()=>open(false,skipTravel)});return;}
   snapshot={time:world.time,position:world.camera.position.clone(),quaternion:world.camera.quaternion.clone(),target:world.controls.target.clone(),fov:world.camera.fov,currentView:world.currentView,autoCamera:world.autoCamera,manualUntil:world.manualUntil,transition:world.transition,cutaway:world.cutawayActive,walking:exploration.active,paused:mission.state.paused,controls:world.controls.enabled,inert:[]};
   onAnalytics('enter');exploration.setActive(false);mission.setPaused(true,'bonus');world.transition=null;world.controls.enabled=false;active=true;
-  for(const node of mount.children){if([root,entry,toast,epilogue,world.container].includes(node)||node.classList.contains('background-resume'))continue;snapshot.inert.push([node,node.inert]);node.inert=true;}
+  for(const node of mount.children){if([root,entry,toast,epilogue,world.container].includes(node)||node.classList.contains('background-resume')||node.classList.contains('debug-travel'))continue;snapshot.inert.push([node,node.inert]);node.inert=true;}
   postgameDock.hidden=true;rebuildButton.hidden=true;mount.classList.add('bonus-active');root.hidden=false;toast.hidden=true;epilogue.hidden=true;route='claims';ensureRoom();if(mission.state.postgame){route='claims';}else restoreFlow();world.resize();render();updateEntry();focusContent();if(!skipTravel&&['claims','negotiation'].includes(route))travel(route,true);else {ensureRoom().setMode(isClassRoute()?'classroom':'claims');room.enter(world.time);}
  }
  function close(){
@@ -399,7 +401,12 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
  dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close();},{signal:events.signal});
  document.addEventListener('visibilitychange',()=>{if(!active)return;for(const a of root.getAnimations({subtree:true})){if(document.hidden&&a.playState==='running'){a.pause();a._backgroundPaused=true;}}updateRecovery();},{signal:events.signal});
  root.addEventListener('keydown',e=>{if(!active)return;if(e.key==='Escape'&&!dialog.open&&!recovery.open){e.preventDefault();close();}if(e.key==='Tab'&&!dialog.open&&!recovery.open){const nodes=[...root.querySelectorAll('button,a[href],textarea,select,input')].filter(n=>!n.disabled&&n.getClientRects().length);if(!nodes.length)return;const first=nodes[0],last=nodes.at(-1);if(e.shiftKey&&(document.activeElement===first||document.activeElement===content)){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}},{signal:events.signal});
- const api={get active(){return active;},get state(){return {active,route,busy,lesson:LESSONS[lessonIndex].id,page:pageIndex,response:responseIndex,room:room?.state||null,presentation:lessonFrame(world.time-lessonAt,course.eligible,reducedMotion()),stampPhase,taps:progress.taps,...structuredClone(progress.data),course:{...course.saved,completed:course.completed,percentage:course.percentage,display:deathMeter.value(world.time)},negotiation:negotiation.state};},
+ const api={
+  leaveForDebug(){travelGeneration++;transitionAnimation?.cancel();transitionAnimation=null;travelTarget=null;busy=false;root.removeAttribute('aria-busy');curtain.style.opacity='0';if(active)close();world.streetShow.reset();},
+  debugStreet(born=false){enterFreeStreet(true);mission.machine.mealBorn=born;world.missionState=mission.state;},
+  debugRoom(destination){if(!['claims','classroom','rating'].includes(destination))return false;enterFreeStreet(true);open(false,true);if(!active)return false;route=destination;flowStage=destination==='classroom'?'class':destination==='rating'?'ending':'claims';ensureRoom().setMode(destination==='claims'?'claims':'classroom');render();focusContent();return true;},
+  debugFirstRestore(){flowStage='claims';rebuilt=false;epilogueStep=2;mission.machine.phaseTo('complete',mission.state.clock-2);updateEpilogue();},
+  get active(){return active;},get state(){return {active,route,busy,lesson:LESSONS[lessonIndex].id,page:pageIndex,response:responseIndex,room:room?.state||null,presentation:lessonFrame(world.time-lessonAt,course.eligible,reducedMotion()),stampPhase,taps:progress.taps,...structuredClone(progress.data),course:{...course.saved,completed:course.completed,percentage:course.percentage,display:deathMeter.value(world.time)},negotiation:negotiation.state};},
   resetEnding(){ratingForm?.dispose();ratingForm=null;feedbackStored=false;freeGuide='house';postgameDock.hidden=true;mount.removeAttribute('data-free-guide');course.reset();negotiation.reset();selectedRating=0;claimsLockedUntil=0;progress.data.claimsSettled=false;progress.data.unlocked=false;progress.data.read=[];progress.taps=0;flowStage='claims';epilogueStep=0;rebuilt=false;epilogue.hidden=true;entry.hidden=true;rebuildButton.hidden=true;progress.save();mount.classList.remove('bonus-unlocked','epilogue-pending');saved=null;},
   handleTap(ray){if(active)return true;const allowed=['ready','complete'].includes(mission.state.phase);if(!allowed){progress.tap(false,mission.state.phase);return false;}const sign=pickBonusSign(world,ray);if(sign){world.flashUntil=world.time+.45;world.pulseLight?.();}if(progress.tap(sign,mission.state.phase)){enterFreeStreet(true);notice('雨夜街角已開放：散步、拆屋復原與二樓劇情。');mount.classList.add('bonus-unlocked');const flash=world.container.animate([{filter:'brightness(1)'},{filter:'brightness(1.7)'},{filter:'brightness(1)'}],{duration:320});flash.onfinish=()=>mount.classList.remove('bonus-unlocked');updateEntry();}return sign;},
   update(){

@@ -18,7 +18,7 @@ export const TABLET_PAGES={
  'meal-label':['便當加熱說明',['正在查看包裝標籤'],[]],
  grid:['找個加速的方法',['探索微波爐的供電設備'],[['scan-grid','找個加熱快一點的方法']]],
  'scan-grid':['偵測電網漏洞中…',['檢查天師樁供電協議'],[]],
- backdoor:['3號天師樁：異常常駐程式',['NIKKE PC Launcher','供應鏈攻擊｜CDN 腳本遭竄改','遠端存取通道：在線'],[]],
+ backdoor:['3號天師樁：偵測到竊密木馬',['NIKKE PC Launcher｜帳號密碼可能外洩','供應鏈攻擊｜CDN 腳本遭竄改','憑證竊取 Credential theft','C2 遠端控制通道：在線'],[]],
  'rapi-request':['3號天師樁管理電腦',['NIKKE PC Launcher'],[]],
  'rapi-answer':['3號天師樁管理電腦',['NIKKE PC Launcher'],[]],
  'rapi-mask':['3號天師樁管理電腦',['遠端存取通道：在線'],[['enable','接通天師樁電源']]],
@@ -36,7 +36,7 @@ const TALKS={
  success:[['xaihi','嗯，有降。','satisfied'],['dragon','成功了？']],
  hot:[['dragon','正五十？！你把蒸發器切到除霜模式了！'],['xaihi','……法國🇫🇷駭客工具，預設模式忘了改。','avert'],['dragon','熱愛105°C的你～🎶\n滴滴清純的蒸餾水～','song'],['xaihi','……飲料晚點再說。先熱便當。','side-eye']],
  'meal-label':[['xaihi','微波三分鐘……','read-label'],['xaihi','太久了。我找個快一點的。','tablet']],
- backdoor:[['xaihi','這台天師樁的管理電腦，怎麼還開著妮姬？'],['dragon','上班守樁，順便守妮姬？'],['xaihi','啟動器裡有人留了遠端通道。照工具說明，就能接上供電。']],
+ backdoor:[['xaihi','這台妮姬啟動器裡有木馬，會偷玩家的帳號密碼。'],['dragon','玩遊戲還附贈盜帳號？'],['xaihi','惡意程式混進正常更新，叫供應鏈攻擊。這台也留下遠端通道。'],['dragon','別人偷帳號，妳偷電？'],['xaihi','借。照工具說明接一下。']],
  'rapi-request':[['rapi','可以幫我打馬賽克嗎？']],
  'rapi-answer':[['dragon','可以！']],
  power:[['dragon','妳連這套都會？'],['xaihi','不會駭。照工具說明借個通道而已。']]

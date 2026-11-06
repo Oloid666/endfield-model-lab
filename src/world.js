@@ -66,7 +66,7 @@ export class World {
     this.scene.environment=makeNightEnvironment(this.renderer,this.r);this.scene.environmentIntensity=.48;
     this.store=buildStore(this.scene,this.r);this.cameraSafety=new CameraSafety(this.camera,this.store.floorPlan);this.batchStats=optimizeStaticSet(this.store.root,this.r);
     this.remnant=buildMealRemnant(this.scene,this.r);this.garden=buildPearGarden(this.scene,this.r);this.siege=buildSiegeEffects(this.scene,this.r);
-    this.tianshi=buildTianshiGrid(this.scene,this.r);this.microwave=buildMicrowave(this.scene,this.r);this.connectionStage=buildConnectionStage(this.scene,this.r);this.investigationProps=buildInvestigationProps(this.scene,this.r);
+    this.tianshi=buildTianshiGrid(this.scene,this.r);this.microwave=buildMicrowave(this.scene,this.r);this.connectionStage=buildConnectionStage(this.scene,this.r);this.investigationProps=buildInvestigationProps(this.scene,this.r,{serverRoot:this.store.root.getObjectByName('upstairs-server-room')});
     this.weather=buildWeather(this.scene,this.r);this.wet=applyWetPavement([...(this.store.wetMaterials||[]),...(this.garden.wetMaterials||[])],this.weather.reflection,this.r);
     this.director=new MissionDirector(this);this.refreshGlassProbe();this.shaderWarmup=new ShaderWarmup(this.renderer,this.scene,this.camera);
     const target=new T.WebGLRenderTarget(1,1,{type:T.HalfFloatType,depthBuffer:true});target.depthTexture=new T.DepthTexture(1,1,T.UnsignedIntType);
@@ -130,10 +130,11 @@ export class World {
   }
 
   resetStoryCamera(){
-    this.setWalking(false);this.autoCamera=true;
+    this.setWalking(false);this.autoCamera=true;this.transition=null;this.currentView=null;this.manualUntil=this.time;
+    const damping=this.controls.enableDamping;this.controls.enableDamping=false;this.controls.update();this.controls.enableDamping=damping;
     this.setCutaway(false);if(this.missionState)this.director.resumeCamera();
     else{this.manualUntil=this.time;this.setView('reset');}
-    this.weather.invalidateReflection();
+    this.cameraSafety.sync();this.weather.invalidateReflection();
   }
   toggleAutoCamera(){this.autoCamera=!this.autoCamera;if(this.autoCamera)this.resetStoryCamera();else this.manualUntil=Infinity;return this.autoCamera;}
   setCutaway(enabled){

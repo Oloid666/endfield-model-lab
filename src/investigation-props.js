@@ -1,7 +1,7 @@
 import * as T from 'three';
 import {buildRossiFigurine} from './rossi-figurine.js';
 // One fixed pool for pixelated food; no postprocessing pass or per-frame allocation.
-export function buildInvestigationProps(scene,r){
+export function buildInvestigationProps(scene,r,{serverRoot=null}={}){
  const root=new T.Group();root.name='investigation-details';scene.add(root);
  const box=(owner,c,p,s,o={})=>r.box(owner,c,p,s,o),label=(owner,text,p,s,options={})=>r.mesh(r.geometry('PlaneGeometry',1,1),r.label(text,{width:1024,height:256,font:'bold 60px sans-serif',...options}),owner,p,s);
  const camera=new T.Group();camera.name='store-cctv';camera.position.set(3.87,2.53,-1.65);root.add(camera);camera.rotation.y=Math.PI;
@@ -26,21 +26,21 @@ export function buildInvestigationProps(scene,r){
    poster.name=`store-poster-${i+1}`;
    const inside=r.mesh(r.geometry('PlaneGeometry',.65,1.3),material,paperGroup,[posterPositions[i][0],posterPositions[i][1],1.813]);inside.rotation.y=Math.PI;inside.name=`store-poster-${i+1}-inside`;
  }
- // A small collection corner visible through the upstairs window.
- const room=new T.Group();room.position.set(1.4,3.56,.66);root.add(room);
- box(room,'#695c50',[0,.45,0],[.8,.05,.48]);for(const x of [-.32,.32])box(room,'#344745',[x,.22,0],[.045,.44,.045]);
- const figurine=buildRossiFigurine(r);figurine.position.set(0,.48,.08);room.add(figurine);
- for(let i=0;i<3;i++)box(room,['#536b66','#886b72','#b08d65'][i],[-.25,.51+i*.035,-.02],[.19,.03,.25]);
- label(room,'禁止碰我老婆',[0,1.02,.1],[.78,.18,1],{bg:'#2b3545',color:'#d0bbc9',font:'bold 58px sans-serif'});
+ // The low server case keeps the enlarged figure between the front window mullions.
+ const room=new T.Group();room.name='rossi-server-display';(serverRoot||root).add(room);room.position.set(.28,serverRoot?0:3.51,serverRoot?.70:1.42);
+ box(room,'#344745',[0,.40,0],[.46,.80,.44]);box(room,'#203239',[0,.35,.23],[.40,.49,.025]);
+ for(let i=0;i<3;i++)box(room,'#718784',[0,.25+i*.09,.25],[.30,.035,.018]);
+ const figurine=buildRossiFigurine(r);figurine.scale.multiplyScalar(1.8);figurine.position.set(0,.80,.015);room.add(figurine);
+ label(room,'禁止碰我老婆',[-.49,.43,.25],[.43,.10,1],{bg:'#2b3545',color:'#d0bbc9',font:'bold 58px sans-serif'});
  const pixels=r.own(new T.InstancedMesh(r.geometry('CircleGeometry',1,7),r.own(new T.MeshBasicMaterial({color:0xffffff,side:T.DoubleSide})),96));pixels.frustumCulled=false;pixels.name='purple-food-mosaic';root.add(pixels);
  const dummy=new T.Object3D(),color=new T.Color(),spots=[new T.Vector3(3.2,1.85,1.06),new T.Vector3(3.83,1.55,1.06),new T.Vector3(3.1,1.1,1.94),new T.Vector3(3.8,.34,.3),new T.Vector3(2.55,.34,1.4),new T.Vector3(3.9,1.65,1.93)];
  for(let i=0;i<96;i++){pixels.setColorAt(i,color.setHSL(.75+(i%4)*.018,.4,.23+(i%5)*.075));pixels.setMatrixAt(i,dummy.matrix);}pixels.instanceColor.needsUpdate=true;
- const launch=new T.Vector3(3.45,1.67,1.1);
+ const launch=new T.Vector3(3.45,1.67,1.1),collectionWorld=new T.Vector3();
  const crater=new T.Group();crater.name='server-impact-crater';root.add(crater);crater.visible=false;
  const dark=r.own(new T.MeshBasicMaterial({color:0x030c13})),hole=r.mesh(r.geometry('CircleGeometry',1.08,32),dark,crater,[0,.012,0]);hole.rotation.x=-Math.PI/2;
  for(let i=0;i<18;i++){const a=i/18*Math.PI*2,m=r.box(crater,i%2?'#506462':'#7c8275',[Math.cos(a)*1.05,.055,Math.sin(a)*1.05],[.34,.13,.24],{roughness:.96});m.rotation.set((i%3)*.13,a,i%2*.18);}
  let burstAt=-100,burstCount=0,lastFailures=0,wasPast=false,active=0,collectionDamage=0;
- function setCollectionDamage(damage=0){collectionDamage=damage;const p=Math.max(0,Math.min(1,(damage-50)/25)),q=p*p*(3-2*p);room.position.set(1.4+1.05*q,3.56-3.12*q,.66+3.7*q);room.rotation.set(.12*q,0,-.40*q);}
+ function setCollectionDamage(damage=0){collectionDamage=damage;if(serverRoot)return;const p=Math.max(0,Math.min(1,(damage-50)/25)),q=p*p*(3-2*p);room.position.set(.28+1.05*q,3.51-3.12*q,1.42+3.7*q);room.rotation.set(.12*q,0,-.40*q);}
  function update(t,delta,state={}){
    const past=['flashback','hack','credentials','heat'].includes(state.phase),failures=state.heat?.failures||0;
    if(state.phase==='ready'){lastFailures=0;burstCount=0;burstAt=-100;}
@@ -60,5 +60,5 @@ export function buildInvestigationProps(scene,r){
    room.visible=!past;setCollectionDamage(state.collectionDamage??state.progress??0);cargo.visible=(state.progress||0)<62||past;
    wasPast=past;
  }
- return {root,camera,cargo,update,setCollectionDamage,breakServer(point){crater.position.set(point[0],.323,point[2]);crater.visible=true;},reset(){crater.visible=false;burstCount=0;lastFailures=0;burstAt=-100;setCollectionDamage(0);},get state(){return {crater:crater.visible,pixels:active,bursts:burstCount,cctv:true,manifest:true,collectionDamage,collectionPosition:room.position.toArray(),figurine:{...figurine.userData}};}};
+ return {root,camera,cargo,update,setCollectionDamage,breakServer(point){crater.position.set(point[0],.323,point[2]);crater.visible=true;},reset(){crater.visible=false;burstCount=0;lastFailures=0;burstAt=-100;setCollectionDamage(0);},get state(){return {crater:crater.visible,pixels:active,bursts:burstCount,cctv:true,manifest:true,collectionDamage,collectionPosition:room.getWorldPosition(collectionWorld).toArray(),figurine:{...figurine.userData}};}};
 }

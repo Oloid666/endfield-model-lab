@@ -1,4 +1,5 @@
-// The six revised sequences have a single shot decision, after the legacy presets.
+import {mealBirthFrame} from './meal-birth.js';
+// Revised sequences have a single shot decision, after the legacy presets.
 // Shot selection uses story events; motion uses the pausable scene clock.
 const clamp=x=>Math.max(0,Math.min(1,x));
 const smooth=x=>{const p=clamp(x);return p*p*(3-2*p);};
@@ -19,6 +20,9 @@ export function revisedStoryShot(s,{feet=[-1.25,.32,3.25],heroHead=null,dragon=[
   return s.speaker==='zhuang'||s.node?.speaker==='zhuang'?person('opening-zhuang-side',hero,{portrait,side:1,distance:3.8,push}):person('opening-dragon-side',pet,{portrait,side:-1,distance:3.0,push});
  }
  if(s.phase==='briefing'){
+  if(s.node?.cue==='rossi-collection')return shot('briefing-rossi-collection',[.85,4.9,5.8],[.28,4.61,1.43],portrait?32:27);
+  if(s.node?.cue==='rossi-closeup')return shot('briefing-rossi-closeup',[.55,4.8,4.6],[.28,4.61,1.43],portrait?33:28);
+  if(s.node?.cue==='age-reaction')return person('briefing-age-reaction',hero,{portrait,side:1,distance:3.3});
   if(index<2)return shot('briefing-evidence',[1.4,4.9,5.8],[0,4.4,1.08],portrait?38:32);
   if(index===2)return caster('briefing-wants-her-book',feet,0,portrait,heroHead);
   if(index===3)return shot('briefing-book-evidence',[-.65,4.62,3.7],[-1.15,4.12,.7],portrait?34:28);
@@ -40,10 +44,11 @@ export function revisedStoryShot(s,{feet=[-1.25,.32,3.25],heroHead=null,dragon=[
   if(index===9)return person('charge-dragon-last-word',pet,{portrait,side:-1,distance:3.7});
  }
  if(s.phase==='meal-spawn'){
-  if(e<2)return shot('birth-charred-meal',[3.35,1.83,-.12],[3.25,1.5,1.10],portrait?35:28);
-  if(e<5)return shot('birth-arcs-before-creature',[3.5,2.3,-1.2],[3.43,1.57,1.10],portrait?62:46);
-  if(e<8){const p=!reduced&&mealPosition?mealPosition:[3.22,1.50,1.0];return shot('birth-creature-reveal',[3.15,2.15,-1.3],[p[0],p[1]+.11,p[2]],portrait?64:48);}
-  const p=mealPosition||[3.06,1.35,.8],h=xaihiHead||[2.17,1.8,.85];return shot('birth-creature-and-witness',[4.0,2.45,-1.2],[(h[0]+p[0])/2,(h[1]+p[1]+.11)/2,(h[2]+p[2])/2],portrait?64:48);
+  const birth=mealBirthFrame(e,reduced),p=e<8?birth.position:mealPosition||birth.position;
+  if(e<3)return shot('birth-charred-meal',[3.2,2.05,-.08],[3.545,1.46,1.43],portrait?35:28);
+  if(e<4.8)return shot('birth-swelling-in-tray',[2.9,1.9,-.35],[3.545,1.52,1.43],portrait?38:31);
+  if(e<8)return shot(reduced?'birth-escape-hold':'birth-escape-follow',reduced?[3.08,2.0,-.7]:[p[0]-.25,p[1]+.55,p[2]-1.8],[p[0],p[1]+.10,p[2]],portrait?60:42);
+  const h=xaihiHead||[2.17,1.8,.85];return shot('birth-creature-and-witness',[(h[0]+p[0])/2+.1,2.65,-2.55],[(h[0]+p[0])/2,(h[1]+p[1]+.11)/2,(h[2]+p[2])/2],portrait?68:48);
  }
  if(s.phase!=='hack'||!s.tablet)return null;
  const t=s.tablet,stage=t.stage;

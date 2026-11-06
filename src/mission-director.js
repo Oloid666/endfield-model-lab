@@ -385,7 +385,7 @@ export class MissionDirector{
       if(s.tablet){const stage=s.tablet.stage,frame=w.xaihi?.tabletFrame(w.camera.aspect);if(frame){position=frame.position;target=frame.center;fov=frame.fov;beat='tablet-read';this.cameraRoll=frame.roll||0;}
        if(stage==='search'&&e<1.2&&frame&&!this.reducedMotion){const p=smooth(e/1.2);position=[3.9+(frame.position[0]-3.9)*p,2.5+(frame.position[1]-2.5)*p,-.6+(frame.position[2]+.6)*p];target=frame.center;beat='tablet-approach';this.cameraRoll=(frame.roll||0)*p;}
        if(stage!=='search'&&['backdoor','rapi-request','rapi-answer','rapi-mask','cable','walk-fridge','walk-counter','cooling','success','defrost','hot','meal-label'].includes(stage))this.cameraRoll=0;
-       if(stage==='backdoor'||stage==='rapi-mask'){if(stage==='backdoor'&&s.tablet.age<1.5){position=[11,5.3,-8];target=[7.4,2,-14.9];fov=portrait?65:53;}else{position=[7.7,2.05,-12];target=[7.4,1.85,-14.94];fov=portrait?52:40;}beat='pylon-nikke';}
+       if(stage==='backdoor'||stage==='rapi-mask'){if(stage==='backdoor'&&s.tablet.age<1.5){position=[11,5.3,-8];target=[7.4,2,-14.9];fov=portrait?65:53;}else{position=[7.7,2.05,-12];target=[7.4,1.85,-14.94];fov=portrait?52:40;}beat=stage==='backdoor'&&s.tablet.age<1.5?'pylon-nikke-establish':'pylon-nikke-screen';}
        if(['rapi-request','rapi-answer'].includes(stage)){position=[7.57,2.10,-13.55];target=[7.52,2.11,-14.94];fov=portrait?28:22;beat='rapi-eye-bar';}
        if(stage==='cable'){const p=s.tablet.age;if(p<1.5){position=[9.4,2.4,-12.5];target=[7.4,1.25,-14.9];}else if(p<4){position=[12,7.2,5];target=[5.4,1,-5.5];}else{position=[4.25,2.15,-.2];target=[3.85,1.48,1.45];}fov=portrait?70:50;beat='energy-wire-'+s.tablet.wireBeat;}
        if(['walk-fridge','walk-counter'].includes(stage)){const a=w.xaihi?.root.position;position=[3.6,2.45,1.2];target=a?[a.x,a.y+1.05,a.z]:[1.5,1.3,-.5];fov=portrait?65:52;beat='xaihi-walk';}
@@ -480,7 +480,7 @@ export class MissionDirector{
     if(w.cameraOcclusion&&(beat==='dialogue-pair'||beat==='briefing-pair'||beat==='photo-together-front')){const old=w.camera.position.clone();w.camera.position.fromArray(position);if(w.cameraOcclusion(target))position=[target[0]+.4,target[1]+.7,Math.max(6,target[2]+5.5)];w.camera.position.copy(old);}
     this.cameraBeat=beat;this.cameraPosition.fromArray(position);this.cameraTarget.fromArray(target);
     const quietCut=this.reducedMotion;
-    const trackingWire=beat==='wire-source-follow'||beat==='wire-route-follow';
+    const trackingWire=beat==='wire-source-follow'||beat==='wire-route-follow'||beat==='birth-escape-follow';
     const blend=s.paused?0:quietCut||storyCut||trackingWire||this.previousBeat!==beat&&!beat.startsWith('dialogue-')&&!beat.startsWith('briefing-')&&!['dragon-store-follow','dragon-return-follow','photo-together-shoulder','pear-moonlight-tour'].includes(beat)?1:1-Math.exp(-Math.min(.1,Math.max(0,delta))*(s.phase==='finisher'?3.9:3.1));
     this.baseCameraPosition.lerp(this.cameraPosition,blend);this.baseCameraTarget.lerp(this.cameraTarget,blend);this.baseFov=T.MathUtils.lerp(this.baseFov,fov,blend);
     w.camera.position.copy(this.baseCameraPosition);w.controls.target.copy(this.baseCameraTarget);

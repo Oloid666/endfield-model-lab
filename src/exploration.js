@@ -10,7 +10,7 @@ export function createExploration(world,{mount,onHotspot,onSceneTap,canWalk=()=>
   controls.append(toggle,rain,pad);mount.append(controls);
   let suspended=false,active=false,padPointer=null,joyX=0,joyY=0;
   const keys=new Set(),direction=new T.Vector3(),right=new T.Vector3(),forward=new T.Vector3(),up=new T.Vector3(0,1,0);
-  const reset=()=>{joyX=joyY=0;keys.clear();padPointer=null;knob.style.transform='translate(-50%,-50%)';world.actors?.setMove(0,0,false);};
+  const reset=()=>{joyX=joyY=0;keys.clear();const pointer=padPointer;padPointer=null;if(pointer!==null&&pad.hasPointerCapture(pointer))pad.releasePointerCapture(pointer);knob.style.transform='translate(-50%,-50%)';world.actors?.setMove(0,0,false);};
   const setActive=value=>{active=Boolean(value&&canWalk());toggle.setAttribute('aria-pressed',String(active));toggle.textContent=active?'停止散步':'讓莊散步';pad.hidden=!active;mount.classList.toggle('walking-mode',active);reset();world.setWalking(active);};
   toggle.addEventListener('click',()=>setActive(!active),{signal});
   function padMove(event){if(event.pointerId!==padPointer)return;const b=pad.getBoundingClientRect();joyX=(event.clientX-b.left-b.width/2)/35;joyY=(event.clientY-b.top-b.height/2)/35;const len=Math.hypot(joyX,joyY);if(len>1){joyX/=len;joyY/=len;}knob.style.transform=`translate(calc(-50% + ${joyX*29}px),calc(-50% + ${joyY*29}px))`;}

@@ -1,6 +1,7 @@
 import * as T from 'three';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import {optimizeStaticSet} from './static-batches.js';
+import {mealBirthFrame} from './meal-birth.js';
 
 const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,Number(v)||0));
 const pastPhases=new Set(['flashback','hack','credentials','heat-demo','meal-spawn','heat','flashback-end']);
@@ -15,7 +16,7 @@ export function buildMicrowave(scene,r,{position=[3.45,.31,1.43]}={}){
   const dark=r.material('#0d191b',{roughness:.78}),steel=r.material('#798c83',{roughness:.33,metalness:.73});
   const box=(owner,mat,p,s)=>r.mesh(unitBox,mat,owner,p,s);
   r.box(cabinet,'#445a51',[0,.43,0],[1.09,.85,.48],{roughness:.7,metalness:.12});
-  r.box(cabinet,'#c8c9b9',[0,.91,0],[1.18,.1,.57],{roughness:.35,metalness:.2});
+  r.box(cabinet,'#c8c9b9',[0,.91,.10],[1.18,.1,.90],{roughness:.35,metalness:.2});
   for(const x of [-.25,.25]){
     r.box(cabinet,'#334a42',[x,.45,.248],[.49,.74,.015]);
     r.box(cabinet,'#9eab97',[x,.73,.267],[.18,.022,.025],{roughness:.36,metalness:.6});
@@ -37,12 +38,14 @@ export function buildMicrowave(scene,r,{position=[3.45,.31,1.43]}={}){
   for(let i=0;i<3;i++)box(rear,dark,[.21+i*.045,-.208,-.325],[.025,.005,.004]);
   optimizeStaticSet(rear,r);
   box(oven,dark,[-.09,0,-.245],[.73,.45,.025]);
-  for(const x of [-.465,.277])box(oven,trimMaterial,[x,0,.32],[.045,.52,.048]);
-  for(const y of [-.24,.24])box(oven,trimMaterial,[-.095,y,.32],[.78,.04,.048]);
+  const door=new T.Group();door.name='microwave-hinged-door';door.position.set(-.465,0,.35);oven.add(door);
+  const doorBox=(mat,p,s)=>box(door,mat,[p[0]+.465,p[1],p[2]-.35],s);
+  for(const x of [-.465,.277])doorBox(trimMaterial,[x,0,.32],[.045,.52,.048]);
+  for(const y of [-.24,.24])doorBox(trimMaterial,[-.095,y,.32],[.78,.04,.048]);
   box(oven,bodyMaterial,[.39,0,.312],[.2,.51,.07]);
-  const pane=r.mesh(r.geometry('PlaneGeometry',1,1),r.own(new T.MeshStandardMaterial({color:0x7a9b9b,transparent:true,opacity:.13,roughness:.25,metalness:.15,side:T.DoubleSide,depthWrite:false})),oven,[-.095,0,.35],[.7,.43,1]);pane.name='microwave-glazed-door';
-  for(const x of [.24,.268])box(oven,steel,[x,0,.39],[.018,.28,.025]);
-  box(oven,steel,[.254,0,.409],[.023,.26,.025]);
+  const pane=r.mesh(r.geometry('PlaneGeometry',1,1),r.own(new T.MeshStandardMaterial({color:0x7a9b9b,transparent:true,opacity:.13,roughness:.25,metalness:.15,side:T.DoubleSide,depthWrite:false})),door,[.37,0,0],[.7,.43,1]);pane.name='microwave-glazed-door';
+  for(const x of [.24,.268])doorBox(steel,[x,0,.39],[.018,.28,.025]);
+  doorBox(steel,[.254,0,.409],[.023,.26,.025]);
   for(let i=0;i<8;i++)box(oven,dark,[-.4+i*.075,.309,-.04],[.036,.008,.29]);
   for(const x of [-.39,.39])for(const z of [-.21,.21])box(oven,dark,[x,-.33,z],[.09,.06,.1]);
   for(const y of [-.11,-.2])r.mesh(r.geometry('CylinderGeometry',.031,.031,.018,12),steel,oven,[.4,y,.362]).rotation.x=Math.PI/2;
@@ -93,8 +96,16 @@ export function buildMicrowave(scene,r,{position=[3.45,.31,1.43]}={}){
   const countMeshes=()=>{let count=0;oven.traverse(node=>{if(node.isMesh)count++;});return count;};
   const ovenMeshesBefore=countMeshes();
   // Visibility and colour animation remain separate from the fixed housing batches.
+  // Batch each live door material locally; the hinge remains a single transform.
+  door.updateWorldMatrix(true,true);
+  for(const material of [trimMaterial,steel]){
+    const parts=door.children.filter(n=>n.isMesh&&n.material===material);if(parts.length<2)continue;
+    const inverse=door.matrixWorld.clone().invert(),transform=new T.Matrix4();
+    const geometries=parts.map(n=>{const g=n.geometry.clone();transform.multiplyMatrices(inverse,n.matrixWorld);return g.applyMatrix4(transform);});
+    const merged=r.own(mergeGeometries(geometries,false));geometries.forEach(g=>g.dispose());parts.forEach(n=>n.removeFromParent());const live=new T.Mesh(merged,material);live.name=material===trimMaterial?'microwave-live-trim':'microwave-door-handle';door.add(live);
+  }
   const keepDynamic=owner=>owner.traverse(node=>{if(node.isMesh||node.isSprite)node.userData.dynamic=true;});
-  for(const owner of [pane,...Object.values(labels),warningLight,soot,foodGroup,arcs,faultHalo,...clouds.map(item=>item.sprite)])keepDynamic(owner);
+  for(const owner of [door,...Object.values(labels),warningLight,soot,foodGroup,arcs,faultHalo,...clouds.map(item=>item.sprite)])keepDynamic(owner);
   // The general batcher bakes material colours. Preserve these two live materials so
   // the earlier CCTV casing can still change from clean paint to the charred present.
   oven.updateMatrixWorld(true);
@@ -111,7 +122,7 @@ export function buildMicrowave(scene,r,{position=[3.45,.31,1.43]}={}){
   }
   const ovenBatch=optimizeStaticSet(oven,r),ovenMeshesAfter=countMeshes();
   let mode='charred',forced=null,charred=1,foodState='cold',arcActive=false,activeArcs=0,steam=0,wreck=false,warming=true,lastPhase='ready',clock=0,quality='balanced',arcSegments=7,arcCoreRadius=0,arcHaloRadius=0,arcPulse=0;
-  const cleanColor=new T.Color('#c4c8ba'),burntColor=new T.Color('#202825'),cleanTrim=new T.Color('#85978a'),burntTrim=new T.Color('#394940'),riceCold=new T.Color('#d8cdb0'),riceHot=new T.Color('#eee2ba'),riceBurnt=new T.Color('#332b20'),meatHot=new T.Color('#b17b45'),meatBurnt=new T.Color('#251f19');
+  const cleanColor=new T.Color('#c4c8ba'),burntColor=new T.Color('#202825'),cleanTrim=new T.Color('#85978a'),burntTrim=new T.Color('#394940'),riceCold=new T.Color('#d8cdb0'),riceHot=new T.Color('#eee2ba'),riceBurnt=new T.Color('#332b20'),meatHot=new T.Color('#b17b45'),meatBurnt=new T.Color('#251f19'),mealPurple=new T.Color('#583594');
   const currentPosition=[...position];
   function modeFor(state){
     if(state.node?.event==='microwave-closeup')return 'heating';if(forced)return forced;if(state.microwaveMode)return state.microwaveMode;
@@ -120,20 +131,23 @@ export function buildMicrowave(scene,r,{position=[3.45,.31,1.43]}={}){
   function arcPoint(index,p,t,out){const s=arcStart[index],e=arcEnd[index],jitter=Math.sin(p*31+t*29+index*7)*.082*Math.sin(p*Math.PI),side=s[2]<-.3&&e[2]<-.3?-1:1;out.set(s[0]+(e[0]-s[0])*p+jitter,s[1]+(e[1]-s[1])*p+Math.cos(p*27-t*23)*.07*Math.sin(p*Math.PI),s[2]+(e[2]-s[2])*p+Math.sin(p*Math.PI)*.15*side);return out;}
   function update(t,delta,state={}){
     lastPhase=state.phase||'ready';clock=lastPhase==='ready'?t:Number.isFinite(state.clock)?state.clock:t;mode=modeFor(state);
+    const birth=state.tabletMode&&lastPhase==='meal-spawn'?mealBirthFrame(state.phaseElapsed||0,reducedMotion):null;
+    door.rotation.y=birth?-birth.doorAngle:0;
     const heat=state.heat||{},past=pastPhases.has(lastPhase)||(lastPhase==='rewind'&&state.rewindProgress>.72);
     wreck=(state.progress||0)>=62&&!past;cabinet.visible=!wreck;
     const wantedY=wreck?.245:1.29;oven.position.y=T.MathUtils.damp(oven.position.y,wantedY,7,Math.min(.1,Math.max(0,delta)));if(Math.abs(oven.position.y-wantedY)<.001)oven.position.y=wantedY;
     oven.rotation.z=T.MathUtils.damp(oven.rotation.z,wreck?-.11:0,6,Math.min(.1,Math.max(0,delta)));
-    charred=mode==='clean'?0:mode==='heating'?((heat.failures||0)>0?1:0):mode==='burning'?clamp((heat.demoIndex||0)*.86+(heat.demoProgress||0)*1.4):1;
+    charred=birth?birth.charred:mode==='clean'?0:mode==='heating'?((heat.failures||0)>0?1:0):mode==='burning'?clamp((heat.demoIndex||0)*.86+(heat.demoProgress||0)*1.4):1;
     soot.visible=charred>.18;bodyMaterial.color.copy(cleanColor).lerp(burntColor,charred);bodyMaterial.roughness=.36+charred*.58;trimMaterial.color.copy(cleanTrim).lerp(burntTrim,charred);
     foodState=mode==='burning'&&(heat.demoProgress||0)>.5||heat.status==='burnt'?'burnt':heat.status==='won'?'hot':'cold';
     const hot=clamp(heat.progress||0);riceMaterial.color.copy(riceCold).lerp(riceHot,hot);mealMaterial.color.copy(meatHot);if(foodState==='burnt'){riceMaterial.color.set('#8955bf');mealMaterial.color.set('#583594');}
+    if(birth){riceMaterial.color.copy(riceCold).lerp(riceBurnt,birth.charred);mealMaterial.color.copy(meatHot).lerp(meatBurnt,birth.charred);mealMaterial.color.lerp(mealPurple,birth.morph);}
     warming=['warm','charred'].includes(mode);const labelMode=mode==='charred'?'warm':mode;for(const [key,label]of Object.entries(labels))label.visible=key===labelMode;
     const visibleFood=past||!wreck;foodGroup.visible=visibleFood;
     const strong=mode==='burning'||mode==='heating'&&(heat.powered||heat.holding),cycle=((clock*.55)%1+1)%1;
     const faultBurst=cycle<.1||cycle>.18&&cycle<.29;
     arcPulse=reducedMotion?(strong?.75:.45):strong?.72+.28*Math.sin(clock*5.2)**2:faultBurst?.9:0;
-    arcActive=arcPulse>0&&mode!=='clean';activeArcs=arcActive?(strong?4:2):0;if(state.tabletMode&&state.phase==='meal-spawn'){arcActive=true;activeArcs=Math.min(4,1+Math.floor((state.phaseElapsed||0)/1.5));}arcs.visible=faultHalo.visible=arcActive;
+    arcActive=arcPulse>0&&mode!=='clean';activeArcs=arcActive?(strong?4:2):0;if(birth){arcActive=true;activeArcs=birth.arcCount;}arcs.visible=faultHalo.visible=arcActive;
     arcCoreRadius=arcActive?(strong?.017:.01)*(reducedMotion?.85:.8+arcPulse*.3):0;arcHaloRadius=arcCoreRadius*3.6;
     sparkleMaterial.opacity=reducedMotion?.72:.82+arcPulse*.16;faultHaloMaterial.opacity=(strong?.26:.2)*arcPulse;
     for(let arc=0;arc<arcCount;arc++)for(let segment=0;segment<maxArcSegments;segment++){
@@ -155,6 +169,6 @@ export function buildMicrowave(scene,r,{position=[3.45,.31,1.43]}={}){
     quality(value){quality=['low','balanced','high'].includes(value)?value:'balanced';arcSegments=quality==='low'?5:quality==='high'?9:7;},
     setMode(value){forced=value==='auto'||!value?null:value;},
     reset(){forced=null;mode='charred';oven.position.y=1.29;oven.rotation.set(0,0,0);update(0,0,{phase:'ready',progress:0});},update,
-    get state(){return {mode,phase:lastPhase,quality,reducedMotion,charred,arcActive,arcs:activeArcs,arcSegments,arcCoreRadius,arcHaloRadius,arcPulse,steam,food:foodState,wreck,warming,position:[...currentPosition],counterVisible:cabinet.visible,batches:{meshesBefore:ovenMeshesBefore,meshesAfter:ovenMeshesAfter,sharedDraws:ovenBatch.sharedDraws},display:mode==='clean'?'03:00':mode==='burning'?'ERR':mode==='heating'?'0.30 s':'極速保溫'};}
+    get state(){return {mode,phase:lastPhase,quality,reducedMotion,doorAngle:door.rotation.y,charred,arcActive,arcs:activeArcs,arcSegments,arcCoreRadius,arcHaloRadius,arcPulse,steam,food:foodState,wreck,warming,position:[...currentPosition],counterVisible:cabinet.visible,batches:{meshesBefore:ovenMeshesBefore,meshesAfter:ovenMeshesAfter,sharedDraws:ovenBatch.sharedDraws},display:mode==='clean'?'03:00':mode==='burning'?'ERR':mode==='heating'?'0.30 s':'極速保溫'};}
   };
 }

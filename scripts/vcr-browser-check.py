@@ -81,6 +81,8 @@ async def main():
   await advance(3);await page.evaluate('__rainy711.missionNext()');await page.evaluate('__rainy711.missionNext()');await advance(6.1)
   assert await page.evaluate('__rainy711.mission.phase')=='heat'
   await page.locator('.rhythm-pad').click();await advance(4);await advance(12.1)
+  assert await page.evaluate('__rainy711.mission.phase')=='meal-spawn'
+  for _ in range(3):await page.locator('.mission-line').click()
   assert await page.evaluate('__rainy711.mission.phase')=='heat'
   for i in range(10):
    await page.locator('.rhythm-pad').click();await advance(.2,False)
