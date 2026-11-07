@@ -11,7 +11,7 @@ fx.update({phase:'hack',vcr:true,clock:14,fridgeHot:true,tablet:{stage:'hot',age
 fx.update({phase:'return',vcr:true,clock:20,fridgeHot:false});check('Return to present cannot cool the fridge',fx.state.temperature===50);
 fx.reset();fx.update({phase:'ready',fridgeHot:false});check('Restart preserves canonical present state',fx.state.temperature===50);
 check('Computer is a physical console',!!rootFind('pylon-03-maintenance-console'));check('Controller is mounted on fridge',!!rootFind('fridge-temperature-controller'));fx.update({phase:'combat'},{intact:false});check('Destroyed fridge has no floating warning lights',!fx.state.fridgeVisible);fx.update({phase:'complete'},{intact:true});check('Rebuilding restores appliance state',fx.state.fridgeVisible&&fx.state.temperature===50);check('Physical meal heating label exists',!!rootFind('meal-heating-label'));
-check('Wire starts at console, not fridge',fx.path.getPointAt(0).distanceTo(new T.Vector3(7.4,1.2,-14.56))<.001);check('Wire ends at microwave side socket',fx.path.getPointAt(1).distanceTo(new T.Vector3(3.99,1.6,1.43))<.001);
+check('Wire starts at the actual third pylon output, separate from control computer',fx.path.getPointAt(0).distanceTo(new T.Vector3(7.44,3.08,-15.3))<.001);check('Wire ends at microwave side socket',fx.path.getPointAt(1).distanceTo(new T.Vector3(3.99,1.6,1.43))<.001);
 function rootFind(name){return fx.root.getObjectByName(name);}r.dispose();
 const {actorBounds}=await import('../src/actor-bounds.js');
 const {shootingCameraLocked}=await import('../src/camera-lock.js');

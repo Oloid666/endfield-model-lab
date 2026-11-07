@@ -6,4 +6,8 @@ const fast=new OpeningTimeline();fast.ready=true;check('Welcome comes before tel
 const index=fast.index;advance(fast,30,false);check('Hidden tab does not consume a line',fast.index===index&&fast.age===0);advance(fast,7.8);check('All three phone lines finish before final line',!fast.done&&fast.index===6);advance(fast,1.5);check('Final confirmation remains readable',fast.final&&!fast.done);advance(fast,1.1);check('Ready and narrative gates both complete',fast.done);
 const slow=new OpeningTimeline();advance(slow,12.4);check('Slow resources enter quiet interaction gap',slow.idle&&slow.text==='');check('Click triggers a reply',slow.interact());check('No overlapping reply',!slow.interact());slow.ready=true;advance(slow,1);check('Readiness does not interrupt current reply',!slow.final&&slow.reaction>=0);advance(slow,3.4);check('Finishes after reply and last phone line',slow.done);
 const wait=new OpeningTimeline();advance(wait,12.4);const seen=new Set();for(let i=0;i<8;i++){check('Idle response accepted',wait.interact());seen.add(wait.text);advance(wait,2.1);}check('Eight distinct waiting replies',seen.size===8);advance(wait,15);check('Long idle gets a bounded automatic reply',wait.reaction>=0);check('Dialogue cannot be clicked through',!new OpeningTimeline().interact());
-console.log(`Loading: ${checks} narrative, background, fast-cache and slow-network checks passed.`);
+
+
+const queued=new OpeningTimeline();queued.requestEntry();advance(queued,30);check('Early direct entry never bypasses resource readiness',queued.entryRequested&&!queued.done);queued.ready=true;queued.tick(.01,true);check('Queued entry completes only once resources are ready',queued.done);const readyEntry=new OpeningTimeline();readyEntry.ready=true;readyEntry.requestEntry();check('Already ready direct entry completes immediately',readyEntry.done);
+
+console.log(`Loading: ${checks} narrative, resource-gated direct entry, background and slow-network checks passed.`);

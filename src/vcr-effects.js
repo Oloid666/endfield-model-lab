@@ -2,7 +2,7 @@ import * as T from 'three';
 import {optimizeStaticSet} from './static-batches.js';
 import {signedTemperature,wireProgress} from './vcr-tablet.js';
 
-export function buildVcrEffects(scene,r){
+export function buildVcrEffects(scene,r,{powerOutput=null}={}){
  const root=new T.Group();root.name='cold-chain-and-grid-props';scene.add(root);
  const reduced=typeof matchMedia==='function'&&matchMedia('(prefers-reduced-motion: reduce)').matches;
  const fridge=new T.Group();fridge.name='fridge-attached-effects';root.add(fridge);
@@ -17,25 +17,27 @@ export function buildVcrEffects(scene,r){
  const frost=r.mesh(r.geometry('PlaneGeometry',1.0,.30),r.own(new T.MeshBasicMaterial({color:'#d8f8ff',transparent:true,opacity:0,depthWrite:false})),fridge,[1.32,2.12,-1.95]);frost.name='fridge-thin-frost';
  const labelCanvas=document.createElement('canvas');labelCanvas.width=1024;labelCanvas.height=256;const lc=labelCanvas.getContext('2d');lc.fillStyle='#f3edcf';lc.fillRect(0,0,1024,256);lc.fillStyle='#243c37';lc.font='bold 60px sans-serif';lc.fillText('本便當 · 建議加熱',40,85);lc.font='bold 86px sans-serif';lc.fillText('800 W  /  3 分鐘',40,200);const labelTexture=r.own(new T.CanvasTexture(labelCanvas));labelTexture.colorSpace=T.SRGBColorSpace;
  const mealLabel=r.mesh(r.geometry('PlaneGeometry',.62,.155),r.own(new T.MeshBasicMaterial({map:labelTexture})),root,[3.48,1.40,1.064]);mealLabel.rotation.y=Math.PI;mealLabel.name='meal-heating-label';
- const path=new T.CatmullRomCurve3([[7.4,1.2,-14.56],[6.6,.43,-14],[5.1,.43,-4.4],[4.75,.43,.7],[4.55,1.16,.7],[4.28,1.16,.7],[4.1,1.25,1.43],[3.99,1.6,1.43]].map(p=>new T.Vector3(...p)),false,'centripetal');
+ const source=new T.Vector3(7.44,3.08,-15.3);if(powerOutput){powerOutput.updateWorldMatrix(true,false);powerOutput.getWorldPosition(source);}
+ const path=new T.CatmullRomCurve3([source.toArray(),[7.85,2.95,-15.3],[7.85,.43,-14.2],[5.1,.43,-4.4],[4.75,.43,.7],[4.55,1.16,.7],[4.28,1.16,.7],[4.1,1.25,1.43],[3.99,1.6,1.43]].map(p=>new T.Vector3(...p)),false,'centripetal');
  const cable=r.mesh(r.own(new T.TubeGeometry(path,90,.023,5,false)),r.material('#223c3b'),root);
  for(const x of [4.58,4.35])r.box(root,'#52685f',[x,1.16,.7],[.13,.22,.2]);
  r.cylinder(root,'#96bca8',[3.99,1.6,1.43],.05,.07).rotation.z=Math.PI/2;
  const flowMat=r.own(new T.ShaderMaterial({transparent:true,depthWrite:false,toneMapped:false,uniforms:{head:{value:0}},vertexShader:'varying float along;void main(){along=uv.x;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',fragmentShader:'varying float along;uniform float head;void main(){float front=(1.-smoothstep(head-.012,head+.012,along));float tail=smoothstep(head-.16,head-.13,along);float a=front*tail;gl_FragColor=vec4(.45,1.,.74,a*.94);}'}));
  const flow=r.mesh(r.own(new T.TubeGeometry(path,100,.060,5,false)),flowMat,root);flow.frustumCulled=false;
  const energyHead=r.mesh(r.geometry('SphereGeometry',.11,8,5),r.own(new T.MeshBasicMaterial({color:'#d0ffda',toneMapped:false})),root);energyHead.name='wire-energy-head';energyHead.visible=false;
- r.cylinder(root,'#95b9ad',[7.4,1.2,-14.56],.055,.06).rotation.x=Math.PI/2;
+ r.cylinder(root,'#95b9ad',source.toArray(),.055,.06).rotation.z=Math.PI/2;
  const consoleRoot=new T.Group();consoleRoot.name='pylon-03-maintenance-console';consoleRoot.position.set(7.4,0,-14.9);root.add(consoleRoot);
  r.box(consoleRoot,'#314b4b',[0,.7,0],[1.15,1.25,.58],{emissive:'#153032',emissiveIntensity:.4});r.box(consoleRoot,'#5c7271',[0,1.36,.16],[1.3,.08,.8]);r.box(consoleRoot,'#1b3038',[0,1.85,-.1],[1.24,.84,.10]);r.box(consoleRoot,'#1b3038',[0,1.41,.30],[.67,.035,.22]);r.box(consoleRoot,'#849b91',[.48,1.42,.28],[.08,.035,.11]);r.box(consoleRoot,'#203b37',[0,2.48,0],[1.52,.08,1.2]);optimizeStaticSet(consoleRoot,r);
- const canvas=document.createElement('canvas');canvas.width=1024;canvas.height=680;const c=canvas.getContext('2d');let art=null,artLoaded=false,censored=false,forensics=false;
+ const canvas=document.createElement('canvas');canvas.width=1024;canvas.height=680;const c=canvas.getContext('2d');let art=null,artLoaded=false,censored=false,forensics=false,controlConfirmed=false;
  function paintLauncher(){c.fillStyle='#e8e7e3';c.fillRect(0,0,1024,680);c.fillStyle='#1b2d39';c.fillRect(0,0,1024,56);c.fillStyle='#e1e8e6';c.font='28px sans-serif';c.fillText('TIANSHI 03   /   維護終端',26,39);if(art){const h=610,w=art.width*h/art.height;c.drawImage(art,600-w/2,64,w,h);}c.fillStyle='#13202e';c.font='bold 114px sans-serif';c.fillText('NIKKE',44,230);c.font='29px sans-serif';c.fillText('GODDESS OF VICTORY',50,277);c.fillText('PC LAUNCHER',50,323);c.fillStyle='#c5473b';c.fillRect(50,495,320,70);c.fillStyle='#fff';c.font='bold 38px sans-serif';c.fillText('啟動遊戲',125,543);c.fillStyle='#647278';c.font='22px sans-serif';c.fillText('版本更新完成   ·   帳戶已登入',50,610);if(forensics){c.fillStyle='#2c3139';c.fillRect(40,350,510,122);c.fillStyle='#ffd4a3';c.font='25px sans-serif';c.fillText('供應鏈攻擊 · CDN 腳本遭竄改',55,382);c.fillText('竊密木馬 · Credential theft',55,419);c.fillStyle='#94e5cd';c.fillText('C2 遠端控制通道 · 在線',55,455);}if(texture)texture.needsUpdate=true;}
  const basePaintLauncher=paintLauncher;
- function repaintLauncher(){basePaintLauncher();if(censored&&art){const scale=610/art.height,left=600-art.width*scale/2;c.fillStyle='#030303';c.fillRect(left+198*scale,64+113*scale,112*scale,37*scale);if(texture)texture.needsUpdate=true;}}
+ function repaintLauncher(){basePaintLauncher();if(controlConfirmed){c.fillStyle='#173e34';c.fillRect(40,350,510,122);c.fillStyle='#d8f3df';c.font='bold 29px sans-serif';c.fillText('控制指令已送出',55,393);c.font='25px sans-serif';c.fillText('供電來源：3號天師樁儲能模組',55,441);if(texture)texture.needsUpdate=true;}if(censored&&art){const scale=610/art.height,left=600-art.width*scale/2;c.fillStyle='#030303';c.fillRect(left+198*scale,64+113*scale,112*scale,37*scale);if(texture)texture.needsUpdate=true;}}
  let texture=null;repaintLauncher();texture=r.own(new T.CanvasTexture(canvas));texture.colorSpace=T.SRGBColorSpace;
  r.mesh(r.geometry('PlaneGeometry',1.16,.76),r.own(new T.MeshBasicMaterial({map:texture})),consoleRoot,[0,1.85,-.039]);
  if(typeof Image!=='undefined'){const img=new Image();img.onload=()=>{art=img;artLoaded=true;repaintLauncher();};img.src=`${import.meta.env?.BASE_URL||'/'}images/nikke-rapi.webp`;}
  let active=false,hot=true,stage='',age=0,temperature=50,hotAt=null;
- return {root,path,panel,reset(){hotAt=null;censored=forensics=false;repaintLauncher();},update(s,{intact=true}={}){active=!!s?.vcr;stage=s?.tablet?.stage||'';age=s?.tablet?.age||0;fridge.visible=mealLabel.visible=!!intact;
+ return {root,path,panel,reset(){hotAt=null;censored=forensics=controlConfirmed=false;repaintLauncher();},update(s,{intact=true}={}){active=!!s?.vcr;stage=s?.tablet?.stage||'';age=s?.tablet?.age||0;fridge.visible=mealLabel.visible=!!intact;
+  const confirmed=stage==='cable';if(confirmed!==controlConfirmed){controlConfirmed=confirmed;repaintLauncher();}
   const incident=['backdoor','rapi-request','rapi-answer','rapi-mask'].includes(stage);if(incident!==forensics){forensics=incident;repaintLauncher();}
   if(s?.tablet&&censored!==!!s.tablet.censored){censored=!!s.tablet.censored;repaintLauncher();}
   const past=active&&!['return','rewind'].includes(s.phase)||s?.phase==='rewind'&&s.rewindProgress>.98;
@@ -44,6 +46,6 @@ export function buildVcrEffects(scene,r){
   const mode=stage==='defrost'?'rising':hot?'hot':'cool';display(temperature,mode,past);railMat.color.set(mode==='cool'?'#b6eaff':mode==='rising'?'#ffc65b':'#ff6244');railMat.color.multiplyScalar(hot&&mode==='hot'&&!reduced?.85+.15*Math.sin((s?.clock||0)*3)**2:1);
   frost.material.opacity=past?Math.max(0,Math.min(.16,-temperature/80)):0;frost.visible=frost.material.opacity>0;
   vapor.visible=past&&stage==='hot';for(let i=0;i<6;i++){const p=reduced?.3:(((s?.clock||0)*.3+i/6)%1);dummy.position.set(1+(i%3)*.22,1.95+p*.6,-1.85);dummy.scale.set(.035+p*.10,.06+p*.12,.035);dummy.updateMatrix();vapor.setMatrixAt(i,dummy.matrix);}vapor.instanceMatrix.needsUpdate=true;
-  flow.visible=past&&stage==='cable';energyHead.visible=flow.visible;if(flow.visible){flowMat.uniforms.head.value=wireProgress(age);path.getPointAt(wireProgress(age),energyHead.position);}
- },get state(){return {active,hot,stage,age,temperature,artLoaded,censored,forensics,fridgeVisible:fridge.visible,energyVisible:energyHead.visible,energyPosition:energyHead.position.toArray()};}};
+  flow.visible=past&&stage==='cable'&&age>=.4;energyHead.visible=flow.visible;if(flow.visible){flowMat.uniforms.head.value=wireProgress(age);path.getPointAt(wireProgress(age),energyHead.position);}
+ },get state(){return {active,hot,stage,age,temperature,artLoaded,censored,forensics,fridgeVisible:fridge.visible,energyVisible:energyHead.visible,energyPosition:energyHead.position.toArray(),powerSource:source.toArray(),sourceKind:'tianshi-grid',controlConfirmed};}};
 }

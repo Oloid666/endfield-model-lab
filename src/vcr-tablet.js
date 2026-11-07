@@ -1,6 +1,6 @@
 // Every reveal uses the mission clock, including the deliberately late eye bar.
 // Slow down near both sockets so the final arrival is visible before power selection.
-export function wireProgress(age){const t=Math.max(0,Math.min(6,age));return t<1.5?t/1.5*.09:t<4.9?.09+(t-1.5)/3.4*.826:.916+(t-4.9)/1.1*.084;}
+export function wireProgress(age){const t=Math.max(0,Math.min(6,age));return t<.4?0:t<1.6?(t-.4)/1.2*.09:t<4.9?.09+(t-1.6)/3.3*.826:.916+(t-4.9)/1.1*.084;}
 export const TABLET_PAGES={
  search:['冰箱溫度設定',['梨花冰沙 −40°C／氣泡水 0°C','調整溫度需要登入管理後台','請輸入管理員密碼'],[['scan','找找進入後台的方法']]],
  'scan-php':['分析 711 網路協議中…',['識別管理閘道與服務版本'],[]],
@@ -18,11 +18,11 @@ export const TABLET_PAGES={
  'meal-label':['便當加熱說明',['正在查看包裝標籤'],[]],
  grid:['找個加速的方法',['探索微波爐的供電設備'],[['scan-grid','找個加熱快一點的方法']]],
  'scan-grid':['偵測電網漏洞中…',['檢查天師樁供電協議'],[]],
- backdoor:['3號天師樁：偵測到竊密木馬',['NIKKE PC Launcher｜帳號密碼可能外洩','供應鏈攻擊｜CDN 腳本遭竄改','憑證竊取 Credential theft','C2 遠端控制通道：在線'],[]],
+ backdoor:['3號天師樁：偵測到竊密木馬',['NIKKE PC Launcher｜帳號密碼可能外洩','供應鏈攻擊｜CDN 腳本遭竄改','憑證竊取 Credential theft','C2 遠端控制通道：在線｜可操作天師樁供電'],[]],
  'rapi-request':['3號天師樁管理電腦',['NIKKE PC Launcher'],[]],
  'rapi-answer':['3號天師樁管理電腦',['NIKKE PC Launcher'],[]],
  'rapi-mask':['3號天師樁管理電腦',['遠端存取通道：在線'],[['enable','接通天師樁電源']]],
- cable:['3號天師樁供電已接通',['能量正在沿線送往微波爐'],[]],
+ cable:['3號天師樁供電已接通',['電腦負責控制，電網負責供電','能量沿線送往微波爐'],[]],
  power:['選擇供電功率',['設備額定與電網輸出'],[['800w','正常加熱（800 W）'],['800mw','借用電網（800 MW）']]],
  confirm:['確認套用：800 MW',['設備額定：800 W','輸出為設備額定的一百萬倍'],[['confirm','確認借電']]],
  ready:['800 MW 已套用',['設備供電已接通'],[['start','開始熱便當']]],
@@ -34,9 +34,9 @@ const TALKS={
  search:[['xaihi','冰箱能不能再調冷一點……'],['xaihi','要從後台設定，還要密碼。'],['dragon','妳知道密碼？'],['xaihi','不知道。我找找別的方法。']],
  php:[['xaihi','後台有個沒修補的問題。這個工具好像能從那裡進去。']],
  success:[['xaihi','嗯，有降。','satisfied'],['dragon','成功了？']],
- hot:[['dragon','正五十？！你把蒸發器切到除霜模式了！'],['xaihi','……法國🇫🇷駭客工具，預設模式忘了改。','avert'],['dragon','熱愛105°C的你～🎶\n滴滴清純的蒸餾水～','song'],['xaihi','……飲料晚點再說。先熱便當。','side-eye']],
+ hot:[['dragon','正五十？！妳把蒸發器切到除霜模式了！'],['xaihi','……借了法國駭客的工具，忘了改預設模式。','avert'],['dragon','熱愛105°C的你～🎶\n滴滴清純的蒸餾水～','song'],['xaihi','……飲料晚點再說。先熱便當。','side-eye']],
  'meal-label':[['xaihi','微波三分鐘……','read-label'],['xaihi','太久了。我找個快一點的。','tablet']],
- backdoor:[['xaihi','這台妮姬啟動器裡有木馬，會偷玩家的帳號密碼。'],['dragon','玩遊戲還附贈盜帳號？'],['xaihi','惡意程式混進正常更新，叫供應鏈攻擊。這台也留下遠端通道。'],['dragon','別人偷帳號，妳偷電？'],['xaihi','借。照工具說明接一下。']],
+ backdoor:[['xaihi','這台妮姬啟動器裡有木馬，會偷玩家的帳號密碼。'],['dragon','玩遊戲還附贈盜帳號？'],['xaihi','惡意程式混進正常更新，叫供應鏈攻擊。這台也留下遠端通道。'],['dragon','別人偷帳號，妳偷電？'],['xaihi','借。這台能控制天師樁，電從那邊接。']],
  'rapi-request':[['rapi','可以幫我打馬賽克嗎？']],
  'rapi-answer':[['dragon','可以！']],
  power:[['dragon','妳連這套都會？'],['xaihi','不會駭。照工具說明借個通道而已。']]
@@ -63,6 +63,6 @@ export class VcrTablet{
   const [title,base,buttons]=TABLET_PAGES[this.stage],age=Math.max(0,this.now-this.at);
   const temperature=this.stage==='cooling'?Math.round(4-12*Math.min(1,age/2)):this.stage==='success'?-8:this.stage==='defrost'?Math.round(-8+58*Math.max(0,Math.min(1,(age-.6)/3))):this.hot?50:4;
   const busy=this.now<this.until||this.stage==='search'&&age<1.2||this.stage==='backdoor'&&age<1.5;
-  return {stage:this.stage,title,lines:this.stage==='cooling'?['指令已送出',`實際溫度：${signedTemperature(temperature)}`]:base,buttons:this.talks.length?[]:buttons,dialogue:this.talks[0]||null,dialogueAge:Math.max(0,this.now-this.talkAt),hot:this.hot,powered:this.powered,censored:this.censored,censorAt:this.censorAt,temperature,note:this.note,age,busy,revision:this.revision,wireBeat:this.stage==='cable'?(age<1.5?'source':age<4.9?'route':'sink'):null};
+  return {stage:this.stage,title,lines:this.stage==='cooling'?['指令已送出',`實際溫度：${signedTemperature(temperature)}`]:base,buttons:this.talks.length?[]:buttons,dialogue:this.talks[0]||null,dialogueAge:Math.max(0,this.now-this.talkAt),hot:this.hot,powered:this.powered,censored:this.censored,censorAt:this.censorAt,temperature,note:this.note,age,busy,revision:this.revision,wireBeat:this.stage==='cable'?(age<.4?'control':age<1.6?'source':age<4.9?'route':'sink'):null};
  }
 }

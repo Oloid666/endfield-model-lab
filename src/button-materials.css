@@ -59,3 +59,22 @@
  #app.ui-refined .flight-position-status{font-size:11px;padding:3px 6px}
 }
 @media(prefers-reduced-motion:reduce){:is(#app.ui-refined,.feedback-dialog) [data-ui]{transition:none!important;translate:none!important}}
+/* The live camera shutter is its own control, never a text CTA. */
+#app.ui-refined .investigation-ui[data-phase=photo]{background:linear-gradient(0deg,#0b2025ed,#0b20251c)!important;border:0;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;padding:10px 14px!important;width:calc(100% - 24px)!important;max-width:520px!important;left:50%!important;right:auto!important;transform:translateX(-50%)!important}
+#app.ui-refined .investigation-ui[data-phase=photo] .investigation-heading{justify-content:center}
+#app.ui-refined .investigation-ui[data-phase=photo] .investigation-message{margin:5px 0 8px;font-size:13px;line-height:1.4;text-align:center}
+#app.ui-refined .investigation-ui[data-phase=photo] .investigation-actions{display:flex!important;justify-content:center;flex:none;gap:0;margin:0;position:relative;padding:0 0 22px}
+#app.ui-refined .photo-shutter[data-ui=shutter]{appearance:none;flex:0 0 72px!important;width:72px!important;min-width:72px!important;max-width:72px!important;height:72px!important;min-height:72px!important;border-radius:50%!important;border:4px solid #f7f4e8!important;background:#f7f4e8!important;box-shadow:inset 0 0 0 3px #173035!important;outline:2px solid #f7f4e8;outline-offset:4px;padding:0!important;margin:7px!important;opacity:1;filter:none;touch-action:manipulation;translate:none}
+#app.ui-refined .photo-shutter-label{position:absolute;left:0;right:0;bottom:0;color:#eee8d5;font:13px/18px sans-serif;text-align:center;letter-spacing:.05em;pointer-events:none}
+#app.ui-refined .photo-shutter[data-ui=shutter]:active{background:#c3cec7!important;transform:scale(.96);filter:none!important}
+#app.ui-refined .photo-shutter[data-ui=shutter]:disabled{background:#80948c!important;cursor:progress;opacity:1!important}
+#app.ui-refined .loading-details .loading-skip{display:block;min-height:48px;padding:10px 20px;margin:8px auto;max-width:100%;white-space:normal;font-size:14px}
+#app.ui-refined .loading-details .loading-skip[hidden]{display:none}
+@media(max-height:600px){#app.ui-refined .photo-shutter[data-ui=shutter]{flex-basis:64px!important;width:64px!important;min-width:64px!important;max-width:64px!important;height:64px!important;min-height:64px!important}#app.ui-refined .investigation-ui[data-phase=photo]{padding:6px 10px!important;max-width:400px!important}}
+@media(prefers-reduced-motion:reduce){#app.ui-refined .photo-shutter[data-ui=shutter]:active{transform:none}}
+
+#app.ui-refined .photo-shutter[data-ui="shutter"]:focus-visible{outline:3px solid #f5dba0;outline-offset:6px}
+
+#app.ui-refined.mission-active:has(.investigation-ui[data-phase=photo]:not([hidden])) #scene{right:0!important;width:100%!important}
+
+#app.ui-refined .investigation-ui[data-phase=photo]::before{content:none!important}

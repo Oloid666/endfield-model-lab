@@ -14,9 +14,10 @@ export const WAITING_LINES = [
   '龍泡泡：雨有點大，站近一點。', '龍泡泡：門口等妳，不催。真的。',
 ];
 export class OpeningTimeline {
-  constructor(){this.time=0;this.index=0;this.age=0;this.ready=false;this.final=false;this.done=false;this.reaction=-1;this.reactionAge=0;this.waited=0;this.cooldown=0;this.count=0;}
+  constructor(){this.time=0;this.index=0;this.age=0;this.ready=false;this.final=false;this.done=false;this.reaction=-1;this.reactionAge=0;this.waited=0;this.cooldown=0;this.count=0;this.entryRequested=false;}
+  requestEntry(){this.entryRequested=true;if(this.ready){this.index=OPENING_LINES.length;this.reaction=-1;this.final=true;this.age=2.5;this.done=true;}return this.done;}
   tick(dt,visible=true){
-    if(!visible||this.done)return;dt=Math.max(0,Math.min(.25,dt));this.time+=dt;this.cooldown=Math.max(0,this.cooldown-dt);
+    if(!visible||this.done)return;if(this.entryRequested&&this.ready){this.requestEntry();return;}dt=Math.max(0,Math.min(.25,dt));this.time+=dt;this.cooldown=Math.max(0,this.cooldown-dt);
     if(this.index<OPENING_LINES.length){this.age+=dt;if(this.age+1e-8>=OPENING_LINES[this.index][1]){this.age=0;this.index++;}return;}
     if(this.reaction>=0){this.reactionAge+=dt;if(this.reactionAge>=1.8){this.reaction=-1;this.waited=0;}return;}
     if(this.ready){this.final=true;this.age+=dt;this.done=this.age>=2.5;return;}

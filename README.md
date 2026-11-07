@@ -120,3 +120,5 @@ npm run preview
 ### 回放裡的妮姬啟動器
 
 螢幕採用《勝利女神：妮姬》拉毗角色圖，來源為 [Nikke-db 公開素材庫](https://github.com/Nikke-db/Nikke-db.github.io/blob/main/images/FB/c010_00.png)，轉為 88 KB WebP 隨遊戲提供。角色美術權利屬原權利人；控制台與啟動器版面為本作重製的劇情介面。
+
+第一輪人物動作、運鏡、白色拍照快門及供電來源修正，見 [實作與驗證紀錄](docs/RAIN-FIRST-WAVE.md)。第二輪待辦保留於 [雨夜待優化](docs/RAIN-BACKLOG.md)。

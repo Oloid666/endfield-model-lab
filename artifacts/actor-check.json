@@ -43,6 +43,11 @@
       "detail": null
     },
     {
+      "name": "Zero-delta capture preserves moving feet, arms and gait",
+      "passed": true,
+      "detail": null
+    },
+    {
       "name": "Walking changes position and hips/knees",
       "passed": true,
       "detail": {
@@ -55,8 +60,8 @@
       "detail": {
         "time": 60.38333333333333,
         "phase": 3.228042557804931,
-        "leftAnkleY": 0.4740672995821366,
-        "rightAnkleY": 0.5468739530537347,
+        "leftAnkleY": 0.47406729934416225,
+        "rightAnkleY": 0.5565815130613336,
         "baselineAnkleY": 0.47406725295000507,
         "pose": {
           "head": [
@@ -72,16 +77,16 @@
             0.10643544952009426
           ],
           "hip": [
-            -0.9967564660022203,
-            -0.00012323310252314312,
-            -0.0013027753986110029,
-            -0.08046635988238102
+            -0.946270226592721,
+            -0.05004071555327533,
+            -0.005939769864911555,
+            -0.31942652392237225
           ],
           "knee": [
-            0.17176164218471268,
-            -0.0030336736857145587,
-            -0.00011862159909686865,
-            0.985133859445818
+            0.6428906589725957,
+            -0.009359259708654533,
+            -0.024944028126985235,
+            0.7654944816390143
           ],
           "armL": [
             0.709218947788247,
@@ -123,11 +128,18 @@
       }
     },
     {
+      "name": "A planted stance foot never jumps during continuous walking",
+      "passed": true,
+      "detail": {
+        "largestWorldStepMetres": 0.003570287141678714
+      }
+    },
+    {
       "name": "Walking ankle target error remains within 2 cm",
       "passed": true,
       "detail": {
-        "maxFootTargetErrorMetres": 0.014223980746992286,
-        "maxActualFootLiftMetres": 0.07475141327302726
+        "maxFootTargetErrorMetres": 0.009119369590161854,
+        "maxActualFootLiftMetres": 0.08471826226930756
       }
     },
     {
@@ -147,7 +159,7 @@
           0.32,
           2.48
         ],
-        "maxFootTargetErrorMetres": 0.0025011674215462453
+        "maxFootTargetErrorMetres": 0.0025011674282174735
       }
     },
     {
@@ -184,9 +196,9 @@
       "passed": true,
       "detail": {
         "phonePosition": [
-          0.11740736237689609,
-          1.1343263488843816,
-          0.29837290311669895
+          0.11740736237689753,
+          1.1343263488843784,
+          0.2983729031166985
         ]
       }
     },

@@ -57,11 +57,16 @@ check('Head and wrist react to different beats',JSON.stringify(trace[0].pose.hea
 check('Cloth joint actually changes its pose',JSON.stringify(trace[1].pose.cloth)!==JSON.stringify(trace[2].pose.cloth));
 
 const start=a.position.clone(),restAnkleHeight=poses.footR.bone.getWorldPosition(vector()).y;
-let maxWalk=0,actualLift=0,liftSample=null,maxArmL=0,maxArmR=0;
+let maxWalk=0,actualLift=0,liftSample=null,maxArmL=0,maxArmR=0,maxStanceStep=0,previousFeet=null;
 const neutralArmL=poses.armL.bone.quaternion.clone(),neutralArmR=poses.armR.bone.quaternion.clone();
 a.setMove(1,0,true);
 for(let i=0;i<120;i++){
   const time=60+i/60;a.update(time,1/60);maxWalk=Math.max(maxWalk,a.status.footDrift);
+  const footSample=['L','R'].map(side=>poses['foot'+side].bone.getWorldPosition(vector()));
+  const swings=[a.status.gait.leftSwing,a.status.gait.rightSwing];
+  if(previousFeet)for(let side=0;side<2;side++)if(swings[side]===false&&previousFeet.swings[side]===false)maxStanceStep=Math.max(maxStanceStep,footSample[side].distanceTo(previousFeet.positions[side]));
+  previousFeet={positions:footSample,swings};
+  if(i===90){const arms=[poses.armL.bone.quaternion.clone(),poses.armR.bone.quaternion.clone()],gait=JSON.stringify(a.status.gait);a.update(time,0);check('Zero-delta capture preserves moving feet, arms and gait',footSample.every((p,j)=>p.distanceTo(poses['foot'+['L','R'][j]].bone.getWorldPosition(vector()))<1e-7)&&arms[0].angleTo(poses.armL.bone.quaternion)<1e-7&&arms[1].angleTo(poses.armR.bone.quaternion)<1e-7&&JSON.stringify(a.status.gait)===gait);}
   const left=poses.footL.bone.getWorldPosition(vector()).y,right=poses.footR.bone.getWorldPosition(vector()).y;
   actualLift=Math.max(actualLift,left-restAnkleHeight,right-restAnkleHeight);
   maxArmL=Math.max(maxArmL,neutralArmL.angleTo(poses.armL.bone.quaternion));maxArmR=Math.max(maxArmR,neutralArmR.angleTo(poses.armR.bone.quaternion));
@@ -69,6 +74,7 @@ for(let i=0;i<120;i++){
 }
 check('Walking changes position and hips/knees',a.position.distanceTo(start)>.8&&JSON.stringify(trace[0].pose.hip)!==JSON.stringify(a.poseData.hip)&&JSON.stringify(trace[0].pose.knee)!==JSON.stringify(a.poseData.knee),{distance:a.position.distanceTo(start)});
 check('Walking swing foot lifts at about 60.38 seconds',Math.max(liftSample.leftAnkleY,liftSample.rightAnkleY)-restAnkleHeight>.045,liftSample);
+check('A planted stance foot never jumps during continuous walking',maxStanceStep<.015,{largestWorldStepMetres:maxStanceStep});
 check('Walking ankle target error remains within 2 cm',maxWalk<.02,{maxFootTargetErrorMetres:maxWalk,maxActualFootLiftMetres:actualLift});
 check('Real shoulder bones have a small, asymmetric walking excursion',maxArmL>.025&&maxArmR>.025&&maxArmL<.15&&maxArmR<.15&&Math.abs(maxArmL-maxArmR)>.005,{leftPeakRadians:maxArmL,rightPeakRadians:maxArmR});
 a.setMove(0,0,false);for(let i=0;i<90;i++)a.update(62+i/60,1/60);

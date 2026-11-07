@@ -5,7 +5,7 @@ import * as T from 'three';
 export function makeLocomotion(root,pivot) {
   const input=new T.Vector2(),velocity=new T.Vector2();
   let enabled=false,heading=.08,phase=0,amount=0,walkDistance=0,avoidance=null;
-  let street=false,avoidanceEnabled=true;
+  let street=false,avoidanceEnabled=true,previousSpeed=0,acceleration=0,turn=0;
   let entrance={minX:-1,maxX:.6,z:1.8};
   let obstacles=[{x:-2.7,z:-.25,w:1,d:1.65},{x:.6,z:-.32,w:.8,d:1.4},{x:2.85,z:.2,w:.95,d:2.15}];
   const radius=.2;
@@ -22,15 +22,16 @@ export function makeLocomotion(root,pivot) {
     }
     return true;
   }
-  const state={moving:false,speed:0,amount:0,phase:0,heading:.08,distance:0,inputX:0,inputZ:0};
+  const state={moving:false,speed:0,amount:0,phase:0,heading:.08,acceleration:0,turn:0,distance:0,inputX:0,inputZ:0};
   return {state,free,
     get entrance(){return entrance;},
     setAvoidance(fn){avoidance=fn;},setAvoidanceEnabled(value){avoidanceEnabled=!!value;},
     setMove(x,z,on=true){enabled=on;input.set(Number.isFinite(x)?x:0,Number.isFinite(z)?z:0);if(input.lengthSq()>1)input.normalize();if(!on)input.set(0,0);},
     setObstacles(value){if(Array.isArray(value))obstacles=value;else if(value){street=value.street===true;obstacles=value.obstacles||value.racks||obstacles;entrance=value.entrance||entrance;}},
-    teleport(x,z){if(!free(x,z))return false;root.position.set(x,.32,z);velocity.set(0,0);input.set(0,0);enabled=false;amount=0;phase=0;heading=.08;pivot.rotation.y=.08;Object.assign(state,{moving:false,speed:0,amount:0,phase:0,heading:.08,inputX:0,inputZ:0});return true;},
+    teleport(x,z){if(!free(x,z))return false;root.position.set(x,.32,z);velocity.set(0,0);input.set(0,0);enabled=false;amount=0;phase=0;previousSpeed=acceleration=turn=0;heading=.08;pivot.rotation.y=.08;Object.assign(state,{moving:false,speed:0,amount:0,phase:0,heading:.08,acceleration:0,turn:0,inputX:0,inputZ:0});return true;},
     update(delta){
       const dt=Math.min(.06,Math.max(0,Number.isFinite(delta)?delta:0));
+      if(!dt)return state;
       const smooth=1-Math.exp(-dt*12),targetX=enabled?input.x*.82:0,targetZ=enabled?input.y*.82:0;
       velocity.x=T.MathUtils.lerp(velocity.x,targetX,smooth);velocity.y=T.MathUtils.lerp(velocity.y,targetZ,smooth);
       const startX=root.position.x,startZ=root.position.z;
@@ -46,13 +47,15 @@ export function makeLocomotion(root,pivot) {
       const distance=Math.hypot(root.position.x-startX,root.position.z-startZ),speed=dt?distance/dt:0;
       const walking=speed>.025;
       amount=T.MathUtils.lerp(amount,walking?Math.min(1,speed/.55):0,1-Math.exp(-dt*10));
+      let turnStep=0;
       if(walking){
         const target=Math.atan2(root.position.x-startX,root.position.z-startZ);
-        let difference=Math.atan2(Math.sin(target-heading),Math.cos(target-heading));heading+=difference*(1-Math.exp(-dt*10));
+        let difference=Math.atan2(Math.sin(target-heading),Math.cos(target-heading));turnStep=difference*(1-Math.exp(-dt*10));heading+=turnStep;
         phase+=distance*12.1;walkDistance+=distance;
       }
+      acceleration=T.MathUtils.damp(acceleration,dt?T.MathUtils.clamp((speed-previousSpeed)/dt,-2,2):0,9,dt);previousSpeed=speed;turn=T.MathUtils.damp(turn,dt?T.MathUtils.clamp(turnStep/dt,-3,3):0,8,dt);
       pivot.rotation.y=heading;
-      Object.assign(state,{moving:walking||amount>.035,speed,amount,phase,heading,distance:walkDistance,inputX:enabled?input.x:0,inputZ:enabled?input.y:0});
+      Object.assign(state,{moving:walking||amount>.035,speed,amount,phase,heading,acceleration,turn,distance:walkDistance,inputX:enabled?input.x:0,inputZ:enabled?input.y:0});
       return state;
     },
   };

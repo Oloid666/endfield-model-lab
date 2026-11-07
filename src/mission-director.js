@@ -36,7 +36,7 @@ export function chargeCameraBeat(elapsed){
 // Coordinates actors, a single camera and pooled effects from the mission clock.
 export class MissionDirector{
   constructor(world){
-    this.vcrEffects=buildVcrEffects(world.scene,world.r);
+    this.vcrEffects=buildVcrEffects(world.scene,world.r,{powerOutput:world.tianshi?.powerOutputs?.[2]});this.wireHolds=[2.15,3.3,4.4].map(age=>this.vcrEffects.path.getPointAt(wireProgress(age)).toArray());
     this.captureFx=buildCaptureEffects(world.scene,world.r);this.captureAt=-Infinity;this.captureFrom=[0,0,0];
     this.cinematicTrack=new CinematicTrack();
     if(import.meta.env?.DEV&&typeof location!=='undefined'&&new URLSearchParams(location.search).get('cameraDebug')==='1'&&world.container)this.cinematicTrack.enableDebug(world.container);
@@ -153,7 +153,7 @@ export class MissionDirector{
   beforeActors(state){
     this.state=state;const actor=this.world.actors;if(!state||!actor)return;
     const phase=state.phase,e=state.phaseElapsed;this.world.controls.enabled=!this.world.upstairsInvitation&&!state.presentationLocked&&!['photo-flight','photo'].includes(phase)&&!lockedPhases.has(phase);
-    actor.setSceneAction?.({playful:phase==='ready',singing:phase==='tour'&&e>=14&&e<30,heading:['ready','intro','photo-talk','cargo'].includes(phase)?-.65:['photo-check','photo-review','photo-sending'].includes(phase)?-.35:['photo-flight','photo'].includes(phase)?0:undefined,handover:phase==='photo-talk'&&state.node?.event==='camera-handover',photoLook:['photo-check','photo-review','photo-sending','cargo'].includes(phase),externalDevice:phase.startsWith('photo')||phase==='cargo',mealVisible:!['ready','intro','purchase'].includes(phase)&&!(phase==='walk-out'&&e<4.2)});
+    actor.setSceneAction?.({mealReceive:phase==='walk-out'&&state.shopping?.handoff?Math.sin(Math.PI*smooth(state.shopping.handoffElapsed/1.2)):0,playful:phase==='ready',singing:phase==='tour'&&e>=14&&e<30,heading:['ready','intro','photo-talk','cargo'].includes(phase)?-.65:['photo-check','photo-review','photo-sending'].includes(phase)?-.35:['photo-flight','photo'].includes(phase)?0:undefined,handover:phase==='photo-talk'&&state.node?.event==='camera-handover',photoLook:['photo-check','photo-review','photo-sending','cargo'].includes(phase),externalDevice:phase.startsWith('photo')||phase==='cargo',mealVisible:!['ready','intro','purchase'].includes(phase)&&!(phase==='walk-out'&&(!state.shopping?.handoff||state.shopping.handoffElapsed<1.1))});
     if(state.postgame){
       actor.root.visible=this.world.charactersEnabled;actor.setCinematic(null);actor.setSoot(false);
       const roam=this.dragonRoam.update(state.clock,actor.heroPosition,actor.dragonPosition,{floorPlan:this.world.store.floorPlan,intact:this.world.streetShow?.state.mode!=='collapsed',doors:this.world.store.doors,meal:this.world.remnant?.state.visible?this.world.remnant.state.position:null});this.roamState=roam;
@@ -239,7 +239,8 @@ export class MissionDirector{
     if(['photo-pose','photo-talk','photo-flight','photo','photo-return','photo-sending','photo-check','photo-review','cargo'].includes(phase)){
       actor.setMove(0,0,false);const p=phase==='photo-pose'?smooth(Math.min(1,e/2)):1;
       const review=['photo-return','photo-sending','photo-check','photo-review','cargo'].includes(phase),back=phase==='photo-return'?smooth(e/2.5):1;
-      const from=this.photoReturnFrom||[0,2.6,11.2];const pos=review?[from[0]+(-2.18-from[0])*back,from[1]+(1.42-from[1])*back+Math.sin(back*Math.PI)*.25,from[2]+(3.42-from[2])*back]:phase==='photo'?[state.flight?.x||0,1.5,state.flight?.z||10.5]:[-2.55,1.5,3.5];
+      const reviewX=phase==='photo-review'?-2.68:phase==='photo-check'?-2.18-.5*smooth((e-1)/1):-2.18;
+      const from=this.photoReturnFrom||[0,2.6,11.2];const pos=review?[from[0]+(reviewX-from[0])*back,from[1]+(1.42-from[1])*back+Math.sin(back*Math.PI)*.25,from[2]+(3.42-from[2])*back]:phase==='photo'?[state.flight?.x||0,1.5,state.flight?.z||10.5]:[-2.55,1.5,3.5];
       actor.setDragonProjectile(pos,0);
       if(!this.world.photoPhone){const phone=new T.Group();this.world.r.box(phone,'#172f36',[0,0,0],[.24,.43,.045]);this.world.r.box(phone,'#8fbab5',[0,0,.027],[.21,.36,.006],{emissive:0x70a399,emissiveIntensity:.5}).name='camera-screen';this.world.r.mesh(this.world.r.geometry('CylinderGeometry',.035,.035,.018,16),this.world.r.material('#101b24',{metalness:.6,roughness:.2}),phone,[.06,.14,-.03]).rotation.x=Math.PI/2;this.world.scene.add(phone);this.world.photoPhone=phone;phone.scale.setScalar(.65);const lens=this.world.r.mesh(this.world.r.geometry('CylinderGeometry',.075,.075,.07,16),this.world.r.material('#142125',{metalness:.8}),phone,[0,0,-.06]);lens.rotation.x=Math.PI/2;lens.name='camera-lens';}
       if(phase==='cargo'&&this.world.renderer){this.receiptTexture??=this.world.r.own(new T.TextureLoader().load(`${import.meta.env.BASE_URL}images/receipt.webp`));this.receiptTexture.colorSpace=T.SRGBColorSpace;const display=this.world.photoPhone.getObjectByName('camera-screen');if(display.material.map!==this.receiptTexture){display.material.map=display.material.emissiveMap=this.receiptTexture;display.material.color.set(0xffffff);display.material.needsUpdate=true;}}
@@ -300,7 +301,14 @@ export class MissionDirector{
     this.breath.update(s,dragon,this.world.actors?.status?.dragonHeading||0);
     this.captureFx.update(clock,s,this.world.actors?.gripPosition||feet,dragon,this.captureAt);
     this.panic.visible=['aim-final','finisher'].includes(s?.phase);this.panic.position.set(dragon[0],dragon[1]+.4,dragon[2]);this.panic.quaternion.copy(this.world.camera.quaternion);this.panic.scale.setScalar(this.reducedMotion?1:1+Math.sin(clock*8)*.05);
-    this.bag.position.set(dragon[0]+.25,dragon[1]-.05,dragon[2]);this.bag.rotation.z=Math.sin(clock*3)*.08;if(s?.phase==='walk-out'&&s.phaseElapsed>3.7){const grip=this.world.actors?.gripPosition||feet,p=smooth((s.phaseElapsed-3.7)/1.1);this.bag.position.lerp(new T.Vector3(...grip),p);this.bag.visible=s.phaseElapsed<4.8;}
+    const petGrip=this.world.actors?.dragonGripPosition||dragon;this.bag.position.set(petGrip[0],petGrip[1]-.32,petGrip[2]);this.bag.rotation.set(0,this.world.actors?.status?.dragonHeading||0,0);
+    if(s?.phase==='walk-out'&&s.shopping?.handoff){
+      const e=s.shopping.handoffElapsed,grip=this.world.actors?.gripPosition||feet,contact=smooth(e/.5)*(1-smooth((e-.9)/.5));
+      this.world.actors.alignDragonHand?.(grip,contact);const hand=this.world.actors.dragonGripPosition;
+      const ownership=smooth((e-.5)/.6);this.bag.position.set(hand[0]+(grip[0]-hand[0])*ownership,hand[1]+(grip[1]-hand[1])*ownership-.32,hand[2]+(grip[2]-hand[2])*ownership);this.bag.visible=e<1.1;
+    }
+    if(s?.phase==='photo-talk'&&s.node?.event==='camera-handover'&&this.world.photoPhone){const p=smooth((s.nodeElapsed||0)/1.5),hand=this.world.actors.deviceGripPosition;this.world.photoPhone.position.set(hand[0]+(-1.7-hand[0])*p,hand[1]+(1.5-hand[1])*p,hand[2]+(3.05-hand[2])*p);}
+
     const personal=s?.phase==='last'&&Number((s.nodeId||'').split('_').at(-1))>=4||s?.phase==='aim-final';
     const propState={...(s?.postgame?{...s,phase:'ready',progress:0}:s||{phase:'ready'}),inspectCctv:this.world.currentView==='cctv'&&this.world.autoCamera===false,hero:feet,dragon,fxShock:fx.shock||0,impactRevision:fx.impactRevision||0};
     if(s?.phase==='pylon-link'){propState.phase='lever';propState.connection={lever:Math.min(1,s.phaseElapsed/4)};}
@@ -453,7 +461,7 @@ export class MissionDirector{
     if(s.postgame){const h=w.actors.heelCenter;target=[h[0],h[1]+1.12,h[2]];position=[h[0],h[1]+2.35,h[2]+6.7];fov=portrait?48:38;beat='homecoming-pair';}
     if(s.node?.event==='vcr-cue'){const d=w.actors.dragonPosition;position=[d[0]+1.3,d[1]+.65,d[2]+3.2];target=[d[0],d[1]+.3,d[2]];fov=portrait?47:40;beat='vcr-dragon-flight';}
     if(s.phase==='complete'&&!s.postgame&&w.streetShow?.state.snapshotReady){position=[0,7,23];target=[0,3,1.8];fov=portrait?56:43;beat='rebuilt-upstairs-invite';}
-    const context={feet,heroHead:w.actors?.headPosition,dragon:w.actors?.dragonPosition,portrait,reduced:this.reducedMotion,heading,xaihiHead:s.tablet||s.phase==='meal-spawn'?w.xaihi?.headPosition:null,mealPosition:s.phase==='meal-spawn'&&w.remnant?.state.visible?w.remnant.state.position:null,wirePoint:s.tablet?.stage==='cable'?this.vcrEffects.path.getPointAt(wireProgress(s.tablet.age),this.point).toArray():null,aspect:w.camera.aspect,width:w.container?.clientWidth,height:w.container?.clientHeight,container:w.container,server:s.phase==='finisher'?this.end:w.store.destruction.state.serverPosition};
+    const context={wireHoldPoint:this.wireHolds[s.tablet?.age<2.7?0:s.tablet?.age<3.9?1:2],grip:w.actors?.gripPosition,powerSource:this.vcrEffects.state.powerSource,feet,heroHead:w.actors?.headPosition,dragon:w.actors?.dragonPosition,portrait,reduced:this.reducedMotion,heading,xaihiHead:s.tablet||s.phase==='meal-spawn'?w.xaihi?.headPosition:null,mealPosition:s.phase==='meal-spawn'&&w.remnant?.state.visible?w.remnant.state.position:null,wirePoint:s.tablet?.stage==='cable'?this.vcrEffects.path.getPointAt(wireProgress(s.tablet.age),this.point).toArray():null,aspect:w.camera.aspect,width:w.container?.clientWidth,height:w.container?.clientHeight,container:w.container,server:s.phase==='finisher'?this.end:w.store.destruction.state.serverPosition};
     const revised=cinematicStoryShot(s,context,this.cinematicTrack)||revisedStoryShot(s,context);
     if(revised){({position,target,fov,beat}=revised);this.cameraRoll=0;}
     const storyCut=!!revised&&this.previousBeat!==beat;

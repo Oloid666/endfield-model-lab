@@ -23,6 +23,7 @@ for(const portrait of [true,false]){
  }
  for(const age of [.2,1.6,3,4.4,5.4]){
   const state={phase:'hack',vcr:true,clock:age,tablet:{stage:'cable',age}},point=fx.path.getPointAt(wireProgress(age)).toArray();fx.update(state);const s=revisedStoryShot(state,{...context,wirePoint:point}),camera=new T.PerspectiveCamera(s.fov,portrait?390/844:844/390,.05,200);camera.position.fromArray(s.position);camera.lookAt(new T.Vector3(...s.target));camera.updateMatrixWorld();const screen=new T.Vector3(...point).project(camera);
+  if(age<.4){check('Control command does not discharge energy from the computer',!fx.state.energyVisible&&s.beat==='grid-control-confirm');continue;}
   if(age<4.9)check('Energy head remains visible while its camera follows the cable',Math.abs(screen.x)<.65&&Math.abs(screen.y)<.55&&screen.z<1);
   check('Visible energy really travels on the same physical cable',fx.state.energyVisible&&fx.state.energyPosition.every((v,i)=>Math.abs(v-point[i])<1e-9));
  }

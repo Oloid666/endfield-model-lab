@@ -172,10 +172,13 @@ rd.beforeActors(state('rewind',{phaseElapsed:6.7,clock:66.7,rewindProgress:1,rew
 check('VCR ends on the doorway before switching to the past',rd.cameraBeat==='rewind-doorway'&&Math.abs(rd.cameraPosition.z-11.6)<1e-9&&rd.cameraTarget.z===3.25);
 for(const event of ['pear-check','pear-safe','pear-irony']){rd.state=state('landing',{phaseElapsed:7,node:{event}});rd.updateCamera(.016,rw.actors.heroPosition);check('Garden cut on '+event,rd.cameraBeat==='pear-garden-survives'&&rd.shakeEnvelope===0);}
 const wireWorld=makeWorld(),wireDirector=new MissionDirector(wireWorld);wireDirector.reducedMotion=false;wireWorld.xaihi.tabletFrame=()=>null;
+for(const reduced of [false,true]){wireDirector.reducedMotion=reduced;
 for(let i=0;i<180;i++){
  const age=i/30,s=state('hack',{clock:age,phaseElapsed:age,vcr:true,tablet:{stage:'cable',age}});wireDirector.state=s;wireDirector.vcrEffects.update(s);wireDirector.updateCamera(1/30,wireWorld.actors.heroPosition);wireWorld.camera.lookAt(wireWorld.controls.target);wireWorld.camera.updateMatrixWorld(true);
+ if(age<.4){check('Control confirmation has no electrical discharge',!wireDirector.vcrEffects.state.energyVisible);continue;}
  const point=new T.Vector3(...wireDirector.vcrEffects.state.energyPosition).project(wireWorld.camera);
  check('Actual following camera keeps the moving energy in frame: '+i,Math.abs(point.x)<.9&&Math.abs(point.y)<.8&&point.z<1,point.toArray());
+}
 }
 wireWorld.r.dispose();rw.r.dispose();w.r.dispose();
 fs.writeFileSync('artifacts/v14-director-check.json',JSON.stringify({kind:'actual-director-with-mock-world-no-gpu',checks,projections,cameraShots},null,2)+'\n');

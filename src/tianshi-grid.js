@@ -12,7 +12,7 @@ export function buildTianshiGrid(scene,r){
   const root=new T.Group();root.name='wuling-tianshi-grid-v8';scene.add(root);
   const box=r.geometry('BoxGeometry',1,1,1),stone=r.material('#b7c0b6',{roughness:.77,metalness:.06}),edge=r.material('#3e514e',{roughness:.55,metalness:.4});
   const deep=r.material('#203a39',{roughness:.55,metalness:.4}),copper=r.material('#8e9b7f',{roughness:.4,metalness:.6});
-  const pillars=[],dummy=new T.Object3D(),a=new T.Vector3(),b=new T.Vector3(),direction=new T.Vector3(),up=new T.Vector3(0,1,0),hero=new T.Vector3(-1.25,5,9);
+  const powerOutputs=[],pillars=[],dummy=new T.Object3D(),a=new T.Vector3(),b=new T.Vector3(),direction=new T.Vector3(),up=new T.Vector3(0,1,0),hero=new T.Vector3(-1.25,5,9);
   const glowMaterial=()=>r.own(new T.MeshStandardMaterial({color:0x5aaf88,emissive:0x48efb0,emissiveIntensity:.16,roughness:.27,metalness:.18}));
   const glowCanvas=document.createElement('canvas');glowCanvas.width=glowCanvas.height=64;const ctx=glowCanvas.getContext('2d'),gradient=ctx.createRadialGradient(32,32,1,32,32,31);gradient.addColorStop(0,'rgba(255,255,255,.8)');gradient.addColorStop(.3,'rgba(255,255,255,.28)');gradient.addColorStop(1,'rgba(255,255,255,0)');ctx.fillStyle=gradient;ctx.fillRect(0,0,64,64);
   const glowMap=r.own(new T.CanvasTexture(glowCanvas)),auraMaterial=r.own(new T.SpriteMaterial({map:glowMap,color:new T.Color(.2,1.5,.82),transparent:true,opacity:.54,depthWrite:false,blending:T.AdditiveBlending,toneMapped:false}));
@@ -57,6 +57,8 @@ export function buildTianshiGrid(scene,r){
     const emitters=r.own(new T.InstancedMesh(box,glow,greenRecords.length));emitters.name='tianshi-green-insulators';owner.add(emitters);
     greenRecords.forEach((record,i)=>{dummy.position.fromArray(record.p);dummy.rotation.set(0,0,0);dummy.scale.fromArray(record.s);dummy.updateMatrix();emitters.setMatrixAt(i,dummy.matrix);});
     emitters.instanceMatrix.needsUpdate=true;emitters.computeBoundingSphere();
+    const output=new T.Object3D();output.name='tianshi-'+(n+1)+'-power-output';output.position.set(.74,.78,0);owner.add(output);powerOutputs.push(output);
+    if(n===2){const plug=r.cylinder(fixed,'#91bda0',[.74,.78,0],.095,.10,{emissive:0x307554,emissiveIntensity:.35});plug.rotation.z=Math.PI/2;}
     optimizeStaticSet(fixed,r);optimizeStaticSet(crown,r);
     owner.traverse(node=>{if(node.isMesh){node.userData.dynamic=true;node.castShadow=false;node.receiveShadow=false;}});
     pillars.push({owner,crown,core,halo,glow,h,strength:0,source:new T.Vector3(sources[n][0],sources[n][1]+h*.78,sources[n][2])});
@@ -92,19 +94,19 @@ export function buildTianshiGrid(scene,r){
   }
   function hideInstances(){dummy.scale.setScalar(0);dummy.updateMatrix();for(const mesh of [beams,linkGlow,motes,rings,columns,surfaceArcs]){for(let i=0;i<mesh.count;i++)mesh.setMatrixAt(i,dummy.matrix);mesh.instanceMatrix.needsUpdate=true;}}
   hideInstances();
-  return {root,
+  return {root,powerOutputs,
     warningTargets:lowSigns.map(m=>m.position.toArray()),focusTargets:pillars.map((p,i)=>({id:'tianshi-'+i,position:[p.source.x,p.source.y,p.source.z],base:[...sources[i]],height:p.h,detailTarget:[p.source.x,p.source.y+.35,p.source.z],detailEye:[p.source.x+(i<2?-3.8:4.2),p.source.y+2.7,p.source.z+6.3]})),
     reset(){root.visible=false;phase='ready';charge=0;activeCount=0;connected.fill(false);for(const p of pillars){p.strength=0;p.glow.emissiveIntensity=.16;p.crown.position.y=p.h;p.halo.scale.set(0,0,1);}hideInstances();},
     quality(value){quality=['low','balanced','high'].includes(value)?value:'balanced';segmentCount=quality==='low'?6:quality==='high'?12:10;motesPerPylon=quality==='low'?2:quality==='high'?8:7;ringsPerPylon=quality==='low'?2:3;},
     update(t,delta,state={}){
-      phase=state.phase||'ready';root.visible=['lever','ascent','director-reminder','shoe-view','pylon-link','charge','fire-ready','combat','energy','last','aim-final','finisher','landing','tour','complete','return'].includes(phase);const clock=phase==='ready'?t:Number.isFinite(state.clock)?state.clock:t;
+      phase=state.phase||'ready';const remote=!!state.vcr&&!!state.tablet&&['backdoor','rapi-request','rapi-answer','rapi-mask','cable','power','confirm','ready','done'].includes(state.tablet.stage),remoteOn=remote&&state.tablet.powered&&(state.tablet.stage!=='cable'||state.tablet.age>=.4);root.visible=remote||['lever','ascent','director-reminder','shoe-view','pylon-link','charge','fire-ready','combat','energy','last','aim-final','finisher','landing','tour','complete','return'].includes(phase);const clock=phase==='ready'?t:Number.isFinite(state.clock)?state.clock:t;
       const outage=['energy','last','return'].includes(phase),outageFlash=reducedMotion||Math.sin(clock*4)>-.2;
-      for(const m of lowSigns){m.visible=outage;m.material.color.setScalar(reducedMotion?.9:.16+.84*(.5+.5*Math.cos(clock*Math.PI*2)));}charge=clamp((state.charge||0)/100);if(state.hero)hero.fromArray(state.hero);
+      for(const m of lowSigns){m.visible=outage;m.material.color.setScalar(reducedMotion?.9:.16+.84*(.5+.5*Math.cos(clock*Math.PI*2)));}charge=remote?.6:clamp((state.charge||0)/100);if(state.hero)hero.fromArray(state.hero);
       const lever=clamp(state.connection?.lever??0),casting=['ascent','director-reminder','shoe-view','pylon-link','charge','fire-ready','combat','energy','last','aim-final','finisher','landing','tour'].includes(phase)&&!(phase==='finisher'&&(state.phaseElapsed||0)>=4.9);
       const linking=phase==='lever'?lever:casting?1:0;
       activeCount=0;
       for(let i=0;i<pillars.length;i++){
-        pillars[i].owner.visible=phase!=='lever'||lever>=i*.18;const depleted=['energy','last','return'].includes(phase);const p=pillars[i],wanted=casting?(depleted?(outageFlash?.18:.045):1):clamp((linking-i*.18)*2.6);
+        pillars[i].owner.visible=remote?i===2:phase!=='lever'||lever>=i*.18;const depleted=['energy','last','return'].includes(phase);const p=pillars[i],wanted=remote?(remoteOn&&i===2?1:0):casting?(depleted?(outageFlash?.18:.045):1):clamp((linking-i*.18)*2.6);
         p.strength=T.MathUtils.damp(p.strength,wanted,5,Math.min(.1,Math.max(0,delta)));
         if(Math.abs(p.strength-wanted)<.001)p.strength=wanted;connected[i]=p.strength>.6;if(connected[i])activeCount++;
         const pulse=reducedMotion?1:1+Math.sin(clock*2.4+i)*.11;

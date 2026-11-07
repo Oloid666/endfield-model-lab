@@ -58,7 +58,7 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
   const heroWorld=new T.Vector3(),projectileWorld=new T.Vector3();let dragonHeading=0;let castActive=false,projectileActive=false,projectileRoll=0,landingFeet=false;
   const castPhases=new Set(['login','captcha','lever','ascent','director-reminder','shoe-view','pylon-link','charge','fire-ready','combat','energy','last','aim-final','finisher','landing']);
   const walkPose={shoulderL:0,shoulderR:0,elbowL:0,elbowR:0,wristL:0,wristR:0};
-  function relax(key,target,rate,delta){walkPose[key]=T.MathUtils.lerp(walkPose[key],target,delta>0?1-Math.exp(-Math.min(delta,.06)*rate):1);return walkPose[key];}
+  function relax(key,target,rate,delta){walkPose[key]=T.MathUtils.lerp(walkPose[key],target,delta>0?1-Math.exp(-Math.min(delta,.06)*rate):lastWalking?0:1);return walkPose[key];}
   let sceneAction={},sceneHeading=.08,reaction=null;
  const reactionTexts=['有，有在聽。','這次很合乎舟禮。','導播，這個有拍到嗎？','再來一碗？','唉，還沒下班。','又是我背鍋。','我先沉默一下。','你剛剛是不是又按我？'];let reactionDeck=[],lastReaction=-1,reactionUntil=-Infinity;
 
@@ -66,6 +66,9 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
   const feet=['L','R'].map(side=>({side,hip:poses['hip'+side]?.bone,knee:poses['knee'+side]?.bone,foot:poses['foot'+side]?.bone,target:new T.Vector3(),local:new T.Vector3(),orientation:new T.Quaternion(),localOrientation:new T.Quaternion()}));
   const pivotInverse=pivot.getWorldQuaternion(new T.Quaternion()).invert();
   for(const leg of feet)if(leg.foot){leg.foot.getWorldPosition(leg.target);leg.local.copy(leg.target);pivot.worldToLocal(leg.local);leg.foot.getWorldQuaternion(leg.orientation);leg.localOrientation.copy(pivotInverse).multiply(leg.orientation);leg.upperLength=leg.hip.getWorldPosition(new T.Vector3()).distanceTo(leg.knee.getWorldPosition(new T.Vector3()));leg.lowerLength=leg.knee.getWorldPosition(new T.Vector3()).distanceTo(leg.target);}
+  const handoffOffset=new T.Vector3(),palmWorld=new T.Vector3(),fingerWorld=new T.Vector3(),mealOffset=new T.Vector3(),mealQ=new T.Quaternion(),mealCalibration=new T.Quaternion(),mealRootQ=new T.Quaternion(),mealYaw=new T.Quaternion(),worldUp=new T.Vector3(0,1,0),footRollQ=new T.Quaternion(),footRollAxis=new T.Vector3(1,0,0);let mealCalibrated=false;
+  for(const leg of feet){leg.planted=leg.target.clone();leg.swingFrom=leg.target.clone();leg.swingTo=leg.target.clone();leg.base=new T.Vector3();leg.swing=null;leg.floorOffset=leg.target.y-root.position.y;}
+
   const jointPosition=new T.Vector3(),footPosition=new T.Vector3(),toFoot=new T.Vector3(),toTarget=new T.Vector3(),handPosition=new T.Vector3(),rootQuaternion=new T.Quaternion(),dragonWorldPosition=new T.Vector3();
   const deltaQuaternion=new T.Quaternion(),worldQuaternion=new T.Quaternion(),parentQuaternion=new T.Quaternion();
   const desiredKnee=new T.Vector3(),kneePosition=new T.Vector3(),pole=new T.Vector3(),legDirection=new T.Vector3(),targetDirection=new T.Vector3();
@@ -99,7 +102,7 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
   }
   function settleFeet(){root.updateMatrixWorld(true);for(const leg of feet)if(leg.foot){leg.foot.getWorldPosition(leg.target);leg.foot.getWorldQuaternion(leg.orientation);}}
   const cinematicStatus={phase:'',lift:0,forward:0,heading:.08,airborne:false,dragonProjectile:false,recoil:0};
-  const status={phase:0,action:'settle',footDrift:0,moving:false,speed:0,distance:0,clothJoints:secondary.length,dinner:null,gesture:'',companion:follower.state,arms:walkPose,cinematic:cinematicStatus,smile:0,smileJointCount:smileJoints.length,companionAction:''};
+  const status={phase:0,action:'settle',footDrift:0,moving:false,speed:0,distance:0,clothJoints:secondary.length,dinner:null,gesture:'',companion:follower.state,arms:walkPose,cinematic:cinematicStatus,smile:0,smileJointCount:smileJoints.length,companionAction:'',gait:{leftSwing:null,rightSwing:null,acceleration:0,turn:0}};
   const api={root,heroRoot:pivot,status,supported:Object.keys(config.zhuangNodes).every(name=>poses[name]),
     get position(){return root.position;},get moving(){return status.moving;},
     // Feet origins in world metres. Follower and walking root remain on the ground.
@@ -108,12 +111,14 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
     get heelCenter(){const left=feet[0].foot,right=feet[1].foot;if(!left||!right)return api.heroPosition;const a=left.getWorldPosition(new T.Vector3()),b=right.getWorldPosition(new T.Vector3());return a.add(b).multiplyScalar(.5).toArray();},
     get deviceGripPosition(){const hand=poses.wristR?.bone;if(hand)return hand.getWorldPosition(handPosition).toArray();return api.heroPosition;},
     get gripPosition(){const hand=poses.wristL?.bone;if(hand)return hand.getWorldPosition(handPosition).toArray();return api.heroPosition;},
+    get mealSupportPosition(){return palmWorld.toArray();},
+    alignDragonHand(point,amount){if(!amount)return;dragon.hand.getWorldPosition(handPosition);handoffOffset.fromArray(point).sub(handPosition).multiplyScalar(amount);root.getWorldQuaternion(rootQuaternion).invert();handoffOffset.applyQuaternion(rootQuaternion);dragon.root.position.add(handoffOffset);root.updateMatrixWorld(true);},
     get dragonGripPosition(){return dragon.hand.getWorldPosition(handPosition).toArray();},
     get dragonPosition(){return dragon.root.getWorldPosition(dragonWorldPosition).toArray();},
     get poseData(){return {head:poses.head?.bone.quaternion.toArray(),wrist:poses.wristL?.bone.quaternion.toArray(),hip:poses.hipL?.bone.quaternion.toArray(),knee:poses.kneeL?.bone.quaternion.toArray(),armL:poses.armL?.bone.quaternion.toArray(),armR:poses.armR?.bone.quaternion.toArray(),elbow:poses.elbowL?.bone.quaternion.toArray(),cloth:secondary.length?poses[secondary[0].key].bone.quaternion.toArray():null,smileCorners:[poses.smile171?.bone.position.toArray(),poses.smile181?.bone.position.toArray()]};},
     setSceneAction(value){sceneAction=value||{};},cancelReaction(){reaction=null;},reactDragon(time,large=false){if(time<reactionUntil)return null;if(!reactionDeck.length){reactionDeck=Array.from({length:8},(_,i)=>i);for(let i=7;i>0;i--){const j=Math.floor(Math.random()*(i+1));[reactionDeck[i],reactionDeck[j]]=[reactionDeck[j],reactionDeck[i]];}if(reactionDeck.at(-1)===lastReaction)[reactionDeck[0],reactionDeck[7]]=[reactionDeck[7],reactionDeck[0]];}const id=reactionDeck.pop();lastReaction=id;reaction={id,at:time,large};reactionUntil=time+3;return reactionTexts[id];},setRain(value){raining=value;},setMove:(x,z,enabled=true)=>locomotion.setMove(x,z,enabled),setObstacles(layout){locomotion.setObstacles(layout);follower.invalidate();},
     setGesture(name,node={}){gesture.name=aliases[name]||String(name||'');gesture.start=lastTime;gesture.speaker=node.speaker||'';},
-    setDinner(value){dinner=['A','B','C'].includes(String(value).toUpperCase())?String(value).toUpperCase():null;meal.setDinner(dinner);dragonMeal.setDinner(dinner);status.dinner=dinner;if(!dinner){smileTarget=smileAmount=0;companionAction.kind='';companionAction.amount=0;}},
+    setDinner(value){dinner=['A','B','C'].includes(String(value).toUpperCase())?String(value).toUpperCase():null;meal.setDinner(dinner);dragonMeal.setDinner(dinner);status.dinner=dinner;mealCalibrated=false;if(!dinner){smileTarget=smileAmount=0;companionAction.kind='';companionAction.amount=0;}},
     setSmile(value){smileTarget=T.MathUtils.clamp(Number(value)||0,0,1);},
     setCompanionAction(value){companionAction.kind=value?.kind||'';companionAction.amount=T.MathUtils.clamp(Number(value?.amount)||0,0,1);status.companionAction=companionAction.kind;},
     setCinematic(value){
@@ -142,6 +147,7 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
       const elapsed=t-gesture.start,g=T.MathUtils.smoothstep(elapsed,0,.3)*(1-T.MathUtils.smoothstep(elapsed,2.1,2.75));
       const dragonSpeaker=gesture.speaker==='dragon'||gesture.speaker==='龍泡泡'||gesture.speaker==='龍';
       const gest=name=>!dragonSpeaker&&gesture.name===name?g:0;
+      const receiving=Number(sceneAction.mealReceive)||0;
       const sleeve=dinner||sceneAction.photoLook?0:Math.max(idle.sleeve,gest('sleeve')),attention=Math.max(idle.dragon,gest('dragon')),goods=Math.max(idle.goods,gest('goods')),rain=Math.max(idle.rain,gest('rain'));
       const phoneLook=sceneAction.photoLook||sceneAction.handover?1:Math.max(idle.phone||0,gest('phone')),hold=dinner?1:Math.max(gest('hold'),gest('receive'),gest('eat'));
       const nod=Math.max(idle.nod,gest('nod')*Math.sin(elapsed*5)),shake=gest('shake')*Math.sin(elapsed*6.3),point=gest('point'),wave=gest('wave'),player=gest('player'),exhale=Math.max(idle.exhale,gest('exhale'));
@@ -149,17 +155,17 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
       status.action=walking?'walking':g>.1?gesture.name:idle.startle>.1?'rain-response':sleeve>.1?'adjust-sleeve':attention>.1?'look-at-dragon':goods>.1?'look-at-display':'rest';
       for(const name of footNames)poses[name]?.bone.quaternion.copy(poses[name].q);
       const stride=Math.sin(motion.phase),breathe=Math.sin(t*1.17)*.007+Math.sin(t*.53)*.003;
-      if(pelvis){pelvis.bone.position.copy(pelvis.rest).addScaledVector(shiftAxis,idle.shift*.009*(1-walk)).addScaledVector(downAxis,idle.shift*.002+walk*(.012+.008*Math.cos(motion.phase*2)));pose('pelvis',walk*.012,walk*stride*.014,idle.shift*.009*(1-walk)+walk*stride*.012);}
-      pose('spine',breathe-exhale*.022-phoneLook*.045+walk*.018,-goods*.035-walk*Math.sin(motion.phase-.15)*.022,-idle.shift*.004+walk*Math.sin(motion.phase-.35)*.004);
+      if(pelvis){pelvis.bone.position.copy(pelvis.rest).addScaledVector(shiftAxis,idle.shift*.009*(1-walk)).addScaledVector(downAxis,idle.shift*.002+walk*(.012+.008*Math.cos(motion.phase*2))+.22*Math.min(1,Math.abs(motion.turn)));pose('pelvis',walk*.012,walk*stride*.014,idle.shift*.009*(1-walk)+walk*stride*.012);}
+      pose('spine',breathe-exhale*.022-phoneLook*.045+walk*.018+motion.acceleration*.022,-goods*.035-motion.turn*.018-walk*Math.sin(motion.phase-.15)*.022,-idle.shift*.004-motion.turn*.012+walk*Math.sin(motion.phase-.35)*.004);
       pose('head',.015+(sceneAction.mealLook?.24:0)+(sceneAction.photoLook?.12:0)+attention*.17+nod*.065-rain*.065+phoneLook*.12,-attention*.35-goods*.25+rain*.15+shake*.12,-player*.025+Math.sin(t*.27)*.008);
       const sway=Math.sin(t*.63)*.012,freeLeft=(1-hold*.94)*(1-sleeve*.75),freeRight=(1-phoneLook*.94)*(1-wave*.9)*(1-point*.8);
       const shoulderL=relax('shoulderL',walk*(-stride*.085+Math.sin(motion.phase*.5-.4)*.008)*freeLeft,8,delta);
       const shoulderR=relax('shoulderR',walk*(Math.sin(motion.phase+.08)*.108+Math.sin(motion.phase*2-.6)*.009)*freeRight,9,delta);
       const elbowL=relax('elbowL',walk*(.025+Math.sin(motion.phase-.55)*.022)*freeLeft,5.5,delta),elbowR=relax('elbowR',walk*(.035-Math.sin(motion.phase-.7)*.028)*freeRight,5,delta);
       const wristL=relax('wristL',walk*Math.sin(motion.phase-1)*.018*freeLeft,4.5,delta),wristR=relax('wristR',-walk*Math.sin(motion.phase-1.12)*.021*freeRight,4,delta);
-      pose('armL',.025+sleeve*.12+hold*.36+shoulderL,.04,-.88+sleeve*.12+hold*.26+point*.23+walk*Math.sin(motion.phase-.45)*.005*freeLeft);
+      pose('armL',.025+sleeve*.12+hold*.36+receiving*.16+shoulderL,.04,-.88+sleeve*.12+hold*.26+point*.23+walk*Math.sin(motion.phase-.45)*.005*freeLeft);
       pose('armR',-.015+sleeve*.12+phoneLook*.32+point*.12+shoulderR,-.035,.9-sleeve*.1-phoneLook*.28-wave*.48-point*.24+sway);
-      pose('elbowL',.08+sleeve*.32+hold*.78+point*.2+elbowL,.015,.025+sleeve*.13+hold*.12);pose('wristL',sleeve*.1+hold*.13+wristL,hold*.08,sleeve*.1-hold*.08);
+      pose('elbowL',.08+sleeve*.32+hold*.78-receiving*.18+point*.2+elbowL,.015,.025+sleeve*.13+hold*.12);pose('wristL',sleeve*.1+hold*.13+wristL,hold*.08,sleeve*.1-hold*.08);
       pose('elbowR',.08+sleeve*.25+phoneLook*.9+wave*.65+point*.1+elbowR,0,-.035-sleeve*.09-phoneLook*.08);pose('wristR',.015+sleeve*.06+phoneLook*.16+wristR,0,-sleeve*.08+wave*Math.sin(elapsed*8)*.2);
       for(let i=0;i<fingers.length;i++)pose(fingers[i],(i<4?hold*.28:phoneLook*.18)+Math.sin(t*.41+i)*.012,0,0);
       const eye=-Math.max(idle.goodsEyes,goods)*.13-Math.max(idle.dragonEyes,attention)*.14+rain*.06;pose('eyeL',0,eye);pose('eyeR',0,eye);
@@ -183,21 +189,41 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
         const prepare=phase==='aim-final'?T.MathUtils.smootherstep(e,0,1.8):phase==='finisher'?1-T.MathUtils.smootherstep(e,1.5,2):0;
         const release=phase==='finisher'?T.MathUtils.smootherstep(e,1.65,2)*(1-T.MathUtils.smootherstep(e,2.3,3.1)):0;
         const settle=phase==='landing'?Math.sin(Math.PI*T.MathUtils.clamp((e-2.3)/.7,0,1))*.16:0;
-        pose('spine',-.025-prepare*.08+release*.1-recoil*.13,prepare*-.12+release*.1,-.018+recoil*.025);
+        pose('spine',-.025-prepare*.08+release*.1-recoil*.17,prepare*-.12+release*.1-recoil*.045,-.018+recoil*.04);
         pose('armR',.88*launch+prepare*.12-release*.22-recoil*.18,.04-prepare*.1,.9-.58*launch+prepare*.12-release*.12);
         pose('elbowR',.1+.3*launch+prepare*.35-release*.3+recoil*.38,0,-.05);
         pose('wristR',-.08-prepare*.07+release*.12,0,0);
-        pose('kneeL',-.055-settle);pose('kneeR',-.23-settle);
+        const hover=T.MathUtils.smoothstep(lift,.12,.55),preload=phase==='ascent'?Math.sin(Math.PI*T.MathUtils.clamp(e/.65,0,1))*.12:0;
+        pose('hipL',.06*hover+recoil*.04,0,.025*hover);pose('hipR',-.10*hover-recoil*.04,0,-.025*hover);
+        pose('kneeL',-.12*hover-settle-preload);pose('kneeR',-.34*hover-settle-preload);
+        pose('footL',-.055*hover+Math.sin(t*.8)*.012*hover);pose('footR',-.10*hover+Math.cos(t*.7)*.012*hover);
         status.castBeat=prepare>.1?'prepare':release>.1?'release':recoil>.05?'recoil':phase==='landing'?'settle':'hover';
       }
       root.updateMatrixWorld(true);
       if(landingFeet){settleFeet();landingFeet=false;}
-      if(walking&&!castActive){
+      const grounded=!castActive||lift<.12;
+      if(grounded){
         pivot.getWorldQuaternion(rootQuaternion);
-        for(let i=0;i<feet.length;i++){const leg=feet[i],cycle=motion.phase+i*Math.PI;leg.target.copy(leg.local);leg.target.z+=Math.sin(cycle)*.155*walk;leg.target.y+=Math.max(0,Math.cos(cycle))*.075*walk;pivot.localToWorld(leg.target);leg.orientation.copy(rootQuaternion).multiply(leg.localOrientation);pose('hip'+leg.side,Math.sin(cycle)*.21*walk);pose('knee'+leg.side,-Math.max(0,Math.cos(cycle))*.35*walk);}
-        root.updateMatrixWorld(true);
-      }else if(!castActive){pivot.getWorldQuaternion(rootQuaternion);for(const leg of feet){leg.target.copy(leg.local);pivot.localToWorld(leg.target);leg.orientation.copy(rootQuaternion).multiply(leg.localOrientation);}}
-      if(!castActive)pinFeet();status.footDrift=0;if(!castActive)for(const leg of feet)if(leg.foot)status.footDrift=Math.max(status.footDrift,leg.foot.getWorldPosition(footPosition).distanceTo(leg.target));lastWalking=walking;
+        for(let i=0;i<feet.length;i++){
+          const leg=feet[i];leg.base.copy(leg.local);pivot.localToWorld(leg.base);leg.base.y=root.position.y+leg.floorOffset;
+          const cycle=((motion.phase+i*Math.PI+Math.PI/2)%(Math.PI*2)+Math.PI*2)%(Math.PI*2),swing=cycle<Math.PI;
+          if(delta===0&&lastWalking&&walking){/* A paused frame preserves planted and swing targets. */}
+          else if(!walking||motion.speed<.025||castActive){
+            leg.target.lerp(leg.base,delta>0&&lastWalking?1-Math.exp(-Math.min(delta,.06)*16):1);leg.orientation.copy(rootQuaternion).multiply(leg.localOrientation);leg.swing=null;
+          }else if(swing){
+            if(leg.swing!==true)leg.swingFrom.copy(leg.target);
+            leg.swingTo.copy(leg.base).addScaledVector(pole.set(Math.sin(motion.heading),0,Math.cos(motion.heading)),(Math.PI-cycle+Math.PI*.5)/12.1);
+            const u=cycle/Math.PI,p=u*u*(3-2*u);leg.target.lerpVectors(leg.swingFrom,leg.swingTo,p);leg.target.y=leg.base.y+Math.sin(Math.PI*u)*.085*walk;
+            leg.orientation.copy(rootQuaternion).multiply(leg.localOrientation);footRollQ.setFromAxisAngle(footRollAxis,.045*Math.sin(Math.PI*u));leg.orientation.multiply(footRollQ);leg.swing=true;
+          }else{
+            if(leg.swing!==false)leg.planted.copy(leg.target);
+            leg.target.copy(leg.planted);leg.target.y=leg.base.y;
+            leg.swing=false;
+          }
+        }
+        root.updateMatrixWorld(true);pinFeet();
+      }else for(const leg of feet)leg.swing=null;
+      status.footDrift=0;if(grounded)for(const leg of feet)if(leg.foot)status.footDrift=Math.max(status.footDrift,leg.foot.getWorldPosition(footPosition).distanceTo(leg.target));Object.assign(status.gait,{leftSwing:feet[0].swing,rightSwing:feet[1].swing,acceleration:motion.acceleration,turn:motion.turn});lastWalking=walking;
       const companion=sceneAction.freeFlying?{...follower.state,walk:0,mode:'flying',lookYaw:sceneAction.freeLookYaw,lookPitch:sceneAction.freeLookPitch}:follower.update(delta,t);
       idle.dragon=attention;idle.rain=rain;idle.nod=Math.max(idle.nod,gest('happy'));idle.walk=companion.walk;idle.walkPhase=companion.phase;idle.lookYaw=companion.lookYaw;idle.lookPitch=companion.lookPitch;idle.followerMode=companion.mode;idle.glance=companion.glance;idle.gesture=status.gesture;idle.gestureAmount=g;idle.holding=!!dinner;idle.gestureAmount=sceneAction.photoLook?0:g;idle.action=companionAction;idle.projectile=!sceneAction.homecoming&&projectileActive&&['aim-final','finisher','landing','tour','complete'].includes(cinematic.phase)&&!['key','lever'].includes(companionAction.kind);idle.phoneHold=sceneAction.photoLook;idle.allowIdleEmote=sceneAction.playful&&!castActive;idle.singing=sceneAction.singing;idle.reaction=reaction&&t-reaction.at<2?{...reaction,age:t-reaction.at}:null;dragon.update(t,idle);status.companionExpression=dragon.state.mood;
       dragonWorldPosition.copy(projectileActive?projectileWorld:heroWorld.fromArray(companion.position));root.worldToLocal(dragonWorldPosition);dragon.root.position.copy(dragonWorldPosition);status.dragonHeading=dragonHeading;dragon.root.rotation.set(sceneAction.photoLook?.25:projectileActive?-.08:0,projectileActive?dragonHeading:companion.heading,projectileActive?projectileRoll:0);dragon.root.scale.set(.59,idle.projectile?.55:.59,.59);
@@ -205,7 +231,16 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
       shadows[0].position.set(0,.006-(castActive?.116*launch:0),.04+forward);shadows[0].scale.set(.7+lift*.07,.48+lift*.045,1);
       shadows[1].visible=!projectileActive;
       shadows[1].position.x=dragon.root.position.x;shadows[1].position.z=dragon.root.position.z;root.updateMatrixWorld(true);
-      if(poses.wristL){poses.wristL.bone.getWorldPosition(handPosition);root.worldToLocal(handPosition);meal.mount.position.copy(handPosition);meal.mount.position.y+=.015;meal.mount.position.z+=.055;meal.mount.rotation.set(-.025,pivot.rotation.y,0);}
+      if(poses.wristL){
+        poses.wristL.bone.getWorldPosition(handPosition);palmWorld.set(0,0,0);let count=0;
+        for(let i=0;i<Math.min(4,fingers.length);i++){const key=fingers[i];poses[key].bone.getWorldPosition(fingerWorld);palmWorld.add(fingerWorld);count++;}
+        if(count)palmWorld.multiplyScalar(1/count).lerp(handPosition,.45);else palmWorld.copy(handPosition);
+        poses.wristL.bone.getWorldQuaternion(mealQ);root.getWorldQuaternion(mealRootQ);
+        if(!mealCalibrated&&dinner){mealYaw.setFromAxisAngle(worldUp,pivot.rotation.y);mealCalibration.copy(mealQ).invert().multiply(mealRootQ).multiply(mealYaw);mealOffset.set(0,dinner==='A'?.035:dinner==='B'?.08:.078,.015).applyQuaternion(parentQuaternion.copy(mealQ).invert());mealCalibrated=true;}
+        fingerWorld.copy(mealOffset).applyQuaternion(mealQ).add(palmWorld);root.worldToLocal(fingerWorld);meal.mount.position.copy(fingerWorld);
+        meal.mount.quaternion.copy(mealRootQ.invert()).multiply(mealQ).multiply(mealCalibration);
+        status.mealSupport=palmWorld.toArray(status.mealSupport||[0,0,0]);
+      }
       phone.visible=phoneLook>.06&&!castActive&&!sceneAction.externalDevice;
       if(phone.visible&&poses.wristR){poses.wristR.bone.getWorldPosition(handPosition);root.worldToLocal(handPosition);phone.position.copy(handPosition);phone.position.y+=.055;phone.position.z+=.025;phone.rotation.set(-.23,motion.heading+.1,-.08);screen.material.emissiveIntensity=.35+phoneLook*.7;}
     },

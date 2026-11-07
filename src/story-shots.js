@@ -12,7 +12,7 @@ function caster(beat,feet,heading,portrait,head){const a=Math.sin(heading),b=Mat
 
 const TERMINAL=[-1.65,.335,5.45];
 const INPUT_PHASES=new Set(['terminal-quip','login','verify-talk','captcha','verified-talk','lever']);
-// Only these three sequences use the new deterministic track. Other shots keep their authoring.
+// Focused story sequences share the deterministic track; other authored shots remain intact.
 export function cinematicStoryShot(s,context,track){
  if(!s||s.postgame)return null;
  const c=Object.assign(track.context,context);c.aspect=context.aspect||(c.portrait?390/844:844/390);c.width=context.width||(c.portrait?390:844);c.height=context.height||(c.portrait?844:390);
@@ -41,12 +41,36 @@ export function cinematicStoryShot(s,context,track){
   return track.pose(counter?[2.95,2.65,-.3]:[-.22,2.45,5.4],d,c.portrait?58:47);
  }
  if(s.phase==='walk-out'){
+  if(s.shopping?.handoff){
+   track.enter('cinematic-meal-handoff',s,c,origin+e-s.shopping.handoffElapsed);
+   const hand=c.grip||[feet[0],feet[1]+1.15,feet[2]+.2];
+   return track.pose([hand[0]+1.65,hand[1]+.62,Math.max(2.65,hand[2]+2.1)],[hand[0],hand[1]-.1,hand[2]],c.portrait?43:35);
+  }
   const outside=(s.shopping?.segment||0)>=2;
   track.enter(outside?'cinematic-return-pair':'cinematic-return-door',s,c,origin);
   if(!outside)return track.pose([-.22,2.45,5.6],d,c.portrait?58:46);
   const u=clamp((d.x+.22)/(-2.55+.22));track.frame.progress=u;
   if(c.reduced)track.p.set(-.6,2.5,c.portrait?10.4:6.8);else{track.returnCurve.getPointAt(u,track.p);if(c.portrait)track.p.z+=3.6;}
   track.t.copy(d).lerp(mid,smooth((u-.65)/.35));return track.pose(track.p,track.t,c.portrait?50:40);
+ }
+ if(s.phase==='photo-check'||s.phase==='photo-review'){
+  const shoulder=s.phase==='photo-review'||e>=2;
+  if(track.enter(shoulder?'cinematic-photo-review-shoulder':'cinematic-photo-review-pair',s,c,shoulder?origin+2:origin)){
+   if(shoulder){track.p.set(-1.65,2.1,2.65);track.t.set(-1.72,1.73,3.98);track.fixedP.copy(track.p);track.fixedT.copy(track.t);}
+   else{
+    track.p.copy(mid).add(PAIR_OFFSET);track.t.copy(mid);track.t.y-=.25;
+    track.fitBox([Math.min(h.x-.45,d.x-.45),1.3,3.05],[Math.max(h.x+.45,d.x+.45),Math.max(h.y,d.y)+.3,4.2],track.p,track.t,c.portrait?48:38,c);
+   }
+  }
+  return track.fixed(clock,1.5,shoulder?.06:.12,c.portrait?(shoulder?54:48):(shoulder?43:38),c.reduced);
+ }
+ if(s.node?.event==='server-survives'){
+  const p=c.server||[0,1.21,1.06],detail=(s.nodeElapsed||0)>=1.2;
+  if(track.enter(detail?'cinematic-surviving-server-detail':'cinematic-surviving-server-reveal',s,c,nodeOrigin+(detail?1.2:0))){
+   track.p.set(p[0]+(detail?1.5:6),p[1]+(detail?.65:5.5),p[2]+(detail?3.5:12));track.t.set(p[0],p[1]+.45,p[2]);
+   track.fixedP.copy(track.p);track.fixedT.copy(track.t);
+  }
+  return track.fixed(clock,1.5,detail?-.25:.18,c.portrait?(detail?40:54):(detail?32:44),c.reduced);
  }
  if(s.phase==='terminal-deploy'){
   if(track.enter('cinematic-terminal-unfold',s,c,origin)){
@@ -97,7 +121,7 @@ export function cinematicStoryShot(s,context,track){
 }
 const TUP={x:0,y:1,z:0},PAIR_OFFSET={x:1.1,y:.35,z:5.8},RISE_START={x:2.6,y:.5,z:5.5},RISE_END={x:4,y:3.2,z:9};
 
-export function revisedStoryShot(s,{feet=[-1.25,.32,3.25],heroHead=null,dragon=[-2,1.5,3.5],portrait=false,reduced=false,heading=2.91,wirePoint=null,xaihiHead=null,mealPosition=null}={}){
+export function revisedStoryShot(s,{feet=[-1.25,.32,3.25],heroHead=null,dragon=[-2,1.5,3.5],portrait=false,reduced=false,heading=2.91,wirePoint=null,wireHoldPoint=null,powerSource=[7.44,3.08,-15.3],server=null,xaihiHead=null,mealPosition=null}={}){
  if(!s||s.postgame)return null;
  const e=s.phaseElapsed||0,age=s.nodeElapsed||0,index=Number((s.nodeId||'').split('_').at(-1))||0;
  const hero=heroHead?[heroHead[0],heroHead[1]+.04,heroHead[2]]:[feet[0],feet[1]+1.48,feet[2]],pet=[dragon[0],dragon[1]+.32,dragon[2]];
@@ -106,12 +130,12 @@ export function revisedStoryShot(s,{feet=[-1.25,.32,3.25],heroHead=null,dragon=[
   if(s.node?.cue==='rossi-collection')return shot('briefing-rossi-collection',[.85,4.9,5.8],[.28,4.61,1.43],portrait?32:27);
   if(s.node?.cue==='rossi-closeup')return shot('briefing-rossi-closeup',[.55,4.8,4.6],[.28,4.61,1.43],portrait?33:28);
   if(s.node?.cue==='age-reaction')return person('briefing-age-reaction',hero,{portrait,side:1,distance:3.3});
-  if(index<2)return shot('briefing-evidence',[1.4,4.9,5.8],[0,4.4,1.08],portrait?38:32);
+  if(index<2)return shot('briefing-evidence',[.45,4.84,5.7],[.28,4.57,1.43],portrait?36:30);
   if(index===2)return caster('briefing-wants-her-book',feet,0,portrait,heroHead);
-  if(index===3)return shot('briefing-book-evidence',[-.65,4.62,3.7],[-1.15,4.12,.7],portrait?34:28);
+  if(index===3)return shot('briefing-book-evidence',[1.25,5.0,4.5],[-1.05,4.15,.7],portrait?36:30);
   if(index===4)return person('briefing-no-taste',hero,{portrait,side:1,distance:3.5});
-  if(index<=6)return shot('briefing-copier',[2.0,4.82,4.5],[1.1,4.2,.72],portrait?35:29);
-  if(index<=8)return shot('briefing-suspect-evidence',[.2,4.80,4.6],[-.1,4.5,1.12],portrait?36:30);
+  if(index<=6)return person('briefing-zhuang-reaction',hero,{portrait,side:-1,distance:1.85});
+  if(index<=8)return shot('briefing-suspect-evidence',[.5,4.8,4.7],[.28,4.58,1.43],portrait?36:30);
   if(index===9)return person('briefing-find-a-charge',hero,{portrait,side:1,distance:3.3});
   if(index<=12)return shot('briefing-pear-evidence',[9.7,4.7,6.1],[7.65,3.1,-.3],portrait?45:37);
   if(index<=15)return person('briefing-incident-time',hero,{portrait,side:1,distance:3.8});
@@ -136,12 +160,12 @@ export function revisedStoryShot(s,{feet=[-1.25,.32,3.25],heroHead=null,dragon=[
  if(s.phase!=='hack'||!s.tablet)return null;
  const t=s.tablet,stage=t.stage;
  if(stage==='cable'){
-  const a=t.age||0,p=wirePoint||[7.4,1.2,-14.56];
-  if(reduced&&a<1.5)return shot('wire-source-hold',[9.8,2.65,-11.8],[7.2,1.05,-14.1],portrait?52:42);
-  if(reduced&&a<4.9)return shot('wire-route-hold',[9.8,5.6,4.8],[5.9,.5,-7.5],portrait?62:48);
-  if(a<1.5)return shot('wire-source-follow',[p[0]+2.1,p[1]+1.15,p[2]+2.3],[p[0],p[1]+.05,p[2]],portrait?48:39);
-  if(a<4.9)return shot('wire-route-follow',[p[0]+2.4,p[1]+1.4,p[2]-1.3],[p[0],p[1]+.30,p[2]+.20],portrait?52:42);
-  return shot('wire-microwave-arrival',[4.05,2.4,-.2],[4.32,1.35,1.10],portrait?72:48);
+  const a=t.age||0,p=wirePoint||powerSource;
+  if(a<.4)return shot('grid-control-confirm',[7.7,2.1,-12.1],[7.4,1.85,-14.94],portrait?45:36);
+  if(a<1.6)return shot('wire-source-hold',[powerSource[0]+3.1,powerSource[1]+1.5,powerSource[2]+3.2],[powerSource[0],powerSource[1]-.65,powerSource[2]],portrait?54:46);
+  if(a>=4.9)return shot('wire-microwave-arrival',[2.6,2.7,-1.3],[3.8,1.35,1.2],portrait?72:54);
+  if(reduced){const h=wireHoldPoint||p;return shot('wire-route-hold-'+(a<2.7?0:a<3.9?1:2),[h[0]+1,h[1]+3.5,h[2]-4.5],h,portrait?84:66);}
+  return a<4.9?shot('wire-route-follow',[p[0]+1.0,p[1]+1.4,p[2]-1.8],[p[0],p[1]+.12,p[2]],portrait?60:48):shot('wire-microwave-arrival',[2.6,2.7,-1.3],[3.8,1.35,1.2],portrait?72:54);
  }
  const temperature=()=>shot(stage==='defrost'?'fridge-temperature-reversal':'fridge-temperature-detail',[2.03,2.05,-.15],[1.79,1.92,-1.89],portrait?31:25);
  if(stage==='cooling'||stage==='defrost')return temperature();
