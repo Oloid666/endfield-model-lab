@@ -21,11 +21,15 @@ async def main():
    q=await page.evaluate('()=>{const q=__rainy711,p=q.projectPoint([0,3.1,2.23]),r=document.querySelector("#scene").getBoundingClientRect();return {x:r.x+(p[0]+1)*r.width/2,y:r.y+(1-p[1])*r.height/2}}');await page.mouse.click(q['x'],q['y']);await tick(.1)
   assert await page.evaluate('__rainy711.debug.unlocked')
   await page.wait_for_timeout(3200)
-  await page.evaluate('__rainy711.debugJump("nikke")');await tick(1.6)
+  await page.evaluate('__rainy711.debugJump("nikke")');await tick(1.6);await shot('nikke-console')
+  # A framed console must be visible, not merely a valid camera transform.
+  from PIL import Image
+  img=Image.open(OUT/'nikke-console.png').convert('RGB');cx,cy=img.width//2,img.height//2
+  assert sum(sum(img.getpixel((x,y)))>420 for x in range(cx-90,cx+90) for y in range(cy-75,cy+75))>6000,'Launcher hidden by geometry'
   for _ in range(30):
    if await page.evaluate('__rainy711.mission.tablet?.stage')=='rapi-mask':break
    await page.evaluate('__rainy711.tabletAction("talk-next")');await tick(.4)
-  await tick(.5);assert await page.evaluate('__rainy711.tabletAction("enable")');assert await page.evaluate('__rainy711.mission.tablet.stage')=='cable'
+  await shot('nikke-eye-bar');await tick(.5);assert await page.evaluate('__rainy711.tabletAction("enable")');assert await page.evaluate('__rainy711.mission.tablet.stage')=='cable'
   old=0
   for age in [.2,.8,1.55,2.3,3.5,4.8,5.6]:
    await tick(age-old);old=age;await shot('wire-'+str(age));assert await page.evaluate('__rainy711.devices.sourceKind')=='tianshi-grid';assert await page.evaluate('__rainy711.devices.energyVisible')==(age>=.4)

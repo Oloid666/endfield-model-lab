@@ -6,6 +6,8 @@
 
 **[開啟正式遊戲](https://endfield10000t.aura87.online/)** · [GitHub Pages 備用](https://oloid666.github.io/endfield-model-lab/)
 
+最新一輪：托盤交接、BOOK、三輪加熱、塞西拒絕梗與照片／背景恢復，見 [晚餐演出與操作修正](docs/RAIN-DINNER-REVISION.md)。
+
 全局按鈕材質與攝影引導見 [按鈕精修紀錄](docs/BUTTON-MATERIALS.md)。
 
 主線介面更新見 [StageShow 與手機／桌面 UI 驗證](docs/UI-STAGESHOW-REVISION.md)；已確認的24項後續工作見 [待優化清單](docs/RAIN-BACKLOG.md)。

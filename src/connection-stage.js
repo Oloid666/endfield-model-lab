@@ -71,6 +71,13 @@ export function buildConnectionStage(scene,r){
   const covers=[],pages=[];
   for(const side of [-1,1]){const hinge=new T.Group();book.add(hinge);box(hinge,metal,[side*.48,0,0],[.96,.065,1.32]);box(hinge,bookMat,[side*.48,.043,0],[.87,.02,1.22]);covers.push({hinge,side});
     for(let i=0;i<3;i++){const page=new T.Group();book.add(page);box(page,bookMat,[side*.46,0,0],[.85,.007,1.18]);pages.push({page,side,index:i});}}
+  const diagram=r.mesh(r.geometry('PlaneGeometry',1,1),r.label('武陵電網  /  CITY ARRAY',{width:1024,height:512,font:'bold 42px sans-serif',bg:'#16372f',color:'#c9ead0'}),book,[0,.105,-.40],[1.55,.22,1]);diagram.rotation.x=-Math.PI/2;
+  const diagramNodes=new T.Group();diagramNodes.name='book-city-array';book.add(diagramNodes);
+  for(const z of [-.12,.32])box(diagramNodes,bookMat,[0,.108,z],[.92,.012,.016]);
+  for(const x of [-.46,.46])box(diagramNodes,bookMat,[x,.108,.10],[.016,.012,.44]);
+  for(const x of [-.46,.46])for(const z of [-.12,.32]){box(diagramNodes,metal,[x,.115,z],[.22,.025,.17]);box(diagramNodes,bookMat,[x,.133,z],[.11,.012,.075]);}
+  const loginNotice=r.mesh(r.geometry('PlaneGeometry',1,1),r.label('請先登入。',{width:512,height:128,font:'bold 64px sans-serif',bg:'#142d2d',color:'#e9d6a2'}),root,[0,.60,0],[1.6,.35,1]);loginNotice.rotation.x=-Math.PI/2;
+  const deployRing=r.mesh(r.geometry('TorusGeometry',1,.012,5,48),r.material('#9bd5ad',{emissive:0x7fb895,emissiveIntensity:1,transparent:true,opacity:.5,depthWrite:false}),root,[0,.025,0]);deployRing.rotation.x=-Math.PI/2;
   const spine=box(book,edge,[0,0,0],[.055,.09,1.35]);
   const ease=value=>{const p=clamp(value);return p*p*(3-2*p);};
   const reduced=typeof matchMedia==='function'&&matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -91,9 +98,9 @@ export function buildConnectionStage(scene,r){
     field=c.field==='password'?'password':'account';lastKey=canonical(c.lastKey);keyNumber=Number(c.keyNumber)||0;keyAt=Number.isFinite(c.keyAt)?c.keyAt:-Infinity;lever=clamp(c.lever);
     scanner.visible=['terminal-deploy','lever'].includes(phase);scanner.position.z=-1.1+((Number(state.clock)||t)*.5%1)*2.2;
     const age=phase==='terminal-deploy'?Number(state.phaseElapsed)||0:6;deployment=ease((age-3.2)/2.3);root.scale.set(1,1,1);root.position.y=.335;
-    book.visible=phase==='terminal-deploy'&&age<5.2;book.position.set(0,.55*(1-ease((age-2.4)/2)),0);book.scale.setScalar(.65+ease((age-1)/2.2)*1.2);
+    book.visible=phase==='terminal-deploy'&&age<5.2;const arrival=ease(age/1.1),settle=ease((age-2.4)/2);book.position.set(.4*(1-arrival),1.05-.98*settle,-1.4*(1-arrival));diagram.visible=age>=2.4&&age<4.6;diagramNodes.visible=diagram.visible;loginNotice.visible=phase==='terminal-deploy'&&age>=4.8;deployRing.visible=phase==='terminal-deploy'&&age>=3.2&&age<4.6;deployRing.scale.setScalar(1+ease((age-3.2)/1.4)*1.6);deployRing.material.opacity=.45*(1-ease((age-3.2)/1.4));book.scale.setScalar(.65+ease((age-1)/2.2)*1.2);
     const opening=reduced?1:ease((age-.7)/2);for(const {hinge,side}of covers)hinge.rotation.z=side*(1-opening)*1.45;
-    for(const {page,side,index}of pages){page.rotation.z=side*(1-opening)*1.5+side*(reduced?0:Math.sin(ease((age-1-index*.18)/1.4)*Math.PI)*.55);page.position.y=.065+index*.012;}
+    for(const {page,side,index}of pages){page.rotation.z=side*(1-opening)*1.5+side*(reduced?0:Math.sin(ease((age-1-index*.18)/1.4)*Math.PI)*.55);page.position.y=.065+index*.012+(reduced?0:Math.sin(Math.max(0,Math.min(1,(age-1-index*.22)/.6))*Math.PI)*.06);}
     shell.visible=age>=3.1;shell.position.y=reduced?0:(1-deployment)*.22;keyboard.position.y=reduced?0:(1-deployment)*.4;
     scanner.visible=phase==='lever'||phase==='terminal-deploy'&&age>3.2;
     keyboard.visible=['terminal-quip','terminal-deploy','login'].includes(phase)&&age>=3.4;captcha.visible=phase==='captcha';leverRoot.visible=phase==='lever';tick.visible=Boolean(c.verified);handle.position.x=-1.18+2.36*lever;

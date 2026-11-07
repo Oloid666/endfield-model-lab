@@ -72,7 +72,22 @@ export function cinematicStoryShot(s,context,track){
   }
   return track.fixed(clock,1.5,detail?-.25:.18,c.portrait?(detail?40:54):(detail?32:44),c.reduced);
  }
+ if(s.phase==='meal-handoff'||s.phase==='meal-reclaim'){
+  track.enter('cinematic-'+s.phase,s,c,origin);
+  return track.pose(c.portrait?[-.1,1.9,7.0]:[.5,2.05,6.8],[-1.25,1.05,3.9],c.portrait?48:42);
+ }
+ if(s.phase==='charge'){
+  const segment=e<5?'array':e<10?'hero':e<14?'pylon':e<22?'hero-close':'ready';track.enter('cinematic-charge-'+segment,s,c,origin);
+  if(segment==='array')return track.pose([14,16,34],[0,5,-6],c.portrait?76:55);
+  if(segment==='pylon')return track.pose([12,11,-3],[6.7,8,-15.3],c.portrait?58:46);
+  if(segment==='ready')return track.pose([2,8.5,27],[0,3,1.6],c.portrait?57:44);
+  const near=segment==='hero-close',distance=near?3.2:5.3,heading=c.heading??2.91;
+  track.p.set(h.x+Math.sin(heading)*distance+Math.cos(heading)*.9,h.y-(near?-.15:.60),Math.max(3.3,h.z+Math.cos(heading)*distance-Math.sin(heading)*.9));track.t.copy(h);track.t.y-=near?.12:.45;
+  return track.pose(track.p,track.t,c.portrait?(near?44:52):(near?36:44));
+ }
  if(s.phase==='terminal-deploy'){
+  if(e<1.0){track.enter('cinematic-book-summon',s,c,origin);return track.pose([.1,2.7,7.8],[-1.25,1.4,4.1],c.portrait?57:46);}
+  if(e>=4.8){track.enter('cinematic-book-login',s,c,origin);return track.pose([-1.65,3.6,7.0],[-1.65,.94,5.45],c.portrait?62:44);}
   if(track.enter('cinematic-terminal-unfold',s,c,origin)){
    track.p.set(.2,5.9,12.5);track.t.set(-1.65,.9,5.45);
    track.fitBox([-3.75,.3,4.05],[.45,2.35,6.8],track.p,track.t,c.portrait?74:55,c);
@@ -151,17 +166,18 @@ export function revisedStoryShot(s,{feet=[-1.25,.32,3.25],heroHead=null,dragon=[
   if(index===9)return person('charge-dragon-last-word',pet,{portrait,side:-1,distance:3.7});
  }
  if(s.phase==='meal-spawn'){
+  if(s.node?.event==='meal-refusal'){const h=xaihiHead||[1.8,1.8,.85];return shot('birth-xaihi-refusal',[h[0]+1.4,h[1]+.18,h[2]-1.3],[h[0],h[1]-.22,h[2]],portrait?46:38);}
   const birth=mealBirthFrame(e,reduced),p=e<8?birth.position:mealPosition||birth.position;
-  if(e<3)return shot('birth-charred-meal',[3.2,2.05,-.08],[3.545,1.46,1.43],portrait?35:28);
-  if(e<4.8)return shot('birth-swelling-in-tray',[2.9,1.9,-.35],[3.545,1.52,1.43],portrait?38:31);
-  if(e<8)return shot(reduced?'birth-escape-hold':'birth-escape-follow',reduced?[3.08,2.0,-.7]:[p[0]-.25,p[1]+.55,p[2]-1.8],[p[0],p[1]+.10,p[2]],portrait?60:42);
+  if(e<.5)return shot('birth-charred-meal',[3.2,2.05,-.08],[3.545,1.46,1.43],portrait?35:28);
+  if(e<2.4)return shot('birth-swelling-in-tray',[2.9,1.9,-.35],[3.545,1.52,1.43],portrait?38:31);
+  if(e<5.2)return shot(reduced?'birth-escape-hold':'birth-escape-follow',reduced?[3.08,2.0,-.7]:[p[0]-.25,p[1]+.55,p[2]-1.8],[p[0],p[1]+.10,p[2]],portrait?60:42);
   const h=xaihiHead||[2.17,1.8,.85];return shot('birth-creature-and-witness',[(h[0]+p[0])/2+.1,2.65,-2.55],[(h[0]+p[0])/2,(h[1]+p[1]+.11)/2,(h[2]+p[2])/2],portrait?68:48);
  }
  if(s.phase!=='hack'||!s.tablet)return null;
  const t=s.tablet,stage=t.stage;
  if(stage==='cable'){
   const a=t.age||0,p=wirePoint||powerSource;
-  if(a<.4)return shot('grid-control-confirm',[7.7,2.1,-12.1],[7.4,1.85,-14.94],portrait?45:36);
+  if(a<.4)return shot('grid-control-confirm',[7.7,2.1,-10.3],[7.4,1.85,-13.189],portrait?45:36);
   if(a<1.6)return shot('wire-source-hold',[powerSource[0]+3.1,powerSource[1]+1.5,powerSource[2]+3.2],[powerSource[0],powerSource[1]-.65,powerSource[2]],portrait?54:46);
   if(a>=4.9)return shot('wire-microwave-arrival',[2.6,2.7,-1.3],[3.8,1.35,1.2],portrait?72:54);
   if(reduced){const h=wireHoldPoint||p;return shot('wire-route-hold-'+(a<2.7?0:a<3.9?1:2),[h[0]+1,h[1]+3.5,h[2]-4.5],h,portrait?84:66);}

@@ -48,7 +48,7 @@ export function createInvestigationUI({mount,machine,capture,onAuto,getAuto,onGu
    }
    if(phase==='heat'){
      title.textContent='微波加熱 · 功率控制';
-     const hit=button('開始送電',()=>{},'rhythm-pad');hit.setAttribute('aria-label','節拍送電，圓點短按，長條按住到尾端');
+     const hit=button('開始送電',()=>{},'rhythm-pad');hit.setAttribute('aria-label','節拍送電，圓點到線時按一下');
      listen(hit,'pointerdown',e=>{if(e.isPrimary===false||e.button>0||held!==null||machine.paused)return;e.preventDefault();held=e.pointerId;hit.setPointerCapture(e.pointerId);machine.heatStart(source(e));});
      listen(hit,'pointerup',e=>{if(held!==e.pointerId)return;e.preventDefault();held=null;machine.heatStop(source(e));});
      for(const type of ['pointercancel','lostpointercapture'])listen(hit,type,()=>{if(held!==null){held=null;machine.heatCancel();}});
@@ -76,14 +76,14 @@ export function createInvestigationUI({mount,machine,capture,onAuto,getAuto,onGu
    if(s.phase==='hack'){if(s.hack.failures)message.textContent=s.hack.failures>1?'輔助路徑：┓ ┏ / ┗ ┛（由上至下）。':'線路未接通。入口在左上，出口在右上；先向下繞一圈。';}if(s.phase==='hack')for(let i=0;i<4;i++){const b=puzzle.children[i],turn=s.hack.turns[i];b.firstChild.style.transform=`rotate(${turn*90}deg)`;b.classList.toggle('connected',turn===[1,0,2,3][i]);}
    if(s.phase==='heat'){
      const h=s.heat,playing=h.status==='playing';
-     message.textContent=h.status==='ready'?(h.completed?`第 ${h.completed+1} 段準備。圓點短按，長條按住到尾端。`:'第一輪：電網功率測試。圓點短按，長條按住。'):h.result||'電流到金線時按下。長條要按到尾端。';
+     message.textContent=h.status==='ready'?(h.completed?`第 ${h.completed+1} 輪：${h.round===1?'開始冒煙，繼續加熱。':'已經沸騰，再加一點電。'}`:'第一輪：圓點到金線時，按一下送電。'):h.result||'圓點到金線時按一下。';
      rhythmStatus.textContent=`${h.completed} / 3 段 · ${h.bpm} BPM · ${h.failures?'輔助 '+Math.min(3,h.failures):'標準'}${h.status==='burnt'?' · 已斷電':''}`;
-     const pad=actions.querySelector('.rhythm-pad'),retry=actions.querySelector('.rhythm-retry');pad.textContent=h.status==='ready'?'開始送電':h.holding?'按住，等尾端到線':'● 短按 ／ ━ 長按';pad.disabled=s.paused||h.status==='burnt';retry.hidden=h.status!=='burnt';
+     const pad=actions.querySelector('.rhythm-pad'),retry=actions.querySelector('.rhythm-retry');pad.textContent=h.status==='ready'?(h.round===0?'開始送電':h.round===1?'繼續加熱':'再加一點電'):h.holding?'按住，等尾端到線':'● 按節奏送電';pad.disabled=s.paused||h.status==='burnt';retry.hidden=h.status!=='burnt';
      const key=`${h.attempts}:${h.round}`;
      if(playing&&animationKey!==key){animations.forEach(a=>a.cancel());animations=[];animationKey=key;for(let i=0;i<4;i++){const note=h.notes[i],n=notes[i];n.textContent=note.type==='hold'?'━':'●';n.style.width=note.type==='hold'?`${(note.end-note.at)*20}cqw`:'auto';const a=n.animate([{transform:'translateX(100cqw)'},{transform:'translateX(-30cqw)'}],{duration:6500,fill:'both',easing:'linear'});a.pause();animations.push(a);}}
      for(let i=0;i<4;i++){const note=h.notes[i],n=notes[i];n.hidden=!playing||!note;n.dataset.result=note?.result||'';if(note&&animations[i]){const wanted=(h.elapsed-note.at+4)*1000;if(!playing||s.paused||document.hidden){animations[i].pause();animations[i].currentTime=wanted;}else{if(Math.abs(Number(animations[i].currentTime)-wanted)>100)animations[i].currentTime=wanted;animations[i].play();}}}
    }
  }
  listen(window,'blur',()=>{releaseFlight();machine.fly(0,0);if(held!==null){held=null;machine.heatCancel();}});
- return {releaseInputs(){releaseFlight();const id=held;held=null;if(id!==null)for(const b of actions.querySelectorAll('button'))if(b.hasPointerCapture?.(id))b.releasePointerCapture(id);animations.forEach(a=>a.pause());},update,get photo(){return photo;},get viewer(){return viewer.state;},snapshot,dispose(){disposed=true;releaseFlight();captureGeneration++;abort.abort();buildAbort.abort();animations.forEach(a=>a.cancel());viewer.dispose();root.remove();auto.remove();}};
+ return {reset(){captureGeneration++;pendingCapture=false;capturing=false;photo=null;phase='';viewer.reset();root.hidden=true;root.removeAttribute('aria-busy');releaseFlight();},releaseInputs(){releaseFlight();const id=held;held=null;if(id!==null)for(const b of actions.querySelectorAll('button'))if(b.hasPointerCapture?.(id))b.releasePointerCapture(id);animations.forEach(a=>a.pause());},update,get photo(){return photo;},get viewer(){return viewer.state;},snapshot,dispose(){disposed=true;releaseFlight();captureGeneration++;abort.abort();buildAbort.abort();animations.forEach(a=>a.cancel());viewer.dispose();root.remove();auto.remove();}};
 }

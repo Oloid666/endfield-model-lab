@@ -36,7 +36,7 @@ export function createExploration(world,{mount,onHotspot,onSceneTap,canWalk=()=>
       if(!hit.object.material?.transparent&&hit.object.layers.mask===1)return;
     }
   },{signal});
-  return {setActive,get active(){return active;},update(){
+  return {releaseInputs:reset,setActive,get active(){return active;},update(){
     const walkAllowed=canWalk();toggle.hidden=!walkAllowed;if(!walkAllowed&&active)setActive(false);
     toggle.disabled=!canMove();pad.hidden=!active||!canMove();
     if(!world.actors)return;

@@ -89,9 +89,9 @@ a.setDinner(null);check('Replay clears meal props',!food.visible&&a.status.dinne
 a.setGesture('phone',{speaker:'zhuang'});a.update(66.2,0);a.update(66.8,0);
 check('Phone follows a real wrist during gesture',root.getObjectByName('phone').visible,{phonePosition:root.getObjectByName('phone').position.toArray()});
 a.teleport(-1.25,2.48);check('Teleport resets heading and walking input',Math.abs(pivot.rotation.y-.08)<.000001&&!a.moving,{heading:pivot.rotation.y,position:a.position.toArray()});
-a.setDinner('A');a.update(70,0);const heldArm=poses.armL.bone.quaternion.clone();let heldExcursion=0;a.setMove(1,0,true);
-for(let i=0;i<120;i++){a.update(70+i/60,1/60);heldExcursion=Math.max(heldExcursion,heldArm.angleTo(poses.armL.bone.quaternion));}
-check('The food-holding shoulder stays protected while walking',heldExcursion<maxArmL*.3,{heldPeakRadians:heldExcursion,freePeakRadians:maxArmL});
+a.setDinner('A');a.update(70,0);const heldArm=poses.armL.bone.quaternion.clone();let heldExcursion=0,maxPalmGap=0;a.setMove(1,0,true);
+for(let i=0;i<120;i++){a.update(70+i/60,1/60);heldExcursion=Math.max(heldExcursion,heldArm.angleTo(poses.armL.bone.quaternion));const plate=food.getObjectByName('meal-A').children[0],bottom=plate.getWorldPosition(vector()).y-.0225;for(const ids of [[349,353,357,361],[396,400,404,408]]){const palm=vector();for(const id of ids)palm.add(byId(id).getWorldPosition(vector()));palm.multiplyScalar(.25);maxPalmGap=Math.max(maxPalmGap,Math.abs(palm.y-bottom));}}
+check('Both palms remain under the real tray while walking and turning',maxPalmGap<.012&&heldExcursion<.20,{maxPalmGapMetres:maxPalmGap,heldPeakRadians:heldExcursion});
 a.setMove(0,0,false);a.teleport(-1.25,2.48);a.setDinner(null);
 
 const testRoot=new T.Group(),testPivot=new T.Group();testRoot.add(testPivot);const move=makeLocomotion(testRoot,testPivot);
@@ -136,7 +136,7 @@ check('Companion routes around a shelf instead of cutting the corner',rackFollow
 
 // V6 cinematic uses the real rig and companion. No browser or image assertions.
 a.teleport(-1.25,3.25);a.setDinner('A');const grounded=a.position.clone();
-a.setCinematic({phase:'charge',elapsed:0,charge:0});a.update(100,1/60);
+a.setTray({owner:'helper',phase:'charge',age:0});a.setCinematic({phase:'charge',elapsed:0,charge:0});a.update(100,1/60);
 check('Cinematic charge begins on the ground',Math.abs(a.heroPosition[1]-.32)<.001&&a.position.distanceTo(grounded)<.001);
 a.setCinematic({phase:'charge',elapsed:30,charge:1});a.update(130,1/60);
 check('Only the hero lifts and clears the canopy',a.heroPosition[1]>2.99&&a.heroPosition[2]>4.4&&a.position.distanceTo(grounded)<.001,{hero:a.heroPosition,root:a.position.toArray()});
@@ -147,7 +147,7 @@ check('V7 casting clears the road by twelve metres without moving the walking ro
 a.setCinematic({phase:'combat',charge:1,distance:12,height:4,recoil:1});a.update(130.2,1/60);
 check('Shot recoil displaces the original body and bends its real elbow',a.heroPosition[2]-farHero[2]>.6&&unrecoiledArm.angleTo(poses.elbowR.bone.quaternion)>.3,{bodyRetreat:a.heroPosition[2]-farHero[2],elbowRadians:unrecoiledArm.angleTo(poses.elbowR.bone.quaternion)});
 
-check('Food moves off the casting hero',!food.visible&&root.getObjectByName('dragon').getObjectByName('food').visible);
+check('Food stays on the ground helper during casting',food.visible&&a.status.mealOwner==='helper'&&food.getWorldPosition(vector()).y<1);
 a.setCinematic({phase:'finisher',elapsed:2,charge:1});a.setDragonProjectile([2,5,1],.4);a.update(132,1/60);
 check('Actual companion follows explicit projectile world coordinates',a.dragonPosition.every((v,i)=>Math.abs(v-[2,5,1][i])<.00001),{dragon:a.dragonPosition});
 check('Projectile companion releases its food',!root.getObjectByName('dragon').getObjectByName('food').visible&&food.visible);

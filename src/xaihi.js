@@ -1,3 +1,4 @@
+import {makeArmSupport} from './arm-support.js';
 import {actorBounds} from './actor-bounds.js';
 import {downloadModel} from './model-download.js';
 import * as T from 'three';
@@ -38,6 +39,7 @@ export function buildXaihi(scene,r,gltf){
   const v=new T.Vector3(),q=new T.Quaternion(),axis=new T.Quaternion();
   function remember(name,bone){if(!bone)return;const inverse=bone.getWorldQuaternion(new T.Quaternion()).invert();poses[name]={bone,rest:bone.position.clone(),q:bone.quaternion.clone(),x:new T.Vector3(1,0,0).applyQuaternion(inverse),y:new T.Vector3(0,1,0).applyQuaternion(inverse),z:new T.Vector3(0,0,1).applyQuaternion(inverse)};}
   for(const [name,id]of Object.entries(ids))remember(name,byId(id));
+  const smileIds=[158,162,168,172,157,161,167,171];for(const id of smileIds)remember('smile'+id,byId(id));
   const eyelids=[];
   for(const [upperId,lowerId]of [[70,60],[67,61],[65,62],[89,79],[86,80],[84,81]]){
     const upper=byId(upperId),lower=byId(lowerId);if(!upper||!lower||upper.parent!==lower.parent)continue;
@@ -65,15 +67,14 @@ export function buildXaihi(scene,r,gltf){
   r.box(meal,'#b5ad8c',[0,.045,0],[.30,.02,.22],{roughness:.72});
   r.box(meal,'#3d7456',[0,.058,.015],[.06,.003,.18],{roughness:.66});
   root.traverse(n=>{if(n.isMesh)n.userData.dynamic=true;});
-  let disposed=false,phase='',action='waiting',time=0,gripCache=null;
+  let disposed=false,phase='',action='waiting',time=0;
   // Solve the real upper arm and elbow toward a held tablet; keep the source rig unchanged.
-  const ikOrigin=new T.Vector3(),ikEnd=new T.Vector3(),ikTarget=new T.Vector3(),ikFrom=new T.Vector3(),ikTo=new T.Vector3(),ikWorld=new T.Quaternion(),ikParent=new T.Quaternion(),ikTurn=new T.Quaternion();
-  function holdArm(side,target){const end=poses['wrist'+side]?.bone;if(!end)return;ikTarget.copy(target);root.localToWorld(ikTarget);
-   for(let i=0;i<8;i++)for(const name of ['elbow','arm']){const bone=poses[name+side]?.bone;if(!bone)continue;bone.getWorldPosition(ikOrigin);end.getWorldPosition(ikEnd);ikFrom.copy(ikEnd).sub(ikOrigin);ikTo.copy(ikTarget).sub(ikOrigin);if(ikFrom.lengthSq()<1e-8||ikTo.lengthSq()<1e-8)continue;
-    ikTurn.setFromUnitVectors(ikFrom.normalize(),ikTo.normalize());bone.getWorldQuaternion(ikWorld);bone.parent.getWorldQuaternion(ikParent).invert();bone.quaternion.copy(ikParent.multiply(ikTurn.multiply(ikWorld)));bone.updateWorldMatrix(false,true);
-   }
-  }
-  const tabletLeft=new T.Vector3(-.40,.94,.38),tabletRight=new T.Vector3(.04,.94,.38);
+  const ikOrigin=new T.Vector3(),ikTarget=new T.Vector3(),ikWorld=new T.Quaternion(),ikParent=new T.Quaternion();
+  function holdArm(side,target,pole){ikTarget.copy(target);root.localToWorld(ikTarget);armSupport.reach(side,ikTarget,null,pole);}
+  const armSupport=makeArmSupport(poses,root),safeRight=new T.Vector3(-.24,.90,.32),refuseLeft=new T.Vector3(.24,1.25,.42);
+  const refusalPole=new T.Vector3(.25,-1,.10);
+  const tabletLeft=new T.Vector3(.04,.98,.40),tabletRight=new T.Vector3(-.40,.98,.40);
+  const palmPoints=[229,233,237,241].map(id=>byId(id).getWorldPosition(new T.Vector3())),palmCenter=new T.Vector3();for(const p of palmPoints)palmCenter.add(p);palmCenter.multiplyScalar(.25);poses.wristL.bone.getWorldPosition(ikOrigin);const palmForward=palmCenter.clone().sub(ikOrigin).normalize(),palmAcross=palmPoints[3].clone().sub(palmPoints[0]).normalize(),palmNormal=palmForward.clone().cross(palmAcross).normalize().negate();palmAcross.crossVectors(palmNormal,palmForward).normalize();palmForward.crossVectors(palmAcross,palmNormal).normalize();const palmCalibration=new T.Quaternion().setFromRotationMatrix(new T.Matrix4().makeBasis(palmAcross,palmNormal,palmForward)).invert().multiply(poses.wristL.bone.getWorldQuaternion(new T.Quaternion())),refusalBasis=new T.Quaternion().setFromRotationMatrix(new T.Matrix4().makeBasis(new T.Vector3(-1,0,0),new T.Vector3(0,0,1),new T.Vector3(0,1,0)));
   const restPosition=root.position.clone();
   const aisle=new T.Vector3();
   function travel(progress,back=false){let p=clamp(progress);if(back)p=1-p;if(p<.66)aisle.set(1.95,restPosition.y,.85-2.20*p/.66);else aisle.set(1.95-.75*(p-.66)/.34,restPosition.y,-1.35);root.position.copy(aisle);root.rotation.y=back?(p<.66?0:Math.PI/2):(p<.66?Math.PI:-Math.PI/2);return p*2.95;}
@@ -87,7 +88,7 @@ export function buildXaihi(scene,r,gltf){
     get loaded(){return !disposed;},get state(){return {...status,headPosition:api.headPosition,screenButtons:phone.visible?hitButtons.map(b=>({id:b.id,world:screen.localToWorld(new T.Vector3(0,.23*(.5-(b.y+56)/768),0)).toArray()})):[],handPositions:['L','R'].map(side=>poses['wrist'+side]?.bone.getWorldPosition(new T.Vector3()).toArray()),position:root.position.toArray(),pose:{head:poses.head?.bone.quaternion.toArray(),wrist:poses.wristR?.bone.quaternion.toArray(),arm:poses.armL?.bone.quaternion.toArray()}};},
     setPosition(x,y,z){root.position.set(x,y,z);restPosition.copy(root.position);},
     setHeading(yaw){root.rotation.y=Number(yaw)||0;},
-    reset(){gripCache=null;phase='';action='waiting';root.visible=false;root.position.copy(restPosition);root.rotation.y=2;phone.visible=meal.visible=false;for(const p of Object.values(poses)){p.bone.position.copy(p.rest);p.bone.quaternion.copy(p.q);}for(const lid of eyelids)lid.bone.position.copy(lid.rest);Object.assign(status,{phase,action,visible:false,headYaw:0,phoneVisible:false,mealVisible:false});},
+    reset(){phase='';action='waiting';root.visible=false;root.position.copy(restPosition);root.rotation.y=2;phone.visible=meal.visible=false;for(const p of Object.values(poses)){p.bone.position.copy(p.rest);p.bone.quaternion.copy(p.q);}for(const lid of eyelids)lid.bone.position.copy(lid.rest);Object.assign(status,{phase,action,visible:false,headYaw:0,phoneVisible:false,mealVisible:false});},
     update(t,delta=0,state={}){
       if(disposed)return;time=Number.isFinite(t)?t:time;phase=state.phase||'';
       const visible=state.xaihiVisible??visiblePhases.has(phase);root.visible=visible;
@@ -95,18 +96,18 @@ export function buildXaihi(scene,r,gltf){
       const gesture=state.node?.gesture||state.gesture||'',text=state.node?.text||state.text||'';
       const operating=['heat-demo','heat'].includes(phase),leaving=phase==='flashback-end',stage=state.tablet?.stage||'',cue=state.tablet?.dialogue?.cue||'',readingLabel=stage==='meal-label'&&cue==='read-label';
       const hack=!readingLabel&&(!!state.tablet||operating||gesture==='phone'||/PHP|電網|漏洞|終端|駭|加速|三分鐘/.test(text));
-      const receive=leaving||gesture==='receive'||gesture==='hold';
+      const refusing=state.node?.event==='meal-refusal',refuse=refusing?clamp((state.nodeElapsed||0)/.65):0;const receive=!state.mealBorn&&(leaving||gesture==='receive'||gesture==='hold');
       action=operating?'microwave':receive?'receive-lunch':hack?'terminal':'waiting';
       const walking=['walk-fridge','walk-counter'].includes(stage);let distance=0;
       if(walking)distance=travel((state.tablet.age||0)/3.2,stage==='walk-counter');
       else if(['temperature','cooling','success','defrost','hot'].includes(stage)){root.position.set(1.2,restPosition.y,-1.35);const reaction=stage==='success'||stage==='hot';root.rotation.y=Math.PI-(reaction?.69*clamp((state.tablet.age||0)/.6):0);}
       else {root.position.copy(restPosition);root.rotation.y=phase==='meal-spawn'?1.6:2;}
-      const recoil=phase==='meal-spawn'?clamp(((state.phaseElapsed||0)-6.2)/.6):0;if(recoil){root.position.x-=.14*recoil;root.position.z-=.10*recoil;}
+      const recoil=phase==='meal-spawn'?clamp(((state.phaseElapsed||0)-6.2)/.6):0;if(recoil){root.position.x-=.14*recoil;root.position.z-=.10*recoil;}if(refusing){root.position.x-=Math.sin(root.rotation.y)*.16*refuse;root.position.z-=Math.cos(root.rotation.y)*.16*refuse;}
       const beat=Math.sin(time*1.1),flinch=phase==='heat-demo'?Math.max(0,Math.sin((state.phaseElapsed||0)*3.1))*.08:0;
       for(const p of Object.values(poses))p.bone.position.copy(p.rest);
-      pose('spine',Math.sin(time*.8)*.006+(hack?.035:0)-flinch*.13-recoil*.04,0,beat*.004);
+      pose('spine',Math.sin(time*.8)*.006+(hack?.035:0)-flinch*.13-recoil*.04-refuse*.08,0,beat*.004);
       pose('neck',hack?.045:0,0,0);
-      const fridgeReaction=stage==='success'||stage==='hot',birth=phase==='meal-spawn',headYaw=cue==='avert'?.38:cue==='side-eye'?-.65:readingLabel?-.10:birth?0:fridgeReaction?-.44:hack?-.22:-.65,nod=cue==='satisfied'?Math.sin(Math.min(1,state.tablet.age/1.2)*Math.PI)*.06:0;pose('head',readingLabel?.28:(birth?.16:fridgeReaction?-.03:hack?.14:.015)+nod,headYaw,Math.sin(time*.43)*.008);
+      const fridgeReaction=stage==='success'||stage==='hot',birth=phase==='meal-spawn',headYaw=refusing?.24*refuse:cue==='avert'?.38:cue==='side-eye'?-.65:readingLabel?-.10:birth?0:fridgeReaction?-.44:hack?-.22:-.65,nod=cue==='satisfied'?Math.sin(Math.min(1,state.tablet.age/1.2)*Math.PI)*.06:0;pose('head',readingLabel?.28:(birth?.16:fridgeReaction?-.03:hack?.14:.015)+nod,headYaw,Math.sin(time*.43)*.008+refuse*.06);
       // Relax the A-pose, then bring the real forearms toward the terminal.
       pose('armL',hack?-.13:receive?-.18:0,.02,-.56+(hack?.10:0));
       pose('elbowL',hack?-1.22:receive?-.88:-.12,0,-.02);pose('wristL',hack?-.5:receive?-.06:0,.06,0);
@@ -114,16 +115,20 @@ export function buildXaihi(scene,r,gltf){
       pose('elbowR',operating?-1.07:hack?-.95:-.13,operating?-.12:0,.02);pose('wristR',hack?-.5:0,0,operating?-.08:.03);
       pose('eyeL',0,hack?-.035:0);pose('eyeR',0,hack?-.035:0);
       const blink=Math.max(0,1-Math.abs((time+.4)%4.7-.16)/.11);
-      for(const lid of eyelids)lid.bone.position.lerpVectors(lid.rest,lid.target,blink);
+      for(const lid of eyelids)lid.bone.position.lerpVectors(lid.rest,lid.target,Math.max(blink,refuse*.08));
       for(let i=0;i<secondary.length;i++)pose(secondary[i],Math.sin(time*.85-i*.4)*.009,0,Math.sin(time*.63-i*.6)*.005);
       for(const suffix of ['L','R','DL','DR']){const swing=walking?Math.sin(distance*10)*(suffix.endsWith('L')?1:-1):0;pose('thigh'+suffix,swing*.25);pose('knee'+suffix,Math.max(0,-swing)*.38);pose('foot'+suffix,-swing*.12);}
       if(walking)root.position.y+=Math.abs(Math.sin(distance*10))*.014;
       root.updateMatrixWorld(true);
-      if(hack){tabletRight.set(.04,.94,.38);if(stage==='pickup')tabletRight.lerp(new T.Vector3(-.1,1.1,.75),1-clamp(state.tablet.age/2));if(!gripCache||stage==='pickup'){holdArm('L',tabletLeft);holdArm('R',tabletRight);if(stage!=='pickup')gripCache=['armL','elbowL','armR','elbowR'].map(key=>[poses[key].bone,poses[key].bone.quaternion.clone()]);}else{for(const [bone,rotation]of gripCache)bone.quaternion.copy(rotation);root.updateMatrixWorld(true);}}
+      if(hack){holdArm('L',tabletLeft);holdArm('R',tabletRight);}
+      else if(refusing){holdArm('L',refuseLeft,refusalPole);holdArm('R',safeRight);root.getWorldQuaternion(ikWorld).multiply(refusalBasis).multiply(palmCalibration);poses.wristL.bone.parent.getWorldQuaternion(ikParent).invert();poses.wristL.bone.quaternion.copy(ikParent.multiply(ikWorld));}
+      else {holdArm('R',safeRight);}
+
+      for(const id of smileIds){const p=poses['smile'+id];if(p)p.bone.position.y+=refuse*([158,162].includes(id)?.003:[168,172].includes(id)?.0012:.0008);}
       paint(state.tablet);phone.visible=hack&&!leaving;meal.visible=receive;
       const wrist=poses.wristL?.bone;
       if(wrist){wrist.getWorldPosition(v);root.worldToLocal(v);phone.position.copy(v).add(phoneOffset);phone.rotation.set(.95,Math.PI,0);if(hack)phone.position.set(-.18,1.13,.46);meal.position.copy(v).add(mealOffset);meal.rotation.set(-.06,0,0);}
-      updateBounds();Object.assign(status,{action,headYaw,phoneVisible:phone.visible,mealVisible:meal.visible});
+      updateBounds();Object.assign(status,{action:refusing?'refuse-lunch':action,refuseAmount:refuse,headYaw,phoneVisible:phone.visible,mealVisible:meal.visible});
     },
     dispose(){if(disposed)return;disposed=true;api.reset();status.loaded=false;root.removeFromParent();},
   };

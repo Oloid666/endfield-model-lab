@@ -48,7 +48,7 @@ export class MissionMachine{
     this.resetInteraction();
   }
   resetInteraction(){
-    this.birthDialogueIndex=-1;this.tablet=new VcrTablet();this.shopping=null;this.doorOpen=1;this.mealBorn=false;this.postgame=false;this.homecomingAt=null;this.homecomingSpoken=false;this.flightStableAt=null;this.failures={};this.seenHeatFailures=0;this.flight=null;this.loginAside='';this.asideCounts={};this.investigation=null;this.photoFaceValid=true;this.photoTaken=false;this.hackTurns=[1,2,3,1];this.hackMoves=0;this.hackFailures=0;this.rhythm=new RhythmHeat();
+    this.trayOwner='hero';this.helperPresent=false;this.birthDialogueIndex=-1;this.tablet=new VcrTablet();this.shopping=null;this.doorOpen=1;this.mealBorn=false;this.postgame=false;this.homecomingAt=null;this.homecomingSpoken=false;this.flightStableAt=null;this.failures={};this.seenHeatFailures=0;this.flight=null;this.loginAside='';this.asideCounts={};this.investigation=null;this.photoFaceValid=true;this.photoTaken=false;this.hackTurns=[1,2,3,1];this.hackMoves=0;this.hackFailures=0;this.rhythm=new RhythmHeat();
     this.connection={field:'account',account:'',password:'',lastKey:'',keyAt:-Infinity,keyNumber:0,error:'',verified:false,lever:0};
 
   }
@@ -81,6 +81,8 @@ export class MissionMachine{
     if(phase==='return')this.line(connectionPrompts.returned,entered);
     if(phase==='aim-final')this.line(finalAmmoLines[0],entered);
     if(phase==='landing')this.line(sequences.landing[0],entered);
+    if(phase==='meal-handoff'){this.helperPresent=true;this.line({id:'tray_pass',speaker:'zhuang',text:'先幫我拿一下。',gesture:'receive'},entered);}
+    if(phase==='meal-reclaim')this.line({id:'tray_back',speaker:'zhuang',text:'謝了。',gesture:'receive'},entered);
     if(phase==='tour')this.progress=100;
     if(phase==='complete'){this.progress=100;this.ended=true;this.quietUntil=this.time+8+this.random()*6;}
     if(phase==='aim-final')this.meterEntered=entered+FINAL_READY;
@@ -88,18 +90,18 @@ export class MissionMachine{
   }
   line(node,entered=this.time){this.node=node;this.nodeEntered=entered;this.revealed=0;if(node?.id==='intro_9'){this.purchaseStarted=entered;this.shopping=new ShoppingJourney();}this.hooks.onGesture?.(node?.gesture||'hold',node||{speaker:'zhuang'});this.emit();}
   sequence(phase,lines){this.phaseTo(phase);this.lines=lines;this.index=0;this.line(lines[0]);}
-  start(){
+  start(launch=true){
     this.branch=null;this.progress=0;this.ended=false;this.paused=false;this.shots=0;this.hits=0;this.lastAttack=-Infinity;this.feedback=null;
     this.output='steady';this.attackHoldUntil=0;this.castingEntered=null;this.castingPaused=0;this.castingFrozen=0;this.vcrStarted=null;this.vcrSnapshot=null;this.purchaseStarted=null;this.shoeOrbitStart=0;this.shoeRounds=0;this.resetInteraction();
     this.chatDeck=[];this.lastChat=-1;this.chatCounts={};this.cooldowns={};this.lastHotspot=-Infinity;this.quietUntil=Infinity;this.target=this.targets[0]?.id??null;
-    this.hooks.onDinner?.(null);this.sequence('intro',sequences.intro);return true;
+    this.hooks.onDinner?.(null);if(launch)this.sequence('intro',sequences.intro);else this.phaseTo('ready');return true;
   }
   returnToStreet(){
     if(this.postgame)return false;
-    this.postgame=true;this.homecomingAt=this.time;this.homecomingSpoken=false;
+    this.trayOwner='hero';this.postgame=true;this.homecomingAt=this.time;this.homecomingSpoken=false;
     this.phaseTo('complete');this.quietUntil=Infinity;return true;
   }
-  replay(){this.start();return true;}
+  replay(){this.start(false);return true;}
   setTargets(targets){this.targets=Array.isArray(targets)?targets.map((v,i)=>({id:v.id??i,label:v.label||`目標 ${i+1}`,position:v.position})):[];this.target=this.targets[0]?.id??null;this.emit();}
   selectTarget(id){
     if(!['combat','aim-final'].includes(this.phase)||this.paused)return false;
@@ -125,9 +127,9 @@ export class MissionMachine{
     else if(this.phase==='complete'){this.node=null;this.lines=[];this.sequenceKind=null;this.quietUntil=this.time+8+this.random()*6;this.emit();}
   }
   next(){
-    if(this.phase==='meal-spawn'&&this.hooks.tabletMode){
+    if(this.phase==='meal-spawn'){
       if(this.paused||this.time-this.entered<MEAL_BIRTH_DIALOGUE_AT||this.birthDialogueIndex<0)return false;
-      if(++this.birthDialogueIndex<3)this.line(heatDemoLines[4+this.birthDialogueIndex]);else {this.rhythm.retry();this.phaseTo('heat');}return true;
+      if(++this.birthDialogueIndex<heatDemoLines.length-4)this.line(heatDemoLines[4+this.birthDialogueIndex]);else this.sequence('flashback-end',sequences['flashback-end']);return true;
     }
     if(this.phase==='hack'&&this.hooks.tabletMode&&this.tablet.state.dialogue)return this.tabletAction('talk-next');
     if(this.phase==='shoe-view'&&!this.paused&&this.shoeReady){this.phaseTo('pylon-link');return true;}
@@ -202,7 +204,7 @@ export class MissionMachine{
   setLever(value){
     if(this.paused||this.phase!=='lever'||!Number.isFinite(value))return false;
     this.connection.lever=clamp(value);this.action('lever',this.connection.lever);this.emit();
-    if(this.connection.lever>=.98){this.connection.lever=1;this.action('grid-connect',true);this.phaseTo('ascent');this.line({id:'ascent_authorized',speaker:'system',text:'系統：允許起飛。',gesture:'look'});}
+    if(this.connection.lever>=.98){this.connection.lever=1;this.action('grid-connect',true);this.phaseTo('meal-handoff');}
     return true;
   }
   logicalInput(sourceTime){return this.time+(Number.isFinite(sourceTime)?sourceTime-this.sourceTime:0);}
@@ -250,7 +252,7 @@ export class MissionMachine{
     if(this.phase==='login'){this.connection.account=CONNECTION_ACCOUNT;this.connection.password=CONNECTION_PASSWORD;this.connection.field='password';return this.submitLogin();}
     if(this.phase==='hack'&&this.hooks.tabletMode){this.tablet.stage='done';this.sequence('credentials',sequences.credentials);return true;}
     if(this.phase==='hack'){this.hackTurns=[1,0,2,3];return this.hackSubmit();}
-    if(this.phase==='heat'){this.rhythm.cancel();this.rhythm.round=3;this.rhythm.status='won';this.action('heat-assisted',true);this.sequence('flashback-end',sequences['flashback-end']);return true;}
+    if(this.phase==='heat'){this.rhythm.cancel();this.rhythm.round=2;this.rhythm.surged=this.rhythm.forced=true;this.rhythm.failures++;this.mealBorn=true;this.action('meal-born',true);this.phaseTo('meal-spawn');return true;}
     if(['combat','aim-final'].includes(this.phase)){const target=this.phase;this.meterEntered=this.time-this.meterSettings.period/4;this.lastAttack=-Infinity;this.attackHoldUntil=this.time;if(target==='combat')this.progress=Math.max(85,this.progress);return this.attack();}
     return false;
   }
@@ -259,7 +261,7 @@ export class MissionMachine{
     this.start();this.branch=['A','B','C'].includes(branch)?branch:'A';this.hooks.onDinner?.(this.branch);
     if(id==='intro')return true;
     this.purchaseStarted=null;this.investigation='floor';this.connection.verified=true;
-    if(['rewind','last'].includes(id)){this.progress=99;this.castingEntered=this.time-30;}
+    if(['rewind','last'].includes(id)){this.trayOwner='helper';this.helperPresent=true;this.progress=99;this.castingEntered=this.time-30;}
     this.hooks.onRestore?.(id,this.state);
     if(id==='cargo'||id==='last')this.sequence(id,sequences[id]);else this.phaseTo(id);
     return true;
@@ -308,13 +310,15 @@ export class MissionMachine{
     // Catch up continuous cinematics after a late frame, but stop on every manual or input gate.
     for(let guard=0;guard<10;guard++){
       const elapsed=this.time-this.entered,phase=this.phase;let changed=false;
-      if(phase==='ascent'&&elapsed>=5){this.phaseTo('director-reminder',this.entered+5);this.line({id:'director_reminder_0',speaker:'dragon',text:'等等！導播，這邊重點不要漏掉！要照顧一下玩家！',gesture:'point'});changed=true;}
+      if(phase==='meal-handoff'&&elapsed+1e-8>=2.6){this.trayOwner='helper';this.phaseTo('ascent',this.entered+2.6);this.line({id:'ascent_authorized',speaker:'system',text:'系統：允許起飛。',gesture:'look'});changed=true;}
+      else if(phase==='meal-reclaim'&&elapsed+1e-8>=2.6){this.trayOwner='hero';this.phaseTo('tour',this.entered+2.6);changed=true;}
+      else if(phase==='ascent'&&elapsed>=5){this.phaseTo('director-reminder',this.entered+5);this.line({id:'director_reminder_0',speaker:'dragon',text:'等等！導播，這邊重點不要漏掉！要照顧一下玩家！',gesture:'point'});changed=true;}
       else if(phase==='director-reminder'&&elapsed>=5){this.phaseTo('shoe-view',this.entered+5);changed=true;}
       else if(phase==='pylon-link'&&elapsed>=4){this.phaseTo('charge',this.entered+4);changed=true;}
       else if(phase==='charge'&&elapsed>=CHARGE_DURATION){this.phaseTo('fire-ready',this.entered+CHARGE_DURATION);changed=true;}
       else if(phase==='terminal-deploy'&&elapsed>=6){this.sequence('terminal-quip',[{id:'terminal_hunter',speaker:'dragon',text:'這是貪婪之島，還是背鍋之島？',gesture:'shake',event:'book-quip'}]);changed=true;}
       else if(phase==='photo-sending'&&elapsed>=1.2){this.sequence('cargo',sequences.cargo);changed=true;}
-      else if(phase==='photo-return'&&elapsed>=2.5){this.sequence('photo-check',sequences.photoCheck);changed=true;}
+      else if(phase==='photo-return'&&elapsed>=2.5){this.sequence('photo-check',this.photoFaceValid?sequences.photoCheck:[{id:'photo_missing_face',speaker:'dragon',text:'這張沒拍到妳的臉，重拍一張。',gesture:'look'}]);changed=true;}
       else if(phase==='purchase'&&this.shopping?.done){this.phaseTo('walk-out');changed=true;}
       else if(phase==='walk-out'&&this.shopping?.done){this.phaseTo('photo-pose');changed=true;}
       else if(phase==='photo-pose'&&elapsed>=2){this.sequence('photo-talk',sequences.photoTalk);changed=true;}
@@ -322,26 +326,23 @@ export class MissionMachine{
       else if(phase==='heat-demo'&&elapsed>=HEAT_DEMO_DURATION){this.phaseTo('heat',this.entered+HEAT_DEMO_DURATION);changed=true;}
       else if(phase==='return'&&elapsed>=RETURN_DURATION){this.restorePresent();changed=true;}
       else if(phase==='finisher'&&elapsed>=9){this.phaseTo('landing',this.entered+9);changed=true;}
-      else if(phase==='landing'&&elapsed>=LANDING_DURATION){this.phaseTo('tour',this.entered+LANDING_DURATION);changed=true;}
+      else if(phase==='landing'&&elapsed>=LANDING_DURATION){this.phaseTo('meal-reclaim',this.entered+LANDING_DURATION);changed=true;}
       else if(phase==='tour'&&elapsed>=TOUR_DURATION){this.phaseTo('complete',this.entered+TOUR_DURATION);changed=true;}
-      else if(phase==='meal-spawn'&&!this.hooks.tabletMode&&elapsed>=12){this.rhythm.retry();this.phaseTo('heat');changed=true;}
       if(!changed)break;
     }
     const elapsed=Math.max(0,this.time-this.entered);
+    if(this.phase==='meal-handoff'&&elapsed>=1.35)this.trayOwner='helper';if(this.phase==='meal-reclaim'&&elapsed>=1.35)this.trayOwner='hero';
     if(this.phase==='charge')this.timedLine(chargeLines,elapsed);
     else if(this.phase==='director-reminder'&&elapsed>=2.7&&this.node?.id!=='director_reminder_1')this.line({id:'director_reminder_1',speaker:'system',text:'導播：差點忘了，謝謝龍董。',gesture:'look'},this.entered+2.7);
 
     else if(this.phase==='lever'&&elapsed>=3&&this.node!==connectionPrompts.lever)this.line(connectionPrompts.lever,this.entered+3);
     else if(this.phase==='heat-demo')this.timedLine(heatDemoLines.slice(0,4),elapsed);
-    else if(this.phase==='meal-spawn'){
-      if(!this.hooks.tabletMode)this.timedLine(heatDemoLines.slice(4).map((n,i)=>({...n,at:i*4})),elapsed);
-      else if(elapsed>=MEAL_BIRTH_DIALOGUE_AT&&this.birthDialogueIndex<0){this.birthDialogueIndex=0;this.line(heatDemoLines[4]);}
-    }
+    else if(this.phase==='meal-spawn'&&elapsed>=MEAL_BIRTH_DIALOGUE_AT&&this.birthDialogueIndex<0){this.birthDialogueIndex=0;this.line(heatDemoLines[4]);}
     else if(this.phase==='aim-final')this.timedLine(finalAmmoLines,elapsed);
     else if(this.phase==='landing')this.timedLine(sequences.landing,elapsed,3);
     if(this.phase==='heat'){
       const revision=this.rhythm.revision;this.rhythm.update(this.time);
-      if(this.rhythm.failures>this.seenHeatFailures){if(this.rhythm.forced&&!this.mealBorn){this.mealBorn=true;this.action('meal-born',true);this.phaseTo('meal-spawn');}if(!this.rhythm.forced)this.recordFailure('heat');this.seenHeatFailures=this.rhythm.failures;}
+      if(this.rhythm.failures>this.seenHeatFailures){if(this.rhythm.surged&&!this.mealBorn){this.mealBorn=true;this.action('meal-born',true);this.phaseTo('meal-spawn');}if(!this.rhythm.forced)this.recordFailure('heat');this.seenHeatFailures=this.rhythm.failures;}
       if(this.rhythm.revision!==revision){this.action('heat-stop',this.rhythm.status==='burnt'?'burnt':'charged',{forced:this.rhythm.forced});this.emit();}
       if(this.rhythm.status==='won')this.sequence('flashback-end',sequences['flashback-end']);
     }
@@ -368,7 +369,7 @@ export class MissionMachine{
     const heat=this.rhythm.state(this.time);
     const vcr=vcrPhases.has(this.phase),combatHoldRemaining=Math.max(0,this.attackHoldUntil-this.time),reverse=clamp((elapsed-.4)/(REWIND_DURATION-1));
     const rewindProgress=this.phase==='rewind'?reverse*reverse*(3-2*reverse):0,rewindStage=this.phase!=='rewind'?null:elapsed<.4?'freeze':elapsed>=REWIND_DURATION-.6?'settle':'reverse';
-    return {tablet:this.hooks.tabletMode&&this.phase==='hack'?this.tablet.state:null,fridgeHot:this.tablet.hot,cablePowered:this.tablet.powered,tabletMode:!!this.hooks.tabletMode,shopping:this.shopping?.state||null,mealBorn:this.mealBorn,postgame:this.postgame,homecomingAt:this.homecomingAt,phase:this.phase,node:this.node,nodeId:this.node?.id||null,nodeElapsed:this.node?Math.max(0,this.time-this.nodeEntered):0,speaker:this.node?.speaker||null,text:this.node?.text||'',revealed:this.revealed,
+    return {trayOwner:this.trayOwner,helperPresent:this.helperPresent,tablet:this.hooks.tabletMode&&this.phase==='hack'?this.tablet.state:null,fridgeHot:this.tablet.hot,cablePowered:this.tablet.powered,tabletMode:!!this.hooks.tabletMode,shopping:this.shopping?.state||null,mealBorn:this.mealBorn,postgame:this.postgame,homecomingAt:this.homecomingAt,phase:this.phase,node:this.node,nodeId:this.node?.id||null,nodeElapsed:this.node?Math.max(0,this.time-this.nodeEntered):0,speaker:this.node?.speaker||null,text:this.node?.text||'',revealed:this.revealed,
       branch:this.branch,choices:this.phase==='choice'?dinnerChoices:[],waitingChoice:this.phase==='choice',progress:this.progress,
       energy:Math.max(0,100-this.progress/99*100),charge:this.phase==='charge'?Math.min(100,30+elapsed/CHARGE_DURATION*70):this.phase==='ascent'?Math.min(30,Math.max(0,elapsed-1)*7.5):['director-reminder','shoe-view','pylon-link'].includes(this.phase)?30:preChargePhases.has(this.phase)?0:100,
       meter,meterElapsed:Math.max(0,this.time-this.meterEntered),meterPeriod:settings.period,meterSettings:settings,output:this.output,outputModes,
@@ -376,7 +377,7 @@ export class MissionMachine{
       phaseElapsed:elapsed,time:this.time,clock:this.time,sourceTime:this.sourceTime,paused:this.paused,auto:this.auto,castingElapsed:this.castingElapsed,
       loginAside:this.loginAside,purchaseElapsed:this.purchaseStarted===null?null:Math.max(0,this.time-this.purchaseStarted),shoeReady:this.shoeReady,shoeOrbitElapsed:this.phase==='shoe-view'?Math.max(0,this.time-this.shoeOrbitStart):0,shoeRounds:this.shoeRounds,flight:this.flight?{...this.flight,ready:Math.abs(this.flight.z-10.5)<=.6&&this.time-(this.flightStableAt??this.time)>=.5}:null,investigation:this.investigation,photoTaken:this.photoTaken,hack:{turns:[...this.hackTurns],moves:this.hackMoves,failures:this.hackFailures},connection,login:connection,heat,vcr,rewindProgress,rewindStage,returnProgress:this.phase==='return'?clamp(elapsed/RETURN_DURATION):0,vcrElapsed:vcr&&this.vcrStarted!==null?Math.max(0,this.time-this.vcrStarted):0,replayStage:vcr?this.phase:null,vcrSnapshot:this.vcrSnapshot?{...this.vcrSnapshot}:null,
       target:this.target,targetLabel:target?.label||'店面外牆',targets:this.targets,feedback:this.feedback,shots:this.shots,hits:this.hits,attackHoldUntil:this.attackHoldUntil,combatHoldRemaining,attackHeld:combatHoldRemaining>0,
-      presentationLocked:this.node?.event==='phone-away'&&this.time-this.nodeEntered<2.4||this.phase==='meal-spawn'&&(!this.hooks.tabletMode||elapsed<MEAL_BIRTH_DIALOGUE_AT)||this.node?.event==='vcr-cue'&&this.time-this.nodeEntered<4||this.node?.event==='dragon-capture'&&this.time-this.nodeEntered<2.1||this.node?.event==='pear-tour'&&this.time-this.nodeEntered<6||this.phase==='photo-check'&&elapsed<5||this.phase==='aim-final'&&elapsed<FINAL_READY||this.phase==='photo-talk'&&this.node?.event==='camera-handover'&&this.time-this.nodeEntered<1.5,failures:{...this.failures},canAssist:(this.failures[this.phase]||0)>=5,
+      presentationLocked:['meal-handoff','meal-reclaim'].includes(this.phase)||this.node?.event==='phone-away'&&this.time-this.nodeEntered<2.4||this.phase==='meal-spawn'&&elapsed<MEAL_BIRTH_DIALOGUE_AT||this.node?.event==='vcr-cue'&&this.time-this.nodeEntered<4||this.node?.event==='dragon-capture'&&this.time-this.nodeEntered<2.1||this.node?.event==='pear-tour'&&this.time-this.nodeEntered<6||this.phase==='photo-check'&&elapsed<5||this.phase==='aim-final'&&elapsed<FINAL_READY||this.phase==='photo-talk'&&this.node?.event==='camera-handover'&&this.time-this.nodeEntered<1.5,failures:{...this.failures},canAssist:(this.failures[this.phase]||0)>=5,
       canAttack:(this.phase!=='aim-final'||elapsed>=FINAL_READY)&&['combat','aim-final'].includes(this.phase)&&!this.paused&&this.time-this.lastAttack>=.6&&combatHoldRemaining===0,
       ended:this.ended,busy:!!this.node||!['ready','complete'].includes(this.phase),sequenceKind:this.sequenceKind,endingCaption,revision:this.revision};
   }

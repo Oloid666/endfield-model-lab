@@ -45,6 +45,9 @@ async function prepareBattle(){
  finally{fxNotice.hidden=true;fxPreparing=null;if(!closed)mission?.setPaused(false,'effects');}})();
 }
 const listen=(element,type,fn)=>element.addEventListener(type,fn,{signal:abort.signal});
+listen(document,'contextmenu',event=>{if(event.target.closest?.('button,[role=button],summary'))event.preventDefault();});
+listen(document,'selectstart',event=>{if(event.target.closest?.('button,[role=button],summary,.walk-pad,.mission-lever-track')&&!event.target.closest('input,textarea,[contenteditable=true]'))event.preventDefault();});
+
 function showError(text){$('#error-message').textContent=text;error.hidden=false;loading.hidden=true;}
 function menu(open){
   $('#settings').hidden=!open;$('#menu-toggle').setAttribute('aria-expanded',String(open));$('#menu-toggle').setAttribute('aria-label',open?'關閉設定':'開啟設定');
@@ -209,7 +212,7 @@ async function init(){
       }finally{restoring=false;}
     }});
     const backgroundResume=document.createElement('button');backgroundResume.className='background-resume';backgroundResume.textContent='已暫停 · 繼續';backgroundResume.hidden=true;$('#app').append(backgroundResume);
-    listen(document,'visibilitychange',()=>{if(document.hidden){analytics.tick(performance.now(),{visible:false});analytics.flush();mission.setPaused(true,'background');}else if(mission.pauseReasons.includes('background'))backgroundResume.hidden=true;});
+    listen(document,'visibilitychange',()=>{if(document.hidden){world?.photoCamera.points.clear();exploration?.releaseInputs();analytics.tick(performance.now(),{visible:false});analytics.flush();mission.setPaused(true,'background');}else {world.previous=undefined;mission.setClockRunning(world.running);}});
     backgroundResume.addEventListener('click',()=>{mission.setPaused(false,'background');backgroundResume.hidden=true;},{signal:abort.signal});
     styleExistingButtons($('#app'));
     window.__rainy711={
@@ -220,7 +223,7 @@ async function init(){
       get shaders(){return world.renderer.info.programs.map(p=>({id:p.id,name:p.name,uses:p.usedTimes}));},get devices(){return world.director.vcrEffects.state;},get performance(){return {...world.frameStats.state,battlePrepared:!!world.battleDrawWarm,drawCalls:world.renderer.info.render.calls,triangles:world.renderer.info.render.triangles,geometries:world.renderer.info.memory.geometries,textures:world.renderer.info.memory.textures,programs:world.renderer.info.programs.length};},get metrics(){let lights=0;world.scene.traverse(n=>{if(n.isLight&&n.visible)lights++;});return {batches:world.batchStats,lights,weather:world.weather.metrics,camera:world.walkCamera.state};},
       get cameraPose(){return {position:world.camera.position.toArray(),target:world.controls.target.toArray(),fov:world.camera.fov,photoOrigin:world.photoCamera.origin.toArray()};},get walkCamera(){return world.walkCamera.state;},get glassReady(){const u=world.store.glass.uniforms;return !!(u.uDepth.value?.isDepthTexture&&u.uScene.value?.isTexture&&u.uEnvironment.value?.isCubeTexture);},
       get poseData(){return world.actors?.poseData;},get idle(){return world.actors?.status;},get floorPlan(){return world.store.floorPlan;},get doors(){return {open:world.store.doors.open};},
-      get mission(){return mission.state;},get story(){return mission.state;},get destruction(){return {...world.store.destruction.state,targets:world.store.destruction.targets};},get garden(){return world.garden.state;},get effects(){return world.siege.state;},
+      get pauseReasons(){return mission.pauseReasons;},get mission(){return mission.state;},get story(){return mission.state;},get destruction(){return {...world.store.destruction.state,targets:world.store.destruction.targets};},get garden(){return world.garden.state;},get effects(){return world.siege.state;},
       get cinematic(){return world.director.status;},get tianshi(){return world.tianshi.state;},get microwave(){return world.microwave.state;},get connectionStage(){return world.connectionStage.state;},get xaihi(){return world.xaihi?.state||{loaded:false,loading:world.xaihiLoading,error:world.xaihiError};},
       get position(){return world.actors?.position.toArray();},get headPosition(){return world.actors?.headPosition;},get heroPosition(){return world.actors?.heroPosition;},get dragonPosition(){return world.actors?.dragonPosition;},get walking(){return exploration.active;},get minimumZoom(){return world.controls.minDistance;},projectPoint:point=>world.projectPoint(point),cameraOcclusion:point=>world.cameraOcclusion(point),
       fly:(x,z)=>mission.machine.fly(x,z),finishFlight:()=>mission.machine.finishFlight(),sendPhoto:()=>mission.sendPhoto(),takePhoto:()=>mission.takePhoto(),investigate:id=>mission.investigate(id),acceptCall:()=>mission.acceptCall(),tabletAction:id=>mission.machine.tabletAction(id),hackRotate:index=>mission.hackRotate(index),keyChunk:value=>mission.keyChunk(value),get photo(){return mission.photo;},get photoViewer(){return mission.viewer;},get investigationProps(){return world.investigationProps.state;},toggleAutoCamera:()=>world.toggleAutoCamera(),
@@ -234,6 +237,6 @@ async function init(){
   }catch(e){analytics.fail('scene');loader.dispose();world?.dispose();showError('無法啟動 3D 畫面。請使用支援 WebGL 2 的 Safari，然後重新載入。');console.error(e);}
 }
 function dispose(){feedbackDialog?.dispose();debugTravel?.dispose();closed=true;loader.dispose();abort.abort();bonus?.dispose();exploration?.dispose();mission?.dispose();audio.dispose();world?.dispose();}
-listen(window,'pagehide',event=>{analytics.tick(performance.now(),{visible:false});analytics.flush();if(!event.persisted)dispose();else world?.stop();});listen(window,'pageshow',event=>{if(event.persisted)world?.start();});
+listen(window,'pagehide',event=>{mission?.setPaused(true,'background');exploration?.releaseInputs();world?.photoCamera.points.clear();analytics.tick(performance.now(),{visible:false});analytics.flush();if(!event.persisted)dispose();else world?.stop();});listen(window,'pageshow',event=>{if(event.persisted&&world){world.previous=undefined;world.start();mission?.setClockRunning(true);}});
 if(import.meta.hot)import.meta.hot.dispose(dispose);
 init();

@@ -108,11 +108,10 @@ export const sequences={
     ['xaihi','借億點點。便當比較重要。','phone'],
   ]),
   'flashback-end':lines('flashback_end',[
-    ['system','加熱完成：0.3 秒。','hold','calm','heated-meal'],
-    ['xaihi','這樣就不用等了。','receive'],
-    ['system','保溫不打烊。武陵電網持續買單。','look','calm','warm-setting'],
-    ['dragon','她忘了關。\n我們剛充的電，正在替便當保溫。','player','aside'],
-    ['dragon','難怪微波爐這麼黑。','look','aside','charred-microwave'],
+    ['system','加熱已停止。保溫：開啟。','look','calm','warm-setting'],
+    ['dragon','便當跑了，保溫還開著。','look','aside','charred-microwave'],
+    ['zhuang','所以整座城的電……','look','aside'],
+    ['dragon','都拿去保溫空盤子了。','player','aside'],
   ]),
   last:lines('last',[
     ['dragon','伺服器呢？','look','calm','server-survives'],
@@ -169,7 +168,8 @@ export const heatDemoLines=lines('heat_demo',[
   ['system','武陵電網額定輸出。','look'],
   ['dragon','單位看一下啊！','shake'],
 ]).map((node,index)=>({...node,at:index*1.2})).concat([
-  {id:'meal_origin',at:6,speaker:'dragon',text:'剛剛那股電流灌進微波爐，把晚餐電活了。',gesture:'look',event:'meal-born'},
+  {id:'meal_refusal',at:6,speaker:'xaihi',text:'那個我不要了',gesture:'refuse',event:'meal-refusal'},
+  {id:'meal_origin',at:10,speaker:'dragon',text:'剛剛那股電流灌進微波爐，把晚餐電活了。',gesture:'look',event:'meal-explanation'},
   {id:'meal_reaction',at:10,speaker:'zhuang',text:'你把晚餐電活了？變成這個紫色不妙物體？？',gesture:'look',event:'meal-closeup'},
   {id:'meal_joke',at:14,speaker:'dragon',text:'至少現在不用我送了。',gesture:'happy',event:'meal-closeup'},
 ]);

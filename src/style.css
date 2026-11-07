@@ -173,3 +173,5 @@ details a { display: inline-block; padding: 3px 0; color: #ddc18b; text-underlin
 #loading.compact .loading-mark {display:none}#loading.compact p {margin:4px 0 10px}
 #loading.compact{bottom:calc(16px + env(safe-area-inset-bottom))}.device-note{font-size:10px;color:#a5b8af;letter-spacing:.12em;margin-bottom:12px}
 #loading.done{pointer-events:none!important;visibility:hidden}
+
+button,button *,[role="button"],[role="button"] *,summary,summary *{-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important}

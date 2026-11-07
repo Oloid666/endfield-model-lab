@@ -17,7 +17,8 @@ export const TABLET_PAGES={
  'walk-counter':['回到加熱櫃檯',['先處理便當'],[]],
  'meal-label':['便當加熱說明',['正在查看包裝標籤'],[]],
  grid:['找個加速的方法',['探索微波爐的供電設備'],[['scan-grid','找個加熱快一點的方法']]],
- 'scan-grid':['偵測電網漏洞中…',['檢查天師樁供電協議'],[]],
+ 'scan-grid':['尋找可用的電網入口',['檢查天師樁遠端維修連線'],[]],
+ 'grid-found':['3號天師樁：找到異常通道',['維修網段出現異常遠端連線','目標：天師樁主控電腦'],[['inspect-console','查看管理電腦']]],
  backdoor:['3號天師樁：偵測到竊密木馬',['NIKKE PC Launcher｜帳號密碼可能外洩','供應鏈攻擊｜CDN 腳本遭竄改','憑證竊取 Credential theft','C2 遠端控制通道：在線｜可操作天師樁供電'],[]],
  'rapi-request':['3號天師樁管理電腦',['NIKKE PC Launcher'],[]],
  'rapi-answer':['3號天師樁管理電腦',['NIKKE PC Launcher'],[]],
@@ -28,15 +29,16 @@ export const TABLET_PAGES={
  ready:['800 MW 已套用',['設備供電已接通'],[['start','開始熱便當']]],
  done:['極速加熱',['加熱控制交接中'],[]]
 };
-const NEXT={scan:'scan-php',tool:'fridge',detect:'scan-controller',control:'walk-fridge',apply:'cooling',meal:'walk-counter','scan-grid':'scan-grid',enable:'cable','800mw':'confirm',confirm:'ready',start:'done'};
-const AUTO={'scan-php':['php',1.6],'scan-controller':['controller',1.3],'walk-fridge':['temperature',3.2],cooling:['success',2],success:['defrost',0],defrost:['hot',3.6],'walk-counter':['meal-label',3.2],'meal-label':['grid',0],'scan-grid':['backdoor',1.8],backdoor:['rapi-request',1.5],'rapi-request':['rapi-answer',0],cable:['power',6]};
+const NEXT={scan:'scan-php',tool:'fridge',detect:'scan-controller',control:'walk-fridge',apply:'cooling',meal:'walk-counter','scan-grid':'scan-grid','inspect-console':'backdoor',enable:'cable','800mw':'confirm',confirm:'ready',start:'done'};
+const AUTO={'scan-php':['php',1.6],'scan-controller':['controller',1.3],'walk-fridge':['temperature',3.2],cooling:['success',2],success:['defrost',0],defrost:['hot',3.6],'walk-counter':['meal-label',3.2],'meal-label':['grid',0],'scan-grid':['grid-found',4.8],backdoor:['rapi-request',1.5],'rapi-request':['rapi-answer',0],cable:['power',6]};
 const TALKS={
  search:[['xaihi','冰箱能不能再調冷一點……'],['xaihi','要從後台設定，還要密碼。'],['dragon','妳知道密碼？'],['xaihi','不知道。我找找別的方法。']],
  php:[['xaihi','後台有個沒修補的問題。這個工具好像能從那裡進去。']],
  success:[['xaihi','嗯，有降。','satisfied'],['dragon','成功了？']],
  hot:[['dragon','正五十？！妳把蒸發器切到除霜模式了！'],['xaihi','……借了法國駭客的工具，忘了改預設模式。','avert'],['dragon','熱愛105°C的你～🎶\n滴滴清純的蒸餾水～','song'],['xaihi','……飲料晚點再說。先熱便當。','side-eye']],
  'meal-label':[['xaihi','微波三分鐘……','read-label'],['xaihi','太久了。我找個快一點的。','tablet']],
- backdoor:[['xaihi','這台妮姬啟動器裡有木馬，會偷玩家的帳號密碼。'],['dragon','玩遊戲還附贈盜帳號？'],['xaihi','惡意程式混進正常更新，叫供應鏈攻擊。這台也留下遠端通道。'],['dragon','別人偷帳號，妳偷電？'],['xaihi','借。這台能控制天師樁，電從那邊接。']],
+ 'grid-found':[['xaihi','咦，這邊有機會。']],
+ backdoor:[['xaihi','怎麼還裝了妮姬？'],['xaihi','這台妮姬啟動器裡有木馬，會偷玩家的帳號密碼。'],['dragon','玩遊戲還附贈盜帳號？'],['xaihi','惡意程式混進正常更新，叫供應鏈攻擊。這台也留下遠端通道。'],['dragon','別人偷帳號，妳偷電？'],['xaihi','留下來的通道還能用。這樣我們可以周轉一下。']],
  'rapi-request':[['rapi','可以幫我打馬賽克嗎？']],
  'rapi-answer':[['dragon','可以！']],
  power:[['dragon','妳連這套都會？'],['xaihi','不會駭。照工具說明借個通道而已。']]
@@ -63,6 +65,6 @@ export class VcrTablet{
   const [title,base,buttons]=TABLET_PAGES[this.stage],age=Math.max(0,this.now-this.at);
   const temperature=this.stage==='cooling'?Math.round(4-12*Math.min(1,age/2)):this.stage==='success'?-8:this.stage==='defrost'?Math.round(-8+58*Math.max(0,Math.min(1,(age-.6)/3))):this.hot?50:4;
   const busy=this.now<this.until||this.stage==='search'&&age<1.2||this.stage==='backdoor'&&age<1.5;
-  return {stage:this.stage,title,lines:this.stage==='cooling'?['指令已送出',`實際溫度：${signedTemperature(temperature)}`]:base,buttons:this.talks.length?[]:buttons,dialogue:this.talks[0]||null,dialogueAge:Math.max(0,this.now-this.talkAt),hot:this.hot,powered:this.powered,censored:this.censored,censorAt:this.censorAt,temperature,note:this.note,age,busy,revision:this.revision,wireBeat:this.stage==='cable'?(age<.4?'control':age<1.6?'source':age<4.9?'route':'sink'):null};
+  return {stage:this.stage,title,lines:this.stage==='scan-grid'?[...(age>=1.4?['1號天師樁：遠端維修已封鎖']:['1號天師樁：檢查中…']),...(age>=2.8?['2號天師樁：未發現可用入口']:age>=1.4?['2號天師樁：檢查中…']:[]),...(age>=4.1?['3號天師樁：偵測到異常遠端連線']:age>=2.8?['3號天師樁：檢查中…']:[])]:this.stage==='cooling'?['指令已送出',`實際溫度：${signedTemperature(temperature)}`]:base,buttons:this.talks.length?[]:buttons,dialogue:this.talks[0]||null,dialogueAge:Math.max(0,this.now-this.talkAt),hot:this.hot,powered:this.powered,censored:this.censored,censorAt:this.censorAt,temperature,note:this.note,age,busy,revision:this.revision+(this.stage==='scan-grid'?Math.floor(age/1.4):0),wireBeat:this.stage==='cable'?(age<.4?'control':age<1.6?'source':age<4.9?'route':'sink'):null};
  }
 }

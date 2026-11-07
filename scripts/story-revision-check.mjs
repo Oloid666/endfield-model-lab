@@ -10,17 +10,17 @@ import {Resources} from '../src/resources.js';
 let checks=0;const check=(name,ok)=>{assert.ok(ok,name);checks++;};
 const m=new MissionMachine({tabletMode:true});m.restoreDebugPoint('birth');
 check('Debug birth has the same forced surge, with no player failure',m.mealBorn&&m.rhythm.forced&&!m.failures.heat);
-m.update(2.9);check('Food changes before any creature is visible',!mealBirthFrame(m.state.phaseElapsed).visible&&!m.next());
-m.update(4);check('Swelling starts inside the tray',mealBirthFrame(m.state.phaseElapsed).visible&&mealBirthFrame(m.state.phaseElapsed).escape===0);
-m.setPaused(true);m.update(100);check('Paused birth cannot advance or accept dialogue',m.state.phaseElapsed===4&&!m.next());m.setPaused(false);m.update(104.1);
-check('Dialogue starts only after landing',m.node.id==='meal_origin'&&mealBirthFrame(m.state.phaseElapsed).revealed);
-m.update(140);check('Reading gate does not auto-skip after a long delay',m.phase==='meal-spawn'&&m.node.id==='meal_origin');
-m.next();check('Reaction follows the physical reveal',m.node.id==='meal_reaction');m.next();check('Delivery joke is last',m.node.id==='meal_joke');m.next();check('Reading completes into retry with the same creature',m.phase==='heat'&&m.mealBorn&&m.rhythm.status==='ready');
+m.update(.4);check('Food changes before any creature is visible',!mealBirthFrame(m.state.phaseElapsed).visible&&!m.next());
+m.update(1.2);check('Swelling starts inside the tray',mealBirthFrame(m.state.phaseElapsed).visible&&mealBirthFrame(m.state.phaseElapsed).escape===0);
+m.setPaused(true);m.update(100);check('Paused birth cannot advance or accept dialogue',m.state.phaseElapsed===1.2&&!m.next());m.setPaused(false);m.update(106);
+check('Dialogue starts only after landing',m.node.id==='meal_refusal'&&mealBirthFrame(m.state.phaseElapsed).revealed);
+m.update(140);check('Reading gate does not auto-skip after a long delay',m.phase==='meal-spawn'&&m.node.id==='meal_refusal');
+m.next();check('Origin follows the refusal',m.node.id==='meal_origin');m.next();check('Reaction follows the physical reveal',m.node.id==='meal_reaction');m.next();check('Delivery joke is last',m.node.id==='meal_joke');m.next();check('Reading exits without reheating the creature',m.phase==='flashback-end'&&m.mealBorn);
 m.start();check('Restart clears birth and input states',!m.mealBorn&&m.birthDialogueIndex===-1&&!m.rhythm.holding);
-for(let t=0;t<=10;t+=.01){const a=mealBirthFrame(t),b=mealBirthFrame(t+.01);check('Birth motion is continuous',Math.hypot(...a.position.map((p,i)=>p-b.position[i]))<.02);check('Door cannot close onto escaping body',t<4.8||t>6.5||a.doorAngle>.22);}
-check('Reduced motion retains origin and reveal ordering',!mealBirthFrame(2,true).visible&&mealBirthFrame(7,true).revealed&&mealBirthFrame(7,true).doorAngle>0);
+for(let t=0;t<=10;t+=.01){const a=mealBirthFrame(t),b=mealBirthFrame(t+.01);check('Birth motion is continuous',Math.hypot(...a.position.map((p,i)=>p-b.position[i]))<.02);check('Door cannot close onto escaping body',t<2.4||t>4.4||a.doorAngle>.22);}
+check('Reduced motion retains origin and reveal ordering',!mealBirthFrame(.4,true).visible&&mealBirthFrame(7,true).revealed&&mealBirthFrame(7,true).doorAngle>0);
 const node=sequences.briefing.find(n=>n.cue==='rossi-closeup');check('Rossi shot survives dialogue renumbering',revisedStoryShot({phase:'briefing',nodeId:'briefing_999',node}).beat==='briefing-rossi-closeup');
-m.restoreDebugPoint('nikke');check('Nikke jump prepares controller and first explanation',m.state.tablet.stage==='backdoor'&&m.state.fridgeHot&&m.state.tablet.dialogue.text.includes('帳號密碼'));
+m.restoreDebugPoint('nikke');check('Nikke jump prepares controller and first explanation',m.state.tablet.stage==='backdoor'&&m.state.fridgeHot&&m.state.tablet.dialogue.text.includes('妮姬'));
 check('Technical layer retains explanatory terms',m.state.tablet.lines.join(' ').includes('Credential theft')&&m.state.tablet.lines.join(' ').includes('C2'));
 check('All debug destinations are unique',new Set(DEBUG_DESTINATIONS.map(d=>d.id)).size===DEBUG_DESTINATIONS.length);
 globalThis.matchMedia=()=>({matches:false});const ctx=new Proxy({measureText:t=>({width:t.length*16}),createLinearGradient:()=>({addColorStop(){}})},{get:(o,k)=>k in o?o[k]:(()=>{})});globalThis.document={createElement:()=>({getContext:()=>ctx})};

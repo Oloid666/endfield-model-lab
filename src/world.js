@@ -167,10 +167,19 @@ export class World {
       const captureOrigin=camera.position.toArray();
       const width=aspect>=1?2048:Math.round(2048*aspect),height=aspect>=1?Math.round(2048/aspect):2048;
       const wide=render(width,height),points=[['floor',[-3.05,1.08,2.1]],['server',[0,4.6,1.4]]].map(([id,p])=>{const q=this.projectPoint(p);return {id,x:(q[0]+1)/2,y:(1-q[1])/2,z:q[2]};});
-      const h=this.actors.headPosition||this.actors.heroPosition,face=[h[0],h[1]+.08,h[2]];const projected=new T.Vector3(...face).project(camera),framePoints=[[-.14,-.17],[.14,.2]].map(([x,y])=>new T.Vector3(face[0]+x,face[1]+y,face[2]).project(camera));const yaw=this.actors.status.cinematic?.heading??0,toEye=new T.Vector3().subVectors(camera.position,new T.Vector3(...face)).normalize();const facing=Math.sin(yaw)*toEye.x+Math.cos(yaw)*toEye.z;const faceValid=projected.z>-1&&projected.z<1&&framePoints.every(q=>Math.abs(q.x)<.98&&Math.abs(q.y)<.98)&&!this.cameraOcclusion(face)&&facing>0;camera.lookAt(...face);const distance=camera.position.distanceTo(new T.Vector3(...face));camera.fov=T.MathUtils.radToDeg(2*Math.atan(.38/distance));
-      await nextFrame();const close=render(1536,1920),src=wide.toDataURL('image/png'),closeup=close.toDataURL('image/png');
-      const display=this.photoPhone?.getObjectByName('camera-screen');if(display){const thumb=document.createElement('canvas');thumb.width=256;thumb.height=384;thumb.getContext('2d').drawImage(close,0,0,256,384);this.photoTexture??=this.r.own(new T.CanvasTexture(thumb));this.photoTexture.image=thumb;this.photoTexture.colorSpace=T.SRGBColorSpace;this.photoTexture.needsUpdate=true;display.material.map=display.material.emissiveMap=this.photoTexture;display.material.color.set(0xffffff);display.material.emissive.set(0xffffff);display.material.emissiveIntensity=.3;display.material.needsUpdate=true;}
-      return {src,width,height,points,closeup,captureOrigin,faceValid,closeupWidth:1536,closeupHeight:1920};
+      const h=this.actors.headPosition||this.actors.heroPosition,face=[h[0],h[1]+.08,h[2]];const projected=new T.Vector3(...face).project(camera),framePoints=[[-.14,-.17],[.14,.2]].map(([x,y])=>new T.Vector3(face[0]+x,face[1]+y,face[2]).project(camera));const yaw=this.actors.status.cinematic?.heading??0,toEye=new T.Vector3().subVectors(camera.position,new T.Vector3(...face)).normalize();const facing=Math.sin(yaw)*toEye.x+Math.cos(yaw)*toEye.z;const faceValid=projected.z>-1&&projected.z<1&&framePoints.every(q=>Math.abs(q.x)<.98&&Math.abs(q.y)<.98)&&!this.cameraOcclusion(face)&&facing>0;
+      // The portrait is a crop of this exposure, never a second, retargeted camera.
+      const src=wide.toDataURL('image/png');let closeup=null,closeupWidth=0,closeupHeight=0,cropRect=null;
+      if(faceValid){
+        const ys=framePoints.map(q=>(1-q.y)*height/2),xs=framePoints.map(q=>(q.x+1)*width/2);
+        const cropH=Math.min(height,Math.max(ys[0]-ys[1],ys[1]-ys[0])*1.85),cropW=Math.min(width,cropH*.8);
+        const cx=(projected.x+1)*width/2,cy=(1-projected.y)*height/2;
+        const x=Math.max(0,Math.min(width-cropW,cx-cropW/2)),y=Math.max(0,Math.min(height-cropH,cy-cropH*.44));
+        cropRect={x,y,width:cropW,height:cropH};const crop=document.createElement('canvas');crop.width=Math.round(cropW);crop.height=Math.round(cropH);crop.getContext('2d').drawImage(wide,x,y,cropW,cropH,0,0,crop.width,crop.height);
+        closeup=crop.toDataURL('image/png');closeupWidth=crop.width;closeupHeight=crop.height;
+      }
+      const display=this.photoPhone?.getObjectByName('camera-screen');if(display){const thumb=document.createElement('canvas');thumb.width=256;thumb.height=384;const ctx=thumb.getContext('2d');ctx.fillStyle='#07181d';ctx.fillRect(0,0,256,384);const fit=Math.min(256/width,384/height);ctx.drawImage(wide,(256-width*fit)/2,(384-height*fit)/2,width*fit,height*fit);this.photoTexture??=this.r.own(new T.CanvasTexture(thumb));this.photoTexture.image=thumb;this.photoTexture.colorSpace=T.SRGBColorSpace;this.photoTexture.needsUpdate=true;display.material.map=display.material.emissiveMap=this.photoTexture;display.material.color.set(0xffffff);display.material.emissive.set(0xffffff);display.material.emissiveIntensity=.3;display.material.needsUpdate=true;}
+      return {src,width,height,points,closeup,captureOrigin,faceValid,closeupWidth,closeupHeight,cropRect};
     }finally{camera.position.copy(position);camera.quaternion.copy(quaternion);camera.fov=fov;this.renderer.setPixelRatio(dpr);this.resize();camera.aspect=aspect;camera.updateProjectionMatrix();this.capturingPhoto=false;if(wasRunning)this.start();}
   }
   projectPoint(point){const p=new T.Vector3().fromArray(point).project(this.camera);return p.toArray();}

@@ -247,12 +247,12 @@ export function buildWindowPromotions(root,r){
   }
   const map=r.own(new T.CanvasTexture(canvas));map.colorSpace=T.SRGBColorSpace;map.anisotropy=4;
   const material=r.own(new T.MeshStandardMaterial({map,roughness:.79,metalness:0}));
-  const placements=[{x:-3.54,y:1.92,w:.75,h:1.1,n:0},{x:3.5,y:1.94,w:.75,h:1.1,n:1},{x:-2.63,y:2.25,w:.55,h:.65,n:2},{x:2.58,y:2.22,w:.55,h:.65,n:3}];
+  const placements=[{x:3.55,y:1.95,w:.38,h:.57,n:1}];
   for(const p of placements){
     const geometry=r.own(new T.PlaneGeometry(1,1)),uv=geometry.attributes.uv;
     for(let k=0;k<uv.count;k++)uv.setXY(k,(p.n%2+uv.getX(k))/2,(1-Math.floor(p.n/2)+uv.getY(k))/2);
-    const mesh=r.mesh(geometry,material,root,[p.x,p.y,1.785],[p.w,p.h,1]);mesh.rotation.z=p.n%2?.009:-.007;
-    for(const side of [-1,1])r.box(root,'#cbd0bb',[p.x+side*p.w*.36,p.y+p.h*.48,1.787],[.075,.025,.003],{roughness:.9});
+    const mesh=r.mesh(geometry,material,root,[p.x,p.y,-2.925],[p.w,p.h,1]);mesh.rotation.z=p.n%2?.009:-.007;
+    for(const side of [-1,1])r.box(root,'#cbd0bb',[p.x+side*p.w*.36,p.y+p.h*.48,-2.923],[.075,.025,.003],{roughness:.9});
   }
-  return {count:4,frontGlassCoverage:placements.reduce((n,p)=>n+p.w*p.h,0)/(6.44*2.08),illustrated:true};
+  return {count:1,frontGlassCoverage:0,illustrated:true};
 }

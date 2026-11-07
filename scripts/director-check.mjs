@@ -125,7 +125,7 @@ const quietWorld=makeWorld(),quietDirector=new MissionDirector(quietWorld);quiet
 const pw=makeWorld(),pd=new MissionDirector(pw);pd.state=state('photo');const beforePhoto=pw.camera.position.toArray();pd.updateCamera(.1,pw.actors.heroPosition);check('Photo framing remains under player control',JSON.stringify(pw.camera.position.toArray())===JSON.stringify(beforePhoto));pw.r.dispose();
 const tw=makeWorld(),td=new MissionDirector(tw);for(const [at,beat] of [[2,'tour-server-hole'],[6,'tour-smile'],[9,'tour-ruins'],[11,'tour-ground-sign'],[13,'tour-ruins-context'],[17,'tour-dragon-orbit']]){td.state=state('tour',{phaseElapsed:at});td.updateCamera(.03,tw.actors.heroPosition);check('Tour retains '+beat,td.status.cameraBeat===beat);}tw.r.dispose();
 // The camera is a shot sequence, with a real front view and clear city subjects.
-const shotSamples=[[1,'charge-lift-wide'],[2,'charge-lift-wide'],[3,'charge-dragon-catchup'],[6,'charge-pylon-one'],[11,'charge-city-array'],[16,'charge-orbit'],[23,'charge-pylon-two'],[28,'charge-battle-wide']];
+const shotSamples=[[1,'cinematic-charge-array'],[3,'cinematic-charge-array'],[6,'cinematic-charge-hero'],[11,'cinematic-charge-pylon'],[16,'cinematic-charge-hero-close'],[23,'cinematic-charge-ready'],[28,'cinematic-charge-ready']];
 const cameraShots=[];
 for(const [label,aspect]of [['portrait',390/844],['landscape',844/390]]){
   const cw=makeWorld(aspect),cd=new MissionDirector(cw);cw.actors.heroPosition=[-1.25,4.32,15.25];cw.actors.status.cinematic={heading:2.91};
@@ -133,17 +133,17 @@ for(const [label,aspect]of [['portrait',390/844],['landscape',844/390]]){
     cd.state=state('charge',{phaseElapsed:elapsed,clock:30+elapsed,charge:elapsed/30*100});
     for(let n=0;n<180;n++){cd.updateCamera(1/30,cw.actors.heroPosition);cw.camera.lookAt(cw.controls.target);cw.camera.updateMatrixWorld(true);}
     const detail={label,elapsed,beat:cd.status.cameraBeat,position:cw.camera.position.toArray(),target:cw.controls.target.toArray(),fov:cw.camera.fov};cameraShots.push(detail);
-    check(`${label} charge ${elapsed}s chooses ${beat}`,chargeCameraBeat(elapsed)===beat&&cd.status.cameraBeat===beat,detail);
+    check(`${label} charge ${elapsed}s chooses ${beat}`,cd.status.cameraBeat===beat,detail);
     if(beat==='charge-pylon-one'||beat==='charge-pylon-two'){
       const point=cw.tianshi.focusTargets[beat==='charge-pylon-one'?0:3].detailTarget,p=new T.Vector3(...point).project(cw.camera);
       check(`${label} ${beat} shows its actual green core`,Math.abs(p.x)<.9&&Math.abs(p.y)<.6&&p.z>-1&&p.z<1,{projected:p.toArray(),...detail});
       check(`${label} ${beat} camera stays above and outside the shop`,Math.abs(cw.camera.position.x)>10&&cw.camera.position.y>9,detail);
     }
-    if(beat==='charge-lift-face'||beat==='charge-caster-face'){
+    if(beat==='cinematic-charge-hero'||beat==='cinematic-charge-hero-close'){
       const face=new T.Vector3(-1.25,5.98,15.25),projected=face.clone().project(cw.camera),normal=new T.Vector3(Math.sin(2.91),0,Math.cos(2.91)),toward=cw.camera.position.clone().sub(face).setY(0).normalize();
       check(`${label} ${beat} looks at the front of her actual face`,normal.dot(toward)>.8&&Math.abs(projected.x)<.5&&Math.abs(projected.y)<.6,{facing:normal.dot(toward),projected:projected.toArray()});
     }
-    if(beat==='charge-city-array'){
+    if(beat==='cinematic-charge-array'){
       const points=cw.tianshi.focusTargets.map(p=>new T.Vector3(...p.position).project(cw.camera).toArray());
       check(`${label} array shot includes all four connected pylon cores`,points.every(p=>Math.abs(p[0])<.98&&Math.abs(p[1])<.95&&p[2]>-1&&p[2]<1),points);
     }

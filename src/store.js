@@ -183,9 +183,10 @@ export function buildStore(scene, r) {
   const handle=r.mesh(r.geometry('TorusGeometry',.1,.014,5,14),r.material('#bba578'),root,[3.25,1.29,2.61]);
   r.cylinder(root,'#e5d0a6',[2.7,.91,2.62],.09,.22);r.cylinder(root,'#3c4338',[2.7,1.025,2.62],.096,.024);
   // Outdoor shopboard.
-  const board=new T.Group();board.position.set(-3.35,.22,2.95);board.rotation.y=.18;root.add(board);
-  r.box(board,'#a48a5e',[0,.6,0],[.8,1.12,.1]);
-  const bm=r.mesh(r.geometry('PlaneGeometry',1,1),r.label('熱的，剛剛好。',{width:512,height:1024,font:'40px sans-serif',bg:'#183f35',color:'#e8d6a9'}),board,[0,.61,.056],[.67,.96,1]);
+  const board=new T.Group();board.position.set(-3.55,.22,2.85);board.rotation.y=.18;root.add(board);
+  r.box(board,'#a48a5e',[0,.68,0],[.66,1.22,.1]);
+  const boardMap=typeof document.createElementNS==='function'?r.own(new T.TextureLoader().load(`${import.meta.env?.BASE_URL||'/'}images/store-posters.png`)):null;if(boardMap){boardMap.colorSpace=T.SRGBColorSpace;boardMap.repeat.set(1/3,1);boardMap.offset.set(0,0);}
+  const bm=r.mesh(r.geometry('PlaneGeometry',1,1),r.own(new T.MeshBasicMaterial({map:boardMap,toneMapped:false})),board,[0,.68,.056],[.52,1.04,1]);bm.name='tsundere-shopboard';
   r.box(board,'#896c49',[-.32,.12,-.25],[.07,.3,.65]);r.box(board,'#896c49',[.32,.12,-.25],[.07,.3,.65]);
   // Side vending machine, bins, parcels.
   B('#405a53',[-5.2,1.18,.65],[.85,1.95,.78]);

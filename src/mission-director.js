@@ -10,8 +10,8 @@ import {wireProgress} from './vcr-tablet.js';
 
 const flying=new Set(['ascent','director-reminder','shoe-view','pylon-link','charge','fire-ready','combat','energy','last','aim-final','finisher','landing']);
 const cctvPhases=new Set(['flashback','hack','credentials','heat-demo','meal-spawn','heat','flashback-end']);
-const lockedPhases=new Set(['photo-return','photo-sending','purchase','walk-out','rewind','flashback','hack','credentials','heat-demo','meal-spawn','heat','flashback-end','return','fire-ready','combat','aim-final','finisher','landing','tour']);
-const cinematicPhases=new Set(['terminal-quip','ascent','director-reminder','shoe-view','pylon-link','ready','intro','purchase','walk-out','photo-pose','photo-talk','photo-flight','photo','photo-return','photo-sending','photo-check','photo-review','terminal-deploy','verify-talk','verified-talk','cargo','observation','comm-request','briefing','login','captcha','lever','charge','fire-ready','combat','energy','rewind','flashback','hack','credentials','heat-demo','meal-spawn','heat','flashback-end','return','last','aim-final','finisher','landing','tour','complete']);
+const lockedPhases=new Set(['meal-handoff','meal-reclaim','photo-return','photo-sending','purchase','walk-out','rewind','flashback','hack','credentials','heat-demo','meal-spawn','heat','flashback-end','return','fire-ready','combat','aim-final','finisher','landing','tour']);
+const cinematicPhases=new Set(['meal-handoff','meal-reclaim','terminal-quip','ascent','director-reminder','shoe-view','pylon-link','ready','intro','purchase','walk-out','photo-pose','photo-talk','photo-flight','photo','photo-return','photo-sending','photo-check','photo-review','terminal-deploy','verify-talk','verified-talk','cargo','observation','comm-request','briefing','login','captcha','lever','charge','fire-ready','combat','energy','rewind','flashback','hack','credentials','heat-demo','meal-spawn','heat','flashback-end','return','last','aim-final','finisher','landing','tour','complete']);
 const smooth=x=>{const p=Math.max(0,Math.min(1,x));return p*p*(3-2*p);};
 const lerp=(a,b,p,out)=>{for(let i=0;i<3;i++)out[i]=a[i]+(b[i]-a[i])*p;return out;};
 function arc(a,b,p,height,out){lerp(a,b,p,out);out[1]+=Math.sin(Math.PI*p)*height;return out;}
@@ -29,8 +29,7 @@ export function dialogueShot(state,feet,dragon,portrait,reduced=false){
   return {position:[target[0]+x,target[1]+(subject==='pair'?.9:.55),Math.max(4.35,target[2]+z)],target,
    fov:portrait?(subject==='pair'?51:subject==='receipt'?46:43):(subject==='pair'?43:subject==='receipt'?39:36),beat:`dialogue-${subject}`};
 }
-export function chargeCameraBeat(elapsed){
-  return elapsed<2.5?'charge-lift-wide':elapsed<4?'charge-dragon-catchup':elapsed<9?'charge-pylon-one':elapsed<14?'charge-city-array':elapsed<21?'charge-orbit':elapsed<25?'charge-pylon-two':'charge-battle-wide';
+export function chargeCameraBeat(elapsed){return 'cinematic-charge-'+(elapsed<5?'array':elapsed<10?'hero':elapsed<14?'pylon':elapsed<22?'hero-close':'ready');
 }
 
 // Coordinates actors, a single camera and pooled effects from the mission clock.
@@ -153,7 +152,8 @@ export class MissionDirector{
   beforeActors(state){
     this.state=state;const actor=this.world.actors;if(!state||!actor)return;
     const phase=state.phase,e=state.phaseElapsed;this.world.controls.enabled=!this.world.upstairsInvitation&&!state.presentationLocked&&!['photo-flight','photo'].includes(phase)&&!lockedPhases.has(phase);
-    actor.setSceneAction?.({mealReceive:phase==='walk-out'&&state.shopping?.handoff?Math.sin(Math.PI*smooth(state.shopping.handoffElapsed/1.2)):0,playful:phase==='ready',singing:phase==='tour'&&e>=14&&e<30,heading:['ready','intro','photo-talk','cargo'].includes(phase)?-.65:['photo-check','photo-review','photo-sending'].includes(phase)?-.35:['photo-flight','photo'].includes(phase)?0:undefined,handover:phase==='photo-talk'&&state.node?.event==='camera-handover',photoLook:['photo-check','photo-review','photo-sending','cargo'].includes(phase),externalDevice:phase.startsWith('photo')||phase==='cargo',mealVisible:!['ready','intro','purchase'].includes(phase)&&!(phase==='walk-out'&&(!state.shopping?.handoff||state.shopping.handoffElapsed<1.1))});
+    actor.setTray?.({owner:state.trayOwner||'hero',phase,age:e});
+    actor.setSceneAction?.({mealReceive:phase==='walk-out'&&state.shopping?.handoff?Math.sin(Math.PI*smooth(state.shopping.handoffElapsed/1.2)):0,playful:phase==='ready',singing:phase==='tour'&&e>=14&&e<30,heading:['meal-handoff','meal-reclaim'].includes(phase)?0:['ready','intro','photo-talk','cargo'].includes(phase)?-.65:['photo-check','photo-review','photo-sending'].includes(phase)?-.35:['photo-flight','photo'].includes(phase)?0:undefined,handover:phase==='photo-talk'&&state.node?.event==='camera-handover',photoLook:['photo-check','photo-review','photo-sending','cargo'].includes(phase),externalDevice:phase.startsWith('photo')||phase==='cargo',mealVisible:!['ready','intro','purchase'].includes(phase)&&!(phase==='walk-out'&&(!state.shopping?.handoff||state.shopping.handoffElapsed<1.1))});
     if(state.postgame){
       actor.root.visible=this.world.charactersEnabled;actor.setCinematic(null);actor.setSoot(false);
       const roam=this.dragonRoam.update(state.clock,actor.heroPosition,actor.dragonPosition,{floorPlan:this.world.store.floorPlan,intact:this.world.streetShow?.state.mode!=='collapsed',doors:this.world.store.doors,meal:this.world.remnant?.state.visible?this.world.remnant.state.position:null});this.roamState=roam;
@@ -380,8 +380,8 @@ export class MissionDirector{
       if(s.tablet){const stage=s.tablet.stage,frame=w.xaihi?.tabletFrame(w.camera.aspect);if(frame){position=frame.position;target=frame.center;fov=frame.fov;beat='tablet-read';this.cameraRoll=frame.roll||0;}
        if(stage==='search'&&e<1.2&&frame&&!this.reducedMotion){const p=smooth(e/1.2);position=[3.9+(frame.position[0]-3.9)*p,2.5+(frame.position[1]-2.5)*p,-.6+(frame.position[2]+.6)*p];target=frame.center;beat='tablet-approach';this.cameraRoll=(frame.roll||0)*p;}
        if(stage!=='search'&&['backdoor','rapi-request','rapi-answer','rapi-mask','cable','walk-fridge','walk-counter','cooling','success','defrost','hot','meal-label'].includes(stage))this.cameraRoll=0;
-       if(stage==='backdoor'||stage==='rapi-mask'){if(stage==='backdoor'&&s.tablet.age<1.5){position=[11,5.3,-8];target=[7.4,2,-14.9];fov=portrait?65:53;}else{position=[7.7,2.05,-12];target=[7.4,1.85,-14.94];fov=portrait?52:40;}beat=stage==='backdoor'&&s.tablet.age<1.5?'pylon-nikke-establish':'pylon-nikke-screen';}
-       if(['rapi-request','rapi-answer'].includes(stage)){position=[7.57,2.10,-13.55];target=[7.52,2.11,-14.94];fov=portrait?28:22;beat='rapi-eye-bar';}
+       if(stage==='backdoor'||stage==='rapi-mask'){position=[7.7,2.05,-10.2];target=[7.4,1.85,-13.189];fov=portrait?58:40;beat='pylon-nikke-screen';}
+       if(['rapi-request','rapi-answer'].includes(stage)){position=[7.57,2.10,-11.8];target=[7.52,2.11,-13.189];fov=portrait?28:22;beat='rapi-eye-bar';}
        if(stage==='cable'){const p=s.tablet.age;if(p<1.5){position=[9.4,2.4,-12.5];target=[7.4,1.25,-14.9];}else if(p<4){position=[12,7.2,5];target=[5.4,1,-5.5];}else{position=[4.25,2.15,-.2];target=[3.85,1.48,1.45];}fov=portrait?70:50;beat='energy-wire-'+s.tablet.wireBeat;}
        if(['walk-fridge','walk-counter'].includes(stage)){const a=w.xaihi?.root.position;position=[3.6,2.45,1.2];target=a?[a.x,a.y+1.05,a.z]:[1.5,1.3,-.5];fov=portrait?65:52;beat='xaihi-walk';}
        if(['cooling','success','defrost','hot'].includes(stage)){position=[2.3,2.25,.55];target=[1.37,1.55,-1.65];fov=portrait?70:52;beat='fridge-temperature';}
