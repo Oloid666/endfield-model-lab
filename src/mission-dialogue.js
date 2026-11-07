@@ -1,5 +1,5 @@
 // Original fan fiction. These lines and the demolition episode are not official lore.
-export const speakers={zhuang:'莊方宜',dragon:'龍泡泡',mifoe:'弭弗',xaihi:'塞西',clerk:'店員',system:'天師樁終端',microwave:'微波爐',manager:'管理員',rapi:'拉毗'};
+export const speakers={zhuang:'莊方宜',dragon:'龍泡泡',mifoe:'弭弗',xaihi:'塞西',clerk:'店員',system:'天師樁終端',microwave:'微波爐',manager:'管理員',rapi:'拉毗',narrator:'旁白'};
 
 export const dinnerChoices=[
   {id:'A',label:'熱便當＋湯',hint:'先吃頓熱的。'},
@@ -100,7 +100,8 @@ export const sequences={
     ['dragon','消失的電跑到哪裡去了呢？\n讓我們看一段 VCR。','player','aside','vcr-cue'],
   ]),
   flashback:lines('flashback',[
-    ['xaihi','想喝氣泡水。加點梨花冰沙，應該不錯。','look'],
+    ['narrator','賽博修女塞西，難得出門買東西。','look','calm','xaihi-introduction'],
+    ['xaihi','想喝梨花氣泡水。加點冰沙，應該不錯。','look'],
     ['xaihi','冰沙負四十度，氣泡水零度……這裡冰箱好像不夠冰。','look'],
     ['xaihi','我來想個辦法。','phone'],
   ]),
@@ -175,9 +176,9 @@ export const heatDemoLines=lines('heat_demo',[
 ]);
 export const finalAmmoLines=lines('ammo',[
   ['dragon','不對吧？我現在是彈藥？','shake','shock'],
-  ['dragon','等一下，哪裡搞錯了。','look','shock'],
+  ['dragon','等等！不要浪費食物！','look','shock'],
   ['dragon','我說的不是方向——','shake','shock'],
-]).map((node,index)=>({...node,at:index*3}));
+]).map((node,index)=>({...node,at:[0,1.0,7.0][index]}));
 
 export const chatterGroups=[
   lines('chat_0',[['zhuang','手機好像亮了。','phone'],['dragon','這次真的是手機。','look'],['zhuang','……先吃完。','hold']]),

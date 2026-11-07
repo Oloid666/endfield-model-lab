@@ -1,4 +1,5 @@
 import * as T from 'three';
+import {trayRescueFrame,rescueTiming,rescueEase} from './tray-rescue.js';
 import {makeArmSupport} from './arm-support.js';
 import {buildDragonBandages} from './dragon-bandages.js';
 import { config } from './config.js';
@@ -42,7 +43,7 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
   buildDragonBandages(r,soot);
 
 
-  const meal=buildMeals(r,root),dragonMeal=buildMeals(r,dragon.foodMount,.68);meal.setDinner(null);dragonMeal.setDinner(null);
+  const meal=buildMeals(r,root),unusedMount=new T.Group();unusedMount.name='food';dragon.foodMount.add(unusedMount);const dragonMeal={mount:unusedMount,setDinner(){}};meal.setDinner(null);unusedMount.visible=false;
   const phone=new T.Group();phone.name='phone';phone.userData.hotspot='phone';root.add(phone);
   r.box(phone,'#1a272b',[0,0,0],[.075,.145,.012],{roughness:.25,metalness:.45});
   const screen=r.box(phone,'#9dbbc4',[0,.002,.008],[.063,.118,.004],{emissive:0x6d9fa8,emissiveIntensity:.4,roughness:.2});
@@ -71,7 +72,7 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
   for(const leg of feet){leg.planted=leg.target.clone();leg.swingFrom=leg.target.clone();leg.swingTo=leg.target.clone();leg.base=new T.Vector3();leg.swing=null;leg.floorOffset=leg.target.y-root.position.y;}
 
   const armSupport=makeArmSupport(poses,pivot),trayWorld=new T.Vector3(),supportPoint=new T.Vector3(),supportWrist=new T.Vector3(),supportQ=new T.Quaternion(),trayQ=new T.Quaternion(),basis=new T.Matrix4(),sideAxis=new T.Vector3(),palmNormal=new T.Vector3(),handForward=new T.Vector3();
-  const carry={owner:'hero',phase:'',age:0};
+  const carry={owner:'hero',phase:'',age:0,rescueAge:null},rescueDonor=[0,0,0],rescueFrame={};let rescueCaptured=false,rescueHeading=0,carryYaw=0;
   const handSupports=['L','R'].map((side,index)=>{
     const wrist=poses['wrist'+side].bone,ids=index?[396,400,404,408]:[349,353,357,361],points=ids.map(id=>byId(id).getWorldPosition(new T.Vector3())),center=new T.Vector3();for(const p of points)center.add(p);center.multiplyScalar(.25);wrist.getWorldPosition(supportWrist);wrist.getWorldQuaternion(supportQ);
     handForward.copy(center).sub(supportWrist).normalize();sideAxis.copy(points[3]).sub(points[0]).normalize();palmNormal.crossVectors(handForward,sideAxis).normalize().multiplyScalar(side==='L'?-1:1);sideAxis.crossVectors(palmNormal,handForward).normalize();handForward.crossVectors(sideAxis,palmNormal).normalize();basis.makeBasis(sideAxis,palmNormal,handForward);
@@ -124,7 +125,7 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
     get dragonGripPosition(){return dragon.hand.getWorldPosition(handPosition).toArray();},
     get dragonPosition(){return dragon.root.getWorldPosition(dragonWorldPosition).toArray();},
     get poseData(){return {head:poses.head?.bone.quaternion.toArray(),wrist:poses.wristL?.bone.quaternion.toArray(),hip:poses.hipL?.bone.quaternion.toArray(),knee:poses.kneeL?.bone.quaternion.toArray(),armL:poses.armL?.bone.quaternion.toArray(),armR:poses.armR?.bone.quaternion.toArray(),elbow:poses.elbowL?.bone.quaternion.toArray(),cloth:secondary.length?poses[secondary[0].key].bone.quaternion.toArray():null,smileCorners:[poses.smile171?.bone.position.toArray(),poses.smile181?.bone.position.toArray()]};},
-    setTray(value){Object.assign(carry,value);},get trayPosition(){return trayWorld.toArray();},setSceneAction(value){sceneAction=value||{};},cancelReaction(){reaction=null;},reactDragon(time,large=false){if(time<reactionUntil)return null;if(!reactionDeck.length){reactionDeck=Array.from({length:8},(_,i)=>i);for(let i=7;i>0;i--){const j=Math.floor(Math.random()*(i+1));[reactionDeck[i],reactionDeck[j]]=[reactionDeck[j],reactionDeck[i]];}if(reactionDeck.at(-1)===lastReaction)[reactionDeck[0],reactionDeck[7]]=[reactionDeck[7],reactionDeck[0]];}const id=reactionDeck.pop();lastReaction=id;reaction={id,at:time,large};reactionUntil=time+3;return reactionTexts[id];},setRain(value){raining=value;},setMove:(x,z,enabled=true)=>locomotion.setMove(x,z,enabled),setObstacles(layout){locomotion.setObstacles(layout);follower.invalidate();},
+    setTray(value){if(value.rescueAge==null||value.phase==='aim-final'&&carry.phase!=='aim-final')rescueCaptured=false;if(value.owner==='hero'&&!['meal-reclaim','meal-handoff'].includes(value.phase))carryYaw=pivot.rotation.y;Object.assign(carry,value);},get rescueFrame(){return rescueCaptured?rescueFrame:null;},get trayPosition(){return trayWorld.toArray();},setSceneAction(value){sceneAction=value||{};},cancelReaction(){reaction=null;},reactDragon(time,large=false){if(time<reactionUntil)return null;if(!reactionDeck.length){reactionDeck=Array.from({length:8},(_,i)=>i);for(let i=7;i>0;i--){const j=Math.floor(Math.random()*(i+1));[reactionDeck[i],reactionDeck[j]]=[reactionDeck[j],reactionDeck[i]];}if(reactionDeck.at(-1)===lastReaction)[reactionDeck[0],reactionDeck[7]]=[reactionDeck[7],reactionDeck[0]];}const id=reactionDeck.pop();lastReaction=id;reaction={id,at:time,large};reactionUntil=time+3;return reactionTexts[id];},setRain(value){raining=value;},setMove:(x,z,enabled=true)=>locomotion.setMove(x,z,enabled),setObstacles(layout){locomotion.setObstacles(layout);follower.invalidate();},
     setGesture(name,node={}){gesture.name=aliases[name]||String(name||'');gesture.start=lastTime;gesture.speaker=node.speaker||'';gesture.mood=node.mood||'calm';},
     setDinner(value){dinner=['A','B','C'].includes(String(value).toUpperCase())?String(value).toUpperCase():null;meal.setDinner(dinner);dragonMeal.setDinner(dinner);status.dinner=dinner;if(!dinner){smileTarget=smileAmount=0;companionAction.kind='';companionAction.amount=0;}},
     setSmile(value){smileTarget=T.MathUtils.clamp(Number(value)||0,0,1);},
@@ -155,7 +156,7 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
       const elapsed=t-gesture.start,g=T.MathUtils.smoothstep(elapsed,0,.3)*(1-T.MathUtils.smoothstep(elapsed,2.1,2.75));
       const dragonSpeaker=gesture.speaker==='dragon'||gesture.speaker==='龍泡泡'||gesture.speaker==='龍';
       const gest=name=>!dragonSpeaker&&gesture.name===name?g:0;
-      const receiving=Number(sceneAction.mealReceive)||0;const transferring=['meal-handoff','meal-reclaim'].includes(carry.phase),handoff=carry.phase==='meal-handoff',reachDown=transferring?T.MathUtils.smootherstep(carry.age,.1,.85)*(1-T.MathUtils.smootherstep(carry.age,1.55,2.5)):0;
+      const receiving=Number(sceneAction.mealReceive)||0;const transferring=['meal-handoff','meal-reclaim'].includes(carry.phase),handoff=carry.phase==='meal-handoff',reachDown=transferring&&!handoff?T.MathUtils.smootherstep(carry.age,.1,.85)*(1-T.MathUtils.smootherstep(carry.age,1.55,2.5)):0;
       const sleeve=dinner||sceneAction.photoLook?0:Math.max(idle.sleeve,gest('sleeve')),attention=Math.max(idle.dragon,gest('dragon')),goods=Math.max(idle.goods,gest('goods')),rain=Math.max(idle.rain,gest('rain'));
       const phoneLook=sceneAction.handover?1:sceneAction.photoLook?0:Math.max(dinner?0:(idle.phone||0),gest('phone')),hold=dinner&&(carry.owner==='hero'||transferring)?1:Math.max(gest('hold'),gest('receive'),gest('eat'));
       let gazeYaw=0;if(sceneAction.gazeTarget&&!castActive&&!phoneLook){gazePoint.fromArray(sceneAction.gazeTarget);root.updateMatrixWorld(true);poses.head.bone.getWorldPosition(handPosition);gazePoint.sub(handPosition);pivot.getWorldQuaternion(gazeQ).invert();gazePoint.applyQuaternion(gazeQ);gazeYaw=T.MathUtils.clamp(Math.atan2(gazePoint.x,gazePoint.z),-.6,.6);}
@@ -235,25 +236,44 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
       }else for(const leg of feet)leg.swing=null;
       status.footDrift=0;if(grounded)for(const leg of feet)if(leg.foot)status.footDrift=Math.max(status.footDrift,leg.foot.getWorldPosition(footPosition).distanceTo(leg.target));Object.assign(status.gait,{leftSwing:feet[0].swing,rightSwing:feet[1].swing,acceleration:motion.acceleration,turn:motion.turn});lastWalking=walking;
       const companion=sceneAction.freeFlying?{...follower.state,walk:0,mode:'flying',lookYaw:sceneAction.freeLookYaw,lookPitch:sceneAction.freeLookPitch}:follower.update(delta,t);
-      idle.dragon=attention;idle.rain=rain;idle.nod=Math.max(idle.nod,gest('happy'));idle.walk=companion.walk;idle.walkPhase=companion.phase;idle.lookYaw=companion.lookYaw;idle.lookPitch=companion.lookPitch;idle.followerMode=companion.mode;idle.glance=companion.glance;idle.gesture=status.gesture;idle.gestureAge=elapsed;idle.gestureAmount=g;idle.holding=!!dinner;idle.gestureAmount=sceneAction.photoLook||!dragonSpeaker?0:g;idle.action=companionAction;idle.projectile=!sceneAction.homecoming&&projectileActive&&['aim-final','finisher','landing','tour','complete'].includes(cinematic.phase)&&!['key','lever'].includes(companionAction.kind);idle.phoneHold=sceneAction.photoLook;idle.allowIdleEmote=sceneAction.playful&&!castActive;idle.singing=sceneAction.singing;idle.reaction=reaction&&t-reaction.at<2?{...reaction,age:t-reaction.at}:null;dragon.update(t,idle);status.companionExpression=dragon.state.mood;
+      idle.dragon=attention;idle.rain=rain;idle.nod=Math.max(idle.nod,gest('happy'));idle.walk=companion.walk;idle.walkPhase=companion.phase;idle.lookYaw=companion.lookYaw;idle.lookPitch=companion.lookPitch;idle.followerMode=companion.mode;idle.glance=companion.glance;idle.gesture=status.gesture;idle.gestureAge=elapsed;idle.gestureAmount=g;idle.holding=!!dinner;idle.gestureAmount=sceneAction.photoLook||!dragonSpeaker?0:g;idle.action=companionAction;idle.projectile=!sceneAction.homecoming&&projectileActive&&['aim-final','finisher','landing','tour','complete'].includes(cinematic.phase)&&!['key','lever'].includes(companionAction.kind);idle.phoneHold=sceneAction.photoLook;idle.allowIdleEmote=sceneAction.playful&&!castActive;idle.singing=sceneAction.singing;idle.singingTrapped=sceneAction.singingTrapped;idle.singingAge=sceneAction.singingAge;idle.reaction=reaction&&t-reaction.at<2?{...reaction,age:t-reaction.at}:null;dragon.update(t,idle);status.companionExpression=dragon.state.mood;
       dragonWorldPosition.copy(projectileActive?projectileWorld:heroWorld.fromArray(companion.position));root.worldToLocal(dragonWorldPosition);dragon.root.position.copy(dragonWorldPosition);status.dragonHeading=dragonHeading;dragon.root.rotation.set(sceneAction.photoLook?.25:projectileActive?-.08:0,projectileActive?dragonHeading:companion.heading,projectileActive?projectileRoll:0);dragon.root.scale.set(.59,idle.projectile?.55:.59,.59);
+      const saving=carry.phase==='aim-final',rescue=rescueTiming(carry.rescueAge||0),holdingDragon=carry.owner==='dragon'||saving&&rescue.release<1;
+      if(carry.phase==='meal-handoff')carryYaw=0;
+      else if(carry.owner==='dragon'&&!rescueCaptured){const turn=Math.atan2(Math.sin(dragonHeading+Math.PI-carryYaw),Math.cos(dragonHeading+Math.PI-carryYaw));carryYaw+=turn*(delta>0?1-Math.exp(-Math.min(delta,.06)*6):0);}
+      if(holdingDragon){
+        if(saving&&!rescueCaptured){const tremble=1-T.MathUtils.smootherstep(carry.age,1.35,1.6);dragon.root.position.x+=Math.sin(t*36)*.012*tremble;dragon.root.position.y+=Math.sin(t*41)*.005*tremble;}
+        dragon.root.rotation.x=0;dragon.root.rotation.z=saving?.65*rescue.release:0;dragon.root.scale.setScalar(.59);dragon.body.rotation.set(0,0,0);dragon.body.position.y=0;dragon.body.scale.set(1,1,1);
+        for(let i=0;i<2;i++){const hand=dragon.hands[i],side=i?1:-1;const yaw=carryYaw-dragonHeading;hand.position.set(side*.29*Math.cos(yaw),.61-rescue.press*.035/.59,1.02-side*.29*Math.sin(yaw));hand.position.lerp(supportPoint.set(side*.53,.43,.07),rescue.release);hand.rotation.set(0,0,side*rescue.release*1.08);}
+      }
       meal.mount.visible=sceneAction.mealVisible!==false&&Boolean(dinner)&&!sceneAction.externalMealHidden;
       dragonMeal.mount.visible=false;
       shadows[0].position.set(0,.006-(castActive?.116*launch:0),.04+forward);shadows[0].scale.set(.7+lift*.07,.48+lift*.045,1);shadows[1].visible=!projectileActive;shadows[1].position.x=dragon.root.position.x;shadows[1].position.z=dragon.root.position.z;root.updateMatrixWorld(true);
       pivot.getWorldQuaternion(trayQ);trayQ.setFromAxisAngle(worldUp,pivot.rotation.y);
       trayWorld.set(0,1.10-reachDown*.32-.22*Math.min(1,Math.abs(motion.turn))-walk*(.012+.008*Math.cos(motion.phase*2)),.65);pivot.localToWorld(trayWorld);
-      if(carry.owner==='helper'){
-        const lift=transferring?(handoff?1-T.MathUtils.smootherstep(carry.age,1.35,2.5):T.MathUtils.smootherstep(carry.age,0,.8)):0;
-        trayWorld.set(-1.25,.79+lift*.30,3.90);trayQ.identity();
+      if(carry.owner==='dragon'||saving){
+        // The plate follows the midpoint of both palm tops, not the dragon's belly.
+        dragon.hands[0].getWorldPosition(supportPoint);dragon.hands[1].getWorldPosition(supportWrist);supportPoint.add(supportWrist).multiplyScalar(.5);supportPoint.y+=.065;
+        if(saving&&rescueCaptured&&rescue.release<1){
+          handoffOffset.fromArray(rescueDonor).sub(supportPoint);root.getWorldQuaternion(rootQuaternion).invert();handoffOffset.applyQuaternion(rootQuaternion);dragon.root.position.add(handoffOffset);root.updateMatrixWorld(true);supportPoint.fromArray(rescueDonor);
+        }
+        if(carry.owner==='dragon'){trayWorld.copy(supportPoint);trayQ.setFromAxisAngle(worldUp,carryYaw);}
+        if(saving&&!rescueCaptured&&carry.age>=1.6){rescueDonor.splice(0,3,...supportPoint.toArray());rescueHeading=Math.atan2(Math.sin(carryYaw),Math.cos(carryYaw));rescueCaptured=true;}
       }
+      if(rescueCaptured&&carry.rescueAge!=null){
+        trayRescueFrame(carry.rescueAge,rescueDonor,undefined,rescueFrame);
+        if(carry.owner==='helper'||saving&&rescueCaptured){trayWorld.fromArray(rescueFrame.tray);trayQ.setFromAxisAngle(worldUp,rescueHeading);}
+        if(carry.phase==='meal-reclaim'){const yaw=rescueHeading*(1-T.MathUtils.smootherstep(carry.age,0,1.25));trayQ.setFromAxisAngle(worldUp,yaw);const lift=T.MathUtils.smootherstep(carry.age,0,.8)*.22;rescueFrame.tray[1]+=lift;rescueFrame.height+=lift;if(carry.owner==='helper')trayWorld.fromArray(rescueFrame.tray);}
+      }
+      if(carry.owner==='helper'&&!rescueCaptured){trayWorld.set(-1.25,.88,3.90);trayQ.identity();}
       // Aim both palms at the tray, instead of placing a tray behind a posed wrist.
       if(dinner&&(carry.owner==='hero'||transferring)&&!castActive){
-        status.handSupportErrors??=[0,0];for(const hand of handSupports){if((sceneAction.handover||phoneLook>.1)&&hand.side==='R')continue;supportQ.copy(trayQ).multiply(hand.calibration);supportPoint.set((sceneAction.handover||phoneLook>.1)&&hand.side==='L'?0:hand.side==='L'?.18:-.18,0,.015).applyQuaternion(trayQ).add(trayWorld);supportWrist.copy(hand.offset).applyQuaternion(supportQ);supportWrist.subVectors(supportPoint,supportWrist);const weight=transferring?(handoff?1-T.MathUtils.smootherstep(carry.age,1.35,2.5):T.MathUtils.smootherstep(carry.age,0,.8)):1;for(const b of hand.blend)b.q.copy(b.bone.quaternion);armSupport.reach(hand.side,supportWrist,supportQ,hand.pole);for(const b of hand.blend)b.solved.copy(b.bone.quaternion);for(const b of hand.blend)b.bone.quaternion.slerpQuaternions(b.q,b.solved,weight);root.updateMatrixWorld(true);poses['wrist'+hand.side].bone.getWorldQuaternion(mealQ);fingerWorld.copy(hand.offset).applyQuaternion(mealQ);poses['wrist'+hand.side].bone.getWorldPosition(handPosition);fingerWorld.add(handPosition);status.handSupportErrors[hand.side==='L'?0:1]=fingerWorld.distanceTo(supportPoint);}
+        status.handSupportErrors??=[0,0];for(const hand of handSupports){if((sceneAction.handover||phoneLook>.1)&&hand.side==='R')continue;supportQ.copy(trayQ).multiply(hand.calibration);supportPoint.set((sceneAction.handover||phoneLook>.1)&&hand.side==='L'?0:hand.side==='L'?.18:-.18,0,.015).applyQuaternion(trayQ).add(trayWorld);supportWrist.copy(hand.offset).applyQuaternion(supportQ);supportWrist.subVectors(supportPoint,supportWrist);const weight=transferring?(handoff?1-T.MathUtils.smootherstep(carry.age,.70,1.2):T.MathUtils.smootherstep(carry.age,0,.8)):1;for(const b of hand.blend)b.q.copy(b.bone.quaternion);armSupport.reach(hand.side,supportWrist,supportQ,hand.pole);for(const b of hand.blend)b.solved.copy(b.bone.quaternion);for(const b of hand.blend)b.bone.quaternion.slerpQuaternions(b.q,b.solved,weight);root.updateMatrixWorld(true);poses['wrist'+hand.side].bone.getWorldQuaternion(mealQ);fingerWorld.copy(hand.offset).applyQuaternion(mealQ);poses['wrist'+hand.side].bone.getWorldPosition(handPosition);fingerWorld.add(handPosition);status.handSupportErrors[hand.side==='L'?0:1]=fingerWorld.distanceTo(supportPoint);}
       }
       fingerWorld.copy(trayWorld);root.worldToLocal(fingerWorld);meal.mount.position.copy(fingerWorld);root.getWorldQuaternion(mealRootQ).invert();meal.mount.quaternion.copy(mealRootQ).multiply(trayQ);
       // Branch trays have different authored base heights; align their undersides.
       meal.mount.position.y+=dinner==='A'?.024:dinner==='B'?.068:.065;
-      status.mealOwner=carry.owner;status.mealSupport=trayWorld.toArray(status.mealSupport||[0,0,0]);palmWorld.copy(trayWorld);
+      status.trayYaw=carry.phase==='meal-reclaim'?rescueHeading*(1-T.MathUtils.smootherstep(carry.age,0,1.25)):carry.owner==='hero'?pivot.rotation.y:rescueCaptured?rescueHeading:carryYaw;status.mealOwner=carry.owner;status.mealSupport=trayWorld.toArray(status.mealSupport||[0,0,0]);palmWorld.copy(trayWorld);
       phone.visible=phoneLook>.06&&!castActive&&!sceneAction.externalDevice;
       if(phone.visible&&poses.wristR){poses.wristR.bone.getWorldPosition(handPosition);root.worldToLocal(handPosition);phone.position.copy(handPosition);phone.position.y+=.055;phone.position.z+=.025;phone.rotation.set(-.23,motion.heading+.1,-.08);screen.material.emissiveIntensity=.35+phoneLook*.7;}
     },

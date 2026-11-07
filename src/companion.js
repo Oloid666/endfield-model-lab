@@ -105,11 +105,21 @@ export function buildDragon(r) {
     }
     // Singing owns the final pose, including when the dragon is stuck in rubble.
     if(s.singing){
-      const beat=reduced?0:Math.sin(t*2)*.025;
-      arms[0].position.set(-.59,.46,.12);arms[0].rotation.z=-.12;
-      arms[1].position.set(.62,.69,.22);arms[1].rotation.z=.32+beat;
-      body.rotation.set(0,0,beat);body.scale.set(1,1,1);
-      microphone.position.set(.18,.46+beat*.4,.79);
+      const tempo=104/60,phrase=4/tempo,part=(s.singingAge??t)/phrase,index=Math.floor(part)%6,blend=T.MathUtils.smoothstep(part%1,0,.10),wave=Math.sin(t*tempo*Math.PI),trapped=!!s.singingTrapped;
+      function clip(i){const soft=reduced?0:1;return [
+        [wave*.07,0,wave*.08,.1],
+        [0,Math.abs(wave)*.035,wave*.035,-.30],
+        [wave*.035,0,wave*.12,.25],
+        [wave*.04,Math.max(0,wave)*.09,wave*.05,-.75],
+        [0,0,wave*.04,-.55],
+        [0,.025,wave*.025,-.95]
+      ][i].map(x=>x*soft);}
+      const from=clip((index+5)%6),to=clip(index),v=to.map((x,i)=>T.MathUtils.lerp(from[i],x,blend));
+      arms[0].position.set(-.59,.46,.12);arms[0].rotation.z=-.12+v[3];
+      arms[1].position.set(.62,.69,.22);arms[1].rotation.z=.32+v[2]*.3;
+      body.rotation.set(index===1?v[1]*.5:0,0,v[2]);body.scale.set(1,1,1);body.position.x=trapped?0:v[0];body.position.y=trapped?0:v[1];
+      if(!trapped)for(let i=0;i<feet.length;i++){feet[i].position.y=.14+Math.max(0,Math.sin(t*tempo*Math.PI+i*Math.PI))*.035;feet[i].rotation.x=Math.sin(t*tempo*Math.PI+i*Math.PI)*.12;}
+      microphone.position.set(.18,.46+v[2]*.08,.79);state.songClip=index;state.songTrapped=trapped;
       material.map=maps[Math.sin(t*5)>0?3:0];state.mood='singing';
     }
     if(action==='snap'){arms[1].position.set(.63,.83,.22);arms[1].rotation.z=.25+Math.sin(effort*Math.PI)*.32;}

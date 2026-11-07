@@ -59,8 +59,9 @@ export function buildXaihi(scene,r,gltf){
   r.box(phone,'#b5d1c2',[0,.001,.013],[.332,.232,.004],{emissive:0x76b7a1,emissiveIntensity:.65,roughness:.4});
   const canvas=document.createElement('canvas');canvas.width=1024;canvas.height=768;const ctx=canvas.getContext('2d'),texture=r.own(new T.CanvasTexture(canvas));texture.colorSpace=T.SRGBColorSpace;
   const screen=r.mesh(r.geometry('PlaneGeometry',.33,.23),r.own(new T.MeshBasicMaterial({map:texture})),phone,[0,0,.017]);let pageKey='',hitButtons=[];
-  function paint(tablet){const key=JSON.stringify(tablet&&[tablet.stage,tablet.note,tablet.lines,tablet.buttons]);if(key===pageKey)return;pageKey=key;ctx.fillStyle='#0b292b';ctx.fillRect(0,0,1024,768);ctx.fillStyle='#91d8bb';ctx.font='bold 54px sans-serif';ctx.fillText(tablet?.title||'武陵 · 管理終端',42,74);ctx.font='48px sans-serif';ctx.fillStyle='#eee5c8';(tablet?.lines||['遠端設備連線']).forEach((line,i)=>ctx.fillText(line,42,145+i*58));
+  function paint(tablet){const key=JSON.stringify(tablet&&[tablet.stage,tablet.note,tablet.lines,tablet.buttons,tablet.notification]);if(key===pageKey)return;pageKey=key;ctx.fillStyle='#0b292b';ctx.fillRect(0,0,1024,768);ctx.fillStyle='#91d8bb';ctx.font='bold 54px sans-serif';ctx.fillText(tablet?.title||'武陵 · 管理終端',42,74);ctx.font='48px sans-serif';ctx.fillStyle='#eee5c8';(tablet?.lines||['遠端設備連線']).forEach((line,i)=>ctx.fillText(line,42,145+i*58));
    if(tablet?.note){ctx.fillStyle='#ffd58a';tablet.note.split('\n').forEach((line,i)=>ctx.fillText(line,42,370+i*42));}
+   if(tablet?.notification){ctx.fillStyle='#203e38';ctx.fillRect(640,380,360,60);ctx.fillStyle='#e1d9bb';ctx.font='28px sans-serif';ctx.fillText(tablet.notification,652,420);}
    hitButtons=[];(tablet?.buttons||[]).forEach(([id,label],i)=>{const y=478+i*130;ctx.fillStyle=id==='800mw'?'#946232':'#41695b';ctx.fillRect(30,y,964,112);ctx.strokeStyle='#d7c58e';ctx.strokeRect(30,y,964,112);ctx.fillStyle='#fff0bf';ctx.font='bold 42px sans-serif';ctx.fillText(label,55,y+68);hitButtons.push({id,y});});texture.needsUpdate=true;
   }
   const meal=new T.Group();meal.name='xaihi-lunch';root.add(meal);

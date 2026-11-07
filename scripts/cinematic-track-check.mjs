@@ -26,7 +26,7 @@ for(const c of [context(320,740),context(),context(440,390),context(874,768)]){
  sample(track,'intro',4,{node:soup,nodeElapsed:0},c);check('Soup reminder has its own OTS',track.id==='cinematic-opening-shoulder');
  for(let t=0;t<=5;t+=.05){const q=sample(track,'ascent',10+t,{phaseElapsed:t,heroHead:[-1.25,1.98+t*.2,3.25]},c);check('Ascent stays on street side',q.position[2]>2.65&&q.position[1]>.2);}
  track.reset();const final={...c,feet:[-1.25,4.32,15.25],heroHead:[-1.25,5.95,15.25],server:[0,1.21,1.06]};
- for(const t of [6,9,14]){const q=sample(track,'aim-final',t,{},final);check('Aim is a steady same-side shoulder shot',q.beat==='cinematic-final-shoulder'&&q.fitValid);}
+ for(const t of [6.7,9,14]){const q=sample(track,'aim-final',t,{},final);check('Aim is a steady same-side shoulder shot',q.beat==='cinematic-final-shoulder'&&q.fitValid);}
  for(const [t,beat] of [[0,'face'],[2,'face'],[2.74,'face'],[2.75,'flight'],[4.349,'flight'],[4.35,'impact'],[4.89,'impact'],[5.5,'impact']]){
   const q=sample(track,'finisher',20+t,{phaseElapsed:t},final);check('Actual release/impact timing stays readable',q.beat==='cinematic-finisher-'+beat&&q.fitValid);
   const offset=new T.Vector3(...q.position).sub(track.axisOrigin);check('All new shot eyes remain on the same firing-axis side',offset.dot(track.axisRight)*track.axisSide>=0);

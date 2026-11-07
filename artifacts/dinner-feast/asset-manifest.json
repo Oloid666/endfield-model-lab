@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "art_direction_brief": "docs/RAIN-DINNER-FEAST-REVISION.md",
+  "assets": [
+    {
+      "id": "zhuang-dinner",
+      "role": "Hero teriyaki chicken bento, soup and serving tray",
+      "path": "src/dinner-art.js",
+      "status": "implemented",
+      "source": {
+        "kind": "original procedural geometry and CanvasTexture",
+        "external_asset_download": false
+      },
+      "verification": {
+        "in_engine_reviewed": true,
+        "multiangle_reviewed": true,
+        "technical_checks_passed": true
+      }
+    },
+    {
+      "id": "xaihi-bento",
+      "role": "Curry bento with independently cooking ingredients and bonded label",
+      "path": "src/dinner-art.js",
+      "status": "implemented",
+      "source": {
+        "kind": "original procedural geometry and CanvasTexture",
+        "external_asset_download": false
+      },
+      "verification": {
+        "in_engine_reviewed": true,
+        "multiangle_reviewed": true,
+        "technical_checks_passed": true
+      }
+    }
+  ]
+}

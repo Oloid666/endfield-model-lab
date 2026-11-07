@@ -27,7 +27,7 @@ const ctx=new Proxy({createRadialGradient:()=>({addColorStop(){}}),createLinearG
 globalThis.document={createElement:()=>({getContext:()=>ctx})};globalThis.matchMedia=()=>({matches:false});
 const scene=new T.Scene(),r=new Resources(),concert=buildConcertStage(scene,r),camera=new T.PerspectiveCamera();camera.position.set(0,5,20);
 concert.update([0,4,6],1,true,camera);const orientation=concert.root.quaternion.clone();camera.rotation.y=1;concert.update([1,4,7],2,true,camera);
-check('Audience does not rotate or travel with the camera/performer',orientation.angleTo(concert.root.quaternion)<1e-9&&concert.root.position.x===0);
+check('Foreground cheering follows the active lens',orientation.angleTo(concert.root.quaternion)>.9&&concert.root.quaternion.angleTo(camera.quaternion)<1e-9&&Math.abs(concert.root.position.distanceTo(camera.position)-.45)<1e-8);
 let properDepth=true;concert.root.traverse(n=>{if(n.isMesh)properDepth&&=n.material.depthTest;});check('Audience props obey depth',properDepth);
 const oven=buildMicrowave(scene,r),ingredients=oven.root.getObjectByName('microwave-original-ingredients');let prior=1;
 for(let i=0;i<=48;i++){

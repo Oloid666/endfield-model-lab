@@ -1,3 +1,4 @@
+import {FIRST_HANDOFF_DURATION,FIRST_HANDOFF_CONTACT,RESCUE_CONTACT} from './tray-rescue.js';
 import {VcrTablet} from './vcr-tablet.js';
 import {MEAL_BIRTH_DIALOGUE_AT} from './meal-birth.js';
 import {ShoppingJourney} from './shopping-journey.js';
@@ -48,7 +49,7 @@ export class MissionMachine{
     this.resetInteraction();
   }
   resetInteraction(){
-    this.trayOwner='hero';this.helperPresent=false;this.birthDialogueIndex=-1;this.tablet=new VcrTablet();this.shopping=null;this.doorOpen=1;this.mealBorn=false;this.postgame=false;this.homecomingAt=null;this.homecomingSpoken=false;this.flightStableAt=null;this.failures={};this.seenHeatFailures=0;this.flight=null;this.loginAside='';this.asideCounts={};this.investigation=null;this.photoFaceValid=true;this.photoTaken=false;this.hackTurns=[1,2,3,1];this.hackMoves=0;this.hackFailures=0;this.rhythm=new RhythmHeat();
+    this.trayOwner='hero';this.helperPresent=false;this.rescueStarted=null;this.birthDialogueIndex=-1;this.tablet=new VcrTablet();this.shopping=null;this.doorOpen=1;this.mealBorn=false;this.postgame=false;this.homecomingAt=null;this.homecomingSpoken=false;this.flightStableAt=null;this.failures={};this.seenHeatFailures=0;this.flight=null;this.loginAside='';this.asideCounts={};this.investigation=null;this.photoFaceValid=true;this.photoTaken=false;this.hackTurns=[1,2,3,1];this.hackMoves=0;this.hackFailures=0;this.rhythm=new RhythmHeat();
     this.connection={field:'account',account:'',password:'',lastKey:'',keyAt:-Infinity,keyNumber:0,error:'',verified:false,lever:0};
 
   }
@@ -70,7 +71,7 @@ export class MissionMachine{
     if(phase==='rewind'){
       this.castingFrozen=this.castingElapsed;
       this.vcrStarted=entered;
-      this.vcrSnapshot={progress:this.progress,branch:this.branch,shots:this.shots,hits:this.hits,output:this.output,target:this.target};
+      this.vcrSnapshot={progress:this.progress,branch:this.branch,shots:this.shots,hits:this.hits,output:this.output,target:this.target,trayOwner:this.trayOwner,helperPresent:this.helperPresent};
       this.action('vcr-freeze',true,{snapshot:{...this.vcrSnapshot}});
     }
     if(phase==='terminal-deploy')this.line({id:'terminal_book',speaker:'zhuang',text:'BOOK！',gesture:'point',event:'book-open'},entered);
@@ -79,9 +80,9 @@ export class MissionMachine{
     if(phase==='heat')this.line(connectionPrompts.heat,entered);
     if(phase==='meal-spawn')this.line(this.hooks.tabletMode?{id:'overload',speaker:'system',text:'電流還在灌入……',event:'meal-overload'}:heatDemoLines[4],entered);
     if(phase==='return')this.line(connectionPrompts.returned,entered);
-    if(phase==='aim-final')this.line(finalAmmoLines[0],entered);
+    if(phase==='aim-final'){this.rescueStarted=entered;this.line(finalAmmoLines[0],entered);}
     if(phase==='landing')this.line(sequences.landing[0],entered);
-    if(phase==='meal-handoff'){this.helperPresent=true;this.line({id:'tray_pass',speaker:'zhuang',text:'先幫我拿一下。',gesture:'receive'},entered);}
+    if(phase==='meal-handoff'){this.helperPresent=false;this.line({id:'tray_pass',speaker:'system',text:'',gesture:'receive'},entered);}
     if(phase==='meal-reclaim')this.line({id:'tray_back',speaker:'zhuang',text:'謝了。',gesture:'receive'},entered);
     if(phase==='tour')this.progress=100;
     if(phase==='complete'){this.progress=100;this.ended=true;this.quietUntil=this.time+8+this.random()*6;}
@@ -261,7 +262,7 @@ export class MissionMachine{
     this.start();this.branch=['A','B','C'].includes(branch)?branch:'A';this.hooks.onDinner?.(this.branch);
     if(id==='intro')return true;
     this.purchaseStarted=null;this.investigation='floor';this.connection.verified=true;
-    if(['rewind','last'].includes(id)){this.trayOwner='helper';this.helperPresent=true;this.progress=99;this.castingEntered=this.time-30;}
+    if(['rewind','last'].includes(id)){this.trayOwner='dragon';this.helperPresent=false;this.progress=99;this.castingEntered=this.time-30;}
     this.hooks.onRestore?.(id,this.state);
     if(id==='cargo'||id==='last')this.sequence(id,sequences[id]);else this.phaseTo(id);
     return true;
@@ -295,7 +296,7 @@ export class MissionMachine{
     if(this.node!==nodes[index])this.line(nodes[index],this.entered+(nodes[index].at??index*step));
   }
   restorePresent(){
-    if(this.vcrSnapshot){const s=this.vcrSnapshot;this.progress=s.progress;this.branch=s.branch;this.shots=s.shots;this.hits=s.hits;this.output=s.output;this.target=s.target;}
+    if(this.vcrSnapshot){const s=this.vcrSnapshot;this.progress=s.progress;this.branch=s.branch;this.shots=s.shots;this.hits=s.hits;this.output=s.output;this.target=s.target;this.trayOwner=s.trayOwner||'dragon';this.helperPresent=s.helperPresent||false;}
     if(this.vcrStarted!==null)this.castingPaused+=this.time-this.vcrStarted;
     this.vcrStarted=null;this.action('vcr-return',true,{snapshot:this.vcrSnapshot?{...this.vcrSnapshot}:null});
     this.sequence('last',sequences.last);
@@ -310,7 +311,7 @@ export class MissionMachine{
     // Catch up continuous cinematics after a late frame, but stop on every manual or input gate.
     for(let guard=0;guard<10;guard++){
       const elapsed=this.time-this.entered,phase=this.phase;let changed=false;
-      if(phase==='meal-handoff'&&elapsed+1e-8>=2.6){this.trayOwner='helper';this.phaseTo('ascent',this.entered+2.6);this.line({id:'ascent_authorized',speaker:'system',text:'系統：允許起飛。',gesture:'look'});changed=true;}
+      if(phase==='meal-handoff'&&elapsed+1e-8>=FIRST_HANDOFF_DURATION){this.trayOwner='dragon';this.phaseTo('ascent',this.entered+FIRST_HANDOFF_DURATION);this.line({id:'ascent_authorized',speaker:'system',text:'系統：允許起飛。',gesture:'look'});changed=true;}
       else if(phase==='meal-reclaim'&&elapsed+1e-8>=2.6){this.trayOwner='hero';this.phaseTo('tour',this.entered+2.6);changed=true;}
       else if(phase==='ascent'&&elapsed>=5){this.phaseTo('director-reminder',this.entered+5);this.line({id:'director_reminder_0',speaker:'dragon',text:'等等！導播，這邊重點不要漏掉！要照顧一下玩家！',gesture:'point'});changed=true;}
       else if(phase==='director-reminder'&&elapsed>=5){this.phaseTo('shoe-view',this.entered+5);changed=true;}
@@ -331,7 +332,8 @@ export class MissionMachine{
       if(!changed)break;
     }
     const elapsed=Math.max(0,this.time-this.entered);
-    if(this.phase==='meal-handoff'&&elapsed>=1.35)this.trayOwner='helper';if(this.phase==='meal-reclaim'&&elapsed>=1.35)this.trayOwner='hero';
+    if(this.phase==='meal-handoff'&&elapsed>=FIRST_HANDOFF_CONTACT)this.trayOwner='dragon';
+    if(this.phase==='aim-final'){if(elapsed>=1.8)this.helperPresent=true;if(elapsed>=RESCUE_CONTACT)this.trayOwner='helper';}if(this.phase==='meal-reclaim'&&elapsed>=1.35)this.trayOwner='hero';
     if(this.phase==='charge')this.timedLine(chargeLines,elapsed);
     else if(this.phase==='director-reminder'&&elapsed>=2.7&&this.node?.id!=='director_reminder_1')this.line({id:'director_reminder_1',speaker:'system',text:'導播：差點忘了，謝謝龍董。',gesture:'look'},this.entered+2.7);
 
@@ -369,7 +371,7 @@ export class MissionMachine{
     const heat=this.rhythm.state(this.time);
     const vcr=vcrPhases.has(this.phase),combatHoldRemaining=Math.max(0,this.attackHoldUntil-this.time),reverse=clamp((elapsed-.4)/(REWIND_DURATION-1));
     const rewindProgress=this.phase==='rewind'?reverse*reverse*(3-2*reverse):0,rewindStage=this.phase!=='rewind'?null:elapsed<.4?'freeze':elapsed>=REWIND_DURATION-.6?'settle':'reverse';
-    return {trayOwner:this.trayOwner,helperPresent:this.helperPresent,tablet:this.hooks.tabletMode&&this.phase==='hack'?this.tablet.state:null,fridgeHot:this.tablet.hot,cablePowered:this.tablet.powered,tabletMode:!!this.hooks.tabletMode,shopping:this.shopping?.state||null,mealBorn:this.mealBorn,postgame:this.postgame,homecomingAt:this.homecomingAt,phase:this.phase,node:this.node,nodeId:this.node?.id||null,nodeElapsed:this.node?Math.max(0,this.time-this.nodeEntered):0,speaker:this.node?.speaker||null,text:this.node?.text||'',revealed:this.revealed,
+    return {trayOwner:this.trayOwner,helperPresent:this.helperPresent,rescueAge:this.rescueStarted===null?null:Math.max(0,this.time-this.rescueStarted),tablet:this.hooks.tabletMode&&this.phase==='hack'?this.tablet.state:null,fridgeHot:this.tablet.hot,cablePowered:this.tablet.powered,tabletMode:!!this.hooks.tabletMode,shopping:this.shopping?.state||null,mealBorn:this.mealBorn,postgame:this.postgame,homecomingAt:this.homecomingAt,phase:this.phase,node:this.node,nodeId:this.node?.id||null,nodeElapsed:this.node?Math.max(0,this.time-this.nodeEntered):0,speaker:this.node?.speaker||null,text:this.node?.text||'',revealed:this.revealed,
       branch:this.branch,choices:this.phase==='choice'?dinnerChoices:[],waitingChoice:this.phase==='choice',progress:this.progress,
       energy:Math.max(0,100-this.progress/99*100),charge:this.phase==='charge'?Math.min(100,30+elapsed/CHARGE_DURATION*70):this.phase==='ascent'?Math.min(30,Math.max(0,elapsed-1)*7.5):['director-reminder','shoe-view','pylon-link'].includes(this.phase)?30:preChargePhases.has(this.phase)?0:100,
       meter,meterElapsed:Math.max(0,this.time-this.meterEntered),meterPeriod:settings.period,meterSettings:settings,output:this.output,outputModes,

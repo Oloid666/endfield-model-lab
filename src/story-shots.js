@@ -40,6 +40,9 @@ export function cinematicStoryShot(s,context,track){
   const counter=!!s.shopping?.atCounter;track.enter(counter?'cinematic-counter-collection':'cinematic-store-approach',s,c,origin);
   return track.pose(counter?[2.95,2.65,-.3]:[-.22,2.45,5.4],d,c.portrait?58:47);
  }
+ if(s.phase==='photo-pose'||s.phase==='meal-reclaim'&&e>=1.35){
+  const p=c.tray||[feet[0],feet[1]+1.1,feet[2]+.65],yaw=c.heading||0,offset=track.offset.set(.7,.86,1.4);offset.applyAxisAngle(TUP,yaw);track.p.fromArray(p).add(offset);track.t.fromArray(p);track.t.y+=.06;track.enter('cinematic-dinner-hero',s,c,origin);return track.pose(track.p,track.t,c.portrait?38:30);
+ }
  if(s.phase==='walk-out'){
   if(s.shopping?.handoff){
    track.enter('cinematic-meal-handoff',s,c,origin+e-s.shopping.handoffElapsed);
@@ -76,6 +79,19 @@ export function cinematicStoryShot(s,context,track){
   track.enter('cinematic-'+s.phase,s,c,origin);
   return track.pose(c.portrait?[-.1,1.9,7.0]:[.5,2.05,6.8],[-1.25,1.05,3.9],c.portrait?48:42);
  }
+ if(s.phase==='aim-final'&&e<6.7&&c.rescue){
+  const r=c.rescue,p=r.tray,b=r.base;let beat,eye,target,fov;
+  if(e<2.7){beat='rescue-notice-run';eye=[b[0]+1.5,b[1]+.65,b[2]+2.7];target=[b[0],b[1]+.3,b[2]];fov=c.portrait?48:38;}
+  else if(e<4.9){beat=e<3.7?'rescue-first-reach':'rescue-second-reach';const y=(b[1]+p[1])*.5;eye=[p[0]+2.8,y+.35,p[2]+5.0];target=[p[0],y+.1,p[2]];fov=c.portrait?58:48;}
+  else {beat=e<5.5?'rescue-weight-contact':'rescue-thumb';eye=[p[0]+1.25,p[1]+.42,p[2]+2.3];target=[p[0]+.12,p[1]-.03,p[2]];fov=c.portrait?38:30;}
+  if(track.enter('cinematic-'+beat,s,c,origin)){
+   track.rescueOrigin=[...b];track.p.fromArray(eye);track.t.fromArray(target);
+   const reach=e>=2.7&&e<4.9,min=reach?[p[0]-.5,b[1],p[2]-.45]:e>=4.9?[p[0]-.4,p[1]-.4,p[2]-.3]:[b[0]-.5,b[1],b[2]-.4],max=reach?[p[0]+.65,p[1]+.65,p[2]+.5]:e>=4.9?[p[0]+.55,p[1]+.35,p[2]+.4]:[b[0]+.5,b[1]+.55,b[2]+.4];
+   track.fitBox(min,max,track.p,track.t,fov,c,'wide');
+  }
+  if(e<2.7){track.offset.set(b[0]-track.rescueOrigin[0],b[1]-track.rescueOrigin[1],b[2]-track.rescueOrigin[2]);track.p.copy(track.fixedP).add(track.offset);track.t.copy(track.fixedT).add(track.offset);return track.pose(track.p,track.t,fov);}
+  return track.pose(track.fixedP,track.fixedT,fov);
+ }
  if(s.phase==='charge'){
   const segment=e<5?'array':e<10?'hero':e<14?'pylon':e<22?'hero-close':'ready';track.enter('cinematic-charge-'+segment,s,c,origin);
   if(segment==='array')return track.pose([14,16,34],[0,5,-6],c.portrait?76:55);
@@ -107,11 +123,11 @@ export function cinematicStoryShot(s,context,track){
   const u=c.reduced?1:smooth(e/5);f.progress=u;track.p.copy(track.riseOrigin).addScaledVector(RISE_START,1-u).addScaledVector(RISE_END,u);track.t.copy(h);track.t.y-=.45;
   return track.pose(track.p,track.t,c.portrait?48+6*u:40+6*u);
  }
- const aiming=s.phase==='aim-final'&&e>=6,finishing=s.phase==='finisher'&&e<6.2;
+ const aiming=s.phase==='aim-final'&&e>=6.7,finishing=s.phase==='finisher'&&e<6.2;
  if(aiming||finishing){
   const server=c.server||[0,1.21,1.06];track.captureAxis(feet,h.toArray(track.headArray||(track.headArray=[0,0,0])),server,c.heading??2.91);
   if(aiming){
-   if(track.enter('cinematic-final-shoulder',s,c,origin+6)){
+   if(track.enter('cinematic-final-shoulder',s,c,origin+6.7)){
     track.p.copy(h).addScaledVector(track.axisForward,-3.8).addScaledVector(track.axisRight,1.2*track.axisSide);track.p.y+=.35;track.t.copy(h).multiplyScalar(.3).addScaledVector(track.offset.fromArray(server),.7);
     track.fitBox([server[0]-.45,server[1]-.6,server[2]-.4],[server[0]+.45,server[1]+1.25,server[2]+.4],track.p,track.t,c.portrait?58:46,c,'wide',true);
    }

@@ -1,4 +1,5 @@
 import * as T from 'three';
+import {buildDinnerTray} from './dinner-art.js';
 
 // A/B/C are three distinct meshes. All geometry and textures are made once.
 export function buildMeals(r,parent,scale=1){
@@ -11,10 +12,7 @@ export function buildMeals(r,parent,scale=1){
     return body;
   };
   for(const name of ['A','B','C']){const group=new T.Group();group.name=`meal-${name}`;mount.add(group);branches[name]=group;}
-  const a=branches.A;
-  item(a,'#344437',[.04,0,0],[.46,.045,.2],{roughness:.38});item(a,'#e5d8b5',[-.055,.035,0],[.12,.045,.14]);
-  for(let i=0;i<3;i++){r.mesh(r.geometry('SphereGeometry',1,10,8),r.material(i===0?'#b27041':'#74934b'),a,[.062,.035,-.055+i*.055],[.045,.025,.028]);}
-  cup(a,[.19,.085,.005],'#a7764c',.055,.12);
+  const a=branches.A;buildDinnerTray(r,a);
   const b=branches.B;item(b,'#d6c6a4',[0,-.055,.01],[.31,.025,.19],{roughness:.85});
   const triangle=new T.Shape();triangle.moveTo(-.075,-.065);triangle.lineTo(.075,-.065);triangle.quadraticCurveTo(.087,-.055,.075,-.035);triangle.lineTo(.012,.08);triangle.quadraticCurveTo(0,.095,-.012,.08);triangle.lineTo(-.075,-.035);triangle.lineTo(-.075,-.065);
   const riceGeo=r.own(new T.ExtrudeGeometry(triangle,{depth:.055,bevelEnabled:true,bevelSize:.012,bevelThickness:.008,bevelSegments:2,steps:1}));

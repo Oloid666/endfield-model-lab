@@ -13,7 +13,7 @@ export function cheerPose(age,index,reduced=false){
 }
 export function buildConcertStage(scene,r){
  const root=new T.Group();root.name='dragon-concert-cheering';scene.add(root);root.visible=false;
- const props=[];let wasActive=false;
+ const props=[],offset=new T.Vector3();let wasActive=false;
  for(let i=0;i<8;i++){
   const pivot=new T.Group(),wrist=new T.Group();root.add(pivot);pivot.add(wrist);const x=(i-3.5)*.43,z=i%2*.20;
   pivot.position.set(x,i<2?.95:.80,z);props.push({pivot,wrist,y:pivot.position.y});
@@ -22,9 +22,13 @@ export function buildConcertStage(scene,r){
   // A small grasp and forearm connect the prop to the audience silhouette.
   r.box(pivot,'#385450',[0,-.015,0],[.075,.075,.075]);r.box(pivot,'#203438',[0,-.18,0],[.085,.27,.08]);
  }
- return {root,reset(){root.visible=false;wasActive=false;},update(subject,age,active,camera,quality='balanced',reduced=false){
+ root.traverse(n=>{if(n.isMesh)n.frustumCulled=false;});
+ return {root,get state(){root.updateMatrixWorld(true);return {visible:root.visible,position:root.position.toArray(),hands:props.filter(p=>p.pivot.visible).map(p=>p.pivot.getWorldPosition(new T.Vector3()).toArray())};},reset(){root.visible=false;wasActive=false;},update(subject,age,active,camera,quality='balanced',reduced=false){
  root.visible=!!active;if(!active){wasActive=false;return;}
- if(!wasActive){root.position.set(subject[0],.02,subject[2]+4.2);root.rotation.set(0,Math.atan2(camera.position.x-subject[0],camera.position.z-subject[2]),0);wasActive=true;}
- props.forEach(({pivot,wrist,y},i)=>{pivot.visible=quality!=='low'||i<6;const p=cheerPose(age,i,reduced);pivot.position.y=y+p.lift;pivot.rotation.set(p.pitch,0,p.roll);wrist.rotation.z=p.wrist;});
+ // A real camera-space foreground: ordinary depth-tested meshes, no overlay pass.
+ const depth=.45,foregroundScale=.084,halfH=Math.tan(camera.fov*Math.PI/360)*depth,halfW=halfH*camera.aspect;
+ offset.set(0,0,-depth).applyQuaternion(camera.quaternion);root.position.copy(camera.position).add(offset);root.quaternion.copy(camera.quaternion);root.scale.setScalar(foregroundScale);wasActive=true;
+ props.forEach(({pivot},i)=>{const side=i<4?-1:1,slot=i%4;pivot.position.x=side*halfW*(.63+slot*.14)/foregroundScale;pivot.position.z=0;});
+ props.forEach(({pivot,wrist,y},i)=>{pivot.visible=quality!=='low'||i<6;const p=cheerPose(age,i,reduced);pivot.position.y=(-halfH*.42)/foregroundScale+p.lift;pivot.rotation.set(p.pitch,0,p.roll);wrist.rotation.z=p.wrist;});
  }};
 }

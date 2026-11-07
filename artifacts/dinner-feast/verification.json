@@ -1,0 +1,79 @@
+{
+  "date_utc": "2026-11-07T17:27:37.527769+00:00",
+  "engine": "Three.js 0.180.0",
+  "build": "npm run build passed; existing chunk-size warning",
+  "node_suites": 41,
+  "all_suites_passed": true,
+  "latest_followup_checks": {
+    "actual_glb": 80,
+    "feast": 3572,
+    "second_wave": 17114,
+    "fx": "passed",
+    "bonus": "passed"
+  },
+  "browsers": {
+    "engine": "Chromium / SwiftShader",
+    "full_flow": "passed",
+    "viewports": [
+      [
+        390,
+        844
+      ],
+      [
+        844,
+        390
+      ],
+      [
+        1366,
+        768
+      ]
+    ],
+    "background_recovery": [
+      "book",
+      "first handoff",
+      "fridge",
+      "nikke",
+      "rhythm",
+      "refusal",
+      "rescue",
+      "reclaim",
+      "claims",
+      "classroom",
+      "rating"
+    ],
+    "restart_physical_seven_taps": "passed",
+    "concert": ">=4 foreground hands project inside viewport; confirmed actual screenshots"
+  },
+  "limitations": [
+    "iPhone Safari physical device not tested",
+    "No measured phone FPS improvement claimed"
+  ],
+  "meal_geometry": {
+    "meshes": 20,
+    "triangles_including_instances": 32654,
+    "external_model_or_texture_downloads": 0
+  },
+  "screenshots": [
+    "asset-front",
+    "asset-side",
+    "asset-back",
+    "asset-bottom",
+    "asset-top",
+    "dinner-held",
+    "packaging-label",
+    "rescue-stretch",
+    "rescue-thumb",
+    "reclaim",
+    "concert-trapped",
+    "concert-wide",
+    "concert-desktop"
+  ],
+  "source_sha256": {
+    "src/dinner-art.js": "d5c67eaa29f80f672b905f0e9f65c500b5d7aaafdfd0de86cd8045755b83fe1c",
+    "src/tray-rescue.js": "3d8f5f817ae601259f8ee17a34a13064ee190feb2912a38bd6273f86b82c528c",
+    "src/performance.js": "a4ffb33105444cd3d79086362f792537ce22dec6853970e6a7cf336518966a1d",
+    "src/meal-remnant.js": "a84e0ddd9709ccdf620616ceb903de7271edcbffb660257773e1574981dda701",
+    "src/concert-stage.js": "d552840af45d93246b5bc141556b0bdd769b146d1bbd483515d8260d3afeed6f"
+  },
+  "independent_review": "passed; independent-review.md"
+}

@@ -11,7 +11,7 @@ async def main():
   async def tick(s=.1):await page.evaluate('(s)=>{const q=__rainy711,n=Math.max(1,Math.ceil(s/.05));for(let i=0;i<n;i++)q.tick(q.time+s/n,Math.min(.05,s/n),false)}',s)
   async def shot(name):
    await page.evaluate('new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))');await tick(0);await js('__rainy711.tick(__rainy711.time,0,true)');await page.screenshot(path=str(OUT/(name+'.png')))
-   r=await js('({phase:__rainy711.mission.phase,node:__rainy711.mission.nodeId,beat:__rainy711.cinematic.cameraBeat,tray:__rainy711.mission.trayOwner,helper:__rainy711.staging.remnant,appliance:__rainy711.microwave})');r['name']=name;records.append(r);print(name,r['phase'],r['node'],flush=True)
+   r=await js('({concert:__rainy711.staging.concert,phase:__rainy711.mission.phase,node:__rainy711.mission.nodeId,beat:__rainy711.cinematic.cameraBeat,tray:__rainy711.mission.trayOwner,helper:__rainy711.staging.remnant,appliance:__rainy711.microwave})');r['name']=name;records.append(r);print(name,r['phase'],r['node'],flush=True)
   async def background(name):
    await js('Object.defineProperty(document,"hidden",{configurable:true,get:()=>true});document.dispatchEvent(new Event("visibilitychange"))');await tick(2)
    assert await js('__rainy711.mission.paused'),name
@@ -51,9 +51,9 @@ async def main():
     if phase=='captcha':await js('__rainy711.missionVerify()')
     else:await js('__rainy711.missionNext()')
     await tick(.5)
-   assert await js('__rainy711.missionLever(1)');await tick(.8);await shot('tray-pass-touch');await background('tray-pass');await tick(1);await shot('tray-pass-helper');assert await js('__rainy711.mission.trayOwner')=='helper'
-   await tick(6);assert await js('__rainy711.mission.helperPresent&&__rainy711.staging.remnant.visible');await tick(15);await js('__rainy711.missionNext()');await tick(4.5);await shot('charge-city');await tick(5);await shot('charge-hero');await tick(5);await shot('charge-pylon')
-   await jump('fridge');await talks();await act('scan');await tick(1.7);await talks();await act('tool');await act('detect');await tick(1.4);await act('control');await tick(3.3);await act('apply');await tick(2.1);await shot('fridge-cold');await talks();await tick(3.7);await shot('fridge-hot');await background('fridge');await talks();await act('meal');await tick(3.3);await talks();await tick(.5);await act('scan-grid');await tick(1.4);await shot('grid-one');await tick(1.4);await shot('grid-two');await tick(1.4);await shot('grid-three');await tick(.8);await talks();await act('inspect-console');await shot('nikke-console');await background('nikke');await talks();await tick(.5);await talks();await tick(2);await act('enable');await tick(6.1);await talks();await act('800mw');await act('confirm');await act('start')
+   assert await js('__rainy711.missionLever(1)');await tick(.8);await shot('tray-pass-touch');await background('tray-pass');await tick(1);await shot('tray-pass-helper');assert await js('__rainy711.mission.trayOwner')=='dragon'
+   await tick(6);assert await js('!__rainy711.mission.helperPresent&&!__rainy711.staging.remnant.visible');await tick(15);await js('__rainy711.missionNext()');await tick(4.5);await shot('charge-city');await tick(5);await shot('charge-hero');await tick(5);await shot('charge-pylon')
+   await jump('fridge');await talks();await act('scan');await tick(1.7);await talks();await act('tool');await act('detect');await tick(1.4);await act('control');await tick(3.3);await act('apply');await tick(2.1);await shot('fridge-cold');await talks();await tick(3.7);await shot('fridge-hot');await background('fridge');await talks();await act('meal');await tick(3.3);await shot('packaging-heating-label');await talks();await tick(.5);await act('scan-grid');await tick(1.4);await shot('grid-one');await tick(1.4);await shot('grid-two');await tick(1.4);await shot('grid-three');await tick(.8);await talks();await act('inspect-console');await shot('nikke-console');await background('nikke');await talks();await tick(.5);await talks();await tick(2);await act('enable');await tick(6.1);await talks();await act('800mw');await act('confirm');await act('start')
    for _ in range(20):
     if await js('__rainy711.mission.phase')=='heat':break
     await js('__rainy711.missionNext()');await tick(.5)
@@ -75,12 +75,17 @@ async def main():
    for _ in range(20):
     if await js('__rainy711.mission.phase')=='aim-final':break
     await js('__rainy711.missionNext()');await tick(.5)
+   assert await js('__rainy711.mission.trayOwner')=='dragon'
+   for age in [1.65,2.6,3.35,4.7,5.2,6.15,8.8]:
+    await tick(max(0,age-await js('__rainy711.mission.phaseElapsed')));await shot('rescue-'+str(age))
    assert await js('__rainy711.mission.trayOwner')=='helper'
+   await background('rescue-safe')
    await page.wait_for_function('!__rainy711.mission.paused',timeout=120000);await tick(await js('Math.max(0,9+__rainy711.mission.meterPeriod/4-__rainy711.mission.phaseElapsed)'));assert await js('__rainy711.missionAttack(__rainy711.time)')
    assert await js('__rainy711.mission.phase')=='finisher'
    await tick(2.1);await shot('explosion-readable');assert await page.locator('.dragon-reaction-bubble').is_visible();assert await page.evaluate('()=>{const q=__rainy711,p=q.projectPoint(q.headPosition),r=document.querySelector("#scene").getBoundingClientRect(),b=document.querySelector(".dragon-reaction-bubble").getBoundingClientRect(),x=r.x+(p[0]+1)*r.width/2,y=r.y+(1-p[1])*r.height/2;return !(x>=b.left&&x<=b.right&&y>=b.top&&y<=b.bottom)}');await tick(2.5);assert await page.locator('.dragon-reaction-bubble').is_visible();await shot('explosion-flight-caption');await tick(4.4+await js('__rainy711.mission.landingDuration')+.8);await shot('tray-reclaim-touch');assert await js('__rainy711.mission.phase')=='meal-reclaim';assert await js('__rainy711.mission.trayOwner')=='helper';await background('tray-reclaim')
    await tick(1);await shot('tray-reclaim-hero');assert await js('__rainy711.mission.trayOwner')=='hero'
    await tick(1);assert await js('__rainy711.mission.phase')=='tour'
+   await tick(max(0,14.2-await js('__rainy711.mission.phaseElapsed')));await shot('concert-trapped');assert await js('__rainy711.staging.concert.visible');assert await js('__rainy711.staging.concert.hands.filter(p=>{const q=__rainy711.projectPoint(p);return Math.abs(q[0])<1&&Math.abs(q[1])<1&&q[2]<1}).length>=4')
    await tick(await js('__rainy711.mission.tourDuration-__rainy711.mission.phaseElapsed')+.001)
    assert await js('__rainy711.mission.phase')=='complete'
    previous=0
@@ -89,7 +94,7 @@ async def main():
    await tick(1.5);assert await page.locator('.epilogue-prompt').is_visible()
    for _ in range(3):
     await tick(.5);await page.locator('.epilogue-prompt button').click()
-   await tick(6);await shot('concert-wide');await tick(.35);await shot('concert-followthrough')
+   await tick(6);await shot('concert-wide');assert await js('__rainy711.staging.show.active&&__rainy711.staging.concert.visible');assert await js('__rainy711.staging.concert.hands.filter(p=>{const q=__rainy711.projectPoint(p);return Math.abs(q[0])<1&&Math.abs(q[1])<1&&q[2]<1}).length>=4');await tick(.35);await shot('concert-followthrough')
    # Finish the existing performance before debug travel.
    await tick(70)
    for where in ['claims','classroom','rating']:

@@ -1,0 +1,351 @@
+{
+  "frames": [
+    {
+      "phase": "complete",
+      "age": 4.599999999999996,
+      "camera": {
+        "position": [
+          0,
+          7,
+          23
+        ],
+        "target": [
+          0,
+          3,
+          1.8
+        ],
+        "fov": 56,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "actor": {
+        "phase": 6.000000000000003,
+        "action": "rest",
+        "footDrift": 0.0025011572658210084,
+        "moving": false,
+        "speed": 0,
+        "distance": 0,
+        "clothJoints": 58,
+        "dinner": "A",
+        "gesture": "",
+        "companion": {
+          "mode": "idle",
+          "distance": 0.7624942281679084,
+          "speed": 0,
+          "walk": 1.3479433967983797e-31,
+          "phase": 1.2940921772864744,
+          "heading": -4.713278215019937,
+          "lookYaw": -1.723759232088519e-05,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -2.0124939149002645,
+            0.325,
+            3.249308820253141
+          ],
+          "target": [
+            -2.0155607661869084,
+            0.325,
+            3.211054996786309
+          ],
+          "trailPoints": 1,
+          "glance": false
+        },
+        "arms": {
+          "shoulderL": 0,
+          "shoulderR": 0,
+          "elbowL": 0,
+          "elbowR": 0,
+          "wristL": 0,
+          "wristR": 0
+        },
+        "cinematic": {
+          "phase": "",
+          "lift": 0,
+          "forward": 0,
+          "heading": 0.08,
+          "airborne": false,
+          "dragonProjectile": true,
+          "recoil": 0
+        },
+        "smile": 1,
+        "smileJointCount": 12,
+        "companionAction": "normal",
+        "gait": {
+          "leftSwing": null,
+          "rightSwing": null,
+          "acceleration": 0,
+          "turn": 0
+        },
+        "walkPhase": 0,
+        "walkBlend": 0,
+        "heading": 0.08,
+        "companionExpression": "singing",
+        "dragonHeading": 0.13313632755164762,
+        "trayYaw": 0.08,
+        "mealOwner": "hero",
+        "mealSupport": [
+          -1.1980554489200377,
+          1.4200000000000002,
+          3.8979211090967025
+        ],
+        "handSupportErrors": [
+          4.682467405385102e-08,
+          3.351284442621587e-08
+        ]
+      },
+      "hand": null,
+      "head": null,
+      "ingredients": true,
+      "name": "concert-wide"
+    },
+    {
+      "phase": "complete",
+      "age": 4.599999999999996,
+      "camera": {
+        "position": [
+          0,
+          7,
+          23
+        ],
+        "target": [
+          0,
+          3,
+          1.8
+        ],
+        "fov": 56,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "actor": {
+        "phase": 6.50000000000001,
+        "action": "rest",
+        "footDrift": 0.0025011572658210084,
+        "moving": false,
+        "speed": 0,
+        "distance": 0,
+        "clothJoints": 58,
+        "dinner": "A",
+        "gesture": "",
+        "companion": {
+          "mode": "idle",
+          "distance": 0.7624942281679084,
+          "speed": 0,
+          "walk": 1.4974298528778816e-33,
+          "phase": 1.2940921772864744,
+          "heading": -4.7132873101501955,
+          "lookYaw": -8.142462062177961e-06,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -2.0124939149002645,
+            0.325,
+            3.249308820253141
+          ],
+          "target": [
+            -2.0155607661869084,
+            0.325,
+            3.211054996786309
+          ],
+          "trailPoints": 1,
+          "glance": false
+        },
+        "arms": {
+          "shoulderL": 0,
+          "shoulderR": 0,
+          "elbowL": 0,
+          "elbowR": 0,
+          "wristL": 0,
+          "wristR": 0
+        },
+        "cinematic": {
+          "phase": "",
+          "lift": 0,
+          "forward": 0,
+          "heading": 0.08,
+          "airborne": false,
+          "dragonProjectile": true,
+          "recoil": 0
+        },
+        "smile": 1,
+        "smileJointCount": 12,
+        "companionAction": "normal",
+        "gait": {
+          "leftSwing": null,
+          "rightSwing": null,
+          "acceleration": 0,
+          "turn": 0
+        },
+        "walkPhase": 0,
+        "walkBlend": 0,
+        "heading": 0.08,
+        "companionExpression": "singing",
+        "dragonHeading": 0.13313632755164762,
+        "trayYaw": 0.08,
+        "mealOwner": "hero",
+        "mealSupport": [
+          -1.1980554489200377,
+          1.4200000000000002,
+          3.8979211090967025
+        ],
+        "handSupportErrors": [
+          4.68000153732531e-08,
+          3.363564356431203e-08
+        ]
+      },
+      "hand": null,
+      "head": null,
+      "ingredients": true,
+      "name": "concert-followthrough"
+    },
+    {
+      "phase": "complete",
+      "age": 4.599999999999996,
+      "camera": {
+        "position": [
+          0,
+          7,
+          23
+        ],
+        "target": [
+          0,
+          3,
+          1.8
+        ],
+        "fov": 43,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "actor": {
+        "phase": 6.50000000000001,
+        "action": "rest",
+        "footDrift": 0.0025011572658210084,
+        "moving": false,
+        "speed": 0,
+        "distance": 0,
+        "clothJoints": 58,
+        "dinner": "A",
+        "gesture": "",
+        "companion": {
+          "mode": "idle",
+          "distance": 0.7624942281679084,
+          "speed": 0,
+          "walk": 1.4974298528778816e-33,
+          "phase": 1.2940921772864744,
+          "heading": -4.7132873101501955,
+          "lookYaw": -8.142462062177961e-06,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -2.0124939149002645,
+            0.325,
+            3.249308820253141
+          ],
+          "target": [
+            -2.0155607661869084,
+            0.325,
+            3.211054996786309
+          ],
+          "trailPoints": 1,
+          "glance": false
+        },
+        "arms": {
+          "shoulderL": 0,
+          "shoulderR": 0,
+          "elbowL": 0,
+          "elbowR": 0,
+          "wristL": 0,
+          "wristR": 0
+        },
+        "cinematic": {
+          "phase": "",
+          "lift": 0,
+          "forward": 0,
+          "heading": 0.08,
+          "airborne": false,
+          "dragonProjectile": true,
+          "recoil": 0
+        },
+        "smile": 1,
+        "smileJointCount": 12,
+        "companionAction": "normal",
+        "gait": {
+          "leftSwing": null,
+          "rightSwing": null,
+          "acceleration": 0,
+          "turn": 0
+        },
+        "walkPhase": 0,
+        "walkBlend": 0,
+        "heading": 0.08,
+        "companionExpression": "singing",
+        "dragonHeading": 0.13313632755164762,
+        "trayYaw": 0.08,
+        "mealOwner": "hero",
+        "mealSupport": [
+          -1.1980554489200377,
+          1.4200000000000002,
+          3.8979211090967025
+        ],
+        "handSupportErrors": [
+          4.68000153732531e-08,
+          3.363564356431203e-08
+        ]
+      },
+      "hand": null,
+      "head": null,
+      "ingredients": true,
+      "name": "concert-desktop"
+    }
+  ],
+  "errors": [],
+  "concert": {
+    "visible": false,
+    "position": [
+      0,
+      6.9165664633609785,
+      22.557802255813186
+    ],
+    "hands": [
+      [
+        -0.1986278186160393,
+        6.843408207395016,
+        22.571605700335066
+      ],
+      [
+        -0.24276733386404803,
+        6.843408207395016,
+        22.571605700335066
+      ],
+      [
+        -0.28690684911205677,
+        6.843408207395016,
+        22.571605700335066
+      ],
+      [
+        -0.3310463643600655,
+        6.843408207395016,
+        22.571605700335066
+      ],
+      [
+        0.1986278186160393,
+        6.843408207395016,
+        22.571605700335066
+      ],
+      [
+        0.24276733386404803,
+        6.843408207395016,
+        22.571605700335066
+      ]
+    ]
+  }
+}

@@ -14,6 +14,7 @@ import { makeFollower } from '../src/follower.js';
 import { config } from '../src/config.js';
 import {buildSiegeEffects} from '../src/siege-effects.js';
 import {buildXaihi} from '../src/xaihi.js';
+import {buildMealRemnant} from '../src/meal-remnant.js';
 
 const checks=[];
 function check(name,passed,detail=null){checks.push({name,passed,detail});}
@@ -26,6 +27,7 @@ check('Original GLB hash and byte count',hash===expectedHash&&bytes.length===752
 // Canvas pixels are irrelevant to these geometry and motion checks.
 globalThis.ProgressEvent=class {constructor(type,props){this.type=type;Object.assign(this,props);}};
 const context={createRadialGradient:()=>({addColorStop(){}}),createLinearGradient:()=>({addColorStop(){}}),fillText(){},fillRect(){},beginPath(){},moveTo(){},lineTo(){},quadraticCurveTo(){},stroke(){},roundRect(){},fill(){},ellipse(){}};
+globalThis.matchMedia=()=>({matches:false});
 globalThis.document={createElement:()=>({width:256,height:256,getContext:()=>context})};
 
 const jsonLength=bytes.readUInt32LE(12),json=JSON.parse(bytes.subarray(20,20+jsonLength));
@@ -217,6 +219,26 @@ xaihi.reset();check('Xaihi reset clears VCR props and pose',!xaihi.state.visible
 xaihi.dispose();check('Xaihi dispose detaches its scene root and reports unloaded',!xaihi.root.parent&&!xaihi.loaded&&!xaihi.state.loaded);
 check('The uploaded Xaihi GLB remains unchanged after runtime posing',createHash('sha256').update(await fs.readFile(xaihiFile)).digest('hex')===xaihiHash);
 
+// One real tray through both transfers, including arbitrary time steps and a paused frame.
+a.setCinematic(null);a.setSceneAction({mealVisible:true,heading:0});a.setDinner('A');a.setDragonHeading(Math.PI);const h=a.heroPosition;
+a.setDragonProjectile([h[0],h[1]+.68,h[2]+1.252],0);a.setTray({owner:'hero',phase:'meal-handoff',age:.65,rescueAge:null});a.update(299.94,0);const cup=food.getObjectByName('lidded-hot-soup'),cupBefore=cup.getWorldPosition(new T.Vector3());a.setTray({owner:'dragon',phase:'meal-handoff',age:.71,rescueAge:null});a.update(300,0);
+check('Asymmetrical soup position does not jump at first ownership change',cup.getWorldPosition(new T.Vector3()).distanceTo(cupBefore)<.012);
+const dragonRoot=root.getObjectByName('dragon'),hands=dragonRoot.getObjectByName('body')?.children||[];
+check('Initial dragon handoff stays grounded and keeps one visible meal',!a.status.cinematic.airborne&&food.visible&&!dragonRoot.getObjectByName('food').visible&&a.status.mealOwner==='dragon');
+a.setCinematic({phase:'aim-final',elapsed:1.65,charge:1,height:4,distance:12});a.setDragonHeading(0);a.setDragonProjectile([-1,5.5,15],0);a.setTray({owner:'dragon',phase:'aim-final',age:1.65,rescueAge:1.65});a.update(301,0);
+const donor=[...a.trayPosition];
+a.setDragonProjectile([-.99,5.51,15.01],.65);a.setTray({owner:'dragon',phase:'aim-final',age:2,rescueAge:2});a.update(301.35,0);
+check('Rescue pins donor tray while actor grip settles',a.trayPosition.every((v,i)=>Math.abs(v-donor[i])<1e-8));
+a.setTray({owner:'helper',phase:'aim-final',age:6,rescueAge:6});a.update(305.35,0);
+const helper=buildMealRemnant(scene,resources);helper.update(305.35,{phase:'aim-final',helperPresent:true,trayOwner:'helper',progress:99},{},{rescue:a.rescueFrame});scene.updateMatrixWorld(true);
+const mesh=helper.root.children[0].children.find(n=>n.isMesh),v=new T.Vector3();let cap=-Infinity;
+for(let i=0;i<mesh.geometry.attributes.position.count;i++){v.fromBufferAttribute(mesh.geometry.attributes.position,i);mesh.localToWorld(v);cap=Math.max(cap,v.y);}
+check('Stretched creature touches the same-frame tray underside',Math.abs(cap-a.trayPosition[1])<.002,{cap,tray:a.trayPosition});
+check('Stretch remains renderable above original bounding sphere',mesh.frustumCulled===false);
+check('Helper earns visible thumb after load settles',helper.root.getObjectByName('purple-helper-thumbs-up').visible);
+a.setTray({owner:'helper',phase:'meal-reclaim',age:1.30,rescueAge:25});a.setCinematic(null);a.update(309,0);const cupBeforeReclaim=cup.getWorldPosition(new T.Vector3());a.setTray({owner:'hero',phase:'meal-reclaim',age:1.40,rescueAge:25.1});a.update(309.1,0);check('Asymmetrical soup position does not jump when Zhuang takes it back',cup.getWorldPosition(new T.Vector3()).distanceTo(cupBeforeReclaim)<.015);
+const beforePause=[...a.trayPosition];a.update(309.1,0);check('Paused rescue holds the exact tray position',a.trayPosition.every((v,i)=>v===beforePause[i]));
+a.setTray({owner:'hero',phase:'ready',age:0,rescueAge:null});a.setCinematic(null);a.setDragonProjectile(null);a.update(310,0);helper.reset();check('Restart clears cached donor and helper visibility',a.rescueFrame===null&&!helper.root.visible&&a.status.mealOwner==='hero');
 a.dispose();resources.dispose();
 check('World disposal releases every Xaihi skinning texture',disposedBoneTextures===xSkeletons.size&&[...xSkeletons].every(skeleton=>skeleton.boneTexture===null),{disposedBoneTextures,skeletons:xSkeletons.size});
 const finalHash=createHash('sha256').update(await fs.readFile(file)).digest('hex');check('Original GLB unchanged after tests',finalHash===expectedHash);

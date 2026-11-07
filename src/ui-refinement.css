@@ -79,3 +79,7 @@
 #app.ui-refined:not(.bonus-active) .debug-travel-toggle{top:calc(20px + env(safe-area-inset-top));right:calc(76px + env(safe-area-inset-right));bottom:auto;left:auto;min-height:44px}
 @media(max-width:350px){#app.ui-refined:not(.bonus-active) .debug-travel-toggle{top:calc(82px + env(safe-area-inset-top));right:auto;left:12px}}
 @media(orientation:landscape) and (max-height:540px){#app.ui-refined:not(.bonus-active) .debug-travel-toggle{top:auto;right:auto;left:12px;bottom:12px}}
+
+/* Hold the dialogue alone while the helper saves dinner; reveal the live meter afterwards. */
+.mission-combat.is-rescuing > :not(.mission-final-seal){display:none}
+.mission-combat.is-rescuing .mission-final-seal{margin-bottom:0;border-bottom:0;padding-bottom:0}

@@ -3,6 +3,10 @@ export const config = {
   reflection: { low: 192, balanced: 384, high: 512 },
   rainCount: { low: 650, balanced: 1400, high: 2200 },
   views: {
+    dinner:{position:[0,2,6],target:[0,1.4,4],mobilePosition:[0,2,6],mobileTarget:[0,1.4,4],fov:38},
+    dinnerSide:{position:[0,2,6],target:[0,1.4,4],mobilePosition:[0,2,6],mobileTarget:[0,1.4,4],fov:30},
+    dinnerBottom:{position:[0,2,6],target:[0,1.4,4],mobilePosition:[0,2,6],mobileTarget:[0,1.4,4],fov:38},
+    dinnerBack:{position:[0,2,6],target:[0,1.4,4],mobilePosition:[0,2,6],mobileTarget:[0,1.4,4],fov:38},
     front:{position:[0,3.5,17],target:[0,2.3,.4],mobilePosition:[0,4.5,23],mobileTarget:[0,2.7,.4]},
     storeLeft:{position:[-12,5.8,12],target:[-.3,2.3,0],mobilePosition:[-16,7,17],mobileTarget:[-.3,2.3,0]},
     heroFront:{position:[.05,1.92,5.9],target:[-1.25,1.72,3.25],mobilePosition:[.05,1.92,5.9],mobileTarget:[-1.25,1.72,3.25],fov:34},

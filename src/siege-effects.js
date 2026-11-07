@@ -94,8 +94,8 @@ export function buildSiegeEffects(scene,r){
       const phase=state.phase||'',charge=T.MathUtils.clamp(Number(state.charge)||0,0,1),casting=['charge','fire-ready','combat','energy','return','last','aim-final','finisher','landing'].includes(phase);
       if(!casting&&!root.visible){summary.phase=phase;summary.charge=charge;return;}
       if(state.hero)hero.fromArray(state.hero);if(state.target)target.fromArray(state.target);if(state.dragon)dragon.fromArray(state.dragon);
-      const strength=['energy','return'].includes(phase)?(.09+.13*Math.max(0,Math.sin(t*17))):phase==='last'?Math.max(.1,charge):phase==='charge'?charge:phase==='landing'?1-T.MathUtils.smootherstep(Number(state.elapsed)||0,0,2.8):casting?1:0;
-      chargeRoot.visible=casting&&strength>.01;groundRoot.visible=casting&&strength>.01;routes.visible=phase==='charge'&&charge>.025;targetRoot.visible=phase==='combat'||phase==='aim-final';bolts.visible=casting&&strength>.13;boltMaterial.opacity=strength*(.44+Math.sin(t*(reducedMotion?2:6))*.06);
+      const strength=state.rescueFocus?.02:['energy','return'].includes(phase)?(.09+.13*Math.max(0,Math.sin(t*17))):phase==='last'?Math.max(.1,charge):phase==='charge'?charge:phase==='landing'?1-T.MathUtils.smootherstep(Number(state.elapsed)||0,0,2.8):casting?1:0;
+      chargeRoot.visible=casting&&strength>.01;groundRoot.visible=casting&&strength>.01;routes.visible=phase==='charge'&&charge>.025;targetRoot.visible=!state.rescueFocus&&(phase==='combat'||phase==='aim-final');bolts.visible=casting&&strength>.13;boltMaterial.opacity=strength*(.44+Math.sin(t*(reducedMotion?2:6))*.06);
       chargeRoot.position.copy(hero);chargeRoot.position.y+=1.05;chargeRoot.position.z+=.18;
       for(let i=0;i<rings.length;i++){
         const item=rings[i],reveal=T.MathUtils.smoothstep(strength,i*.12,i*.12+.32);item.group.visible=reveal>.005&&(quality!=='low'||i<2);item.group.scale.setScalar(.2+reveal*.8);item.group.rotation.z=t*(i%2?-.19:.13)+(i/5)*Math.PI;item.group.position.z=(i-2)*.24;item.group.rotation.y=Math.sin(t*.23+i)*.12;item.material.opacity=(.32+i*.055)*reveal;

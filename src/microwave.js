@@ -1,4 +1,5 @@
 import * as T from 'three';
+import {buildBento} from './dinner-art.js';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import {optimizeStaticSet} from './static-batches.js';
 import {mealBirthFrame} from './meal-birth.js';
@@ -76,13 +77,8 @@ export function buildMicrowave(scene,r,{position=[3.45,.31,1.43]}={}){
   // The tray and food retain colour cues while the outer appliance stays charred.
   const foodGroup=new T.Group();foodGroup.name='microwave-meal';oven.add(foodGroup);
   const tray=r.mesh(r.geometry('CylinderGeometry',.255,.255,.018,28),r.material('#aaa994',{roughness:.4,metalness:.25}),foodGroup,[-.095,-.19,-.005]);
-  box(foodGroup,r.material('#dfddcb',{roughness:.61}),[-.095,-.16,.015],[.57,.055,.36]);
-  const riceMaterial=r.own(new T.MeshStandardMaterial({color:0xe6d9b6,roughness:.86})),mealMaterial=r.own(new T.MeshStandardMaterial({color:0x9b7042,roughness:.66}));
-  const foodSolids=new T.Group();foodSolids.name='microwave-original-ingredients';foodGroup.add(foodSolids);
-  const rice=r.own(new T.InstancedMesh(r.geometry('BoxGeometry',1,1,1),riceMaterial,24)),dummy=new T.Object3D();foodSolids.add(rice);
-  for(let i=0;i<24;i++){dummy.position.set(-.28+(i%6)*.042,-.105+((i%3)*.008),-.08+Math.floor(i/6)*.054);dummy.scale.set(.045,.038,.049);dummy.rotation.set(i*.02,i*.33,0);dummy.updateMatrix();rice.setMatrixAt(i,dummy.matrix);}rice.instanceMatrix.needsUpdate=true;rice.computeBoundingSphere();
-  for(let i=0;i<5;i++){const food=r.mesh(r.geometry('SphereGeometry',1,7,5),mealMaterial,foodSolids,[.045+(i%2)*.09,-.087+Math.floor(i/3)*.015,-.08+Math.floor(i/2)*.075],[.075,.045,.059]);food.rotation.z=i*.3;}
-  const vegetables=r.material('#68804c',{roughness:.82});for(let i=0;i<5;i++)r.mesh(r.geometry('OctahedronGeometry',.045,0),vegetables,foodSolids,[.12+(i%2)*.05,-.08,.08+(i%3)*.026]);
+  const bento=buildBento(r,foodGroup,{variant:'xaihi'});bento.root.position.set(-.095,-.18,.015);bento.root.scale.setScalar(1.8);
+  const foodSolids=bento.solids;foodSolids.name='microwave-original-ingredients';const dummy=new T.Object3D();
   const sparkleMaterial=r.own(new T.MeshBasicMaterial({color:new T.Color(1.4,1.9,1.6),transparent:true,opacity:.94,depthWrite:false,blending:T.AdditiveBlending,toneMapped:false}));
   const faultHaloMaterial=r.own(new T.MeshBasicMaterial({color:new T.Color(.12,1.4,1.12),transparent:true,opacity:.29,depthWrite:false,blending:T.AdditiveBlending,toneMapped:false}));
   const maxArcSegments=9,arcCount=4,arcGeometry=r.geometry('CylinderGeometry',1,1,1,4,1,true),arcs=r.own(new T.InstancedMesh(arcGeometry,sparkleMaterial,arcCount*maxArcSegments));arcs.name='microwave-live-electric-arcs';arcs.frustumCulled=false;arcs.instanceMatrix.setUsage(T.DynamicDrawUsage);oven.add(arcs);
@@ -123,7 +119,7 @@ export function buildMicrowave(scene,r,{position=[3.45,.31,1.43]}={}){
   }
   const ovenBatch=optimizeStaticSet(oven,r),ovenMeshesAfter=countMeshes();
   let mode='charred',forced=null,charred=1,foodState='cold',arcActive=false,activeArcs=0,steam=0,wreck=false,warming=true,lastPhase='ready',clock=0,quality='balanced',arcSegments=7,arcCoreRadius=0,arcHaloRadius=0,arcPulse=0;
-  const cleanColor=new T.Color('#c4c8ba'),burntColor=new T.Color('#202825'),cleanTrim=new T.Color('#85978a'),burntTrim=new T.Color('#394940'),riceCold=new T.Color('#d8cdb0'),riceHot=new T.Color('#eee2ba'),riceBurnt=new T.Color('#332b20'),meatHot=new T.Color('#b17b45'),meatBurnt=new T.Color('#251f19'),mealPurple=new T.Color('#583594');
+  const cleanColor=new T.Color('#c4c8ba'),burntColor=new T.Color('#202825'),cleanTrim=new T.Color('#85978a'),burntTrim=new T.Color('#394940');
   const currentPosition=[...position];
   function modeFor(state){
     if(state.node?.event==='microwave-closeup')return 'heating';if(forced)return forced;if(state.microwaveMode)return state.microwaveMode;
@@ -141,16 +137,13 @@ export function buildMicrowave(scene,r,{position=[3.45,.31,1.43]}={}){
     charred=birth?birth.charred:mode==='clean'?0:mode==='heating'?(heat.charred||0):mode==='burning'?clamp((heat.demoIndex||0)*.86+(heat.demoProgress||0)*1.4):1;
     soot.visible=charred>.18;bodyMaterial.color.copy(cleanColor).lerp(burntColor,charred);bodyMaterial.roughness=.36+charred*.58;trimMaterial.color.copy(cleanTrim).lerp(burntTrim,charred);
     foodState=mode==='burning'&&(heat.demoProgress||0)>.5||heat.status==='burnt'?'burnt':heat.status==='won'?'hot':'cold';
-    const hot=clamp(heat.heatAmount??heat.progress??0);riceMaterial.color.copy(riceCold).lerp(riceHot,hot);mealMaterial.color.copy(meatHot);
-    if(heat.charred){riceMaterial.color.lerp(riceBurnt,heat.charred);mealMaterial.color.lerp(meatBurnt,heat.charred);}vegetables.color.set('#68804c').lerp(meatBurnt,heat.charred||0);
-    if(birth){riceMaterial.color.copy(riceCold).lerp(riceBurnt,birth.charred);mealMaterial.color.copy(meatHot).lerp(meatBurnt,birth.charred);mealMaterial.color.lerp(mealPurple,birth.morph);}
+    const hot=clamp(heat.heatAmount??heat.progress??0);bento.cook(hot,birth?birth.charred:heat.charred||0,birth?.morph||0);
     warming=['warm','charred'].includes(mode);const labelMode=mode==='charred'?'warm':mode;for(const [key,label]of Object.entries(labels))label.visible=key===labelMode;
     const visibleFood=past||!wreck;foodGroup.visible=visibleFood;
     const fusion=birth?birth.morph:0,remaining=1-fusion,boil=heat.boilAmount||0,swell=heat.swellAmount||0;
     foodSolids.visible=!(birth?fusion>=.985:state.mealBorn&&!['rewind','flashback','hack','credentials','heat-demo'].includes(lastPhase));
     const shrink=Math.max(.015,remaining);foodSolids.scale.set(shrink,shrink*(1+boil*Math.sin(clock*21)*.035+swell*.26),shrink);
-    foodSolids.position.set(-.095*(1-shrink),-.095*(1-shrink)+boil*Math.abs(Math.sin(clock*18))*.008+swell*.015,.015*(1-shrink));
-    if(birth){riceMaterial.color.lerp(mealPurple,fusion);mealMaterial.color.lerp(mealPurple,fusion);vegetables.color.lerp(mealPurple,fusion);}
+    foodSolids.position.set(0,.04*(1-shrink)+boil*Math.abs(Math.sin(clock*18))*.004+swell*.008,0);
     const strong=mode==='burning'||mode==='heating'&&(heat.powered||heat.holding),cycle=((clock*.55)%1+1)%1;
     const faultBurst=cycle<.1||cycle>.18&&cycle<.29;
     arcPulse=reducedMotion?(strong?.75:.45):strong?.72+.28*Math.sin(clock*5.2)**2:faultBurst?.9:0;
@@ -174,6 +167,7 @@ export function buildMicrowave(scene,r,{position=[3.45,.31,1.43]}={}){
   update(0,0,{phase:'ready',clock:0,progress:0});
   return {root,cabinet,oven,position:currentPosition,
     quality(value){quality=['low','balanced','high'].includes(value)?value:'balanced';arcSegments=quality==='low'?5:quality==='high'?9:7;},
+    get labelPosition(){return bento.labelPoint.getWorldPosition(new T.Vector3()).toArray();},
     setMode(value){forced=value==='auto'||!value?null:value;},
     reset(){forced=null;mode='charred';oven.position.y=1.29;oven.rotation.set(0,0,0);update(0,0,{phase:'ready',progress:0});},update,
     get state(){return {mode,phase:lastPhase,quality,reducedMotion,doorAngle:door.rotation.y,charred,arcActive,arcs:activeArcs,arcSegments,arcCoreRadius,arcHaloRadius,arcPulse,steam,food:foodState,ingredientsVisible:foodSolids.visible,wreck,warming,position:[...currentPosition],counterVisible:cabinet.visible,batches:{meshesBefore:ovenMeshesBefore,meshesAfter:ovenMeshesAfter,sharedDraws:ovenBatch.sharedDraws},display:mode==='clean'?'03:00':mode==='burning'?'ERR':mode==='heating'?'0.30 s':'極速保溫'};}

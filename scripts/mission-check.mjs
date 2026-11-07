@@ -37,7 +37,7 @@ const r=new RhythmHeat();r.start(0);r.cancel();r.start(4);r.update(9);check('Can
 check('Meter still differentiates edge and centre',judgeMeter(0).result==='miss'&&judgeMeter(.5).result==='perfect');
 check('Insurance pays off smuggling premise',chargeLines.some(v=>v.text.includes('都保了'))&&chargeLines.some(v=>v.text.includes('事故時間空白')));
 check('Third-floor report waits for the energy scene',!reactionPools.hit.some(v=>v.includes('三樓'))&&sequences.energy.some(v=>v.text.includes('三樓已坍塌')));
-check('Cold drink motivation precedes tablet without repeated heckling',sequences.flashback.every(l=>l.speaker==='xaihi')&&sequences.flashback[0].text.includes('氣泡水')&&sequences.flashback[1].text.includes('不夠冰'));
+check('Cold drink motivation precedes tablet without repeated heckling',sequences.flashback[0].speaker==='narrator'&&sequences.flashback[1].text.includes('氣泡水')&&sequences.flashback.some(l=>l.text.includes('不夠冰')));
 check('Every line has stable data fields',[...Object.values(sequences).flat(),...chatterGroups.flat(),...Object.values(hotspots).flat(2)].every(l=>['id','speaker','text','mood','gesture','next'].every(k=>k in l)));
 check('At least fourteen aftermath groups',chatterGroups.length>=14);
 await fs.writeFile(new URL('../artifacts/v14-mission-check.json',import.meta.url),JSON.stringify({passed:true,count:checks.length,checks},null,2)+'\n');console.log(`V14 mission: ${checks.length} checks passed.`);

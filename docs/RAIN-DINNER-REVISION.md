@@ -7,7 +7,7 @@
 | 段落 | 實際修改 | 主要檔案 |
 | --- | --- | --- |
 | 莊拿晚餐 | 同一托盤保持水平；依實際指根估算掌面，雙臂解析式 IK 從下承托；轉身、走路保留支撐腳 | `arm-support.js`、`performance.js` |
-| 起飛前／落地後 | 2.6秒交接鏡頭，1.35秒接觸時換唯一持有人。紫色生物站地上代拿；砲擊後以「謝了。」接回才散步。前段先看到生物，倒敘再解釋來源 | `mission-state.js`、`meal-remnant.js`、`mission-director.js`、`story-shots.js` |
+| 起飛前／落地後 | 起飛前1.2秒交給龍泡泡；回放後紫色生物才在最後一發救餐、比👍。落地以「謝了。」接回再散步；新版細節見 [晚餐美術與救餐演出](RAIN-DINNER-FEAST-REVISION.md) | `mission-state.js`、`meal-remnant.js`、`mission-director.js`、`story-shots.js` |
 | BOOK | 手邊召喚、翻頁、四節點電網圖、展開終端；最後切近景「請先登入。」。維持6秒與既有貪婪之島吐槽 | `connection-stage.js`、`story-shots.js` |
 | 城域充能 | 四座天師樁遠景→人物低角度→樁體→人物近景→準備遠景，顯示「城域雷射砲・陣列同步中」及真實進度。直式獨立調整視野 | `story-shots.js`、`mission.js` |
 | 冰箱事故 | +50°C時增加暖色水氣；保留溫度顯示、角色與台詞可讀性。未加入已刪除的平均五度笑話 | `vcr-effects.js` |

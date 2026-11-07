@@ -33,7 +33,7 @@ const NEXT={scan:'scan-php',tool:'fridge',detect:'scan-controller',control:'walk
 const AUTO={'scan-php':['php',1.6],'scan-controller':['controller',1.3],'walk-fridge':['temperature',3.2],cooling:['success',2],success:['defrost',0],defrost:['hot',3.6],'walk-counter':['meal-label',3.2],'meal-label':['grid',0],'scan-grid':['grid-found',4.8],backdoor:['rapi-request',1.5],'rapi-request':['rapi-answer',0],cable:['power',6]};
 const TALKS={
  search:[['xaihi','冰箱能不能再調冷一點……'],['xaihi','要從後台設定，還要密碼。'],['dragon','妳知道密碼？'],['xaihi','不知道。我找找別的方法。']],
- php:[['xaihi','後台有個沒修補的問題。這個工具好像能從那裡進去。']],
+ php:[['xaihi','管理後台有個漏洞，不用密碼也能進去。'],['xaihi','PHP 出了個大漏洞，賽馬娘停服維修……我才有時間出門。','maintenance']],
  success:[['xaihi','嗯，有降。','satisfied'],['dragon','成功了？']],
  hot:[['dragon','正五十？！妳把蒸發器切到除霜模式了！'],['xaihi','……借了法國駭客的工具，忘了改預設模式。','avert'],['dragon','熱愛105°C的你～🎶\n滴滴清純的蒸餾水～','song'],['xaihi','……飲料晚點再說。先熱便當。','side-eye']],
  'meal-label':[['xaihi','微波三分鐘……','read-label'],['xaihi','太久了。我找個快一點的。','tablet']],
@@ -65,6 +65,6 @@ export class VcrTablet{
   const [title,base,buttons]=TABLET_PAGES[this.stage],age=Math.max(0,this.now-this.at);
   const temperature=this.stage==='cooling'?Math.round(4-12*Math.min(1,age/2)):this.stage==='success'?-8:this.stage==='defrost'?Math.round(-8+58*Math.max(0,Math.min(1,(age-.6)/3))):this.hot?50:4;
   const busy=this.now<this.until||this.stage==='search'&&age<1.9||this.stage==='backdoor'&&age<1.5;
-  return {stage:this.stage,title,lines:this.stage==='scan-grid'?[...(age>=1.4?['1號天師樁：遠端維修已封鎖']:['1號天師樁：檢查中…']),...(age>=2.8?['2號天師樁：未發現可用入口']:age>=1.4?['2號天師樁：檢查中…']:[]),...(age>=4.1?['3號天師樁：偵測到異常遠端連線']:age>=2.8?['3號天師樁：檢查中…']:[])]:this.stage==='cooling'?['指令已送出',`實際溫度：${signedTemperature(temperature)}`]:base,buttons:this.talks.length?[]:buttons,dialogue:this.talks[0]||null,dialogueAge:Math.max(0,this.now-this.talkAt),hot:this.hot,powered:this.powered,censored:this.censored,censorAt:this.censorAt,temperature,note:this.note,age,busy,revision:this.revision+(this.stage==='scan-grid'?Math.floor(age/1.4):0),wireBeat:this.stage==='cable'?(age<.4?'control':age<1.6?'source':age<4.9?'route':'sink'):null};
+  return {stage:this.stage,title,lines:this.stage==='scan-grid'?[...(age>=1.4?['1號天師樁：遠端維修已封鎖']:['1號天師樁：檢查中…']),...(age>=2.8?['2號天師樁：未發現可用入口']:age>=1.4?['2號天師樁：檢查中…']:[]),...(age>=4.1?['3號天師樁：偵測到異常遠端連線']:age>=2.8?['3號天師樁：檢查中…']:[])]:this.stage==='cooling'?['指令已送出',`實際溫度：${signedTemperature(temperature)}`]:base,buttons:this.talks.length?[]:buttons,dialogue:this.talks[0]||null,dialogueAge:Math.max(0,this.now-this.talkAt),hot:this.hot,powered:this.powered,censored:this.censored,censorAt:this.censorAt,temperature,notification:['php','fridge','scan-controller','controller'].includes(this.stage)?'賽馬娘｜維護中':null,note:this.note,age,busy,revision:this.revision+(this.stage==='scan-grid'?Math.floor(age/1.4):0),wireBeat:this.stage==='cable'?(age<.4?'control':age<1.6?'source':age<4.9?'route':'sink'):null};
  }
 }

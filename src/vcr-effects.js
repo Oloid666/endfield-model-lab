@@ -15,8 +15,7 @@ export function buildVcrEffects(scene,r,{powerOutput=null}={}){
  [[.80,1.54,-1.98,.012,2.14,.015],[1.84,1.54,-1.98,.012,2.14,.015],[1.32,2.61,-1.98,1.05,.012,.015]].forEach((v,i)=>{dummy.position.fromArray(v);dummy.scale.set(...v.slice(3));dummy.updateMatrix();rails.setMatrixAt(i,dummy.matrix);});
  const vaporMat=r.own(new T.MeshBasicMaterial({color:'#d5e5e5',transparent:true,opacity:.16,depthWrite:false})),vapor=r.own(new T.InstancedMesh(r.geometry('SphereGeometry',1,7,5),vaporMat,12));vapor.frustumCulled=false;fridge.add(vapor);
  const frost=r.mesh(r.geometry('PlaneGeometry',1.0,.30),r.own(new T.MeshBasicMaterial({color:'#d8f8ff',transparent:true,opacity:0,depthWrite:false})),fridge,[1.32,2.12,-1.95]);frost.name='fridge-thin-frost';
- const labelCanvas=document.createElement('canvas');labelCanvas.width=1024;labelCanvas.height=256;const lc=labelCanvas.getContext('2d');lc.fillStyle='#f3edcf';lc.fillRect(0,0,1024,256);lc.fillStyle='#243c37';lc.font='bold 60px sans-serif';lc.fillText('本便當 · 建議加熱',40,85);lc.font='bold 86px sans-serif';lc.fillText('800 W  /  3 分鐘',40,200);const labelTexture=r.own(new T.CanvasTexture(labelCanvas));labelTexture.colorSpace=T.SRGBColorSpace;
- const mealLabel=r.mesh(r.geometry('PlaneGeometry',.62,.155),r.own(new T.MeshBasicMaterial({map:labelTexture})),root,[3.48,1.40,1.064]);mealLabel.rotation.y=Math.PI;mealLabel.name='meal-heating-label';
+ // Heating instructions belong to the lunch-box packaging, not a world-space card.
  const source=new T.Vector3(7.44,3.08,-15.3);if(powerOutput){powerOutput.updateWorldMatrix(true,false);powerOutput.getWorldPosition(source);}
  const path=new T.CatmullRomCurve3([source.toArray(),[7.85,2.95,-15.3],[7.85,.43,-14.2],[5.1,.43,-4.4],[4.75,.43,.7],[4.55,1.16,.7],[4.28,1.16,.7],[4.1,1.25,1.43],[3.99,1.6,1.43]].map(p=>new T.Vector3(...p)),false,'centripetal');
  const cable=r.mesh(r.own(new T.TubeGeometry(path,90,.023,5,false)),r.material('#223c3b'),root);
@@ -37,7 +36,7 @@ export function buildVcrEffects(scene,r,{powerOutput=null}={}){
  r.mesh(r.geometry('PlaneGeometry',1.16,.76),r.own(new T.MeshBasicMaterial({map:texture})),consoleRoot,[0,1.85,-.039]).name='pylon-03-launcher-screen';
  if(typeof Image!=='undefined'){const img=new Image();img.onload=()=>{art=img;artLoaded=true;repaintLauncher();};img.src=`${import.meta.env?.BASE_URL||'/'}images/nikke-rapi.webp`;}
  let active=false,hot=true,stage='',age=0,temperature=50,hotAt=null;
- return {root,path,panel,reset(){hotAt=null;censored=forensics=controlConfirmed=false;repaintLauncher();},update(s,{intact=true}={}){active=!!s?.vcr;stage=s?.tablet?.stage||'';age=s?.tablet?.age||0;fridge.visible=mealLabel.visible=!!intact;
+ return {root,path,panel,reset(){hotAt=null;censored=forensics=controlConfirmed=false;repaintLauncher();},update(s,{intact=true}={}){active=!!s?.vcr;stage=s?.tablet?.stage||'';age=s?.tablet?.age||0;fridge.visible=!!intact;
   const confirmed=stage==='cable';if(confirmed!==controlConfirmed){controlConfirmed=confirmed;repaintLauncher();}
   const incident=['backdoor','rapi-request','rapi-answer','rapi-mask'].includes(stage);if(incident!==forensics){forensics=incident;repaintLauncher();}
   if(s?.tablet&&censored!==!!s.tablet.censored){censored=!!s.tablet.censored;repaintLauncher();}

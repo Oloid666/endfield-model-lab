@@ -105,6 +105,7 @@ export class World {
       const h=this.actors.headPosition,heading=this.actors.status.cinematic?.heading||0,angle=heading+(name==='left'?-.78:name==='right'?.78:name==='back'?Math.PI:0),distance=name==='heroFront'?2.8:3.1;
       target.set(h[0],h[1]-(name==='heroFront'?.27:.42),h[2]);position.set(h[0]+Math.sin(angle)*distance,h[1]+.08,h[2]+Math.cos(angle)*distance);
     }
+    if(name.startsWith('dinner')&&this.actors){const p=this.actors.mealSupportPosition,heading=this.actors.status.mealOwner==='dragon'?this.actors.status.dragonHeading:this.actors.status.cinematic?.heading||0,offset=new T.Vector3(...(name==='dinnerSide'?[1.5,.16,.4]:name==='dinnerBottom'?[.4,-.55,1.6]:name==='dinnerBack'?[-.7,.86,-1.4]:[.7,.86,1.4])).applyAxisAngle(new T.Vector3(0,1,0),heading);target.set(p[0]+.025,p[1]+.05,p[2]);position.copy(target).add(offset);}
     if(name==='dragon'&&this.actors){const d=this.actors.dragonPosition,heading=this.actors.status.dragonHeading??0;target.set(d[0],d[1]+.4,d[2]);position.set(d[0]+Math.sin(heading-.5)*1.8,d[1]+.5,d[2]+Math.cos(heading-.5)*1.8);}
     // Flush damping once, so user momentum does not fight a selected preset.
     const damping=this.controls.enableDamping;this.controls.enableDamping=false;this.controls.update();this.controls.enableDamping=damping;
@@ -227,10 +228,11 @@ export class World {
     this.store.update(sceneTime,sceneDelta,this.actors?.position,this.actors?.dragonPosition,this.currentView==='insideOut'?this.camera.position:null);
     if(this.missionState?.phase==='photo')this.photoCamera.apply();else this.controls.update();if(this.upstairsInvitation){this.camera.position.set(0,7,23);this.controls.target.set(0,3,1.8);this.camera.fov=this.camera.aspect<.85?56:43;this.camera.updateProjectionMatrix();this.controls.enabled=false;this.cameraSafety.sync();}
     this.cameraSafety.resolve(this.autoCamera===false&&!this.currentView&&this.missionState?.phase!=='photo',(this.streetShow?.state.mode==='intact'||this.store.destruction.state.progress<62));this.camera.lookAt(this.controls.target);if(this.director.cameraRoll)this.camera.rotateZ(this.director.cameraRoll);const close=this.camera.position.distanceTo(this.controls.target)<(this.camera.aspect<.85?14:11);
+    this.concert.update(this.actors?.dragonPosition||[0,0,0],Math.max(0,(this.missionState?.phaseElapsed||0)-14),this.missionState?.phase==='tour'&&this.missionState.phaseElapsed>=14&&this.missionState.phaseElapsed<30,this.camera,this.quality,this.director.reducedMotion);
     this.director.cinematicTrack.drawDebug(this.camera);
     if(close!==this.closeFraming){this.closeFraming=close;this.onFraming(close);}
     const presentation=this.missionState?.vcr,damage=presentation?0:this.store.destruction.state.progress;this.weather.setShelter(this.missionState?.postgame?this.streetShow?.state.mode==='intact':damage<80,this.missionState?.postgame?this.streetShow?.state.mode==='intact':damage<44);
-    const visualTime=this.director.visualTime??sceneTime;this.remnant.update(visualTime,this.missionState,this.missionState?.postgame?this.actors?.heelCenter:null,{doors:this.store.doors,floorPlan:this.store.floorPlan,intact:this.streetShow?.state.mode!=='collapsed'});
+    const visualTime=this.director.visualTime??sceneTime;this.remnant.update(visualTime,this.missionState,this.missionState?.postgame?this.actors?.heelCenter:null,{doors:this.store.doors,floorPlan:this.store.floorPlan,intact:this.streetShow?.state.mode!=='collapsed',rescue:this.actors?.rescueFrame});
     this.store.glass.uniforms.uTime.value=visualTime;this.wet.update(visualTime);this.weather.update(visualTime);
     if(render){this.renderer.info.reset();this.composer.render();this.renderCount++;
     }
