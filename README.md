@@ -6,6 +6,8 @@
 
 **[開啟正式遊戲](https://endfield10000t.aura87.online/)** · [GitHub Pages 備用](https://oloid666.github.io/endfield-model-lab/)
 
+全局按鈕材質與攝影引導見 [按鈕精修紀錄](docs/BUTTON-MATERIALS.md)。
+
 主線介面更新見 [StageShow 與手機／桌面 UI 驗證](docs/UI-STAGESHOW-REVISION.md)；已確認的24項後續工作見 [待優化清單](docs/RAIN-BACKLOG.md)。
 
 目前手機與劇情修正見 [冰箱反轉、遮眼梗與操作驗證](docs/RAIN-MOBILE-STORY-REVISION.md)。

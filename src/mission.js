@@ -1,10 +1,11 @@
+import {buttonStyle} from './button-style.js';
 import {portrait as setPortrait} from './portrait.js';
 import {createInvestigationUI} from './investigation-ui.js';
 import './mission.css';
 import {MissionMachine,METER_PERIOD} from './mission-state.js';
 import {speakers,endingCaption,endingSong,reactionPools,combatHitLine} from './mission-dialogue.js';
 
-const E=(tag,className,text)=>{const e=document.createElement(tag);e.className=className;if(text!==undefined)e.textContent=text;return e;};
+const E=(tag,className,text)=>{const e=document.createElement(tag);e.className=className;if(text!==undefined)e.textContent=text;return buttonStyle(e);};
 const setText=(node,text)=>{const value=String(text??'');if(node.textContent!==value)node.textContent=value;};
 const runningPhases=new Set(['login','captcha','lever','ascent','director-reminder','shoe-view','pylon-link','charge','fire-ready','combat','energy','rewind','flashback','hack','credentials','heat-demo','meal-spawn','heat','flashback-end','return','last','aim-final','finisher','landing','tour']);
 const manualPhases=new Set(['meal-spawn','terminal-quip','intro','meal','cargo','photo-talk','photo-check','verify-talk','verified-talk','observation','credentials','briefing','energy','flashback','flashback-end','last','complete']);
@@ -99,7 +100,7 @@ export function createMission({mount=document.querySelector('#app'),onDinner,onG
       if(professional){const detail=E('details','tablet-details'),summary=E('summary','','技術詳情');detail.append(summary,E('p','',t.lines.join('\n')));tabletControls.append(detail);}
       else if(['search','temperature','power','confirm'].includes(t.stage))tabletControls.append(E('p','tablet-explanation',t.lines.join('\n')));
       if(t.note)tabletControls.append(E('p','tablet-note',t.note));
-      else if(!t.buttons.length)tabletControls.append(E('p','tablet-note','演出中…'));for(const [id,label]of s.tablet.buttons){const b=E('button','',label);b.type='button';b.dataset.tabletAction=id;b.onclick=()=>{machine.tabletAction(id);render(true);};tabletControls.append(b);}}for(const b of tabletControls.querySelectorAll('button'))b.disabled=s.paused||s.tablet.busy;}
+      else if(!t.buttons.length)tabletControls.append(E('p','tablet-note','演出中…'));for(const [id,label]of s.tablet.buttons){const b=E('button','',label);b.type='button';b.dataset.tabletAction=id;buttonStyle(b,id==='800w'?'secondary':'primary');b.onclick=()=>{machine.tabletAction(id);render(true);};tabletControls.append(b);}}for(const b of tabletControls.querySelectorAll('button'))b.disabled=s.paused||s.tablet.busy;}
     cameraReset.hidden=true;
     mount.classList.toggle('mission-ready',s.phase==='ready');mount.classList.toggle('mission-active',active);mount.classList.toggle('mission-running',runningPhases.has(s.phase));mount.classList.toggle('mission-complete',s.phase==='complete');mount.classList.toggle('mission-vcr-active',isVcr);
     loginAside.hidden=s.phase!=='login'||!s.loginAside;setText(loginAside,'龍泡泡：'+s.loginAside);

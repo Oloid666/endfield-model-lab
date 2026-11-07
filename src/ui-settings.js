@@ -1,3 +1,4 @@
+import {buttonStyle} from './button-style.js';
 // Group existing controls without replacing their listeners or pause ownership.
 export function createSettingsLayout(settings, signal) {
   const original = [...settings.children];
@@ -15,7 +16,7 @@ export function createSettingsLayout(settings, signal) {
     if (node.classList.contains('chapter-menu')) { chapters.append(node); node.querySelector('h3')?.remove(); }
     else if (node.classList.contains('setting-row')) display.append(node);
     else if (node.tagName === 'BUTTON' && /自動對話|字幕字級|回到演出/.test(text)) play.append(node);
-    else if (node.tagName === 'BUTTON' && /重新開始/.test(text)) { node.classList.add('settings-restart'); settings.append(node); }
+    else if (node.tagName === 'BUTTON' && /重新開始/.test(text)) { node.classList.add('settings-restart'); buttonStyle(node,'danger'); settings.append(node); }
     else about.append(node);
   }
   // Keep restart last, away from ordinary adjustments.

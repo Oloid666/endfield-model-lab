@@ -1,3 +1,4 @@
+import {buttonStyle} from './button-style.js';
 // Independent input surface: gestures never reach the 3D camera.
 export function photoBounds(stageWidth,stageHeight,imageWidth,imageHeight,scale){
  const fit=Math.min(stageWidth/imageWidth,stageHeight/imageHeight);
@@ -9,9 +10,9 @@ export function createPhotoViewer({mount,signal,onSend,onRetake,onClose}){
  const header=el('header','gallery-header'),title=el('strong','','全景 · 1 / 2');header.append(title);
  const stage=el('div','gallery-stage'),image=el('img','gallery-image');image.alt='本次拍攝的照片';image.draggable=false;stage.append(image);
  const hint=el('p','gallery-hint','左右滑換照片，雙指放大。'),tools=el('div','gallery-tools'),footer=el('footer','gallery-footer');
- const button=(owner,text,fn)=>{const b=el('button','',text);b.type='button';b.addEventListener('click',fn,{signal});owner.append(b);return b;};
+ const button=(owner,text,fn,tone='secondary')=>{const b=buttonStyle(el('button','',text),tone);b.type='button';b.addEventListener('click',fn,{signal});owner.append(b);return b;};
  const inspect=button(tools,'放大看有沒有眨眼',()=>{if(paused)return;index=1;scale=1;x=y=0;load();});
- const retake=button(footer,'重新拍',()=>{hide();photo=null;image.removeAttribute('src');onRetake();}),send=button(footer,'傳送給管理員',()=>{if(!send.disabled&&photo?.faceValid!==false){send.disabled=true;try{if(onSend()!==false)hide();else send.disabled=false;}catch{send.disabled=false;}}});
+ const retake=button(footer,'重新拍',()=>{hide();photo=null;image.removeAttribute('src');onRetake();}),send=button(footer,'傳送給管理員',()=>{if(!send.disabled&&photo?.faceValid!==false){send.disabled=true;send.setAttribute('aria-busy','true');try{if(onSend()!==false)hide();else send.disabled=false;}catch{send.disabled=false;}finally{send.removeAttribute('aria-busy');}}},'primary');
  root.append(header,stage,hint,tools,footer);mount.append(root);
  let blocked=[];
  let photo=null,index=0,scale=1,x=0,y=0,opener=null,gesture=null,paused=false;const pointers=new Map();

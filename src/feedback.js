@@ -1,11 +1,12 @@
+import {buttonStyle} from './button-style.js';
 import './feedback.css';
 import {FEEDBACK_CATEGORIES as categories} from './feedback-client.js';
 export {createFeedbackService,feedbackEndpoint} from './feedback-client.js';
-const element=(tag,cls='',text)=>{const n=document.createElement(tag);n.className=cls;if(text!==undefined)n.textContent=text;return n;};
+const element=(tag,cls='',text)=>{const n=document.createElement(tag);n.className=cls;if(text!==undefined)n.textContent=text;return buttonStyle(n);};
 export function createFeedbackForm({service,initialRating=0,requireRating=false,onRating=()=>{},onFinish=()=>{},onSkip=()=>{},isCurrent=()=>true}={}){
  const root=element('section','feedback-form');let rating=initialRating,pending=false,disposed=false,controller=null;const draft=service.draft;
  const stars=element('div','rating-stars');stars.setAttribute('role','group');stars.setAttribute('aria-label','一至五星評分');const starButtons=[];
- for(let i=1;i<=5;i++){const b=element('button');b.type='button';b.setAttribute('aria-label',i+' 星');b.onclick=()=>{rating=i;onRating(i);update();};stars.append(b);starButtons.push(b);}root.append(stars);
+ for(let i=1;i<=5;i++){const b=element('button');b.type='button';buttonStyle(b,'rating');b.setAttribute('aria-label',i+' 星');b.onclick=()=>{rating=i;onRating(i);update();};stars.append(b);starButtons.push(b);}root.append(stars);
  if(!requireRating)root.append(element('p','feedback-hint','星等可不選；留言與問題都歡迎。'));
  const typeLabel=element('label','feedback-label','意見類型'),select=element('select');for(const [value,title]of Object.entries(categories)){const o=element('option','',title);o.value=value;select.append(o);}select.value=draft.category;typeLabel.append(select);root.append(typeLabel);
  const label=element('label','feedback-label','想對我們說什麼？（選填）'),text=element('textarea');text.rows=4;text.maxLength=1000;text.value=draft.message;text.placeholder='哪一幕最好笑？哪裡卡住了？還想看到什麼？';label.append(text);root.append(label);
@@ -17,7 +18,7 @@ export function createFeedbackForm({service,initialRating=0,requireRating=false,
  function update(){
   length.textContent=text.value.length+' / 1000';starButtons.forEach((b,i)=>{b.textContent=i<rating?'★':'☆';b.setAttribute('aria-pressed',String(i+1===rating));b.disabled=pending;});
   const hasText=!!text.value.trim();submit.textContent=pending?'送出中…':requireRating?(rating?(hasText?'送出評分與意見':'送出評分'):'先選一顆到五顆星'):'送出意見';
-  submit.disabled=pending||(requireRating?!rating:!hasText);text.disabled=select.disabled=pending;
+  submit.setAttribute('aria-busy',String(pending));submit.disabled=pending||(requireRating?!rating:!hasText);text.disabled=select.disabled=pending;
  }
  function save(){service.saveDraft({message:text.value,category:select.value});fallback.hidden=true;status.textContent='';update();}
  text.addEventListener('input',save);select.addEventListener('change',save);

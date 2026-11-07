@@ -1,3 +1,4 @@
+import {styleExistingButtons} from './button-style.js';
 import {createSettingsLayout} from './ui-settings.js';
 import {createFeedbackService,createFeedbackDialog} from './feedback.js';
 import {createGA4,createRainAnalytics} from './analytics.js';
@@ -20,6 +21,7 @@ import { createBonus } from './bonus.js';
 import './presentation.css';
 import './responsive.css';
 import './ui-refinement.css';
+import './button-materials.css';
 document.querySelector('#app').classList.add('ui-refined');
 
 const $=s=>document.querySelector(s),loading=$('#loading'),message=$('#loading-message'),error=$('#error');
@@ -209,6 +211,7 @@ async function init(){
     const backgroundResume=document.createElement('button');backgroundResume.className='background-resume';backgroundResume.textContent='已暫停 · 繼續';backgroundResume.hidden=true;$('#app').append(backgroundResume);
     listen(document,'visibilitychange',()=>{if(document.hidden){analytics.tick(performance.now(),{visible:false});analytics.flush();mission.setPaused(true,'background');}else if(mission.pauseReasons.includes('background'))backgroundResume.hidden=true;});
     backgroundResume.addEventListener('click',()=>{mission.setPaused(false,'background');backgroundResume.hidden=true;},{signal:abort.signal});
+    styleExistingButtons($('#app'));
     window.__rainy711={
       get debug(){return debugTravel.state;},debugJump:id=>debugTravel.go(id),
       get staging(){return {show:world.streetShow?.state,shopping:mission.state.shopping,remnant:world.remnant.state,tractor:world.director.captureFx.root.visible,microphone:!!world.actors?.root.getObjectByName('floating-singing-microphone')?.visible,phone:world.photoPhone?.position.toArray()};},get loading(){return loader.state;},get bonus(){return bonus.state;},get chapters(){return chapters.data;},restoreChapter:id=>restore(id),assist:()=>mission.machine.assist(),

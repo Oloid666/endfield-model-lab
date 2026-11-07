@@ -1,3 +1,4 @@
+import {buttonStyle} from './button-style.js';
 import {createFeedbackForm} from './feedback.js';
 import {BonusProgress,LESSONS,CLASS_MOTTO,LESSON_NOTES,ClassCourse,lessonCardCount} from './bonus-data.js';
 import {ClaimsNegotiation,APPLICATION_FIELDS,SETTLEMENT_STAMPS} from './claims-negotiation.js';
@@ -5,7 +6,7 @@ import {createBonusRoom} from './bonus-room.js';
 import {lessonFrame,StampSequence,SmoothMeter} from './bonus-presentation.js';
 import './bonus.css';
 
-const E=(tag,cls='',text)=>{const n=document.createElement(tag);n.className=cls;if(text!==undefined)n.textContent=text;return n;};
+const E=(tag,cls='',text)=>{const n=document.createElement(tag);n.className=cls;if(text!==undefined)n.textContent=text;return buttonStyle(n);};
 const visible=node=>{for(let p=node;p;p=p.parent)if(!p.visible)return false;return node.material?.visible!==false;};
 export function pickBonusSign(world,ray){
  // Test the nearest visible surface, so signs cannot be tapped through walls.
@@ -67,7 +68,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
   if(route!=='rating')render();resumeBonus();
  },{signal:events.signal});
  recovery.addEventListener('cancel',e=>{e.preventDefault();resumeBonus();},{signal:events.signal});
- function button(parent,text,action,value,cls='') {const b=E('button',cls,text);b.type='button';b.dataset.action=action;if(value!==undefined)b.dataset.value=value;parent.append(b);return b;}
+ function button(parent,text,action,value,cls='') {const b=E('button',cls,text);b.type='button';b.dataset.action=action;if(action==='rate')buttonStyle(b,'rating');if(['restart-night','class-reset'].includes(action))buttonStyle(b,'danger');if(value!==undefined)b.dataset.value=value;parent.append(b);return b;}
  function heading(kicker,text,description){content.append(E('p','bonus-kicker',kicker),E('h2','',text));if(description)content.append(E('p','bonus-description',description));}
  function focusContent(){content.focus({preventScroll:true});content.scrollTop=0;panel.scrollTop=0;}
  function reducedMotion(){return matchMedia('(prefers-reduced-motion: reduce)').matches;}

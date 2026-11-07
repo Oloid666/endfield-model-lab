@@ -1,0 +1,61 @@
+/* StageShow craft applied to real controls. Paint shared; mechanics stay local. */
+:is(#app.ui-refined,.feedback-dialog) :is([data-ui=primary],[data-ui=secondary],[data-ui=quiet],[data-ui=danger]){
+ --button-face:linear-gradient(165deg,#315957 0%,#244749 52%,#193a3d 100%);
+ --button-edge:#92b6a96e;--button-ink:#f0ead8;
+ background:var(--button-face)!important;color:var(--button-ink)!important;border-color:var(--button-edge)!important;
+ border-radius:12px!important;box-shadow:inset 0 1px 0 #e8f5dc38,inset 0 -1px 0 #061f2999,0 2px 4px #030c1438!important;
+ opacity:1!important;filter:none!important;text-shadow:none;touch-action:manipulation;
+ transition:box-shadow 110ms ease-out,border-color 110ms ease-out,translate 90ms ease-out;
+}
+:is(#app.ui-refined,.feedback-dialog) [data-ui=primary],
+#app.ui-refined[data-free-guide=house] .postgame-toggle,
+#app.ui-refined[data-free-guide=walk] .walk-toggle{
+ --button-face:linear-gradient(165deg,#f0dca5 0%,#dfc48a 50%,#c4a266 100%);--button-edge:#f7dfaa;--button-ink:#2c3024;
+ background:var(--button-face)!important;color:var(--button-ink)!important;border-color:var(--button-edge)!important;
+ font-weight:600;box-shadow:inset 0 1px 0 #fff6d6d9,inset 0 -1px 0 #8e6d3e99,0 3px 5px #020a154d!important;
+}
+:is(#app.ui-refined,.feedback-dialog) [data-ui=quiet]{--button-face:linear-gradient(160deg,#254342b8,#183739c9);--button-edge:#a1beb53d;box-shadow:inset 0 1px 0 #efffe51c!important}
+:is(#app.ui-refined,.feedback-dialog) [data-ui=danger]{--button-face:linear-gradient(160deg,#4a3b37,#342e2f);--button-edge:#b68d7b88;--button-ink:#f3d8c5}
+:is(#app.ui-refined,.feedback-dialog) :is([data-ui=primary],[data-ui=secondary],[data-ui=quiet],[data-ui=danger]):disabled{
+ --button-face:linear-gradient(160deg,#374743,#2a3b39);--button-edge:#83958a50;--button-ink:#b5c0b6;
+ opacity:1!important;box-shadow:inset 0 1px 0 #dbe5cb12!important;translate:none;cursor:default;
+}
+:is(#app.ui-refined,.feedback-dialog) [data-ui][aria-busy=true]{--button-ink:#dce1c9;cursor:progress}
+#app.ui-refined :is(.mission-line,.mission-resume-panel):disabled{opacity:1}
+:is(#app.ui-refined,.feedback-dialog) :is([data-ui=primary],[data-ui=secondary],[data-ui=quiet],[data-ui=danger]):not(:disabled):active{
+ box-shadow:inset 0 2px 4px #07182066,inset 0 1px 0 #06192255!important;translate:0 1px;
+}
+#app.ui-refined :is(.rhythm-pad,.mission-attack,.flight-step):active{translate:none!important;transform:none!important}
+#app.ui-refined :is(.rhythm-pad,.flight-step){touch-action:none}
+#app.ui-refined .view-dock button:active{transform:none!important}
+#app.ui-refined :is(.view-dock button.active,.mission-output[aria-pressed=true],.mission-output.selected,.bonus-selected,[data-ui=secondary][aria-pressed=true]){
+ --button-face:linear-gradient(155deg,#49655d,#294b46);--button-edge:#e0ca8c;--button-ink:#f6e6bb;
+ box-shadow:inset 0 1px 0 #f6edd647,inset 0 0 0 1px #ddc48c55!important;
+}
+:is(#app.ui-refined,.feedback-dialog) [data-ui=rating]{background:transparent!important;box-shadow:none!important;border-color:transparent!important;opacity:1!important}
+:is(#app.ui-refined,.feedback-dialog) [data-ui=rating]:disabled{opacity:.6!important}
+:is(#app.ui-refined,.feedback-dialog) [data-ui]:focus-visible{outline:3px solid #f5dba0;outline-offset:3px}
+.feedback-form .feedback-actions [data-ui=primary]{min-inline-size:11em}
+@media(hover:hover){:is(#app.ui-refined,.feedback-dialog) :is([data-ui=primary],[data-ui=secondary],[data-ui=quiet],[data-ui=danger]):not(:disabled):hover:not(:active){border-color:#f2dfb3!important;box-shadow:inset 0 1px 0 #fff6df80,inset 0 -1px 0 #07192280,0 3px 6px #020c184d!important}}
+/* Photo positioning: primary first in both reading and keyboard order. */
+#app.ui-refined .investigation-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:0}
+#app.ui-refined .flight-position-status{flex:none;padding:4px 10px;border:1px solid #9fc4b275;border-radius:20px;font-size:12px;color:#e2d8ae;white-space:nowrap}
+#app.ui-refined .flight-position-status[hidden]{display:none}
+#app.ui-refined .investigation-ui[data-phase=photo-flight]{padding:14px;max-height:42dvh;overflow:auto;overscroll-behavior:contain}
+#app.ui-refined .investigation-ui[data-phase=photo-flight] .investigation-message{margin:10px 0 14px;font-size:var(--dialogue-size,18px);line-height:1.5}
+#app.ui-refined .investigation-ui[data-phase=photo-flight] .investigation-actions{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+#app.ui-refined .investigation-ui[data-phase=photo-flight] .flight-ready{grid-column:1/-1!important;min-height:52px!important;display:flex;align-items:center;justify-content:center;gap:10px;font-size:19px;padding:10px 14px}
+#app.ui-refined .investigation-ui[data-phase=photo-flight] .investigation-actions button{min-width:0!important;width:100%;box-sizing:border-box}
+#app.ui-refined .flight-ready svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.7;flex:none}
+#app.ui-refined .investigation-ui[data-phase=photo-flight] .flight-step{min-height:48px!important;border-radius:12px;padding:10px;font-size:16px}
+#app.ui-refined .flight-step.suggested{border-color:#e7d09c!important;box-shadow:inset 0 1px 0 #f4e8c766,0 0 0 1px #dcc48a55!important}
+#app.ui-refined .investigation-ui[data-ready=true] .flight-position-status{color:#dfebca;border-color:#c0d5af99;background:#324b3f}
+@media(max-height:600px){
+ #app.ui-refined .investigation-ui[data-phase=photo-flight]{max-height:calc(100dvh - 155px)}
+ #app.ui-refined .investigation-ui[data-phase=photo-flight] .investigation-actions{grid-template-columns:minmax(116px,1.6fr) minmax(0,1fr) minmax(0,1fr)!important;gap:6px!important}
+ #app.ui-refined .investigation-ui[data-phase=photo-flight] .flight-ready{grid-column:auto!important;font-size:16px;min-height:48px!important;padding:8px 6px;gap:6px}
+ #app.ui-refined .flight-ready svg{width:18px;height:18px}
+ #app.ui-refined .investigation-ui[data-phase=photo-flight] .flight-step{padding:8px 6px;font-size:15px}
+ #app.ui-refined .flight-position-status{font-size:11px;padding:3px 6px}
+}
+@media(prefers-reduced-motion:reduce){:is(#app.ui-refined,.feedback-dialog) [data-ui]{transition:none!important;translate:none!important}}
