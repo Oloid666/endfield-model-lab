@@ -39,6 +39,7 @@ export function buildXaihi(scene,r,gltf){
   const v=new T.Vector3(),q=new T.Quaternion(),axis=new T.Quaternion();
   function remember(name,bone){if(!bone)return;const inverse=bone.getWorldQuaternion(new T.Quaternion()).invert();poses[name]={bone,rest:bone.position.clone(),q:bone.quaternion.clone(),x:new T.Vector3(1,0,0).applyQuaternion(inverse),y:new T.Vector3(0,1,0).applyQuaternion(inverse),z:new T.Vector3(0,0,1).applyQuaternion(inverse)};}
   for(const [name,id]of Object.entries(ids))remember(name,byId(id));
+  remember('cuffL',byId(256));
   const smileIds=[158,162,168,172,157,161,167,171];for(const id of smileIds)remember('smile'+id,byId(id));
   const eyelids=[];
   for(const [upperId,lowerId]of [[70,60],[67,61],[65,62],[89,79],[86,80],[84,81]]){
@@ -70,9 +71,9 @@ export function buildXaihi(scene,r,gltf){
   let disposed=false,phase='',action='waiting',time=0;
   // Solve the real upper arm and elbow toward a held tablet; keep the source rig unchanged.
   const ikOrigin=new T.Vector3(),ikTarget=new T.Vector3(),ikWorld=new T.Quaternion(),ikParent=new T.Quaternion();
-  function holdArm(side,target,pole){ikTarget.copy(target);root.localToWorld(ikTarget);armSupport.reach(side,ikTarget,null,pole);}
-  const armSupport=makeArmSupport(poses,root),safeRight=new T.Vector3(-.24,.90,.32),refuseLeft=new T.Vector3(.24,1.25,.42);
-  const refusalPole=new T.Vector3(.25,-1,.10);
+  function holdArm(side,target,pole,orientation){ikTarget.copy(target);root.localToWorld(ikTarget);armSupport.reach(side,ikTarget,orientation,pole);}
+  const armSupport=makeArmSupport(poses,root),safeRight=new T.Vector3(-.24,.90,.32),refuseLeft=new T.Vector3(.14,1.24,.57);
+  const refusalPole=new T.Vector3(.45,-1,.18),refusalTarget=new T.Vector3(),refusalStart=new T.Vector3(),refusalQ=new T.Quaternion(),refusalRestQ=new T.Quaternion();
   const tabletLeft=new T.Vector3(.04,.98,.40),tabletRight=new T.Vector3(-.40,.98,.40);
   const palmPoints=[229,233,237,241].map(id=>byId(id).getWorldPosition(new T.Vector3())),palmCenter=new T.Vector3();for(const p of palmPoints)palmCenter.add(p);palmCenter.multiplyScalar(.25);poses.wristL.bone.getWorldPosition(ikOrigin);const palmForward=palmCenter.clone().sub(ikOrigin).normalize(),palmAcross=palmPoints[3].clone().sub(palmPoints[0]).normalize(),palmNormal=palmForward.clone().cross(palmAcross).normalize().negate();palmAcross.crossVectors(palmNormal,palmForward).normalize();palmForward.crossVectors(palmAcross,palmNormal).normalize();const palmCalibration=new T.Quaternion().setFromRotationMatrix(new T.Matrix4().makeBasis(palmAcross,palmNormal,palmForward)).invert().multiply(poses.wristL.bone.getWorldQuaternion(new T.Quaternion())),refusalBasis=new T.Quaternion().setFromRotationMatrix(new T.Matrix4().makeBasis(new T.Vector3(-1,0,0),new T.Vector3(0,0,1),new T.Vector3(0,1,0)));
   const restPosition=root.position.clone();
@@ -102,12 +103,13 @@ export function buildXaihi(scene,r,gltf){
       if(walking)distance=travel((state.tablet.age||0)/3.2,stage==='walk-counter');
       else if(['temperature','cooling','success','defrost','hot'].includes(stage)){root.position.set(1.2,restPosition.y,-1.35);const reaction=stage==='success'||stage==='hot';root.rotation.y=Math.PI-(reaction?.69*clamp((state.tablet.age||0)/.6):0);}
       else {root.position.copy(restPosition);root.rotation.y=phase==='meal-spawn'?1.6:2;}
+      if(refusing)root.rotation.y+=.52*refuse;
       const recoil=phase==='meal-spawn'?clamp(((state.phaseElapsed||0)-6.2)/.6):0;if(recoil){root.position.x-=.14*recoil;root.position.z-=.10*recoil;}if(refusing){root.position.x-=Math.sin(root.rotation.y)*.16*refuse;root.position.z-=Math.cos(root.rotation.y)*.16*refuse;}
       const beat=Math.sin(time*1.1),flinch=phase==='heat-demo'?Math.max(0,Math.sin((state.phaseElapsed||0)*3.1))*.08:0;
       for(const p of Object.values(poses))p.bone.position.copy(p.rest);
       pose('spine',Math.sin(time*.8)*.006+(hack?.035:0)-flinch*.13-recoil*.04-refuse*.08,0,beat*.004);
       pose('neck',hack?.045:0,0,0);
-      const fridgeReaction=stage==='success'||stage==='hot',birth=phase==='meal-spawn',headYaw=refusing?.24*refuse:cue==='avert'?.38:cue==='side-eye'?-.65:readingLabel?-.10:birth?0:fridgeReaction?-.44:hack?-.22:-.65,nod=cue==='satisfied'?Math.sin(Math.min(1,state.tablet.age/1.2)*Math.PI)*.06:0;pose('head',readingLabel?.28:(birth?.16:fridgeReaction?-.03:hack?.14:.015)+nod,headYaw,Math.sin(time*.43)*.008+refuse*.06);
+      const fridgeReaction=stage==='success'||stage==='hot',birth=phase==='meal-spawn',headYaw=refusing?.24*refuse:cue==='avert'?.38:cue==='side-eye'?-.65:readingLabel?-.10:birth?0:fridgeReaction?-.44:hack?-.22:-.65,nod=cue==='satisfied'?Math.sin(Math.min(1,state.tablet.age/1.2)*Math.PI)*.06:0;pose('head',readingLabel?.28:(refusing?-.02:birth?.16:fridgeReaction?-.03:hack?.14:.015)+nod,headYaw,Math.sin(time*.43)*.008+refuse*.06);
       // Relax the A-pose, then bring the real forearms toward the terminal.
       pose('armL',hack?-.13:receive?-.18:0,.02,-.56+(hack?.10:0));
       pose('elbowL',hack?-1.22:receive?-.88:-.12,0,-.02);pose('wristL',hack?-.5:receive?-.06:0,.06,0);
@@ -121,9 +123,10 @@ export function buildXaihi(scene,r,gltf){
       if(walking)root.position.y+=Math.abs(Math.sin(distance*10))*.014;
       root.updateMatrixWorld(true);
       if(hack){holdArm('L',tabletLeft);holdArm('R',tabletRight);}
-      else if(refusing){holdArm('L',refuseLeft,refusalPole);holdArm('R',safeRight);root.getWorldQuaternion(ikWorld).multiply(refusalBasis).multiply(palmCalibration);poses.wristL.bone.parent.getWorldQuaternion(ikParent).invert();poses.wristL.bone.quaternion.copy(ikParent.multiply(ikWorld));}
+      else if(refusing){poses.wristL.bone.getWorldPosition(refusalStart);root.worldToLocal(refusalStart);refusalTarget.lerpVectors(refusalStart,refuseLeft,refuse);poses.wristL.bone.getWorldQuaternion(refusalRestQ);root.getWorldQuaternion(ikWorld).multiply(refusalBasis).multiply(palmCalibration);refusalQ.slerpQuaternions(refusalRestQ,ikWorld,refuse);holdArm('L',refusalTarget,refusalPole,refusalQ);holdArm('R',safeRight);}
       else {holdArm('R',safeRight);}
 
+      if(poses.cuffL)poses.cuffL.bone.position.y-=.08*refuse;
       for(const id of smileIds){const p=poses['smile'+id];if(p)p.bone.position.y+=refuse*([158,162].includes(id)?.003:[168,172].includes(id)?.0012:.0008);}
       paint(state.tablet);phone.visible=hack&&!leaving;meal.visible=receive;
       const wrist=poses.wristL?.bone;

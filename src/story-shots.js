@@ -119,10 +119,10 @@ export function cinematicStoryShot(s,context,track){
   }
   if(e<2.75){
    if(track.enter('cinematic-finisher-face',s,c,origin)){
-    const face=faceFrame(feet,c.heading??2.91,4.4,2.6,2.1,1.45);track.p.fromArray(face.position);track.t.set(h.x,h.y-.25,h.z);
-    track.fitBox([feet[0]-.9,feet[1]+.95,feet[2]-.7],[feet[0]+.9,h.y+.35,feet[2]+.7],track.p,track.t,c.portrait?47:42,c);
+    const face=faceFrame(feet,c.heading??2.91,2.0,.75,1.9,1.48);track.p.fromArray(face.position);track.t.set(h.x,h.y-.08,h.z);
+    track.fitBox([h.x-.35,h.y-.40,h.z-.3],[h.x+.35,h.y+.35,h.z+.3],track.p,track.t,c.portrait?40:32,c);
    }
-   return track.fixed(clock,1.2,.15,c.portrait?47:42,c.reduced);
+   return track.fixed(clock,1.2,.08,c.portrait?40:32,c.reduced);
   }
   if(e<4.35){track.enter('cinematic-finisher-flight',s,c,origin+2.75);track.sideAligned(c.portrait?[0,9.6,33]:[5,10,31]);return track.pose(track.p,[-1,3.2,7.5],c.portrait?63:54);}
   if(track.enter('cinematic-finisher-impact',s,c,origin+4.35)){
@@ -141,6 +141,13 @@ export function revisedStoryShot(s,{feet=[-1.25,.32,3.25],heroHead=null,dragon=[
  const e=s.phaseElapsed||0,age=s.nodeElapsed||0,index=Number((s.nodeId||'').split('_').at(-1))||0;
  const hero=heroHead?[heroHead[0],heroHead[1]+.04,heroHead[2]]:[feet[0],feet[1]+1.48,feet[2]],pet=[dragon[0],dragon[1]+.32,dragon[2]];
  const push=reduced?0:smooth(age/3)*.12;
+ if(s.phase==='rewind')return shot('rewind-exterior-lock',[22,8,34],[0,3.1,.8],portrait?28:22);
+ if(s.node?.event==='phone-away'){
+  if(age<.7)return shot('sigh-phone-away',[pet[0]+1.8,pet[1]+.6,pet[2]+4.4],[pet[0]+.35,pet[1]-.12,pet[2]],portrait?48:38);
+  return person('sigh-quiet-reaction',pet,{portrait,side:1,distance:2.4,push});
+ }
+ if(s.node?.event==='backfire-complaint')return person('dialogue-backfire-reaction',pet,{portrait,side:-1,distance:2.7,push});
+
  if(s.phase==='briefing'){
   if(s.node?.cue==='rossi-collection')return shot('briefing-rossi-collection',[.85,4.9,5.8],[.28,4.61,1.43],portrait?32:27);
   if(s.node?.cue==='rossi-closeup')return shot('briefing-rossi-closeup',[.55,4.8,4.6],[.28,4.61,1.43],portrait?33:28);
@@ -154,7 +161,7 @@ export function revisedStoryShot(s,{feet=[-1.25,.32,3.25],heroHead=null,dragon=[
   if(index===9)return person('briefing-find-a-charge',hero,{portrait,side:1,distance:3.3});
   if(index<=12)return shot('briefing-pear-evidence',[9.7,4.7,6.1],[7.65,3.1,-.3],portrait?45:37);
   if(index<=15)return person('briefing-incident-time',hero,{portrait,side:1,distance:3.8});
-  if(index<=19)return shot('briefing-built-to-demolish',[7.7,6.5,18.2],[.3,3,1],portrait?49:37);
+  if(index<=19)return shot('briefing-built-to-demolish',[22+(reduced?0:smooth(age/6)*2),8,34],[0,3.1,.8],portrait?28:22);
   return person('briefing-final-instruction',s.speaker==='dragon'?pet:hero,{portrait,side:s.speaker==='dragon'?-1:1,distance:4.0});
  }
  if(s.phase==='charge'&&s.node){
@@ -166,7 +173,7 @@ export function revisedStoryShot(s,{feet=[-1.25,.32,3.25],heroHead=null,dragon=[
   if(index===9)return person('charge-dragon-last-word',pet,{portrait,side:-1,distance:3.7});
  }
  if(s.phase==='meal-spawn'){
-  if(s.node?.event==='meal-refusal'){const h=xaihiHead||[1.8,1.8,.85];return shot('birth-xaihi-refusal',[h[0]+1.4,h[1]+.18,h[2]-1.3],[h[0],h[1]-.22,h[2]],portrait?46:38);}
+  if(s.node?.event==='meal-refusal'){const h=xaihiHead||[1.8,1.8,.85];return shot('birth-xaihi-refusal',[h[0]+1.45,h[1]+.14,h[2]-1.2],[h[0]+.07,h[1]+.02,h[2]-.08],portrait?36:36);}
   const birth=mealBirthFrame(e,reduced),p=e<8?birth.position:mealPosition||birth.position;
   if(e<.5)return shot('birth-charred-meal',[3.2,2.05,-.08],[3.545,1.46,1.43],portrait?35:28);
   if(e<2.4)return shot('birth-swelling-in-tray',[2.9,1.9,-.35],[3.545,1.52,1.43],portrait?38:31);

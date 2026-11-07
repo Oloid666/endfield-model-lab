@@ -273,7 +273,7 @@ export class MissionMachine{
     if(id==='figurine'){this.sequence('briefing',sequences.briefing);this.index=this.lines.findIndex(n=>n.cue==='rossi-collection');this.line(this.lines[this.index]);return true;}
     this.vcrStarted=this.time;this.vcrSnapshot={progress:99,branch:this.branch,shots:0,hits:0,output:this.output,target:this.target};
     if(id==='birth'){
-      this.tablet.hot=this.tablet.powered=true;this.rhythm.first=false;this.rhythm.forced=true;this.rhythm.status='burnt';this.rhythm.failures=1;this.seenHeatFailures=1;this.mealBorn=true;this.phaseTo('meal-spawn');
+      this.tablet.hot=this.tablet.powered=true;this.rhythm.first=false;this.rhythm.forced=true;this.rhythm.artChar=this.rhythm.artSwell=this.rhythm.artHeat=1;this.rhythm.status='burnt';this.rhythm.failures=1;this.seenHeatFailures=1;this.mealBorn=true;this.phaseTo('meal-spawn');
     }else {this.tablet.hot=id==='nikke';this.phaseTo('hack');this.tablet.enter(id==='nikke'?'backdoor':'search',this.time);this.emit();}
     return true;
   }

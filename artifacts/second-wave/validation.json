@@ -1,0 +1,3063 @@
+{
+  "node_suites": [
+    {
+      "name": "actor",
+      "passed": true
+    },
+    {
+      "name": "bonus",
+      "passed": true
+    },
+    {
+      "name": "character-copy",
+      "passed": true
+    },
+    {
+      "name": "cinematic",
+      "passed": true
+    },
+    {
+      "name": "cinematic-track",
+      "passed": true
+    },
+    {
+      "name": "concert",
+      "passed": true
+    },
+    {
+      "name": "destruction",
+      "passed": true
+    },
+    {
+      "name": "director",
+      "passed": true
+    },
+    {
+      "name": "entry-camera",
+      "passed": true
+    },
+    {
+      "name": "feedback",
+      "passed": true
+    },
+    {
+      "name": "fx",
+      "passed": true
+    },
+    {
+      "name": "living-world",
+      "passed": true
+    },
+    {
+      "name": "loading",
+      "passed": true
+    },
+    {
+      "name": "mission",
+      "passed": true
+    },
+    {
+      "name": "photo-camera",
+      "passed": true
+    },
+    {
+      "name": "polish",
+      "passed": true
+    },
+    {
+      "name": "postgame",
+      "passed": true
+    },
+    {
+      "name": "presentation",
+      "passed": true
+    },
+    {
+      "name": "props",
+      "passed": true
+    },
+    {
+      "name": "revision",
+      "passed": true
+    },
+    {
+      "name": "stage-detail",
+      "passed": true
+    },
+    {
+      "name": "story",
+      "passed": true
+    },
+    {
+      "name": "story-revision",
+      "passed": true
+    },
+    {
+      "name": "street-camera",
+      "passed": true
+    },
+    {
+      "name": "street-stage",
+      "passed": true
+    },
+    {
+      "name": "touch-detail",
+      "passed": true
+    },
+    {
+      "name": "vcr-props",
+      "passed": true
+    },
+    {
+      "name": "vcr-tablet",
+      "passed": true
+    },
+    {
+      "name": "viewer",
+      "passed": true
+    },
+    {
+      "name": "walking-environment",
+      "passed": true
+    },
+    {
+      "name": "warmup",
+      "passed": true
+    },
+    {
+      "name": "dinner-revision",
+      "passed": true
+    },
+    {
+      "name": "second-wave",
+      "passed": true
+    }
+  ],
+  "targeted_final_reruns": [
+    "actor",
+    "cinematic",
+    "second-wave",
+    "dinner-revision"
+  ],
+  "browser": {
+    "full_story": {
+      "records": [
+        {
+          "phase": "ready",
+          "node": null,
+          "beat": "street-dragon-arrival",
+          "tray": "hero",
+          "helper": {
+            "born": false,
+            "visible": false,
+            "mode": "unborn",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "charred",
+            "phase": "ready",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": 0,
+            "charred": 1,
+            "arcActive": true,
+            "arcs": 2,
+            "arcSegments": 5,
+            "arcCoreRadius": 0.010700000000000001,
+            "arcHaloRadius": 0.038520000000000006,
+            "arcPulse": 0.9,
+            "steam": 0,
+            "food": "cold",
+            "ingredientsVisible": true,
+            "wreck": false,
+            "warming": true,
+            "position": [
+              3.45,
+              1.6,
+              1.43
+            ],
+            "counterVisible": true,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "極速保溫"
+          },
+          "name": "entry-art"
+        },
+        {
+          "phase": "cargo",
+          "node": "cargo_0",
+          "beat": "manual",
+          "tray": "hero",
+          "helper": {
+            "born": false,
+            "visible": false,
+            "mode": "unborn",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "charred",
+            "phase": "cargo",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": 0,
+            "charred": 1,
+            "arcActive": false,
+            "arcs": 0,
+            "arcSegments": 5,
+            "arcCoreRadius": 0,
+            "arcHaloRadius": 0,
+            "arcPulse": 0,
+            "steam": 0,
+            "food": "cold",
+            "ingredientsVisible": true,
+            "wreck": false,
+            "warming": true,
+            "position": [
+              3.45,
+              1.6,
+              1.43
+            ],
+            "counterVisible": true,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "極速保溫"
+          },
+          "name": "tray-left"
+        },
+        {
+          "phase": "cargo",
+          "node": "cargo_0",
+          "beat": "manual",
+          "tray": "hero",
+          "helper": {
+            "born": false,
+            "visible": false,
+            "mode": "unborn",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "charred",
+            "phase": "cargo",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": 0,
+            "charred": 1,
+            "arcActive": false,
+            "arcs": 0,
+            "arcSegments": 5,
+            "arcCoreRadius": 0,
+            "arcHaloRadius": 0,
+            "arcPulse": 0,
+            "steam": 0,
+            "food": "cold",
+            "ingredientsVisible": true,
+            "wreck": false,
+            "warming": true,
+            "position": [
+              3.45,
+              1.6,
+              1.43
+            ],
+            "counterVisible": true,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "極速保溫"
+          },
+          "name": "tray-right"
+        },
+        {
+          "phase": "cargo",
+          "node": "cargo_0",
+          "beat": "manual",
+          "tray": "hero",
+          "helper": {
+            "born": false,
+            "visible": false,
+            "mode": "unborn",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "charred",
+            "phase": "cargo",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": 0,
+            "charred": 1,
+            "arcActive": false,
+            "arcs": 0,
+            "arcSegments": 5,
+            "arcCoreRadius": 0,
+            "arcHaloRadius": 0,
+            "arcPulse": 0,
+            "steam": 0,
+            "food": "cold",
+            "ingredientsVisible": true,
+            "wreck": false,
+            "warming": true,
+            "position": [
+              3.45,
+              1.6,
+              1.43
+            ],
+            "counterVisible": true,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "極速保溫"
+          },
+          "name": "tray-heroFront"
+        },
+        {
+          "phase": "cargo",
+          "node": "cargo_0",
+          "beat": "manual",
+          "tray": "hero",
+          "helper": {
+            "born": false,
+            "visible": false,
+            "mode": "unborn",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "charred",
+            "phase": "cargo",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": 0,
+            "charred": 1,
+            "arcActive": false,
+            "arcs": 0,
+            "arcSegments": 5,
+            "arcCoreRadius": 0,
+            "arcHaloRadius": 0,
+            "arcPulse": 0,
+            "steam": 0,
+            "food": "cold",
+            "ingredientsVisible": true,
+            "wreck": false,
+            "warming": true,
+            "position": [
+              3.45,
+              1.6,
+              1.43
+            ],
+            "counterVisible": true,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "極速保溫"
+          },
+          "name": "tray-overhead"
+        },
+        {
+          "phase": "terminal-deploy",
+          "node": "terminal_book",
+          "beat": "cinematic-book-summon",
+          "tray": "hero",
+          "helper": {
+            "born": false,
+            "visible": false,
+            "mode": "unborn",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "charred",
+            "phase": "terminal-deploy",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": 0,
+            "charred": 1,
+            "arcActive": false,
+            "arcs": 0,
+            "arcSegments": 5,
+            "arcCoreRadius": 0,
+            "arcHaloRadius": 0,
+            "arcPulse": 0,
+            "steam": 0,
+            "food": "cold",
+            "ingredientsVisible": true,
+            "wreck": false,
+            "warming": true,
+            "position": [
+              3.45,
+              1.6,
+              1.43
+            ],
+            "counterVisible": true,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "極速保溫"
+          },
+          "name": "book-hand"
+        },
+        {
+          "phase": "terminal-deploy",
+          "node": "terminal_book",
+          "beat": "cinematic-terminal-unfold",
+          "tray": "hero",
+          "helper": {
+            "born": false,
+            "visible": false,
+            "mode": "unborn",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "charred",
+            "phase": "terminal-deploy",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": 0,
+            "charred": 1,
+            "arcActive": true,
+            "arcs": 2,
+            "arcSegments": 5,
+            "arcCoreRadius": 0.010700000000000001,
+            "arcHaloRadius": 0.038520000000000006,
+            "arcPulse": 0.9,
+            "steam": 0,
+            "food": "cold",
+            "ingredientsVisible": true,
+            "wreck": false,
+            "warming": true,
+            "position": [
+              3.45,
+              1.6,
+              1.43
+            ],
+            "counterVisible": true,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "極速保溫"
+          },
+          "name": "book-open"
+        },
+        {
+          "phase": "terminal-deploy",
+          "node": "terminal_book",
+          "beat": "cinematic-book-login",
+          "tray": "hero",
+          "helper": {
+            "born": false,
+            "visible": false,
+            "mode": "unborn",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "charred",
+            "phase": "terminal-deploy",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": 0,
+            "charred": 1,
+            "arcActive": false,
+            "arcs": 0,
+            "arcSegments": 5,
+            "arcCoreRadius": 0,
+            "arcHaloRadius": 0,
+            "arcPulse": 0,
+            "steam": 0,
+            "food": "cold",
+            "ingredientsVisible": true,
+            "wreck": false,
+            "warming": true,
+            "position": [
+              3.45,
+              1.6,
+              1.43
+            ],
+            "counterVisible": true,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "極速保溫"
+          },
+          "name": "book-login"
+        },
+        {
+          "phase": "meal-handoff",
+          "node": "tray_pass",
+          "beat": "cinematic-meal-handoff",
+          "tray": "hero",
+          "helper": {
+            "born": false,
+            "visible": true,
+            "mode": "helping",
+            "position": [
+              -1.25,
+              0.33,
+              3.9
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "charred",
+            "phase": "meal-handoff",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": 0,
+            "charred": 1,
+            "arcActive": false,
+            "arcs": 0,
+            "arcSegments": 5,
+            "arcCoreRadius": 0,
+            "arcHaloRadius": 0,
+            "arcPulse": 0,
+            "steam": 0,
+            "food": "cold",
+            "ingredientsVisible": true,
+            "wreck": false,
+            "warming": true,
+            "position": [
+              3.45,
+              1.6,
+              1.43
+            ],
+            "counterVisible": true,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "極速保溫"
+          },
+          "name": "tray-pass-touch"
+        },
+        {
+          "phase": "meal-handoff",
+          "node": "tray_pass",
+          "beat": "cinematic-meal-handoff",
+          "tray": "helper",
+          "helper": {
+            "born": false,
+            "visible": true,
+            "mode": "holding-tray",
+            "position": [
+              -1.25,
+              0.33,
+              3.9
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "charred",
+            "phase": "meal-handoff",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": 0,
+            "charred": 1,
+            "arcActive": false,
+            "arcs": 0,
+            "arcSegments": 5,
+            "arcCoreRadius": 0,
+            "arcHaloRadius": 0,
+            "arcPulse": 0,
+            "steam": 0,
+            "food": "cold",
+            "ingredientsVisible": true,
+            "wreck": false,
+            "warming": true,
+            "position": [
+              3.45,
+              1.6,
+              1.43
+            ],
+            "counterVisible": true,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "極速保溫"
+          },
+          "name": "tray-pass-helper"
+        },
+        {
+          "phase": "charge",
+          "node": "charge_0",
+          "beat": "cinematic-charge-array",
+          "tray": "helper",
+          "helper": {
+            "born": false,
+            "visible": true,
+            "mode": "holding-tray",
+            "position": [
+              -1.25,
+              0.33,
+              3.9
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "charred",
+            "phase": "charge",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": 0,
+            "charred": 1,
+            "arcActive": false,
+            "arcs": 0,
+            "arcSegments": 5,
+            "arcCoreRadius": 0,
+            "arcHaloRadius": 0,
+            "arcPulse": 0,
+            "steam": 0,
+            "food": "cold",
+            "ingredientsVisible": true,
+            "wreck": false,
+            "warming": true,
+            "position": [
+              3.45,
+              1.6,
+              1.43
+            ],
+            "counterVisible": true,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "極速保溫"
+          },
+          "name": "charge-city"
+        },
+        {
+          "phase": "charge",
+          "node": "charge_1",
+          "beat": "cinematic-charge-hero",
+          "tray": "helper",
+          "helper": {
+            "born": false,
+            "visible": true,
+            "mode": "holding-tray",
+            "position": [
+              -1.25,
+              0.33,
+              3.9
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "charred",
+            "phase": "charge",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": 0,
+            "charred": 1,
+            "arcActive": false,
+            "arcs": 0,
+            "arcSegments": 5,
+            "arcCoreRadius": 0,
+            "arcHaloRadius": 0,
+            "arcPulse": 0,
+            "steam": 0,
+            "food": "cold",
+            "ingredientsVisible": true,
+            "wreck": false,
+            "warming": true,
+            "position": [
+              3.45,
+              1.6,
+              1.43
+            ],
+            "counterVisible": true,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "極速保溫"
+          },
+          "name": "charge-hero"
+        },
+        {
+          "phase": "charge",
+          "node": "charge_3",
+          "beat": "cinematic-charge-pylon",
+          "tray": "helper",
+          "helper": {
+            "born": false,
+            "visible": true,
+            "mode": "holding-tray",
+            "position": [
+              -1.25,
+              0.33,
+              3.9
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "charred",
+            "phase": "charge",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": 0,
+            "charred": 1,
+            "arcActive": false,
+            "arcs": 0,
+            "arcSegments": 5,
+            "arcCoreRadius": 0,
+            "arcHaloRadius": 0,
+            "arcPulse": 0,
+            "steam": 0,
+            "food": "cold",
+            "ingredientsVisible": true,
+            "wreck": false,
+            "warming": true,
+            "position": [
+              3.45,
+              1.6,
+              1.43
+            ],
+            "counterVisible": true,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "極速保溫"
+          },
+          "name": "charge-pylon"
+        },
+        {
+          "phase": "hack",
+          "node": null,
+          "beat": "fridge-hopeful-profile",
+          "tray": "helper",
+          "helper": {
+            "born": false,
+            "visible": false,
+            "mode": "unborn",
+            "position": [
+              -1.25,
+              0.33,
+              3.9
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "clean",
+            "phase": "hack",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": 0,
+            "charred": 0,
+            "arcActive": false,
+            "arcs": 0,
+            "arcSegments": 5,
+            "arcCoreRadius": 0,
+            "arcHaloRadius": 0,
+            "arcPulse": 0,
+            "steam": 0,
+            "food": "cold",
+            "ingredientsVisible": true,
+            "wreck": false,
+            "warming": false,
+            "position": [
+              3.45,
+              1.6,
+              1.43
+            ],
+            "counterVisible": true,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "03:00"
+          },
+          "name": "fridge-cold"
+        },
+        {
+          "phase": "hack",
+          "node": null,
+          "beat": "fridge-dragon-reaction",
+          "tray": "helper",
+          "helper": {
+            "born": false,
+            "visible": false,
+            "mode": "unborn",
+            "position": [
+              -1.25,
+              0.33,
+              3.9
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "clean",
+            "phase": "hack",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": 0,
+            "charred": 0,
+            "arcActive": false,
+            "arcs": 0,
+            "arcSegments": 5,
+            "arcCoreRadius": 0,
+            "arcHaloRadius": 0,
+            "arcPulse": 0,
+            "steam": 0,
+            "food": "cold",
+            "ingredientsVisible": true,
+            "wreck": false,
+            "warming": false,
+            "position": [
+              3.45,
+              1.6,
+              1.43
+            ],
+            "counterVisible": true,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "03:00"
+          },
+          "name": "fridge-hot"
+        },
+        {
+          "phase": "hack",
+          "node": null,
+          "beat": "tablet-read",
+          "tray": "helper",
+          "helper": {
+            "born": false,
+            "visible": false,
+            "mode": "unborn",
+            "position": [
+              -1.25,
+              0.33,
+              3.9
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "clean",
+            "phase": "hack",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": 0,
+            "charred": 0,
+            "arcActive": false,
+            "arcs": 0,
+            "arcSegments": 5,
+            "arcCoreRadius": 0,
+            "arcHaloRadius": 0,
+            "arcPulse": 0,
+            "steam": 0,
+            "food": "cold",
+            "ingredientsVisible": true,
+            "wreck": false,
+            "warming": false,
+            "position": [
+              3.45,
+              1.6,
+              1.43
+            ],
+            "counterVisible": true,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "03:00"
+          },
+          "name": "grid-one"
+        },
+        {
+          "phase": "hack",
+          "node": null,
+          "beat": "tablet-read",
+          "tray": "helper",
+          "helper": {
+            "born": false,
+            "visible": false,
+            "mode": "unborn",
+            "position": [
+              -1.25,
+              0.33,
+              3.9
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "clean",
+            "phase": "hack",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": 0,
+            "charred": 0,
+            "arcActive": false,
+            "arcs": 0,
+            "arcSegments": 5,
+            "arcCoreRadius": 0,
+            "arcHaloRadius": 0,
+            "arcPulse": 0,
+            "steam": 0,
+            "food": "cold",
+            "ingredientsVisible": true,
+            "wreck": false,
+            "warming": false,
+            "position": [
+              3.45,
+              1.6,
+              1.43
+            ],
+            "counterVisible": true,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "03:00"
+          },
+          "name": "grid-two"
+        },
+        {
+          "phase": "hack",
+          "node": null,
+          "beat": "tablet-read",
+          "tray": "helper",
+          "helper": {
+            "born": false,
+            "visible": false,
+            "mode": "unborn",
+            "position": [
+              -1.25,
+              0.33,
+              3.9
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "clean",
+            "phase": "hack",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": 0,
+            "charred": 0,
+            "arcActive": false,
+            "arcs": 0,
+            "arcSegments": 5,
+            "arcCoreRadius": 0,
+            "arcHaloRadius": 0,
+            "arcPulse": 0,
+            "steam": 0,
+            "food": "cold",
+            "ingredientsVisible": true,
+            "wreck": false,
+            "warming": false,
+            "position": [
+              3.45,
+              1.6,
+              1.43
+            ],
+            "counterVisible": true,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "03:00"
+          },
+          "name": "grid-three"
+        },
+        {
+          "phase": "hack",
+          "node": null,
+          "beat": "pylon-nikke-screen",
+          "tray": "helper",
+          "helper": {
+            "born": false,
+            "visible": false,
+            "mode": "unborn",
+            "position": [
+              -1.25,
+              0.33,
+              3.9
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "clean",
+            "phase": "hack",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": 0,
+            "charred": 0,
+            "arcActive": false,
+            "arcs": 0,
+            "arcSegments": 5,
+            "arcCoreRadius": 0,
+            "arcHaloRadius": 0,
+            "arcPulse": 0.9,
+            "steam": 0,
+            "food": "cold",
+            "ingredientsVisible": true,
+            "wreck": false,
+            "warming": false,
+            "position": [
+              3.45,
+              1.6,
+              1.43
+            ],
+            "counterVisible": true,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "03:00"
+          },
+          "name": "nikke-console"
+        },
+        {
+          "phase": "heat",
+          "node": "heat_ready",
+          "beat": "cctv-microwave",
+          "tray": "helper",
+          "helper": {
+            "born": false,
+            "visible": false,
+            "mode": "unborn",
+            "position": [
+              -1.25,
+              0.33,
+              3.9
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "heating",
+            "phase": "heat",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": 0,
+            "charred": 0,
+            "arcActive": false,
+            "arcs": 0,
+            "arcSegments": 5,
+            "arcCoreRadius": 0,
+            "arcHaloRadius": 0,
+            "arcPulse": 0,
+            "steam": 7,
+            "food": "cold",
+            "ingredientsVisible": true,
+            "wreck": false,
+            "warming": false,
+            "position": [
+              3.45,
+              1.6,
+              1.43
+            ],
+            "counterVisible": true,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "0.30 s"
+          },
+          "name": "round1"
+        },
+        {
+          "phase": "heat",
+          "node": "heat_ready",
+          "beat": "cctv-microwave",
+          "tray": "helper",
+          "helper": {
+            "born": false,
+            "visible": false,
+            "mode": "unborn",
+            "position": [
+              -1.25,
+              0.33,
+              3.9
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "heating",
+            "phase": "heat",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": 0,
+            "charred": 0,
+            "arcActive": false,
+            "arcs": 0,
+            "arcSegments": 5,
+            "arcCoreRadius": 0,
+            "arcHaloRadius": 0,
+            "arcPulse": 0,
+            "steam": 7,
+            "food": "cold",
+            "ingredientsVisible": true,
+            "wreck": false,
+            "warming": false,
+            "position": [
+              3.45,
+              1.6,
+              1.43
+            ],
+            "counterVisible": true,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "0.30 s"
+          },
+          "name": "round2"
+        },
+        {
+          "phase": "heat",
+          "node": "heat_ready",
+          "beat": "cctv-microwave",
+          "tray": "helper",
+          "helper": {
+            "born": false,
+            "visible": false,
+            "mode": "unborn",
+            "position": [
+              -1.25,
+              0.33,
+              3.9
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "heating",
+            "phase": "heat",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": 0,
+            "charred": 0.00908800000006434,
+            "arcActive": true,
+            "arcs": 4,
+            "arcSegments": 5,
+            "arcCoreRadius": 0.018575582547158572,
+            "arcHaloRadius": 0.06687209716977086,
+            "arcPulse": 0.9756044210114844,
+            "steam": 7,
+            "food": "cold",
+            "ingredientsVisible": true,
+            "wreck": false,
+            "warming": false,
+            "position": [
+              3.45,
+              1.6,
+              1.43
+            ],
+            "counterVisible": true,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "0.30 s"
+          },
+          "name": "round3-beat1"
+        },
+        {
+          "phase": "heat",
+          "node": "heat_ready",
+          "beat": "cctv-microwave",
+          "tray": "helper",
+          "helper": {
+            "born": false,
+            "visible": false,
+            "mode": "unborn",
+            "position": [
+              -1.25,
+              0.33,
+              3.9
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "heating",
+            "phase": "heat",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": 0,
+            "charred": 0.5090880000001056,
+            "arcActive": true,
+            "arcs": 4,
+            "arcSegments": 5,
+            "arcCoreRadius": 0.018667132023596655,
+            "arcHaloRadius": 0.06720167528494796,
+            "arcPulse": 0.9935552987444422,
+            "steam": 7,
+            "food": "cold",
+            "ingredientsVisible": true,
+            "wreck": false,
+            "warming": false,
+            "position": [
+              3.45,
+              1.6,
+              1.43
+            ],
+            "counterVisible": true,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "0.30 s"
+          },
+          "name": "round3-beat2"
+        },
+        {
+          "phase": "heat",
+          "node": "heat_ready",
+          "beat": "cctv-microwave",
+          "tray": "helper",
+          "helper": {
+            "born": false,
+            "visible": false,
+            "mode": "unborn",
+            "position": [
+              -1.25,
+              0.33,
+              3.9
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "heating",
+            "phase": "heat",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": 0,
+            "charred": 1,
+            "arcActive": true,
+            "arcs": 4,
+            "arcSegments": 5,
+            "arcCoreRadius": 0.018239073051971127,
+            "arcHaloRadius": 0.06566066298709605,
+            "arcPulse": 0.9096221670531623,
+            "steam": 7,
+            "food": "cold",
+            "ingredientsVisible": true,
+            "wreck": false,
+            "warming": false,
+            "position": [
+              3.45,
+              1.6,
+              1.43
+            ],
+            "counterVisible": true,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "0.30 s"
+          },
+          "name": "round3-beat3"
+        },
+        {
+          "phase": "meal-spawn",
+          "node": "overload",
+          "beat": "birth-swelling-in-tray",
+          "tray": "helper",
+          "helper": {
+            "born": true,
+            "visible": true,
+            "mode": "swelling",
+            "position": [
+              3.545,
+              1.435,
+              1.43
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "charred",
+            "phase": "meal-spawn",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": -0.0,
+            "charred": 1,
+            "arcActive": true,
+            "arcs": 1,
+            "arcSegments": 5,
+            "arcCoreRadius": 0.008,
+            "arcHaloRadius": 0.028800000000000003,
+            "arcPulse": 0,
+            "steam": 7,
+            "food": "burnt",
+            "ingredientsVisible": true,
+            "wreck": false,
+            "warming": true,
+            "position": [
+              3.45,
+              1.6,
+              1.43
+            ],
+            "counterVisible": true,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "極速保溫"
+          },
+          "name": "birth-start"
+        },
+        {
+          "phase": "meal-spawn",
+          "node": "overload",
+          "beat": "birth-swelling-in-tray",
+          "tray": "helper",
+          "helper": {
+            "born": true,
+            "visible": true,
+            "mode": "swelling",
+            "position": [
+              3.545,
+              1.435,
+              1.43
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "charred",
+            "phase": "meal-spawn",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": -0.0,
+            "charred": 1,
+            "arcActive": true,
+            "arcs": 2,
+            "arcSegments": 5,
+            "arcCoreRadius": 0.010700000000000001,
+            "arcHaloRadius": 0.038520000000000006,
+            "arcPulse": 0.9,
+            "steam": 7,
+            "food": "burnt",
+            "ingredientsVisible": true,
+            "wreck": false,
+            "warming": true,
+            "position": [
+              3.45,
+              1.6,
+              1.43
+            ],
+            "counterVisible": true,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "極速保溫"
+          },
+          "name": "birth-purple"
+        },
+        {
+          "phase": "meal-spawn",
+          "node": "overload",
+          "beat": "birth-escape-follow",
+          "tray": "helper",
+          "helper": {
+            "born": true,
+            "visible": true,
+            "mode": "escape",
+            "position": [
+              3.4264887499999053,
+              1.3778516701349468,
+              1.2073424999998221
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "charred",
+            "phase": "meal-spawn",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": -0.23,
+            "charred": 1,
+            "arcActive": true,
+            "arcs": 3,
+            "arcSegments": 5,
+            "arcCoreRadius": 0.010700000000000001,
+            "arcHaloRadius": 0.038520000000000006,
+            "arcPulse": 0.9,
+            "steam": 7,
+            "food": "burnt",
+            "ingredientsVisible": false,
+            "wreck": false,
+            "warming": true,
+            "position": [
+              3.45,
+              1.6,
+              1.43
+            ],
+            "counterVisible": true,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "極速保溫"
+          },
+          "name": "birth-escape"
+        },
+        {
+          "phase": "meal-spawn",
+          "node": "meal_refusal",
+          "beat": "birth-xaihi-refusal",
+          "tray": "helper",
+          "helper": {
+            "born": true,
+            "visible": true,
+            "mode": "alive",
+            "position": [
+              3.38,
+              1.28,
+              1.12
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "charred",
+            "phase": "meal-spawn",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": -0.004525462962805132,
+            "charred": 1,
+            "arcActive": true,
+            "arcs": 1,
+            "arcSegments": 5,
+            "arcCoreRadius": 0.008,
+            "arcHaloRadius": 0.028800000000000003,
+            "arcPulse": 0,
+            "steam": 7,
+            "food": "burnt",
+            "ingredientsVisible": false,
+            "wreck": false,
+            "warming": true,
+            "position": [
+              3.45,
+              1.6,
+              1.43
+            ],
+            "counterVisible": true,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "極速保溫"
+          },
+          "name": "refusal-meme"
+        },
+        {
+          "phase": "meal-spawn",
+          "node": "meal_refusal",
+          "beat": "birth-xaihi-refusal",
+          "tray": "helper",
+          "helper": {
+            "born": true,
+            "visible": true,
+            "mode": "alive",
+            "position": [
+              3.38,
+              1.28,
+              1.12
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "charred",
+            "phase": "meal-spawn",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": -0.0,
+            "charred": 1,
+            "arcActive": true,
+            "arcs": 1,
+            "arcSegments": 5,
+            "arcCoreRadius": 0.008,
+            "arcHaloRadius": 0.028800000000000003,
+            "arcPulse": 0,
+            "steam": 7,
+            "food": "burnt",
+            "ingredientsVisible": false,
+            "wreck": false,
+            "warming": true,
+            "position": [
+              3.45,
+              1.6,
+              1.43
+            ],
+            "counterVisible": true,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "極速保溫"
+          },
+          "name": "refusal-landscape"
+        },
+        {
+          "phase": "meal-spawn",
+          "node": "meal_refusal",
+          "beat": "birth-xaihi-refusal",
+          "tray": "helper",
+          "helper": {
+            "born": true,
+            "visible": true,
+            "mode": "alive",
+            "position": [
+              3.38,
+              1.28,
+              1.12
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "charred",
+            "phase": "meal-spawn",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": -0.0,
+            "charred": 1,
+            "arcActive": true,
+            "arcs": 1,
+            "arcSegments": 5,
+            "arcCoreRadius": 0.008,
+            "arcHaloRadius": 0.028800000000000003,
+            "arcPulse": 0,
+            "steam": 7,
+            "food": "burnt",
+            "ingredientsVisible": false,
+            "wreck": false,
+            "warming": true,
+            "position": [
+              3.45,
+              1.6,
+              1.43
+            ],
+            "counterVisible": true,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "極速保溫"
+          },
+          "name": "refusal-desktop"
+        },
+        {
+          "phase": "finisher",
+          "node": null,
+          "beat": "cinematic-finisher-face",
+          "tray": "helper",
+          "helper": {
+            "born": false,
+            "visible": true,
+            "mode": "holding-tray",
+            "position": [
+              -1.25,
+              0.33,
+              3.9
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "charred",
+            "phase": "finisher",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": 0,
+            "charred": 1,
+            "arcActive": false,
+            "arcs": 0,
+            "arcSegments": 5,
+            "arcCoreRadius": 0,
+            "arcHaloRadius": 0,
+            "arcPulse": 0,
+            "steam": 0,
+            "food": "cold",
+            "ingredientsVisible": true,
+            "wreck": true,
+            "warming": true,
+            "position": [
+              3.45,
+              0.5549999999999999,
+              1.43
+            ],
+            "counterVisible": false,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "極速保溫"
+          },
+          "name": "explosion-readable"
+        },
+        {
+          "phase": "finisher",
+          "node": null,
+          "beat": "cinematic-finisher-impact",
+          "tray": "helper",
+          "helper": {
+            "born": false,
+            "visible": true,
+            "mode": "holding-tray",
+            "position": [
+              -1.25,
+              0.33,
+              3.9
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "charred",
+            "phase": "finisher",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": 0,
+            "charred": 1,
+            "arcActive": false,
+            "arcs": 0,
+            "arcSegments": 5,
+            "arcCoreRadius": 0,
+            "arcHaloRadius": 0,
+            "arcPulse": 0,
+            "steam": 0,
+            "food": "cold",
+            "ingredientsVisible": true,
+            "wreck": true,
+            "warming": true,
+            "position": [
+              3.45,
+              0.5549999999999999,
+              1.43
+            ],
+            "counterVisible": false,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "極速保溫"
+          },
+          "name": "explosion-flight-caption"
+        },
+        {
+          "phase": "meal-reclaim",
+          "node": "tray_back",
+          "beat": "cinematic-meal-reclaim",
+          "tray": "helper",
+          "helper": {
+            "born": false,
+            "visible": true,
+            "mode": "holding-tray",
+            "position": [
+              -1.25,
+              0.33,
+              3.9
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "charred",
+            "phase": "meal-reclaim",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": 0,
+            "charred": 1,
+            "arcActive": false,
+            "arcs": 0,
+            "arcSegments": 5,
+            "arcCoreRadius": 0,
+            "arcHaloRadius": 0,
+            "arcPulse": 0,
+            "steam": 0,
+            "food": "cold",
+            "ingredientsVisible": true,
+            "wreck": true,
+            "warming": true,
+            "position": [
+              3.45,
+              0.5549999999999999,
+              1.43
+            ],
+            "counterVisible": false,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "極速保溫"
+          },
+          "name": "tray-reclaim-touch"
+        },
+        {
+          "phase": "meal-reclaim",
+          "node": "tray_back",
+          "beat": "cinematic-meal-reclaim",
+          "tray": "hero",
+          "helper": {
+            "born": false,
+            "visible": true,
+            "mode": "helping",
+            "position": [
+              -1.25,
+              0.33,
+              3.9
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "charred",
+            "phase": "meal-reclaim",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": 0,
+            "charred": 1,
+            "arcActive": false,
+            "arcs": 0,
+            "arcSegments": 5,
+            "arcCoreRadius": 0,
+            "arcHaloRadius": 0,
+            "arcPulse": 0,
+            "steam": 0,
+            "food": "cold",
+            "ingredientsVisible": true,
+            "wreck": true,
+            "warming": true,
+            "position": [
+              3.45,
+              0.5549999999999999,
+              1.43
+            ],
+            "counterVisible": false,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "極速保溫"
+          },
+          "name": "tray-reclaim-hero"
+        },
+        {
+          "phase": "complete",
+          "node": null,
+          "beat": "final-dragon",
+          "tray": "hero",
+          "helper": {
+            "born": false,
+            "visible": true,
+            "mode": "helping",
+            "position": [
+              -1.25,
+              0.33,
+              3.9
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "charred",
+            "phase": "complete",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": 0,
+            "charred": 1,
+            "arcActive": false,
+            "arcs": 0,
+            "arcSegments": 5,
+            "arcCoreRadius": 0,
+            "arcHaloRadius": 0,
+            "arcPulse": 0,
+            "steam": 0,
+            "food": "cold",
+            "ingredientsVisible": true,
+            "wreck": true,
+            "warming": true,
+            "position": [
+              3.45,
+              0.5549999999999999,
+              1.43
+            ],
+            "counterVisible": false,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "極速保溫"
+          },
+          "name": "fin-0"
+        },
+        {
+          "phase": "complete",
+          "node": null,
+          "beat": "final-dragon",
+          "tray": "hero",
+          "helper": {
+            "born": false,
+            "visible": true,
+            "mode": "helping",
+            "position": [
+              -1.25,
+              0.33,
+              3.9
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "charred",
+            "phase": "complete",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": 0,
+            "charred": 1,
+            "arcActive": false,
+            "arcs": 0,
+            "arcSegments": 5,
+            "arcCoreRadius": 0,
+            "arcHaloRadius": 0,
+            "arcPulse": 0,
+            "steam": 0,
+            "food": "cold",
+            "ingredientsVisible": true,
+            "wreck": true,
+            "warming": true,
+            "position": [
+              3.45,
+              0.5549999999999999,
+              1.43
+            ],
+            "counterVisible": false,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "極速保溫"
+          },
+          "name": "fin-1.25"
+        },
+        {
+          "phase": "complete",
+          "node": null,
+          "beat": "final-dragon",
+          "tray": "hero",
+          "helper": {
+            "born": false,
+            "visible": true,
+            "mode": "helping",
+            "position": [
+              -1.25,
+              0.33,
+              3.9
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "charred",
+            "phase": "complete",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": 0,
+            "charred": 1,
+            "arcActive": false,
+            "arcs": 0,
+            "arcSegments": 5,
+            "arcCoreRadius": 0,
+            "arcHaloRadius": 0,
+            "arcPulse": 0,
+            "steam": 0,
+            "food": "cold",
+            "ingredientsVisible": true,
+            "wreck": true,
+            "warming": true,
+            "position": [
+              3.45,
+              0.5549999999999999,
+              1.43
+            ],
+            "counterVisible": false,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "極速保溫"
+          },
+          "name": "fin-1.7"
+        },
+        {
+          "phase": "complete",
+          "node": null,
+          "beat": "final-dragon",
+          "tray": "hero",
+          "helper": {
+            "born": false,
+            "visible": true,
+            "mode": "helping",
+            "position": [
+              -1.25,
+              0.33,
+              3.9
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "charred",
+            "phase": "complete",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": 0,
+            "charred": 1,
+            "arcActive": true,
+            "arcs": 2,
+            "arcSegments": 5,
+            "arcCoreRadius": 0.010700000000000001,
+            "arcHaloRadius": 0.038520000000000006,
+            "arcPulse": 0.9,
+            "steam": 0,
+            "food": "cold",
+            "ingredientsVisible": true,
+            "wreck": true,
+            "warming": true,
+            "position": [
+              3.45,
+              0.5549999999999999,
+              1.43
+            ],
+            "counterVisible": false,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "極速保溫"
+          },
+          "name": "fin-2.15"
+        },
+        {
+          "phase": "complete",
+          "node": null,
+          "beat": "final-dragon",
+          "tray": "hero",
+          "helper": {
+            "born": false,
+            "visible": true,
+            "mode": "helping",
+            "position": [
+              -1.25,
+              0.33,
+              3.9
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "charred",
+            "phase": "complete",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": 0,
+            "charred": 1,
+            "arcActive": true,
+            "arcs": 2,
+            "arcSegments": 5,
+            "arcCoreRadius": 0.010700000000000001,
+            "arcHaloRadius": 0.038520000000000006,
+            "arcPulse": 0.9,
+            "steam": 0,
+            "food": "cold",
+            "ingredientsVisible": true,
+            "wreck": true,
+            "warming": true,
+            "position": [
+              3.45,
+              0.5549999999999999,
+              1.43
+            ],
+            "counterVisible": false,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "極速保溫"
+          },
+          "name": "fin-2.6"
+        },
+        {
+          "phase": "complete",
+          "node": null,
+          "beat": "final-dragon",
+          "tray": "hero",
+          "helper": {
+            "born": false,
+            "visible": true,
+            "mode": "helping",
+            "position": [
+              -1.25,
+              0.33,
+              3.9
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "charred",
+            "phase": "complete",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": 0,
+            "charred": 1,
+            "arcActive": false,
+            "arcs": 0,
+            "arcSegments": 5,
+            "arcCoreRadius": 0,
+            "arcHaloRadius": 0,
+            "arcPulse": 0,
+            "steam": 0,
+            "food": "cold",
+            "ingredientsVisible": true,
+            "wreck": true,
+            "warming": true,
+            "position": [
+              3.45,
+              0.5549999999999999,
+              1.43
+            ],
+            "counterVisible": false,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "極速保溫"
+          },
+          "name": "concert-wide"
+        },
+        {
+          "phase": "complete",
+          "node": null,
+          "beat": "final-dragon",
+          "tray": "hero",
+          "helper": {
+            "born": false,
+            "visible": true,
+            "mode": "helping",
+            "position": [
+              -1.25,
+              0.33,
+              3.9
+            ],
+            "shape": "crawling-lump"
+          },
+          "appliance": {
+            "mode": "charred",
+            "phase": "complete",
+            "quality": "low",
+            "reducedMotion": false,
+            "doorAngle": 0,
+            "charred": 1,
+            "arcActive": false,
+            "arcs": 0,
+            "arcSegments": 5,
+            "arcCoreRadius": 0,
+            "arcHaloRadius": 0,
+            "arcPulse": 0,
+            "steam": 0,
+            "food": "cold",
+            "ingredientsVisible": true,
+            "wreck": true,
+            "warming": true,
+            "position": [
+              3.45,
+              0.5549999999999999,
+              1.43
+            ],
+            "counterVisible": false,
+            "batches": {
+              "meshesBefore": 76,
+              "meshesAfter": 50,
+              "sharedDraws": 2
+            },
+            "display": "極速保溫"
+          },
+          "name": "concert-followthrough"
+        }
+      ],
+      "errors": []
+    },
+    "final_cuff": {
+      "frames": [
+        {
+          "phase": "meal-spawn",
+          "age": 6.809999999999989,
+          "camera": {
+            "position": [
+              3.4976806594073864,
+              1.9354171834093938,
+              -0.45596868342218333
+            ],
+            "target": [
+              2.117680659407386,
+              1.815417183409394,
+              0.6640313165778168
+            ],
+            "fov": 36,
+            "photoOrigin": [
+              0,
+              0,
+              0
+            ]
+          },
+          "actor": {
+            "phase": 7.609999999999989,
+            "action": "look-at-display",
+            "footDrift": 0.0025011572658210084,
+            "moving": false,
+            "speed": 0,
+            "distance": 0,
+            "clothJoints": 58,
+            "dinner": "A",
+            "gesture": "refuse",
+            "companion": {
+              "mode": "idle",
+              "distance": 0.7624689804724221,
+              "speed": 0,
+              "walk": 1.2837237317860856e-24,
+              "phase": 1.2875151519693109,
+              "heading": 1.5705473939780412,
+              "lookYaw": -0.0002481231544473328,
+              "lookPitch": -0.095,
+              "blocked": false,
+              "position": [
+                -2.0124688862828624,
+                0.325,
+                3.249621010255929
+              ],
+              "target": [
+                -2.0155607661869084,
+                0.325,
+                3.211054996786309
+              ],
+              "trailPoints": 1,
+              "glance": false
+            },
+            "arms": {
+              "shoulderL": 0,
+              "shoulderR": 0,
+              "elbowL": 0,
+              "elbowR": 0,
+              "wristL": 0,
+              "wristR": 0
+            },
+            "cinematic": {
+              "phase": "",
+              "lift": 0,
+              "forward": 0,
+              "heading": 0.08,
+              "airborne": false,
+              "dragonProjectile": true,
+              "recoil": 0
+            },
+            "smile": 0,
+            "smileJointCount": 12,
+            "companionAction": "normal",
+            "gait": {
+              "leftSwing": null,
+              "rightSwing": null,
+              "acceleration": 0,
+              "turn": 0
+            },
+            "walkPhase": 0,
+            "walkBlend": 0,
+            "heading": 0.08,
+            "companionExpression": "normal",
+            "dragonHeading": -2.25,
+            "mealOwner": "helper",
+            "mealSupport": [
+              -1.25,
+              0.79,
+              3.9
+            ]
+          },
+          "hand": [
+            [
+              2.0610140684501355,
+              1.2195553698034176,
+              0.5041878542224951
+            ],
+            [
+              2.134746157556859,
+              1.2223469581992572,
+              0.9770840742625025
+            ]
+          ],
+          "head": [
+            2.047680659407386,
+            1.795417183409394,
+            0.7440313165778167
+          ],
+          "ingredients": false,
+          "name": "refusal-start"
+        },
+        {
+          "phase": "meal-spawn",
+          "age": 7.109999999999988,
+          "camera": {
+            "position": [
+              3.4624766221012973,
+              1.9347505228274533,
+              -0.4714589004853563
+            ],
+            "target": [
+              2.0824766221012974,
+              1.8147505228274534,
+              0.6485410995146438
+            ],
+            "fov": 36,
+            "photoOrigin": [
+              0,
+              0,
+              0
+            ]
+          },
+          "actor": {
+            "phase": 7.909999999999988,
+            "action": "refuse",
+            "footDrift": 0.0025011572658210084,
+            "moving": false,
+            "speed": 0,
+            "distance": 0,
+            "clothJoints": 58,
+            "dinner": "A",
+            "gesture": "refuse",
+            "companion": {
+              "mode": "idle",
+              "distance": 0.7624689804724221,
+              "speed": 0,
+              "walk": 8.62733116108689e-26,
+              "phase": 1.2875151519693109,
+              "heading": 1.570457481131939,
+              "lookYaw": -0.00015821030834506367,
+              "lookPitch": -0.095,
+              "blocked": false,
+              "position": [
+                -2.0124688862828624,
+                0.325,
+                3.249621010255929
+              ],
+              "target": [
+                -2.0155607661869084,
+                0.325,
+                3.211054996786309
+              ],
+              "trailPoints": 1,
+              "glance": false
+            },
+            "arms": {
+              "shoulderL": 0,
+              "shoulderR": 0,
+              "elbowL": 0,
+              "elbowR": 0,
+              "wristL": 0,
+              "wristR": 0
+            },
+            "cinematic": {
+              "phase": "",
+              "lift": 0,
+              "forward": 0,
+              "heading": 0.08,
+              "airborne": false,
+              "dragonProjectile": true,
+              "recoil": 0
+            },
+            "smile": 0,
+            "smileJointCount": 12,
+            "companionAction": "normal",
+            "gait": {
+              "leftSwing": null,
+              "rightSwing": null,
+              "acceleration": 0,
+              "turn": 0
+            },
+            "walkPhase": 0,
+            "walkBlend": 0,
+            "heading": 0.08,
+            "companionExpression": "normal",
+            "dragonHeading": -2.25,
+            "mealOwner": "helper",
+            "mealSupport": [
+              -1.25,
+              0.79,
+              3.9
+            ]
+          },
+          "hand": [
+            [
+              2.080576670424692,
+              1.3716229338419057,
+              0.47530194768997086
+            ],
+            [
+              2.1081910890306927,
+              1.2219520451756993,
+              0.9131377749371598
+            ]
+          ],
+          "head": [
+            1.958691016870536,
+            1.793703562645263,
+            0.7097455203173454
+          ],
+          "ingredients": false,
+          "name": "refusal-middle"
+        },
+        {
+          "phase": "meal-spawn",
+          "age": 7.459999999999991,
+          "camera": {
+            "position": [
+              3.3824313082305295,
+              1.9330165454655752,
+              -0.4816638943270358
+            ],
+            "target": [
+              2.002431308230529,
+              1.8130165454655753,
+              0.6383361056729643
+            ],
+            "fov": 36,
+            "photoOrigin": [
+              0,
+              0,
+              0
+            ]
+          },
+          "actor": {
+            "phase": 8.259999999999991,
+            "action": "refuse",
+            "footDrift": 0.0025011572658210084,
+            "moving": false,
+            "speed": 0,
+            "distance": 0,
+            "clothJoints": 58,
+            "dinner": "A",
+            "gesture": "refuse",
+            "companion": {
+              "mode": "idle",
+              "distance": 0.7624689804724221,
+              "speed": 0,
+              "walk": 3.696994894388647e-27,
+              "phase": 1.2875151519693109,
+              "heading": 1.5703928609801936,
+              "lookYaw": -9.359015659970993e-05,
+              "lookPitch": -0.095,
+              "blocked": false,
+              "position": [
+                -2.0124688862828624,
+                0.325,
+                3.249621010255929
+              ],
+              "target": [
+                -2.0155607661869084,
+                0.325,
+                3.211054996786309
+              ],
+              "trailPoints": 1,
+              "glance": false
+            },
+            "arms": {
+              "shoulderL": 0,
+              "shoulderR": 0,
+              "elbowL": 0,
+              "elbowR": 0,
+              "wristL": 0,
+              "wristR": 0
+            },
+            "cinematic": {
+              "phase": "",
+              "lift": 0,
+              "forward": 0,
+              "heading": 0.08,
+              "airborne": false,
+              "dragonProjectile": true,
+              "recoil": 0
+            },
+            "smile": 0,
+            "smileJointCount": 12,
+            "companionAction": "normal",
+            "gait": {
+              "leftSwing": null,
+              "rightSwing": null,
+              "acceleration": 0,
+              "turn": 0
+            },
+            "walkPhase": 0,
+            "walkBlend": 0,
+            "heading": 0.08,
+            "companionExpression": "normal",
+            "dragonHeading": -2.25,
+            "mealOwner": "helper",
+            "mealSupport": [
+              -1.25,
+              0.79,
+              3.9
+            ]
+          },
+          "hand": [
+            [
+              2.0866245249834323,
+              1.5499999807438154,
+              0.4165650033481361
+            ],
+            [
+              2.0682073065889655,
+              1.2214017898487912,
+              0.869498609181243
+            ]
+          ],
+          "head": [
+            1.8583483768701659,
+            1.7912617104444253,
+            0.7208462878321745
+          ],
+          "ingredients": false,
+          "name": "refusal-final-390"
+        },
+        {
+          "phase": "meal-spawn",
+          "age": 7.459999999999991,
+          "camera": {
+            "position": [
+              3.3824313082305295,
+              1.9330165454655752,
+              -0.4816638943270358
+            ],
+            "target": [
+              2.002431308230529,
+              1.8130165454655753,
+              0.6383361056729643
+            ],
+            "fov": 36,
+            "photoOrigin": [
+              0,
+              0,
+              0
+            ]
+          },
+          "actor": {
+            "phase": 8.259999999999991,
+            "action": "refuse",
+            "footDrift": 0.0025011572658210084,
+            "moving": false,
+            "speed": 0,
+            "distance": 0,
+            "clothJoints": 58,
+            "dinner": "A",
+            "gesture": "refuse",
+            "companion": {
+              "mode": "idle",
+              "distance": 0.7624689804724221,
+              "speed": 0,
+              "walk": 3.696994894388647e-27,
+              "phase": 1.2875151519693109,
+              "heading": 1.5703928609801936,
+              "lookYaw": -9.359015659970993e-05,
+              "lookPitch": -0.095,
+              "blocked": false,
+              "position": [
+                -2.0124688862828624,
+                0.325,
+                3.249621010255929
+              ],
+              "target": [
+                -2.0155607661869084,
+                0.325,
+                3.211054996786309
+              ],
+              "trailPoints": 1,
+              "glance": false
+            },
+            "arms": {
+              "shoulderL": 0,
+              "shoulderR": 0,
+              "elbowL": 0,
+              "elbowR": 0,
+              "wristL": 0,
+              "wristR": 0
+            },
+            "cinematic": {
+              "phase": "",
+              "lift": 0,
+              "forward": 0,
+              "heading": 0.08,
+              "airborne": false,
+              "dragonProjectile": true,
+              "recoil": 0
+            },
+            "smile": 0,
+            "smileJointCount": 12,
+            "companionAction": "normal",
+            "gait": {
+              "leftSwing": null,
+              "rightSwing": null,
+              "acceleration": 0,
+              "turn": 0
+            },
+            "walkPhase": 0,
+            "walkBlend": 0,
+            "heading": 0.08,
+            "companionExpression": "normal",
+            "dragonHeading": -2.25,
+            "mealOwner": "helper",
+            "mealSupport": [
+              -1.25,
+              0.79,
+              3.9
+            ]
+          },
+          "hand": [
+            [
+              2.0866245249834323,
+              1.5499999807438154,
+              0.4165650033481361
+            ],
+            [
+              2.0682073065889655,
+              1.2214017898487912,
+              0.869498609181243
+            ]
+          ],
+          "head": [
+            1.8583483768701659,
+            1.7912617104444253,
+            0.7208462878321745
+          ],
+          "ingredients": false,
+          "name": "refusal-final-844"
+        },
+        {
+          "phase": "meal-spawn",
+          "age": 7.459999999999991,
+          "camera": {
+            "position": [
+              3.3824313082305295,
+              1.9330165454655752,
+              -0.4816638943270358
+            ],
+            "target": [
+              2.002431308230529,
+              1.8130165454655753,
+              0.6383361056729643
+            ],
+            "fov": 36,
+            "photoOrigin": [
+              0,
+              0,
+              0
+            ]
+          },
+          "actor": {
+            "phase": 8.259999999999991,
+            "action": "refuse",
+            "footDrift": 0.0025011572658210084,
+            "moving": false,
+            "speed": 0,
+            "distance": 0,
+            "clothJoints": 58,
+            "dinner": "A",
+            "gesture": "refuse",
+            "companion": {
+              "mode": "idle",
+              "distance": 0.7624689804724221,
+              "speed": 0,
+              "walk": 3.696994894388647e-27,
+              "phase": 1.2875151519693109,
+              "heading": 1.5703928609801936,
+              "lookYaw": -9.359015659970993e-05,
+              "lookPitch": -0.095,
+              "blocked": false,
+              "position": [
+                -2.0124688862828624,
+                0.325,
+                3.249621010255929
+              ],
+              "target": [
+                -2.0155607661869084,
+                0.325,
+                3.211054996786309
+              ],
+              "trailPoints": 1,
+              "glance": false
+            },
+            "arms": {
+              "shoulderL": 0,
+              "shoulderR": 0,
+              "elbowL": 0,
+              "elbowR": 0,
+              "wristL": 0,
+              "wristR": 0
+            },
+            "cinematic": {
+              "phase": "",
+              "lift": 0,
+              "forward": 0,
+              "heading": 0.08,
+              "airborne": false,
+              "dragonProjectile": true,
+              "recoil": 0
+            },
+            "smile": 0,
+            "smileJointCount": 12,
+            "companionAction": "normal",
+            "gait": {
+              "leftSwing": null,
+              "rightSwing": null,
+              "acceleration": 0,
+              "turn": 0
+            },
+            "walkPhase": 0,
+            "walkBlend": 0,
+            "heading": 0.08,
+            "companionExpression": "normal",
+            "dragonHeading": -2.25,
+            "mealOwner": "helper",
+            "mealSupport": [
+              -1.25,
+              0.79,
+              3.9
+            ]
+          },
+          "hand": [
+            [
+              2.0866245249834323,
+              1.5499999807438154,
+              0.4165650033481361
+            ],
+            [
+              2.0682073065889655,
+              1.2214017898487912,
+              0.869498609181243
+            ]
+          ],
+          "head": [
+            1.8583483768701659,
+            1.7912617104444253,
+            0.7208462878321745
+          ],
+          "ingredients": false,
+          "name": "refusal-final-1366"
+        }
+      ],
+      "errors": []
+    },
+    "long_shots": {
+      "frames": [
+        {
+          "phase": "briefing",
+          "age": 16.699999999999676,
+          "camera": {
+            "position": [
+              22.219849633076688,
+              8.000000000000004,
+              34
+            ],
+            "target": [
+              0,
+              3.1,
+              0.8000000000000003
+            ],
+            "fov": 28,
+            "photoOrigin": [
+              0,
+              0,
+              0
+            ]
+          },
+          "actor": {
+            "phase": 39.89999999999987,
+            "action": "point",
+            "footDrift": 0.0025011572658210084,
+            "moving": false,
+            "speed": 0,
+            "distance": 0,
+            "clothJoints": 58,
+            "dinner": "A",
+            "gesture": "point",
+            "companion": {
+              "mode": "idle",
+              "distance": 0.7624942281679084,
+              "speed": 0,
+              "walk": 8.238276672723013e-151,
+              "phase": 1.2940921772864744,
+              "heading": -4.713295452612252,
+              "lookYaw": -5.573999878030222e-15,
+              "lookPitch": -0.095,
+              "blocked": false,
+              "position": [
+                -2.0124939149002645,
+                0.325,
+                3.249308820253141
+              ],
+              "target": [
+                -2.0155607661869084,
+                0.325,
+                3.211054996786309
+              ],
+              "trailPoints": 1,
+              "glance": false
+            },
+            "arms": {
+              "shoulderL": 0,
+              "shoulderR": 0,
+              "elbowL": 0,
+              "elbowR": 0,
+              "wristL": 0,
+              "wristR": 0
+            },
+            "cinematic": {
+              "phase": "",
+              "lift": 0,
+              "forward": 0,
+              "heading": 0.08,
+              "airborne": false,
+              "dragonProjectile": true,
+              "recoil": 0
+            },
+            "smile": 0,
+            "smileJointCount": 12,
+            "companionAction": "normal",
+            "gait": {
+              "leftSwing": null,
+              "rightSwing": null,
+              "acceleration": 0,
+              "turn": 0
+            },
+            "walkPhase": 0,
+            "walkBlend": 0,
+            "heading": 0.08,
+            "companionExpression": "normal",
+            "dragonHeading": 1.7771775783501806,
+            "mealOwner": "hero",
+            "mealSupport": [
+              -1.1980554489200377,
+              1.4200000000000002,
+              3.8979211090967025
+            ],
+            "handSupportErrors": [
+              4.983581351360527e-08,
+              3.6345097630598665e-08
+            ]
+          },
+          "hand": null,
+          "head": null,
+          "ingredients": true,
+          "name": "house-long-390"
+        },
+        {
+          "phase": "briefing",
+          "age": 16.749999999999673,
+          "camera": {
+            "position": [
+              22.235874616122043,
+              7.999999999999998,
+              34
+            ],
+            "target": [
+              0,
+              3.1,
+              0.8000000000000003
+            ],
+            "fov": 28,
+            "photoOrigin": [
+              0,
+              0,
+              0
+            ]
+          },
+          "actor": {
+            "phase": 39.94999999999987,
+            "action": "point",
+            "footDrift": 0.0025011572658210084,
+            "moving": false,
+            "speed": 0,
+            "distance": 0,
+            "clothJoints": 58,
+            "dinner": "A",
+            "gesture": "point",
+            "companion": {
+              "mode": "idle",
+              "distance": 0.7624942281679084,
+              "speed": 0,
+              "walk": 5.252957127377148e-151,
+              "phase": 1.2940921772864744,
+              "heading": -4.713295452612252,
+              "lookYaw": -5.573999878030222e-15,
+              "lookPitch": -0.095,
+              "blocked": false,
+              "position": [
+                -2.0124939149002645,
+                0.325,
+                3.249308820253141
+              ],
+              "target": [
+                -2.0155607661869084,
+                0.325,
+                3.211054996786309
+              ],
+              "trailPoints": 1,
+              "glance": false
+            },
+            "arms": {
+              "shoulderL": 0,
+              "shoulderR": 0,
+              "elbowL": 0,
+              "elbowR": 0,
+              "wristL": 0,
+              "wristR": 0
+            },
+            "cinematic": {
+              "phase": "",
+              "lift": 0,
+              "forward": 0,
+              "heading": 0.08,
+              "airborne": false,
+              "dragonProjectile": true,
+              "recoil": 0
+            },
+            "smile": 0,
+            "smileJointCount": 12,
+            "companionAction": "normal",
+            "gait": {
+              "leftSwing": null,
+              "rightSwing": null,
+              "acceleration": 0,
+              "turn": 0
+            },
+            "walkPhase": 0,
+            "walkBlend": 0,
+            "heading": 0.08,
+            "companionExpression": "normal",
+            "dragonHeading": 1.7809940445026553,
+            "mealOwner": "hero",
+            "mealSupport": [
+              -1.1980554489200377,
+              1.4200000000000002,
+              3.8979211090967025
+            ],
+            "handSupportErrors": [
+              4.9843077863132165e-08,
+              3.6326453372176026e-08
+            ]
+          },
+          "hand": null,
+          "head": null,
+          "ingredients": true,
+          "name": "house-long-1366"
+        },
+        {
+          "phase": "rewind",
+          "age": 1.9999999999998863,
+          "camera": {
+            "position": [
+              22.000000000000004,
+              7.9999999999999964,
+              34.00000000000001
+            ],
+            "target": [
+              0,
+              3.1,
+              0.8
+            ],
+            "fov": 28,
+            "photoOrigin": [
+              0,
+              0,
+              0
+            ]
+          },
+          "actor": {
+            "phase": 41.949999999999754,
+            "action": "summoning",
+            "footDrift": 0,
+            "moving": false,
+            "speed": 0,
+            "distance": 0,
+            "clothJoints": 58,
+            "dinner": "A",
+            "gesture": "point",
+            "companion": {
+              "mode": "idle",
+              "distance": 0.7624942281679084,
+              "speed": 0,
+              "walk": 8.448194046771965e-06,
+              "phase": 1.2940921772864744,
+              "heading": -4.36974385219955,
+              "lookYaw": -0.34355160041270794,
+              "lookPitch": -0.095,
+              "blocked": false,
+              "position": [
+                -2.0124939149002645,
+                0.325,
+                3.249308820253141
+              ],
+              "target": [
+                -2.0155607661869084,
+                0.325,
+                3.211054996786309
+              ],
+              "trailPoints": 1,
+              "glance": false
+            },
+            "arms": {
+              "shoulderL": 0,
+              "shoulderR": 0,
+              "elbowL": 0,
+              "elbowR": 0,
+              "wristL": 0,
+              "wristR": 0
+            },
+            "cinematic": {
+              "phase": "charge",
+              "lift": 3.665689986282623,
+              "forward": 10.99706995884787,
+              "heading": 2.911592653589793,
+              "airborne": true,
+              "dragonProjectile": false,
+              "recoil": 0
+            },
+            "smile": 0,
+            "smileJointCount": 12,
+            "companionAction": "normal",
+            "gait": {
+              "leftSwing": null,
+              "rightSwing": null,
+              "acceleration": 0,
+              "turn": 0
+            },
+            "walkPhase": 0,
+            "walkBlend": 0,
+            "heading": 0.08,
+            "companionExpression": "normal",
+            "dragonHeading": 0,
+            "mealOwner": "helper",
+            "mealSupport": [
+              -1.25,
+              0.79,
+              3.9
+            ],
+            "handSupportErrors": [
+              4.9843077863132165e-08,
+              3.6326453372176026e-08
+            ],
+            "castBeat": "hover"
+          },
+          "hand": [
+            [
+              1.9713639997731693,
+              1.3583993812417088,
+              0.3462713779514035
+            ],
+            [
+              2.3451830842169388,
+              1.3584010018393409,
+              1.1630929075951066
+            ]
+          ],
+          "head": [
+            2.1766544988362786,
+            1.7969673003619029,
+            0.7462689555612476
+          ],
+          "ingredients": true,
+          "name": "rewind-exterior"
+        }
+      ],
+      "errors": []
+    },
+    "photo_recovery": "Passed invalid/valid shutter, native optical portrait, modal recovery and BFCache"
+  },
+  "runtime": "Chromium / SwiftShader",
+  "not_verified": [
+    "Physical iPhone Safari",
+    "Physical GPU frame-time improvement"
+  ],
+  "independent_review": {
+    "result": "Passed inspected samples; major defects resolved",
+    "record": "docs/RAIN-SECOND-WAVE-REVIEW.md",
+    "not_verified": [
+      "Physical iPhone Safari",
+      "GPU performance",
+      "Audio sync",
+      "Every frame and arbitrary free-camera angles"
+    ]
+  }
+}

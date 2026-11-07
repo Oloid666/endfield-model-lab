@@ -1,3 +1,4 @@
+import {FAKE_END_DURATION} from './ending-title.js';
 import {buttonStyle} from './button-style.js';
 import {createFeedbackForm} from './feedback.js';
 import {BonusProgress,LESSONS,CLASS_MOTTO,LESSON_NOTES,ClassCourse,lessonCardCount} from './bonus-data.js';
@@ -29,7 +30,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
  let freeGuide='house';
  let flowStage=saved?.stage||'claims',endingAge=0,whispered=false,answerAt=null,lastEpilogueClock=null,epilogueStep=0,thanksStep=0,skippedRating=false,rebuilt=false;
  const epilogue=E('section','epilogue-prompt');epilogue.hidden=true;epilogue.setAttribute('aria-live','polite');const epilogueText=E('p'),epilogueGo=E('button','','繼續');epilogueGo.type='button';epilogue.append(epilogueText,epilogueGo);mount.append(epilogue);
- epilogueGo.addEventListener('click',()=>{if(externallyPaused()||mission.state.phaseElapsed<1.55)return;if(epilogueStep<2){epilogueStep++;updateEpilogue();}else if(rebuilt)open(true);else world.streetShow.start({initial:true,done:()=>{rebuilt=true;epilogueStep=3;updateEpilogue();}});},{signal:events.signal});
+ epilogueGo.addEventListener('click',()=>{if(externallyPaused()||mission.state.phaseElapsed<FAKE_END_DURATION+.35)return;if(epilogueStep<2){epilogueStep++;updateEpilogue();}else if(rebuilt)open(true);else world.streetShow.start({initial:true,done:()=>{rebuilt=true;epilogueStep=3;updateEpilogue();}});},{signal:events.signal});
  const entry=E('button','bonus-entry','等等，二樓還不能拆');if(saved&&flowStage!=='done'){progress.data.unlocked=true;entry.textContent='繼續未完成的任務';}entry.type='button';entry.hidden=true;entry.dataset.action='open';
  const toast=E('p','bonus-toast');toast.hidden=true;toast.setAttribute('role','status');
  const root=E('section','bonus-ui');root.hidden=true;root.setAttribute('aria-label','等等，二樓還不能拆');
@@ -414,7 +415,7 @@ export function createBonus({mount,world,mission,exploration,playEffect=()=>{},r
    const s=mission.state;mission.machine.epiloguePending=flowStage!=='done';
    if(!['ready','complete'].includes(s.phase))progress.taps=0;
 
-   epilogue.hidden=active||s.phase!=='complete'||flowStage==='done'||world.streetShow?.active||s.phaseElapsed<1.2;
+   epilogue.hidden=active||s.phase!=='complete'||flowStage==='done'||world.streetShow?.active||s.phaseElapsed<FAKE_END_DURATION;
    mount.classList.toggle('epilogue-pending',s.phase==='complete'&&flowStage!=='done'&&!rebuilt);
    if(!epilogue.hidden)updateEpilogue();
    updateEntry();

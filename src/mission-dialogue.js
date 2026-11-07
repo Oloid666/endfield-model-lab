@@ -47,7 +47,7 @@ export const sequences={
     ['dragon','我剛剛簽的是便當，不是一萬噸息壤！','shake'],
     ['zhuang','同一張補給簽收單。你只看了上面。','hold'],
     ['zhuang','送到711。你隨貨簽收。','nod'],
-    ['dragon','餐具我拿了，供詞也要我寫？','shake'],
+    ['dragon','飯還沒吃，鍋倒是先背上了？','shake','doubt','backfire-complaint'],
     ['zhuang','都是補給。','nod'],
     ['dragon','一個用餐袋，一個要寫供詞！','player','aside'],
     ['zhuang','單據收好。晚點有用。','phone'],

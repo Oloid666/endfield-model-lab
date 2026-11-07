@@ -6,6 +6,8 @@
 
 **[開啟正式遊戲](https://endfield10000t.aura87.online/)** · [GitHub Pages 備用](https://oloid666.github.io/endfield-model-lab/)
 
+第二輪16項整合修改與驗證見 [人物演出與後半運鏡](docs/RAIN-SECOND-WAVE.md)。
+
 最新一輪：托盤交接、BOOK、三輪加熱、塞西拒絕梗與照片／背景恢復，見 [晚餐演出與操作修正](docs/RAIN-DINNER-REVISION.md)。
 
 全局按鈕材質與攝影引導見 [按鈕精修紀錄](docs/BUTTON-MATERIALS.md)。

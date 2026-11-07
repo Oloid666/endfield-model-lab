@@ -64,7 +64,7 @@ export class VcrTablet{
  get state(){
   const [title,base,buttons]=TABLET_PAGES[this.stage],age=Math.max(0,this.now-this.at);
   const temperature=this.stage==='cooling'?Math.round(4-12*Math.min(1,age/2)):this.stage==='success'?-8:this.stage==='defrost'?Math.round(-8+58*Math.max(0,Math.min(1,(age-.6)/3))):this.hot?50:4;
-  const busy=this.now<this.until||this.stage==='search'&&age<1.2||this.stage==='backdoor'&&age<1.5;
+  const busy=this.now<this.until||this.stage==='search'&&age<1.9||this.stage==='backdoor'&&age<1.5;
   return {stage:this.stage,title,lines:this.stage==='scan-grid'?[...(age>=1.4?['1號天師樁：遠端維修已封鎖']:['1號天師樁：檢查中…']),...(age>=2.8?['2號天師樁：未發現可用入口']:age>=1.4?['2號天師樁：檢查中…']:[]),...(age>=4.1?['3號天師樁：偵測到異常遠端連線']:age>=2.8?['3號天師樁：檢查中…']:[])]:this.stage==='cooling'?['指令已送出',`實際溫度：${signedTemperature(temperature)}`]:base,buttons:this.talks.length?[]:buttons,dialogue:this.talks[0]||null,dialogueAge:Math.max(0,this.now-this.talkAt),hot:this.hot,powered:this.powered,censored:this.censored,censorAt:this.censorAt,temperature,note:this.note,age,busy,revision:this.revision+(this.stage==='scan-grid'?Math.floor(age/1.4):0),wireBeat:this.stage==='cable'?(age<.4?'control':age<1.6?'source':age<4.9?'route':'sink'):null};
  }
 }

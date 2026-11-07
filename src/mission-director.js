@@ -153,7 +153,7 @@ export class MissionDirector{
     this.state=state;const actor=this.world.actors;if(!state||!actor)return;
     const phase=state.phase,e=state.phaseElapsed;this.world.controls.enabled=!this.world.upstairsInvitation&&!state.presentationLocked&&!['photo-flight','photo'].includes(phase)&&!lockedPhases.has(phase);
     actor.setTray?.({owner:state.trayOwner||'hero',phase,age:e});
-    actor.setSceneAction?.({mealReceive:phase==='walk-out'&&state.shopping?.handoff?Math.sin(Math.PI*smooth(state.shopping.handoffElapsed/1.2)):0,playful:phase==='ready',singing:phase==='tour'&&e>=14&&e<30,heading:['meal-handoff','meal-reclaim'].includes(phase)?0:['ready','intro','photo-talk','cargo'].includes(phase)?-.65:['photo-check','photo-review','photo-sending'].includes(phase)?-.35:['photo-flight','photo'].includes(phase)?0:undefined,handover:phase==='photo-talk'&&state.node?.event==='camera-handover',photoLook:['photo-check','photo-review','photo-sending','cargo'].includes(phase),externalDevice:phase.startsWith('photo')||phase==='cargo',mealVisible:!['ready','intro','purchase'].includes(phase)&&!(phase==='walk-out'&&(!state.shopping?.handoff||state.shopping.handoffElapsed<1.1))});
+    actor.setSceneAction?.({gazeTarget:!state.vcr&&state.node&&!['photo','photo-flight'].includes(phase)?actor.dragonPosition:null,mealReceive:phase==='walk-out'&&state.shopping?.handoff?Math.sin(Math.PI*smooth(state.shopping.handoffElapsed/1.2)):0,playful:phase==='ready',singing:phase==='tour'&&e>=14&&e<30,heading:['meal-handoff','meal-reclaim'].includes(phase)?0:['ready','intro','photo-talk','cargo'].includes(phase)?-.65:['photo-check','photo-review','photo-sending'].includes(phase)?-.35:['photo-flight','photo'].includes(phase)?0:undefined,handover:phase==='photo-talk'&&state.node?.event==='camera-handover',photoLook:['photo-check','photo-review','photo-sending','cargo'].includes(phase),externalDevice:phase.startsWith('photo')||phase==='cargo',mealVisible:!['ready','intro','purchase'].includes(phase)&&!(phase==='walk-out'&&(!state.shopping?.handoff||state.shopping.handoffElapsed<1.1))});
     if(state.postgame){
       actor.root.visible=this.world.charactersEnabled;actor.setCinematic(null);actor.setSoot(false);
       const roam=this.dragonRoam.update(state.clock,actor.heroPosition,actor.dragonPosition,{floorPlan:this.world.store.floorPlan,intact:this.world.streetShow?.state.mode!=='collapsed',doors:this.world.store.doors,meal:this.world.remnant?.state.visible?this.world.remnant.state.position:null});this.roamState=roam;
@@ -378,7 +378,7 @@ export class MissionDirector{
       if(s.phase==='flashback'&&s.nodeId==='flashback_6'){position=[2.85,2.1,-.25];target=[2.05,1.25,.65];fov=portrait?49:40;beat='xaihi-phone-detail';}
       if(s.phase==='heat'&&s.heat?.status==='burnt'){position=[3.5,2.25,-.8];target=[3.45,1.6,1.25];fov=portrait?78:65;beat='cctv-food-burst';}
       if(s.tablet){const stage=s.tablet.stage,frame=w.xaihi?.tabletFrame(w.camera.aspect);if(frame){position=frame.position;target=frame.center;fov=frame.fov;beat='tablet-read';this.cameraRoll=frame.roll||0;}
-       if(stage==='search'&&e<1.2&&frame&&!this.reducedMotion){const p=smooth(e/1.2);position=[3.9+(frame.position[0]-3.9)*p,2.5+(frame.position[1]-2.5)*p,-.6+(frame.position[2]+.6)*p];target=frame.center;beat='tablet-approach';this.cameraRoll=(frame.roll||0)*p;}
+       if(stage==='search'&&e<1.9&&frame){const p=this.reducedMotion?1:smooth((e-.55)/1.35);position=[3.9+(frame.position[0]-3.9)*p,2.5+(frame.position[1]-2.5)*p,-.6+(frame.position[2]+.6)*p];target=frame.center;beat=e<.55?'tablet-hold-context':'tablet-approach';this.cameraRoll=(frame.roll||0)*p;fov=62+(frame.fov-62)*p;}
        if(stage!=='search'&&['backdoor','rapi-request','rapi-answer','rapi-mask','cable','walk-fridge','walk-counter','cooling','success','defrost','hot','meal-label'].includes(stage))this.cameraRoll=0;
        if(stage==='backdoor'||stage==='rapi-mask'){position=[7.7,2.05,-10.2];target=[7.4,1.85,-13.189];fov=portrait?58:40;beat='pylon-nikke-screen';}
        if(['rapi-request','rapi-answer'].includes(stage)){position=[7.57,2.10,-11.8];target=[7.52,2.11,-13.189];fov=portrait?28:22;beat='rapi-eye-bar';}
@@ -392,7 +392,8 @@ export class MissionDirector{
       const point=sign.position,fall=sign.elapsed/sign.duration;
       position=[point[0]+(fall<.62?3.9:2.6),Math.max(1.35,point[1]+1.5),point[2]+6.2];target=[point[0],Math.max(.42,point[1]),point[2]];fov=portrait?44:38;beat='falling-sign';
     }else if(s.phase==='tour'){
-      if(e<4){position=[3.5,4.8,7.5];target=this.end;fov=portrait?48:40;beat='tour-server-hole';}
+      if(e<2.5){position=[this.wall[0]+2.2,this.wall[1]+1.8,this.wall[2]+6.4];target=[this.wall[0],this.wall[1]+.35,this.wall[2]];fov=portrait?52:44;beat='tour-server-hole';}
+      else if(e<4){position=[this.wall[0]+.75,this.wall[1]+.65,this.wall[2]+3.4];target=[this.wall[0],this.wall[1]+.35,this.wall[2]];fov=portrait?42:34;beat='tour-stuck-reaction';}
       else if(e<8){position=[feet[0]+.35,feet[1]+1.87,feet[2]+3.15];target=[feet[0],feet[1]+1.66,feet[2]];fov=32;beat='tour-smile';}
       else if(e<10){const a=.4+(e-8)*.25;position=[Math.cos(a)*12,3,Math.sin(a)*13+2];target=[.4,.9,.65];fov=51;beat='tour-ruins';}
       else if(e<12){position=[3,2.4,8];target=sign?.position||[0,.4,2.5];fov=43;beat='tour-ground-sign';}

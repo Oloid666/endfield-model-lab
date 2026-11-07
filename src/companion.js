@@ -55,10 +55,10 @@ export function buildDragon(r) {
     const action=s.action?.kind||'',effort=T.MathUtils.clamp(Number(s.action?.amount)||0,0,1),shocked=action==='shock'||!!s.projectile;
     state.mood=shocked?'shock':action==='lever'?'doubt':blink>.3?'blink':(s.nod||0)>.15?'happy':'normal';state.action=action;
     material.map=maps[action==='sigh'?1:shocked?3:action==='lever'?4:blink>.3?1:(s.nod||0)>.15?2:0];
-    const gesture=s.gestureAmount||0,happy=s.gesture==='happy'?gesture:0,wave=s.gesture==='wave'?gesture:0,point=s.gesture==='point'?gesture:0,roll=s.gesture==='roll'?gesture:0,nod=s.gesture==='nod'?gesture:0;
+    const gesture=s.gestureAmount||0,gestureAge=Math.max(0,s.gestureAge||0),anticipation=Math.max(0,1-gestureAge/.18)*gesture,settle=Math.max(0,Math.min(1,gestureAge/.45))*Math.max(0,1-(gestureAge-1)/.7),happy=s.gesture==='happy'?gesture:0,wave=s.gesture==='wave'?gesture:0,point=s.gesture==='point'?gesture:0,roll=s.gesture==='roll'?gesture:0,nod=s.gesture==='nod'?gesture:0;
     const curiosity=Math.max(s.curious||0,s.glance?.35:0),startle=Math.max(s.startle||0,s.gesture==='rain'?gesture*.7:0),attention=s.dragon||0,walk=s.walk||0;
     const catchUp=s.followerMode==='catch-up'?1:0,hesitate=s.followerMode==='hesitate'?1:0,phase=s.walkPhase||0;
-    body.rotation.set(curiosity*.11-startle*.12+walk*.035+nod*Math.sin(t*7)*.06+(s.lookPitch||0),attention*.3+(s.rain||0)*.15+(s.lookYaw||0)*.72,curiosity*-.05+startle*.11+walk*Math.sin(phase)*.035+happy*Math.sin(gesture*Math.PI)*.28+roll*Math.PI);
+    body.rotation.set(curiosity*.11-startle*.12+walk*.035+nod*Math.sin(t*7)*.06+(s.lookPitch||0),attention*.3+(s.rain||0)*.15+(s.lookYaw||0)*.72,curiosity*-.05+startle*.11+walk*Math.sin(phase)*.035+happy*settle*.18-anticipation*.045+roll*Math.PI);
     body.position.y=walk*Math.max(0,Math.cos(phase*2))*.006+Math.sin(t*Math.PI*2/3.6)*(s.allowIdleEmote?.055:.025);
     const breath=Math.sin(t*Math.PI*2/3.6)*.008;body.scale.set(1+startle*.035+breath,1-startle*.075-breath,1+startle*.035+breath);
     root.position.y=.005;

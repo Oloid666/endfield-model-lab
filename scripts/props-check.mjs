@@ -77,13 +77,13 @@ check('Earlier CCTV shows the same clean oven above its intact cabinet',oven.sta
 check('Batched shell keeps its live clean colour and independent display/soot visibility',colorDistance(shellMaterial.color,charredShell)>.5&&oven.oven.getObjectByName('microwave-display-clean').visible&&!oven.oven.getObjectByName('microwave-display-warm').visible&&!oven.oven.getObjectByName('microwave-burn-scars').visible);
 oven.update(3,.016,{phase:'heat-demo',clock:3,progress:99,heat:{demoIndex:0,demoProgress:.9}});const firstBurn=oven.state.charred;
 oven.update(3.01,.016,{phase:'heat-demo',clock:3.01,progress:99,heat:{demoIndex:1,demoProgress:0}});
-check('Second failed heating keeps the first attempt burn scars',firstBurn===1&&oven.state.charred>=.85,oven.state);
-oven.update(4,.016,{phase:'heat',clock:4,heat:{holding:true,progress:.7,status:'heating'}});
+check('Instructions cannot pre-burn food before the first playable round',firstBurn===0&&oven.state.charred===0,oven.state);
+oven.update(4,.016,{phase:'heat',clock:4,heat:{holding:true,progress:.7,heatAmount:.7,smokeAmount:.7,boilAmount:.5,status:'heating'}});
 check('Player power input creates four strong arcs and steam',oven.state.arcs===4&&oven.state.steam>0,oven.state);
 check('Microwave fault has a thick white core and a distinct green halo layer',oven.state.arcCoreRadius>=.015&&oven.state.arcHaloRadius>=oven.state.arcCoreRadius*3.5&&oven.root.getObjectByName('microwave-fault-halo')?.isInstancedMesh,oven.state);
-oven.quality('low');oven.update(4.1,.016,{phase:'heat',clock:4.1,heat:{holding:true,progress:.7,status:'heating'}});
+oven.quality('low');oven.update(4.1,.016,{phase:'heat',clock:4.1,heat:{holding:true,progress:.7,heatAmount:.7,smokeAmount:.7,boilAmount:.5,status:'heating'}});
 check('Low quality keeps the exaggerated fault but cuts arc segments',oven.state.arcSegments===5&&oven.state.arcs===4&&oven.state.arcCoreRadius>=.015,oven.state);
-oven.quality('high');oven.update(4.2,.016,{phase:'heat',clock:4.2,heat:{holding:true,progress:.7,status:'heating'}});
+oven.quality('high');oven.update(4.2,.016,{phase:'heat',clock:4.2,heat:{holding:true,progress:.7,heatAmount:.7,smokeAmount:.7,boilAmount:.5,status:'heating'}});
 check('High quality adds curve segments without creating extra arc pools',oven.state.arcSegments===9&&arcMeshes.count===36,oven.state);
 oven.update(5,.016,{phase:'heat',clock:5,heat:{status:'burnt',progress:1}});
 check('Burnt input darkens food and produces smoke',oven.state.food==='burnt'&&oven.state.steam===7,oven.state);

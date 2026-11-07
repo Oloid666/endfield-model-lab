@@ -165,11 +165,11 @@ check('Reduced motion removes shake and roll and limits the lens pulse',rd.camer
 rd.state=state('ready');check('Resume at entry enables the opening cast shot',rd.resumeCamera()===true);
 rd.state=state('energy',{clock:60});rw.camera.position.set(2,7,20);rw.controls.target.set(0,3,1);rw.time=300;rd.stage('rewind',state('rewind',{vcr:true}));
 rd.beforeActors(state('rewind',{phaseElapsed:.2,clock:60.2,rewindProgress:0,rewindStage:'freeze',vcr:true}));rd.updateCamera(.016,rw.actors.heroPosition);
-check('VCR first approaches the physical CCTV while preserving visual clock',rd.cameraBeat==='rewind-cctv-source'&&rd.visualTime===300);
+check('VCR begins on a locked exterior while preserving visual clock',rd.cameraBeat==='rewind-exterior-lock'&&rd.visualTime===300);
 rd.beforeActors(state('rewind',{phaseElapsed:3.4,clock:63.4,rewindProgress:.5,rewindStage:'reverse',vcr:true}));rd.updateCamera(.016,rw.actors.heroPosition);
-check('VCR reverse follows the shared eased progress',rd.visualTime===282.5&&rd.cameraBeat==='rewind-street');
+check('VCR reverse follows the shared eased progress',rd.visualTime===282.5&&rd.cameraBeat==='rewind-exterior-lock');
 rd.beforeActors(state('rewind',{phaseElapsed:6.7,clock:66.7,rewindProgress:1,rewindStage:'settle',vcr:true}));rd.updateCamera(.016,rw.actors.heroPosition);
-check('VCR ends on the doorway before switching to the past',rd.cameraBeat==='rewind-doorway'&&Math.abs(rd.cameraPosition.z-11.6)<1e-9&&rd.cameraTarget.z===3.25);
+check('VCR holds the exterior until the cut into the past',rd.cameraBeat==='rewind-exterior-lock'&&Math.abs(rd.cameraPosition.z-34)<1e-9&&rd.cameraTarget.z===.8);
 for(const event of ['pear-check','pear-safe','pear-irony']){rd.state=state('landing',{phaseElapsed:7,node:{event}});rd.updateCamera(.016,rw.actors.heroPosition);check('Garden cut on '+event,rd.cameraBeat==='pear-garden-survives'&&rd.shakeEnvelope===0);}
 const wireWorld=makeWorld(),wireDirector=new MissionDirector(wireWorld);wireDirector.reducedMotion=false;wireWorld.xaihi.tabletFrame=()=>null;
 for(const reduced of [false,true]){wireDirector.reducedMotion=reduced;

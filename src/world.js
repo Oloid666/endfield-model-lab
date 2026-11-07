@@ -100,8 +100,11 @@ export class World {
     this.setCutaway(['interior','shelves','fridge','oven','cctv'].includes(name));this.camera.fov=preset.fov??(name==='interior'?65:37);this.camera.updateProjectionMatrix();
     const mobile=this.container.clientWidth/Math.max(1,this.container.clientHeight)<.85;
     const target=new T.Vector3().fromArray(mobile?preset.mobileTarget:preset.target),position=new T.Vector3().fromArray(mobile?preset.mobilePosition:preset.position);
-    if(['detail','heroFront','left','right','back','story','dragon'].includes(name)&&this.actors){const anchor=name==='dragon'?this.actors.dragonPosition:this.actors.heroPosition;const origin=name==='dragon'?[-2,1,3.25]:[-1.25,.32,3.25];const offset=new T.Vector3(...anchor).sub(new T.Vector3(...origin));target.add(offset);position.add(offset);}
-    if(name==='heroFront'&&this.actors?.headPosition){const h=this.actors.headPosition;target.set(h[0],h[1]-.27,h[2]);position.set(h[0]+.9,h[1]+.05,h[2]+2.8);}
+    if(['detail','half','heroFront','left','right','back','story','dragon'].includes(name)&&this.actors){const anchor=name==='dragon'?this.actors.dragonPosition:this.actors.heroPosition;const origin=name==='dragon'?[-2,1,3.25]:[-1.25,.32,3.25];const offset=new T.Vector3(...anchor).sub(new T.Vector3(...origin));target.add(offset);position.add(offset);}
+    if(['heroFront','half','left','right','back'].includes(name)&&this.actors?.headPosition){
+      const h=this.actors.headPosition,heading=this.actors.status.cinematic?.heading||0,angle=heading+(name==='left'?-.78:name==='right'?.78:name==='back'?Math.PI:0),distance=name==='heroFront'?2.8:3.1;
+      target.set(h[0],h[1]-(name==='heroFront'?.27:.42),h[2]);position.set(h[0]+Math.sin(angle)*distance,h[1]+.08,h[2]+Math.cos(angle)*distance);
+    }
     if(name==='dragon'&&this.actors){const d=this.actors.dragonPosition,heading=this.actors.status.dragonHeading??0;target.set(d[0],d[1]+.4,d[2]);position.set(d[0]+Math.sin(heading-.5)*1.8,d[1]+.5,d[2]+Math.cos(heading-.5)*1.8);}
     // Flush damping once, so user momentum does not fight a selected preset.
     const damping=this.controls.enableDamping;this.controls.enableDamping=false;this.controls.update();this.controls.enableDamping=damping;
@@ -168,18 +171,16 @@ export class World {
       const width=aspect>=1?2048:Math.round(2048*aspect),height=aspect>=1?Math.round(2048/aspect):2048;
       const wide=render(width,height),points=[['floor',[-3.05,1.08,2.1]],['server',[0,4.6,1.4]]].map(([id,p])=>{const q=this.projectPoint(p);return {id,x:(q[0]+1)/2,y:(1-q[1])/2,z:q[2]};});
       const h=this.actors.headPosition||this.actors.heroPosition,face=[h[0],h[1]+.08,h[2]];const projected=new T.Vector3(...face).project(camera),framePoints=[[-.14,-.17],[.14,.2]].map(([x,y])=>new T.Vector3(face[0]+x,face[1]+y,face[2]).project(camera));const yaw=this.actors.status.cinematic?.heading??0,toEye=new T.Vector3().subVectors(camera.position,new T.Vector3(...face)).normalize();const facing=Math.sin(yaw)*toEye.x+Math.cos(yaw)*toEye.z;const faceValid=projected.z>-1&&projected.z<1&&framePoints.every(q=>Math.abs(q.x)<.98&&Math.abs(q.y)<.98)&&!this.cameraOcclusion(face)&&facing>0;
-      // The portrait is a crop of this exposure, never a second, retargeted camera.
-      const src=wide.toDataURL('image/png');let closeup=null,closeupWidth=0,closeupHeight=0,cropRect=null;
+      // Keep the actual exposure on the phone; render a separate optical portrait.
+      const src=wide.toDataURL('image/png');let closeup=null,closeupWidth=0,closeupHeight=0;
       if(faceValid){
-        const ys=framePoints.map(q=>(1-q.y)*height/2),xs=framePoints.map(q=>(q.x+1)*width/2);
-        const cropH=Math.min(height,Math.max(ys[0]-ys[1],ys[1]-ys[0])*1.85),cropW=Math.min(width,cropH*.8);
-        const cx=(projected.x+1)*width/2,cy=(1-projected.y)*height/2;
-        const x=Math.max(0,Math.min(width-cropW,cx-cropW/2)),y=Math.max(0,Math.min(height-cropH,cy-cropH*.44));
-        cropRect={x,y,width:cropW,height:cropH};const crop=document.createElement('canvas');crop.width=Math.round(cropW);crop.height=Math.round(cropH);crop.getContext('2d').drawImage(wide,x,y,cropW,cropH,0,0,crop.width,crop.height);
-        closeup=crop.toDataURL('image/png');closeupWidth=crop.width;closeupHeight=crop.height;
+        camera.lookAt(...face);const distance=camera.position.distanceTo(new T.Vector3(...face));
+        camera.fov=T.MathUtils.radToDeg(2*Math.atan(.36/distance));
+        await nextFrame();const portrait=render(1536,1920);
+        closeup=portrait.toDataURL('image/png');closeupWidth=1536;closeupHeight=1920;
       }
       const display=this.photoPhone?.getObjectByName('camera-screen');if(display){const thumb=document.createElement('canvas');thumb.width=256;thumb.height=384;const ctx=thumb.getContext('2d');ctx.fillStyle='#07181d';ctx.fillRect(0,0,256,384);const fit=Math.min(256/width,384/height);ctx.drawImage(wide,(256-width*fit)/2,(384-height*fit)/2,width*fit,height*fit);this.photoTexture??=this.r.own(new T.CanvasTexture(thumb));this.photoTexture.image=thumb;this.photoTexture.colorSpace=T.SRGBColorSpace;this.photoTexture.needsUpdate=true;display.material.map=display.material.emissiveMap=this.photoTexture;display.material.color.set(0xffffff);display.material.emissive.set(0xffffff);display.material.emissiveIntensity=.3;display.material.needsUpdate=true;}
-      return {src,width,height,points,closeup,captureOrigin,faceValid,closeupWidth,closeupHeight,cropRect};
+      return {src,width,height,points,closeup,captureOrigin,faceValid,closeupWidth,closeupHeight,portraitSource:closeup?'optical':null};
     }finally{camera.position.copy(position);camera.quaternion.copy(quaternion);camera.fov=fov;this.renderer.setPixelRatio(dpr);this.resize();camera.aspect=aspect;camera.updateProjectionMatrix();this.capturingPhoto=false;if(wasRunning)this.start();}
   }
   projectPoint(point){const p=new T.Vector3().fromArray(point).project(this.camera);return p.toArray();}

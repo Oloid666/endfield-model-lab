@@ -35,7 +35,10 @@ async def main():
   try:
    await page.goto(os.environ.get('PREVIEW_URL','http://127.0.0.1:4200/'),wait_until='domcontentloaded');await page.locator('.loading-details summary').click();await page.locator('.loading-skip').click();await page.wait_for_function('window.__rainy711?.actorsLoaded&&document.querySelector("#loading").hidden',timeout=240000)
    await js('__rainy711.pauseForCapture();const e=document.querySelector("#quality");e.value="low";e.dispatchEvent(new Event("change"))')
-   await shot('entry-art');await unlock();await jump('chapter:terminal-deploy')
+   await shot('entry-art');await unlock();await jump('chapter:cargo');await js('__rainy711.toggleAutoCamera()')
+   for view in ['left','right','heroFront']:
+    await page.evaluate('(v)=>__rainy711.frameView(v)',view);await tick(.05);await shot('tray-'+view)
+   await page.mouse.move(200,400);await page.mouse.down();await page.mouse.move(200,650,steps=20);await page.mouse.up();await tick(.1);await shot('tray-overhead');await js('__rainy711.resetCamera()');await jump('chapter:terminal-deploy')
    await shot('book-hand');await tick(2.6);await shot('book-open');await tick(2.4);await shot('book-login');await background('book')
    for _ in range(25):
     phase=await js('__rainy711.mission.phase')
@@ -63,7 +66,7 @@ async def main():
      if rnd==2 and i in [0,1,2]:await shot('round3-beat'+str(i+1))
     await tick(.7)
     if rnd<2:assert await js('__rainy711.mission.heat.completed')==rnd+1;await shot('round'+str(rnd+1))
-   assert await js('__rainy711.mission.phase')=='meal-spawn';await shot('birth-start');await tick(1);await shot('birth-purple');assert not await js('__rainy711.microwave.ingredientsVisible');await tick(2);await shot('birth-escape');await tick(4.2);await shot('refusal-meme');assert await page.locator('.mission-text').inner_text()=='那個我不要了';await background('birth-refusal');await page.set_viewport_size({'width':844,'height':390});await tick(.1);await shot('refusal-landscape');await page.set_viewport_size({'width':1366,'height':768});await tick(.1);await shot('refusal-desktop');await page.set_viewport_size({'width':390,'height':844});await tick(.1)
+   assert await js('__rainy711.mission.phase')=='meal-spawn';await shot('birth-start');await tick(1);await shot('birth-purple');assert await js('__rainy711.microwave.ingredientsVisible');await tick(2);await shot('birth-escape');assert not await js('__rainy711.microwave.ingredientsVisible');await tick(4.2);await shot('refusal-meme');assert await page.locator('.mission-text').inner_text()=='那個我不要了';await background('birth-refusal');await page.set_viewport_size({'width':844,'height':390});await tick(.1);await shot('refusal-landscape');await page.set_viewport_size({'width':1366,'height':768});await tick(.1);await shot('refusal-desktop');await page.set_viewport_size({'width':390,'height':844});await tick(.1)
    for _ in range(12):
     if await js('__rainy711.mission.phase')=='flashback-end':break
     await js('__rainy711.missionNext()');await tick(.5)
@@ -75,9 +78,20 @@ async def main():
    assert await js('__rainy711.mission.trayOwner')=='helper'
    await page.wait_for_function('!__rainy711.mission.paused',timeout=120000);await tick(await js('Math.max(0,9+__rainy711.mission.meterPeriod/4-__rainy711.mission.phaseElapsed)'));assert await js('__rainy711.missionAttack(__rainy711.time)')
    assert await js('__rainy711.mission.phase')=='finisher'
-   await tick(9+await js('__rainy711.mission.landingDuration')+.8);await shot('tray-reclaim-touch');assert await js('__rainy711.mission.phase')=='meal-reclaim';assert await js('__rainy711.mission.trayOwner')=='helper';await background('tray-reclaim')
+   await tick(2.1);await shot('explosion-readable');assert await page.locator('.dragon-reaction-bubble').is_visible();assert await page.evaluate('()=>{const q=__rainy711,p=q.projectPoint(q.headPosition),r=document.querySelector("#scene").getBoundingClientRect(),b=document.querySelector(".dragon-reaction-bubble").getBoundingClientRect(),x=r.x+(p[0]+1)*r.width/2,y=r.y+(1-p[1])*r.height/2;return !(x>=b.left&&x<=b.right&&y>=b.top&&y<=b.bottom)}');await tick(2.5);assert await page.locator('.dragon-reaction-bubble').is_visible();await shot('explosion-flight-caption');await tick(4.4+await js('__rainy711.mission.landingDuration')+.8);await shot('tray-reclaim-touch');assert await js('__rainy711.mission.phase')=='meal-reclaim';assert await js('__rainy711.mission.trayOwner')=='helper';await background('tray-reclaim')
    await tick(1);await shot('tray-reclaim-hero');assert await js('__rainy711.mission.trayOwner')=='hero'
    await tick(1);assert await js('__rainy711.mission.phase')=='tour'
+   await tick(await js('__rainy711.mission.tourDuration-__rainy711.mission.phaseElapsed')+.001)
+   assert await js('__rainy711.mission.phase')=='complete'
+   previous=0
+   for age,title in [(0,'Fin.'),(1.25,'Fin..'),(1.7,'Fin...'),(2.15,'Fin....'),(2.6,'Fin....?')]:
+    await tick(age-previous);previous=age;assert await page.locator('.mission-caption').inner_text()==title;assert not await page.locator('.epilogue-prompt').is_visible();await shot('fin-'+str(age))
+   await tick(1.5);assert await page.locator('.epilogue-prompt').is_visible()
+   for _ in range(3):
+    await tick(.5);await page.locator('.epilogue-prompt button').click()
+   await tick(6);await shot('concert-wide');await tick(.35);await shot('concert-followthrough')
+   # Finish the existing performance before debug travel.
+   await tick(70)
    for where in ['claims','classroom','rating']:
     await jump(where);await background(where)
    # The bonus has its own recovery dialog; settings are tested after leaving it.

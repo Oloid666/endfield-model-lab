@@ -127,7 +127,7 @@ export function buildMicrowave(scene,r,{position=[3.45,.31,1.43]}={}){
   const currentPosition=[...position];
   function modeFor(state){
     if(state.node?.event==='microwave-closeup')return 'heating';if(forced)return forced;if(state.microwaveMode)return state.microwaveMode;
-    const phase=state.phase||'ready';if(['flashback','hack','credentials'].includes(phase))return 'clean';if(phase==='heat-demo')return 'burning';if(phase==='heat')return 'heating';if(phase==='flashback-end')return 'warm';if(phase==='rewind'&&state.rewindProgress>.72)return 'clean';return 'charred';
+    const phase=state.phase||'ready';if(['flashback','hack','credentials'].includes(phase))return 'clean';if(phase==='heat-demo')return 'clean';if(phase==='heat')return 'heating';if(phase==='flashback-end')return 'warm';if(phase==='rewind'&&state.rewindProgress>.72)return 'clean';return 'charred';
   }
   function arcPoint(index,p,t,out){const s=arcStart[index],e=arcEnd[index],jitter=Math.sin(p*31+t*29+index*7)*.082*Math.sin(p*Math.PI),side=s[2]<-.3&&e[2]<-.3?-1:1;out.set(s[0]+(e[0]-s[0])*p+jitter,s[1]+(e[1]-s[1])*p+Math.cos(p*27-t*23)*.07*Math.sin(p*Math.PI),s[2]+(e[2]-s[2])*p+Math.sin(p*Math.PI)*.15*side);return out;}
   function update(t,delta,state={}){
@@ -141,12 +141,16 @@ export function buildMicrowave(scene,r,{position=[3.45,.31,1.43]}={}){
     charred=birth?birth.charred:mode==='clean'?0:mode==='heating'?(heat.charred||0):mode==='burning'?clamp((heat.demoIndex||0)*.86+(heat.demoProgress||0)*1.4):1;
     soot.visible=charred>.18;bodyMaterial.color.copy(cleanColor).lerp(burntColor,charred);bodyMaterial.roughness=.36+charred*.58;trimMaterial.color.copy(cleanTrim).lerp(burntTrim,charred);
     foodState=mode==='burning'&&(heat.demoProgress||0)>.5||heat.status==='burnt'?'burnt':heat.status==='won'?'hot':'cold';
-    const hot=clamp(heat.progress||0);riceMaterial.color.copy(riceCold).lerp(riceHot,hot);mealMaterial.color.copy(meatHot);if(foodState==='burnt'){riceMaterial.color.set('#8955bf');mealMaterial.color.set('#583594');}
-    if(heat.charred){riceMaterial.color.lerp(riceBurnt,heat.charred);mealMaterial.color.lerp(meatBurnt,heat.charred);}
+    const hot=clamp(heat.heatAmount??heat.progress??0);riceMaterial.color.copy(riceCold).lerp(riceHot,hot);mealMaterial.color.copy(meatHot);
+    if(heat.charred){riceMaterial.color.lerp(riceBurnt,heat.charred);mealMaterial.color.lerp(meatBurnt,heat.charred);}vegetables.color.set('#68804c').lerp(meatBurnt,heat.charred||0);
     if(birth){riceMaterial.color.copy(riceCold).lerp(riceBurnt,birth.charred);mealMaterial.color.copy(meatHot).lerp(meatBurnt,birth.charred);mealMaterial.color.lerp(mealPurple,birth.morph);}
     warming=['warm','charred'].includes(mode);const labelMode=mode==='charred'?'warm':mode;for(const [key,label]of Object.entries(labels))label.visible=key===labelMode;
-    const visibleFood=past||!wreck;foodGroup.visible=visibleFood;foodSolids.visible=!(birth?.visible||state.mealBorn&&!['rewind','flashback','hack','credentials','heat-demo'].includes(lastPhase));
-    foodSolids.scale.y=heat.boiling?1+Math.sin(clock*21)*.035:1;foodSolids.position.y=heat.swelling?.025+Math.sin(clock*16)*.01:heat.boiling?Math.abs(Math.sin(clock*18))*.008:0;
+    const visibleFood=past||!wreck;foodGroup.visible=visibleFood;
+    const fusion=birth?birth.morph:0,remaining=1-fusion,boil=heat.boilAmount||0,swell=heat.swellAmount||0;
+    foodSolids.visible=!(birth?fusion>=.985:state.mealBorn&&!['rewind','flashback','hack','credentials','heat-demo'].includes(lastPhase));
+    const shrink=Math.max(.015,remaining);foodSolids.scale.set(shrink,shrink*(1+boil*Math.sin(clock*21)*.035+swell*.26),shrink);
+    foodSolids.position.set(-.095*(1-shrink),-.095*(1-shrink)+boil*Math.abs(Math.sin(clock*18))*.008+swell*.015,.015*(1-shrink));
+    if(birth){riceMaterial.color.lerp(mealPurple,fusion);mealMaterial.color.lerp(mealPurple,fusion);vegetables.color.lerp(mealPurple,fusion);}
     const strong=mode==='burning'||mode==='heating'&&(heat.powered||heat.holding),cycle=((clock*.55)%1+1)%1;
     const faultBurst=cycle<.1||cycle>.18&&cycle<.29;
     arcPulse=reducedMotion?(strong?.75:.45):strong?.72+.28*Math.sin(clock*5.2)**2:faultBurst?.9:0;
@@ -162,7 +166,7 @@ export function buildMicrowave(scene,r,{position=[3.45,.31,1.43]}={}){
     const smoking=heat.smoking||mode==='burning'&&(heat.demoProgress||0)>.42||heat.status==='burnt',steaming=smoking||mode==='heating'&&(heat.powered||heat.holding)&&hot>.4||heat.status==='won';steam=0;
     for(let i=0;i<clouds.length;i++){
       const item=clouds[i],life=((clock*(smoking?.7:.48)+i*.137)%1+1)%1;item.sprite.visible=steaming&&(smoking||i<3);if(!item.sprite.visible)continue;steam++;
-      item.sprite.position.set(-.25+Math.sin(i*2.1+clock*.3)*.17,.26+life*(smoking?1.1:.66),.16+Math.cos(i*1.7)*.12);item.sprite.scale.setScalar((.09+life*.5)*(smoking?1.3:.72));item.material.color.setHex(smoking?0x677772:0xc0d2c7);item.material.opacity=Math.sin(life*Math.PI)*(smoking?.55:.23);
+      item.sprite.position.set(-.25+Math.sin(i*2.1+clock*.3)*.17,.26+life*(smoking?1.1:.66),.16+Math.cos(i*1.7)*.12);item.sprite.scale.setScalar((.09+life*.5)*(smoking?1.3:.72));item.material.color.setHex(smoking?0x677772:0xc0d2c7);item.material.opacity=Math.sin(life*Math.PI)*(smoking?.55:.23)*Math.max(birth?1:0,heat.smokeAmount||0);
     }
     currentPosition[0]=root.position.x;currentPosition[1]=root.position.y+oven.position.y;currentPosition[2]=root.position.z;
   }

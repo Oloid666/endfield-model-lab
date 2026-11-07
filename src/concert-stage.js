@@ -1,22 +1,30 @@
 import * as T from 'three';
 export function songCamera(subject,age,{trapped=false,portrait=false,reduced=false}={}){
- const angle=reduced?0:trapped?Math.sin(age*.16)*.9:Math.min(1,Math.max(0,age)/20)*Math.PI*4/3;
+ const angle=reduced?0:trapped?Math.sin(age*.16)*.24:Math.min(1,Math.max(0,age)/20)*Math.PI*4/3;
  const radius=trapped?(portrait?3.7:3):3.6;
  return {position:[subject[0]+Math.sin(angle)*radius,subject[1]+(trapped?.65:1.1),subject[2]+Math.cos(angle)*radius],target:[subject[0],subject[1]+.4,subject[2]],fov:portrait?58:46};
 }
+// Shared musical phrase, individual delay and a soft wrist follow-through.
+export function cheerPose(age,index,reduced=false){
+ if(reduced)return {roll:(index%3-1)*.09,lift:0,pitch:0,wrist:0};
+ const beat=60/104,phrase=age/(beat*8),part=phrase%1,ease=v=>{const p=Math.max(0,Math.min(1,v));return p*p*(3-2*p);},sync=Math.floor(phrase)%4===3?ease(part/.2)*ease((1-part)/.2):0;
+ const t=Math.max(0,age-(index*.071% .31)),cycle=(t/beat+index*.13)%(index%3===1?4:2),arc=Math.sin(ease(cycle/1.6)*Math.PI*2),common=Math.sin(ease((age/beat%2)/1.6)*Math.PI*2),wave=arc+(common-arc)*sync,amplitude=.24+(index%3)*.065;
+ return {roll:wave*(amplitude+(.30-amplitude)*sync),lift:Math.abs(wave)*.10,pitch:Math.sin(t/beat*Math.PI-index*.3)*.10*(1-sync),wrist:Math.sin((t-.10)/beat*Math.PI)*.13*(1-sync)};
+}
 export function buildConcertStage(scene,r){
  const root=new T.Group();root.name='dragon-concert-cheering';scene.add(root);root.visible=false;
- for(const [i,text]of ['龍泡泡','安可'].entries()){
-  const sign=new T.Group();root.add(sign);sign.position.set(i?.55:-.55,1,0);sign.scale.setScalar(.65);
-  const label=r.mesh(r.geometry('PlaneGeometry',.72,.32),r.label(text,{width:512,height:256,bg:'#123439',color:'#f4df9c',font:'bold 90px sans-serif'}),sign);
-  for(const y of [-.18,.18])r.box(sign,'#98e5d1',[0,y,0],[.8,.018,.018],{emissive:0x98e5d1,emissiveIntensity:1.2});
-  for(const x of [-.39,.39])r.box(sign,'#e6c68e',[x,0,0],[.018,.36,.018],{emissive:0xe6c68e,emissiveIntensity:1});
-  label.material.depthWrite=false;
+ const props=[];let wasActive=false;
+ for(let i=0;i<8;i++){
+  const pivot=new T.Group(),wrist=new T.Group();root.add(pivot);pivot.add(wrist);const x=(i-3.5)*.43,z=i%2*.20;
+  pivot.position.set(x,i<2?.95:.80,z);props.push({pivot,wrist,y:pivot.position.y});
+  if(i<2){const text=i?'安可':'龍泡泡';r.mesh(r.geometry('PlaneGeometry',.58,.24),r.label(text,{width:512,height:256,bg:'#123439',color:'#f4df9c',font:'bold 90px sans-serif'}),wrist,[0,.27,0]);for(const x of [-.30,.30])r.box(wrist,'#e6c68e',[x,.27,0],[.014,.28,.018],{emissive:0xe6c68e,emissiveIntensity:.6});}
+  else{r.box(wrist,'#173b3e',[0,.04,0],[.045,.14,.045]);r.box(wrist,i%2?'#9be2d8':'#ecd48d',[0,.24,0],[.04,.28,.04],{emissive:i%2?0x9be2d8:0xecd48d,emissiveIntensity:1.3});}
+  // A small grasp and forearm connect the prop to the audience silhouette.
+  r.box(pivot,'#385450',[0,-.015,0],[.075,.075,.075]);r.box(pivot,'#203438',[0,-.18,0],[.085,.27,.08]);
  }
- for(let i=0;i<6;i++){
-  const rod=new T.Group();rod.position.set((i-2.5)*.25,-.65,0);root.add(rod);
-  r.box(rod,'#173b3e',[0,-.12,0],[.045,.14,.045]);r.box(rod,i%2?'#9be2d8':'#ecd48d',[0,.08,0],[.04,.3,.04],{emissive:i%2?0x9be2d8:0xecd48d,emissiveIntensity:1.5});
- }
- root.traverse(n=>{if(n.isMesh){n.material=r.own(n.material.clone());n.material.depthTest=false;n.material.depthWrite=false;n.renderOrder=100;}});
- return {root,reset(){root.visible=false;},update(subject,age,active,camera,quality='balanced',reduced=false){root.visible=!!active;if(!active)return;root.position.set(subject[0],subject[1]+.5,subject[2]);root.quaternion.copy(camera.quaternion);root.children.forEach((n,i)=>{n.visible=quality!=='low'||i<6;n.rotation.z=reduced?0:Math.sin(age*2.5+i)*.08;});}};
+ return {root,reset(){root.visible=false;wasActive=false;},update(subject,age,active,camera,quality='balanced',reduced=false){
+ root.visible=!!active;if(!active){wasActive=false;return;}
+ if(!wasActive){root.position.set(subject[0],.02,subject[2]+4.2);root.rotation.set(0,Math.atan2(camera.position.x-subject[0],camera.position.z-subject[2]),0);wasActive=true;}
+ props.forEach(({pivot,wrist,y},i)=>{pivot.visible=quality!=='low'||i<6;const p=cheerPose(age,i,reduced);pivot.position.y=y+p.lift;pivot.rotation.set(p.pitch,0,p.roll);wrist.rotation.z=p.wrist;});
+ }};
 }
