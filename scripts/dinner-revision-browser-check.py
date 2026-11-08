@@ -76,11 +76,11 @@ async def main():
     if await js('__rainy711.mission.phase')=='aim-final':break
     await js('__rainy711.missionNext()');await tick(.5)
    assert await js('__rainy711.mission.trayOwner')=='dragon'
-   for age in [1.65,2.4,3.4,5,6.2,7.3,8.5,9.2,10.1,11.2,13,16]:
+   for age in [1.9,2.4,3.4,4.9,5.5,6.2,6.95,7.2,8.5,9.3,10.6,11.2]:
     await tick(max(0,age-await js('__rainy711.mission.phaseElapsed')));await shot('rescue-'+str(age))
    assert await js('__rainy711.mission.trayOwner')=='helper'
    await background('rescue-safe')
-   await page.wait_for_function('!__rainy711.mission.paused',timeout=120000);await tick(await js('Math.max(0,17+__rainy711.mission.meterPeriod/4-__rainy711.mission.phaseElapsed)'));assert await js('__rainy711.missionAttack(__rainy711.time)')
+   await page.wait_for_function('!__rainy711.mission.paused',timeout=120000);await tick(await js('Math.max(0,12+__rainy711.mission.meterPeriod/4-__rainy711.mission.phaseElapsed)'));assert await js('__rainy711.missionAttack(__rainy711.time)')
    assert await js('__rainy711.mission.phase')=='finisher'
    await tick(2.1);await shot('explosion-readable');assert await page.locator('.dragon-reaction-bubble').is_visible();assert await page.evaluate('()=>{const q=__rainy711,p=q.projectPoint(q.headPosition),r=document.querySelector("#scene").getBoundingClientRect(),b=document.querySelector(".dragon-reaction-bubble").getBoundingClientRect(),x=r.x+(p[0]+1)*r.width/2,y=r.y+(1-p[1])*r.height/2;return !(x>=b.left&&x<=b.right&&y>=b.top&&y<=b.bottom)}');await tick(2.5);assert await page.locator('.dragon-reaction-bubble').is_visible();await shot('explosion-flight-caption');await tick(4.4+await js('__rainy711.mission.landingDuration')+.8);await shot('tray-reclaim-touch');assert await js('__rainy711.mission.phase')=='meal-reclaim';assert await js('__rainy711.mission.trayOwner')=='helper';await background('tray-reclaim')
    await tick(1);await shot('tray-reclaim-hero');assert await js('__rainy711.mission.trayOwner')=='hero'

@@ -4,7 +4,9 @@
 
 目前場景：《莊的晚餐｜雨夜711》。
 
-最新預覽修改：[雙主菜晚餐、105°C與紫色保管員](docs/RAIN-DINNER-NEXT.md)；二樓美術尚為[提案](docs/UPSTAIRS-ART-PROPOSAL.md)。
+最新：[高空拋餐、集氣抖動與二樓美術更新](docs/RAIN-AIR-UPSTAIRS.md)。
+
+前輪晚餐修改：[雙主菜晚餐、105°C與紫色保管員](docs/RAIN-DINNER-NEXT.md)；[二樓原始美術提案](docs/UPSTAIRS-ART-PROPOSAL.md)。
 
 **[開啟正式遊戲](https://endfield10000t.aura87.online/)** · [GitHub Pages 備用](https://oloid666.github.io/endfield-model-lab/)
 

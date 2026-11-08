@@ -60,7 +60,7 @@ export function buildMealRemnant(scene,r){
     body.scale.set(1,1,1);tendrils(supportHeight,(rescue?.tray[0]??root.position.x)-root.position.x,(rescue?.tray[2]??root.position.z)-root.position.z,supportHeight>.33);
   }
   if(!home&&!helper){if(birthing)root.position.fromArray(birth.position);else root.position.set((wreck?RESCUE_WAITING[0]:MEAL_LANDING[0])+crawl,wreck?RESCUE_WAITING[1]:MEAL_LANDING[1],(wreck?RESCUE_WAITING[2]:MEAL_LANDING[2])+crawl*.12);}body.rotation.y=helper?0:birthing?Math.PI:reduced?0:Math.sin(age*.6)*.12;
-  for(const {eye,pupil}of eyes){eye.visible=!birthing||age>=4.5;const blink=reduced?0:Math.max(0,1-Math.abs((age+.4)%4.1-.12)/.10);eye.scale.y=1-blink*.85;pupil.position.x=helper?0:Math.sin(age*.55)*.006;pupil.position.y=helper&&supportHeight>.8?.006:0;}
+  for(const {eye,pupil}of eyes){eye.visible=!birthing||age>=4.5;const blink=reduced?0:Math.max(0,1-Math.abs((age+.4)%4.1-.12)/.10);eye.scale.y=1-blink*.85;pupil.position.x=helper?0:Math.sin(age*.55)*.006;pupil.position.y=helper&&((state.phaseElapsed||0)<7||supportHeight>.8)?.009:0;}
   const dt=lastTime===null?0:Math.max(0,Math.min(.1,time-lastTime));lastTime=time;
   if(home){
     if(homeAt!==state.homecomingAt){homeAt=state.homecomingAt;if(environment.intact===false)root.position.set(2.45,.33,4.52);else if(root.position.z<1||root.position.y>1)root.position.set(2.05,.33,1.35);clearWander();}

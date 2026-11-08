@@ -1,0 +1,81 @@
+{
+  "base_commit": "1262a52e352f6f4e3b49b55e38c793ce2638c2ca",
+  "node_suites": 43,
+  "node_passed": 43,
+  "actual_glb_cinematic_checks": 90,
+  "air_upstairs_checks": 3940,
+  "build": "npm run build passed",
+  "browser": "Chromium / SwiftShader",
+  "viewports": [
+    [
+      390,
+      844
+    ],
+    [
+      844,
+      390
+    ],
+    [
+      1366,
+      768
+    ]
+  ],
+  "main_flow_errors": [],
+  "upstairs_flow_errors": [],
+  "latest_room_errors": [],
+  "upstairs_verified": [
+    "three settlement stamps in each viewport",
+    "eight topics fully read and 100% in each viewport",
+    "death certificate and rating reachable",
+    "reading mode and return from background in each viewport",
+    "FOV interpolates before settling at close-up"
+  ],
+  "toss_verified": [
+    "hero height stays above 4m",
+    "handle/wrist distance below 1e-6m",
+    "single air-owned tray before ground catch",
+    "no eye emoji",
+    "actual live meter strengthens tremble; pause holds pose"
+  ],
+  "timings": {
+    "release": 5.5,
+    "contact": 7,
+    "ready": 12
+  },
+  "shipping": "ui-preview only; main unchanged",
+  "review": "independent-review.md",
+  "screenshots": [
+    "toss-wide",
+    "tray-falling",
+    "catch",
+    "thumb",
+    "fall-landscape",
+    "thumb-desktop",
+    "held-meter",
+    "claims-portrait",
+    "claims-landscape",
+    "claims-desktop",
+    "claims-client",
+    "claims-representative",
+    "stamp1",
+    "stamp2",
+    "stamp3",
+    "classroom-portrait",
+    "classroom-landscape",
+    "classroom-desktop",
+    "teacher-close",
+    "teacher-close-landscape",
+    "reading",
+    "completed-eight",
+    "rating"
+  ],
+  "limits": [
+    "Not real iPhone Safari testing",
+    "No measured mobile FPS improvement",
+    "Changed sequences reviewed, not every frame in the entire game"
+  ],
+  "notes": [
+    "Complete upstairs/main flow uses Build4; final FOV interpolation and cameraFov readout additionally checked in Build5 screenshots and 43 final Node suites.",
+    "Multi-viewport toss evidence from initial high-flight build; final main flow additionally verifies the corrected 12-second energy-light window."
+  ]
+}

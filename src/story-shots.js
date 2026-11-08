@@ -80,20 +80,18 @@ export function cinematicStoryShot(s,context,track){
   track.enter('cinematic-'+s.phase,s,c,origin);
   return track.pose(c.portrait?[-.1,1.9,7.0]:[.5,2.05,6.8],[-1.25,1.05,3.9],c.portrait?48:42);
  }
- if(s.phase==='aim-final'&&e>=1&&e<2&&!c.rescue){
-  const b=RESCUE_WAITING,fov=c.portrait?48:38;
-  if(track.enter('cinematic-rescue-notice',s,c,origin)){track.rescueOrigin=[...b];track.p.set(b[0]+1.4,b[1]+.62,b[2]+2.7);track.t.set(b[0],b[1]+.3,b[2]);track.fitBox([b[0]-.5,b[1],b[2]-.4],[b[0]+.5,b[1]+.70,b[2]+.4],track.p,track.t,fov,c,'wide');}
-  return track.pose(track.fixedP,track.fixedT,fov);
+ if(s.phase==='aim-final'&&e>=1.5&&e<2.2&&!c.rescue){
+  const b=RESCUE_WAITING;track.enter('cinematic-rescue-notice',s,c,origin);return track.pose([b[0]+1.4,b[1]+.62,b[2]+2.7],[b[0],b[1]+.3,b[2]],c.portrait?48:38);
  }
- if(s.phase==='aim-final'&&e<RESCUE_READY&&c.rescue){
+ if(s.phase==='aim-final'&&e>=1.5&&e<RESCUE_READY&&c.rescue){
   const r=c.rescue,p=r.tray,b=r.base;let beat='rescue-'+r.beat,eye,target,fov,min,max;
-  if(e<4){eye=[b[0]+1.4,b[1]+.62,b[2]+2.7];target=[b[0],b[1]+.3,b[2]];fov=c.portrait?48:38;min=[b[0]-.5,b[1],b[2]-.4];max=[b[0]+.5,b[1]+.70,b[2]+.4];}
-  else if(e<6){const y=(b[1]+h.y)*.5;eye=[p[0]+2.8,y+.35,p[2]+5];target=[p[0],y,p[2]];fov=c.portrait?57:47;min=[p[0]-.6,b[1],p[2]-.5];max=[Math.max(p[0]+.8,h.x+.5),h.y+.35,p[2]+.5];}
-  else if(e<12){eye=[p[0]+1.35,p[1]+.5,p[2]+3.0];target=[p[0]+.1,(p[1]+b[1]+.25)/2,p[2]];fov=c.portrait?42:33;min=[p[0]-.42,b[1],p[2]-.35];max=[p[0]+.65,p[1]+.48,p[2]+.45];}
-  else if(e<14){eye=[p[0]+1.8,b[1]+1.8,p[2]+4];target=[p[0],b[1]+.85,p[2]];fov=c.portrait?48:38;min=[p[0]-.6,b[1],p[2]-.4];max=[p[0]+.8,h.y+.3,p[2]+.5];}
-  else {track.enter(beat,s,c,origin);track.p.copy(h).add(RISE_END);track.t.copy(h);track.t.y-=.40;return track.pose(track.p,track.t,c.portrait?54:44);}
+  if(e<4.5){eye=[b[0]+1.4,b[1]+.62,b[2]+2.7];target=[b[0],b[1]+.3,b[2]];fov=c.portrait?48:38;min=[b[0]-.5,b[1],b[2]-.4];max=[b[0]+.5,b[1]+.70,b[2]+.4];}
+  else if(e<5.5){const y=(b[1]+h.y)*.5;eye=[p[0]+3.4,y+.35,p[2]+6];target=[p[0],y,p[2]];fov=c.portrait?57:47;min=[p[0]-.6,b[1],p[2]-.5];max=[Math.max(p[0]+.8,h.x+.5),h.y+.35,p[2]+.5];}
+  else if(e<7){track.enter('rescue-fall-follow',s,c,origin);return track.pose([p[0]+1.4,p[1]+.5,p[2]+3.4],[p[0],p[1],p[2]],c.portrait?46:36);}
+  else if(e<10.1){eye=[p[0]+1.1,b[1]+1.1,p[2]+2.7];target=[p[0]+.08,b[1]+.43,p[2]];fov=c.portrait?42:33;min=[p[0]-.46,b[1],p[2]-.35];max=[p[0]+.65,p[1]+.35,p[2]+.4];}
+  else {track.enter('rescue-back-to-held',s,c,origin);track.p.copy(h).add(RISE_END);track.t.copy(h);track.t.y-=.40;return track.pose(track.p,track.t,c.portrait?54:44);}
   if(track.enter(beat,s,c,origin)){track.rescueOrigin=[...b];track.p.fromArray(eye);track.t.fromArray(target);track.fitBox(min,max,track.p,track.t,fov,c,'wide');}
-  if(e<4){track.offset.set(b[0]-track.rescueOrigin[0],b[1]-track.rescueOrigin[1],b[2]-track.rescueOrigin[2]);track.p.copy(track.fixedP).add(track.offset);track.t.copy(track.fixedT).add(track.offset);return track.pose(track.p,track.t,fov);}
+  if(e<4.5){track.offset.set(b[0]-track.rescueOrigin[0],b[1]-track.rescueOrigin[1],b[2]-track.rescueOrigin[2]);track.p.copy(track.fixedP).add(track.offset);track.t.copy(track.fixedT).add(track.offset);return track.pose(track.p,track.t,fov);}
   return track.pose(track.fixedP,track.fixedT,fov);
  }
  if(s.phase==='charge'){

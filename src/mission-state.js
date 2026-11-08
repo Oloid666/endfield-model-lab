@@ -1,4 +1,4 @@
-import {FIRST_HANDOFF_DURATION,FIRST_HANDOFF_CONTACT,RESCUE_CONTACT,RESCUE_READY} from './tray-rescue.js';
+import {FIRST_HANDOFF_DURATION,FIRST_HANDOFF_CONTACT,RESCUE_RELEASE,RESCUE_CONTACT,RESCUE_READY} from './tray-rescue.js';
 import {VcrTablet} from './vcr-tablet.js';
 import {MEAL_BIRTH_DIALOGUE_AT} from './meal-birth.js';
 import {ShoppingJourney} from './shopping-journey.js';
@@ -334,7 +334,7 @@ export class MissionMachine{
     }
     const elapsed=Math.max(0,this.time-this.entered);
     if(this.phase==='meal-handoff'&&elapsed>=FIRST_HANDOFF_CONTACT)this.trayOwner='dragon';
-    if(this.phase==='aim-final'){if(elapsed>=RESCUE_CONTACT)this.trayOwner='helper';}if(this.phase==='meal-reclaim'&&elapsed>=1.35)this.trayOwner='hero';
+    if(this.phase==='aim-final')this.trayOwner=elapsed>=RESCUE_CONTACT?'helper':elapsed>=RESCUE_RELEASE?'air':'dragon';if(this.phase==='meal-reclaim'&&elapsed>=1.35)this.trayOwner='hero';
     if(this.phase==='charge')this.timedLine(chargeLines,elapsed);
     else if(this.phase==='director-reminder'&&elapsed>=2.7&&this.node?.id!=='director_reminder_1')this.line({id:'director_reminder_1',speaker:'system',text:'導播：差點忘了，謝謝龍董。',gesture:'look'},this.entered+2.7);
 

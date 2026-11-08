@@ -1,16 +1,16 @@
-// Shared story-clock score: state, performers, creature, UI and cameras.
+// Shared story clock: hold high, toss one real tray, catch, acknowledge, resume aim.
 export const FIRST_HANDOFF_DURATION=1.2;
 export const FIRST_HANDOFF_CONTACT=.70;
-export const RESCUE_CONTACT=8.80;
-export const RESCUE_READY=17;
+export const RESCUE_RELEASE=5.5;
+export const RESCUE_CONTACT=7;
+export const RESCUE_READY=12;
 export const RESCUE_WAITING=Object.freeze([.15,.025,14.45]);
-export const RESCUE_TIMES=Object.freeze({notice:2,arrive:4,lowered:6,almost:7.2,retry:7.8,contact:RESCUE_CONTACT,release:9.05,okay:9.5,thumb:10.6,guard:12,return:14,ready:RESCUE_READY});
+export const RESCUE_TIMES=Object.freeze({notice:1.5,arrive:4.5,release:RESCUE_RELEASE,contact:RESCUE_CONTACT,okay:8.2,thumb:8.8,guard:10.1,return:12,ready:RESCUE_READY});
 export const rescueEase=x=>{const v=Math.max(0,Math.min(1,x));return v*v*(3-2*v);};
 const mix=(a,b,t)=>a+(b-a)*t;
 export function rescueTiming(age=0){
- const e=Math.max(0,age),T=RESCUE_TIMES,lowered=rescueEase((e-T.arrive)/2)*(1-rescueEase((e-T.return)/3));
- const emoji=e<1?'':e<2.2?'👀':e<3.2?'✋':e<4.2?'😌':e<5.2?'🍱':e<6.4?'🫴':e<9.5?'':e<10.6?'👌':e<12?'👍':'';
- return {age:e,beat:e<2?'notice':e<4?'approach':e<6?'descend':e<7.8?'almost':e<8.8?'reach':e<9.5?'weight':e<10.6?'okay':e<12?'thumb':e<14?'guard':'return',approach:rescueEase((e-2)/2),lowered,release:rescueEase((e-9.05)/.45),press:Math.sin(Math.PI*rescueEase((e-8.65)/.85)),thumb:rescueEase((e-10.6)/.25)*(1-rescueEase((e-11.75)/.25)),emoji,ready:e>=RESCUE_READY};
+ const e=Math.max(0,age),emoji=e<2.2?'':e<2.9?'✋':e<3.6?'😌':e<4.3?'🍱':e<5.5?'🫴':e<8.2?'':e<8.8?'👌':e<10.1?'👍':'';
+ return {age:e,beat:e<1.5?'hold':e<2.2?'notice':e<4.5?'approach':e<5.5?'prepare-toss':e<7?'fall':e<8.2?'weight':e<8.8?'okay':e<10.1?'thumb':e<12?'guard':'aim',approach:rescueEase((e-2.2)/2.3),lowered:0,release:rescueEase((e-RESCUE_RELEASE)/.3),press:e>=7&&e<8.2?Math.sin(Math.PI*rescueEase((e-7)/1.2)):0,thumb:rescueEase((e-8.8)/.22)*(1-rescueEase((e-9.88)/.22)),emoji,ready:e>=RESCUE_READY};
 }
 function streetRoute(from,to,progress,out){
  const lane=Math.max(6.2,Math.min(from[2],to[2])),points=[from,[from[0],.025,lane],[to[0],.025,lane],to],lengths=[];let total=0;
@@ -20,14 +20,13 @@ function streetRoute(from,to,progress,out){
  out[1]=.025+.305*(1-rescueEase((out[2]-4.50)/.30));return out;
 }
 export function trayRescueFrame(age,donor,pickup=[-1.25,.33,3.90],out={}){
- const t=rescueTiming(age),base=out.base||[0,0,0],tray=out.tray||[0,0,0],start=RESCUE_WAITING,catchBase=[donor[0],donor[2]>4.65?.025:.33,donor[2]+.06];
- streetRoute(start,catchBase,t.approach,base);
- if(age>=14)streetRoute(catchBase,pickup,rescueEase((age-14)/6),base);
- const lowY=catchBase[1]+1.25,donorY=mix(donor[1],lowY,rescueEase((age-4)/2)),goal=out.handoffPoint||[donor[0],donorY,donor[2]],fullHeight=Math.max(.28,goal[1]-catchBase[1]);let height=.28;
- if(age>=6&&age<7.8)height=mix(.28,fullHeight-.14,rescueEase((age-6)/1.2))-.03*rescueEase((age-7.2)/.6);
- else if(age>=7.8&&age<RESCUE_CONTACT)height=mix(fullHeight-.17,fullHeight,rescueEase((age-7.8)/1));
- else if(age>=RESCUE_CONTACT)height=mix(fullHeight,.55,rescueEase((age-12)/2));
- tray[0]=age<12?goal[0]:mix(goal[0],base[0],rescueEase((age-12)/2));tray[1]=age<12?goal[1]:base[1]+height;tray[2]=age<12?goal[2]:mix(goal[2],base[2],rescueEase((age-12)/2));
- if(age>=14){tray[0]=base[0];tray[1]=base[1]+.55;tray[2]=base[2];height=.55;}
- Object.assign(out,t,{base,tray,height,carrying:age>=RESCUE_CONTACT});return out;
+ const t=rescueTiming(age),base=out.base||[0,0,0],tray=out.tray||[0,0,0],origin=out.handoffPoint||donor,catchBase=[donor[0]+.10,donor[2]>4.65?.025:.33,donor[2]+.42];
+ streetRoute(RESCUE_WAITING,catchBase,t.approach,base);
+ if(age>=12)streetRoute(catchBase,pickup,rescueEase((age-12)/6),base);
+ const u=Math.max(0,Math.min(1,(age-RESCUE_RELEASE)/(RESCUE_CONTACT-RESCUE_RELEASE))),catchY=catchBase[1]+.64;
+ let height=age<5.5?.28:age<6.7?mix(.28,.53,rescueEase((age-5.5)/.8)):mix(.53,.64,rescueEase((age-6.7)/.3));
+ if(age<RESCUE_RELEASE){tray[0]=origin[0];tray[1]=origin[1];tray[2]=origin[2];}
+ else if(age<RESCUE_CONTACT){tray[0]=mix(origin[0],catchBase[0],u);tray[1]=mix(origin[1],catchY,u*u)+.08*Math.sin(u*Math.PI);tray[2]=mix(origin[2],catchBase[2],u);}
+ else{height=.64-.045*t.press; height=mix(height,.55,rescueEase((age-10.1)/1.1));tray[0]=base[0];tray[1]=base[1]+height;tray[2]=base[2];}
+ Object.assign(out,t,{base,tray,height,airborne:age>=RESCUE_RELEASE&&age<RESCUE_CONTACT,tilt:age>=RESCUE_RELEASE&&age<RESCUE_CONTACT?Math.sin(u*Math.PI)*.065:0,carrying:age>=RESCUE_CONTACT});return out;
 }

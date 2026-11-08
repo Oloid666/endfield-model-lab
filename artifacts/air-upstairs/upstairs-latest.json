@@ -1,0 +1,3807 @@
+{
+  "frames": [
+    {
+      "phase": "complete",
+      "age": 0,
+      "node": null,
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.0229294901316346,
+          1.4200000298095916,
+          3.8299216550044424
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": true,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": false,
+          "mode": "unborn",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "actor": {
+        "phase": 0.8000000000000002,
+        "action": "rest",
+        "footDrift": 3.597058350194085e-14,
+        "moving": false,
+        "speed": 0,
+        "distance": 0,
+        "clothJoints": 58,
+        "dinner": "A",
+        "gesture": "",
+        "companion": {
+          "mode": "idle",
+          "distance": 0.7600000000000002,
+          "speed": 0,
+          "walk": 0,
+          "phase": 0,
+          "heading": 0.08,
+          "lookYaw": -0.55,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -2.007569296789991,
+            0.325,
+            3.310735167416571
+          ],
+          "target": [
+            -2.007569296789991,
+            0.325,
+            3.310735167416571
+          ],
+          "trailPoints": 1,
+          "glance": false
+        },
+        "arms": {
+          "shoulderL": 0,
+          "shoulderR": 0,
+          "elbowL": 0,
+          "elbowR": 0,
+          "wristL": 0,
+          "wristR": 0
+        },
+        "cinematic": {
+          "phase": "",
+          "lift": 0,
+          "forward": 0,
+          "heading": 0.08,
+          "airborne": false,
+          "dragonProjectile": false,
+          "recoil": 0
+        },
+        "smile": 0,
+        "smileJointCount": 12,
+        "companionAction": "normal",
+        "gait": {
+          "leftSwing": null,
+          "rightSwing": null,
+          "acceleration": 0,
+          "turn": 0
+        },
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "walkPhase": 0,
+        "walkBlend": 0,
+        "heading": 0.08,
+        "companionExpression": "normal",
+        "companionHandsVisible": true,
+        "dragonHeading": 0.4003709838169465,
+        "trayYaw": 0.08,
+        "mealOwner": "hero",
+        "mealSupport": [
+          -1.1980554489200377,
+          1.4200000000000002,
+          3.8979211090967025
+        ],
+        "handSupportErrors": [
+          4.70225918322817e-08,
+          3.2245924584899397e-08
+        ]
+      },
+      "hero": [
+        -1.25,
+        0.32,
+        3.25
+      ],
+      "dragon": [
+        -2.007569296789991,
+        0.325,
+        3.310735167416571
+      ],
+      "camera": {
+        "position": [
+          -2,
+          2.05,
+          9.900000000000004
+        ],
+        "target": [
+          -2,
+          1.3800000000000003,
+          3.35
+        ],
+        "fov": 39,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "canAttack": false,
+      "name": "claims-390",
+      "room": {
+        "mode": "claims",
+        "focus": "wide",
+        "cameraPosition": [
+          0.7,
+          2.8,
+          7.4
+        ],
+        "cameraFov": 47,
+        "board": {
+          "title": "笑點小學堂",
+          "lines": [
+            "解釋笑話就像解剖青蛙。",
+            "你會更了解牠，但青蛙死了。",
+            "手術成功，笑點死亡。"
+          ]
+        },
+        "representative": "serious",
+        "policyholderVisible": false,
+        "faceDetached": 0,
+        "completedStamps": 0,
+        "paperStamped": false,
+        "stampContactError": 0.012499999999999956
+      },
+      "communication": {
+        "visible": false,
+        "text": "",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "phase": "complete",
+      "age": 0,
+      "node": null,
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.0229294901316346,
+          1.4200000298095916,
+          3.8299216550044424
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": true,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": false,
+          "mode": "unborn",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "actor": {
+        "phase": 0.8000000000000002,
+        "action": "rest",
+        "footDrift": 3.597058350194085e-14,
+        "moving": false,
+        "speed": 0,
+        "distance": 0,
+        "clothJoints": 58,
+        "dinner": "A",
+        "gesture": "",
+        "companion": {
+          "mode": "idle",
+          "distance": 0.7600000000000002,
+          "speed": 0,
+          "walk": 0,
+          "phase": 0,
+          "heading": 0.08,
+          "lookYaw": -0.55,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -2.007569296789991,
+            0.325,
+            3.310735167416571
+          ],
+          "target": [
+            -2.007569296789991,
+            0.325,
+            3.310735167416571
+          ],
+          "trailPoints": 1,
+          "glance": false
+        },
+        "arms": {
+          "shoulderL": 0,
+          "shoulderR": 0,
+          "elbowL": 0,
+          "elbowR": 0,
+          "wristL": 0,
+          "wristR": 0
+        },
+        "cinematic": {
+          "phase": "",
+          "lift": 0,
+          "forward": 0,
+          "heading": 0.08,
+          "airborne": false,
+          "dragonProjectile": false,
+          "recoil": 0
+        },
+        "smile": 0,
+        "smileJointCount": 12,
+        "companionAction": "normal",
+        "gait": {
+          "leftSwing": null,
+          "rightSwing": null,
+          "acceleration": 0,
+          "turn": 0
+        },
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "walkPhase": 0,
+        "walkBlend": 0,
+        "heading": 0.08,
+        "companionExpression": "normal",
+        "companionHandsVisible": true,
+        "dragonHeading": 0.4003709838169465,
+        "trayYaw": 0.08,
+        "mealOwner": "hero",
+        "mealSupport": [
+          -1.1980554489200377,
+          1.4200000000000002,
+          3.8979211090967025
+        ],
+        "handSupportErrors": [
+          4.70225918322817e-08,
+          3.2245924584899397e-08
+        ]
+      },
+      "hero": [
+        -1.25,
+        0.32,
+        3.25
+      ],
+      "dragon": [
+        -2.007569296789991,
+        0.325,
+        3.310735167416571
+      ],
+      "camera": {
+        "position": [
+          -2,
+          2.05,
+          9.900000000000004
+        ],
+        "target": [
+          -2,
+          1.3800000000000003,
+          3.35
+        ],
+        "fov": 39,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "canAttack": false,
+      "name": "claims-client-390",
+      "room": {
+        "mode": "claims",
+        "focus": "representative",
+        "cameraPosition": [
+          1.7172839503335164,
+          2.120000000189684,
+          1.8709876558632876
+        ],
+        "cameraFov": 36.00000000306841,
+        "board": {
+          "title": "笑點小學堂",
+          "lines": [
+            "解釋笑話就像解剖青蛙。",
+            "你會更了解牠，但青蛙死了。",
+            "手術成功，笑點死亡。"
+          ]
+        },
+        "representative": "serious",
+        "policyholderVisible": false,
+        "faceDetached": 0,
+        "completedStamps": 0,
+        "paperStamped": false,
+        "stampContactError": 0
+      },
+      "communication": {
+        "visible": false,
+        "text": "",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "phase": "complete",
+      "age": 0,
+      "node": null,
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.0229294901316346,
+          1.4200000298095916,
+          3.8299216550044424
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": true,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": false,
+          "mode": "unborn",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "actor": {
+        "phase": 0.8000000000000002,
+        "action": "rest",
+        "footDrift": 3.597058350194085e-14,
+        "moving": false,
+        "speed": 0,
+        "distance": 0,
+        "clothJoints": 58,
+        "dinner": "A",
+        "gesture": "",
+        "companion": {
+          "mode": "idle",
+          "distance": 0.7600000000000002,
+          "speed": 0,
+          "walk": 0,
+          "phase": 0,
+          "heading": 0.08,
+          "lookYaw": -0.55,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -2.007569296789991,
+            0.325,
+            3.310735167416571
+          ],
+          "target": [
+            -2.007569296789991,
+            0.325,
+            3.310735167416571
+          ],
+          "trailPoints": 1,
+          "glance": false
+        },
+        "arms": {
+          "shoulderL": 0,
+          "shoulderR": 0,
+          "elbowL": 0,
+          "elbowR": 0,
+          "wristL": 0,
+          "wristR": 0
+        },
+        "cinematic": {
+          "phase": "",
+          "lift": 0,
+          "forward": 0,
+          "heading": 0.08,
+          "airborne": false,
+          "dragonProjectile": false,
+          "recoil": 0
+        },
+        "smile": 0,
+        "smileJointCount": 12,
+        "companionAction": "normal",
+        "gait": {
+          "leftSwing": null,
+          "rightSwing": null,
+          "acceleration": 0,
+          "turn": 0
+        },
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "walkPhase": 0,
+        "walkBlend": 0,
+        "heading": 0.08,
+        "companionExpression": "normal",
+        "companionHandsVisible": true,
+        "dragonHeading": 0.4003709838169465,
+        "trayYaw": 0.08,
+        "mealOwner": "hero",
+        "mealSupport": [
+          -1.1980554489200377,
+          1.4200000000000002,
+          3.8979211090967025
+        ],
+        "handSupportErrors": [
+          4.70225918322817e-08,
+          3.2245924584899397e-08
+        ]
+      },
+      "hero": [
+        -1.25,
+        0.32,
+        3.25
+      ],
+      "dragon": [
+        -2.007569296789991,
+        0.325,
+        3.310735167416571
+      ],
+      "camera": {
+        "position": [
+          -2,
+          2.05,
+          9.900000000000004
+        ],
+        "target": [
+          -2,
+          1.3800000000000003,
+          3.35
+        ],
+        "fov": 39,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "canAttack": false,
+      "name": "classroom-390",
+      "room": {
+        "mode": "classroom",
+        "focus": "wide",
+        "cameraPosition": [
+          0.95,
+          2.4,
+          4.7727867546799665
+        ],
+        "cameraFov": 47,
+        "board": {
+          "title": "手術成功，笑點死亡。",
+          "lines": [
+            "解釋笑話就像解剖青蛙。",
+            "你會更了解牠，但青蛙死了。"
+          ]
+        },
+        "representative": "serious",
+        "policyholderVisible": false,
+        "faceDetached": 0,
+        "completedStamps": 0,
+        "paperStamped": false,
+        "stampContactError": 0
+      },
+      "communication": {
+        "visible": false,
+        "text": "",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "phase": "complete",
+      "age": 0,
+      "node": null,
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.0229294901316346,
+          1.4200000298095916,
+          3.8299216550044424
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": true,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": false,
+          "mode": "unborn",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "actor": {
+        "phase": 0.8000000000000002,
+        "action": "rest",
+        "footDrift": 3.597058350194085e-14,
+        "moving": false,
+        "speed": 0,
+        "distance": 0,
+        "clothJoints": 58,
+        "dinner": "A",
+        "gesture": "",
+        "companion": {
+          "mode": "idle",
+          "distance": 0.7600000000000002,
+          "speed": 0,
+          "walk": 0,
+          "phase": 0,
+          "heading": 0.08,
+          "lookYaw": -0.55,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -2.007569296789991,
+            0.325,
+            3.310735167416571
+          ],
+          "target": [
+            -2.007569296789991,
+            0.325,
+            3.310735167416571
+          ],
+          "trailPoints": 1,
+          "glance": false
+        },
+        "arms": {
+          "shoulderL": 0,
+          "shoulderR": 0,
+          "elbowL": 0,
+          "elbowR": 0,
+          "wristL": 0,
+          "wristR": 0
+        },
+        "cinematic": {
+          "phase": "",
+          "lift": 0,
+          "forward": 0,
+          "heading": 0.08,
+          "airborne": false,
+          "dragonProjectile": false,
+          "recoil": 0
+        },
+        "smile": 0,
+        "smileJointCount": 12,
+        "companionAction": "normal",
+        "gait": {
+          "leftSwing": null,
+          "rightSwing": null,
+          "acceleration": 0,
+          "turn": 0
+        },
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "walkPhase": 0,
+        "walkBlend": 0,
+        "heading": 0.08,
+        "companionExpression": "normal",
+        "companionHandsVisible": true,
+        "dragonHeading": 0.4003709838169465,
+        "trayYaw": 0.08,
+        "mealOwner": "hero",
+        "mealSupport": [
+          -1.1980554489200377,
+          1.4200000000000002,
+          3.8979211090967025
+        ],
+        "handSupportErrors": [
+          4.70225918322817e-08,
+          3.2245924584899397e-08
+        ]
+      },
+      "hero": [
+        -1.25,
+        0.32,
+        3.25
+      ],
+      "dragon": [
+        -2.007569296789991,
+        0.325,
+        3.310735167416571
+      ],
+      "camera": {
+        "position": [
+          -2,
+          2.05,
+          9.900000000000004
+        ],
+        "target": [
+          -2,
+          1.3800000000000003,
+          3.35
+        ],
+        "fov": 39,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "canAttack": false,
+      "name": "reaction-390",
+      "room": {
+        "mode": "classroom",
+        "focus": "reaction",
+        "cameraPosition": [
+          2.3199996107540546,
+          1.66000010211403,
+          1.0500006541316944
+        ],
+        "cameraFov": 36.00000133723188,
+        "board": {
+          "title": "講師補充",
+          "lines": [
+            "手術成功，笑點死亡。"
+          ]
+        },
+        "representative": "serious",
+        "policyholderVisible": false,
+        "faceDetached": 0,
+        "completedStamps": 0,
+        "paperStamped": false,
+        "stampContactError": 0
+      },
+      "communication": {
+        "visible": false,
+        "text": "",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "phase": "complete",
+      "age": 0,
+      "node": null,
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.0229294901316346,
+          1.4200000298095916,
+          3.8299216550044424
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": true,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": false,
+          "mode": "unborn",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "actor": {
+        "phase": 0.8000000000000002,
+        "action": "rest",
+        "footDrift": 3.597058350194085e-14,
+        "moving": false,
+        "speed": 0,
+        "distance": 0,
+        "clothJoints": 58,
+        "dinner": "A",
+        "gesture": "",
+        "companion": {
+          "mode": "idle",
+          "distance": 0.7600000000000002,
+          "speed": 0,
+          "walk": 0,
+          "phase": 0,
+          "heading": 0.08,
+          "lookYaw": -0.55,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -2.007569296789991,
+            0.325,
+            3.310735167416571
+          ],
+          "target": [
+            -2.007569296789991,
+            0.325,
+            3.310735167416571
+          ],
+          "trailPoints": 1,
+          "glance": false
+        },
+        "arms": {
+          "shoulderL": 0,
+          "shoulderR": 0,
+          "elbowL": 0,
+          "elbowR": 0,
+          "wristL": 0,
+          "wristR": 0
+        },
+        "cinematic": {
+          "phase": "",
+          "lift": 0,
+          "forward": 0,
+          "heading": 0.08,
+          "airborne": false,
+          "dragonProjectile": false,
+          "recoil": 0
+        },
+        "smile": 0,
+        "smileJointCount": 12,
+        "companionAction": "normal",
+        "gait": {
+          "leftSwing": null,
+          "rightSwing": null,
+          "acceleration": 0,
+          "turn": 0
+        },
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "walkPhase": 0,
+        "walkBlend": 0,
+        "heading": 0.08,
+        "companionExpression": "normal",
+        "companionHandsVisible": true,
+        "dragonHeading": 0.4003709838169465,
+        "trayYaw": 0.08,
+        "mealOwner": "hero",
+        "mealSupport": [
+          -1.1980554489200377,
+          1.4200000000000002,
+          3.8979211090967025
+        ],
+        "handSupportErrors": [
+          4.70225918322817e-08,
+          3.2245924584899397e-08
+        ]
+      },
+      "hero": [
+        -1.25,
+        0.32,
+        3.25
+      ],
+      "dragon": [
+        -2.007569296789991,
+        0.325,
+        3.310735167416571
+      ],
+      "camera": {
+        "position": [
+          -2,
+          2.05,
+          9.900000000000004
+        ],
+        "target": [
+          -2,
+          1.3800000000000003,
+          3.35
+        ],
+        "fov": 39,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "canAttack": false,
+      "name": "reading-390",
+      "room": {
+        "mode": "classroom",
+        "focus": "reaction",
+        "cameraPosition": [
+          2.319999856804419,
+          1.6600000375656523,
+          1.0500002406416022
+        ],
+        "cameraFov": 36.00000133723188,
+        "board": {
+          "title": "講師補充",
+          "lines": [
+            "手術成功，笑點死亡。"
+          ]
+        },
+        "representative": "serious",
+        "policyholderVisible": false,
+        "faceDetached": 0,
+        "completedStamps": 0,
+        "paperStamped": false,
+        "stampContactError": 0
+      },
+      "communication": {
+        "visible": false,
+        "text": "",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "phase": "complete",
+      "age": 0,
+      "node": null,
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.0229294901316346,
+          1.4200000298095916,
+          3.8299216550044424
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": true,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": false,
+          "mode": "unborn",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "actor": {
+        "phase": 0.8000000000000002,
+        "action": "rest",
+        "footDrift": 3.597058350194085e-14,
+        "moving": false,
+        "speed": 0,
+        "distance": 0,
+        "clothJoints": 58,
+        "dinner": "A",
+        "gesture": "",
+        "companion": {
+          "mode": "idle",
+          "distance": 0.7600000000000002,
+          "speed": 0,
+          "walk": 0,
+          "phase": 0,
+          "heading": 0.08,
+          "lookYaw": -0.55,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -2.007569296789991,
+            0.325,
+            3.310735167416571
+          ],
+          "target": [
+            -2.007569296789991,
+            0.325,
+            3.310735167416571
+          ],
+          "trailPoints": 1,
+          "glance": false
+        },
+        "arms": {
+          "shoulderL": 0,
+          "shoulderR": 0,
+          "elbowL": 0,
+          "elbowR": 0,
+          "wristL": 0,
+          "wristR": 0
+        },
+        "cinematic": {
+          "phase": "",
+          "lift": 0,
+          "forward": 0,
+          "heading": 0.08,
+          "airborne": false,
+          "dragonProjectile": false,
+          "recoil": 0
+        },
+        "smile": 0,
+        "smileJointCount": 12,
+        "companionAction": "normal",
+        "gait": {
+          "leftSwing": null,
+          "rightSwing": null,
+          "acceleration": 0,
+          "turn": 0
+        },
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "walkPhase": 0,
+        "walkBlend": 0,
+        "heading": 0.08,
+        "companionExpression": "normal",
+        "companionHandsVisible": true,
+        "dragonHeading": 0.4003709838169465,
+        "trayYaw": 0.08,
+        "mealOwner": "hero",
+        "mealSupport": [
+          -1.1980554489200377,
+          1.4200000000000002,
+          3.8979211090967025
+        ],
+        "handSupportErrors": [
+          4.70225918322817e-08,
+          3.2245924584899397e-08
+        ]
+      },
+      "hero": [
+        -1.25,
+        0.32,
+        3.25
+      ],
+      "dragon": [
+        -2.007569296789991,
+        0.325,
+        3.310735167416571
+      ],
+      "camera": {
+        "position": [
+          -2,
+          2.0500000000000007,
+          9.1
+        ],
+        "target": [
+          -2,
+          1.3800000000000003,
+          3.35
+        ],
+        "fov": 39,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "canAttack": false,
+      "name": "claims-844",
+      "room": {
+        "mode": "claims",
+        "focus": "wide",
+        "cameraPosition": [
+          0.7,
+          2.8,
+          7.4
+        ],
+        "cameraFov": 47,
+        "board": {
+          "title": "講師補充",
+          "lines": [
+            "手術成功，笑點死亡。"
+          ]
+        },
+        "representative": "serious",
+        "policyholderVisible": false,
+        "faceDetached": 0,
+        "completedStamps": 0,
+        "paperStamped": false,
+        "stampContactError": 0
+      },
+      "communication": {
+        "visible": false,
+        "text": "",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "phase": "complete",
+      "age": 0,
+      "node": null,
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.0229294901316346,
+          1.4200000298095916,
+          3.8299216550044424
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": true,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": false,
+          "mode": "unborn",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "actor": {
+        "phase": 0.8000000000000002,
+        "action": "rest",
+        "footDrift": 3.597058350194085e-14,
+        "moving": false,
+        "speed": 0,
+        "distance": 0,
+        "clothJoints": 58,
+        "dinner": "A",
+        "gesture": "",
+        "companion": {
+          "mode": "idle",
+          "distance": 0.7600000000000002,
+          "speed": 0,
+          "walk": 0,
+          "phase": 0,
+          "heading": 0.08,
+          "lookYaw": -0.55,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -2.007569296789991,
+            0.325,
+            3.310735167416571
+          ],
+          "target": [
+            -2.007569296789991,
+            0.325,
+            3.310735167416571
+          ],
+          "trailPoints": 1,
+          "glance": false
+        },
+        "arms": {
+          "shoulderL": 0,
+          "shoulderR": 0,
+          "elbowL": 0,
+          "elbowR": 0,
+          "wristL": 0,
+          "wristR": 0
+        },
+        "cinematic": {
+          "phase": "",
+          "lift": 0,
+          "forward": 0,
+          "heading": 0.08,
+          "airborne": false,
+          "dragonProjectile": false,
+          "recoil": 0
+        },
+        "smile": 0,
+        "smileJointCount": 12,
+        "companionAction": "normal",
+        "gait": {
+          "leftSwing": null,
+          "rightSwing": null,
+          "acceleration": 0,
+          "turn": 0
+        },
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "walkPhase": 0,
+        "walkBlend": 0,
+        "heading": 0.08,
+        "companionExpression": "normal",
+        "companionHandsVisible": true,
+        "dragonHeading": 0.4003709838169465,
+        "trayYaw": 0.08,
+        "mealOwner": "hero",
+        "mealSupport": [
+          -1.1980554489200377,
+          1.4200000000000002,
+          3.8979211090967025
+        ],
+        "handSupportErrors": [
+          4.70225918322817e-08,
+          3.2245924584899397e-08
+        ]
+      },
+      "hero": [
+        -1.25,
+        0.32,
+        3.25
+      ],
+      "dragon": [
+        -2.007569296789991,
+        0.325,
+        3.310735167416571
+      ],
+      "camera": {
+        "position": [
+          -2,
+          2.0500000000000007,
+          9.1
+        ],
+        "target": [
+          -2,
+          1.3800000000000003,
+          3.35
+        ],
+        "fov": 39,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "canAttack": false,
+      "name": "claims-client-844",
+      "room": {
+        "mode": "claims",
+        "focus": "representative",
+        "cameraPosition": [
+          1.717283950333514,
+          2.120000000189684,
+          1.8709876558632859
+        ],
+        "cameraFov": 36.00000000306841,
+        "board": {
+          "title": "講師補充",
+          "lines": [
+            "手術成功，笑點死亡。"
+          ]
+        },
+        "representative": "serious",
+        "policyholderVisible": false,
+        "faceDetached": 0,
+        "completedStamps": 0,
+        "paperStamped": false,
+        "stampContactError": 0
+      },
+      "communication": {
+        "visible": false,
+        "text": "",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "phase": "complete",
+      "age": 0,
+      "node": null,
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.0229294901316346,
+          1.4200000298095916,
+          3.8299216550044424
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": true,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": false,
+          "mode": "unborn",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "actor": {
+        "phase": 0.8000000000000002,
+        "action": "rest",
+        "footDrift": 3.597058350194085e-14,
+        "moving": false,
+        "speed": 0,
+        "distance": 0,
+        "clothJoints": 58,
+        "dinner": "A",
+        "gesture": "",
+        "companion": {
+          "mode": "idle",
+          "distance": 0.7600000000000002,
+          "speed": 0,
+          "walk": 0,
+          "phase": 0,
+          "heading": 0.08,
+          "lookYaw": -0.55,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -2.007569296789991,
+            0.325,
+            3.310735167416571
+          ],
+          "target": [
+            -2.007569296789991,
+            0.325,
+            3.310735167416571
+          ],
+          "trailPoints": 1,
+          "glance": false
+        },
+        "arms": {
+          "shoulderL": 0,
+          "shoulderR": 0,
+          "elbowL": 0,
+          "elbowR": 0,
+          "wristL": 0,
+          "wristR": 0
+        },
+        "cinematic": {
+          "phase": "",
+          "lift": 0,
+          "forward": 0,
+          "heading": 0.08,
+          "airborne": false,
+          "dragonProjectile": false,
+          "recoil": 0
+        },
+        "smile": 0,
+        "smileJointCount": 12,
+        "companionAction": "normal",
+        "gait": {
+          "leftSwing": null,
+          "rightSwing": null,
+          "acceleration": 0,
+          "turn": 0
+        },
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "walkPhase": 0,
+        "walkBlend": 0,
+        "heading": 0.08,
+        "companionExpression": "normal",
+        "companionHandsVisible": true,
+        "dragonHeading": 0.4003709838169465,
+        "trayYaw": 0.08,
+        "mealOwner": "hero",
+        "mealSupport": [
+          -1.1980554489200377,
+          1.4200000000000002,
+          3.8979211090967025
+        ],
+        "handSupportErrors": [
+          4.70225918322817e-08,
+          3.2245924584899397e-08
+        ]
+      },
+      "hero": [
+        -1.25,
+        0.32,
+        3.25
+      ],
+      "dragon": [
+        -2.007569296789991,
+        0.325,
+        3.310735167416571
+      ],
+      "camera": {
+        "position": [
+          -2,
+          2.0500000000000007,
+          9.1
+        ],
+        "target": [
+          -2,
+          1.3800000000000003,
+          3.35
+        ],
+        "fov": 39,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "canAttack": false,
+      "name": "classroom-844",
+      "room": {
+        "mode": "classroom",
+        "focus": "wide",
+        "cameraPosition": [
+          0.95,
+          2.4,
+          5.299112394572441
+        ],
+        "cameraFov": 47,
+        "board": {
+          "title": "手術成功，笑點死亡。",
+          "lines": [
+            "解釋笑話就像解剖青蛙。",
+            "你會更了解牠，但青蛙死了。"
+          ]
+        },
+        "representative": "serious",
+        "policyholderVisible": false,
+        "faceDetached": 0,
+        "completedStamps": 0,
+        "paperStamped": false,
+        "stampContactError": 0
+      },
+      "communication": {
+        "visible": false,
+        "text": "",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "phase": "complete",
+      "age": 0,
+      "node": null,
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.0229294901316346,
+          1.4200000298095916,
+          3.8299216550044424
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": true,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": false,
+          "mode": "unborn",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "actor": {
+        "phase": 0.8000000000000002,
+        "action": "rest",
+        "footDrift": 3.597058350194085e-14,
+        "moving": false,
+        "speed": 0,
+        "distance": 0,
+        "clothJoints": 58,
+        "dinner": "A",
+        "gesture": "",
+        "companion": {
+          "mode": "idle",
+          "distance": 0.7600000000000002,
+          "speed": 0,
+          "walk": 0,
+          "phase": 0,
+          "heading": 0.08,
+          "lookYaw": -0.55,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -2.007569296789991,
+            0.325,
+            3.310735167416571
+          ],
+          "target": [
+            -2.007569296789991,
+            0.325,
+            3.310735167416571
+          ],
+          "trailPoints": 1,
+          "glance": false
+        },
+        "arms": {
+          "shoulderL": 0,
+          "shoulderR": 0,
+          "elbowL": 0,
+          "elbowR": 0,
+          "wristL": 0,
+          "wristR": 0
+        },
+        "cinematic": {
+          "phase": "",
+          "lift": 0,
+          "forward": 0,
+          "heading": 0.08,
+          "airborne": false,
+          "dragonProjectile": false,
+          "recoil": 0
+        },
+        "smile": 0,
+        "smileJointCount": 12,
+        "companionAction": "normal",
+        "gait": {
+          "leftSwing": null,
+          "rightSwing": null,
+          "acceleration": 0,
+          "turn": 0
+        },
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "walkPhase": 0,
+        "walkBlend": 0,
+        "heading": 0.08,
+        "companionExpression": "normal",
+        "companionHandsVisible": true,
+        "dragonHeading": 0.4003709838169465,
+        "trayYaw": 0.08,
+        "mealOwner": "hero",
+        "mealSupport": [
+          -1.1980554489200377,
+          1.4200000000000002,
+          3.8979211090967025
+        ],
+        "handSupportErrors": [
+          4.70225918322817e-08,
+          3.2245924584899397e-08
+        ]
+      },
+      "hero": [
+        -1.25,
+        0.32,
+        3.25
+      ],
+      "dragon": [
+        -2.007569296789991,
+        0.325,
+        3.310735167416571
+      ],
+      "camera": {
+        "position": [
+          -2,
+          2.0500000000000007,
+          9.1
+        ],
+        "target": [
+          -2,
+          1.3800000000000003,
+          3.35
+        ],
+        "fov": 39,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "canAttack": false,
+      "name": "reaction-844",
+      "room": {
+        "mode": "classroom",
+        "focus": "reaction",
+        "cameraPosition": [
+          2.3199996107540546,
+          1.66000010211403,
+          1.050000748899536
+        ],
+        "cameraFov": 36.00000133723188,
+        "board": {
+          "title": "講師補充",
+          "lines": [
+            "手術成功，笑點死亡。"
+          ]
+        },
+        "representative": "serious",
+        "policyholderVisible": false,
+        "faceDetached": 0,
+        "completedStamps": 0,
+        "paperStamped": false,
+        "stampContactError": 0
+      },
+      "communication": {
+        "visible": false,
+        "text": "",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "phase": "complete",
+      "age": 0,
+      "node": null,
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.0229294901316346,
+          1.4200000298095916,
+          3.8299216550044424
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": true,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": false,
+          "mode": "unborn",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "actor": {
+        "phase": 0.8000000000000002,
+        "action": "rest",
+        "footDrift": 3.597058350194085e-14,
+        "moving": false,
+        "speed": 0,
+        "distance": 0,
+        "clothJoints": 58,
+        "dinner": "A",
+        "gesture": "",
+        "companion": {
+          "mode": "idle",
+          "distance": 0.7600000000000002,
+          "speed": 0,
+          "walk": 0,
+          "phase": 0,
+          "heading": 0.08,
+          "lookYaw": -0.55,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -2.007569296789991,
+            0.325,
+            3.310735167416571
+          ],
+          "target": [
+            -2.007569296789991,
+            0.325,
+            3.310735167416571
+          ],
+          "trailPoints": 1,
+          "glance": false
+        },
+        "arms": {
+          "shoulderL": 0,
+          "shoulderR": 0,
+          "elbowL": 0,
+          "elbowR": 0,
+          "wristL": 0,
+          "wristR": 0
+        },
+        "cinematic": {
+          "phase": "",
+          "lift": 0,
+          "forward": 0,
+          "heading": 0.08,
+          "airborne": false,
+          "dragonProjectile": false,
+          "recoil": 0
+        },
+        "smile": 0,
+        "smileJointCount": 12,
+        "companionAction": "normal",
+        "gait": {
+          "leftSwing": null,
+          "rightSwing": null,
+          "acceleration": 0,
+          "turn": 0
+        },
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "walkPhase": 0,
+        "walkBlend": 0,
+        "heading": 0.08,
+        "companionExpression": "normal",
+        "companionHandsVisible": true,
+        "dragonHeading": 0.4003709838169465,
+        "trayYaw": 0.08,
+        "mealOwner": "hero",
+        "mealSupport": [
+          -1.1980554489200377,
+          1.4200000000000002,
+          3.8979211090967025
+        ],
+        "handSupportErrors": [
+          4.70225918322817e-08,
+          3.2245924584899397e-08
+        ]
+      },
+      "hero": [
+        -1.25,
+        0.32,
+        3.25
+      ],
+      "dragon": [
+        -2.007569296789991,
+        0.325,
+        3.310735167416571
+      ],
+      "camera": {
+        "position": [
+          -2,
+          2.0500000000000007,
+          9.1
+        ],
+        "target": [
+          -2,
+          1.3800000000000003,
+          3.35
+        ],
+        "fov": 39,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "canAttack": false,
+      "name": "reading-844",
+      "room": {
+        "mode": "classroom",
+        "focus": "reaction",
+        "cameraPosition": [
+          2.319999856804419,
+          1.6600000375656523,
+          1.0500002755047428
+        ],
+        "cameraFov": 36.00000133723188,
+        "board": {
+          "title": "講師補充",
+          "lines": [
+            "手術成功，笑點死亡。"
+          ]
+        },
+        "representative": "serious",
+        "policyholderVisible": false,
+        "faceDetached": 0,
+        "completedStamps": 0,
+        "paperStamped": false,
+        "stampContactError": 0
+      },
+      "communication": {
+        "visible": false,
+        "text": "",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "phase": "complete",
+      "age": 0,
+      "node": null,
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.0229294901316346,
+          1.4200000298095916,
+          3.8299216550044424
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": true,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": false,
+          "mode": "unborn",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "actor": {
+        "phase": 0.8000000000000002,
+        "action": "rest",
+        "footDrift": 3.597058350194085e-14,
+        "moving": false,
+        "speed": 0,
+        "distance": 0,
+        "clothJoints": 58,
+        "dinner": "A",
+        "gesture": "",
+        "companion": {
+          "mode": "idle",
+          "distance": 0.7600000000000002,
+          "speed": 0,
+          "walk": 0,
+          "phase": 0,
+          "heading": 0.08,
+          "lookYaw": -0.55,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -2.007569296789991,
+            0.325,
+            3.310735167416571
+          ],
+          "target": [
+            -2.007569296789991,
+            0.325,
+            3.310735167416571
+          ],
+          "trailPoints": 1,
+          "glance": false
+        },
+        "arms": {
+          "shoulderL": 0,
+          "shoulderR": 0,
+          "elbowL": 0,
+          "elbowR": 0,
+          "wristL": 0,
+          "wristR": 0
+        },
+        "cinematic": {
+          "phase": "",
+          "lift": 0,
+          "forward": 0,
+          "heading": 0.08,
+          "airborne": false,
+          "dragonProjectile": false,
+          "recoil": 0
+        },
+        "smile": 0,
+        "smileJointCount": 12,
+        "companionAction": "normal",
+        "gait": {
+          "leftSwing": null,
+          "rightSwing": null,
+          "acceleration": 0,
+          "turn": 0
+        },
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "walkPhase": 0,
+        "walkBlend": 0,
+        "heading": 0.08,
+        "companionExpression": "normal",
+        "companionHandsVisible": true,
+        "dragonHeading": 0.4003709838169465,
+        "trayYaw": 0.08,
+        "mealOwner": "hero",
+        "mealSupport": [
+          -1.1980554489200377,
+          1.4200000000000002,
+          3.8979211090967025
+        ],
+        "handSupportErrors": [
+          4.70225918322817e-08,
+          3.2245924584899397e-08
+        ]
+      },
+      "hero": [
+        -1.25,
+        0.32,
+        3.25
+      ],
+      "dragon": [
+        -2.007569296789991,
+        0.325,
+        3.310735167416571
+      ],
+      "camera": {
+        "position": [
+          -2,
+          2.0500000000000007,
+          9.1
+        ],
+        "target": [
+          -2,
+          1.3800000000000003,
+          3.35
+        ],
+        "fov": 39,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "canAttack": false,
+      "name": "claims-1366",
+      "room": {
+        "mode": "claims",
+        "focus": "wide",
+        "cameraPosition": [
+          0.7,
+          2.8,
+          7.4
+        ],
+        "cameraFov": 47,
+        "board": {
+          "title": "講師補充",
+          "lines": [
+            "手術成功，笑點死亡。"
+          ]
+        },
+        "representative": "serious",
+        "policyholderVisible": false,
+        "faceDetached": 0,
+        "completedStamps": 0,
+        "paperStamped": false,
+        "stampContactError": 0
+      },
+      "communication": {
+        "visible": false,
+        "text": "",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "phase": "complete",
+      "age": 0,
+      "node": null,
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.0229294901316346,
+          1.4200000298095916,
+          3.8299216550044424
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": true,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": false,
+          "mode": "unborn",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "actor": {
+        "phase": 0.8000000000000002,
+        "action": "rest",
+        "footDrift": 3.597058350194085e-14,
+        "moving": false,
+        "speed": 0,
+        "distance": 0,
+        "clothJoints": 58,
+        "dinner": "A",
+        "gesture": "",
+        "companion": {
+          "mode": "idle",
+          "distance": 0.7600000000000002,
+          "speed": 0,
+          "walk": 0,
+          "phase": 0,
+          "heading": 0.08,
+          "lookYaw": -0.55,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -2.007569296789991,
+            0.325,
+            3.310735167416571
+          ],
+          "target": [
+            -2.007569296789991,
+            0.325,
+            3.310735167416571
+          ],
+          "trailPoints": 1,
+          "glance": false
+        },
+        "arms": {
+          "shoulderL": 0,
+          "shoulderR": 0,
+          "elbowL": 0,
+          "elbowR": 0,
+          "wristL": 0,
+          "wristR": 0
+        },
+        "cinematic": {
+          "phase": "",
+          "lift": 0,
+          "forward": 0,
+          "heading": 0.08,
+          "airborne": false,
+          "dragonProjectile": false,
+          "recoil": 0
+        },
+        "smile": 0,
+        "smileJointCount": 12,
+        "companionAction": "normal",
+        "gait": {
+          "leftSwing": null,
+          "rightSwing": null,
+          "acceleration": 0,
+          "turn": 0
+        },
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "walkPhase": 0,
+        "walkBlend": 0,
+        "heading": 0.08,
+        "companionExpression": "normal",
+        "companionHandsVisible": true,
+        "dragonHeading": 0.4003709838169465,
+        "trayYaw": 0.08,
+        "mealOwner": "hero",
+        "mealSupport": [
+          -1.1980554489200377,
+          1.4200000000000002,
+          3.8979211090967025
+        ],
+        "handSupportErrors": [
+          4.70225918322817e-08,
+          3.2245924584899397e-08
+        ]
+      },
+      "hero": [
+        -1.25,
+        0.32,
+        3.25
+      ],
+      "dragon": [
+        -2.007569296789991,
+        0.325,
+        3.310735167416571
+      ],
+      "camera": {
+        "position": [
+          -2,
+          2.0500000000000007,
+          9.1
+        ],
+        "target": [
+          -2,
+          1.3800000000000003,
+          3.35
+        ],
+        "fov": 39,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "canAttack": false,
+      "name": "claims-client-1366",
+      "room": {
+        "mode": "claims",
+        "focus": "representative",
+        "cameraPosition": [
+          1.717283950333516,
+          2.120000000189684,
+          1.8709876558632876
+        ],
+        "cameraFov": 36.00000000306841,
+        "board": {
+          "title": "講師補充",
+          "lines": [
+            "手術成功，笑點死亡。"
+          ]
+        },
+        "representative": "serious",
+        "policyholderVisible": false,
+        "faceDetached": 0,
+        "completedStamps": 0,
+        "paperStamped": false,
+        "stampContactError": 0
+      },
+      "communication": {
+        "visible": false,
+        "text": "",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "phase": "complete",
+      "age": 0,
+      "node": null,
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.0229294901316346,
+          1.4200000298095916,
+          3.8299216550044424
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": true,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": false,
+          "mode": "unborn",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "actor": {
+        "phase": 0.8000000000000002,
+        "action": "rest",
+        "footDrift": 3.597058350194085e-14,
+        "moving": false,
+        "speed": 0,
+        "distance": 0,
+        "clothJoints": 58,
+        "dinner": "A",
+        "gesture": "",
+        "companion": {
+          "mode": "idle",
+          "distance": 0.7600000000000002,
+          "speed": 0,
+          "walk": 0,
+          "phase": 0,
+          "heading": 0.08,
+          "lookYaw": -0.55,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -2.007569296789991,
+            0.325,
+            3.310735167416571
+          ],
+          "target": [
+            -2.007569296789991,
+            0.325,
+            3.310735167416571
+          ],
+          "trailPoints": 1,
+          "glance": false
+        },
+        "arms": {
+          "shoulderL": 0,
+          "shoulderR": 0,
+          "elbowL": 0,
+          "elbowR": 0,
+          "wristL": 0,
+          "wristR": 0
+        },
+        "cinematic": {
+          "phase": "",
+          "lift": 0,
+          "forward": 0,
+          "heading": 0.08,
+          "airborne": false,
+          "dragonProjectile": false,
+          "recoil": 0
+        },
+        "smile": 0,
+        "smileJointCount": 12,
+        "companionAction": "normal",
+        "gait": {
+          "leftSwing": null,
+          "rightSwing": null,
+          "acceleration": 0,
+          "turn": 0
+        },
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "walkPhase": 0,
+        "walkBlend": 0,
+        "heading": 0.08,
+        "companionExpression": "normal",
+        "companionHandsVisible": true,
+        "dragonHeading": 0.4003709838169465,
+        "trayYaw": 0.08,
+        "mealOwner": "hero",
+        "mealSupport": [
+          -1.1980554489200377,
+          1.4200000000000002,
+          3.8979211090967025
+        ],
+        "handSupportErrors": [
+          4.70225918322817e-08,
+          3.2245924584899397e-08
+        ]
+      },
+      "hero": [
+        -1.25,
+        0.32,
+        3.25
+      ],
+      "dragon": [
+        -2.007569296789991,
+        0.325,
+        3.310735167416571
+      ],
+      "camera": {
+        "position": [
+          -2,
+          2.0500000000000007,
+          9.1
+        ],
+        "target": [
+          -2,
+          1.3800000000000003,
+          3.35
+        ],
+        "fov": 39,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "canAttack": false,
+      "name": "classroom-1366",
+      "room": {
+        "mode": "classroom",
+        "focus": "wide",
+        "cameraPosition": [
+          0.95,
+          2.4,
+          5.015470067581781
+        ],
+        "cameraFov": 47,
+        "board": {
+          "title": "手術成功，笑點死亡。",
+          "lines": [
+            "解釋笑話就像解剖青蛙。",
+            "你會更了解牠，但青蛙死了。"
+          ]
+        },
+        "representative": "serious",
+        "policyholderVisible": false,
+        "faceDetached": 0,
+        "completedStamps": 0,
+        "paperStamped": false,
+        "stampContactError": 0
+      },
+      "communication": {
+        "visible": false,
+        "text": "",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "phase": "complete",
+      "age": 0,
+      "node": null,
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.0229294901316346,
+          1.4200000298095916,
+          3.8299216550044424
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": true,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": false,
+          "mode": "unborn",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "actor": {
+        "phase": 0.8000000000000002,
+        "action": "rest",
+        "footDrift": 3.597058350194085e-14,
+        "moving": false,
+        "speed": 0,
+        "distance": 0,
+        "clothJoints": 58,
+        "dinner": "A",
+        "gesture": "",
+        "companion": {
+          "mode": "idle",
+          "distance": 0.7600000000000002,
+          "speed": 0,
+          "walk": 0,
+          "phase": 0,
+          "heading": 0.08,
+          "lookYaw": -0.55,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -2.007569296789991,
+            0.325,
+            3.310735167416571
+          ],
+          "target": [
+            -2.007569296789991,
+            0.325,
+            3.310735167416571
+          ],
+          "trailPoints": 1,
+          "glance": false
+        },
+        "arms": {
+          "shoulderL": 0,
+          "shoulderR": 0,
+          "elbowL": 0,
+          "elbowR": 0,
+          "wristL": 0,
+          "wristR": 0
+        },
+        "cinematic": {
+          "phase": "",
+          "lift": 0,
+          "forward": 0,
+          "heading": 0.08,
+          "airborne": false,
+          "dragonProjectile": false,
+          "recoil": 0
+        },
+        "smile": 0,
+        "smileJointCount": 12,
+        "companionAction": "normal",
+        "gait": {
+          "leftSwing": null,
+          "rightSwing": null,
+          "acceleration": 0,
+          "turn": 0
+        },
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "walkPhase": 0,
+        "walkBlend": 0,
+        "heading": 0.08,
+        "companionExpression": "normal",
+        "companionHandsVisible": true,
+        "dragonHeading": 0.4003709838169465,
+        "trayYaw": 0.08,
+        "mealOwner": "hero",
+        "mealSupport": [
+          -1.1980554489200377,
+          1.4200000000000002,
+          3.8979211090967025
+        ],
+        "handSupportErrors": [
+          4.70225918322817e-08,
+          3.2245924584899397e-08
+        ]
+      },
+      "hero": [
+        -1.25,
+        0.32,
+        3.25
+      ],
+      "dragon": [
+        -2.007569296789991,
+        0.325,
+        3.310735167416571
+      ],
+      "camera": {
+        "position": [
+          -2,
+          2.0500000000000007,
+          9.1
+        ],
+        "target": [
+          -2,
+          1.3800000000000003,
+          3.35
+        ],
+        "fov": 39,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "canAttack": false,
+      "name": "reaction-1366",
+      "room": {
+        "mode": "classroom",
+        "focus": "reaction",
+        "cameraPosition": [
+          2.3199996107540546,
+          1.66000010211403,
+          1.0500006978281666
+        ],
+        "cameraFov": 36.00000133723188,
+        "board": {
+          "title": "講師補充",
+          "lines": [
+            "手術成功，笑點死亡。"
+          ]
+        },
+        "representative": "serious",
+        "policyholderVisible": false,
+        "faceDetached": 0,
+        "completedStamps": 0,
+        "paperStamped": false,
+        "stampContactError": 0
+      },
+      "communication": {
+        "visible": false,
+        "text": "",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "phase": "complete",
+      "age": 0,
+      "node": null,
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.0229294901316346,
+          1.4200000298095916,
+          3.8299216550044424
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": true,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": false,
+          "mode": "unborn",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "actor": {
+        "phase": 0.8000000000000002,
+        "action": "rest",
+        "footDrift": 3.597058350194085e-14,
+        "moving": false,
+        "speed": 0,
+        "distance": 0,
+        "clothJoints": 58,
+        "dinner": "A",
+        "gesture": "",
+        "companion": {
+          "mode": "idle",
+          "distance": 0.7600000000000002,
+          "speed": 0,
+          "walk": 0,
+          "phase": 0,
+          "heading": 0.08,
+          "lookYaw": -0.55,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -2.007569296789991,
+            0.325,
+            3.310735167416571
+          ],
+          "target": [
+            -2.007569296789991,
+            0.325,
+            3.310735167416571
+          ],
+          "trailPoints": 1,
+          "glance": false
+        },
+        "arms": {
+          "shoulderL": 0,
+          "shoulderR": 0,
+          "elbowL": 0,
+          "elbowR": 0,
+          "wristL": 0,
+          "wristR": 0
+        },
+        "cinematic": {
+          "phase": "",
+          "lift": 0,
+          "forward": 0,
+          "heading": 0.08,
+          "airborne": false,
+          "dragonProjectile": false,
+          "recoil": 0
+        },
+        "smile": 0,
+        "smileJointCount": 12,
+        "companionAction": "normal",
+        "gait": {
+          "leftSwing": null,
+          "rightSwing": null,
+          "acceleration": 0,
+          "turn": 0
+        },
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "walkPhase": 0,
+        "walkBlend": 0,
+        "heading": 0.08,
+        "companionExpression": "normal",
+        "companionHandsVisible": true,
+        "dragonHeading": 0.4003709838169465,
+        "trayYaw": 0.08,
+        "mealOwner": "hero",
+        "mealSupport": [
+          -1.1980554489200377,
+          1.4200000000000002,
+          3.8979211090967025
+        ],
+        "handSupportErrors": [
+          4.70225918322817e-08,
+          3.2245924584899397e-08
+        ]
+      },
+      "hero": [
+        -1.25,
+        0.32,
+        3.25
+      ],
+      "dragon": [
+        -2.007569296789991,
+        0.325,
+        3.310735167416571
+      ],
+      "camera": {
+        "position": [
+          -2,
+          2.0500000000000007,
+          9.1
+        ],
+        "target": [
+          -2,
+          1.3800000000000003,
+          3.35
+        ],
+        "fov": 39,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "canAttack": false,
+      "name": "reading-1366",
+      "room": {
+        "mode": "classroom",
+        "focus": "reaction",
+        "cameraPosition": [
+          2.319999856804419,
+          1.6600000375656523,
+          1.050000256716636
+        ],
+        "cameraFov": 36.00000133723188,
+        "board": {
+          "title": "講師補充",
+          "lines": [
+            "手術成功，笑點死亡。"
+          ]
+        },
+        "representative": "serious",
+        "policyholderVisible": false,
+        "faceDetached": 0,
+        "completedStamps": 0,
+        "paperStamped": false,
+        "stampContactError": 0
+      },
+      "communication": {
+        "visible": false,
+        "text": "",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    }
+  ],
+  "errors": []
+}

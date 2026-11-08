@@ -1,5 +1,5 @@
 import {Vector3} from 'three';
-const meanings={'👀':'注意到了','✋':'先別急','😌':'慢慢來','🍱':'晚餐','🫴':'交給我保管','👌':'沒問題','👍':'接好了'};
+const meanings={'✋':'先別急','😌':'慢慢來','🍱':'晚餐','🫴':'交給我保管','👌':'沒問題','👍':'接好了'};
 export function creatureCommunication(container){
  const mount=container.parentElement||container,node=document.createElement('div'),point=new Vector3();node.className='creature-communication';node.hidden=true;node.setAttribute('role','status');node.setAttribute('aria-live','polite');mount.append(node);let last='';
  return {update(camera,position,emoji){

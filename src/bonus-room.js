@@ -1,5 +1,6 @@
 import * as T from 'three';
 import {claimsReaction} from './claims-performance.js';
+import {upstairsArt} from './upstairs-art.js';
 import {Resources} from './resources.js';
 import {buildDragon} from './companion.js';
 import {CLASS_MOTTO} from './bonus-data.js';
@@ -9,19 +10,10 @@ import {lessonFrame,wrapBoardText} from './bonus-presentation.js';
 export function createBonusRoom(){
  const r=new Resources(),scene=new T.Scene();scene.background=new T.Color('#172b2b');
  const camera=new T.PerspectiveCamera(47,1,.05,40),classroom=new T.Group(),claims=new T.Group();scene.add(classroom,claims);
- scene.add(new T.HemisphereLight(0xfff1d2,0x314c48,2.6));const key=new T.DirectionalLight(0xffe5b8,2.1);key.position.set(-3,5,6);scene.add(key);
- const box=(parent,color,p,s)=>r.box(parent,color,p,s);
+ scene.add(new T.HemisphereLight(0xfff1d2,0x314c48,1.35));const key=new T.DirectionalLight(0xffe5b8,2.4);key.position.set(-3,5,6);scene.add(key);
+ const art=upstairsArt(r),box=art.box;
  const label=(parent,text,p,w=2,h=.3,color='#ecdfb7',bg='#203f38')=>r.mesh(r.geometry('PlaneGeometry',1,1),r.label(text,{width:1024,height:160,color,bg,font:'bold 64px sans-serif'}),parent,p,[w,h,1]);
- function shell(parent){
-  box(parent,'#a99773',[0,-.07,0],[6,.14,5]);box(parent,'#596b5b',[0,1.6,-2.4],[6,3.2,.1]);box(parent,'#354d48',[-3,1.6,0],[.1,3.2,5]);box(parent,'#354d48',[3,1.6,0],[.1,3.2,5]);
-  for(let x=-2.8;x<3;x+=.6)box(parent,'#776d58',[x,.005,0],[.018,.008,5]);
-  box(parent,'#d1bc83',[0,3,-2.3],[5.8,.05,.05]);
-  // Rainy blue window and clock make this feel like the floor above the street.
-  box(parent,'#9ab8b5',[-2.94,1.8,.3],[.025,1.4,1.5]);for(const z of [-.45,.3,1.05])box(parent,'#283e39',[-2.91,1.8,z],[.045,1.5,.05]);
-  const clock=r.mesh(r.geometry('CircleGeometry',.22,24),r.material('#eee6cd'),parent,[2.5,2.7,-2.32]);
-  box(parent,'#273e35',[2.5,2.76,-2.30],[.025,.14,.02]);box(parent,'#273e35',[2.55,2.7,-2.30],[.12,.025,.02]);clock.name='class-clock';
- }
- shell(classroom);shell(claims);
+ const shells=[art.shell(classroom),art.shell(claims)];
  box(classroom,'#927b53',[-.35,1.91,-2.26],[4.7,1.94,.12]);
  const canvas=document.createElement('canvas');canvas.width=1536;canvas.height=640;
  const texture=r.own(new T.CanvasTexture(canvas));texture.colorSpace=T.SRGBColorSpace;
@@ -31,7 +23,7 @@ export function createBonusRoom(){
   box(classroom,'#a78b5e',[x,.72,z],[1.2,.09,.65]);for(const dx of [-.45,.45])box(classroom,'#35423a',[x+dx,.35,z],[.04,.7,.05]);
   box(classroom,'#8a7957',[x,.42,z+.6],[.65,.06,.5]);box(classroom,'#8a7957',[x,.72,z+.85],[.65,.55,.05]);
  }
- box(classroom,'#927c54',[1.8,.75,-.7],[1.1,.12,.65]);box(classroom,'#586047',[1.8,.36,-.7],[.75,.7,.45]);
+ box(classroom,'#927c54',[1.95,.75,-.7],[1.65,.12,.65]);box(classroom,'#586047',[1.95,.36,-.7],[1.35,.7,.45]);
  const dragon=buildDragon(r),dragonMount=new T.Group();dragonMount.add(dragon.root);classroom.add(dragonMount);dragonMount.position.set(1.95,.95,-1.8);dragon.root.scale.setScalar(.65);dragon.root.rotation.y=-.2;
  // Glasses stay on the face, and the pointer follows the pointing arm.
  const body=dragon.root.children[0],rim=r.material('#2c3834',{metalness:.4});
@@ -40,10 +32,8 @@ export function createBonusRoom(){
  const pointer=new T.Group();pointer.position.set(-.53,.43,.12);body.add(pointer);const stick=box(pointer,'#b79f6c',[-.27,.4,0],[.027,.9,.027]);stick.rotation.z=.55;
  label(classroom,'左室 · 笑點小學堂',[0,3.05,-2.18],3.5,.24);
  box(claims,'#8b7551',[0,.95,.1],[4.6,.15,1.1]);box(claims,'#3c6155',[0,.44,.2],[4.4,.88,.8]);
- label(claims,'武陵事故理賠調解會',[0,2.7,-2.26],4.8,.44);
- label(claims,'理賠調解 · 新產險洽談',[0,.55,.62],3,.3,'#f3deab','#3c6155');
- box(claims,'#b69b65',[-1.5,1.85,-2.26],[1.85,1.1,.08]);
- for(let i=0;i<3;i++){box(claims,'#e3dfcb',[-2.07+i*.57,1.85,-2.20],[.48,.8,.02]);label(claims,`0${i+1}`,[-2.07+i*.57,1.95,-2.18],.35,.16,'#33483d','#e3dfcb');}
+ label(claims,'武陵雨夜理賠所',[0,2.94,-2.26],3.7,.25);
+ label(claims,'理賠調解',[0,.55,.62],1.4,.18,'#ddc58c','#29443d');
  for(let i=0;i<4;i++)box(claims,'#e8dfc1',[-.9+i*.03,1.05,.2],[.65,.012,.8]);
  const stamp=new T.Group();claims.add(stamp);stamp.position.set(-.9,1.06,.2);box(stamp,'#9a463c',[0,.03,0],[.35,.06,.25]);r.cylinder(stamp,'#6e4f39',[0,.18,0],.065,.26);r.mesh(r.geometry('SphereGeometry',.1,12,8),r.material('#6e4f39'),stamp,[0,.32,0]);
  box(claims,'#c5bfab',[1.5,1.19,-.2],[.8,.35,.6]);box(claims,'#263c36',[1.5,1.15,.105],[.62,.04,.02]);
@@ -92,48 +82,53 @@ export function createBonusRoom(){
  function paint(time){
   const state=lessonFrame(time-boardAt,boardData.reaction,reduced()),k=`${boardKey}:${state.reveal}:${state.dead}`;
   if(k===paintKey)return;paintKey=k;
-  const {title,lines}=boardData,c=canvas.getContext('2d');c.fillStyle='#21473b';c.fillRect(0,0,1536,640);
+  const {title,lines}=boardData,c=canvas.getContext('2d');c.fillStyle='#1f3c33';c.fillRect(0,0,1536,640);
   c.strokeStyle='#c4d1ad55';c.lineWidth=2;c.strokeRect(28,26,1480,588);c.fillStyle='#f3e6ac';c.textAlign='left';
-  c.font='bold 92px sans-serif';const titleLines=wrapBoardText(title,t=>c.measureText(t).width,1380);titleLines.forEach((line,i)=>c.fillText(line,78,145+i*105));
-  c.font='76px sans-serif';c.fillStyle='#d9e4c2';const shown=lines.slice(0,state.reveal+1).flatMap(line=>wrapBoardText(line,t=>c.measureText(t).width,1380));
-  shown.forEach((line,i)=>c.fillText(line,78,190+titleLines.length*105+i*95));texture.needsUpdate=true;
+  c.font='bold 80px sans-serif';const titleLines=wrapBoardText(title,t=>c.measureText(t).width,1380);titleLines.forEach((line,i)=>c.fillText(line,78,130+i*90));
+  c.font='66px sans-serif';c.fillStyle='#d9e4c2';const shown=lines.slice(0,state.reveal+1).flatMap(line=>wrapBoardText(line,t=>c.measureText(t).width,1380));
+  shown.forEach((line,i)=>c.fillText(line,78,155+titleLines.length*90+i*82));texture.needsUpdate=true;
  }
+ art.dress(classroom,claims);
  const endPosition=new T.Vector3(),framePosition=new T.Vector3(),endTarget=new T.Vector3(),lookTarget=new T.Vector3();
- let frameKey='',firstFrame=true;
+ let frameKey='',firstFrame=true,endFov=47;
  function frame(width,height,time){
-  const k=`${mode}:${focus}:${width}:${height}`;
+  const stageFocus=mode==='claims'&&time-entryAt<1.6?'wide':focus;
+  const k=`${mode}:${stageFocus}:${width}:${height}`;
   if(k!==frameKey){
    frameKey=k;camera.aspect=width/Math.max(1,height);camera.updateProjectionMatrix();const narrow=camera.aspect<1.2;
-   let pos,target;
+   const currentFov=camera.fov;let pos,target;camera.fov=47;
    if(mode==='claims') {
-    if(focus==='stamp'){pos=[.4,2.5,2.7];target=[-.3,1.05,.1];}
-    else if(focus==='representative'){pos=[1.8,2.2,3.5];target=[1.15,1.5,-1];}
-    else if(focus==='client'){pos=[-1.5,2.1,3.5];target=[-1.3,1.5,-1];}
-    else if(focus==='policy'){pos=[.1,2.1,2.4];target=[.1,1.5,-.2];}
-    else if(focus==='contract'){pos=[0,2.4,narrow?5.5:4.8];target=[0,1.5,-.65];}
-    else{pos=[narrow?0:2.4,2.6,narrow?6.4:5.5];target=[0,1.45,-.7];}
+    if(stageFocus==='stamp'){pos=[-.42,2.32,1.9];target=[-.9,1.08,.23];camera.fov=40;}
+    else if(stageFocus==='representative'){pos=[1.82,2.12,1.95];target=[1.15,1.83,-.88];camera.fov=36;}
+    else if(stageFocus==='client'){pos=[-.65,1.98,1.65];target=[-1.35,1.58,-.90];camera.fov=38;}
+    else if(stageFocus==='policy'){pos=[.55,2.05,2.4];target=[.1,1.5,-.2];camera.fov=36;}
+    else if(stageFocus==='contract'){pos=[1.1,2.4,narrow?5.5:4.8];target=[0,1.5,-.65];}
+    else{pos=[narrow?.7:2.2,2.8,narrow?7.4:5.8];target=[0,1.45,-.6];}
    }
-   else if(focus==='stamp'){pos=[2.6,2.05,1.75];target=[1.7,1.05,-.55];}
+   else if(stageFocus==='stamp'){pos=[2.3,1.9,1.5];target=[1.65,.84,-.65];camera.fov=39;}
+   else if(stageFocus==='reaction'){target=[1.95,1.46,-1.48];pos=[2.32,1.66,1.05];camera.fov=36;}
    else {
-    // Keep the full board and the teacher's face in frame, like a seated interview.
-    const side=focus==='board-side',reaction=focus==='reaction';
-    const distance=Math.max(2.2,(reaction?5.7:5.9)/(2*Math.tan(T.MathUtils.degToRad(camera.fov/2))*camera.aspect));
-    target=[.1,1.85,-2.1];pos=[.1+(side?-.45:reaction?.55:0),reaction?2.12:1.96,-2.1+distance];
+    const side=stageFocus==='board-side',boardFocus=stageFocus==='board'||side;
+    camera.fov=boardFocus?41:47;
+    const distance=Math.max(3.1,(boardFocus?5.0:6.1)/(2*Math.tan(T.MathUtils.degToRad(camera.fov/2))*camera.aspect));
+    target=[boardFocus?-.35:.1,1.80,-1.9];pos=[side?-.9:.95,boardFocus?2.10:2.4,-1.9+distance];
    }
+   endFov=camera.fov;camera.fov=currentFov;
    endPosition.fromArray(pos);endTarget.fromArray(target);
-   if(firstFrame||reduced()){camera.position.copy(endPosition);lookTarget.copy(endTarget);firstFrame=false;}
+   if(firstFrame||reduced()){camera.fov=endFov;camera.updateProjectionMatrix();camera.position.copy(endPosition);lookTarget.copy(endTarget);firstFrame=false;}
   }
   const dt=lastTime===null?0:Math.max(0,time-lastTime),amount=reduced()?1:1-Math.exp(-dt*10);
   framePosition.copy(endPosition);
   if(mode==='claims'&&['client','representative'].includes(focus)&&!reduced()){const move=T.MathUtils.smootherstep(time-cueAt,0,3);framePosition.x+=(focus==='client'?.13:-.13)*move;framePosition.z-=.1*move;}
+  const nextFov=T.MathUtils.lerp(camera.fov,endFov,amount);if(Math.abs(camera.fov-nextFov)>.000001){camera.fov=nextFov;camera.updateProjectionMatrix();}
   camera.position.lerp(framePosition,amount);lookTarget.lerp(endTarget,amount);camera.lookAt(lookTarget);
  }
  board();
- return {scene,camera,board,get state(){return {mode,focus,cameraPosition:camera.position.toArray(),board:{title:boardData.title,lines:[...boardData.lines]},representative:negotiation?.polite?'polite':'serious',policyholderVisible:policyCard.visible,faceDetached:detached,completedStamps:completedInks.filter(n=>n.visible).length,paperStamped:mode==='classroom'?classInk.visible:ink.visible,stampContactError:mode==='classroom'?classStamp.position.y-(classPaper.position.y+classPaper.scale.y/2):stamp.position.y-(output.position.y+output.scale.y/2)};},resetPaper(){stampAt=-Infinity;ink.visible=classInk.visible=false;classStamp.position.y=.822;classPaper.position.z=-.65;stamp.position.y=1.06;output.position.set(-.9,1.0525,.2);focus='wide';},
+ return {scene,camera,board,get state(){return {mode,focus,cameraPosition:camera.position.toArray(),cameraFov:camera.fov,board:{title:boardData.title,lines:[...boardData.lines]},representative:negotiation?.polite?'polite':'serious',policyholderVisible:policyCard.visible,faceDetached:detached,completedStamps:completedInks.filter(n=>n.visible).length,paperStamped:mode==='classroom'?classInk.visible:ink.visible,stampContactError:mode==='classroom'?classStamp.position.y-(classPaper.position.y+classPaper.scale.y/2):stamp.position.y-(output.position.y+output.scale.y/2)};},resetPaper(){stampAt=-Infinity;ink.visible=classInk.visible=false;classStamp.position.y=.822;classPaper.position.z=-.65;stamp.position.y=1.06;output.position.set(-.9,1.0525,.2);focus='wide';},
  setMode(value){if(mode!==value){mode=value;firstFrame=true;}classroom.visible=value==='classroom';claims.visible=value==='claims';focus='wide';frameKey='';},
  shiftClock(delta){boardAt+=delta;stampAt+=delta;entryAt+=delta;cueAt+=delta;objectionAt+=delta;reactionAt+=delta;policyAt+=delta;poseAt+=delta;if(lastTime!==null)lastTime+=delta;},enter(time){entryAt=reduced()?-Infinity:time;},negotiate,setFocus(value){focus=value;},perform(value){if(value!==pose)poseAt=lastTime??0;pose=value;},stamp(t,status){stampAt=t;stampReduced=reduced();focus='stamp';ink.visible=classInk.visible=false;const c=ink.material.map.image.getContext('2d');c.fillStyle='#e8dfc1';c.fillRect(0,0,1024,160);c.fillStyle='#a34b3b';c.font='bold 110px sans-serif';c.textAlign='center';c.textBaseline='middle';c.fillText(status,512,80,1000);ink.material.map.needsUpdate=true;},
  render(renderer,time,width,height){
-  frame(width,height,time);paint(time);
+  frame(width,height,time);paint(time);for(const shell of shells)shell.update(time,reduced());
   dragonMount.visible=pose!=='gone';
   const state=lessonFrame(time-boardAt,boardData.reaction,reduced()),interrupted=pose==='interrupted'||boardData.reaction&&state.pose==='interrupted',awkward=pose==='awkward'||boardData.reaction&&state.pose==='awkward';
   dragon.update(interrupted?boardAt:time,{gesture:pose==='wave'?'wave':pose==='bow'?'nod':interrupted||awkward?'look':'point',gestureAmount:interrupted||awkward?0:.8,curious:awkward?.8:0,lookYaw:0});

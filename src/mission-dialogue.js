@@ -177,7 +177,7 @@ export const finalAmmoLines=lines('ammo',[
   ['dragon','不對吧？我現在是彈藥？','shake','shock'],
   ['dragon','等等！不要浪費食物！','look','shock'],
   ['dragon','我說的不是方向——','shake','shock'],
-]).map((node,index)=>({...node,at:[0,1.0,15.0][index]}));
+]).map((node,index)=>({...node,at:[0,1.0,10.6][index]}));
 
 export const chatterGroups=[
   lines('chat_0',[['zhuang','手機好像亮了。','phone'],['dragon','這次真的是手機。','look'],['zhuang','……先吃完。','hold']]),
