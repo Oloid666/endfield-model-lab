@@ -1,6 +1,6 @@
 import * as T from 'three';
 import {optimizeStaticSet} from './static-batches.js';
-import {signedTemperature,wireProgress} from './vcr-tablet.js';
+import {signedTemperature,wireProgress,FRIDGE_HOT_C} from './vcr-tablet.js';
 
 export function buildVcrEffects(scene,r,{powerOutput=null}={}){
  const root=new T.Group();root.name='cold-chain-and-grid-props';scene.add(root);
@@ -13,7 +13,9 @@ export function buildVcrEffects(scene,r,{powerOutput=null}={}){
  function display(temp,mode,target){const key=[temp,mode,target].join();if(key===displayKey)return;displayKey=key;dc.setTransform(.5,0,0,.5,0,0);dc.fillStyle='#0b222a';dc.fillRect(0,0,1024,640);dc.fillStyle='#9bb9bb';dc.font='36px sans-serif';dc.fillText('711  /  冷鏈控制 · 實際溫度',45,68);dc.fillStyle=mode==='cool'?'#a8efff':mode==='rising'?'#ffc66f':'#ff967c';dc.font='bold 176px monospace';dc.fillText(signedTemperature(temp),40,283);dc.font='44px sans-serif';dc.fillText(mode==='cool'?'● 製冷中':mode==='rising'?'● 除霜加熱啟動':'● 過熱警示',45,375);dc.fillStyle='#d1dfe0';dc.font='34px sans-serif';dc.fillText(target?'目標 −40°C  /  0°C':'遠端維修 · 除霜模式',45,477);dc.fillStyle='#7f9d9f';dc.font='30px sans-serif';dc.fillText(mode==='cool'?'遠端溫度回報':'FR · DEFAULT: DEFROST',45,568);dt.needsUpdate=true;}
  const railMat=r.own(new T.MeshBasicMaterial({color:'#d5f4ff',toneMapped:false})),rails=r.own(new T.InstancedMesh(r.geometry('BoxGeometry',1,1,1),railMat,3)),dummy=new T.Object3D();fridge.add(rails);
  [[.80,1.54,-1.98,.012,2.14,.015],[1.84,1.54,-1.98,.012,2.14,.015],[1.32,2.61,-1.98,1.05,.012,.015]].forEach((v,i)=>{dummy.position.fromArray(v);dummy.scale.set(...v.slice(3));dummy.updateMatrix();rails.setMatrixAt(i,dummy.matrix);});
- const vaporMat=r.own(new T.MeshBasicMaterial({color:'#d5e5e5',transparent:true,opacity:.16,depthWrite:false})),vapor=r.own(new T.InstancedMesh(r.geometry('SphereGeometry',1,7,5),vaporMat,12));vapor.frustumCulled=false;fridge.add(vapor);
+ const steamCanvas=document.createElement('canvas');steamCanvas.width=steamCanvas.height=64;const sc=steamCanvas.getContext('2d'),sg=sc.createRadialGradient(32,32,0,32,32,31);sg.addColorStop(0,'rgba(255,255,255,.8)');sg.addColorStop(.45,'rgba(255,255,255,.45)');sg.addColorStop(1,'rgba(255,255,255,0)');sc.fillStyle=sg;sc.fillRect(0,0,64,64);const steamMap=r.own(new T.CanvasTexture(steamCanvas));steamMap.colorSpace=T.SRGBColorSpace;
+ const vaporMat=r.own(new T.MeshBasicMaterial({map:steamMap,color:'#d5e5e5',transparent:true,opacity:.42,depthWrite:false})),vapor=r.own(new T.InstancedMesh(r.geometry('PlaneGeometry',1,1),vaporMat,12));vapor.frustumCulled=false;fridge.add(vapor);
+
  const frost=r.mesh(r.geometry('PlaneGeometry',1.0,.30),r.own(new T.MeshBasicMaterial({color:'#d8f8ff',transparent:true,opacity:0,depthWrite:false})),fridge,[1.32,2.12,-1.95]);frost.name='fridge-thin-frost';
  // Heating instructions belong to the lunch-box packaging, not a world-space card.
  const source=new T.Vector3(7.44,3.08,-15.3);if(powerOutput){powerOutput.updateWorldMatrix(true,false);powerOutput.getWorldPosition(source);}
@@ -35,17 +37,17 @@ export function buildVcrEffects(scene,r,{powerOutput=null}={}){
  let texture=null;repaintLauncher();texture=r.own(new T.CanvasTexture(canvas));texture.colorSpace=T.SRGBColorSpace;
  r.mesh(r.geometry('PlaneGeometry',1.16,.76),r.own(new T.MeshBasicMaterial({map:texture})),consoleRoot,[0,1.85,-.039]).name='pylon-03-launcher-screen';
  if(typeof Image!=='undefined'){const img=new Image();img.onload=()=>{art=img;artLoaded=true;repaintLauncher();};img.src=`${import.meta.env?.BASE_URL||'/'}images/nikke-rapi.webp`;}
- let active=false,hot=true,stage='',age=0,temperature=50,hotAt=null;
- return {root,path,panel,reset(){hotAt=null;censored=forensics=controlConfirmed=false;repaintLauncher();},update(s,{intact=true}={}){active=!!s?.vcr;stage=s?.tablet?.stage||'';age=s?.tablet?.age||0;fridge.visible=!!intact;
+ let active=false,hot=true,stage='',age=0,temperature=FRIDGE_HOT_C,hotAt=null;
+ return {root,path,panel,reset(){hotAt=null;censored=forensics=controlConfirmed=false;repaintLauncher();},update(s,{intact=true,camera=null}={}){active=!!s?.vcr;stage=s?.tablet?.stage||'';age=s?.tablet?.age||0;fridge.visible=!!intact;
   const confirmed=stage==='cable';if(confirmed!==controlConfirmed){controlConfirmed=confirmed;repaintLauncher();}
   const incident=['backdoor','rapi-request','rapi-answer','rapi-mask'].includes(stage);if(incident!==forensics){forensics=incident;repaintLauncher();}
   if(s?.tablet&&censored!==!!s.tablet.censored){censored=!!s.tablet.censored;repaintLauncher();}
   const past=active&&!['return','rewind'].includes(s.phase)||s?.phase==='rewind'&&s.rewindProgress>.98;
   hot=!past||!!s?.fridgeHot;if(past&&!s?.fridgeHot)hotAt=null;if(past&&s?.fridgeHot)hotAt??=s.clock;
-  temperature=past?(s?.tablet?.temperature??(hot?50:4)):50;
+  temperature=past?(s?.tablet?.temperature??(hot?FRIDGE_HOT_C:4)):FRIDGE_HOT_C;
   const mode=stage==='defrost'?'rising':hot?'hot':'cool';display(temperature,mode,past);railMat.color.set(mode==='cool'?'#b6eaff':mode==='rising'?'#ffc65b':'#ff6244');railMat.color.multiplyScalar(hot&&mode==='hot'&&!reduced?.85+.15*Math.sin((s?.clock||0)*3)**2:1);
   frost.material.opacity=past?Math.max(0,Math.min(.16,-temperature/80)):0;frost.visible=frost.material.opacity>0;
-  vapor.visible=hot&&temperature>=40&&(!past||stage==='hot'||stage==='defrost');for(let i=0;i<12;i++){const p=reduced?.4:(((s?.clock||0)*.24+i/12)%1);dummy.position.set(.82+(i%4)*.20+Math.sin(i+p)*.05,1.7+p*.85,-1.74-Math.sin(i*.8)*.10);dummy.scale.set(.10+p*.16,.13+p*.24,.075+p*.06);dummy.updateMatrix();vapor.setMatrixAt(i,dummy.matrix);}vapor.instanceMatrix.needsUpdate=true;
+  vapor.visible=hot&&temperature>=40&&(!past||stage==='hot'||stage==='defrost');for(let i=0;i<12;i++){const p=reduced?.4:(((s?.clock||0)*.24+i/12)%1);dummy.position.set(.82+(i%4)*.20+Math.sin(i+p)*.05,2.38+p*.72,-1.74-Math.sin(i*.8)*.10);if(camera)dummy.quaternion.copy(camera.quaternion);dummy.scale.set(.25+p*.26,.30+p*.34,1);dummy.updateMatrix();vapor.setMatrixAt(i,dummy.matrix);}vapor.instanceMatrix.needsUpdate=true;
   flow.visible=past&&stage==='cable'&&age>=.4;energyHead.visible=flow.visible;if(flow.visible){flowMat.uniforms.head.value=wireProgress(age);path.getPointAt(wireProgress(age),energyHead.position);}
  },get state(){return {active,hot,stage,age,temperature,artLoaded,censored,forensics,fridgeVisible:fridge.visible,energyVisible:energyHead.visible,energyPosition:energyHead.position.toArray(),powerSource:source.toArray(),sourceKind:'tianshi-grid',controlConfirmed};}};
 }

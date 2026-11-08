@@ -1,0 +1,170 @@
+[
+  {
+    "suite": "actor",
+    "exit": 0
+  },
+  {
+    "suite": "analytics",
+    "exit": 0
+  },
+  {
+    "suite": "battle-warm",
+    "exit": 0
+  },
+  {
+    "suite": "bonus",
+    "exit": 0
+  },
+  {
+    "suite": "character-copy",
+    "exit": 0
+  },
+  {
+    "suite": "cinematic",
+    "exit": 0
+  },
+  {
+    "suite": "cinematic-track",
+    "exit": 0
+  },
+  {
+    "suite": "concert",
+    "exit": 0
+  },
+  {
+    "suite": "destruction",
+    "exit": 0
+  },
+  {
+    "suite": "dinner-revision",
+    "exit": 0
+  },
+  {
+    "suite": "director",
+    "exit": 0
+  },
+  {
+    "suite": "entry-camera",
+    "exit": 0
+  },
+  {
+    "suite": "feast",
+    "exit": 0
+  },
+  {
+    "suite": "feedback",
+    "exit": 0
+  },
+  {
+    "suite": "fx",
+    "exit": 0
+  },
+  {
+    "suite": "indoor-camera",
+    "exit": 0
+  },
+  {
+    "suite": "indoor",
+    "exit": 0
+  },
+  {
+    "suite": "indoor-impact",
+    "exit": 0
+  },
+  {
+    "suite": "indoor-passenger",
+    "exit": 0
+  },
+  {
+    "suite": "living-world",
+    "exit": 0
+  },
+  {
+    "suite": "loading",
+    "exit": 0
+  },
+  {
+    "suite": "mission",
+    "exit": 0
+  },
+  {
+    "suite": "next-dinner",
+    "exit": 0
+  },
+  {
+    "suite": "photo-camera",
+    "exit": 0
+  },
+  {
+    "suite": "polish",
+    "exit": 0
+  },
+  {
+    "suite": "postgame",
+    "exit": 0
+  },
+  {
+    "suite": "presentation",
+    "exit": 0
+  },
+  {
+    "suite": "props",
+    "exit": 0
+  },
+  {
+    "suite": "racing",
+    "exit": 0
+  },
+  {
+    "suite": "revision",
+    "exit": 0
+  },
+  {
+    "suite": "second-wave",
+    "exit": 0
+  },
+  {
+    "suite": "stage-detail",
+    "exit": 0
+  },
+  {
+    "suite": "story",
+    "exit": 0
+  },
+  {
+    "suite": "story-revision",
+    "exit": 0
+  },
+  {
+    "suite": "street-camera",
+    "exit": 0
+  },
+  {
+    "suite": "street-stage",
+    "exit": 0
+  },
+  {
+    "suite": "touch-detail",
+    "exit": 0
+  },
+  {
+    "suite": "vcr-props",
+    "exit": 0
+  },
+  {
+    "suite": "vcr-tablet",
+    "exit": 0
+  },
+  {
+    "suite": "viewer",
+    "exit": 0
+  },
+  {
+    "suite": "walking-environment",
+    "exit": 0
+  },
+  {
+    "suite": "warmup",
+    "exit": 0
+  }
+]

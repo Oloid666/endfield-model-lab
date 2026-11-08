@@ -1,0 +1,25 @@
+import assert from 'node:assert/strict';
+import * as T from 'three';
+import {MissionMachine,FINAL_READY} from '../src/mission-state.js';
+import {RESCUE_CONTACT,rescueTiming,trayRescueFrame} from '../src/tray-rescue.js';
+import {MEAL_BIRTH_DIALOGUE_AT,mealBirthFrame,MEAL_LANDING} from '../src/meal-birth.js';
+import {damageAppearance} from '../src/damage-appearance.js';
+import {buildMealRemnant} from '../src/meal-remnant.js';
+import {buildDragon} from '../src/companion.js';
+import {Resources} from '../src/resources.js';
+let count=0;const check=(n,v)=>{assert.ok(v,n);count++;},step=(m,n)=>m.update(m.sourceTime+n);
+const m=new MissionMachine();m.start();for(let n=0;n<50&&m.phase==='intro';n++){m.next();step(m,.01);}
+check('Fast dialogue still stops at the actual purchase',m.phase==='purchase'&&!m.state.text.includes('買完了'));
+for(let n=0;n<200&&m.phase!=='photo-pose';n++){check('No premature completion announcement',!m.state.text.includes('買完了'));check('Shopping ignores next/skip',!m.next()&&!m.skip());step(m,.1);}
+check('Completion appears once, after the return handoff',m.phase==='photo-pose'&&m.shopping.done&&m.node.id==='shopping_complete'&&m.state.text==='買完了，來吃吧。');
+check('Completed meal shot has a reading gate',!m.next());m.setPaused(true);const readingAge=m.state.phaseElapsed;step(m,90);check('Background holds completed meal line',m.state.phaseElapsed===readingAge);m.setPaused(false);step(m,2.7);check('Only then start asking for a photo',m.phase==='photo-talk');
+m.trayOwner='dragon';m.phaseTo('aim-final');for(const age of [2,6,8.79,9,12,16.99]){step(m,age-m.state.phaseElapsed);check('No early launch during rescue',!m.state.canAttack&&!m.attack());}step(m,17-m.state.phaseElapsed);check('Launch unlocks after returning to altitude',m.state.canAttack&&FINAL_READY===17&&m.trayOwner==='helper');
+const symbols=[];for(let t=0;t<17;t+=.1){const e=rescueTiming(t).emoji;if(e&&symbols.at(-1)!==e)symbols.push(e);}check('Communication proceeds as authored',symbols.join('')==='👀✋😌🍱🫴👌👍');
+for(const age of [6,7,8.8,10,11,13,17,20]){const f=trayRescueFrame(age,[-1.6,5.30,15.7]);check('No metre-high body pillar is necessary',f.height<=1.25);if(age>=RESCUE_CONTACT)check('Tray and support share one height',Math.abs(f.tray[1]-f.base[1]-f.height)<1e-8);}
+check('Birth has time to discover, escape and land',MEAL_BIRTH_DIALOGUE_AT===11.5&&!mealBirthFrame(10).dialogueReady&&mealBirthFrame(11.5).dialogueReady&&mealBirthFrame(5).beat==='peeking');
+check('Landing body clears counter, wall and microwave cabinet',MEAL_LANDING[0]-.36>3.28&&MEAL_LANDING[0]+.36<4.1&&MEAL_LANDING[2]+.26<1.19);
+const ctx=new Proxy({createRadialGradient:()=>({addColorStop(){}}),createLinearGradient:()=>({addColorStop(){}})},{get:(o,k)=>o[k]||(()=>{})});globalThis.document={createElement:()=>({getContext:()=>ctx})};globalThis.matchMedia=()=>({matches:false});
+const r=new Resources(),root=new T.Group(),tape=new T.Group();tape.name='dragon-curved-bandages';root.add(tape);r.box(root,'#51463f',[0,0,0],[.1,.1,.01]);r.box(tape,'#dfc289',[0,.1,0],[.2,.1,.01]);const damage=damageAppearance(r,root);
+damage.set('dirty',300);damage.update(0);check('New animation clock does not erase damage',damage.state.visible&&damage.state.bandagesVisible);damage.update(2.59);check('Bandage and soot stay until snap',damage.state.state==='dirty');damage.set('clearing',2.6);damage.update(2.7);const progress=damage.state.progress;damage.update(2.7);check('Paused clearing does not move',damage.state.progress===progress);damage.update(2.96);check('Both clear together after snap',!damage.state.visible&&!damage.state.bandagesVisible);damage.update(70);check('Later stages cannot grow damage back',damage.state.state==='clean');damage.set('dirty',70);damage.set('clean',70);check('Restart clears a new damage state',!damage.state.visible);
+const dragon=buildDragon(r);for(const age of [0,1,3,5]){dragon.update(age,{singing:true,quietSong:true});check('Fridge song has neither hands nor microphone',!dragon.state.handsVisible&&!dragon.state.microphoneVisible);}dragon.update(6,{singing:true});check('Concert gets its hands and microphone back',dragon.state.handsVisible&&dragon.state.microphoneVisible);
+const scene=new T.Scene(),pet=buildMealRemnant(scene,r),frame=trayRescueFrame(11.2,[-1.6,5.3,15.7]);pet.update(11.2,{phase:'aim-final',helperPresent:true,trayOwner:'helper'},null,{rescue:frame});scene.updateMatrixWorld(true);check('Helper communicates confidence after weight settles',pet.state.emoji==='👍'&&pet.state.thumbVisible);const shape=pet.root.children[0].children.find(n=>n.isMesh),bounds=new T.Box3().setFromBufferAttribute(shape.geometry.attributes.position);check('Body stays compact while arms do the carrying',bounds.max.y-bounds.min.y<.45);pet.update(18.5,{phase:'finisher',phaseElapsed:1.5,helperPresent:true,trayOwner:'helper'},null,{rescue:trayRescueFrame(18.5,[-1.6,5.3,15.7])});check('No notice emoji restarts during firing',pet.state.emoji==='');check('No invisible or broken vertices',Array.from(shape.geometry.attributes.position.array).every(Number.isFinite));r.dispose();console.log(`Next dinner: ${count} checks passed.`);

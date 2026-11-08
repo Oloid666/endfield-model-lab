@@ -1,4 +1,4 @@
-import {FIRST_HANDOFF_DURATION,FIRST_HANDOFF_CONTACT,RESCUE_CONTACT} from './tray-rescue.js';
+import {FIRST_HANDOFF_DURATION,FIRST_HANDOFF_CONTACT,RESCUE_CONTACT,RESCUE_READY} from './tray-rescue.js';
 import {VcrTablet} from './vcr-tablet.js';
 import {MEAL_BIRTH_DIALOGUE_AT} from './meal-birth.js';
 import {ShoppingJourney} from './shopping-journey.js';
@@ -15,7 +15,7 @@ export const RETURN_DURATION=3;
 export const TOUR_DURATION=34;
 export const LANDING_DURATION=sequences.landing.length*3;
 export const HEAT_TARGET=.3;
-export const FINAL_READY=9;
+export const FINAL_READY=RESCUE_READY;
 export const CHAPTERS=[{id:'intro',label:'晚餐與拍照'},{id:'cargo',label:'萬噸簽收'},{id:'terminal-deploy',label:'電網接通'},{id:'rewind',label:'三小時前'},{id:'last',label:'最後一擊'}];
 export const CONNECTION_ACCOUNT='endfield_power';
 export const CONNECTION_PASSWORD='5201314';
@@ -80,8 +80,9 @@ export class MissionMachine{
     if(phase==='heat')this.line(connectionPrompts.heat,entered);
     if(phase==='meal-spawn')this.line(this.hooks.tabletMode?{id:'overload',speaker:'system',text:'電流還在灌入……',event:'meal-overload'}:heatDemoLines[4],entered);
     if(phase==='return')this.line(connectionPrompts.returned,entered);
-    if(phase==='aim-final'){this.rescueStarted=entered;this.line(finalAmmoLines[0],entered);}
+    if(phase==='aim-final'){this.helperPresent=true;this.rescueStarted=entered;this.line(finalAmmoLines[0],entered);}
     if(phase==='landing')this.line(sequences.landing[0],entered);
+    if(phase==='photo-pose')this.line({id:'shopping_complete',speaker:'dragon',text:'買完了，來吃吧。',gesture:'hold'},entered);
     if(phase==='meal-handoff'){this.helperPresent=false;this.line({id:'tray_pass',speaker:'system',text:'',gesture:'receive'},entered);}
     if(phase==='meal-reclaim')this.line({id:'tray_back',speaker:'zhuang',text:'謝了。',gesture:'receive'},entered);
     if(phase==='tour')this.progress=100;
@@ -322,7 +323,7 @@ export class MissionMachine{
       else if(phase==='photo-return'&&elapsed>=2.5){this.sequence('photo-check',this.photoFaceValid?sequences.photoCheck:[{id:'photo_missing_face',speaker:'dragon',text:'這張沒拍到妳的臉，重拍一張。',gesture:'look'}]);changed=true;}
       else if(phase==='purchase'&&this.shopping?.done){this.phaseTo('walk-out');changed=true;}
       else if(phase==='walk-out'&&this.shopping?.done){this.phaseTo('photo-pose');changed=true;}
-      else if(phase==='photo-pose'&&elapsed>=2){this.sequence('photo-talk',sequences.photoTalk);changed=true;}
+      else if(phase==='photo-pose'&&elapsed>=2.6){this.sequence('photo-talk',sequences.photoTalk);changed=true;}
       else if(phase==='rewind'&&elapsed>=REWIND_DURATION){this.sequence('flashback',sequences.flashback);changed=true;}
       else if(phase==='heat-demo'&&elapsed>=HEAT_DEMO_DURATION){this.phaseTo('heat',this.entered+HEAT_DEMO_DURATION);changed=true;}
       else if(phase==='return'&&elapsed>=RETURN_DURATION){this.restorePresent();changed=true;}
@@ -333,7 +334,7 @@ export class MissionMachine{
     }
     const elapsed=Math.max(0,this.time-this.entered);
     if(this.phase==='meal-handoff'&&elapsed>=FIRST_HANDOFF_CONTACT)this.trayOwner='dragon';
-    if(this.phase==='aim-final'){if(elapsed>=1.8)this.helperPresent=true;if(elapsed>=RESCUE_CONTACT)this.trayOwner='helper';}if(this.phase==='meal-reclaim'&&elapsed>=1.35)this.trayOwner='hero';
+    if(this.phase==='aim-final'){if(elapsed>=RESCUE_CONTACT)this.trayOwner='helper';}if(this.phase==='meal-reclaim'&&elapsed>=1.35)this.trayOwner='hero';
     if(this.phase==='charge')this.timedLine(chargeLines,elapsed);
     else if(this.phase==='director-reminder'&&elapsed>=2.7&&this.node?.id!=='director_reminder_1')this.line({id:'director_reminder_1',speaker:'system',text:'導播：差點忘了，謝謝龍董。',gesture:'look'},this.entered+2.7);
 

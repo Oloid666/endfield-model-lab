@@ -18,6 +18,7 @@ export function buildDragon(r) {
   const tail=r.mesh(r.geometry('ConeGeometry',.15,.53,10),r.material('#80ab8d'),body,[0,.27,-.48]);tail.rotation.x=-1.1;
   const tuft=r.mesh(r.geometry('ConeGeometry',.1,.25,8),r.material('#a9c0b3'),body,[0,1.34,-.08]);tuft.rotation.z=-.18;
   r.box(body,'#b65843',[.42,1.19,.05],[.28,.06,.08]);r.box(body,'#b65843',[.54,1.03,.03],[.06,.3,.05]);
+  const grabHandle=new T.Object3D();grabHandle.name='dragon-grab-handle';grabHandle.position.set(.54,1.18,.03);body.add(grabHandle);
   function face(blink,mood='normal'){
     const canvas=document.createElement('canvas');canvas.width=canvas.height=256;const c=canvas.getContext('2d');
     c.lineWidth=8;c.strokeStyle='#344d42';c.lineCap='round';
@@ -50,7 +51,7 @@ export function buildDragon(r) {
   root.traverse(n=>n.userData.hotspot='dragon');
   const reduced=typeof matchMedia==='function'&&matchMedia('(prefers-reduced-motion: reduce)').matches;
   const state={mood:'normal',action:''};
-  return {root,body,foodMount,hand:arms[1],hands:arms,feet,get state(){return {...state};},update(t,s={}){
+  return {root,body,foodMount,grabHandle,hand:arms[1],hands:arms,feet,get state(){return {...state};},update(t,s={}){
     const blink=Math.max(0,1-Math.abs((t+.7)%4.3-.15)/.11);
     const action=s.action?.kind||'',effort=T.MathUtils.clamp(Number(s.action?.amount)||0,0,1),shocked=action==='shock'||!!s.projectile;
     state.mood=shocked?'shock':action==='lever'?'doubt':blink>.3?'blink':(s.nod||0)>.15?'happy':'normal';state.action=action;
@@ -122,7 +123,9 @@ export function buildDragon(r) {
       microphone.position.set(.18,.46+v[2]*.08,.79);state.songClip=index;state.songTrapped=trapped;
       material.map=maps[Math.sin(t*5)>0?3:0];state.mood='singing';
     }
+    for(const arm of arms)arm.visible=!s.quietSong;
+    if(s.quietSong){microphone.visible=false;thumb.visible=false;body.rotation.set(0,0,reduced?0:Math.sin(t*1.8)*.018);body.position.set(0,0,0);}
     if(action==='snap'){arms[1].position.set(.63,.83,.22);arms[1].rotation.z=.25+Math.sin(effort*Math.PI)*.32;}
-    state.faceVisible=faceMesh.visible;state.singing=!!s.singing;state.hand=arms[1].position.toArray();state.microphone=microphone.position.toArray();
+    state.faceVisible=faceMesh.visible;state.singing=!!s.singing;state.handsVisible=arms.every(arm=>arm.visible);state.microphoneVisible=microphone.visible;state.hand=arms[1].position.toArray();state.microphone=microphone.position.toArray();
   },dispose(){root.removeFromParent();}};
 }

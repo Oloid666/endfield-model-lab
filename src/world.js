@@ -1,3 +1,4 @@
+import {creatureCommunication} from './creature-communication.js';
 import {shootingCameraLocked} from './camera-lock.js';
 import {qualityLocked,FrameStats} from './performance-guard.js';
 import {buildInvestigationProps} from './investigation-props.js';
@@ -65,7 +66,7 @@ export class World {
     this.r.mesh(this.r.geometry('BoxGeometry',1,1,1),this.r.material('#e6f1ff',{emissive:0xb6d5ff,emissiveIntensity:2.5}),this.scene,[0,3.45,2.16],[8.95,.045,.06])];
     this.scene.environment=makeNightEnvironment(this.renderer,this.r);this.scene.environmentIntensity=.48;
     this.store=buildStore(this.scene,this.r);this.cameraSafety=new CameraSafety(this.camera,this.store.floorPlan);this.batchStats=optimizeStaticSet(this.store.root,this.r);
-    this.remnant=buildMealRemnant(this.scene,this.r);this.garden=buildPearGarden(this.scene,this.r);this.siege=buildSiegeEffects(this.scene,this.r);
+    this.remnant=buildMealRemnant(this.scene,this.r);this.creatureSpeech=creatureCommunication(container);this.garden=buildPearGarden(this.scene,this.r);this.siege=buildSiegeEffects(this.scene,this.r);
     this.tianshi=buildTianshiGrid(this.scene,this.r);this.microwave=buildMicrowave(this.scene,this.r);this.connectionStage=buildConnectionStage(this.scene,this.r);this.investigationProps=buildInvestigationProps(this.scene,this.r,{serverRoot:this.store.root.getObjectByName('upstairs-server-room')});
     this.weather=buildWeather(this.scene,this.r);this.wet=applyWetPavement([...(this.store.wetMaterials||[]),...(this.garden.wetMaterials||[])],this.weather.reflection,this.r);
     this.director=new MissionDirector(this);this.refreshGlassProbe();this.shaderWarmup=new ShaderWarmup(this.renderer,this.scene,this.camera);
@@ -206,8 +207,8 @@ export class World {
   }
   get upstairsInvitation(){return this.missionState?.phase==='complete'&&!this.missionState.postgame&&this.streetShow?.state.snapshotReady&&!this.streetShow.active&&!this.bonus?.active;}
   tick(t,delta=.016,render=true){
-    if(this.streetShow?.active){this.time=t;this.onTick(t,delta);this.streetShow.tick(t,render);return;}
-    if(this.bonus?.active){this.time=t;this.bonus.tick(t,render);return;}
+    if(this.streetShow?.active){this.creatureSpeech.update(this.camera,[0,0,0],'');this.time=t;this.onTick(t,delta);this.streetShow.tick(t,render);return;}
+    if(this.bonus?.active){this.creatureSpeech.update(this.camera,[0,0,0],'');this.time=t;this.bonus.tick(t,render);return;}
     this.time=t;if(this.lightPulse){const age=t-this.lightPulse.at,brightness=age>=.45?1:matchMedia('(prefers-reduced-motion: reduce)').matches?.75:.6+.4*Math.cos(age*Math.PI*4/.45);for(const [m,c,e]of this.lightPulse.materials){m.color.copy(c).multiplyScalar(brightness);if(e!=null)m.emissiveIntensity=e*brightness;}if(age>=.45)this.lightPulse=null;}if(this.loadingPresentation){if(render)this.loadingPresentation.render(t);return;}this.onTick(t,delta);
     if(this.earlyDragon){const d=this.earlyDragon;d.root.position.y=.32+Math.abs(Math.sin(t*2.6))*.3;d.root.rotation.y=Math.sin(t*.9)*.65;d.update(t,{nod:.3,gesture:'wave',gestureAmount:(Math.sin(t*2)+1)/2});}
 
@@ -233,6 +234,7 @@ export class World {
     if(close!==this.closeFraming){this.closeFraming=close;this.onFraming(close);}
     const presentation=this.missionState?.vcr,damage=presentation?0:this.store.destruction.state.progress;this.weather.setShelter(this.missionState?.postgame?this.streetShow?.state.mode==='intact':damage<80,this.missionState?.postgame?this.streetShow?.state.mode==='intact':damage<44);
     const visualTime=this.director.visualTime??sceneTime;this.remnant.update(visualTime,this.missionState,this.missionState?.postgame?this.actors?.heelCenter:null,{doors:this.store.doors,floorPlan:this.store.floorPlan,intact:this.streetShow?.state.mode!=='collapsed',rescue:this.actors?.rescueFrame});
+    this.creatureSpeech.update(this.camera,this.remnant.state.position,this.remnant.state.visible?this.remnant.state.emoji:'');
     this.store.glass.uniforms.uTime.value=visualTime;this.wet.update(visualTime);this.weather.update(visualTime);
     if(render){this.renderer.info.reset();this.composer.render();this.renderCount++;
     }
@@ -248,5 +250,5 @@ export class World {
     const next=this.adaptiveQuality.sample(delta,this.qualityMode==='auto'&&!this.loadingPresentation&&!this.capturingPhoto&&!this.missionState?.paused&&!document.hidden,this.quality);if(next)this.setQuality(next,true);
   });}
   stop(){this.renderer.setAnimationLoop(null);this.previous=undefined;this.running=false;this.onClockState?.(false);}
-  dispose(){if(this.disposed)return;this.disposed=true;this.stop();this.director.cinematicTrack.dispose();this.streetShow?.dispose();this.shaderWarmup.dispose();this.observer.disconnect();document.removeEventListener('visibilitychange',this.visibility);this.controls.removeEventListener('start',this.manual);this.photoCamera.dispose();this.controls.dispose();this.renderer.domElement.removeEventListener('webglcontextlost',this.contextLost);this.renderer.domElement.removeEventListener('webglcontextrestored',this.contextRestored);this.actors?.dispose();this.xaihi?.dispose();this.siege.dispose();this.garden.root.removeFromParent();this.tianshi.root.removeFromParent();this.microwave.root.removeFromParent();this.connectionStage.root.removeFromParent();this.store.spill.shadow.dispose();this.weather.dispose();for(const pass of this.composer.passes)pass.dispose?.();this.composer.dispose();this.r.dispose();this.renderer.dispose();this.renderer.domElement.remove();}
+  dispose(){if(this.disposed)return;this.disposed=true;this.stop();this.creatureSpeech.dispose();this.director.cinematicTrack.dispose();this.streetShow?.dispose();this.shaderWarmup.dispose();this.observer.disconnect();document.removeEventListener('visibilitychange',this.visibility);this.controls.removeEventListener('start',this.manual);this.photoCamera.dispose();this.controls.dispose();this.renderer.domElement.removeEventListener('webglcontextlost',this.contextLost);this.renderer.domElement.removeEventListener('webglcontextrestored',this.contextRestored);this.actors?.dispose();this.xaihi?.dispose();this.siege.dispose();this.garden.root.removeFromParent();this.tianshi.root.removeFromParent();this.microwave.root.removeFromParent();this.connectionStage.root.removeFromParent();this.store.spill.shadow.dispose();this.weather.dispose();for(const pass of this.composer.passes)pass.dispose?.();this.composer.dispose();this.r.dispose();this.renderer.dispose();this.renderer.domElement.remove();}
 }

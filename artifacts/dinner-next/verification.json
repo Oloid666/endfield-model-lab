@@ -1,0 +1,76 @@
+{
+  "base_commit": "480283c1e1aea11a459902132b0f754c1c4a874c",
+  "engine": "Three.js 0.180.0",
+  "node_suites": 42,
+  "node_passed": 42,
+  "latest_birth_changes_rechecked": [
+    "next-dinner (312)",
+    "story-revision (2821)",
+    "cinematic-track (734)",
+    "revision (18835)"
+  ],
+  "build": "npm run build passed",
+  "browser": "Chromium / SwiftShader",
+  "viewports": [
+    [
+      390,
+      844
+    ],
+    [
+      844,
+      390
+    ],
+    [
+      1366,
+      768
+    ]
+  ],
+  "browser_flow_errors": [],
+  "browser_views_errors": [],
+  "browser_birth_errors": [],
+  "meal": {
+    "meshes": 25,
+    "triangles_with_instances": 39014,
+    "external_assets_added": 0
+  },
+  "timings_seconds": {
+    "shopping_completion_read": 2.6,
+    "birth": 11.5,
+    "rescue": 17,
+    "contact": 8.8,
+    "snap": 2.6,
+    "damage_clear": 0.35
+  },
+  "limits": [
+    "iPhone Safari hardware not tested",
+    "No measured mobile FPS improvement",
+    "Review covers changed shots, not every game frame",
+    "Production main unchanged; ui-preview publication only"
+  ],
+  "screenshots": [
+    "dinner",
+    "notice",
+    "notice-hold",
+    "please-wait",
+    "second-reach",
+    "contact",
+    "okay",
+    "thumb",
+    "rise",
+    "contact-desktop",
+    "thumb-landscape",
+    "birth-peek",
+    "birth-escape",
+    "birth-ground",
+    "birth-ground-desktop",
+    "birth-ground-landscape",
+    "refusal",
+    "fridge-105",
+    "fridge-song",
+    "damage-before-snap",
+    "damage-clearing",
+    "damage-clean",
+    "shopping-complete"
+  ],
+  "independent_review": "independent-review.md"
+}

@@ -1,0 +1,5972 @@
+{
+  "records": [
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "ready",
+      "node": null,
+      "beat": "street-dragon-arrival",
+      "tray": "hero",
+      "helper": {
+        "born": false,
+        "visible": false,
+        "mode": "unborn",
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "ready",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": true,
+        "arcs": 2,
+        "arcSegments": 5,
+        "arcCoreRadius": 0.010700000000000001,
+        "arcHaloRadius": 0.038520000000000006,
+        "arcPulse": 0.9,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": false,
+        "warming": true,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "entry-art"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "cargo",
+      "node": "cargo_0",
+      "beat": "manual",
+      "tray": "hero",
+      "helper": {
+        "born": false,
+        "visible": false,
+        "mode": "unborn",
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "cargo",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": false,
+        "warming": true,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "tray-left"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "cargo",
+      "node": "cargo_0",
+      "beat": "manual",
+      "tray": "hero",
+      "helper": {
+        "born": false,
+        "visible": false,
+        "mode": "unborn",
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "cargo",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": false,
+        "warming": true,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "tray-right"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "cargo",
+      "node": "cargo_0",
+      "beat": "manual",
+      "tray": "hero",
+      "helper": {
+        "born": false,
+        "visible": false,
+        "mode": "unborn",
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "cargo",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": false,
+        "warming": true,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "tray-heroFront"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "cargo",
+      "node": "cargo_0",
+      "beat": "manual",
+      "tray": "hero",
+      "helper": {
+        "born": false,
+        "visible": false,
+        "mode": "unborn",
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "cargo",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": false,
+        "warming": true,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "tray-overhead"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "terminal-deploy",
+      "node": "terminal_book",
+      "beat": "cinematic-book-summon",
+      "tray": "hero",
+      "helper": {
+        "born": false,
+        "visible": false,
+        "mode": "unborn",
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "terminal-deploy",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": false,
+        "warming": true,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "book-hand"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "terminal-deploy",
+      "node": "terminal_book",
+      "beat": "cinematic-terminal-unfold",
+      "tray": "hero",
+      "helper": {
+        "born": false,
+        "visible": false,
+        "mode": "unborn",
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "terminal-deploy",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": true,
+        "arcs": 2,
+        "arcSegments": 5,
+        "arcCoreRadius": 0.010700000000000001,
+        "arcHaloRadius": 0.038520000000000006,
+        "arcPulse": 0.9,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": false,
+        "warming": true,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "book-open"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "terminal-deploy",
+      "node": "terminal_book",
+      "beat": "cinematic-book-login",
+      "tray": "hero",
+      "helper": {
+        "born": false,
+        "visible": false,
+        "mode": "unborn",
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "terminal-deploy",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": false,
+        "warming": true,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "book-login"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "meal-handoff",
+      "node": "tray_pass",
+      "beat": "cinematic-meal-handoff",
+      "tray": "dragon",
+      "helper": {
+        "born": false,
+        "visible": false,
+        "mode": "unborn",
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "meal-handoff",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": false,
+        "warming": true,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "tray-pass-touch"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "ascent",
+      "node": "ascent_authorized",
+      "beat": "cinematic-authorized-ascent",
+      "tray": "dragon",
+      "helper": {
+        "born": false,
+        "visible": false,
+        "mode": "unborn",
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "ascent",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": false,
+        "warming": true,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "tray-pass-helper"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "charge",
+      "node": "charge_0",
+      "beat": "cinematic-charge-array",
+      "tray": "dragon",
+      "helper": {
+        "born": false,
+        "visible": false,
+        "mode": "unborn",
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "charge",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": false,
+        "warming": true,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "charge-city"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "charge",
+      "node": "charge_1",
+      "beat": "cinematic-charge-hero",
+      "tray": "dragon",
+      "helper": {
+        "born": false,
+        "visible": false,
+        "mode": "unborn",
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "charge",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": false,
+        "warming": true,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "charge-hero"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "charge",
+      "node": "charge_3",
+      "beat": "cinematic-charge-pylon",
+      "tray": "dragon",
+      "helper": {
+        "born": false,
+        "visible": false,
+        "mode": "unborn",
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "charge",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": false,
+        "warming": true,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "charge-pylon"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "hack",
+      "node": null,
+      "beat": "fridge-hopeful-profile",
+      "tray": "dragon",
+      "helper": {
+        "born": false,
+        "visible": false,
+        "mode": "unborn",
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "clean",
+        "phase": "hack",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 0,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": false,
+        "warming": false,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "03:00"
+      },
+      "name": "fridge-cold"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "hack",
+      "node": null,
+      "beat": "fridge-dragon-reaction",
+      "tray": "dragon",
+      "helper": {
+        "born": false,
+        "visible": false,
+        "mode": "unborn",
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "clean",
+        "phase": "hack",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 0,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": false,
+        "warming": false,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "03:00"
+      },
+      "name": "fridge-hot"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "hack",
+      "node": null,
+      "beat": "fridge-dragon-song",
+      "tray": "dragon",
+      "helper": {
+        "born": false,
+        "visible": false,
+        "mode": "unborn",
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "clean",
+        "phase": "hack",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 0,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": false,
+        "warming": false,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "03:00"
+      },
+      "name": "fridge-song"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "hack",
+      "node": null,
+      "beat": "meal-heating-label",
+      "tray": "dragon",
+      "helper": {
+        "born": false,
+        "visible": false,
+        "mode": "unborn",
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "clean",
+        "phase": "hack",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 0,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0.9,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": false,
+        "warming": false,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "03:00"
+      },
+      "name": "packaging-heating-label"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "hack",
+      "node": null,
+      "beat": "tablet-read",
+      "tray": "dragon",
+      "helper": {
+        "born": false,
+        "visible": false,
+        "mode": "unborn",
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "clean",
+        "phase": "hack",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 0,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0.9,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": false,
+        "warming": false,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "03:00"
+      },
+      "name": "grid-one"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "hack",
+      "node": null,
+      "beat": "tablet-read",
+      "tray": "dragon",
+      "helper": {
+        "born": false,
+        "visible": false,
+        "mode": "unborn",
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "clean",
+        "phase": "hack",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 0,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0.9,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": false,
+        "warming": false,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "03:00"
+      },
+      "name": "grid-two"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "hack",
+      "node": null,
+      "beat": "tablet-read",
+      "tray": "dragon",
+      "helper": {
+        "born": false,
+        "visible": false,
+        "mode": "unborn",
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "clean",
+        "phase": "hack",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 0,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": false,
+        "warming": false,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "03:00"
+      },
+      "name": "grid-three"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "hack",
+      "node": null,
+      "beat": "pylon-nikke-screen",
+      "tray": "dragon",
+      "helper": {
+        "born": false,
+        "visible": false,
+        "mode": "unborn",
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "clean",
+        "phase": "hack",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 0,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": false,
+        "warming": false,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "03:00"
+      },
+      "name": "nikke-console"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "heat",
+      "node": "heat_ready",
+      "beat": "cctv-microwave",
+      "tray": "dragon",
+      "helper": {
+        "born": false,
+        "visible": false,
+        "mode": "unborn",
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "heating",
+        "phase": "heat",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 0,
+        "arcActive": true,
+        "arcs": 2,
+        "arcSegments": 5,
+        "arcCoreRadius": 0.010700000000000001,
+        "arcHaloRadius": 0.038520000000000006,
+        "arcPulse": 0.9,
+        "steam": 7,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": false,
+        "warming": false,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "0.30 s"
+      },
+      "name": "round1"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "heat",
+      "node": "heat_ready",
+      "beat": "cctv-microwave",
+      "tray": "dragon",
+      "helper": {
+        "born": false,
+        "visible": false,
+        "mode": "unborn",
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "heating",
+        "phase": "heat",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 0,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 7,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": false,
+        "warming": false,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "0.30 s"
+      },
+      "name": "round2"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "heat",
+      "node": "heat_ready",
+      "beat": "cctv-microwave",
+      "tray": "dragon",
+      "helper": {
+        "born": false,
+        "visible": false,
+        "mode": "unborn",
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "heating",
+        "phase": "heat",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 0.009088000000051789,
+        "arcActive": true,
+        "arcs": 4,
+        "arcSegments": 5,
+        "arcCoreRadius": 0.017346955503214037,
+        "arcHaloRadius": 0.06244903981157054,
+        "arcPulse": 0.7346971574929478,
+        "steam": 7,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": false,
+        "warming": false,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "0.30 s"
+      },
+      "name": "round3-beat1"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "heat",
+      "node": "heat_ready",
+      "beat": "cctv-microwave",
+      "tray": "dragon",
+      "helper": {
+        "born": false,
+        "visible": false,
+        "mode": "unborn",
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "heating",
+        "phase": "heat",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 0.5090880000000804,
+        "arcActive": true,
+        "arcs": 4,
+        "arcSegments": 5,
+        "arcCoreRadius": 0.01784093144913808,
+        "arcHaloRadius": 0.06422735321689708,
+        "arcPulse": 0.8315551861055056,
+        "steam": 7,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": false,
+        "warming": false,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "0.30 s"
+      },
+      "name": "round3-beat2"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "heat",
+      "node": "heat_ready",
+      "beat": "cctv-microwave",
+      "tray": "dragon",
+      "helper": {
+        "born": false,
+        "visible": false,
+        "mode": "unborn",
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "heating",
+        "phase": "heat",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": true,
+        "arcs": 4,
+        "arcSegments": 5,
+        "arcCoreRadius": 0.018445574405222917,
+        "arcHaloRadius": 0.0664040678588025,
+        "arcPulse": 0.9501126284750818,
+        "steam": 7,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": false,
+        "warming": false,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "0.30 s"
+      },
+      "name": "round3-beat3"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "meal-spawn",
+      "node": "overload",
+      "beat": "birth-charred-meal",
+      "tray": "dragon",
+      "helper": {
+        "born": true,
+        "visible": false,
+        "mode": "unborn",
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "meal-spawn",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": -0.0,
+        "charred": 1,
+        "arcActive": true,
+        "arcs": 1,
+        "arcSegments": 5,
+        "arcCoreRadius": 0.008,
+        "arcHaloRadius": 0.028800000000000003,
+        "arcPulse": 0,
+        "steam": 7,
+        "food": "burnt",
+        "ingredientsVisible": true,
+        "wreck": false,
+        "warming": true,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "birth-start"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "meal-spawn",
+      "node": "overload",
+      "beat": "birth-swelling-in-tray",
+      "tray": "dragon",
+      "helper": {
+        "born": true,
+        "visible": true,
+        "mode": "swelling",
+        "position": [
+          3.545,
+          1.435,
+          1.43
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "meal-spawn",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": -0.0,
+        "charred": 1,
+        "arcActive": true,
+        "arcs": 1,
+        "arcSegments": 5,
+        "arcCoreRadius": 0.008,
+        "arcHaloRadius": 0.028800000000000003,
+        "arcPulse": 0,
+        "steam": 7,
+        "food": "burnt",
+        "ingredientsVisible": true,
+        "wreck": false,
+        "warming": true,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "birth-purple"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "meal-spawn",
+      "node": "overload",
+      "beat": "birth-escape-follow",
+      "tray": "dragon",
+      "helper": {
+        "born": true,
+        "visible": true,
+        "mode": "escape",
+        "position": [
+          3.4772787199998203,
+          1.4098098975592572,
+          1.2042623999994009
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "meal-spawn",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": -1.5,
+        "charred": 1,
+        "arcActive": true,
+        "arcs": 3,
+        "arcSegments": 5,
+        "arcCoreRadius": 0.008,
+        "arcHaloRadius": 0.028800000000000003,
+        "arcPulse": 0,
+        "steam": 7,
+        "food": "burnt",
+        "ingredientsVisible": false,
+        "wreck": false,
+        "warming": true,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "birth-escape"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "meal-spawn",
+      "node": "meal_refusal",
+      "beat": "birth-xaihi-refusal",
+      "tray": "dragon",
+      "helper": {
+        "born": true,
+        "visible": true,
+        "mode": "alive",
+        "position": [
+          3.38,
+          0.33000000000000007,
+          0.45
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "meal-spawn",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": -1.2656249999991847,
+        "charred": 1,
+        "arcActive": true,
+        "arcs": 1,
+        "arcSegments": 5,
+        "arcCoreRadius": 0.008,
+        "arcHaloRadius": 0.028800000000000003,
+        "arcPulse": 0,
+        "steam": 7,
+        "food": "burnt",
+        "ingredientsVisible": false,
+        "wreck": false,
+        "warming": true,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "refusal-meme"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "meal-spawn",
+      "node": "meal_refusal",
+      "beat": "birth-xaihi-refusal",
+      "tray": "dragon",
+      "helper": {
+        "born": true,
+        "visible": true,
+        "mode": "alive",
+        "position": [
+          3.38,
+          0.33000000000000007,
+          0.45
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "meal-spawn",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": -1.1111111111101069,
+        "charred": 1,
+        "arcActive": true,
+        "arcs": 1,
+        "arcSegments": 5,
+        "arcCoreRadius": 0.008,
+        "arcHaloRadius": 0.028800000000000003,
+        "arcPulse": 0,
+        "steam": 7,
+        "food": "burnt",
+        "ingredientsVisible": false,
+        "wreck": false,
+        "warming": true,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "refusal-landscape"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "meal-spawn",
+      "node": "meal_refusal",
+      "beat": "birth-xaihi-refusal",
+      "tray": "dragon",
+      "helper": {
+        "born": true,
+        "visible": true,
+        "mode": "alive",
+        "position": [
+          3.38,
+          0.33000000000000007,
+          0.45
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "meal-spawn",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": -0.9357638888877491,
+        "charred": 1,
+        "arcActive": true,
+        "arcs": 1,
+        "arcSegments": 5,
+        "arcCoreRadius": 0.008,
+        "arcHaloRadius": 0.028800000000000003,
+        "arcPulse": 0,
+        "steam": 7,
+        "food": "burnt",
+        "ingredientsVisible": false,
+        "wreck": false,
+        "warming": true,
+        "position": [
+          3.45,
+          1.6,
+          1.43
+        ],
+        "counterVisible": true,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "refusal-desktop"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "aim-final",
+      "node": "ammo_1",
+      "beat": "rescue-notice",
+      "tray": "dragon",
+      "helper": {
+        "born": false,
+        "visible": true,
+        "mode": "helping",
+        "position": [
+          0.15,
+          0.025,
+          14.45
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.36,
+        "emoji": "👀",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "aim-final",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": true,
+        "warming": true,
+        "position": [
+          3.45,
+          0.5549999999999999,
+          1.43
+        ],
+        "counterVisible": false,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "rescue-1.65"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "aim-final",
+      "node": "ammo_1",
+      "beat": "rescue-approach",
+      "tray": "dragon",
+      "helper": {
+        "born": false,
+        "visible": true,
+        "mode": "helping",
+        "position": [
+          -0.20446953712521124,
+          0.025,
+          14.45
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.36,
+        "emoji": "✋",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "aim-final",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": true,
+        "warming": true,
+        "position": [
+          3.45,
+          0.5549999999999999,
+          1.43
+        ],
+        "counterVisible": false,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "rescue-2.4"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "aim-final",
+      "node": "ammo_1",
+      "beat": "rescue-approach",
+      "tray": "dragon",
+      "helper": {
+        "born": false,
+        "visible": true,
+        "mode": "helping",
+        "position": [
+          -1.9541564782429715,
+          0.025,
+          15.01799849392917
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.36,
+        "emoji": "😌",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "aim-final",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": true,
+        "warming": true,
+        "position": [
+          3.45,
+          0.5549999999999999,
+          1.43
+        ],
+        "counterVisible": false,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "rescue-3.4"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "aim-final",
+      "node": "ammo_1",
+      "beat": "rescue-descend",
+      "tray": "dragon",
+      "helper": {
+        "born": false,
+        "visible": true,
+        "mode": "helping",
+        "position": [
+          -1.9541564782429715,
+          0.025,
+          15.754204455650518
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.36,
+        "emoji": "🍱",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "aim-final",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": true,
+        "arcs": 2,
+        "arcSegments": 5,
+        "arcCoreRadius": 0.010700000000000001,
+        "arcHaloRadius": 0.038520000000000006,
+        "arcPulse": 0.9,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": true,
+        "warming": true,
+        "position": [
+          3.45,
+          0.5549999999999999,
+          1.43
+        ],
+        "counterVisible": false,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "rescue-5"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "aim-final",
+      "node": "ammo_1",
+      "beat": "rescue-almost",
+      "tray": "dragon",
+      "helper": {
+        "born": false,
+        "visible": true,
+        "mode": "helping",
+        "position": [
+          -1.9541564782429715,
+          0.025,
+          15.754204455650518
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0.3418640370291026,
+        "bodyHeight": 0.36,
+        "emoji": "🫴",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "aim-final",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": true,
+        "warming": true,
+        "position": [
+          3.45,
+          0.5549999999999999,
+          1.43
+        ],
+        "counterVisible": false,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "rescue-6.2"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "aim-final",
+      "node": "ammo_1",
+      "beat": "rescue-almost",
+      "tray": "dragon",
+      "helper": {
+        "born": false,
+        "visible": true,
+        "mode": "helping",
+        "position": [
+          -1.9541564782429715,
+          0.025,
+          15.754204455650518
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 1.112942277671873,
+        "bodyHeight": 0.36,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "aim-final",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": true,
+        "arcs": 2,
+        "arcSegments": 5,
+        "arcCoreRadius": 0.010700000000000001,
+        "arcHaloRadius": 0.038520000000000006,
+        "arcPulse": 0.9,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": true,
+        "warming": true,
+        "position": [
+          3.45,
+          0.5549999999999999,
+          1.43
+        ],
+        "counterVisible": false,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "rescue-7.3"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "aim-final",
+      "node": "ammo_1",
+      "beat": "rescue-reach",
+      "tray": "dragon",
+      "helper": {
+        "born": false,
+        "visible": true,
+        "mode": "helping",
+        "position": [
+          -1.9541564782429715,
+          0.025,
+          15.754204455650518
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 1.2184444998940498,
+        "bodyHeight": 0.36,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "aim-final",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": true,
+        "warming": true,
+        "position": [
+          3.45,
+          0.5549999999999999,
+          1.43
+        ],
+        "counterVisible": false,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "rescue-8.5"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "aim-final",
+      "node": "ammo_1",
+      "beat": "rescue-weight",
+      "tray": "helper",
+      "helper": {
+        "born": false,
+        "visible": true,
+        "mode": "holding-tray",
+        "position": [
+          -1.9541564782429715,
+          0.025,
+          15.754204455650518
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 1.2220950451734869,
+        "bodyHeight": 0.36,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "aim-final",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": true,
+        "warming": true,
+        "position": [
+          3.45,
+          0.5549999999999999,
+          1.43
+        ],
+        "counterVisible": false,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "rescue-9.2"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "aim-final",
+      "node": "ammo_1",
+      "beat": "rescue-okay",
+      "tray": "helper",
+      "helper": {
+        "born": false,
+        "visible": true,
+        "mode": "holding-tray",
+        "position": [
+          -1.9541564782429715,
+          0.025,
+          15.754204455650518
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 1.2220950451734869,
+        "bodyHeight": 0.36,
+        "emoji": "👌",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "aim-final",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": true,
+        "warming": true,
+        "position": [
+          3.45,
+          0.5549999999999999,
+          1.43
+        ],
+        "counterVisible": false,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "rescue-10.1"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "aim-final",
+      "node": "ammo_1",
+      "beat": "rescue-thumb",
+      "tray": "helper",
+      "helper": {
+        "born": false,
+        "visible": true,
+        "mode": "holding-tray",
+        "position": [
+          -1.9541564782429715,
+          0.025,
+          15.754204455650518
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 1.2220950451734869,
+        "bodyHeight": 0.36,
+        "emoji": "👍",
+        "thumbVisible": true
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "aim-final",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": true,
+        "warming": true,
+        "position": [
+          3.45,
+          0.5549999999999999,
+          1.43
+        ],
+        "counterVisible": false,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "rescue-11.2"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "aim-final",
+      "node": "ammo_1",
+      "beat": "rescue-guard",
+      "tray": "helper",
+      "helper": {
+        "born": false,
+        "visible": true,
+        "mode": "holding-tray",
+        "position": [
+          -1.9541564782429715,
+          0.025,
+          15.754204455650518
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0.8860475225867578,
+        "bodyHeight": 0.36,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "aim-final",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": true,
+        "warming": true,
+        "position": [
+          3.45,
+          0.5549999999999999,
+          1.43
+        ],
+        "counterVisible": false,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "rescue-13"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "aim-final",
+      "node": "ammo_2",
+      "beat": "rescue-return",
+      "tray": "helper",
+      "helper": {
+        "born": false,
+        "visible": true,
+        "mode": "holding-tray",
+        "position": [
+          -1.9541564782429715,
+          0.025,
+          12.498333102421173
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0.55,
+        "bodyHeight": 0.36,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "aim-final",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": true,
+        "arcs": 2,
+        "arcSegments": 5,
+        "arcCoreRadius": 0.010700000000000001,
+        "arcHaloRadius": 0.038520000000000006,
+        "arcPulse": 0.9,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": true,
+        "warming": true,
+        "position": [
+          3.45,
+          0.5549999999999999,
+          1.43
+        ],
+        "counterVisible": false,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "rescue-16"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "finisher",
+      "node": null,
+      "beat": "cinematic-finisher-face",
+      "tray": "helper",
+      "helper": {
+        "born": false,
+        "visible": true,
+        "mode": "holding-tray",
+        "position": [
+          -1.25,
+          0.33,
+          4.116671180876396
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0.55,
+        "bodyHeight": 0.36,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "finisher",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": true,
+        "arcs": 2,
+        "arcSegments": 5,
+        "arcCoreRadius": 0.010700000000000001,
+        "arcHaloRadius": 0.038520000000000006,
+        "arcPulse": 0.9,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": true,
+        "warming": true,
+        "position": [
+          3.45,
+          0.5549999999999999,
+          1.43
+        ],
+        "counterVisible": false,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "explosion-readable"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "finisher",
+      "node": null,
+      "beat": "cinematic-finisher-impact",
+      "tray": "helper",
+      "helper": {
+        "born": false,
+        "visible": true,
+        "mode": "holding-tray",
+        "position": [
+          -1.25,
+          0.33,
+          3.9
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0.55,
+        "bodyHeight": 0.36,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "finisher",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": true,
+        "warming": true,
+        "position": [
+          3.45,
+          0.5549999999999999,
+          1.43
+        ],
+        "counterVisible": false,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "explosion-flight-caption"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "meal-reclaim",
+      "node": "tray_back",
+      "beat": "cinematic-meal-reclaim",
+      "tray": "helper",
+      "helper": {
+        "born": false,
+        "visible": true,
+        "mode": "holding-tray",
+        "position": [
+          -1.25,
+          0.33,
+          3.9
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0.77,
+        "bodyHeight": 0.36,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "meal-reclaim",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": true,
+        "warming": true,
+        "position": [
+          3.45,
+          0.5549999999999999,
+          1.43
+        ],
+        "counterVisible": false,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "tray-reclaim-touch"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "hands": [
+          [
+            -1.505,
+            0.95,
+            0
+          ],
+          [
+            -1.075,
+            0.95,
+            0.2
+          ],
+          [
+            -0.645,
+            0.8,
+            0
+          ],
+          [
+            -0.215,
+            0.8,
+            0.2
+          ],
+          [
+            0.215,
+            0.8,
+            0
+          ],
+          [
+            0.645,
+            0.8,
+            0.2
+          ],
+          [
+            1.075,
+            0.8,
+            0
+          ],
+          [
+            1.505,
+            0.8,
+            0.2
+          ]
+        ]
+      },
+      "phase": "meal-reclaim",
+      "node": "tray_back",
+      "beat": "cinematic-dinner-hero",
+      "tray": "hero",
+      "helper": {
+        "born": false,
+        "visible": true,
+        "mode": "helping",
+        "position": [
+          -1.25,
+          0.33,
+          3.9
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0.5370552315106524,
+        "bodyHeight": 0.36,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "meal-reclaim",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": true,
+        "warming": true,
+        "position": [
+          3.45,
+          0.5549999999999999,
+          1.43
+        ],
+        "counterVisible": false,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "tray-reclaim-hero"
+    },
+    {
+      "concert": {
+        "visible": true,
+        "position": [
+          0.8077644180075182,
+          1.7696636321436057,
+          -3.2790017008275285
+        ],
+        "hands": [
+          [
+            0.7351654214475205,
+            1.6708934772080772,
+            -3.272154604062695
+          ],
+          [
+            0.7190287420489995,
+            1.671061326412848,
+            -3.272127405783891
+          ],
+          [
+            0.7028920630287753,
+            1.671226831380538,
+            -3.272100049110451
+          ],
+          [
+            0.6867553028255293,
+            1.6718954129341064,
+            -3.272106684149584
+          ],
+          [
+            0.8803948687429985,
+            1.6735179180023962,
+            -3.272678786537187
+          ],
+          [
+            0.8965320084976094,
+            1.670497324894376,
+            -3.272513231558283
+          ]
+        ]
+      },
+      "phase": "tour",
+      "node": null,
+      "beat": "tour-dragon-orbit",
+      "tray": "hero",
+      "helper": {
+        "born": false,
+        "visible": true,
+        "mode": "helping",
+        "position": [
+          -1.25,
+          0.33,
+          3.9
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0.55,
+        "bodyHeight": 0.36,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "tour",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": true,
+        "warming": true,
+        "position": [
+          3.45,
+          0.5549999999999999,
+          1.43
+        ],
+        "counterVisible": false,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "concert-trapped"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          1.260948317589103,
+          1.7696623867242345,
+          -3.311990469977918
+        ],
+        "hands": [
+          [
+            1.1900683224328523,
+            1.6651363264012065,
+            -3.2947026223552127
+          ],
+          [
+            1.1740946638404903,
+            1.6651363264012065,
+            -3.292414552358776
+          ],
+          [
+            1.1581210052481286,
+            1.6651363264012065,
+            -3.290126482362339
+          ],
+          [
+            1.1421473466557666,
+            1.6651363264012065,
+            -3.2878384123659017
+          ],
+          [
+            1.3338312497641098,
+            1.6651363264012065,
+            -3.3152952523231463
+          ],
+          [
+            1.3498049083564718,
+            1.6651363264012065,
+            -3.317583322319583
+          ]
+        ]
+      },
+      "phase": "complete",
+      "node": null,
+      "beat": "final-dragon",
+      "tray": "hero",
+      "helper": {
+        "born": false,
+        "visible": true,
+        "mode": "helping",
+        "position": [
+          -1.25,
+          0.33,
+          3.9
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0.55,
+        "bodyHeight": 0.36,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "complete",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": true,
+        "warming": true,
+        "position": [
+          3.45,
+          0.5549999999999999,
+          1.43
+        ],
+        "counterVisible": false,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "fin-0"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          1.260948317589103,
+          1.7696623867242345,
+          -3.311990469977918
+        ],
+        "hands": [
+          [
+            1.1900683224328523,
+            1.6651363264012065,
+            -3.2947026223552127
+          ],
+          [
+            1.1740946638404903,
+            1.6651363264012065,
+            -3.292414552358776
+          ],
+          [
+            1.1581210052481286,
+            1.6651363264012065,
+            -3.290126482362339
+          ],
+          [
+            1.1421473466557666,
+            1.6651363264012065,
+            -3.2878384123659017
+          ],
+          [
+            1.3338312497641098,
+            1.6651363264012065,
+            -3.3152952523231463
+          ],
+          [
+            1.3498049083564718,
+            1.6651363264012065,
+            -3.317583322319583
+          ]
+        ]
+      },
+      "phase": "complete",
+      "node": null,
+      "beat": "final-dragon",
+      "tray": "hero",
+      "helper": {
+        "born": false,
+        "visible": true,
+        "mode": "helping",
+        "position": [
+          -1.25,
+          0.33,
+          3.9
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0.55,
+        "bodyHeight": 0.36,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "complete",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": true,
+        "warming": true,
+        "position": [
+          3.45,
+          0.5549999999999999,
+          1.43
+        ],
+        "counterVisible": false,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "fin-1.25"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          1.260948317589103,
+          1.7696623867242345,
+          -3.311990469977918
+        ],
+        "hands": [
+          [
+            1.1900683224328523,
+            1.6651363264012065,
+            -3.2947026223552127
+          ],
+          [
+            1.1740946638404903,
+            1.6651363264012065,
+            -3.292414552358776
+          ],
+          [
+            1.1581210052481286,
+            1.6651363264012065,
+            -3.290126482362339
+          ],
+          [
+            1.1421473466557666,
+            1.6651363264012065,
+            -3.2878384123659017
+          ],
+          [
+            1.3338312497641098,
+            1.6651363264012065,
+            -3.3152952523231463
+          ],
+          [
+            1.3498049083564718,
+            1.6651363264012065,
+            -3.317583322319583
+          ]
+        ]
+      },
+      "phase": "complete",
+      "node": null,
+      "beat": "final-dragon",
+      "tray": "hero",
+      "helper": {
+        "born": false,
+        "visible": true,
+        "mode": "helping",
+        "position": [
+          -1.25,
+          0.33,
+          3.9
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0.55,
+        "bodyHeight": 0.36,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "complete",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": true,
+        "warming": true,
+        "position": [
+          3.45,
+          0.5549999999999999,
+          1.43
+        ],
+        "counterVisible": false,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "fin-1.7"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          1.260948317589103,
+          1.7696623867242345,
+          -3.311990469977918
+        ],
+        "hands": [
+          [
+            1.1900683224328523,
+            1.6651363264012065,
+            -3.2947026223552127
+          ],
+          [
+            1.1740946638404903,
+            1.6651363264012065,
+            -3.292414552358776
+          ],
+          [
+            1.1581210052481286,
+            1.6651363264012065,
+            -3.290126482362339
+          ],
+          [
+            1.1421473466557666,
+            1.6651363264012065,
+            -3.2878384123659017
+          ],
+          [
+            1.3338312497641098,
+            1.6651363264012065,
+            -3.3152952523231463
+          ],
+          [
+            1.3498049083564718,
+            1.6651363264012065,
+            -3.317583322319583
+          ]
+        ]
+      },
+      "phase": "complete",
+      "node": null,
+      "beat": "final-dragon",
+      "tray": "hero",
+      "helper": {
+        "born": false,
+        "visible": true,
+        "mode": "helping",
+        "position": [
+          -1.25,
+          0.33,
+          3.9
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0.55,
+        "bodyHeight": 0.36,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "complete",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": true,
+        "warming": true,
+        "position": [
+          3.45,
+          0.5549999999999999,
+          1.43
+        ],
+        "counterVisible": false,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "fin-2.15"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          1.260948317589103,
+          1.7696623867242345,
+          -3.311990469977918
+        ],
+        "hands": [
+          [
+            1.1900683224328523,
+            1.6651363264012065,
+            -3.2947026223552127
+          ],
+          [
+            1.1740946638404903,
+            1.6651363264012065,
+            -3.292414552358776
+          ],
+          [
+            1.1581210052481286,
+            1.6651363264012065,
+            -3.290126482362339
+          ],
+          [
+            1.1421473466557666,
+            1.6651363264012065,
+            -3.2878384123659017
+          ],
+          [
+            1.3338312497641098,
+            1.6651363264012065,
+            -3.3152952523231463
+          ],
+          [
+            1.3498049083564718,
+            1.6651363264012065,
+            -3.317583322319583
+          ]
+        ]
+      },
+      "phase": "complete",
+      "node": null,
+      "beat": "final-dragon",
+      "tray": "hero",
+      "helper": {
+        "born": false,
+        "visible": true,
+        "mode": "helping",
+        "position": [
+          -1.25,
+          0.33,
+          3.9
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0.55,
+        "bodyHeight": 0.36,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "complete",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": true,
+        "warming": true,
+        "position": [
+          3.45,
+          0.5549999999999999,
+          1.43
+        ],
+        "counterVisible": false,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "fin-2.6"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          1.260948317589103,
+          1.7696623867242345,
+          -3.311990469977918
+        ],
+        "hands": [
+          [
+            1.1900683224328523,
+            1.6651363264012065,
+            -3.2947026223552127
+          ],
+          [
+            1.1740946638404903,
+            1.6651363264012065,
+            -3.292414552358776
+          ],
+          [
+            1.1581210052481286,
+            1.6651363264012065,
+            -3.290126482362339
+          ],
+          [
+            1.1421473466557666,
+            1.6651363264012065,
+            -3.2878384123659017
+          ],
+          [
+            1.3338312497641098,
+            1.6651363264012065,
+            -3.3152952523231463
+          ],
+          [
+            1.3498049083564718,
+            1.6651363264012065,
+            -3.317583322319583
+          ]
+        ]
+      },
+      "phase": "complete",
+      "node": null,
+      "beat": "final-dragon",
+      "tray": "hero",
+      "helper": {
+        "born": false,
+        "visible": true,
+        "mode": "incident",
+        "position": [
+          0.15,
+          0.025,
+          14.45
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "complete",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": true,
+        "warming": true,
+        "position": [
+          3.45,
+          0.5549999999999999,
+          1.43
+        ],
+        "counterVisible": false,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "restore-bandages"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          1.260948317589103,
+          1.7696623867242345,
+          -3.311990469977918
+        ],
+        "hands": [
+          [
+            1.1900683224328523,
+            1.6651363264012065,
+            -3.2947026223552127
+          ],
+          [
+            1.1740946638404903,
+            1.6651363264012065,
+            -3.292414552358776
+          ],
+          [
+            1.1581210052481286,
+            1.6651363264012065,
+            -3.290126482362339
+          ],
+          [
+            1.1421473466557666,
+            1.6651363264012065,
+            -3.2878384123659017
+          ],
+          [
+            1.3338312497641098,
+            1.6651363264012065,
+            -3.3152952523231463
+          ],
+          [
+            1.3498049083564718,
+            1.6651363264012065,
+            -3.317583322319583
+          ]
+        ]
+      },
+      "phase": "complete",
+      "node": null,
+      "beat": "final-dragon",
+      "tray": "hero",
+      "helper": {
+        "born": false,
+        "visible": true,
+        "mode": "incident",
+        "position": [
+          0.15,
+          0.025,
+          14.45
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "complete",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": true,
+        "warming": true,
+        "position": [
+          3.45,
+          0.5549999999999999,
+          1.43
+        ],
+        "counterVisible": false,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "snap-clearing"
+    },
+    {
+      "concert": {
+        "visible": false,
+        "position": [
+          1.260948317589103,
+          1.7696623867242345,
+          -3.311990469977918
+        ],
+        "hands": [
+          [
+            1.1900683224328523,
+            1.6651363264012065,
+            -3.2947026223552127
+          ],
+          [
+            1.1740946638404903,
+            1.6651363264012065,
+            -3.292414552358776
+          ],
+          [
+            1.1581210052481286,
+            1.6651363264012065,
+            -3.290126482362339
+          ],
+          [
+            1.1421473466557666,
+            1.6651363264012065,
+            -3.2878384123659017
+          ],
+          [
+            1.3338312497641098,
+            1.6651363264012065,
+            -3.3152952523231463
+          ],
+          [
+            1.3498049083564718,
+            1.6651363264012065,
+            -3.317583322319583
+          ]
+        ]
+      },
+      "phase": "complete",
+      "node": null,
+      "beat": "final-dragon",
+      "tray": "hero",
+      "helper": {
+        "born": false,
+        "visible": true,
+        "mode": "incident",
+        "position": [
+          0.15,
+          0.025,
+          14.45
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "complete",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": true,
+        "warming": true,
+        "position": [
+          3.45,
+          0.5549999999999999,
+          1.43
+        ],
+        "counterVisible": false,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "snap-clean"
+    },
+    {
+      "concert": {
+        "visible": true,
+        "position": [
+          0,
+          6.9165664633609785,
+          22.557802255813186
+        ],
+        "hands": [
+          [
+            -0.069654565535132,
+            6.825936005515644,
+            22.5749023421991
+          ],
+          [
+            -0.08513335787627242,
+            6.817815764638684,
+            22.57643446311928
+          ],
+          [
+            -0.10061215021741289,
+            6.826019493687713,
+            22.574886589713802
+          ],
+          [
+            -0.11609094255855333,
+            6.826046567494499,
+            22.574881481448372
+          ],
+          [
+            0.069654565535132,
+            6.817815764638684,
+            22.57643446311928
+          ],
+          [
+            0.08513335787627242,
+            6.826028702760971,
+            22.57488485215281
+          ]
+        ]
+      },
+      "phase": "complete",
+      "node": null,
+      "beat": "final-dragon",
+      "tray": "hero",
+      "helper": {
+        "born": false,
+        "visible": true,
+        "mode": "incident",
+        "position": [
+          0.15,
+          0.025,
+          14.45
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "complete",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": true,
+        "warming": true,
+        "position": [
+          3.45,
+          0.5549999999999999,
+          1.43
+        ],
+        "counterVisible": false,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "concert-wide"
+    },
+    {
+      "concert": {
+        "visible": true,
+        "position": [
+          0,
+          6.9165664633609785,
+          22.557802255813186
+        ],
+        "hands": [
+          [
+            -0.069654565535132,
+            6.826043956198881,
+            22.574881974145658
+          ],
+          [
+            -0.08513335787627242,
+            6.817815764638684,
+            22.57643446311928
+          ],
+          [
+            -0.10061215021741289,
+            6.825977659750249,
+            22.57489448290955
+          ],
+          [
+            -0.11609094255855333,
+            6.8259300315602465,
+            22.574903469360493
+          ],
+          [
+            0.069654565535132,
+            6.817815764638684,
+            22.57643446311928
+          ],
+          [
+            0.08513335787627242,
+            6.817815764638684,
+            22.57643446311928
+          ]
+        ]
+      },
+      "phase": "complete",
+      "node": null,
+      "beat": "final-dragon",
+      "tray": "hero",
+      "helper": {
+        "born": false,
+        "visible": true,
+        "mode": "incident",
+        "position": [
+          0.15,
+          0.025,
+          14.45
+        ],
+        "shape": "soft-lobed-creature",
+        "supportHeight": 0,
+        "bodyHeight": 0.28,
+        "emoji": "",
+        "thumbVisible": false
+      },
+      "appliance": {
+        "mode": "charred",
+        "phase": "complete",
+        "quality": "low",
+        "reducedMotion": false,
+        "doorAngle": 0,
+        "charred": 1,
+        "arcActive": false,
+        "arcs": 0,
+        "arcSegments": 5,
+        "arcCoreRadius": 0,
+        "arcHaloRadius": 0,
+        "arcPulse": 0,
+        "steam": 0,
+        "food": "cold",
+        "ingredientsVisible": true,
+        "wreck": true,
+        "warming": true,
+        "position": [
+          3.45,
+          0.5549999999999999,
+          1.43
+        ],
+        "counterVisible": false,
+        "batches": {
+          "meshesBefore": 79,
+          "meshesAfter": 53,
+          "sharedDraws": 2
+        },
+        "display": "極速保溫"
+      },
+      "name": "concert-followthrough"
+    }
+  ],
+  "errors": []
+}

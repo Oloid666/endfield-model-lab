@@ -1,3 +1,4 @@
+export const FRIDGE_HOT_C=105;
 // Every reveal uses the mission clock, including the deliberately late eye bar.
 // Slow down near both sockets so the final arrival is visible before power selection.
 export function wireProgress(age){const t=Math.max(0,Math.min(6,age));return t<.4?0:t<1.6?(t-.4)/1.2*.09:t<4.9?.09+(t-1.6)/3.3*.826:.916+(t-4.9)/1.1*.084;}
@@ -13,7 +14,7 @@ export const TABLET_PAGES={
  cooling:['指令已送出',['正在讀取實際溫度…'],[]],
  success:['溫度下降中',['實際溫度：−8°C'],[]],
  defrost:['控制器回應異常',['實際溫度正在回升','模式：強制除霜'],[]],
- hot:['設備警示',['實際溫度：+50°C','模式：強制除霜'],[['meal','先去熱便當']]],
+ hot:['設備警示',['實際溫度：+105°C','模式：強制除霜'],[['meal','先去熱便當']]],
  'walk-counter':['回到加熱櫃檯',['先處理便當'],[]],
  'meal-label':['便當加熱說明',['正在查看包裝標籤'],[]],
  grid:['找個加速的方法',['探索微波爐的供電設備'],[['scan-grid','找個加熱快一點的方法']]],
@@ -35,7 +36,7 @@ const TALKS={
  search:[['xaihi','冰箱能不能再調冷一點……'],['xaihi','要從後台設定，還要密碼。'],['dragon','妳知道密碼？'],['xaihi','不知道。我找找別的方法。']],
  php:[['xaihi','管理後台有個漏洞，不用密碼也能進去。'],['xaihi','PHP 出了個大漏洞，賽馬娘停服維修……我才有時間出門。','maintenance']],
  success:[['xaihi','嗯，有降。','satisfied'],['dragon','成功了？']],
- hot:[['dragon','正五十？！妳把蒸發器切到除霜模式了！'],['xaihi','……借了法國駭客的工具，忘了改預設模式。','avert'],['dragon','熱愛105°C的你～🎶\n滴滴清純的蒸餾水～','song'],['xaihi','……飲料晚點再說。先熱便當。','side-eye']],
+ hot:[['dragon','正一百零五？！這台不是冰箱嗎？！'],['xaihi','……借了法國駭客的工具，忘了改預設模式。','avert'],['dragon','熱愛105°C的你～🎶\n滴滴清純的蒸餾水～','song'],['xaihi','……飲料晚點再說。先熱便當。','side-eye']],
  'meal-label':[['xaihi','微波三分鐘……','read-label'],['xaihi','太久了。我找個快一點的。','tablet']],
  'grid-found':[['xaihi','咦，這邊有機會。']],
  backdoor:[['xaihi','怎麼還裝了妮姬？'],['xaihi','這台妮姬啟動器裡有木馬，會偷玩家的帳號密碼。'],['dragon','玩遊戲還附贈盜帳號？'],['xaihi','惡意程式混進正常更新，叫供應鏈攻擊。這台也留下遠端通道。'],['dragon','別人偷帳號，妳偷電？'],['xaihi','留下來的通道還能用。這樣我們可以周轉一下。']],
@@ -63,7 +64,7 @@ export class VcrTablet{
  }
  get state(){
   const [title,base,buttons]=TABLET_PAGES[this.stage],age=Math.max(0,this.now-this.at);
-  const temperature=this.stage==='cooling'?Math.round(4-12*Math.min(1,age/2)):this.stage==='success'?-8:this.stage==='defrost'?Math.round(-8+58*Math.max(0,Math.min(1,(age-.6)/3))):this.hot?50:4;
+  const temperature=this.stage==='cooling'?Math.round(4-12*Math.min(1,age/2)):this.stage==='success'?-8:this.stage==='defrost'?Math.round(-8+(FRIDGE_HOT_C+8)*Math.max(0,Math.min(1,(age-.6)/3))):this.hot?FRIDGE_HOT_C:4;
   const busy=this.now<this.until||this.stage==='search'&&age<1.9||this.stage==='backdoor'&&age<1.5;
   return {stage:this.stage,title,lines:this.stage==='scan-grid'?[...(age>=1.4?['1號天師樁：遠端維修已封鎖']:['1號天師樁：檢查中…']),...(age>=2.8?['2號天師樁：未發現可用入口']:age>=1.4?['2號天師樁：檢查中…']:[]),...(age>=4.1?['3號天師樁：偵測到異常遠端連線']:age>=2.8?['3號天師樁：檢查中…']:[])]:this.stage==='cooling'?['指令已送出',`實際溫度：${signedTemperature(temperature)}`]:base,buttons:this.talks.length?[]:buttons,dialogue:this.talks[0]||null,dialogueAge:Math.max(0,this.now-this.talkAt),hot:this.hot,powered:this.powered,censored:this.censored,censorAt:this.censorAt,temperature,notification:['php','fridge','scan-controller','controller'].includes(this.stage)?'賽馬娘｜維護中':null,note:this.note,age,busy,revision:this.revision+(this.stage==='scan-grid'?Math.floor(age/1.4):0),wireBeat:this.stage==='cable'?(age<.4?'control':age<1.6?'source':age<4.9?'route':'sink'):null};
  }

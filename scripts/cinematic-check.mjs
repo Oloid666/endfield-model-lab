@@ -228,13 +228,19 @@ check('Initial dragon handoff stays grounded and keeps one visible meal',!a.stat
 a.setCinematic({phase:'aim-final',elapsed:1.65,charge:1,height:4,distance:12});a.setDragonHeading(0);a.setDragonProjectile([-1,5.5,15],0);a.setTray({owner:'dragon',phase:'aim-final',age:1.65,rescueAge:1.65});a.update(301,0);
 const donor=[...a.trayPosition];
 a.setDragonProjectile([-.99,5.51,15.01],.65);a.setTray({owner:'dragon',phase:'aim-final',age:2,rescueAge:2});a.update(301.35,0);
-check('Rescue pins donor tray while actor grip settles',a.trayPosition.every((v,i)=>Math.abs(v-donor[i])<1e-8));
-a.setTray({owner:'helper',phase:'aim-final',age:6,rescueAge:6});a.update(305.35,0);
+check('Rescue keeps the real hand on the red grab handle',a.status.catchGripError<1e-6);
+const heldHandle=dragonRoot.getObjectByName('dragon-grab-handle');
+for(const age of [5,6.2,8.5,8.7]){
+ const lowering=(await import('../src/tray-rescue.js')).rescueTiming(age).lowered;a.setCinematic({phase:'aim-final',elapsed:age,charge:1,height:4*(1-lowering),distance:12});a.setTray({owner:'dragon',phase:'aim-final',age,rescueAge:age});a.update(301+age,1/60);
+ check('Descent keeps forward position and feet above the street',Math.abs(a.heroPosition[2]-15.25)<.001&&a.heelCenter[1]>.025,{age,hero:a.heroPosition,heel:a.heelCenter});
+ check('Catching hand follows the red handle without a detached actor',heldHandle.getWorldPosition(new T.Vector3()).distanceTo(new T.Vector3(...a.gripPosition))<1e-6,{age,error:heldHandle.getWorldPosition(new T.Vector3()).distanceTo(new T.Vector3(...a.gripPosition))});
+}
+a.setTray({owner:'helper',phase:'aim-final',age:11.2,rescueAge:11.2});a.update(305.35,0);
 const helper=buildMealRemnant(scene,resources);helper.update(305.35,{phase:'aim-final',helperPresent:true,trayOwner:'helper',progress:99},{},{rescue:a.rescueFrame});scene.updateMatrixWorld(true);
-const mesh=helper.root.children[0].children.find(n=>n.isMesh),v=new T.Vector3();let cap=-Infinity;
+const mesh=helper.root.getObjectByName('purple-tray-support'),v=new T.Vector3();let cap=-Infinity;
 for(let i=0;i<mesh.geometry.attributes.position.count;i++){v.fromBufferAttribute(mesh.geometry.attributes.position,i);mesh.localToWorld(v);cap=Math.max(cap,v.y);}
-check('Stretched creature touches the same-frame tray underside',Math.abs(cap-a.trayPosition[1])<.002,{cap,tray:a.trayPosition});
-check('Stretch remains renderable above original bounding sphere',mesh.frustumCulled===false);
+check('Short tentacles touch the same-frame tray underside',Math.abs(cap-a.trayPosition[1])<.002,{cap,tray:a.trayPosition});
+check('Short creature body stays squat',helper.state.bodyHeight<.5);
 check('Helper earns visible thumb after load settles',helper.root.getObjectByName('purple-helper-thumbs-up').visible);
 a.setTray({owner:'helper',phase:'meal-reclaim',age:1.30,rescueAge:25});a.setCinematic(null);a.update(309,0);const cupBeforeReclaim=cup.getWorldPosition(new T.Vector3());a.setTray({owner:'hero',phase:'meal-reclaim',age:1.40,rescueAge:25.1});a.update(309.1,0);check('Asymmetrical soup position does not jump when Zhuang takes it back',cup.getWorldPosition(new T.Vector3()).distanceTo(cupBeforeReclaim)<.015);
 const beforePause=[...a.trayPosition];a.update(309.1,0);check('Paused rescue holds the exact tray position',a.trayPosition.every((v,i)=>v===beforePause[i]));

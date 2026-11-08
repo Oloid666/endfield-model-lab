@@ -1,0 +1,38 @@
+
+> endfield-model-lab@0.1.0 build
+> vite build
+
+vite v7.1.12 building for production...
+transforming...
+✓ 149 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/feedback-admin.html                          2.25 kB │ gzip:   1.20 kB
+dist/racing.html                                  2.91 kB │ gzip:   1.62 kB
+dist/indoor.html                                  3.18 kB │ gzip:   1.74 kB
+dist/index.html                                   5.80 kB │ gzip:   2.85 kB
+dist/assets/feedbackAdmin-D2pjX9vU.css            0.99 kB │ gzip:   0.54 kB
+dist/assets/racing-BNCiQFWA.css                   3.90 kB │ gzip:   1.42 kB
+dist/assets/indoor-DWNeQ86L.css                   5.43 kB │ gzip:   1.78 kB
+dist/assets/main-BVAE347Z.css                   137.28 kB │ gzip:  28.63 kB
+dist/assets/modulepreload-polyfill-B5Qt9EMX.js    0.71 kB │ gzip:   0.40 kB
+dist/assets/feedback-client-C6AnEI5i.js           2.47 kB │ gzip:   1.47 kB
+dist/assets/audio-CBBkbJyi.js                     2.81 kB │ gzip:   1.19 kB
+dist/assets/feedbackAdmin-BPD_uFfy.js             4.39 kB │ gzip:   2.36 kB
+dist/assets/xaihi-DhZWcvNb.js                    11.36 kB │ gzip:   5.28 kB
+dist/assets/racing-UPZVd9_z.js                   17.24 kB │ gzip:   8.20 kB
+dist/assets/indoor-BTcWeI-r.js                   40.30 kB │ gzip:  16.49 kB
+dist/assets/store-aeYyXH7D.js                    60.71 kB │ gzip:  23.68 kB
+dist/assets/main-B_YaOMSu.js                    589.38 kB │ gzip: 209.23 kB
+dist/assets/interior-Cf-Raqeq.js                749.07 kB │ gzip: 199.04 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 2.16s
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.2
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.2
+npm notice To update run: npm install -g npm@12.2.2
+npm notice

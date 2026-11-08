@@ -21,8 +21,8 @@ function kitchen(r){
   if(labels.has(kind))return labels.get(kind);
   const canvas=document.createElement('canvas');canvas.width=1024;canvas.height=128;const c=canvas.getContext('2d');
   c.fillStyle=kind==='xaihi'?'#e8e0c8':'#eddfba';c.fillRect(0,0,1024,128);c.fillStyle=kind==='xaihi'?'#564361':'#25483c';c.fillRect(0,0,1024,15);
-  c.textAlign='center';c.textBaseline='middle';c.font='bold 24px sans-serif';c.fillText(kind==='xaihi'?'夜班補給 · 咖哩雞便當':'夜班補給 · 照燒雞腿',512,25);
-  c.font='bold 78px sans-serif';c.fillText(kind==='tray'?'武陵夜班 · 好好吃飯':'800 W / 3 分鐘',512,84);
+  c.textAlign='center';c.textBaseline='middle';c.font='bold 24px sans-serif';c.fillText(kind==='xaihi'?'夜班補給 · 咖哩雞便當':'夜班特選 · 雙主菜',512,25);
+  c.font=kind==='zhuang'?'bold 56px sans-serif':'bold 78px sans-serif';c.fillText(kind==='tray'?'武陵夜班 · 好好吃飯':kind==='zhuang'?'照燒雞腿 × 炙燒鮭魚':'800 W / 3 分鐘',512,84);
   const map=r.own(new T.CanvasTexture(canvas));map.colorSpace=T.SRGBColorSpace;map.anisotropy=4;
   const material=r.own(new T.MeshStandardMaterial({map,roughness:.83,metalness:0}));labels.set(kind,material);return material;
  }
@@ -32,7 +32,7 @@ function randomStream(seed){return ()=>{seed=(seed*1664525+1013904223)>>>0;retur
 
 export function buildBento(r,parent,{variant='zhuang'}={}){
  const k=kitchen(r),{m}=k,root=new T.Group();root.name=variant+'-crafted-bento';parent.add(root);
- const isX=variant==='xaihi',shell=isX?r.material('#46404a',{roughness:.46}):m.ivory;
+ const isX=variant==='xaihi',shell=r.material(isX?'#46404a':'#263c34',{roughness:.42});
  const mesh=(geo,mat,p,s=[1,1,1],owner=root)=>r.mesh(geo,mat,owner,p,s);
  // Closed underside, moulded feet and a raised rim remain visible from below/side.
  mesh(k.rounded(.30,.024,.19,.007),shell,[0,.012,0]);
@@ -44,11 +44,18 @@ export function buildBento(r,parent,{variant='zhuang'}={}){
  // Front label is bonded to the box, rather than a freestanding piece of paper.
  const label=mesh(r.geometry('PlaneGeometry',.258,.034),k.label(variant),[0,.018,.096]);label.name='bento-packaging-heating-label';
  const labelPoint=new T.Object3D();labelPoint.position.set(0,.020,.099);root.add(labelPoint);
+ if(!isX){
+  for(const z of [-.092,.092])mesh(k.rounded(.286,.002,.002,.0005),m.gold,[0,.038,z]);
+  mesh(k.rounded(.003,.018,.164,.001),shell,[-.021,.037,0]);
+  mesh(k.rounded(.160,.014,.003,.001),shell,[.063,.035,.001]);
+ }
  const solids=new T.Group();solids.name='crafted-bento-ingredients';root.add(solids);
  const riceMat=r.own(m.rice.clone()),meatMat=r.own(m.chicken.clone()),vegMat=r.own(m.green.clone()),eggMat=r.own(m.egg.clone()),yolkMat=r.own(m.yolk.clone()),accentMat=r.own(m.carrot.clone());
  const leafMat=r.own(m.leaf.clone()),sesameMat=r.own(m.sesame.clone()),charMat=r.own(m.char.clone());
  const dynamicMaterials=[riceMat,meatMat,vegMat,eggMat,yolkMat,accentMat,leafMat,sesameMat,charMat],original=dynamicMaterials.map(x=>x.color.clone());
  const add=(geo,mat,p,s=[1,1,1])=>mesh(geo,mat,p,s,solids);
+ const protein=new T.Group();protein.name='thick-teriyaki-chicken';solids.add(protein);protein.position.set(...(isX?[.046,.041,-.020]:[.028,.043,-.044]));protein.scale.set(...(isX?[1,1,1]:[.82,1.30,.70]));
+ const meat=(g,m,p,s=[1,1,1])=>mesh(g,m,p,s,protein);
  // Rice mound + many rounded individual grains; all grains share one draw.
  add(k.sphere,riceMat,[-.078,.042,-.005],[.060,.017,.075]);
  const rice=r.own(new T.InstancedMesh(k.grain,riceMat,180));rice.name='rounded-rice-grains';solids.add(rice);
@@ -65,25 +72,38 @@ export function buildBento(r,parent,{variant='zhuang'}={}){
   g.setAttribute('color',new T.Float32BufferAttribute(colors,3));g.computeVertexNormals();return g;
  });
  const skin=r.own(new T.MeshStandardMaterial({color:0xffffff,vertexColors:true,roughness:.35}));dynamicMaterials.push(skin);original.push(skin.color.clone());
- const chicken=add(fillet,skin,[.046,.041,-.020]);chicken.rotation.y=-.10;
+ const chicken=meat(fillet,skin,[0,0,0]);chicken.rotation.y=-.10;
  for(let i=0;i<4;i++){
-  const x=.012+i*.022;const cut=add(k.rounded(.002,.009,.083,.0007),meatMat,[x,.058,-.018]);cut.rotation.z=.1;cut.rotation.y=-.10;
+  const x=.012+i*.022;const cut=meat(k.rounded(.002,.009,.083,.0007),meatMat,[x-.046,.017,.002]);cut.rotation.z=.1;cut.rotation.y=-.10;
  }
  // Thin charred grill lines conform to the curved skin, not painted black bars.
  for(let i=0;i<5;i++){
   const x=-.039+i*.018,points=[];for(let j=0;j<7;j++){const z=-.037+j*.012;points.push(new T.Vector3(x,.0125+Math.sqrt(Math.max(0,1-(x/.055)**2-(z/.060)**2))*.015,z));}
-  const g=k.get('grill-'+i,()=>new T.TubeGeometry(new T.CatmullRomCurve3(points),6,.0008,4,false));const n=add(g,charMat,[.046,.041,-.02]);n.rotation.y=-.10;
+  const g=k.get('grill-'+i,()=>new T.TubeGeometry(new T.CatmullRomCurve3(points),6,.0008,4,false));const n=meat(g,charMat,[0,0,0]);n.rotation.y=-.10;
  }
  // Broccoli has clustered florets, a stem and leaf silhouettes.
- for(let i=0;i<3;i++){
-  const x=.015+i*.039,z=.057+(i%2)*.005;add(k.rounded(.010,.018,.010,.003),leafMat,[x,.042,z]);
+ for(let i=0;i<(isX?3:2);i++){
+  const x=isX?.015+i*.039:.083+i*.035,z=isX?.057+(i%2)*.005:.067;add(k.rounded(.010,.018,.010,.003),leafMat,[x,.042,z]);
   for(let j=0;j<5;j++){const a=j*2.4;add(k.sphere,vegMat,[x+Math.cos(a)*.009,.054+(j%2)*.004,z+Math.sin(a)*.008],[.011,.010,.011]);}
  }
  for(let i=0;i<2;i++){const c=add(r.geometry('CylinderGeometry',.014,.014,.005,12),accentMat,[.113,.046,-.056+i*.027]);c.rotation.z=.15;}
  // Half egg: a real cut white with a slightly recessed glossy yolk.
- add(k.sphere,eggMat,[.112,.047,.012],[.024,.014,.030]);add(k.sphere,yolkMat,[.112,.059,.012],[.014,.0035,.017]);
- const sesame=r.own(new T.InstancedMesh(k.grain,sesameMat,28));solids.add(sesame);
- for(let i=0;i<28;i++){const x=-.038+rng()*.076,z=-.035+rng()*.070;dummy.position.set(.046+x*Math.cos(-.1)+z*Math.sin(-.1),.0538+Math.sqrt(Math.max(0,1-(x/.055)**2-(z/.060)**2))*.015,-.020-x*Math.sin(-.1)+z*Math.cos(-.1));dummy.rotation.set(0,rng()*6.28,.2);dummy.scale.set(.0009,.0007,.0020);dummy.updateMatrix();sesame.setMatrixAt(i,dummy.matrix);}sesame.instanceMatrix.needsUpdate=true;sesame.computeBoundingSphere();
+ add(k.sphere,eggMat,isX?[.112,.047,.012]:[.010,.047,.054],[.024,.014,.030]);add(k.sphere,yolkMat,isX?[.112,.059,.012]:[.010,.059,.054],[.014,.0035,.017]);
+ const sesame=r.own(new T.InstancedMesh(k.grain,sesameMat,28));protein.add(sesame);
+ for(let i=0;i<28;i++){const x=-.038+rng()*.076,z=-.035+rng()*.070;dummy.position.set(x*Math.cos(-.1)+z*Math.sin(-.1),.0128+Math.sqrt(Math.max(0,1-(x/.055)**2-(z/.060)**2))*.015,-x*Math.sin(-.1)+z*Math.cos(-.1));dummy.rotation.set(0,rng()*6.28,.2);dummy.scale.set(.0009,.0007,.0020);dummy.updateMatrix();sesame.setMatrixAt(i,dummy.matrix);}sesame.instanceMatrix.needsUpdate=true;sesame.computeBoundingSphere();
+ if(!isX){
+  // The second main has its own skin edge, volume, fat marbling and toasted surface.
+  const canvas=document.createElement('canvas');canvas.width=256;canvas.height=128;const c=canvas.getContext('2d');c.fillStyle='#e5a071';c.fillRect(0,0,256,128);
+  c.lineCap='round';for(let i=-4;i<14;i++){c.strokeStyle=i%3===0?'#f8d9b0':'#f1bf8d';c.lineWidth=3+(i%2);c.beginPath();c.moveTo(i*26,-8);c.quadraticCurveTo(i*26-20,64,i*26-22,136);c.stroke();}
+  for(let i=0;i<35;i++){c.fillStyle=i%2?'#a86a3c':'#c17c45';c.fillRect((i*71)%250,(i*29)%122,2,3);}
+  const map=r.own(new T.CanvasTexture(canvas));map.colorSpace=T.SRGBColorSpace;map.anisotropy=4;
+  const fishMat=r.own(new T.MeshStandardMaterial({map,color:'#ffe5c1',roughness:.30})),skinMat=r.material('#667062',{roughness:.45});dynamicMaterials.push(fishMat);original.push(fishMat.color.clone());
+  const fish=add(k.rounded(.069,.018,.043,.006),fishMat,[.087,.050,.025]);fish.name='seared-salmon-main';fish.rotation.y=-.10;
+  const fishSkin=add(k.rounded(.069,.004,.043,.0015),skinMat,[.087,.040,.025]);fishSkin.rotation.y=-.10;
+  for(let i=0;i<2;i++)add(k.rounded(.015,.013,.027,.004),yolkMat,[.040+i*.016,.045,.059]);
+  // A few nori flakes and scallions replace uniform decoration with deliberate accents.
+  for(let i=0;i<12;i++){const fleck=add(k.rounded(.002,.0007,.005,.00025),leafMat,[-.102+(i%4)*.015,.060+Math.sin(i)*.001,-.040+Math.floor(i/4)*.029]);fleck.rotation.y=i*1.7;}
+ }
  if(isX){const sauce=add(k.sphere,r.material('#ad803c',{roughness:.42}),[.047,.039,-.016],[.066,.006,.067]);sauce.name='curry-sauce';dynamicMaterials.push(sauce.material);original.push(sauce.material.color.clone());}
  const originalRoughness=dynamicMaterials.map(mat=>mat.roughness);
  batchParts(solids,r);solids.traverse(n=>{if(n.isMesh)n.userData.dynamic=true;});batchParts(root,r);
@@ -104,7 +124,11 @@ export function buildDinnerTray(r,parent){
  for(const x of [-.18,.23])for(const z of [-.085,.085])add(k.rounded(.025,.005,.018,.0015),m.rim,[x,-.022,z]);
  for(const z of [-.065,0,.065])add(k.rounded(.39,.002,.003,.0006),m.rim,[.025,-.0205,z]);
  const seal=add(r.geometry('PlaneGeometry',.10,.026),k.label('tray'),[.025,-.022,0]);seal.rotation.x=Math.PI/2;
- const bento=buildBento(r,root);bento.root.position.set(-.066,.025,-.009);
+ const bento=buildBento(r,root);bento.root.position.set(-.066,.025,-.009);bento.root.scale.set(1.06,1,1.06);
+ // Sealed chopsticks sit in the front lip, clear of both food and cup.
+ for(const z of [.105,.111])add(k.rounded(.29,.004,.003,.001),m.soup,[-.035,.026,z]);
+ add(k.rounded(.235,.007,.014,.002),m.paper,[-.045,.029,.108]);
+ for(const x of [-.142,.051])add(k.rounded(.003,.001,.014,.0004),m.gold,[x,.033,.108]);
  const bowl=new T.Group();bowl.name='lidded-hot-soup';bowl.position.set(.19,.022,.005);root.add(bowl);
  const profile=[[0,0],[.030,0],[.037,.006],[.058,.086],[.060,.094],[.056,.098],[.052,.090],[.032,.011],[0,.011]].map(p=>new T.Vector2(...p));
  r.mesh(k.get('soup-bowl',()=>new T.LatheGeometry(profile,28)),m.soup,bowl);

@@ -1,5 +1,6 @@
 import {buildVcrEffects} from './vcr-effects.js';
 import * as T from 'three';
+import {rescueTiming,RESCUE_READY} from './tray-rescue.js';
 import {buildConcertStage,songCamera} from './concert-stage.js';
 import {buildSighBreath} from './sigh-breath.js';
 import {buildCaptureEffects} from './capture-effects.js';
@@ -128,7 +129,7 @@ export class MissionDirector{
     this.world.weather.invalidateReflection();
   }
   hitNeighbor(){
-    if(this.neighborImpacted)return;this.neighborImpacted=true;
+    if(this.neighborImpacted)return;this.neighborImpacted=true;this.world.actors?.setDamageState?.('dirty',this.state?.clock||0);
     this.world.store.destruction.neighbor?.impact();this.world.siege.impact(this.wall,1.45);
     this.world.weather.invalidateReflection();
   }
@@ -155,14 +156,13 @@ export class MissionDirector{
     actor.setTray?.({owner:state.trayOwner||'hero',phase,age:e,rescueAge:state.rescueAge});
     actor.setSceneAction?.({gazeTarget:!state.vcr&&state.node&&!['photo','photo-flight'].includes(phase)?actor.dragonPosition:null,mealReceive:phase==='walk-out'&&state.shopping?.handoff?Math.sin(Math.PI*smooth(state.shopping.handoffElapsed/1.2)):0,playful:phase==='ready',singing:phase==='tour'&&e>=14&&e<30,singingTrapped:phase==='tour',singingAge:Math.max(0,e-14),heading:['meal-handoff','meal-reclaim'].includes(phase)?0:['ready','intro','photo-talk','cargo'].includes(phase)?-.65:['photo-check','photo-review','photo-sending'].includes(phase)?-.35:['photo-flight','photo'].includes(phase)?0:undefined,handover:phase==='photo-talk'&&state.node?.event==='camera-handover',photoLook:['photo-check','photo-review','photo-sending','cargo'].includes(phase),externalDevice:phase.startsWith('photo')||phase==='cargo',mealVisible:!['ready','intro','purchase'].includes(phase)&&!(phase==='walk-out'&&(!state.shopping?.handoff||state.shopping.handoffElapsed<1.1))});
     if(state.postgame){
-      actor.root.visible=this.world.charactersEnabled;actor.setCinematic(null);actor.setSoot(false);
+      actor.root.visible=this.world.charactersEnabled;actor.setCinematic(null);
       const roam=this.dragonRoam.update(state.clock,actor.heroPosition,actor.dragonPosition,{floorPlan:this.world.store.floorPlan,intact:this.world.streetShow?.state.mode!=='collapsed',doors:this.world.store.doors,meal:this.world.remnant?.state.visible?this.world.remnant.state.position:null});this.roamState=roam;
       actor.setSceneAction?.({homecoming:true,playful:!state.node,mealVisible:true,mealLook:state.node?.event==='meal-arrival',freeLookYaw:roam.lookYaw,freeLookPitch:roam.lookPitch,freeFlying:true});
       actor.setDragonProjectile(roam.position,0);actor.setDragonHeading(roam.heading);actor.setCompanionAction({kind:'normal',amount:0});
       this.visualTime=state.clock;this.cameraRoll=0;return;
     }
-    if(phase==='complete'&&this.world.streetShow?.state.snapshotReady){actor.setCinematic(null);actor.setSoot(false);actor.setSceneAction({homecoming:true,playful:true,mealVisible:true});actor.setDragonProjectile([-2.25,4.3,6.2],0);actor.setDragonHeading(.15);return;}
-    actor.setSoot?.(this.neighborImpacted);
+    if(phase==='complete'&&this.world.streetShow?.state.snapshotReady){actor.setCinematic(null);actor.setSceneAction({homecoming:true,playful:true,mealVisible:true});actor.setDragonProjectile([-2.25,4.3,6.2],0);actor.setDragonHeading(.15);return;}
     // Turn into a readable three-quarter conversation, then follow the shopping path
     // without snapping 180 degrees when the purchase phase changes.
     let dragonHeading=0;
@@ -185,7 +185,7 @@ export class MissionDirector{
     this.cameraRoll=0;
     this.visualTime=phase==='rewind'?this.rewindStarted-state.rewindProgress*35:null;
     if(phase==='rewind')this.world.store.destruction.updateRewind(state.rewindProgress);
-    let cast=flying.has(phase)?{phase,elapsed:e,castingElapsed:state.castingElapsed,charge:state.charge/100,flight:Math.min(1,e/9),recoil:this.recoil,distance:12,height:4}:null;
+    let cast=flying.has(phase)?{phase,elapsed:e,castingElapsed:state.castingElapsed,charge:state.charge/100,flight:Math.min(1,e/9),recoil:this.recoil,distance:12,height:phase==='aim-final'?4*(1-rescueTiming(e).lowered):4}:null;
     if(['terminal-quip','login','captcha','verify-talk','lever'].includes(phase))cast=null;
     if(['ascent','director-reminder','shoe-view','pylon-link'].includes(phase)){
       const rise=phase==='ascent'?smooth(e/5)*.5:.5;
@@ -201,7 +201,7 @@ export class MissionDirector{
     if(cctv){
       const tablet=state.tablet,fridgeScene=['cooling','success','defrost','hot'].includes(tablet?.stage),singing=tablet?.dialogue?.cue==='song';
       actor.root.visible=this.world.charactersEnabled&&fridgeScene;if(actor.heroRoot)actor.heroRoot.visible=false;
-      actor.setSceneAction?.({singing,singingAge:tablet?.dialogueAge||0,mealVisible:false,externalDevice:true});actor.setDragonProjectile([1.7,1.12,-.65],0);
+      actor.setSceneAction?.({singing,singingAge:tablet?.dialogueAge||0,quietSong:singing,mealVisible:false,externalDevice:true});actor.setDragonProjectile([1.7,1.12,-.65],0);
       actor.setDragonHeading?.(singing&&tablet.dialogueAge>2.5?-2.42:-2.25);return;
     }
     const connection=state.connection;
@@ -317,10 +317,10 @@ export class MissionDirector{
     this.world.tianshi.update(clock,s?.paused?0:delta,propState);this.world.microwave.update(clock,s?.paused?0:delta,propState);this.world.connectionStage.update(clock,s?.paused?0:delta,propState);
     propState.collectionDamage=s?.postgame&&this.world.streetShow?.state.snapshotReady?(this.world.streetShow.state.mode==='collapsed'?99:0):s?.vcr?0:s?.progress||0;
     this.world.investigationProps?.update(clock,s?.paused?0:delta,propState);
-    this.world.xaihi?.update(clock,s?.paused?0:delta,propState);this.vcrEffects.update(s,{intact:!!s?.vcr||(this.world.streetShow?.state.snapshotReady?this.world.streetShow.state.mode==='intact':this.world.store.destruction.state.progress<44)});for(const door of this.world.store.floorPlan?.fridgeDoors||[])door.rotation.y=0;
+    this.world.xaihi?.update(clock,s?.paused?0:delta,propState);this.vcrEffects.update(s,{camera:this.world.camera,intact:!!s?.vcr||(this.world.streetShow?.state.snapshotReady?this.world.streetShow.state.mode==='intact':this.world.store.destruction.state.progress<44)});for(const door of this.world.store.floorPlan?.fridgeDoors||[])door.rotation.y=0;
     if(this.world.xaihi&&!this.world.charactersEnabled)this.world.xaihi.root.visible=false;
     const target=this.target(s?.target)?.position||[0,4.3,1.6];
-    this.world.siege.update(clock,s?.paused?0:delta,{phase:s?.postgame?'ready':s?.vcr?'vcr':s?.phase||'ready',elapsed:s?.phaseElapsed||0,rescueFocus:s?.phase==='aim-final'&&s.phaseElapsed>=1.8&&s.phaseElapsed<6.7,charge:s?.phase==='last'&&Number.isFinite(this.captureAt)?.25:personal?(s?.phase==='aim-final'&&s.phaseElapsed>=1.8&&s.phaseElapsed<6.7?.045:Math.min(1,(s?.phaseElapsed||0)/3)):['energy','return'].includes(s?.phase)?.08:(s?.charge||0)/100,hero:feet,dragon,target,progress:s?.progress||0,recoil:this.recoil});
+    this.world.siege.update(clock,s?.paused?0:delta,{phase:s?.postgame?'ready':s?.vcr?'vcr':s?.phase||'ready',elapsed:s?.phaseElapsed||0,rescueFocus:s?.phase==='aim-final'&&s.phaseElapsed>=1&&s.phaseElapsed<14,charge:s?.phase==='last'&&Number.isFinite(this.captureAt)?.25:personal?(s?.phase==='aim-final'&&s.phaseElapsed>=1&&s.phaseElapsed<14?.045:Math.min(1,(s?.phaseElapsed||0)/3)):['energy','return'].includes(s?.phase)?.08:(s?.charge||0)/100,hero:feet,dragon,target,progress:s?.progress||0,recoil:this.recoil});
     this.marker.visible=!!s&&['combat','aim-final'].includes(s.phase);
     if(this.marker.visible){this.marker.position.fromArray(s.phase==='photo-flight'?[0,2.6,10.5]:target);this.marker.quaternion.copy(this.world.camera.quaternion);this.marker.scale.setScalar(.9+Math.sin(clock*3)*.05);}
     if(s)this.updateCamera(delta,feet);

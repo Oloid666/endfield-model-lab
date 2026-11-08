@@ -53,7 +53,7 @@ async def main():
     await tick(.5)
    assert await js('__rainy711.missionLever(1)');await tick(.8);await shot('tray-pass-touch');await background('tray-pass');await tick(1);await shot('tray-pass-helper');assert await js('__rainy711.mission.trayOwner')=='dragon'
    await tick(6);assert await js('!__rainy711.mission.helperPresent&&!__rainy711.staging.remnant.visible');await tick(15);await js('__rainy711.missionNext()');await tick(4.5);await shot('charge-city');await tick(5);await shot('charge-hero');await tick(5);await shot('charge-pylon')
-   await jump('fridge');await talks();await act('scan');await tick(1.7);await talks();await act('tool');await act('detect');await tick(1.4);await act('control');await tick(3.3);await act('apply');await tick(2.1);await shot('fridge-cold');await talks();await tick(3.7);await shot('fridge-hot');await background('fridge');await talks();await act('meal');await tick(3.3);await shot('packaging-heating-label');await talks();await tick(.5);await act('scan-grid');await tick(1.4);await shot('grid-one');await tick(1.4);await shot('grid-two');await tick(1.4);await shot('grid-three');await tick(.8);await talks();await act('inspect-console');await shot('nikke-console');await background('nikke');await talks();await tick(.5);await talks();await tick(2);await act('enable');await tick(6.1);await talks();await act('800mw');await act('confirm');await act('start')
+   await jump('fridge');await talks();await act('scan');await tick(1.7);await talks();await act('tool');await act('detect');await tick(1.4);await act('control');await tick(3.3);await act('apply');await tick(2.1);await shot('fridge-cold');await talks();await tick(3.7);await shot('fridge-hot');await background('fridge');await tick(.4);assert await js('__rainy711.tabletAction("talk-next")');await tick(.4);assert await js('__rainy711.tabletAction("talk-next")');await tick(.4);await shot('fridge-song');assert await js('__rainy711.mission.tablet.dialogue.cue')=='song';assert not await js('__rainy711.idle.companionHandsVisible||__rainy711.staging.microphone');assert await js('__rainy711.devices.temperature')==105;await talks();await act('meal');await tick(3.3);await shot('packaging-heating-label');await talks();await tick(.5);await act('scan-grid');await tick(1.4);await shot('grid-one');await tick(1.4);await shot('grid-two');await tick(1.4);await shot('grid-three');await tick(.8);await talks();await act('inspect-console');await shot('nikke-console');await background('nikke');await talks();await tick(.5);await talks();await tick(2);await act('enable');await tick(6.1);await talks();await act('800mw');await act('confirm');await act('start')
    for _ in range(20):
     if await js('__rainy711.mission.phase')=='heat':break
     await js('__rainy711.missionNext()');await tick(.5)
@@ -66,7 +66,7 @@ async def main():
      if rnd==2 and i in [0,1,2]:await shot('round3-beat'+str(i+1))
     await tick(.7)
     if rnd<2:assert await js('__rainy711.mission.heat.completed')==rnd+1;await shot('round'+str(rnd+1))
-   assert await js('__rainy711.mission.phase')=='meal-spawn';await shot('birth-start');await tick(1);await shot('birth-purple');assert await js('__rainy711.microwave.ingredientsVisible');await tick(2);await shot('birth-escape');assert not await js('__rainy711.microwave.ingredientsVisible');await tick(4.2);await shot('refusal-meme');assert await page.locator('.mission-text').inner_text()=='那個我不要了';await background('birth-refusal');await page.set_viewport_size({'width':844,'height':390});await tick(.1);await shot('refusal-landscape');await page.set_viewport_size({'width':1366,'height':768});await tick(.1);await shot('refusal-desktop');await page.set_viewport_size({'width':390,'height':844});await tick(.1)
+   assert await js('__rainy711.mission.phase')=='meal-spawn';await shot('birth-start');await tick(2);await shot('birth-purple');assert await js('__rainy711.microwave.ingredientsVisible');await tick(5.4);await shot('birth-escape');assert not await js('__rainy711.microwave.ingredientsVisible');await tick(max(0,11.8-await js('__rainy711.mission.phaseElapsed')));await shot('refusal-meme');assert await page.locator('.mission-text').inner_text()=='那個我不要了';await background('birth-refusal');await page.set_viewport_size({'width':844,'height':390});await tick(.1);await shot('refusal-landscape');await page.set_viewport_size({'width':1366,'height':768});await tick(.1);await shot('refusal-desktop');await page.set_viewport_size({'width':390,'height':844});await tick(.1)
    for _ in range(12):
     if await js('__rainy711.mission.phase')=='flashback-end':break
     await js('__rainy711.missionNext()');await tick(.5)
@@ -76,11 +76,11 @@ async def main():
     if await js('__rainy711.mission.phase')=='aim-final':break
     await js('__rainy711.missionNext()');await tick(.5)
    assert await js('__rainy711.mission.trayOwner')=='dragon'
-   for age in [1.65,2.6,3.35,4.7,5.2,6.15,8.8]:
+   for age in [1.65,2.4,3.4,5,6.2,7.3,8.5,9.2,10.1,11.2,13,16]:
     await tick(max(0,age-await js('__rainy711.mission.phaseElapsed')));await shot('rescue-'+str(age))
    assert await js('__rainy711.mission.trayOwner')=='helper'
    await background('rescue-safe')
-   await page.wait_for_function('!__rainy711.mission.paused',timeout=120000);await tick(await js('Math.max(0,9+__rainy711.mission.meterPeriod/4-__rainy711.mission.phaseElapsed)'));assert await js('__rainy711.missionAttack(__rainy711.time)')
+   await page.wait_for_function('!__rainy711.mission.paused',timeout=120000);await tick(await js('Math.max(0,17+__rainy711.mission.meterPeriod/4-__rainy711.mission.phaseElapsed)'));assert await js('__rainy711.missionAttack(__rainy711.time)')
    assert await js('__rainy711.mission.phase')=='finisher'
    await tick(2.1);await shot('explosion-readable');assert await page.locator('.dragon-reaction-bubble').is_visible();assert await page.evaluate('()=>{const q=__rainy711,p=q.projectPoint(q.headPosition),r=document.querySelector("#scene").getBoundingClientRect(),b=document.querySelector(".dragon-reaction-bubble").getBoundingClientRect(),x=r.x+(p[0]+1)*r.width/2,y=r.y+(1-p[1])*r.height/2;return !(x>=b.left&&x<=b.right&&y>=b.top&&y<=b.bottom)}');await tick(2.5);assert await page.locator('.dragon-reaction-bubble').is_visible();await shot('explosion-flight-caption');await tick(4.4+await js('__rainy711.mission.landingDuration')+.8);await shot('tray-reclaim-touch');assert await js('__rainy711.mission.phase')=='meal-reclaim';assert await js('__rainy711.mission.trayOwner')=='helper';await background('tray-reclaim')
    await tick(1);await shot('tray-reclaim-hero');assert await js('__rainy711.mission.trayOwner')=='hero'
@@ -94,7 +94,7 @@ async def main():
    await tick(1.5);assert await page.locator('.epilogue-prompt').is_visible()
    for _ in range(3):
     await tick(.5);await page.locator('.epilogue-prompt button').click()
-   await tick(6);await shot('concert-wide');assert await js('__rainy711.staging.show.active&&__rainy711.staging.concert.visible');assert await js('__rainy711.staging.concert.hands.filter(p=>{const q=__rainy711.projectPoint(p);return Math.abs(q[0])<1&&Math.abs(q[1])<1&&q[2]<1}).length>=4');await tick(.35);await shot('concert-followthrough')
+   await tick(2.5);await shot('restore-bandages');assert await js('__rainy711.staging.damage.state')=='dirty';await tick(.2);await shot('snap-clearing');assert await js('__rainy711.staging.damage.state')=='clearing';await tick(.35);assert not await js('__rainy711.staging.damage.visible');await shot('snap-clean');await tick(3);await shot('concert-wide');assert await js('__rainy711.staging.show.active&&__rainy711.staging.concert.visible');assert await js('__rainy711.staging.concert.hands.filter(p=>{const q=__rainy711.projectPoint(p);return Math.abs(q[0])<1&&Math.abs(q[1])<1&&q[2]<1}).length>=4');await tick(.35);await shot('concert-followthrough')
    # Finish the existing performance before debug travel.
    await tick(70)
    for where in ['claims','classroom','rating']:

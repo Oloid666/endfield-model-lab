@@ -30,7 +30,7 @@ concert.update([0,4,6],1,true,camera);const orientation=concert.root.quaternion.
 check('Foreground cheering follows the active lens',orientation.angleTo(concert.root.quaternion)>.9&&concert.root.quaternion.angleTo(camera.quaternion)<1e-9&&Math.abs(concert.root.position.distanceTo(camera.position)-.45)<1e-8);
 let properDepth=true;concert.root.traverse(n=>{if(n.isMesh)properDepth&&=n.material.depthTest;});check('Audience props obey depth',properDepth);
 const oven=buildMicrowave(scene,r),ingredients=oven.root.getObjectByName('microwave-original-ingredients');let prior=1;
-for(let i=0;i<=48;i++){
+for(let i=0;i<=96;i++){
  const age=i*.05;oven.update(age,.05,{phase:'meal-spawn',tabletMode:true,phaseElapsed:age,clock:age,mealBorn:true});
  const current=ingredients.scale.x;check('Ingredients shrink continuously into the creature',current<=prior+.0001&&prior-current<.06);prior=current;
  if(age<1.8)check('Ingredients remain until the creature fills their space',ingredients.visible);

@@ -1,0 +1,4091 @@
+{
+  "frames": [
+    {
+      "phase": "meal-spawn",
+      "age": 5.2999999999999865,
+      "node": "overload",
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.0739695626177748,
+          1.297036154183386,
+          3.53032845583409
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": true,
+          "visible": true,
+          "mode": "peeking",
+          "position": [
+            3.545,
+            1.435,
+            1.43
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "actor": {
+        "phase": 6.099999999999986,
+        "action": "rest",
+        "footDrift": 0.0025011572658210084,
+        "moving": false,
+        "speed": 0,
+        "distance": 0,
+        "clothJoints": 58,
+        "dinner": "A",
+        "gesture": "",
+        "companion": {
+          "mode": "idle",
+          "distance": 0.7624942281679084,
+          "speed": 0,
+          "walk": 1.0671310781819628e-18,
+          "phase": 1.2940921772864744,
+          "heading": -4.710861936138305,
+          "lookYaw": -0.002433516473952647,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -2.0124939149002645,
+            0.325,
+            3.249308820253141
+          ],
+          "target": [
+            -2.0155607661869084,
+            0.325,
+            3.211054996786309
+          ],
+          "trailPoints": 1,
+          "glance": false
+        },
+        "arms": {
+          "shoulderL": 0,
+          "shoulderR": 0,
+          "elbowL": 0,
+          "elbowR": 0,
+          "wristL": 0,
+          "wristR": 0
+        },
+        "cinematic": {
+          "phase": "",
+          "lift": 0,
+          "forward": 0,
+          "heading": 0.08,
+          "airborne": false,
+          "dragonProjectile": true,
+          "recoil": 0
+        },
+        "smile": 0,
+        "smileJointCount": 12,
+        "companionAction": "normal",
+        "gait": {
+          "leftSwing": null,
+          "rightSwing": null,
+          "acceleration": 0,
+          "turn": 0
+        },
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "walkPhase": 0,
+        "walkBlend": 0,
+        "heading": 0.08,
+        "companionExpression": "normal",
+        "companionHandsVisible": true,
+        "dragonHeading": -2.25,
+        "trayYaw": 0.8915926535897806,
+        "mealOwner": "dragon",
+        "mealSupport": [
+          1.2317555501128492,
+          1.5449000000000002,
+          -1.0280348861545443
+        ]
+      },
+      "hero": [
+        -1.25,
+        0.32,
+        3.25
+      ],
+      "dragon": [
+        1.7000000000000002,
+        1.12,
+        -0.6499999999999999
+      ],
+      "camera": {
+        "position": [
+          2.9,
+          1.9,
+          -0.34999999999999987
+        ],
+        "target": [
+          3.545,
+          1.52,
+          1.43
+        ],
+        "fov": 38,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "canAttack": false,
+      "name": "birth-390-5.3",
+      "communication": {
+        "visible": false,
+        "text": "",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "phase": "meal-spawn",
+      "age": 7.3999999999999835,
+      "node": "overload",
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.0697089576917205,
+          1.29598008275321,
+          3.5372077486653604
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": true,
+          "visible": true,
+          "mode": "escape",
+          "position": [
+            3.555634239999999,
+            1.4329206956192473,
+            1.3922656000000029
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "actor": {
+        "phase": 8.199999999999983,
+        "action": "look-at-display",
+        "footDrift": 0.0025011572658210084,
+        "moving": false,
+        "speed": 0,
+        "distance": 0,
+        "clothJoints": 58,
+        "dinner": "A",
+        "gesture": "",
+        "companion": {
+          "mode": "idle",
+          "distance": 0.7624942281679084,
+          "speed": 0,
+          "walk": 6.60772651975453e-27,
+          "phase": 1.2940921772864744,
+          "heading": -4.713191171255584,
+          "lookYaw": -0.00010428135667364182,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -2.0124939149002645,
+            0.325,
+            3.249308820253141
+          ],
+          "target": [
+            -2.0155607661869084,
+            0.325,
+            3.211054996786309
+          ],
+          "trailPoints": 1,
+          "glance": false
+        },
+        "arms": {
+          "shoulderL": 0,
+          "shoulderR": 0,
+          "elbowL": 0,
+          "elbowR": 0,
+          "wristL": 0,
+          "wristR": 0
+        },
+        "cinematic": {
+          "phase": "",
+          "lift": 0,
+          "forward": 0,
+          "heading": 0.08,
+          "airborne": false,
+          "dragonProjectile": true,
+          "recoil": 0
+        },
+        "smile": 0,
+        "smileJointCount": 12,
+        "companionAction": "normal",
+        "gait": {
+          "leftSwing": null,
+          "rightSwing": null,
+          "acceleration": 0,
+          "turn": 0
+        },
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "walkPhase": 0,
+        "walkBlend": 0,
+        "heading": 0.08,
+        "companionExpression": "normal",
+        "companionHandsVisible": true,
+        "dragonHeading": -2.25,
+        "trayYaw": 0.891592653589793,
+        "mealOwner": "dragon",
+        "mealSupport": [
+          1.2317555501128492,
+          1.5449000000000002,
+          -1.0280348861545443
+        ]
+      },
+      "hero": [
+        -1.25,
+        0.32,
+        3.25
+      ],
+      "dragon": [
+        1.7000000000000002,
+        1.12,
+        -0.6499999999999999
+      ],
+      "camera": {
+        "position": [
+          3.6499999999999995,
+          1.982920695619247,
+          -0.0577343999999973
+        ],
+        "target": [
+          3.555634239999999,
+          1.5329206956192474,
+          1.3922656000000029
+        ],
+        "fov": 60,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "canAttack": false,
+      "name": "birth-390-7.4",
+      "communication": {
+        "visible": false,
+        "text": "",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "phase": "meal-spawn",
+      "age": 9.800000000000011,
+      "node": "overload",
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.0697100034884464,
+          1.2960962792155923,
+          3.536973894524427
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": true,
+          "visible": true,
+          "mode": "landing",
+          "position": [
+            3.7,
+            1.202448979591831,
+            0.7947521865889156
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "actor": {
+        "phase": 10.600000000000012,
+        "action": "look-at-display",
+        "footDrift": 0.0025011572658210084,
+        "moving": false,
+        "speed": 0,
+        "distance": 0,
+        "clothJoints": 58,
+        "dinner": "A",
+        "gesture": "",
+        "companion": {
+          "mode": "idle",
+          "distance": 0.7624942281679084,
+          "speed": 0,
+          "walk": 2.749737592104812e-36,
+          "phase": 1.2940921772864744,
+          "heading": -4.713292603257412,
+          "lookYaw": 0.55,
+          "lookPitch": 0.025,
+          "blocked": false,
+          "position": [
+            -2.0124939149002645,
+            0.325,
+            3.249308820253141
+          ],
+          "target": [
+            -2.0155607661869084,
+            0.325,
+            3.211054996786309
+          ],
+          "trailPoints": 1,
+          "glance": true
+        },
+        "arms": {
+          "shoulderL": 0,
+          "shoulderR": 0,
+          "elbowL": 0,
+          "elbowR": 0,
+          "wristL": 0,
+          "wristR": 0
+        },
+        "cinematic": {
+          "phase": "",
+          "lift": 0,
+          "forward": 0,
+          "heading": 0.08,
+          "airborne": false,
+          "dragonProjectile": true,
+          "recoil": 0
+        },
+        "smile": 0,
+        "smileJointCount": 12,
+        "companionAction": "normal",
+        "gait": {
+          "leftSwing": null,
+          "rightSwing": null,
+          "acceleration": 0,
+          "turn": 0
+        },
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "walkPhase": 0,
+        "walkBlend": 0,
+        "heading": 0.08,
+        "companionExpression": "normal",
+        "companionHandsVisible": true,
+        "dragonHeading": -2.25,
+        "trayYaw": 0.891592653589793,
+        "mealOwner": "dragon",
+        "mealSupport": [
+          1.2317555501128492,
+          1.5449000000000002,
+          -1.0280348861545443
+        ]
+      },
+      "hero": [
+        -1.25,
+        0.32,
+        3.25
+      ],
+      "dragon": [
+        1.7000000000000002,
+        1.12,
+        -0.6499999999999999
+      ],
+      "camera": {
+        "position": [
+          3.65,
+          1.752448979591831,
+          -0.6552478134110846
+        ],
+        "target": [
+          3.7,
+          1.302448979591831,
+          0.7947521865889156
+        ],
+        "fov": 60,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "canAttack": false,
+      "name": "birth-390-9.8",
+      "communication": {
+        "visible": false,
+        "text": "",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "phase": "meal-spawn",
+      "age": 10.699999999999992,
+      "node": "overload",
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.0703716764985305,
+          1.2970327628114562,
+          3.5343541399663576
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": true,
+          "visible": true,
+          "mode": "landing",
+          "position": [
+            3.7,
+            0.33000000000000007,
+            0.45
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "actor": {
+        "phase": 11.499999999999993,
+        "action": "look-at-display",
+        "footDrift": 0.0025011572658210084,
+        "moving": false,
+        "speed": 0,
+        "distance": 0,
+        "clothJoints": 58,
+        "dinner": "A",
+        "gesture": "",
+        "companion": {
+          "mode": "idle",
+          "distance": 0.7624942281679084,
+          "speed": 0,
+          "walk": 8.34652978650643e-40,
+          "phase": 1.2940921772864744,
+          "heading": -4.713294713944766,
+          "lookYaw": -7.38667491862591e-07,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -2.0124939149002645,
+            0.325,
+            3.249308820253141
+          ],
+          "target": [
+            -2.0155607661869084,
+            0.325,
+            3.211054996786309
+          ],
+          "trailPoints": 1,
+          "glance": false
+        },
+        "arms": {
+          "shoulderL": 0,
+          "shoulderR": 0,
+          "elbowL": 0,
+          "elbowR": 0,
+          "wristL": 0,
+          "wristR": 0
+        },
+        "cinematic": {
+          "phase": "",
+          "lift": 0,
+          "forward": 0,
+          "heading": 0.08,
+          "airborne": false,
+          "dragonProjectile": true,
+          "recoil": 0
+        },
+        "smile": 0,
+        "smileJointCount": 12,
+        "companionAction": "normal",
+        "gait": {
+          "leftSwing": null,
+          "rightSwing": null,
+          "acceleration": 0,
+          "turn": 0
+        },
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "walkPhase": 0,
+        "walkBlend": 0,
+        "heading": 0.08,
+        "companionExpression": "normal",
+        "companionHandsVisible": true,
+        "dragonHeading": -2.25,
+        "trayYaw": 0.891592653589793,
+        "mealOwner": "dragon",
+        "mealSupport": [
+          1.2317555501128492,
+          1.5449000000000002,
+          -1.0280348861545443
+        ]
+      },
+      "hero": [
+        -1.25,
+        0.32,
+        3.25
+      ],
+      "dragon": [
+        1.7000000000000002,
+        1.12,
+        -0.6499999999999999
+      ],
+      "camera": {
+        "position": [
+          3.6500000000000004,
+          0.8800000000000001,
+          -1
+        ],
+        "target": [
+          3.7000000000000006,
+          0.43000000000000005,
+          0.45
+        ],
+        "fov": 60,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "canAttack": false,
+      "name": "birth-390-10.7",
+      "communication": {
+        "visible": false,
+        "text": "",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "phase": "meal-spawn",
+      "age": 11.200000000000006,
+      "node": "overload",
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.0718257420337258,
+          1.2973134012582244,
+          3.5321632610194174
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": true,
+          "visible": true,
+          "mode": "landing",
+          "position": [
+            3.7,
+            0.33000000000000007,
+            0.45
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "actor": {
+        "phase": 12.000000000000007,
+        "action": "look-at-display",
+        "footDrift": 0.0025011572658210084,
+        "moving": false,
+        "speed": 0,
+        "distance": 0,
+        "clothJoints": 58,
+        "dinner": "A",
+        "gesture": "",
+        "companion": {
+          "mode": "idle",
+          "distance": 0.7624942281679084,
+          "speed": 0,
+          "walk": 9.272157050463023e-42,
+          "phase": 1.2940921772864744,
+          "heading": -4.713295103690441,
+          "lookYaw": -3.489218170178585e-07,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -2.0124939149002645,
+            0.325,
+            3.249308820253141
+          ],
+          "target": [
+            -2.0155607661869084,
+            0.325,
+            3.211054996786309
+          ],
+          "trailPoints": 1,
+          "glance": false
+        },
+        "arms": {
+          "shoulderL": 0,
+          "shoulderR": 0,
+          "elbowL": 0,
+          "elbowR": 0,
+          "wristL": 0,
+          "wristR": 0
+        },
+        "cinematic": {
+          "phase": "",
+          "lift": 0,
+          "forward": 0,
+          "heading": 0.08,
+          "airborne": false,
+          "dragonProjectile": true,
+          "recoil": 0
+        },
+        "smile": 0,
+        "smileJointCount": 12,
+        "companionAction": "normal",
+        "gait": {
+          "leftSwing": null,
+          "rightSwing": null,
+          "acceleration": 0,
+          "turn": 0
+        },
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "walkPhase": 0,
+        "walkBlend": 0,
+        "heading": 0.08,
+        "companionExpression": "normal",
+        "companionHandsVisible": true,
+        "dragonHeading": -2.25,
+        "trayYaw": 0.891592653589793,
+        "mealOwner": "dragon",
+        "mealSupport": [
+          1.2317555501128492,
+          1.5449000000000002,
+          -1.0280348861545443
+        ]
+      },
+      "hero": [
+        -1.25,
+        0.32,
+        3.25
+      ],
+      "dragon": [
+        1.7000000000000002,
+        1.12,
+        -0.6499999999999999
+      ],
+      "camera": {
+        "position": [
+          3.6500000000000004,
+          0.8800000000000001,
+          -1
+        ],
+        "target": [
+          3.7000000000000006,
+          0.43000000000000005,
+          0.45
+        ],
+        "fov": 60,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "canAttack": false,
+      "name": "birth-390-11.2",
+      "communication": {
+        "visible": false,
+        "text": "",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "phase": "meal-spawn",
+      "age": 12.699999999999974,
+      "node": "meal_refusal",
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.0739658452707148,
+          1.2966231268957942,
+          3.531114465121347
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": true,
+          "visible": true,
+          "mode": "alive",
+          "position": [
+            3.7,
+            0.33000000000000007,
+            0.45
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "actor": {
+        "phase": 13.499999999999975,
+        "action": "refuse",
+        "footDrift": 0.0025011572658210084,
+        "moving": false,
+        "speed": 0,
+        "distance": 0,
+        "clothJoints": 58,
+        "dinner": "A",
+        "gesture": "refuse",
+        "companion": {
+          "mode": "idle",
+          "distance": 0.7624942281679084,
+          "speed": 0,
+          "walk": 1.2711747958713355e-47,
+          "phase": 1.2940921772864744,
+          "heading": -4.713295415836168,
+          "lookYaw": -3.6776089974003004e-08,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -2.0124939149002645,
+            0.325,
+            3.249308820253141
+          ],
+          "target": [
+            -2.0155607661869084,
+            0.325,
+            3.211054996786309
+          ],
+          "trailPoints": 1,
+          "glance": false
+        },
+        "arms": {
+          "shoulderL": 0,
+          "shoulderR": 0,
+          "elbowL": 0,
+          "elbowR": 0,
+          "wristL": 0,
+          "wristR": 0
+        },
+        "cinematic": {
+          "phase": "",
+          "lift": 0,
+          "forward": 0,
+          "heading": 0.08,
+          "airborne": false,
+          "dragonProjectile": true,
+          "recoil": 0
+        },
+        "smile": 0,
+        "smileJointCount": 12,
+        "companionAction": "normal",
+        "gait": {
+          "leftSwing": null,
+          "rightSwing": null,
+          "acceleration": 0,
+          "turn": 0
+        },
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "walkPhase": 0,
+        "walkBlend": 0,
+        "heading": 0.08,
+        "companionExpression": "normal",
+        "companionHandsVisible": true,
+        "dragonHeading": -2.25,
+        "trayYaw": 0.891592653589793,
+        "mealOwner": "dragon",
+        "mealSupport": [
+          1.2317555501128492,
+          1.5449000000000002,
+          -1.0280348861545443
+        ]
+      },
+      "hero": [
+        -1.25,
+        0.32,
+        3.25
+      ],
+      "dragon": [
+        1.7000000000000002,
+        1.12,
+        -0.6499999999999999
+      ],
+      "camera": {
+        "position": [
+          3.32044596631886,
+          1.9311236012419635,
+          -0.478152304842975
+        ],
+        "target": [
+          1.9404459663188602,
+          1.8111236012419636,
+          0.6418476951570247
+        ],
+        "fov": 36,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "canAttack": false,
+      "name": "birth-390-12.7",
+      "communication": {
+        "visible": false,
+        "text": "",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "phase": "meal-spawn",
+      "age": 5.300000000000075,
+      "node": "overload",
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.0739622095273709,
+          1.296219166441259,
+          3.531889397848942
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": true,
+          "visible": true,
+          "mode": "peeking",
+          "position": [
+            3.545,
+            1.435,
+            1.43
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "actor": {
+        "phase": 18.80000000000005,
+        "action": "look-at-dragon",
+        "footDrift": 0.0025011572658210084,
+        "moving": false,
+        "speed": 0,
+        "distance": 0,
+        "clothJoints": 58,
+        "dinner": "A",
+        "gesture": "",
+        "companion": {
+          "mode": "idle",
+          "distance": 0.7624942281679084,
+          "speed": 0,
+          "walk": 1.0671310781819628e-18,
+          "phase": 1.2940921772864744,
+          "heading": -4.710861936138305,
+          "lookYaw": -0.002433516473952647,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -2.0124939149002645,
+            0.325,
+            3.249308820253141
+          ],
+          "target": [
+            -2.0155607661869084,
+            0.325,
+            3.211054996786309
+          ],
+          "trailPoints": 1,
+          "glance": false
+        },
+        "arms": {
+          "shoulderL": 0,
+          "shoulderR": 0,
+          "elbowL": 0,
+          "elbowR": 0,
+          "wristL": 0,
+          "wristR": 0
+        },
+        "cinematic": {
+          "phase": "",
+          "lift": 0,
+          "forward": 0,
+          "heading": 0.08,
+          "airborne": false,
+          "dragonProjectile": true,
+          "recoil": 0
+        },
+        "smile": 0,
+        "smileJointCount": 12,
+        "companionAction": "normal",
+        "gait": {
+          "leftSwing": null,
+          "rightSwing": null,
+          "acceleration": 0,
+          "turn": 0
+        },
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "walkPhase": 0,
+        "walkBlend": 0,
+        "heading": 0.08,
+        "companionExpression": "normal",
+        "companionHandsVisible": true,
+        "dragonHeading": -2.25,
+        "trayYaw": 0.891592653589793,
+        "mealOwner": "dragon",
+        "mealSupport": [
+          1.2317555501128492,
+          1.5449000000000002,
+          -1.0280348861545443
+        ]
+      },
+      "hero": [
+        -1.25,
+        0.32,
+        3.25
+      ],
+      "dragon": [
+        1.7000000000000002,
+        1.12,
+        -0.6499999999999999
+      ],
+      "camera": {
+        "position": [
+          2.9,
+          1.9,
+          -0.34999999999999987
+        ],
+        "target": [
+          3.545,
+          1.52,
+          1.43
+        ],
+        "fov": 31,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "canAttack": false,
+      "name": "birth-844-5.3",
+      "communication": {
+        "visible": false,
+        "text": "",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "phase": "meal-spawn",
+      "age": 7.399999999999956,
+      "node": "overload",
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.0739557845859944,
+          1.2955053035567958,
+          3.533274125827609
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": true,
+          "visible": true,
+          "mode": "escape",
+          "position": [
+            3.5556342399999976,
+            1.4329206956192475,
+            1.3922656000000078
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "actor": {
+        "phase": 20.89999999999993,
+        "action": "look-at-dragon",
+        "footDrift": 0.0025011572658210084,
+        "moving": false,
+        "speed": 0,
+        "distance": 0,
+        "clothJoints": 58,
+        "dinner": "A",
+        "gesture": "",
+        "companion": {
+          "mode": "idle",
+          "distance": 0.7624942281679084,
+          "speed": 0,
+          "walk": 6.607726519759852e-27,
+          "phase": 1.2940921772864744,
+          "heading": -4.713191171255581,
+          "lookYaw": -0.00010428135667630636,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -2.0124939149002645,
+            0.325,
+            3.249308820253141
+          ],
+          "target": [
+            -2.0155607661869084,
+            0.325,
+            3.211054996786309
+          ],
+          "trailPoints": 1,
+          "glance": false
+        },
+        "arms": {
+          "shoulderL": 0,
+          "shoulderR": 0,
+          "elbowL": 0,
+          "elbowR": 0,
+          "wristL": 0,
+          "wristR": 0
+        },
+        "cinematic": {
+          "phase": "",
+          "lift": 0,
+          "forward": 0,
+          "heading": 0.08,
+          "airborne": false,
+          "dragonProjectile": true,
+          "recoil": 0
+        },
+        "smile": 0,
+        "smileJointCount": 12,
+        "companionAction": "normal",
+        "gait": {
+          "leftSwing": null,
+          "rightSwing": null,
+          "acceleration": 0,
+          "turn": 0
+        },
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "walkPhase": 0,
+        "walkBlend": 0,
+        "heading": 0.08,
+        "companionExpression": "blink",
+        "companionHandsVisible": true,
+        "dragonHeading": -2.25,
+        "trayYaw": 0.891592653589793,
+        "mealOwner": "dragon",
+        "mealSupport": [
+          1.2317555501128492,
+          1.5449000000000002,
+          -1.0280348861545443
+        ]
+      },
+      "hero": [
+        -1.25,
+        0.32,
+        3.25
+      ],
+      "dragon": [
+        1.7000000000000002,
+        1.12,
+        -0.6499999999999999
+      ],
+      "camera": {
+        "position": [
+          3.6499999999999995,
+          1.9829206956192473,
+          -0.057734399999992414
+        ],
+        "target": [
+          3.5556342399999976,
+          1.5329206956192476,
+          1.3922656000000078
+        ],
+        "fov": 42,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "canAttack": false,
+      "name": "birth-844-7.4",
+      "communication": {
+        "visible": false,
+        "text": "",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "phase": "meal-spawn",
+      "age": 9.800000000000072,
+      "node": "overload",
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.0739698895292626,
+          1.2970724766905428,
+          3.530259634045678
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": true,
+          "visible": true,
+          "mode": "landing",
+          "position": [
+            3.7,
+            1.2024489795917996,
+            0.7947521865888854
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "actor": {
+        "phase": 23.300000000000047,
+        "action": "rest",
+        "footDrift": 0.0025011572658210084,
+        "moving": false,
+        "speed": 0,
+        "distance": 0,
+        "clothJoints": 58,
+        "dinner": "A",
+        "gesture": "",
+        "companion": {
+          "mode": "idle",
+          "distance": 0.7624942281679084,
+          "speed": 0,
+          "walk": 2.7497375921063287e-36,
+          "phase": 1.2940921772864744,
+          "heading": -4.713292603257411,
+          "lookYaw": -2.849354846535382e-06,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -2.0124939149002645,
+            0.325,
+            3.249308820253141
+          ],
+          "target": [
+            -2.0155607661869084,
+            0.325,
+            3.211054996786309
+          ],
+          "trailPoints": 1,
+          "glance": false
+        },
+        "arms": {
+          "shoulderL": 0,
+          "shoulderR": 0,
+          "elbowL": 0,
+          "elbowR": 0,
+          "wristL": 0,
+          "wristR": 0
+        },
+        "cinematic": {
+          "phase": "",
+          "lift": 0,
+          "forward": 0,
+          "heading": 0.08,
+          "airborne": false,
+          "dragonProjectile": true,
+          "recoil": 0
+        },
+        "smile": 0,
+        "smileJointCount": 12,
+        "companionAction": "normal",
+        "gait": {
+          "leftSwing": null,
+          "rightSwing": null,
+          "acceleration": 0,
+          "turn": 0
+        },
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "walkPhase": 0,
+        "walkBlend": 0,
+        "heading": 0.08,
+        "companionExpression": "normal",
+        "companionHandsVisible": true,
+        "dragonHeading": -2.25,
+        "trayYaw": 0.891592653589793,
+        "mealOwner": "dragon",
+        "mealSupport": [
+          1.2317555501128492,
+          1.5449000000000002,
+          -1.0280348861545443
+        ]
+      },
+      "hero": [
+        -1.25,
+        0.32,
+        3.25
+      ],
+      "dragon": [
+        1.7000000000000002,
+        1.12,
+        -0.6499999999999999
+      ],
+      "camera": {
+        "position": [
+          3.6499999999999995,
+          1.7524489795917995,
+          -0.6552478134111149
+        ],
+        "target": [
+          3.6999999999999997,
+          1.3024489795917997,
+          0.7947521865888852
+        ],
+        "fov": 42,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "canAttack": false,
+      "name": "birth-844-9.8",
+      "communication": {
+        "visible": false,
+        "text": "",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "phase": "meal-spawn",
+      "age": 10.70000000000002,
+      "node": "overload",
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.073964510386968,
+          1.2964748105284036,
+          3.5313982701372844
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": true,
+          "visible": true,
+          "mode": "landing",
+          "position": [
+            3.7,
+            0.33000000000000007,
+            0.45
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "actor": {
+        "phase": 24.199999999999996,
+        "action": "rest",
+        "footDrift": 0.0025011572658210084,
+        "moving": false,
+        "speed": 0,
+        "distance": 0,
+        "clothJoints": 58,
+        "dinner": "A",
+        "gesture": "",
+        "companion": {
+          "mode": "idle",
+          "distance": 0.7624942281679084,
+          "speed": 0,
+          "walk": 8.346529786515583e-40,
+          "phase": 1.2940921772864744,
+          "heading": -4.713294713944765,
+          "lookYaw": -7.386674927507694e-07,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -2.0124939149002645,
+            0.325,
+            3.249308820253141
+          ],
+          "target": [
+            -2.0155607661869084,
+            0.325,
+            3.211054996786309
+          ],
+          "trailPoints": 1,
+          "glance": false
+        },
+        "arms": {
+          "shoulderL": 0,
+          "shoulderR": 0,
+          "elbowL": 0,
+          "elbowR": 0,
+          "wristL": 0,
+          "wristR": 0
+        },
+        "cinematic": {
+          "phase": "",
+          "lift": 0,
+          "forward": 0,
+          "heading": 0.08,
+          "airborne": false,
+          "dragonProjectile": true,
+          "recoil": 0
+        },
+        "smile": 0,
+        "smileJointCount": 12,
+        "companionAction": "normal",
+        "gait": {
+          "leftSwing": null,
+          "rightSwing": null,
+          "acceleration": 0,
+          "turn": 0
+        },
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "walkPhase": 0,
+        "walkBlend": 0,
+        "heading": 0.08,
+        "companionExpression": "normal",
+        "companionHandsVisible": true,
+        "dragonHeading": -2.25,
+        "trayYaw": 0.891592653589793,
+        "mealOwner": "dragon",
+        "mealSupport": [
+          1.2317555501128492,
+          1.5449000000000002,
+          -1.0280348861545443
+        ]
+      },
+      "hero": [
+        -1.25,
+        0.32,
+        3.25
+      ],
+      "dragon": [
+        1.7000000000000002,
+        1.12,
+        -0.6499999999999999
+      ],
+      "camera": {
+        "position": [
+          3.6500000000000004,
+          0.8800000000000001,
+          -1
+        ],
+        "target": [
+          3.7000000000000006,
+          0.43000000000000005,
+          0.45
+        ],
+        "fov": 42,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "canAttack": false,
+      "name": "birth-844-10.7",
+      "communication": {
+        "visible": false,
+        "text": "",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "phase": "meal-spawn",
+      "age": 11.199999999999992,
+      "node": "overload",
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.0739610810726894,
+          1.2960937860108008,
+          3.5321311805070272
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": true,
+          "visible": true,
+          "mode": "landing",
+          "position": [
+            3.7,
+            0.33000000000000007,
+            0.45
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "actor": {
+        "phase": 24.699999999999967,
+        "action": "rest",
+        "footDrift": 0.0025011572658210084,
+        "moving": false,
+        "speed": 0,
+        "distance": 0,
+        "clothJoints": 58,
+        "dinner": "A",
+        "gesture": "",
+        "companion": {
+          "mode": "idle",
+          "distance": 0.7624942281679084,
+          "speed": 0,
+          "walk": 9.27215705047557e-42,
+          "phase": 1.2940921772864744,
+          "heading": -4.713295103690441,
+          "lookYaw": -3.489218170178585e-07,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -2.0124939149002645,
+            0.325,
+            3.249308820253141
+          ],
+          "target": [
+            -2.0155607661869084,
+            0.325,
+            3.211054996786309
+          ],
+          "trailPoints": 1,
+          "glance": false
+        },
+        "arms": {
+          "shoulderL": 0,
+          "shoulderR": 0,
+          "elbowL": 0,
+          "elbowR": 0,
+          "wristL": 0,
+          "wristR": 0
+        },
+        "cinematic": {
+          "phase": "",
+          "lift": 0,
+          "forward": 0,
+          "heading": 0.08,
+          "airborne": false,
+          "dragonProjectile": true,
+          "recoil": 0
+        },
+        "smile": 0,
+        "smileJointCount": 12,
+        "companionAction": "normal",
+        "gait": {
+          "leftSwing": null,
+          "rightSwing": null,
+          "acceleration": 0,
+          "turn": 0
+        },
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "walkPhase": 0,
+        "walkBlend": 0,
+        "heading": 0.08,
+        "companionExpression": "normal",
+        "companionHandsVisible": true,
+        "dragonHeading": -2.25,
+        "trayYaw": 0.891592653589793,
+        "mealOwner": "dragon",
+        "mealSupport": [
+          1.2317555501128492,
+          1.5449000000000002,
+          -1.0280348861545443
+        ]
+      },
+      "hero": [
+        -1.25,
+        0.32,
+        3.25
+      ],
+      "dragon": [
+        1.7000000000000002,
+        1.12,
+        -0.6499999999999999
+      ],
+      "camera": {
+        "position": [
+          3.6500000000000004,
+          0.8800000000000001,
+          -1
+        ],
+        "target": [
+          3.7000000000000006,
+          0.43000000000000005,
+          0.45
+        ],
+        "fov": 42,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "canAttack": false,
+      "name": "birth-844-11.2",
+      "communication": {
+        "visible": false,
+        "text": "",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "phase": "meal-spawn",
+      "age": 12.69999999999995,
+      "node": "meal_refusal",
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.0739618186226527,
+          1.2961757337693922,
+          3.531973085004665
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": true,
+          "visible": true,
+          "mode": "alive",
+          "position": [
+            3.7,
+            0.33000000000000007,
+            0.45
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "actor": {
+        "phase": 26.199999999999925,
+        "action": "refuse",
+        "footDrift": 0.0025011572658210084,
+        "moving": false,
+        "speed": 0,
+        "distance": 0,
+        "clothJoints": 58,
+        "dinner": "A",
+        "gesture": "refuse",
+        "companion": {
+          "mode": "idle",
+          "distance": 0.7624942281679084,
+          "speed": 0,
+          "walk": 1.271174795872895e-47,
+          "phase": 1.2940921772864744,
+          "heading": -4.713295415836169,
+          "lookYaw": 0.55,
+          "lookPitch": 0.025,
+          "blocked": false,
+          "position": [
+            -2.0124939149002645,
+            0.325,
+            3.249308820253141
+          ],
+          "target": [
+            -2.0155607661869084,
+            0.325,
+            3.211054996786309
+          ],
+          "trailPoints": 1,
+          "glance": true
+        },
+        "arms": {
+          "shoulderL": 0,
+          "shoulderR": 0,
+          "elbowL": 0,
+          "elbowR": 0,
+          "wristL": 0,
+          "wristR": 0
+        },
+        "cinematic": {
+          "phase": "",
+          "lift": 0,
+          "forward": 0,
+          "heading": 0.08,
+          "airborne": false,
+          "dragonProjectile": true,
+          "recoil": 0
+        },
+        "smile": 0,
+        "smileJointCount": 12,
+        "companionAction": "normal",
+        "gait": {
+          "leftSwing": null,
+          "rightSwing": null,
+          "acceleration": 0,
+          "turn": 0
+        },
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "walkPhase": 0,
+        "walkBlend": 0,
+        "heading": 0.08,
+        "companionExpression": "normal",
+        "companionHandsVisible": true,
+        "dragonHeading": -2.25,
+        "trayYaw": 0.891592653589793,
+        "mealOwner": "dragon",
+        "mealSupport": [
+          1.2317555501128492,
+          1.5449000000000002,
+          -1.0280348861545443
+        ]
+      },
+      "hero": [
+        -1.25,
+        0.32,
+        3.25
+      ],
+      "dragon": [
+        1.7000000000000002,
+        1.12,
+        -0.6499999999999999
+      ],
+      "camera": {
+        "position": [
+          3.324214797972272,
+          1.9318631731046205,
+          -0.4807615952604539
+        ],
+        "target": [
+          1.9442147979722717,
+          1.8118631731046206,
+          0.6392384047395462
+        ],
+        "fov": 36,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "canAttack": false,
+      "name": "birth-844-12.7",
+      "communication": {
+        "visible": false,
+        "text": "",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "phase": "meal-spawn",
+      "age": 5.300000000000075,
+      "node": "overload",
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.0739554061100627,
+          1.2954632518237337,
+          3.5333563170163536
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": true,
+          "visible": true,
+          "mode": "peeking",
+          "position": [
+            3.545,
+            1.435,
+            1.43
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "actor": {
+        "phase": 31.5,
+        "action": "rest",
+        "footDrift": 0.0025011572658210084,
+        "moving": false,
+        "speed": 0,
+        "distance": 0,
+        "clothJoints": 58,
+        "dinner": "A",
+        "gesture": "",
+        "companion": {
+          "mode": "idle",
+          "distance": 0.7624942281679084,
+          "speed": 0,
+          "walk": 1.0671310781819628e-18,
+          "phase": 1.2940921772864744,
+          "heading": -4.710861936138305,
+          "lookYaw": -0.002433516473952647,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -2.0124939149002645,
+            0.325,
+            3.249308820253141
+          ],
+          "target": [
+            -2.0155607661869084,
+            0.325,
+            3.211054996786309
+          ],
+          "trailPoints": 1,
+          "glance": false
+        },
+        "arms": {
+          "shoulderL": 0,
+          "shoulderR": 0,
+          "elbowL": 0,
+          "elbowR": 0,
+          "wristL": 0,
+          "wristR": 0
+        },
+        "cinematic": {
+          "phase": "",
+          "lift": 0,
+          "forward": 0,
+          "heading": 0.08,
+          "airborne": false,
+          "dragonProjectile": true,
+          "recoil": 0
+        },
+        "smile": 0,
+        "smileJointCount": 12,
+        "companionAction": "normal",
+        "gait": {
+          "leftSwing": null,
+          "rightSwing": null,
+          "acceleration": 0,
+          "turn": 0
+        },
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "walkPhase": 0,
+        "walkBlend": 0,
+        "heading": 0.08,
+        "companionExpression": "normal",
+        "companionHandsVisible": true,
+        "dragonHeading": -2.25,
+        "trayYaw": 0.891592653589793,
+        "mealOwner": "dragon",
+        "mealSupport": [
+          1.2317555501128492,
+          1.5449000000000002,
+          -1.0280348861545443
+        ]
+      },
+      "hero": [
+        -1.25,
+        0.32,
+        3.25
+      ],
+      "dragon": [
+        1.7000000000000002,
+        1.12,
+        -0.6499999999999999
+      ],
+      "camera": {
+        "position": [
+          2.9,
+          1.9,
+          -0.34999999999999987
+        ],
+        "target": [
+          3.545,
+          1.52,
+          1.43
+        ],
+        "fov": 31,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "canAttack": false,
+      "name": "birth-1366-5.3",
+      "communication": {
+        "visible": false,
+        "text": "",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "phase": "meal-spawn",
+      "age": 7.399999999999956,
+      "node": "overload",
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.0739688897044546,
+          1.2969613880775193,
+          3.5304702709988875
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": true,
+          "visible": true,
+          "mode": "escape",
+          "position": [
+            3.5556342399999976,
+            1.4329206956192475,
+            1.3922656000000078
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "actor": {
+        "phase": 33.59999999999988,
+        "action": "rest",
+        "footDrift": 0.0025011572658210084,
+        "moving": false,
+        "speed": 0,
+        "distance": 0,
+        "clothJoints": 58,
+        "dinner": "A",
+        "gesture": "",
+        "companion": {
+          "mode": "idle",
+          "distance": 0.7624942281679084,
+          "speed": 0,
+          "walk": 6.607726519759852e-27,
+          "phase": 1.2940921772864744,
+          "heading": -4.713191171255581,
+          "lookYaw": -0.00010428135667630636,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -2.0124939149002645,
+            0.325,
+            3.249308820253141
+          ],
+          "target": [
+            -2.0155607661869084,
+            0.325,
+            3.211054996786309
+          ],
+          "trailPoints": 1,
+          "glance": false
+        },
+        "arms": {
+          "shoulderL": 0,
+          "shoulderR": 0,
+          "elbowL": 0,
+          "elbowR": 0,
+          "wristL": 0,
+          "wristR": 0
+        },
+        "cinematic": {
+          "phase": "",
+          "lift": 0,
+          "forward": 0,
+          "heading": 0.08,
+          "airborne": false,
+          "dragonProjectile": true,
+          "recoil": 0
+        },
+        "smile": 0,
+        "smileJointCount": 12,
+        "companionAction": "normal",
+        "gait": {
+          "leftSwing": null,
+          "rightSwing": null,
+          "acceleration": 0,
+          "turn": 0
+        },
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "walkPhase": 0,
+        "walkBlend": 0,
+        "heading": 0.08,
+        "companionExpression": "normal",
+        "companionHandsVisible": true,
+        "dragonHeading": -2.25,
+        "trayYaw": 0.891592653589793,
+        "mealOwner": "dragon",
+        "mealSupport": [
+          1.2317555501128492,
+          1.5449000000000002,
+          -1.0280348861545443
+        ]
+      },
+      "hero": [
+        -1.25,
+        0.32,
+        3.25
+      ],
+      "dragon": [
+        1.7000000000000002,
+        1.12,
+        -0.6499999999999999
+      ],
+      "camera": {
+        "position": [
+          3.6499999999999995,
+          1.9829206956192473,
+          -0.057734399999992414
+        ],
+        "target": [
+          3.5556342399999976,
+          1.5329206956192476,
+          1.3922656000000078
+        ],
+        "fov": 42,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "canAttack": false,
+      "name": "birth-1366-7.4",
+      "communication": {
+        "visible": false,
+        "text": "",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "phase": "meal-spawn",
+      "age": 9.799999999999898,
+      "node": "overload",
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.073957292353077,
+          1.2956728286583963,
+          3.532947385142185
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": true,
+          "visible": true,
+          "mode": "landing",
+          "position": [
+            3.7,
+            1.2024489795918896,
+            0.7947521865889726
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "actor": {
+        "phase": 35.99999999999982,
+        "action": "rest",
+        "footDrift": 0.0025011572658210084,
+        "moving": false,
+        "speed": 0,
+        "distance": 0,
+        "clothJoints": 58,
+        "dinner": "A",
+        "gesture": "",
+        "companion": {
+          "mode": "idle",
+          "distance": 0.7624942281679084,
+          "speed": 0,
+          "walk": 2.7497375921063287e-36,
+          "phase": 1.2940921772864744,
+          "heading": -4.713292603257411,
+          "lookYaw": -2.849354846535382e-06,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -2.0124939149002645,
+            0.325,
+            3.249308820253141
+          ],
+          "target": [
+            -2.0155607661869084,
+            0.325,
+            3.211054996786309
+          ],
+          "trailPoints": 1,
+          "glance": false
+        },
+        "arms": {
+          "shoulderL": 0,
+          "shoulderR": 0,
+          "elbowL": 0,
+          "elbowR": 0,
+          "wristL": 0,
+          "wristR": 0
+        },
+        "cinematic": {
+          "phase": "",
+          "lift": 0,
+          "forward": 0,
+          "heading": 0.08,
+          "airborne": false,
+          "dragonProjectile": true,
+          "recoil": 0
+        },
+        "smile": 0,
+        "smileJointCount": 12,
+        "companionAction": "normal",
+        "gait": {
+          "leftSwing": null,
+          "rightSwing": null,
+          "acceleration": 0,
+          "turn": 0
+        },
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "walkPhase": 0,
+        "walkBlend": 0,
+        "heading": 0.08,
+        "companionExpression": "normal",
+        "companionHandsVisible": true,
+        "dragonHeading": -2.25,
+        "trayYaw": 0.891592653589793,
+        "mealOwner": "dragon",
+        "mealSupport": [
+          1.2317555501128492,
+          1.5449000000000002,
+          -1.0280348861545443
+        ]
+      },
+      "hero": [
+        -1.25,
+        0.32,
+        3.25
+      ],
+      "dragon": [
+        1.7000000000000002,
+        1.12,
+        -0.6499999999999999
+      ],
+      "camera": {
+        "position": [
+          3.6499999999999995,
+          1.7524489795918896,
+          -0.6552478134110277
+        ],
+        "target": [
+          3.6999999999999997,
+          1.3024489795918897,
+          0.7947521865889725
+        ],
+        "fov": 42,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "canAttack": false,
+      "name": "birth-1366-9.8",
+      "communication": {
+        "visible": false,
+        "text": "",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "phase": "meal-spawn",
+      "age": 10.700000000000031,
+      "node": "overload",
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.0739604983387883,
+          1.296029039567294,
+          3.5322562730386706
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": true,
+          "visible": true,
+          "mode": "landing",
+          "position": [
+            3.7,
+            0.33000000000000007,
+            0.45
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "actor": {
+        "phase": 36.899999999999956,
+        "action": "rest",
+        "footDrift": 0.0025011572658210084,
+        "moving": false,
+        "speed": 0,
+        "distance": 0,
+        "clothJoints": 58,
+        "dinner": "A",
+        "gesture": "",
+        "companion": {
+          "mode": "idle",
+          "distance": 0.7624942281679084,
+          "speed": 0,
+          "walk": 8.346529786502503e-40,
+          "phase": 1.2940921772864744,
+          "heading": -4.713294713944765,
+          "lookYaw": -7.386674927507694e-07,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -2.0124939149002645,
+            0.325,
+            3.249308820253141
+          ],
+          "target": [
+            -2.0155607661869084,
+            0.325,
+            3.211054996786309
+          ],
+          "trailPoints": 1,
+          "glance": false
+        },
+        "arms": {
+          "shoulderL": 0,
+          "shoulderR": 0,
+          "elbowL": 0,
+          "elbowR": 0,
+          "wristL": 0,
+          "wristR": 0
+        },
+        "cinematic": {
+          "phase": "",
+          "lift": 0,
+          "forward": 0,
+          "heading": 0.08,
+          "airborne": false,
+          "dragonProjectile": true,
+          "recoil": 0
+        },
+        "smile": 0,
+        "smileJointCount": 12,
+        "companionAction": "normal",
+        "gait": {
+          "leftSwing": null,
+          "rightSwing": null,
+          "acceleration": 0,
+          "turn": 0
+        },
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "walkPhase": 0,
+        "walkBlend": 0,
+        "heading": 0.08,
+        "companionExpression": "normal",
+        "companionHandsVisible": true,
+        "dragonHeading": -2.25,
+        "trayYaw": 0.891592653589793,
+        "mealOwner": "dragon",
+        "mealSupport": [
+          1.2317555501128492,
+          1.5449000000000002,
+          -1.0280348861545443
+        ]
+      },
+      "hero": [
+        -1.25,
+        0.32,
+        3.25
+      ],
+      "dragon": [
+        1.7000000000000002,
+        1.12,
+        -0.6499999999999999
+      ],
+      "camera": {
+        "position": [
+          3.6500000000000004,
+          0.8800000000000001,
+          -1
+        ],
+        "target": [
+          3.7000000000000006,
+          0.43000000000000005,
+          0.45
+        ],
+        "fov": 42,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "canAttack": false,
+      "name": "birth-1366-10.7",
+      "communication": {
+        "visible": false,
+        "text": "",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "phase": "meal-spawn",
+      "age": 11.200000000000003,
+      "node": "overload",
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.0739649893823633,
+          1.296528030786141,
+          3.5312963374783766
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": true,
+          "visible": true,
+          "mode": "landing",
+          "position": [
+            3.7,
+            0.33000000000000007,
+            0.45
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "actor": {
+        "phase": 37.39999999999993,
+        "action": "rest",
+        "footDrift": 0.0025011572658210084,
+        "moving": false,
+        "speed": 0,
+        "distance": 0,
+        "clothJoints": 58,
+        "dinner": "A",
+        "gesture": "",
+        "companion": {
+          "mode": "idle",
+          "distance": 0.7624942281679084,
+          "speed": 0,
+          "walk": 9.272157050461932e-42,
+          "phase": 1.2940921772864744,
+          "heading": -4.713295103690441,
+          "lookYaw": -3.489218170178585e-07,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -2.0124939149002645,
+            0.325,
+            3.249308820253141
+          ],
+          "target": [
+            -2.0155607661869084,
+            0.325,
+            3.211054996786309
+          ],
+          "trailPoints": 1,
+          "glance": false
+        },
+        "arms": {
+          "shoulderL": 0,
+          "shoulderR": 0,
+          "elbowL": 0,
+          "elbowR": 0,
+          "wristL": 0,
+          "wristR": 0
+        },
+        "cinematic": {
+          "phase": "",
+          "lift": 0,
+          "forward": 0,
+          "heading": 0.08,
+          "airborne": false,
+          "dragonProjectile": true,
+          "recoil": 0
+        },
+        "smile": 0,
+        "smileJointCount": 12,
+        "companionAction": "normal",
+        "gait": {
+          "leftSwing": null,
+          "rightSwing": null,
+          "acceleration": 0,
+          "turn": 0
+        },
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "walkPhase": 0,
+        "walkBlend": 0,
+        "heading": 0.08,
+        "companionExpression": "normal",
+        "companionHandsVisible": true,
+        "dragonHeading": -2.25,
+        "trayYaw": 0.891592653589793,
+        "mealOwner": "dragon",
+        "mealSupport": [
+          1.2317555501128492,
+          1.5449000000000002,
+          -1.0280348861545443
+        ]
+      },
+      "hero": [
+        -1.25,
+        0.32,
+        3.25
+      ],
+      "dragon": [
+        1.7000000000000002,
+        1.12,
+        -0.6499999999999999
+      ],
+      "camera": {
+        "position": [
+          3.6500000000000004,
+          0.8800000000000001,
+          -1
+        ],
+        "target": [
+          3.7000000000000006,
+          0.43000000000000005,
+          0.45
+        ],
+        "fov": 42,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "canAttack": false,
+      "name": "birth-1366-11.2",
+      "communication": {
+        "visible": false,
+        "text": "",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "phase": "meal-spawn",
+      "age": 12.699999999999918,
+      "node": "meal_refusal",
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.07397513916817,
+          1.2976557539820366,
+          3.529161047686956
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": true,
+          "visible": true,
+          "mode": "alive",
+          "position": [
+            3.7,
+            0.33000000000000007,
+            0.45
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "actor": {
+        "phase": 38.89999999999984,
+        "action": "refuse",
+        "footDrift": 0.0025011572658210084,
+        "moving": false,
+        "speed": 0,
+        "distance": 0,
+        "clothJoints": 58,
+        "dinner": "A",
+        "gesture": "refuse",
+        "companion": {
+          "mode": "idle",
+          "distance": 0.7624942281679084,
+          "speed": 0,
+          "walk": 1.2711747958711462e-47,
+          "phase": 1.2940921772864744,
+          "heading": -4.713295415836168,
+          "lookYaw": -3.6776089974003004e-08,
+          "lookPitch": -0.095,
+          "blocked": false,
+          "position": [
+            -2.0124939149002645,
+            0.325,
+            3.249308820253141
+          ],
+          "target": [
+            -2.0155607661869084,
+            0.325,
+            3.211054996786309
+          ],
+          "trailPoints": 1,
+          "glance": false
+        },
+        "arms": {
+          "shoulderL": 0,
+          "shoulderR": 0,
+          "elbowL": 0,
+          "elbowR": 0,
+          "wristL": 0,
+          "wristR": 0
+        },
+        "cinematic": {
+          "phase": "",
+          "lift": 0,
+          "forward": 0,
+          "heading": 0.08,
+          "airborne": false,
+          "dragonProjectile": true,
+          "recoil": 0
+        },
+        "smile": 0,
+        "smileJointCount": 12,
+        "companionAction": "normal",
+        "gait": {
+          "leftSwing": null,
+          "rightSwing": null,
+          "acceleration": 0,
+          "turn": 0
+        },
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "walkPhase": 0,
+        "walkBlend": 0,
+        "heading": 0.08,
+        "companionExpression": "normal",
+        "companionHandsVisible": true,
+        "dragonHeading": -2.25,
+        "trayYaw": 0.891592653589793,
+        "mealOwner": "dragon",
+        "mealSupport": [
+          1.2317555501128492,
+          1.5449000000000002,
+          -1.0280348861545443
+        ]
+      },
+      "hero": [
+        -1.25,
+        0.32,
+        3.25
+      ],
+      "dragon": [
+        1.7000000000000002,
+        1.12,
+        -0.6499999999999999
+      ],
+      "camera": {
+        "position": [
+          3.322264296570804,
+          1.9313419846101074,
+          -0.480383311207462
+        ],
+        "target": [
+          1.9422642965708041,
+          1.8113419846101075,
+          0.6396166887925379
+        ],
+        "fov": 36,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "canAttack": false,
+      "name": "birth-1366-12.7",
+      "communication": {
+        "visible": false,
+        "text": "",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    }
+  ],
+  "errors": []
+}

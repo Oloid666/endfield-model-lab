@@ -23,7 +23,6 @@ export const sequences={
     ['dragon','妳留在這。我進去拿晚餐。','point'],
     ['zhuang','公發餐券，簽收就能領。','hold'],
     ['dragon','便當、湯。好，簽名換晚餐。','look'],
-    ['dragon','買完了，來吃吧。','hold'],
   ]),
   photoTalk:lines('photo_talk',[
     ['zhuang','龍泡泡，幫我拍一張。跟管理員報個平安，讓他知道我有好好吃飯。','phone'],
@@ -178,7 +177,7 @@ export const finalAmmoLines=lines('ammo',[
   ['dragon','不對吧？我現在是彈藥？','shake','shock'],
   ['dragon','等等！不要浪費食物！','look','shock'],
   ['dragon','我說的不是方向——','shake','shock'],
-]).map((node,index)=>({...node,at:[0,1.0,7.0][index]}));
+]).map((node,index)=>({...node,at:[0,1.0,15.0][index]}));
 
 export const chatterGroups=[
   lines('chat_0',[['zhuang','手機好像亮了。','phone'],['dragon','這次真的是手機。','look'],['zhuang','……先吃完。','hold']]),

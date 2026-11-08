@@ -10,7 +10,7 @@ import {cinematicStoryShot,revisedStoryShot} from '../src/story-shots.js';
 import {CinematicTrack} from '../src/cinematic-track.js';
 import {DragonRoam,postgameFree} from '../src/postgame-roam.js';
 globalThis.matchMedia=()=>({matches:false});
-const ctx=new Proxy({measureText:t=>({width:t.length*16}),createLinearGradient:()=>({addColorStop(){}})},{get:(o,k)=>k in o?o[k]:(()=>{})});
+const ctx=new Proxy({measureText:t=>({width:t.length*16}),createLinearGradient:()=>({addColorStop(){}}),createRadialGradient:()=>({addColorStop(){}})},{get:(o,k)=>k in o?o[k]:(()=>{})});
 globalThis.document={createElement:()=>({getContext:()=>ctx})};
 const r=new Resources(),scene=new T.Scene();let count=0;const check=(name,ok)=>{assert.ok(ok,name);count++;};
 const toy=buildRossiFigurine(r);check('Rossi is an actual mesh below the agreed triangle budget',toy.userData.triangles>500&&toy.userData.triangles<=1000);check('Whole figurine uses a single draw with vertex colors',toy.children.length===1&&toy.userData.draws===1&&toy.children[0].material.vertexColors);toy.traverse(n=>{if(n.isMesh)check('Toy has no downloaded textures, shadow pass or skeleton',!n.material.map&&!n.castShadow&&!n.isSkinnedMesh);});

@@ -5,13 +5,13 @@ import {buildTianshiGrid} from '../src/tianshi-grid.js';
 import {buildVcrEffects} from '../src/vcr-effects.js';
 const ctx=new Proxy({createRadialGradient:()=>({addColorStop(){}})},{get:(o,k)=>o[k]||(()=>{})});globalThis.document={createElement:()=>({getContext:()=>ctx})};
 const r=new Resources(),scene=new T.Scene(),fx=buildVcrEffects(scene,r);let checks=0;const check=(n,p)=>{assert.ok(p,n);checks++;};
-fx.update({phase:'ready'});check('Present day begins after fridge accident',fx.state.temperature===50&&fx.state.hot);
+fx.update({phase:'ready'});check('Present day begins after fridge accident',fx.state.temperature===105&&fx.state.hot);
 fx.update({phase:'hack',vcr:true,clock:10,fridgeHot:false,tablet:{stage:'search',age:0}});check('Past begins at ordinary cold temperature',fx.state.temperature===4&&!fx.state.hot);
 fx.update({phase:'hack',vcr:true,clock:12,fridgeHot:true,tablet:{stage:'defrost',age:2,temperature:19}});check('Temperature actually rises during defrost',fx.state.temperature===19);
-fx.update({phase:'hack',vcr:true,clock:14,fridgeHot:true,tablet:{stage:'hot',age:0}});check('Incident ends at fifty degrees',fx.state.temperature===50);
-fx.update({phase:'return',vcr:true,clock:20,fridgeHot:false});check('Return to present cannot cool the fridge',fx.state.temperature===50);
-fx.reset();fx.update({phase:'ready',fridgeHot:false});check('Restart preserves canonical present state',fx.state.temperature===50);
-check('Computer is a physical console',!!rootFind('pylon-03-maintenance-console'));check('Controller is mounted on fridge',!!rootFind('fridge-temperature-controller'));fx.update({phase:'combat'},{intact:false});check('Destroyed fridge has no floating warning lights',!fx.state.fridgeVisible);fx.update({phase:'complete'},{intact:true});check('Rebuilding restores appliance state',fx.state.fridgeVisible&&fx.state.temperature===50);check('No freestanding heating paper',!rootFind('meal-heating-label'));
+fx.update({phase:'hack',vcr:true,clock:14,fridgeHot:true,tablet:{stage:'hot',age:0}});check('Incident ends at 105 degrees',fx.state.temperature===105);
+fx.update({phase:'return',vcr:true,clock:20,fridgeHot:false});check('Return to present cannot cool the fridge',fx.state.temperature===105);
+fx.reset();fx.update({phase:'ready',fridgeHot:false});check('Restart preserves canonical present state',fx.state.temperature===105);
+check('Computer is a physical console',!!rootFind('pylon-03-maintenance-console'));check('Controller is mounted on fridge',!!rootFind('fridge-temperature-controller'));fx.update({phase:'combat'},{intact:false});check('Destroyed fridge has no floating warning lights',!fx.state.fridgeVisible);fx.update({phase:'complete'},{intact:true});check('Rebuilding restores appliance state',fx.state.fridgeVisible&&fx.state.temperature===105);check('No freestanding heating paper',!rootFind('meal-heating-label'));
 check('Wire starts at the actual third pylon output, separate from control computer',fx.path.getPointAt(0).distanceTo(new T.Vector3(7.44,3.08,-15.3))<.001);check('Wire ends at microwave side socket',fx.path.getPointAt(1).distanceTo(new T.Vector3(3.99,1.6,1.43))<.001);
 // The real console used to be embedded inside the third pylon podium.
 const grid=buildTianshiGrid(scene,r);grid.update(0,0,{phase:'hack',vcr:true,tablet:{stage:'backdoor'}});scene.updateMatrixWorld(true);

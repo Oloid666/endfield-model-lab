@@ -37,7 +37,7 @@ check('Background pause cannot transfer a tray',m.state.trayOwner==='hero'&&m.st
 m.setPaused(false);step(m,.02);
 check('Exactly one owner changes at contact',m.state.trayOwner==='dragon'&&!m.state.helperPresent);
 step(m,.5);check('Takeoff follows completed handoff',m.phase==='ascent');
-m.phaseTo('aim-final');step(m,4.89);check('Dragon protects dinner until helper contact',m.state.trayOwner==='dragon');step(m,.02);check('Helper takes tray after stretch',m.state.trayOwner==='helper');
+m.phaseTo('aim-final');step(m,8.79);check('Dragon protects dinner until helper contact',m.state.trayOwner==='dragon');step(m,.02);check('Helper takes tray after stretch',m.state.trayOwner==='helper');
 m.phaseTo('meal-reclaim');step(m,1.34);
 check('Helper retains tray before reclaim contact',m.state.trayOwner==='helper');
 step(m,.02);check('Hero takes tray back at contact',m.state.trayOwner==='hero');

@@ -1,6 +1,7 @@
+import {MEAL_BIRTH_DIALOGUE_AT} from '../src/meal-birth.js';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
-import {MissionMachine,CHARGE_DURATION,REWIND_DURATION,RETURN_DURATION,LANDING_DURATION,TOUR_DURATION,judgeMeter} from '../src/mission-state.js';
+import {MissionMachine,CHARGE_DURATION,REWIND_DURATION,RETURN_DURATION,LANDING_DURATION,TOUR_DURATION,FINAL_READY,judgeMeter} from '../src/mission-state.js';
 import {RhythmHeat} from '../src/rhythm-heat.js';
 import {sequences,chargeLines,chatterGroups,hotspots,reactionPools} from '../src/mission-dialogue.js';
 const checks=[];function check(name,condition){assert.ok(condition,name);checks.push(name);}
@@ -14,7 +15,7 @@ function rhythmWin(r,origin){
 const lineClock=new MissionMachine();lineClock.start();step(lineClock,1);const ageBeforePause=lineClock.state.nodeElapsed;lineClock.setPaused(true);step(lineClock,50);check('Paused dialogue holds the shot clock',lineClock.state.nodeElapsed===ageBeforePause);lineClock.setPaused(false);step(lineClock,1);check('Dialogue shot clock resumes with the story',Math.abs(lineClock.state.nodeElapsed-ageBeforePause-1)<1e-9);lineClock.next();lineClock.next();check('A new line resets the shot clock',lineClock.state.nodeElapsed===0);
 for(const route of ['floor']){
  const events=[],m=new MissionMachine({onAction:e=>events.push(e)});m.setTargets([{id:'structure',label:'店體',position:[0,3,1]}]);
- step(m,900);check('Opening waits',m.phase==='ready');m.start();finish(m);check('Purchase holds at counter',m.phase==='purchase');step(m,7);step(m,7.5);step(m,2);finish(m);check('Flight gate waits',m.phase==='photo-flight');m.fly(1,1);for(let j=0;j<7;j++)step(m,.1);m.fly(0,1);for(let j=0;j<18;j++)step(m,.1);m.fly(0,0);step(m,.6);check('Flight positioning opens camera',m.finishFlight());check('Dinner no longer blocks story',m.phase==='photo'&&m.branch==='A');
+ step(m,900);check('Opening waits',m.phase==='ready');m.start();finish(m);check('Purchase holds at counter',m.phase==='purchase');step(m,7);step(m,7.5);step(m,3);finish(m);check('Flight gate waits',m.phase==='photo-flight');m.fly(1,1);for(let j=0;j<7;j++)step(m,.1);m.fly(0,1);for(let j=0;j<18;j++)step(m,.1);m.fly(0,0);step(m,.6);check('Flight positioning opens camera',m.finishFlight());check('Dinner no longer blocks story',m.phase==='photo'&&m.branch==='A');
  m.setAuto(true);step(m,500);check('Photo never auto submits',m.phase==='photo');m.setPaused(true);check('Paused shutter rejected',!m.takePhoto());m.setPaused(false);m.takePhoto();check('Photo return is a timed gate',m.phase==='photo-return');step(m,2.5);finish(m);
  check('Review waits for send',m.phase==='photo-review');step(m,50);check('Review never auto sends',m.phase==='photo-review');
  m.setAuto(false);m.sendPhoto();step(m,1.2);check('Route produces distinct scene',m.phase===(route==='floor'?'cargo':'observation'));
@@ -29,8 +30,8 @@ for(const route of ['floor']){
    for(const note of notes){step(m,Math.max(0,start+note.at-m.time));m.heatStart(m.sourceTime);step(m,.001);}
    step(m,.7);
  }
- check('Third round overload creates the living meal',m.phase==='meal-spawn'&&m.mealBorn&&!m.failures.heat);step(m,7);for(let i=0;i<4;i++)m.next();check('Refusal exits into aftermath',m.phase==='flashback-end');finish(m);check('Return phase',m.phase==='return');step(m,RETURN_DURATION);check('Return preserves damage and route',m.phase==='last'&&m.progress===99&&m.investigation===route);finish(m);check('Last ammo waits',m.phase==='aim-final');
- const period=m.state.meterPeriod;step(m,9+period/4);m.attack(m.sourceTime);check('Final shot starts animation',m.phase==='finisher');step(m,9+LANDING_DURATION+2.6+TOUR_DURATION);check('Completed',m.phase==='complete'&&m.progress===100);
+ check('Third round overload creates the living meal',m.phase==='meal-spawn'&&m.mealBorn&&!m.failures.heat);step(m,MEAL_BIRTH_DIALOGUE_AT+.1);for(let i=0;i<4;i++)m.next();check('Refusal exits into aftermath',m.phase==='flashback-end');finish(m);check('Return phase',m.phase==='return');step(m,RETURN_DURATION);check('Return preserves damage and route',m.phase==='last'&&m.progress===99&&m.investigation===route);finish(m);check('Last ammo waits',m.phase==='aim-final');
+ const period=m.state.meterPeriod;step(m,FINAL_READY+period/4);m.attack(m.sourceTime);check('Final shot starts animation',m.phase==='finisher');step(m,9+LANDING_DURATION+2.6+TOUR_DURATION);check('Completed',m.phase==='complete'&&m.progress===100);
  step(m,15);check('Aftermath stays alive',m.phase==='complete'&&!!m.node);check('Busy chatter blocks hotspot',!m.hotspot('phone'));m.replay();check('Replay resets all new state',m.phase==='ready'&&!m.photoTaken&&m.investigation===null&&m.rhythm.first&&m.hackMoves===0);
 }
 const r=new RhythmHeat();r.start(0);r.cancel();r.start(4);r.update(9);check('Cancelled first round still requires successful input',r.status==='burnt'&&r.round===0);r.retry();const initialWindow=r.window;r.start(10);r.update(20);check('Real missed notes fail',r.status==='burnt'&&r.failures===2);r.retry();check('Failure widens timing and slows BPM',r.window>initialWindow);rhythmWin(r,30);check('Completed round retained',r.round===1);r.start(40);r.cancel();check('Cancel retains successful round',r.round===1&&r.status==='ready');

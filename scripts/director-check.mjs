@@ -6,7 +6,7 @@ import {Resources} from '../src/resources.js';
 import {MissionDirector,chargeCameraBeat,dialogueShot} from '../src/mission-director.js';
 import {buildConnectionStage} from '../src/connection-stage.js';
 
-const ctx=new Proxy({measureText:s=>({width:s.length*12})},{get:(o,k)=>k in o?o[k]:(()=>{})});
+const ctx=new Proxy({measureText:s=>({width:s.length*12}),createRadialGradient:()=>({addColorStop(){}})},{get:(o,k)=>k in o?o[k]:(()=>{})});
 globalThis.document={createElement:()=>({width:256,height:256,getContext:()=>ctx})};
 const checks=[];
 function check(name,passed,detail=null){checks.push({name,passed,detail});if(!passed)throw Error(`${name}: ${JSON.stringify(detail)}`);}

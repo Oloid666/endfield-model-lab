@@ -27,7 +27,7 @@ export function createStreetPerformance({world,mission,mount,playEffect=()=>{},h
   if(active)return false;first=initial;wideIndex=initial?0:nextWide++%3;kind=initial||mode==='collapsed'?'restore':'collapse';lines=STREET_SONGS[kind][initial?1:indices[kind]++%4];onDone=done;
   if(!snapshotReady){world.store.destruction.beginRewind();snapshotReady=true;}
   mount.classList.add('street-show-active');if(!initial&&(world.actors.heelCenter[2]<2.7||world.remnant.state.visible&&world.remnant.state.position[2]<2.7)){cover.hidden=false;cover.style.opacity='1';if(world.actors.heelCenter[2]<2.7)world.actors.teleport(-1.25,3.25);world.remnant.placeNear(world.actors.heelCenter);world.actors.setDragonProjectile([world.actors.heelCenter[0]-1.2,1.6,world.actors.heelCenter[2]+.3],0);world.actors.update(world.time,0);}age=0;last=world.time;snapped=false;active=true;from=[...world.actors.dragonPosition];
-  world.director.stuckReleased=true;world.director.finalBegun=false;world.setWalking(false);world.setCutaway(false);world.transition=null;world.currentView=null;world.controls.enabled=false;world.siege.reset();mission.setPaused(true,'street-show');dock.hidden=false;skip.hidden=first;world.actors.setSoot(false);return true;
+  world.director.stuckReleased=true;world.director.finalBegun=false;world.setWalking(false);world.setCutaway(false);world.transition=null;world.currentView=null;world.controls.enabled=false;world.siege.reset();mission.setPaused(true,'street-show');dock.hidden=false;skip.hidden=first;return true;
  },
  tick(time,render=true){const dt=Math.max(0,Math.min(.1,time-last));last=time;if(!paused())age+=dt;
   if(!cover.hidden){cover.style.opacity=String(Math.max(0,1-age/.4));if(age>=.4)cover.hidden=true;}
@@ -35,7 +35,7 @@ export function createStreetPerformance({world,mission,mount,playEffect=()=>{},h
   world.remnant.update?.(mission.state.clock,mission.state,world.actors.heelCenter,{doors:world.store.doors,floorPlan:world.store.floorPlan,intact:kind==='restore'?stage.progress>=.9:stage.progress<.1});
   world.portrait.fill.position.set(pos[0]+2,pos[1]+3,pos[2]+5);world.portrait.fill.target.position.set(pos[0],pos[1]+.35,pos[2]);
   const snapAt=2.6;
-  if(age>=snapAt&&!snapped){snapped=true;playEffect('snap');}
+  if(age>=snapAt&&!snapped){snapped=true;actor.setDamageState?.('clearing',snapAt);playEffect('snap');}
   stars.visible=age>=snapAt&&age<snapAt+1.25;stars.position.set(pos[0]+.35,pos[1]+.5,pos[2]+.2);mat.opacity=Math.max(0,1-(age-snapAt)/1.25);for(const n of stars.children){const i=n.userData.index,a=i*2.4,t=Math.max(0,age-snapAt);n.position.set(Math.cos(a)*t*(reduced?.1:.5),Math.sin(a)*t*(reduced?.1:.5),0);n.quaternion.copy(world.camera.quaternion);n.scale.setScalar(i? .4:1.4);}
   const frame=songFrame(lines,age-stage.buildAt+2.8),caption=age<snapAt?'龍泡泡：看我的。':age<stage.buildAt?'✦ 啪！':frame.line;
   if(text.textContent!==caption)text.textContent=caption;skip.disabled=age<1||paused();

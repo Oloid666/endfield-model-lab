@@ -83,3 +83,6 @@
 /* Hold the dialogue alone while the helper saves dinner; reveal the live meter afterwards. */
 .mission-combat.is-rescuing > :not(.mission-final-seal){display:none}
 .mission-combat.is-rescuing .mission-final-seal{margin-bottom:0;border-bottom:0;padding-bottom:0}
+
+.creature-communication{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;position:absolute;z-index:14;pointer-events:none;transform:translate(-50%,-100%);min-width:58px;height:58px;display:grid;place-items:center;border:1px solid #c8b78d99;border-radius:18px 18px 18px 5px;background:#20343bef;box-shadow:0 5px 15px #04101966;font:40px/1 "Apple Color Emoji","Noto Color Emoji","Segoe UI Emoji",sans-serif}
+.creature-communication[hidden]{display:none}

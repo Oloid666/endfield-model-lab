@@ -1,5 +1,6 @@
+import {RESCUE_READY,RESCUE_WAITING} from './tray-rescue.js';
 import {faceFrame} from './cinematic-track.js';
-import {mealBirthFrame} from './meal-birth.js';
+import {mealBirthFrame,BIRTH_TIMES} from './meal-birth.js';
 // Revised sequences have a single shot decision, after the legacy presets.
 // Shot selection uses story events; motion uses the pausable scene clock.
 const clamp=x=>Math.max(0,Math.min(1,x));
@@ -79,17 +80,20 @@ export function cinematicStoryShot(s,context,track){
   track.enter('cinematic-'+s.phase,s,c,origin);
   return track.pose(c.portrait?[-.1,1.9,7.0]:[.5,2.05,6.8],[-1.25,1.05,3.9],c.portrait?48:42);
  }
- if(s.phase==='aim-final'&&e<6.7&&c.rescue){
-  const r=c.rescue,p=r.tray,b=r.base;let beat,eye,target,fov;
-  if(e<2.7){beat='rescue-notice-run';eye=[b[0]+1.5,b[1]+.65,b[2]+2.7];target=[b[0],b[1]+.3,b[2]];fov=c.portrait?48:38;}
-  else if(e<4.9){beat=e<3.7?'rescue-first-reach':'rescue-second-reach';const y=(b[1]+p[1])*.5;eye=[p[0]+2.8,y+.35,p[2]+5.0];target=[p[0],y+.1,p[2]];fov=c.portrait?58:48;}
-  else {beat=e<5.5?'rescue-weight-contact':'rescue-thumb';eye=[p[0]+1.25,p[1]+.42,p[2]+2.3];target=[p[0]+.12,p[1]-.03,p[2]];fov=c.portrait?38:30;}
-  if(track.enter('cinematic-'+beat,s,c,origin)){
-   track.rescueOrigin=[...b];track.p.fromArray(eye);track.t.fromArray(target);
-   const reach=e>=2.7&&e<4.9,min=reach?[p[0]-.5,b[1],p[2]-.45]:e>=4.9?[p[0]-.4,p[1]-.4,p[2]-.3]:[b[0]-.5,b[1],b[2]-.4],max=reach?[p[0]+.65,p[1]+.65,p[2]+.5]:e>=4.9?[p[0]+.55,p[1]+.35,p[2]+.4]:[b[0]+.5,b[1]+.55,b[2]+.4];
-   track.fitBox(min,max,track.p,track.t,fov,c,'wide');
-  }
-  if(e<2.7){track.offset.set(b[0]-track.rescueOrigin[0],b[1]-track.rescueOrigin[1],b[2]-track.rescueOrigin[2]);track.p.copy(track.fixedP).add(track.offset);track.t.copy(track.fixedT).add(track.offset);return track.pose(track.p,track.t,fov);}
+ if(s.phase==='aim-final'&&e>=1&&e<2&&!c.rescue){
+  const b=RESCUE_WAITING,fov=c.portrait?48:38;
+  if(track.enter('cinematic-rescue-notice',s,c,origin)){track.rescueOrigin=[...b];track.p.set(b[0]+1.4,b[1]+.62,b[2]+2.7);track.t.set(b[0],b[1]+.3,b[2]);track.fitBox([b[0]-.5,b[1],b[2]-.4],[b[0]+.5,b[1]+.70,b[2]+.4],track.p,track.t,fov,c,'wide');}
+  return track.pose(track.fixedP,track.fixedT,fov);
+ }
+ if(s.phase==='aim-final'&&e<RESCUE_READY&&c.rescue){
+  const r=c.rescue,p=r.tray,b=r.base;let beat='rescue-'+r.beat,eye,target,fov,min,max;
+  if(e<4){eye=[b[0]+1.4,b[1]+.62,b[2]+2.7];target=[b[0],b[1]+.3,b[2]];fov=c.portrait?48:38;min=[b[0]-.5,b[1],b[2]-.4];max=[b[0]+.5,b[1]+.70,b[2]+.4];}
+  else if(e<6){const y=(b[1]+h.y)*.5;eye=[p[0]+2.8,y+.35,p[2]+5];target=[p[0],y,p[2]];fov=c.portrait?57:47;min=[p[0]-.6,b[1],p[2]-.5];max=[Math.max(p[0]+.8,h.x+.5),h.y+.35,p[2]+.5];}
+  else if(e<12){eye=[p[0]+1.35,p[1]+.5,p[2]+3.0];target=[p[0]+.1,(p[1]+b[1]+.25)/2,p[2]];fov=c.portrait?42:33;min=[p[0]-.42,b[1],p[2]-.35];max=[p[0]+.65,p[1]+.48,p[2]+.45];}
+  else if(e<14){eye=[p[0]+1.8,b[1]+1.8,p[2]+4];target=[p[0],b[1]+.85,p[2]];fov=c.portrait?48:38;min=[p[0]-.6,b[1],p[2]-.4];max=[p[0]+.8,h.y+.3,p[2]+.5];}
+  else {track.enter(beat,s,c,origin);track.p.copy(h).add(RISE_END);track.t.copy(h);track.t.y-=.40;return track.pose(track.p,track.t,c.portrait?54:44);}
+  if(track.enter(beat,s,c,origin)){track.rescueOrigin=[...b];track.p.fromArray(eye);track.t.fromArray(target);track.fitBox(min,max,track.p,track.t,fov,c,'wide');}
+  if(e<4){track.offset.set(b[0]-track.rescueOrigin[0],b[1]-track.rescueOrigin[1],b[2]-track.rescueOrigin[2]);track.p.copy(track.fixedP).add(track.offset);track.t.copy(track.fixedT).add(track.offset);return track.pose(track.p,track.t,fov);}
   return track.pose(track.fixedP,track.fixedT,fov);
  }
  if(s.phase==='charge'){
@@ -123,11 +127,11 @@ export function cinematicStoryShot(s,context,track){
   const u=c.reduced?1:smooth(e/5);f.progress=u;track.p.copy(track.riseOrigin).addScaledVector(RISE_START,1-u).addScaledVector(RISE_END,u);track.t.copy(h);track.t.y-=.45;
   return track.pose(track.p,track.t,c.portrait?48+6*u:40+6*u);
  }
- const aiming=s.phase==='aim-final'&&e>=6.7,finishing=s.phase==='finisher'&&e<6.2;
+ const aiming=s.phase==='aim-final'&&e>=RESCUE_READY,finishing=s.phase==='finisher'&&e<6.2;
  if(aiming||finishing){
   const server=c.server||[0,1.21,1.06];track.captureAxis(feet,h.toArray(track.headArray||(track.headArray=[0,0,0])),server,c.heading??2.91);
   if(aiming){
-   if(track.enter('cinematic-final-shoulder',s,c,origin+6.7)){
+   if(track.enter('cinematic-final-shoulder',s,c,origin+RESCUE_READY)){
     track.p.copy(h).addScaledVector(track.axisForward,-3.8).addScaledVector(track.axisRight,1.2*track.axisSide);track.p.y+=.35;track.t.copy(h).multiplyScalar(.3).addScaledVector(track.offset.fromArray(server),.7);
     track.fitBox([server[0]-.45,server[1]-.6,server[2]-.4],[server[0]+.45,server[1]+1.25,server[2]+.4],track.p,track.t,c.portrait?58:46,c,'wide',true);
    }
@@ -190,10 +194,10 @@ export function revisedStoryShot(s,{feet=[-1.25,.32,3.25],heroHead=null,dragon=[
  }
  if(s.phase==='meal-spawn'){
   if(s.node?.event==='meal-refusal'){const h=xaihiHead||[1.8,1.8,.85];return shot('birth-xaihi-refusal',[h[0]+1.45,h[1]+.14,h[2]-1.2],[h[0]+.07,h[1]+.02,h[2]-.08],portrait?36:36);}
-  const birth=mealBirthFrame(e,reduced),p=e<8?birth.position:mealPosition||birth.position;
-  if(e<.5)return shot('birth-charred-meal',[3.2,2.05,-.08],[3.545,1.46,1.43],portrait?35:28);
-  if(e<2.4)return shot('birth-swelling-in-tray',[2.9,1.9,-.35],[3.545,1.52,1.43],portrait?38:31);
-  if(e<5.2)return shot(reduced?'birth-escape-hold':'birth-escape-follow',reduced?[3.08,2.0,-.7]:[p[0]-.25,p[1]+.55,p[2]-1.8],[p[0],p[1]+.10,p[2]],portrait?60:42);
+  const birth=mealBirthFrame(e,reduced),p=e<BIRTH_TIMES.ready?birth.position:mealPosition||birth.position;
+  if(e<BIRTH_TIMES.swell)return shot('birth-charred-meal',[3.2,2.05,-.08],[3.545,1.46,1.43],portrait?35:28);
+  if(e<BIRTH_TIMES.escape)return shot('birth-swelling-in-tray',[2.9,1.9,-.35],[3.545,1.52,1.43],portrait?38:31);
+  if(e<BIRTH_TIMES.ready)return shot(reduced?'birth-escape-hold':'birth-escape-follow',reduced?[3.65,2.0,-.7]:[3.65,p[1]+.55,p[2]-1.45],[p[0],p[1]+.10,p[2]],portrait?60:42);
   const h=xaihiHead||[2.17,1.8,.85];return shot('birth-creature-and-witness',[(h[0]+p[0])/2+.1,2.65,-2.55],[(h[0]+p[0])/2,(h[1]+p[1]+.11)/2,(h[2]+p[2])/2],portrait?68:48);
  }
  if(s.phase!=='hack'||!s.tablet)return null;
