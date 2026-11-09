@@ -1,0 +1,61 @@
+{
+  "codeCommit": "0974e9e50eaebbb9a0dc6ebc463a488747558375",
+  "captureWorkingTree": "src/tray-grip.js included the pending 0974e9e fix; later edits before commit affected only the check script. Runtime code equals the code commit.",
+  "images": [
+    {
+      "file": "01-bought-left-rear-after.png",
+      "source": "controller-390-01-bought-L-rear.png",
+      "pixels": [
+        780,
+        1688
+      ],
+      "sha256": "0d470c0c03476f2bd6d0555cb24ff51c21e2ce500a9f7f262b1b9c6ec7d86173",
+      "nativePng": true,
+      "altered": false
+    },
+    {
+      "file": "02-photo-talk-single-hand-after.png",
+      "source": "controller-390-02-photo-talk-L-side.png",
+      "pixels": [
+        780,
+        1688
+      ],
+      "sha256": "09126f3f50954936bd59b0377d5647c585e4fd5a5fb4b0d5b296762a5d025e85",
+      "nativePng": true,
+      "altered": false
+    },
+    {
+      "file": "03-handoff-player-after.png",
+      "source": "controller-390-03-handoff-0.75-game.png",
+      "pixels": [
+        780,
+        1688
+      ],
+      "sha256": "b28a2f5a7b52791d1281f35ef7632a692929f6e394f88b57c151085b2ba16c22",
+      "nativePng": true,
+      "altered": false
+    },
+    {
+      "file": "04-after-return-right-front-after.png",
+      "source": "controller-390-04-after-return-R-front.png",
+      "pixels": [
+        780,
+        1688
+      ],
+      "sha256": "e36f876b4a978d2ff1b6b3a6d8ae25b91bc91578b3700ec4c7bbff75f3201675",
+      "nativePng": true,
+      "altered": false
+    },
+    {
+      "file": "05-photo-talk-desktop-after.png",
+      "source": "controller-1440-02-photo-talk-game.png",
+      "pixels": [
+        1440,
+        900
+      ],
+      "sha256": "7a2346a6b2224c3d02926e27994060c0b12a45442860755529fda184f79b7728",
+      "nativePng": true,
+      "altered": false
+    }
+  ]
+}

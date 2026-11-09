@@ -7,4 +7,4 @@
 - 每輪評審README必須列：受評及比較commit、修改項目與上一輪問題編號、修改檔案、截圖索引、可重現入口與步驟、測試範圍、iPhone已測／未測、影片連結及時間碼（若有）。證據不能只存在本機路徑或對話附件。範本及完整約定見`docs/review/README.md`與`docs/review/TEMPLATE.md`。
 - 避免commit自指：先提交程式取得受評commit，再以該短碼建立證據資料夾；證據可由下一個僅含文件／截圖的commit補上。最終回報包含證據的交付commit，README明確列出受評程式commit；不要amend或force push來追逐資料夾名稱。
 - 保留並維護`window.__rainy711.debugJump`、`restoreChapter`、`tick`及點711正面招牌七次的快速測試。若名稱、參數或流程有變，必須在當輪README交代遷移方式。本次交付不更動這些入口。
-- Claude是外部唯讀評審，不會push、開Issue或部署。它在自己的環境以指定commit和Chromium軟體渲染取證；可用來判斷可見性／穿模／UI／已走過的流程，不能視為iPhone幀率、觸控手感或聲音驗收。不要把Codex的完成敘述當作Claude通過紀錄。
+- Codex主控整合與發布。Claude未受指派實作時維持外部唯讀評審；經使用者或Codex指派時，可在指定工作分支實作並push程式與證據，不自行合併`ui-preview`／`main`或部署。實作者自測不能當作獨立評審通過。Chromium軟體渲染取證可判斷可見性／穿模／UI／已走過的流程，不能視為iPhone幀率、觸控手感或聲音驗收。

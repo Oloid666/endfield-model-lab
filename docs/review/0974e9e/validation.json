@@ -1,0 +1,428 @@
+{
+  "codeCommit": "0974e9e50eaebbb9a0dc6ebc463a488747558375",
+  "submittedCommit": "8612f88c4913bdf1dd2aa053095834e8651a66ff",
+  "submittedCodeCommit": "d5721c1c8694e96ad128dfb1c85f7c2e96823bd4",
+  "baseCommit": "ae25ab2e70b0268204de7537a4579103fc2e584c",
+  "viteBuild": {
+    "command": "npm run build",
+    "exitCode": 0,
+    "warning": "Existing chunk >500 kB advisory remains; no dependency updates."
+  },
+  "allNodeChecks": [
+    {
+      "script": "scripts/actor-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/air-upstairs-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/analytics-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/battle-warm-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/bonus-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/character-copy-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/cinematic-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/cinematic-track-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/concert-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/destruction-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/dinner-revision-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/director-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/entry-camera-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/feast-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/feedback-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/fx-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/indoor-camera-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/indoor-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/indoor-impact-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/indoor-passenger-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/living-world-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/loading-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/mission-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/next-dinner-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/photo-camera-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/polish-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/postgame-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/presentation-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/props-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/racing-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/review-synthesis-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/revision-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/second-wave-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/stage-detail-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/story-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/story-revision-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/street-camera-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/street-stage-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/touch-detail-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/tray-grip-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/vcr-props-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/vcr-tablet-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/viewer-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/walking-environment-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/warmup-check.mjs",
+      "exitCode": 0
+    }
+  ],
+  "finalTrayChecks": {
+    "passed": 41,
+    "total": 41,
+    "labelClarification": "After the all-check run, two labels were clarified (one-hand checks exclude thumb; tray motion skips two setup frames), and tray-grip-check was rerun. Logic was unchanged."
+  },
+  "regressionBeforeFix": {
+    "method": "An isolated Node loader served the submitted tray-grip.js to the new regressions; no source file was replaced.",
+    "failedChecks": [
+      "Thumb aim blends a quarter-turn proportionally at 0/25/50/75/100%, including rotated parents and terminal joints",
+      "Handoff: thumb joints relax without a rotation snap (<=20 degrees per 1/60 s frame)"
+    ],
+    "thumbRelease": {
+      "maxJointStepDegrees": 48.27,
+      "atAge": 0.717
+    }
+  },
+  "regressionAfterFix": {
+    "maxJointStepDegrees": 7.37,
+    "atAge": 0.783
+  },
+  "knownOpenOneHandThumb": {
+    "method": "Closest slab-face depth, dominant skin weight grouping, actual GLB; single handover pose. This is excluded from the passing single-hand assertions.",
+    "base": {
+      "n": 299,
+      "under": 299,
+      "pen": 297,
+      "maxPenMm": 20,
+      "touch": 0,
+      "gapMm": null,
+      "endFace": 0
+    },
+    "submitted": {
+      "n": 299,
+      "under": 299,
+      "pen": 239,
+      "maxPenMm": 19.9,
+      "touch": 15,
+      "gapMm": 0,
+      "endFace": 0
+    },
+    "reviewed": {
+      "n": 299,
+      "under": 299,
+      "pen": 239,
+      "maxPenMm": 19.9,
+      "touch": 15,
+      "gapMm": 0,
+      "endFace": 0
+    }
+  },
+  "browser": {
+    "engine": "Chromium 154 / SwiftShader",
+    "errors": [],
+    "viewports": [
+      {
+        "viewport": "390x844",
+        "deviceDpr": 2.0,
+        "rendererDpr": 1.25,
+        "quality": "balanced",
+        "checkpoints": [
+          {
+            "name": "01-bought",
+            "phase": "photo-pose",
+            "age": 0.85,
+            "node": "shopping_complete"
+          },
+          {
+            "name": "02-photo-talk",
+            "phase": "photo-talk",
+            "age": 1.2,
+            "node": "photo_talk_0"
+          },
+          {
+            "name": "03-before-handoff",
+            "phase": "lever",
+            "age": 0.85,
+            "node": "captcha_verified"
+          },
+          {
+            "name": "03-handoff-0.35",
+            "phase": "meal-handoff",
+            "age": 0.35,
+            "node": "tray_pass"
+          },
+          {
+            "name": "03-handoff-0.75",
+            "phase": "meal-handoff",
+            "age": 0.75,
+            "node": "tray_pass"
+          },
+          {
+            "name": "03-handoff-1.00",
+            "phase": "meal-handoff",
+            "age": 1.0,
+            "node": "tray_pass"
+          },
+          {
+            "name": "04-reclaim-0.60",
+            "phase": "meal-reclaim",
+            "age": 0.6,
+            "node": "tray_back"
+          },
+          {
+            "name": "04-reclaim-1.40",
+            "phase": "meal-reclaim",
+            "age": 1.4,
+            "node": "tray_back"
+          },
+          {
+            "name": "04-reclaim-2.20",
+            "phase": "meal-reclaim",
+            "age": 2.2,
+            "node": "tray_back"
+          },
+          {
+            "name": "04-after-return",
+            "phase": "tour",
+            "age": 1.501,
+            "node": null
+          }
+        ],
+        "handoffSteps": {
+          "wristMm": 37.4,
+          "wristAge": 0.934,
+          "trayMm": 31.1,
+          "trayAge": 0.033,
+          "trayAbsMm": 31.1,
+          "trayAbsAge": 0.033,
+          "owner": "hero"
+        },
+        "reclaimSteps": {
+          "wristMm": 35.7,
+          "wristAge": 0.433,
+          "trayMm": 10.5,
+          "trayAge": 2.034,
+          "trayAbsMm": 10.5,
+          "trayAbsAge": 2.034,
+          "owner": "hero"
+        }
+      },
+      {
+        "viewport": "1440x900",
+        "deviceDpr": 1.0,
+        "rendererDpr": 1,
+        "quality": "balanced",
+        "checkpoints": [
+          {
+            "name": "01-bought",
+            "phase": "photo-pose",
+            "age": 0.85,
+            "node": "shopping_complete"
+          },
+          {
+            "name": "02-photo-talk",
+            "phase": "photo-talk",
+            "age": 1.2,
+            "node": "photo_talk_0"
+          },
+          {
+            "name": "03-before-handoff",
+            "phase": "lever",
+            "age": 0.85,
+            "node": "captcha_verified"
+          },
+          {
+            "name": "03-handoff-0.35",
+            "phase": "meal-handoff",
+            "age": 0.35,
+            "node": "tray_pass"
+          },
+          {
+            "name": "03-handoff-0.75",
+            "phase": "meal-handoff",
+            "age": 0.75,
+            "node": "tray_pass"
+          },
+          {
+            "name": "03-handoff-1.00",
+            "phase": "meal-handoff",
+            "age": 1.0,
+            "node": "tray_pass"
+          },
+          {
+            "name": "04-reclaim-0.60",
+            "phase": "meal-reclaim",
+            "age": 0.6,
+            "node": "tray_back"
+          },
+          {
+            "name": "04-reclaim-1.40",
+            "phase": "meal-reclaim",
+            "age": 1.4,
+            "node": "tray_back"
+          },
+          {
+            "name": "04-reclaim-2.20",
+            "phase": "meal-reclaim",
+            "age": 2.2,
+            "node": "tray_back"
+          },
+          {
+            "name": "04-after-return",
+            "phase": "tour",
+            "age": 1.501,
+            "node": null
+          }
+        ],
+        "handoffSteps": {
+          "wristMm": 37.4,
+          "wristAge": 0.934,
+          "trayMm": 31.1,
+          "trayAge": 0.033,
+          "trayAbsMm": 31.1,
+          "trayAbsAge": 0.033,
+          "owner": "hero"
+        },
+        "reclaimSteps": {
+          "wristMm": 35.7,
+          "wristAge": 0.433,
+          "trayMm": 10.5,
+          "trayAge": 2.034,
+          "trayAbsMm": 10.5,
+          "trayAbsAge": 2.034,
+          "owner": "hero"
+        }
+      }
+    ]
+  },
+  "limits": [
+    "No iPhone hardware, audio, touch-feel or FPS validation.",
+    "Contact snapshots and fixed-clock displacement samples do not establish cinematic timing quality.",
+    "Browser aggregate vertex depth uses distance from underside, unlike closest-face depth in Node. Do not compare the two penetration metrics.",
+    "Default player camera still hides much of the gripping hands.",
+    "Single-hand thumb overlap and existing release/reclaim paths remain open."
+  ]
+}
