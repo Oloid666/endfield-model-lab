@@ -11,7 +11,7 @@ export function createPhotoViewer({mount,signal,onSend,onRetake,onClose}){
  const stage=el('div','gallery-stage'),image=el('img','gallery-image');image.alt='本次拍攝的照片';image.draggable=false;stage.append(image);
  const hint=el('p','gallery-hint','左右滑換照片，雙指放大。'),tools=el('div','gallery-tools'),footer=el('footer','gallery-footer');
  const button=(owner,text,fn,tone='secondary')=>{const b=buttonStyle(el('button','',text),tone);b.type='button';b.addEventListener('click',fn,{signal});owner.append(b);return b;};
- const inspect=button(tools,'放大看有沒有眨眼',()=>{if(paused||!canInspect())return;index=1;scale=1;x=y=0;load();});
+ const inspect=button(tools,'放大看有沒有眨眼',()=>{if(paused||!canInspect())return;index=index?0:1;scale=1;x=y=0;load();});
  const retake=button(footer,'重新拍',()=>{hide();photo=null;image.removeAttribute('src');onRetake();}),send=button(footer,'傳送給管理員',()=>{if(!send.disabled&&photo?.faceValid!==false){send.disabled=true;send.setAttribute('aria-busy','true');try{if(onSend()!==false)hide();else send.disabled=false;}catch{send.disabled=false;}finally{send.removeAttribute('aria-busy');}}},'primary');
  root.append(header,stage,hint,tools,footer);mount.append(root);
  let blocked=[];
@@ -22,7 +22,7 @@ export function createPhotoViewer({mount,signal,onSend,onRetake,onClose}){
  function settle(){const b=bounds();x=Math.max(-b.x,Math.min(b.x,x));y=Math.max(-b.y,Math.min(b.y,y));paint(true);}
  function maxZoom(){const b=bounds();return Math.max(1,Math.min(3,(image.naturalWidth||1)/Math.max(1,b.width)/(window.devicePixelRatio||1)));}
  function zoom(value){if(paused||!canInspect())return;scale=Math.max(1,Math.min(maxZoom(),value));settle();}
- function load(){if(!canInspect())index=0;inspect.disabled=paused||!canInspect();send.disabled=paused||photo?.faceValid===false;hint.textContent=photo?.faceValid===false?'沒有拍清楚莊的臉，請重新拍。':'左右滑換全景與近照，雙指縮放，雙擊恢復。';hint.hidden=false;image.onload=null;title.textContent=index?'人物近照 · 2 / 2':canInspect()?'全景 · 1 / 2':'本次照片';image.src=index?photo.closeup:photo.src;image.onload=()=>{scale=Math.min(scale,maxZoom());settle();};paint();}
+ function load(){if(!canInspect())index=0;inspect.textContent=index?'回到全景':'放大看有沒有眨眼';inspect.disabled=paused||!canInspect();send.disabled=paused||photo?.faceValid===false;hint.textContent=photo?.faceValid===false?'沒有拍清楚莊的臉，請重新拍。':'左右滑換全景與近照，雙指縮放，雙擊恢復。';hint.hidden=false;image.onload=null;title.textContent=index?'人物近照 · 2 / 2':canInspect()?'全景 · 1 / 2':'本次照片';image.src=index?photo.closeup:photo.src;image.onload=()=>{scale=Math.min(scale,maxZoom());settle();};paint();}
  function change(step){if(paused)return;const next=Math.max(0,Math.min(canInspect()?1:0,index+step));if(index!==next){index=next;scale=1;x=y=0;load();}else{x=step>0?-35:35;paint();requestAnimationFrame(settle);}}
  function clear(){pointers.clear();gesture=null;settle();}
  function hide(){for(const [n,inert]of blocked)n.inert=inert;blocked=[];root.hidden=true;mount.classList.remove('gallery-open');clear();opener?.focus({preventScroll:true});onClose?.();}

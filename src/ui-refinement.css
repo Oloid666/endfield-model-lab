@@ -88,3 +88,7 @@
 .creature-communication[hidden]{display:none}
 /* Keep short spoken sentences balanced; preserve explicit lyric line breaks. */
 #app.ui-refined .mission-panel.tablet-dialogue .mission-text{display:block;text-wrap:balance;line-break:strict}
+
+/* Functional overlays stay readable on bright glass without changing scene exposure. */
+#app.ui-refined .identity{text-shadow:0 1px 3px #06171c,0 2px 10px #06171c;background:linear-gradient(90deg,#10272bc9,#10272b00);border-radius:10px}
+#app.ui-refined .mission-vcr-label,#app.ui-refined .mission-vcr-timecode,#app.ui-refined .mission-vcr[data-mode=play] .mission-vcr-symbol{background:#10272be6;color:#f0ead4;border-radius:4px;padding:3px 5px;font-size:12px;text-shadow:0 1px 2px #071416}

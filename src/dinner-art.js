@@ -84,9 +84,9 @@ export function buildBento(r,parent,{variant='zhuang'}={}){
  // Broccoli has clustered florets, a stem and leaf silhouettes.
  for(let i=0;i<(isX?3:2);i++){
   const x=isX?.015+i*.039:.083+i*.035,z=isX?.057+(i%2)*.005:.067;add(k.rounded(.010,.018,.010,.003),leafMat,[x,.042,z]);
-  for(let j=0;j<5;j++){const a=j*2.4;add(k.sphere,vegMat,[x+Math.cos(a)*.009,.054+(j%2)*.004,z+Math.sin(a)*.008],[.011,.010,.011]);}
+  for(let j=0;j<5;j++){const a=j*2.4+i*.37,size=.009+rng()*.004;add(k.sphere,j%3===0?leafMat:vegMat,[x+Math.cos(a)*.010,.052+rng()*.007,z+Math.sin(a)*.009],[size,size*.90,size*1.07]);}
  }
- for(let i=0;i<2;i++){const c=add(r.geometry('CylinderGeometry',.014,.014,.005,12),accentMat,[.113,.046,-.056+i*.027]);c.rotation.z=.15;}
+ for(let i=0;i<2;i++){const c=add(r.geometry('CylinderGeometry',.014,.014,.005,12),accentMat,[.113,.046,-.056+i*.027]);c.rotation.set(.10+i*.08,.18-i*.32,.10+i*.13);c.scale.set(1-i*.12,1,.94+i*.13);}
  // Half egg: a real cut white with a slightly recessed glossy yolk.
  add(k.sphere,eggMat,isX?[.112,.047,.012]:[.010,.047,.054],[.024,.014,.030]);add(k.sphere,yolkMat,isX?[.112,.059,.012]:[.010,.059,.054],[.014,.0035,.017]);
  const sesame=r.own(new T.InstancedMesh(k.grain,sesameMat,28));protein.add(sesame);

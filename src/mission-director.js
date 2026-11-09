@@ -382,8 +382,8 @@ export class MissionDirector{
       if(s.tablet){const stage=s.tablet.stage,frame=w.xaihi?.tabletFrame(w.camera.aspect);if(frame){position=frame.position;target=frame.center;fov=frame.fov;beat='tablet-read';this.cameraRoll=frame.roll||0;}
        if(stage==='search'&&e<1.9&&frame){const p=this.reducedMotion?1:smooth((e-.55)/1.35);position=[3.9+(frame.position[0]-3.9)*p,2.5+(frame.position[1]-2.5)*p,-.6+(frame.position[2]+.6)*p];target=frame.center;beat=e<.55?'tablet-hold-context':'tablet-approach';this.cameraRoll=(frame.roll||0)*p;fov=62+(frame.fov-62)*p;}
        if(stage!=='search'&&['backdoor','rapi-request','rapi-answer','rapi-mask','cable','walk-fridge','walk-counter','cooling','success','defrost','hot','meal-label'].includes(stage))this.cameraRoll=0;
-       if(stage==='backdoor'||stage==='rapi-mask'){position=[7.7,2.05,-10.2];target=[7.4,1.85,-13.189];fov=portrait?58:40;beat='pylon-nikke-screen';}
-       if(['rapi-request','rapi-answer'].includes(stage)){position=[7.57,2.10,-11.8];target=[7.52,2.11,-13.189];fov=portrait?28:22;beat='rapi-eye-bar';}
+       if(stage==='backdoor'){position=portrait?[7.4,1.95,-10.25]:[7.64,2.10,-11.25];target=[7.4,1.85,-13.189];fov=portrait?50:34;beat='pylon-nikke-screen';}
+       if(['rapi-request','rapi-answer','rapi-mask'].includes(stage)){position=[7.57,2.10,-11.8];target=[7.52,2.11,-13.189];fov=portrait?28:22;beat='rapi-eye-bar';}
        if(stage==='cable'){const p=s.tablet.age;if(p<1.5){position=[9.4,2.4,-12.5];target=[7.4,1.25,-14.9];}else if(p<4){position=[12,7.2,5];target=[5.4,1,-5.5];}else{position=[4.25,2.15,-.2];target=[3.85,1.48,1.45];}fov=portrait?70:50;beat='energy-wire-'+s.tablet.wireBeat;}
        if(['walk-fridge','walk-counter'].includes(stage)){const a=w.xaihi?.root.position;position=[3.6,2.45,1.2];target=a?[a.x,a.y+1.05,a.z]:[1.5,1.3,-.5];fov=portrait?65:52;beat='xaihi-walk';}
        if(['cooling','success','defrost','hot'].includes(stage)){position=[2.3,2.25,.55];target=[1.37,1.55,-1.65];fov=portrait?70:52;beat='fridge-temperature';}

@@ -67,18 +67,20 @@ export function buildConnectionStage(scene,r){
   root.traverse(node=>{if(node.isMesh){node.userData.dynamic=true;node.castShadow=false;node.receiveShadow=true;}});
   // Hinged light-book: covers open, pages spread, then keys settle into the terminal.
   const book=new T.Group();book.name='book-deployment';root.add(book);
-  const bookMat=r.material('#b9e1cf',{emissive:0x7bbca4,emissiveIntensity:.8,transparent:true,opacity:.85,roughness:.4});
+  const bookMat=r.material('#b9e1cf',{emissive:0x7bbca4,emissiveIntensity:.38,transparent:true,opacity:.92,roughness:.4});
+  const paper=r.material('#dedbc2',{roughness:.84,emissive:0x436f58,emissiveIntensity:.10});
   const covers=[],pages=[];
   for(const side of [-1,1]){const hinge=new T.Group();book.add(hinge);box(hinge,metal,[side*.48,0,0],[.96,.065,1.32]);box(hinge,bookMat,[side*.48,.043,0],[.87,.02,1.22]);covers.push({hinge,side});
-    for(let i=0;i<3;i++){const page=new T.Group();book.add(page);box(page,bookMat,[side*.46,0,0],[.85,.007,1.18]);pages.push({page,side,index:i});}}
-  const diagram=r.mesh(r.geometry('PlaneGeometry',1,1),r.label('武陵電網  /  CITY ARRAY',{width:1024,height:512,font:'bold 42px sans-serif',bg:'#16372f',color:'#c9ead0'}),book,[0,.105,-.40],[1.55,.22,1]);diagram.rotation.x=-Math.PI/2;
+    for(let i=0;i<3;i++){const page=new T.Group();book.add(page);box(page,paper,[side*.46,0,0],[.85,.007,1.18]);pages.push({page,side,index:i});}}
+  const diagram=r.mesh(r.geometry('PlaneGeometry',1,1),r.label('BOOK  /  武陵電網',{width:1024,height:512,font:'bold 42px sans-serif',bg:'#16372f',color:'#c9ead0'}),book,[0,.105,-.40],[1.55,.22,1]);diagram.rotation.x=-Math.PI/2;
   const diagramNodes=new T.Group();diagramNodes.name='book-city-array';book.add(diagramNodes);
   for(const z of [-.12,.32])box(diagramNodes,bookMat,[0,.108,z],[.92,.012,.016]);
   for(const x of [-.46,.46])box(diagramNodes,bookMat,[x,.108,.10],[.016,.012,.44]);
   for(const x of [-.46,.46])for(const z of [-.12,.32]){box(diagramNodes,metal,[x,.115,z],[.22,.025,.17]);box(diagramNodes,bookMat,[x,.133,z],[.11,.012,.075]);}
   const loginNotice=r.mesh(r.geometry('PlaneGeometry',1,1),r.label('請先登入。',{width:512,height:128,font:'bold 64px sans-serif',bg:'#142d2d',color:'#e9d6a2'}),root,[0,.60,0],[1.6,.35,1]);loginNotice.rotation.x=-Math.PI/2;
   const deployRing=r.mesh(r.geometry('TorusGeometry',1,.012,5,48),r.material('#9bd5ad',{emissive:0x7fb895,emissiveIntensity:1,transparent:true,opacity:.5,depthWrite:false}),root,[0,.025,0]);deployRing.rotation.x=-Math.PI/2;
-  const spine=box(book,edge,[0,0,0],[.055,.09,1.35]);
+  const spine=box(book,edge,[0,0,0],[.075,.10,1.35]);
+  for(const {hinge,side}of covers)for(let i=0;i<3;i++)box(hinge,ivory,[side*.94,.058+i*.012,0],[.012,.005,1.20]);
   const ease=value=>{const p=clamp(value);return p*p*(3-2*p);};
   const reduced=typeof matchMedia==='function'&&matchMedia('(prefers-reduced-motion: reduce)').matches;
   let deployment=1;

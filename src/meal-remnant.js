@@ -10,7 +10,7 @@ export function buildMealRemnant(scene,r){
  const geometry=r.own(new T.SphereGeometry(1,28,16)),positions=geometry.attributes.position,rest=positions.array.slice();
  const colors=new Float32Array(positions.count*3),shade=new T.Color();
  for(let i=0;i<positions.count;i++){const y=rest[i*3+1];shade.set('#674079').lerp(new T.Color('#b093cf'),(y+1)*.5);shade.toArray(colors,i*3);}geometry.setAttribute('color',new T.BufferAttribute(colors,3));
- const material=r.own(new T.MeshPhysicalMaterial({color:'#ffffff',vertexColors:true,roughness:.34,metalness:0,clearcoat:.48,clearcoatRoughness:.22,emissive:0x4d2678,emissiveIntensity:.09}));
+ const material=r.own(new T.MeshPhysicalMaterial({color:'#ffffff',vertexColors:true,roughness:.49,metalness:0,clearcoat:.20,clearcoatRoughness:.38,emissive:0x4d2678,emissiveIntensity:.09}));
  const surface=r.mesh(geometry,material,body);surface.frustumCulled=false;
  // The helper earns a tiny expressive hand only after the weight settles.
  const thumbs=new T.Group();thumbs.name='purple-helper-thumbs-up';body.add(thumbs);thumbs.visible=false;
@@ -41,8 +41,8 @@ export function buildMealRemnant(scene,r){
  const route=[[3.06,.33,1.65],[1.1,.33,1.65],[0,.33,1.65],[0,.33,2.65],[-.65,.33,3.48]];
  function shape(time,press,carrying=false,height=.28,weight=0){
   const squash=Math.max(press,weight*.42),motion=reduced||carrying?0:1;
-  for(let i=0;i<positions.count;i++){const j=i*3,x=rest[j],y=rest[j+1],z=rest[j+2],u=(y+1)*.5,angle=Math.atan2(z,x),lobe=1+.065*Math.sin(angle*3+.4),wave=motion*Math.sin(time*2.1-z*3.5)*.009*(1-u);
-   positions.setXYZ(i,x*.34*lobe*(1+squash*.20)+wave,u*(carrying?.36:.28)*(1-squash*.30)+.008,z*.24*lobe-wave*.7);
+  for(let i=0;i<positions.count;i++){const j=i*3,x=rest[j],y=rest[j+1],z=rest[j+2],u=(y+1)*.5,angle=Math.atan2(z,x),lobe=1+.085*Math.sin(angle*3+.4)+.035*Math.cos(angle*2-1.1),wave=motion*Math.sin(time*1.5-z*3.5)*.016*(1-u);
+   positions.setXYZ(i,x*.34*lobe*(1+squash*.28)+wave+motion*Math.sin(time*1.5)*.009*u,u*(carrying?.36:.28)*(1-squash*.34)+.008,z*.24*lobe-wave*.7);
   }positions.needsUpdate=true;geometry.computeVertexNormals();
  }
 
