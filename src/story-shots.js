@@ -130,7 +130,7 @@ export function cinematicStoryShot(s,context,track){
   const server=c.server||[0,1.21,1.06];track.captureAxis(feet,h.toArray(track.headArray||(track.headArray=[0,0,0])),server,c.heading??2.91);
   if(aiming){
    if(track.enter('cinematic-final-shoulder',s,c,origin+RESCUE_READY)){
-    track.p.copy(h).addScaledVector(track.axisForward,-3.8).addScaledVector(track.axisRight,1.2*track.axisSide);track.p.y+=.35;track.t.copy(h).lerp(track.offset.fromArray(c.grip||h.toArray()),.55);track.t.y-=.08;
+    const face=faceFrame(feet,c.heading??2.91,3.2,1.6,1.9,1.3);track.p.fromArray(face.position);track.t.copy(h).lerp(track.offset.fromArray(c.grip||h.toArray()),.55);track.t.y-=.08;
     const g=c.grip||h.toArray();track.fitBox([Math.min(h.x,g[0])-.45,Math.min(h.y,g[1])-.35,Math.min(h.z,g[2])-.4],[Math.max(h.x,g[0])+.45,Math.max(h.y,g[1])+.35,Math.max(h.z,g[2])+.4],track.p,track.t,c.portrait?58:46,c,'wide',true);
    }
    return track.pose(track.fixedP,track.fixedT,c.portrait?58:46);

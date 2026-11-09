@@ -25,7 +25,7 @@ for(const c of [context(320,740),context(),context(440,390),context(874,768)]){
  for(let t=1.2;t<=3.5;t+=.1){const q=sample(track,'intro',t,{node:first,nodeElapsed:t},c);check('Opening push stays outside frontage',q.position[2]>2.65&&q.position[1]>.2);}
  sample(track,'intro',4,{node:soup,nodeElapsed:0},c);check('Soup reminder has its own OTS',track.id==='cinematic-opening-shoulder');
  for(let t=0;t<=5;t+=.05){const q=sample(track,'ascent',10+t,{phaseElapsed:t,heroHead:[-1.25,1.98+t*.2,3.25]},c);check('Ascent stays on street side',q.position[2]>2.65&&q.position[1]>.2);}
- track.reset();const final={...c,feet:[-1.25,4.32,15.25],heroHead:[-1.25,5.95,15.25],server:[0,1.21,1.06]};
+ track.reset();const final={...c,feet:[-1.25,4.32,15.25],heroHead:[-1.25,5.95,15.25],grip:[-1.3,5.35,15.5],server:[0,1.21,1.06]};
  for(const t of [17,19,24]){const q=sample(track,'aim-final',t,{},final);check('Aim is a steady same-side shoulder shot',q.beat==='cinematic-final-shoulder'&&q.fitValid);}
  for(const [t,beat] of [[0,'face'],[2,'face'],[2.74,'face'],[2.75,'flight'],[4.349,'flight'],[4.35,'impact'],[4.89,'impact'],[5.5,'impact']]){
   const q=sample(track,'finisher',20+t,{phaseElapsed:t},final);check('Actual release/impact timing stays readable',q.beat==='cinematic-finisher-'+beat&&q.fitValid);
@@ -37,8 +37,9 @@ for(const c of [context(320,740),context(),context(440,390),context(874,768)]){
 // Actual landscape uses a right-side DOM panel over the same full-width renderer.
 const landscape=context(844,390),panel={left:450,right:830,top:99,bottom:376,width:380,height:277};
 globalThis.document={querySelectorAll:()=>[{getClientRects:()=>[panel],getBoundingClientRect:()=>panel}]};
-const sidebar=new CinematicTrack();sample(sidebar,'terminal-quip',0,{},landscape);const previews=sidebar.fitCount;const sidebarFrame=sample(sidebar,'login',1,{},landscape);check('First real keyboard gate refits after preview dialogue',sidebar.fitCount===previews+1);check('Landscape keyboard reserves a left viewing region',sidebar.area.right<.05);assertEnvelope(sidebar,sidebarFrame,[-3.75,.3,4.05],[.45,2.55,6.85],landscape);const firing=new CinematicTrack(),firingContext={...landscape,feet:[-1.25,4.32,15.25],heroHead:[-1.25,5.95,15.25],server:[0,1.21,1.06]};
-const firingFrame=sample(firing,'aim-final',17,{},firingContext);check('HUD framing must preserve the final firing-axis side',new T.Vector3(...firingFrame.position).sub(firing.axisOrigin).dot(firing.axisRight)*firing.axisSide>0);assertEnvelope(firing,firingFrame,[-.45,.61,.66],[.45,2.46,1.46],firingContext);
+const sidebar=new CinematicTrack();sample(sidebar,'terminal-quip',0,{},landscape);const previews=sidebar.fitCount;const sidebarFrame=sample(sidebar,'login',1,{},landscape);check('First real keyboard gate refits after preview dialogue',sidebar.fitCount===previews+1);check('Landscape keyboard reserves a left viewing region',sidebar.area.right<.05);assertEnvelope(sidebar,sidebarFrame,[-3.75,.3,4.05],[.45,2.55,6.85],landscape);const firing=new CinematicTrack(),firingContext={...landscape,feet:[-1.25,4.32,15.25],heroHead:[-1.25,5.95,15.25],grip:[-1.3,5.35,15.5],server:[0,1.21,1.06]};
+const firingFrame=sample(firing,'aim-final',17,{},firingContext);check('HUD framing must preserve the final firing-axis side',new T.Vector3(...firingFrame.position).sub(firing.axisOrigin).dot(firing.axisRight)*firing.axisSide>0);// The preparation shot now shows the face and grip; the target returns in the flight/impact shots.
+assertEnvelope(firing,firingFrame,[-1.75,5.0,14.85],[-.8,6.3,15.9],firingContext);
 delete globalThis.document;
 for(const phase of ['intro','terminal-deploy','ascent']){
  const run=hz=>{const track=new CinematicTrack();for(let n=0;n<=hz*3;n++)sample(track,phase,n/hz,{node:sequences.intro[1],nodeElapsed:n/hz});return {position:[...track.frame.position],target:[...track.frame.target],fov:track.frame.fov};};
