@@ -6,8 +6,8 @@
 
 - 受評程式commit：`d5721c1c8694e96ad128dfb1c85f7c2e96823bd4`，分支`claude/dinner-grip-01`。
 - 比較程式commit：`ae25ab2e70b0268204de7537a4579103fc2e584c`（本輪起始點）。
-- 交付commit：受評commit之後只新增本資料夾，並在`docs/review/README.md`加一行索引；遊戲`src/`、`public/`、頁面、依賴與部署設定與受評commit相同。
-- **尚未推送**：本環境沒有GitHub寫入權限（GitHub帳號未連結，`add_repo access:push`被拒）。兩個commit以`git format-patch`交付，由Codex套用到`claude/dinner-grip-01`後推送。沒有分支預覽網址。
+- 交付commit：分支最新commit。受評commit之後只新增本資料夾、替換10號圖，並在`docs/review/README.md`加一行索引；遊戲`src/`、`public/`、頁面、依賴與部署設定與受評commit相同。
+- 推送狀態：已推送到`origin/claude/dinner-grip-01`（2026-11-09，使用者連結GitHub並安裝Claude GitHub App後）。沒有推`main`或`ui-preview`，沒有合併或force push。沒有分支預覽網址；整合與發布由Codex決定。
 - 本輪只做D-F01。沒有改GLB、角色比例、晚餐美術、鏡頭、故事或玩法，也沒有加震動、粒子或Bob。共享IK`src/arm-support.js`與塞西`src/xaihi.js`未改。
 
 ## 觀眾實際看到的問題（修改前）
@@ -47,9 +47,9 @@
 | 07 交給龍泡泡 0.35 s 玩家鏡頭 | [before](07-handoff-0.35s-player-view-before.png) | [after](07-handoff-0.35s-player-view-after.png) | 390×844、DPR 2 |
 | 08 交給龍泡泡 0.75 s（換手後）玩家鏡頭 | [before](08-handoff-0.75s-player-view-before.png) | [after](08-handoff-0.75s-player-view-after.png) | 390×844、DPR 2 |
 | 09 紫色生物歸還後（meal-reclaim 2.2 s）左手側面近景 | [before](09-reclaim-left-side-before.png) | [after](09-reclaim-left-side-after.png) | 1440×900、DPR 1 |
-| 10 歸還後巡場（tour 1.5 s）玩家鏡頭 | [before](10-after-return-player-view-before.png) | [after](10-after-return-player-view-after.png) | 390×844、DPR 2 |
+| 10 歸還後巡場（tour 1.5 s）右手正前斜近景 | [before](10-after-return-right-front-oblique-before.png) | [after](10-after-return-right-front-oblique-after.png) | 390×844、DPR 2；修改前可見拇指尖從盤的前側面穿出 |
 
-取證時的其他圖（每節點左右手×三角度、兩種視窗，共約200張）留在本機，沒有提交。
+10號原本放的是巡場的玩家鏡頭，但那個鏡頭只拍龍泡泡卡在牆洞、莊不在畫面內，修改前後是同一張圖，不能當作證據，已改成同一時間點的近景。取證時的其他圖（每節點左右手×三角度、兩種視窗，共約200張）留在本機，沒有提交。
 
 ## 量測（實作者自測，不是評審結論）
 
