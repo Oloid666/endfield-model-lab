@@ -68,12 +68,13 @@ CAMERA_JS = r"""(o)=>{const W=__world,a=W.actors,c=W.camera,V=c.position.constru
 async def main():
     async with async_playwright() as p:
         b = await p.chromium.launch(executable_path=CHROME, headless=True,
-                                    args=['--no-sandbox', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'])
+                                    args=['--no-sandbox', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--disable-dev-shm-usage'])
         report = {'url': URL, 'tag': TAG, 'viewports': [], 'errors': []}
         for (vw, vh, dpr) in VIEWPORTS:
             ctx = await b.new_context(viewport={'width': vw, 'height': vh}, device_scale_factor=dpr, has_touch=vw < 600, is_mobile=vw < 600)
             page = await ctx.new_page()
             page.on('pageerror', lambda e: report['errors'].append(str(e)[:300]))
+            page.set_default_timeout(90000)
             js = page.evaluate
 
             async def tick(sec, render=False):

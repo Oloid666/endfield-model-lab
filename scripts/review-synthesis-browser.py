@@ -71,6 +71,8 @@ async def main(args):
    for _ in range(7):
     point=await js("()=>{const p=__rainy711.projectPoint([0,3.1,2.23]),r=document.querySelector('#scene').getBoundingClientRect();return [r.x+(p[0]+1)*r.width/2,r.y+(1-p[1])*r.height/2]}")
     await page.mouse.click(*point);await tick()
+   # Finish the presentation-only unlock animation before taking story evidence.
+   await page.locator('.bonus-toast').evaluate('(e)=>e.getAnimations().forEach(a=>a.finish())')
    await page.wait_for_function("document.querySelector('.bonus-toast').hidden",timeout=10000)
    await jump('fridge');await tick(2.2);await talks();await act('scan');await tick(1.7);await talks()
    await act('tool');await act('detect');await tick(1.4);await act('control');await tick(3.3);await act('apply');await tick(3)

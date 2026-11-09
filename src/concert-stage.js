@@ -28,7 +28,7 @@ export function buildConcertStage(scene,r){
  // A real camera-space foreground: ordinary depth-tested meshes, no overlay pass.
  const depth=.45,foregroundScale=.084,halfH=Math.tan(camera.fov*Math.PI/360)*depth,halfW=halfH*camera.aspect;
  offset.set(0,0,-depth).applyQuaternion(camera.quaternion);root.position.copy(camera.position).add(offset);root.quaternion.copy(camera.quaternion);root.scale.setScalar(foregroundScale);wasActive=true;
- props.forEach(({pivot},i)=>{const side=i<4?-1:1,slot=i%4;pivot.position.x=side*halfW*(.63+slot*.14)/foregroundScale;pivot.position.z=0;});
- props.forEach(({pivot,wrist,y},i)=>{pivot.visible=quality!=='low'||i<6;const p=cheerPose(age,i,reduced);pivot.position.y=(-halfH*.42)/foregroundScale+p.lift;pivot.rotation.set(p.pitch,0,p.roll);wrist.rotation.z=p.wrist;});
+ props.forEach(({pivot},i)=>{const side=i<4?-1:1,slot=i%4;pivot.position.x=side*halfW*(.42+slot*.13)/foregroundScale;pivot.position.z=0;});
+ props.forEach(({pivot,wrist,y},i)=>{pivot.visible=quality!=='low'||i<6;const p=cheerPose(age,i,reduced);pivot.position.y=(-halfH*.15)/foregroundScale+p.lift;pivot.rotation.set(p.pitch,0,p.roll);wrist.rotation.z=p.wrist;});
  }};
 }

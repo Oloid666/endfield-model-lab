@@ -82,7 +82,7 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
   });
   // D-F01: fingertips slightly raised so finger pads, not the palm heel, carry the tray; thumbs brace the tray ends.
   const handoffMatrix=new T.Matrix4(),handoffEuler=new T.Euler(),handoffScale=new T.Vector3(),gripTilts={L:new T.Quaternion().setFromEuler(new T.Euler(-GRIP.pitch,0,-GRIP.roll)),R:new T.Quaternion().setFromEuler(new T.Euler(-GRIP.pitch,0,GRIP.roll))},thumbTargets=[new T.Vector3(),new T.Vector3(),new T.Vector3()],thumbDirection=new T.Vector3(),thumbBase=new T.Vector3();
-  function wrapThumb(hand,weight){const [base,middle,tip]=hand.thumb;if(!base||!middle||!tip)return;thumbPoints(dinner,hand.side,thumbTargets);for(const p of thumbTargets)p.applyQuaternion(trayQ).add(trayWorld);
+  function wrapThumb(hand,weight,single=false){const [base,middle,tip]=hand.thumb;if(!base||!middle||!tip)return;thumbPoints(dinner,hand.side,thumbTargets,single);for(const p of thumbTargets)p.applyQuaternion(trayQ).add(trayWorld);
    aimBone(base,middle,thumbTargets[0],weight);aimBone(middle,tip,thumbTargets[1],weight);middle.getWorldPosition(thumbBase);tip.getWorldPosition(thumbDirection).sub(thumbBase);aimBone(tip,null,thumbTargets[2],weight,thumbDirection);}
   const jointPosition=new T.Vector3(),footPosition=new T.Vector3(),toFoot=new T.Vector3(),toTarget=new T.Vector3(),handPosition=new T.Vector3(),rootQuaternion=new T.Quaternion(),dragonWorldPosition=new T.Vector3();
   const deltaQuaternion=new T.Quaternion(),worldQuaternion=new T.Quaternion(),parentQuaternion=new T.Quaternion();
@@ -164,7 +164,7 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
       const gest=name=>!dragonSpeaker&&gesture.name===name?g:0;
       const receiving=Number(sceneAction.mealReceive)||0;const transferring=['meal-handoff','meal-reclaim'].includes(carry.phase),handoff=carry.phase==='meal-handoff',reachDown=(transferring&&!handoff?T.MathUtils.smootherstep(carry.age,.1,.85)*(1-T.MathUtils.smootherstep(carry.age,1.55,2.5)):0);
       const sleeve=dinner||sceneAction.photoLook?0:Math.max(idle.sleeve,gest('sleeve')),attention=Math.max(idle.dragon,gest('dragon')),goods=Math.max(idle.goods,gest('goods')),rain=Math.max(idle.rain,gest('rain'));
-      const phoneLook=sceneAction.handover?1:sceneAction.photoLook?0:Math.max(dinner?0:(idle.phone||0),gest('phone')),hold=dinner&&(carry.owner==='hero'||transferring)?1:Math.max(gest('hold'),gest('receive'),gest('eat'));
+      const phoneLook=sceneAction.handover?1:sceneAction.photoLook?0:Math.max(dinner?0:(idle.phone||0),gest('phone')),hold=dinner&&carry.owner==='hero'&&!transferring?1:Math.max(gest('hold'),gest('receive'),gest('eat'));
       let gazeYaw=0;if(sceneAction.gazeTarget&&!castActive&&!phoneLook){gazePoint.fromArray(sceneAction.gazeTarget);root.updateMatrixWorld(true);poses.head.bone.getWorldPosition(handPosition);gazePoint.sub(handPosition);pivot.getWorldQuaternion(gazeQ).invert();gazePoint.applyQuaternion(gazeQ);gazeYaw=T.MathUtils.clamp(Math.atan2(gazePoint.x,gazePoint.z),-.6,.6);}
       const gazeDt=Math.min(.08,Math.max(0,delta));for(const [key,rate,scale]of [['eyes',12,1],['head',5,.65],['body',2,.18]])gaze[key]+=(gazeYaw*scale-gaze[key])*(1-Math.exp(-gazeDt*rate));gaze.lagTurn+=(motion.turn-gaze.lagTurn)*(1-Math.exp(-gazeDt*4));gaze.lagAccel+=(motion.acceleration-gaze.lagAccel)*(1-Math.exp(-gazeDt*3));
       const nod=Math.max(idle.nod,gest('nod')*Math.sin(elapsed*5)),shake=gest('shake')*Math.sin(elapsed*6.3),point=gest('point'),wave=gest('wave'),player=gest('player'),exhale=Math.max(idle.exhale,gest('exhale'));
@@ -279,20 +279,49 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
       if(rescueCaptured&&carry.rescueAge!=null){
         trayRescueFrame(carry.rescueAge,rescueDonor,undefined,rescueFrame);
         if(carry.owner==='helper'||saving&&rescueCaptured){trayWorld.fromArray(rescueFrame.tray);trayQ.setFromAxisAngle(worldUp,rescueHeading);if(rescueFrame.tilt)trayQ.multiply(supportQ.setFromAxisAngle(supportPoint.set(0,0,1),rescueFrame.tilt));}
-        if(carry.phase==='meal-reclaim'){const yaw=rescueHeading*(1-T.MathUtils.smootherstep(carry.age,0,1.25));trayQ.setFromAxisAngle(worldUp,yaw);const lift=T.MathUtils.smootherstep(carry.age,0,.8)*.22;rescueFrame.tray[1]+=lift;rescueFrame.height+=lift;if(carry.owner==='helper')trayWorld.fromArray(rescueFrame.tray);}
+        if(carry.phase==='meal-reclaim'){const yaw=rescueHeading*(1-T.MathUtils.smootherstep(carry.age,0,.65));trayQ.setFromAxisAngle(worldUp,yaw);const lift=T.MathUtils.smootherstep(carry.age,0,.8)*.22;rescueFrame.tray[1]+=lift;rescueFrame.height+=lift;if(carry.owner==='helper')trayWorld.fromArray(rescueFrame.tray);}
       }
       if(carry.owner==='helper'&&!rescueCaptured){trayWorld.set(-1.25,.88,3.90);trayQ.identity();}
       // Aim both palms at the tray, instead of placing a tray behind a posed wrist.
       // Thumbs are not driven by pose(); restore their rest rotation every frame so the wrap never accumulates or outlives the hold.
       for(const hand of handSupports)hand.thumb.forEach((b,i)=>b&&b.quaternion.copy(hand.thumbRest[i]));
       if(dinner&&(carry.owner==='hero'||transferring)&&!castActive){
-        status.handSupportErrors??=[0,0];for(const hand of handSupports){if((sceneAction.handover||phoneLook>.1)&&hand.side==='R')continue;const single=Boolean(sceneAction.handover||phoneLook>.1);supportQ.copy(trayQ).multiply(gripTilts[hand.side]).multiply(hand.calibration);gripPoint(dinner,hand.side,single,supportPoint).applyQuaternion(trayQ).add(trayWorld);supportWrist.copy(hand.offset).applyQuaternion(supportQ);supportWrist.subVectors(supportPoint,supportWrist);const weight=transferring?(handoff?1-T.MathUtils.smootherstep(carry.age,.70,1.2):T.MathUtils.smootherstep(carry.age,0,.8)):1;for(const b of hand.blend)b.q.copy(b.bone.quaternion);armSupport.reach(hand.side,supportWrist,supportQ,hand.pole);for(const b of hand.blend)b.solved.copy(b.bone.quaternion);for(const b of hand.blend)b.bone.quaternion.slerpQuaternions(b.q,b.solved,weight);root.updateMatrixWorld(true);if(!single)wrapThumb(hand,weight);poses['wrist'+hand.side].bone.getWorldQuaternion(mealQ);fingerWorld.copy(hand.offset).applyQuaternion(mealQ);poses['wrist'+hand.side].bone.getWorldPosition(handPosition);fingerWorld.add(handPosition);status.handSupportErrors[hand.side==='L'?0:1]=fingerWorld.distanceTo(supportPoint);}
+        status.handSupportErrors??=[0,0];
+        for(const hand of handSupports){
+          if((sceneAction.handover||phoneLook>.1)&&hand.side==='R')continue;
+          const single=Boolean(sceneAction.handover||phoneLook>.1);
+          supportQ.copy(trayQ).multiply(gripTilts[hand.side]).multiply(hand.calibration);
+          gripPoint(dinner,hand.side,single,supportPoint).applyQuaternion(trayQ).add(trayWorld);
+          poses['wrist'+hand.side].bone.getWorldPosition(handPosition);
+          poses['wrist'+hand.side].bone.getWorldQuaternion(mealQ);
+          const weight=transferring?(handoff?1-T.MathUtils.smootherstep(carry.age,.70,1.2):T.MathUtils.smootherstep(carry.age,1.05,1.3)):1;
+          // Move the wrist outside/below the slab before withdrawing; blending joint rotations
+          // directly makes the palm describe an arc through the tray during reach and release.
+          if(transferring){
+            const travel=handoff?T.MathUtils.smootherstep(carry.age,.72,1.2):1-T.MathUtils.smoothstep(carry.age,.35,1.05);
+            const clearance=handoff?T.MathUtils.smootherstep(carry.age,.70,.84):1-T.MathUtils.smootherstep(carry.age,1.0,1.3);
+            fingerWorld.copy(hand.offset).applyQuaternion(mealQ).add(handPosition);
+            supportPoint.y-=.085*clearance;
+            supportPoint.lerp(fingerWorld,travel);
+            const orientationTravel=handoff?travel:1-T.MathUtils.smootherstep(carry.age,1.05,1.3);
+            supportQ.slerp(mealQ,orientationTravel);
+          }
+          // Recompute the wrist offset AFTER orientation blends: otherwise the palm is
+          // displaced from the requested path as the wrist turns (up to a whole hand-width).
+          supportWrist.copy(hand.offset).applyQuaternion(supportQ);supportWrist.subVectors(supportPoint,supportWrist);
+          armSupport.reach(hand.side,supportWrist,supportQ,hand.pole);
+          root.updateMatrixWorld(true);wrapThumb(hand,weight,single);
+          poses['wrist'+hand.side].bone.getWorldQuaternion(mealQ);
+          fingerWorld.copy(hand.offset).applyQuaternion(mealQ);
+          poses['wrist'+hand.side].bone.getWorldPosition(handPosition);fingerWorld.add(handPosition);
+          status.handSupportErrors[hand.side==='L'?0:1]=fingerWorld.distanceTo(supportPoint);
+        }
       }
       fingerWorld.copy(trayWorld);root.worldToLocal(fingerWorld);meal.mount.position.copy(fingerWorld);root.getWorldQuaternion(mealRootQ).invert();meal.mount.quaternion.copy(mealRootQ).multiply(trayQ);
       // Branch trays have different authored base heights; align their undersides.
       meal.mount.position.y+=dinner==='A'?.024:dinner==='B'?.068:.065;
       if(saving&&dragon.grabHandle){dragon.grabHandle.getWorldPosition(handPosition);status.catchGripError=handPosition.distanceTo(poses.wristL.bone.getWorldPosition(supportWrist));}
-      status.trayYaw=carry.phase==='meal-reclaim'?rescueHeading*(1-T.MathUtils.smootherstep(carry.age,0,1.25)):carry.owner==='hero'?pivot.rotation.y:rescueCaptured?rescueHeading:carryYaw;status.mealOwner=carry.owner;status.mealSupport=trayWorld.toArray(status.mealSupport||[0,0,0]);palmWorld.copy(trayWorld);
+      status.trayYaw=carry.phase==='meal-reclaim'?rescueHeading*(1-T.MathUtils.smootherstep(carry.age,0,.65)):carry.owner==='hero'?pivot.rotation.y:rescueCaptured?rescueHeading:carryYaw;status.mealOwner=carry.owner;status.mealSupport=trayWorld.toArray(status.mealSupport||[0,0,0]);palmWorld.copy(trayWorld);
       phone.visible=phoneLook>.06&&!castActive&&!sceneAction.externalDevice;
       if(phone.visible&&poses.wristR){poses.wristR.bone.getWorldPosition(handPosition);root.worldToLocal(handPosition);phone.position.copy(handPosition);phone.position.y+=.055;phone.position.z+=.025;phone.rotation.set(-.23,motion.heading+.1,-.08);screen.material.emissiveIntensity=.35+phoneLook*.7;}
     },

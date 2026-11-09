@@ -134,7 +134,7 @@ export function buildDragon(r) {
       body.rotation.set(index===1?v[1]*.5:0,0,v[2]);body.scale.set(1,1,1);body.position.x=trapped?0:v[0];body.position.y=trapped?0:v[1];
       if(!trapped)for(let i=0;i<feet.length;i++){feet[i].position.y=.14+Math.max(0,Math.sin(t*tempo*Math.PI+i*Math.PI))*.035;feet[i].rotation.x=Math.sin(t*tempo*Math.PI+i*Math.PI)*.12;}
       microphone.position.set(.18,.46+v[2]*.08,.79);state.songClip=index;state.songTrapped=trapped;
-      material.map=maps[Math.sin(t*5)>0?3:0];state.mood='singing';
+      const songFace=index%3===0?2:index%3===1?4:0;material.map=maps[songFace];state.songFace=songFace;state.mood='singing';
     }
     for(const arm of arms)arm.visible=!s.quietSong;
     if(s.quietSong){microphone.visible=false;thumb.visible=false;body.rotation.set(0,0,reduced?0:Math.sin(t*1.8)*.018);body.position.set(0,0,0);}

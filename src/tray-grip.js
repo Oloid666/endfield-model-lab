@@ -29,8 +29,14 @@ export function gripPoint(dinner,side,single,out=new T.Vector3()){
 // from under the tray. It braces the short end instead (a pinch grip on the end face), which
 // stays visible from the player camera. Tray-frame points: first joint low on the end face,
 // second joint near the rim, and where the pad points (up the face, slightly inward).
-export function thumbPoints(dinner,side,out=[new T.Vector3(),new T.Vector3(),new T.Vector3()]){
+export function thumbPoints(dinner,side,out=[new T.Vector3(),new T.Vector3(),new T.Vector3()],single=false){
  const g=TRAY_GEOMETRY[dinner]||TRAY_GEOMETRY.A,s=side==='L'?1:-1,end=g.center+s*g.half;
+ if(single){
+  out[0].set(g.center+s*.065,g.bottom-.025,-.015);
+  out[1].set(g.center+s*.085,g.bottom-.025,.020);
+  out[2].set(g.center+s*.085,g.bottom-.025,.055);
+  return out;
+ }
  out[0].set(end+s*.016,g.bottom+.002,GRIP.forward-.040);
  out[1].set(end+s*.012,g.top-.006,GRIP.forward-.030);
  out[2].set(end+s*.010,g.top+.016,GRIP.forward-.016);

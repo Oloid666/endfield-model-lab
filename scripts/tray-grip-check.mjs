@@ -108,6 +108,9 @@ a.teleport(-1.25,2.48);a.setDinner('A');a.setSceneAction({handover:true});a.upda
 {const r=measure();report.oneHand=r;const pen=Math.max(...['palm',...fingers].map(k=>r['L:'+k]?.maxPenMm||0));
  check('One-hand carry: left palm and four fingers under the tray without sinking (<=4 mm; excludes thumb)',pen<=4,{maxPenetrationMm:pen});
  check('One-hand carry: left finger pads touch the underside',sum(r,'L',fingers,'touch')>=40,{touching:sum(r,'L',fingers,'touch')});}
+check('One-hand carry: thumb stays outside the slab (<=4 mm penetration)',report.oneHand['L:thumb'].maxPenMm<=4,report.oneHand['L:thumb']);
+for(const variant of ['B','C']){a.setDinner(variant);a.update(101,0);a.update(101.05,.05);const r=measure();report['oneHand-'+variant]=r;check(`One-hand ${variant}: all hand regions, including thumb, stay within 4 mm penetration`,Math.max(...['palm','thumb',...fingers].map(k=>r['L:'+k].maxPenMm))<=4,r['L:thumb']);}
+a.setSceneAction({photoLook:true});a.setDinner('A');a.update(102,.05);twoHandHold(measure(),'Photo review both hands');
 a.setSceneAction({handover:false});
 
 // Handoff to the dragon: no single-frame jump of the hand or the tray while the IK weight blends out.
