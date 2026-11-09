@@ -8,6 +8,8 @@
 
 本輪：[DS／Claude意見整合與首批修正](docs/REVIEW-SYNTHESIS.md)。先修還盤狀態、105°C閱讀及表演、手辦與讚氣泡遮擋，保留原本故事和遊戲機制；其餘建議按證據與成本排入待改。
 
+外部唯讀評審：[每輪Git證據交付與範本](docs/review/README.md)。[2f5c6fd本輪README與編號截圖](docs/review/2f5c6fd/README.md)可直接由公開repo取得，不需連pages.dev或下載對話附件。
+
 最新：[高空拋餐、集氣抖動與二樓美術更新](docs/RAIN-AIR-UPSTAIRS.md)。
 
 前輪晚餐修改：[雙主菜晚餐、105°C與紫色保管員](docs/RAIN-DINNER-NEXT.md)；[二樓原始美術提案](docs/UPSTAIRS-ART-PROPOSAL.md)。

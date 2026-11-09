@@ -1,0 +1,3804 @@
+{
+  "schema_version": 1,
+  "target_commit": "2f5c6fd25fb8d97476933fc372f705f5aedc7882",
+  "baseline_commit": "c88911624c23d19e3195868095791484e62aa8ee",
+  "runtime_sha256": "f2bf235fcd61dbd0cdcfa044d6e07cedddfe902abd270c9904c520a166d10cf3",
+  "capture_git_head_note": "Most after images were captured before committing game changes; capture HEAD c889116 plus runtime SHA identifies that working tree. Its runtime SHA matches target 2f5c6fd. Classroom after was captured directly at 2f5c6fd. Before capture had uncommitted review tooling/package script changes, not changes to src/public/index.html.",
+  "scope": "Selected evidence from prior capture plus one new classroom capture; not a fresh full-game or all-branches review.",
+  "iphone_tested": false,
+  "real_device_videos": [],
+  "files": [
+    {
+      "file": "01-fridge-success-before.png",
+      "issues": [
+        "F01"
+      ],
+      "side": "before",
+      "original_id": "01",
+      "source_commit": "c88911624c23d19e3195868095791484e62aa8ee",
+      "capture_git_head": "c88911624c23d19e3195868095791484e62aa8ee",
+      "runtime_sha256": "d379739c91fb94b0a2407111b54cd3a51acf454ea73c150c8c5f8128c3558622",
+      "size_px": [
+        585,
+        1266
+      ],
+      "viewport_css_px": [
+        390,
+        844
+      ],
+      "device_scale_factor": 1.5,
+      "browser": "Chromium SwiftShader",
+      "quality": "balanced",
+      "png_sha256": "e32ecf6b014f043bff168009c1079a362ed98eee87000bbb1c2ca159363eb891",
+      "decoded_rgb_sha256": "dea6f228b5986aa95bfd379a683a30e70b62184f630d608a6c1d295b3eb2b6f2",
+      "original_file_sha256": "6b8b31b401de55fd49b6404d9f7ef2a91ffbd9f991ef890c5b21f60b344d9b90",
+      "format_note": "JPEG decoded to lossless PNG; identical decoded RGB, no crop, resize or enhancement",
+      "state": {
+        "stage": "success",
+        "stage_age": 1.0000000000000284,
+        "dialogue": {
+          "speaker": "xaihi",
+          "text": "嗯，有降。",
+          "cue": "satisfied"
+        },
+        "dialogue_age": 1.0000000000000284,
+        "temperature": -8,
+        "dragon_expression": "happy",
+        "xaihi": {
+          "loaded": true,
+          "phase": "hack",
+          "action": "terminal",
+          "visible": true,
+          "bones": 960,
+          "scale": 1.00924974058618,
+          "headYaw": -0.44,
+          "phoneVisible": true,
+          "mealVisible": false,
+          "refuseAmount": 0,
+          "headPosition": [
+            1.3662466113517555,
+            1.7972272896343229,
+            -1.5525951373934386
+          ],
+          "screenButtons": [],
+          "handPositions": [
+            [
+              1.4237651738975863,
+              1.2900000657277393,
+              -1.6839598898122505
+            ],
+            [
+              1.7394315416718034,
+              1.3176574543314201,
+              -1.409377023612671
+            ]
+          ],
+          "position": [
+            1.2,
+            0.31,
+            -1.35
+          ],
+          "pose": {
+            "head": [
+              -0.04180351617037941,
+              -0.21794736703555032,
+              0.011269757205813781,
+              0.9749996914042974
+            ],
+            "wrist": [
+              -0.1650565998491321,
+              0.968473689210853,
+              -0.018657478586764982,
+              -0.18565279937743956
+            ],
+            "arm": [
+              0.6515579205249177,
+              0.329991720274712,
+              0.681005838323344,
+              0.05299808454911581
+            ]
+          }
+        }
+      }
+    },
+    {
+      "file": "01-fridge-success-after.png",
+      "issues": [
+        "F01"
+      ],
+      "side": "after",
+      "original_id": "01-390x844",
+      "source_commit": "2f5c6fd25fb8d97476933fc372f705f5aedc7882",
+      "capture_git_head": "c88911624c23d19e3195868095791484e62aa8ee",
+      "runtime_sha256": "f2bf235fcd61dbd0cdcfa044d6e07cedddfe902abd270c9904c520a166d10cf3",
+      "size_px": [
+        585,
+        1266
+      ],
+      "viewport_css_px": [
+        390,
+        844
+      ],
+      "device_scale_factor": 1.5,
+      "browser": "Chromium SwiftShader",
+      "quality": "balanced",
+      "png_sha256": "dd1edabf7a1498a788b43b118d78120347d6cd2dc6cb7bf9e74b39b6119e370e",
+      "decoded_rgb_sha256": "b98341e87a919e98a45ba6abcca0e7d123c4c67fbc3630b78ca657f2d0fcaef2",
+      "original_file_sha256": "7eb57d4042eea6eb3b13c8af42f98b897c009afcd8ed38fba3247a80494d0637",
+      "format_note": "JPEG decoded to lossless PNG; identical decoded RGB, no crop, resize or enhancement",
+      "state": {
+        "phase": "hack",
+        "age": 21.650000000000187,
+        "tablet": {
+          "stage": "success",
+          "title": "溫度下降中",
+          "lines": [
+            "實際溫度：−8°C"
+          ],
+          "buttons": [],
+          "dialogue": {
+            "speaker": "xaihi",
+            "text": "嗯，有降。",
+            "cue": "satisfied"
+          },
+          "dialogueAge": 1.0000000000000142,
+          "hot": false,
+          "powered": false,
+          "censored": false,
+          "censorAt": null,
+          "temperature": -8,
+          "notification": null,
+          "note": "",
+          "age": 1.0000000000000142,
+          "busy": false,
+          "revision": 17,
+          "wireBeat": null
+        },
+        "expression": "normal",
+        "xaihi": {
+          "loaded": true,
+          "phase": "hack",
+          "action": "terminal",
+          "visible": true,
+          "bones": 960,
+          "scale": 1.00924974058618,
+          "headYaw": -0.44,
+          "phoneVisible": true,
+          "mealVisible": false,
+          "eyeYaw": -0.09,
+          "eyePitch": 0,
+          "tabletLift": 0.035,
+          "performanceCue": "satisfied",
+          "refuseAmount": 0,
+          "headPosition": [
+            1.423127790143577,
+            1.7972282346802635,
+            -1.487469322171627
+          ],
+          "screenButtons": [],
+          "handPositions": [
+            [
+              1.519908662810573,
+              1.3250000485237157,
+              -1.5934306113400816
+            ],
+            [
+              1.7435073497121178,
+              1.3331153279976533,
+              -1.222667454562286
+            ]
+          ],
+          "position": [
+            1.2,
+            0.31,
+            -1.35
+          ],
+          "pose": {
+            "head": [
+              -0.0642603691620586,
+              -0.21782165349108884,
+              0.01337677668323508,
+              0.9737789217779464
+            ],
+            "wrist": [
+              -0.1650565998491321,
+              0.968473689210853,
+              -0.018657478586764982,
+              -0.18565279937743956
+            ],
+            "arm": [
+              0.6320523708173026,
+              0.39332315595050205,
+              0.6673817596592356,
+              0.020206086799684636
+            ]
+          }
+        },
+        "staging": {
+          "damage": {
+            "state": "clean",
+            "progress": 1,
+            "visible": false,
+            "bandagesVisible": false
+          },
+          "catchGrip": [
+            -1.0739694628368888,
+            1.2970250677208661,
+            3.530349471474538
+          ],
+          "rescue": null,
+          "concert": {
+            "visible": false,
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "hands": [
+              [
+                -1.505,
+                0.95,
+                0
+              ],
+              [
+                -1.075,
+                0.95,
+                0.2
+              ],
+              [
+                -0.645,
+                0.8,
+                0
+              ],
+              [
+                -0.215,
+                0.8,
+                0.2
+              ],
+              [
+                0.215,
+                0.8,
+                0
+              ],
+              [
+                0.645,
+                0.8,
+                0.2
+              ],
+              [
+                1.075,
+                0.8,
+                0
+              ],
+              [
+                1.505,
+                0.8,
+                0.2
+              ]
+            ]
+          },
+          "show": {
+            "active": false,
+            "age": 0,
+            "first": false,
+            "kind": "restore",
+            "mode": "intact",
+            "line": "",
+            "indices": {
+              "collapse": 0,
+              "restore": 0
+            },
+            "snapshotReady": false,
+            "wideIndex": 0,
+            "phase": "closeup",
+            "buildingProgress": 0
+          },
+          "shopping": null,
+          "remnant": {
+            "born": false,
+            "visible": false,
+            "mode": "unborn",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "shape": "soft-lobed-creature",
+            "supportHeight": 0,
+            "bodyHeight": 0.28,
+            "emoji": "",
+            "thumbVisible": false
+          },
+          "tractor": false,
+          "microphone": false,
+          "phone": null
+        },
+        "last_line_characters": 5
+      }
+    },
+    {
+      "file": "02-fridge-reading-before.png",
+      "issues": [
+        "F03"
+      ],
+      "side": "before",
+      "original_id": "04a",
+      "source_commit": "c88911624c23d19e3195868095791484e62aa8ee",
+      "capture_git_head": "c88911624c23d19e3195868095791484e62aa8ee",
+      "runtime_sha256": "d379739c91fb94b0a2407111b54cd3a51acf454ea73c150c8c5f8128c3558622",
+      "size_px": [
+        586,
+        1266
+      ],
+      "viewport_css_px": [
+        390,
+        844
+      ],
+      "device_scale_factor": 1.5,
+      "browser": "Chromium SwiftShader",
+      "quality": "balanced",
+      "png_sha256": "19cd7fc79fa2ce58f3dff0365672f834fc5104c7780cdacdf6044d8a85305328",
+      "decoded_rgb_sha256": "b521fc8786d577030a2657a202136447af7310bbd5877212eb25bd4581884fcc",
+      "original_file_sha256": "5c69459b955292585e9ba7c25a7a764248a8d25b3c37ae774e182faba7a7c6eb",
+      "format_note": "JPEG decoded to lossless PNG; identical decoded RGB, no crop, resize or enhancement",
+      "state": {
+        "title": "升溫特寫切鏡前相鄰影格",
+        "frame_index": 132,
+        "video_seconds": 11.0
+      }
+    },
+    {
+      "file": "02-fridge-reading-after.png",
+      "issues": [
+        "F03"
+      ],
+      "side": "after",
+      "original_id": "04a",
+      "source_commit": "2f5c6fd25fb8d97476933fc372f705f5aedc7882",
+      "capture_git_head": "c88911624c23d19e3195868095791484e62aa8ee",
+      "runtime_sha256": "f2bf235fcd61dbd0cdcfa044d6e07cedddfe902abd270c9904c520a166d10cf3",
+      "size_px": [
+        585,
+        1266
+      ],
+      "viewport_css_px": [
+        390,
+        844
+      ],
+      "device_scale_factor": 1.5,
+      "browser": "Chromium SwiftShader",
+      "quality": "balanced",
+      "png_sha256": "d4c3e372315ebf0014ecab73a4c024d1ab5387f5a1d11d4202674a9b878f1e56",
+      "decoded_rgb_sha256": "99f08c84574cd14e9cef2c41b227a41bbb69c075d9f7ff7152523c419cf7c527",
+      "original_file_sha256": "7a70e9ac8705ba48d36e4868ab51fd2812e2add76bea30eba5098ce40a82d65c",
+      "format_note": "JPEG decoded to lossless PNG; identical decoded RGB, no crop, resize or enhancement",
+      "state": {
+        "phase": "hack",
+        "age": 27.650000000000272,
+        "tablet": {
+          "stage": "defrost",
+          "title": "控制器回應異常",
+          "lines": [
+            "實際溫度正在回升",
+            "模式：強制除霜"
+          ],
+          "buttons": [],
+          "dialogue": null,
+          "dialogueAge": 4.0500000000000576,
+          "hot": true,
+          "powered": false,
+          "censored": false,
+          "censorAt": null,
+          "temperature": 105,
+          "notification": null,
+          "note": "",
+          "age": 4.0500000000000576,
+          "busy": false,
+          "revision": 20,
+          "wireBeat": null
+        },
+        "expression": "normal",
+        "xaihi": {
+          "loaded": true,
+          "phase": "hack",
+          "action": "terminal",
+          "visible": true,
+          "bones": 960,
+          "scale": 1.00924974058618,
+          "headYaw": -0.22,
+          "phoneVisible": true,
+          "mealVisible": false,
+          "eyeYaw": -0.035,
+          "eyePitch": 0,
+          "tabletLift": 0,
+          "performanceCue": "",
+          "refuseAmount": 0,
+          "headPosition": [
+            1.1999869477884098,
+            1.7972254301344581,
+            -1.6120310629967292
+          ],
+          "screenButtons": [],
+          "handPositions": [
+            [
+              1.1600001317255235,
+              1.2899999847082846,
+              -1.7499999162280593
+            ],
+            [
+              1.578488324559477,
+              1.3173531600814825,
+              -1.7392715126430374
+            ]
+          ],
+          "position": [
+            1.2,
+            0.31,
+            -1.35
+          ],
+          "pose": {
+            "head": [
+              0.027569811378081573,
+              -0.10970499749002438,
+              -0.004167067460431371,
+              0.9935730214749997
+            ],
+            "wrist": [
+              -0.1650565998491321,
+              0.968473689210853,
+              -0.018657478586764982,
+              -0.18565279937743956
+            ],
+            "arm": [
+              -0.6518382079936625,
+              -0.3289405294704842,
+              -0.6812002442545173,
+              -0.05358475877243135
+            ]
+          }
+        },
+        "staging": {
+          "damage": {
+            "state": "clean",
+            "progress": 1,
+            "visible": false,
+            "bandagesVisible": false
+          },
+          "catchGrip": [
+            -1.0739729848727781,
+            1.2974163943604171,
+            3.529610385954244
+          ],
+          "rescue": null,
+          "concert": {
+            "visible": false,
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "hands": [
+              [
+                -1.505,
+                0.95,
+                0
+              ],
+              [
+                -1.075,
+                0.95,
+                0.2
+              ],
+              [
+                -0.645,
+                0.8,
+                0
+              ],
+              [
+                -0.215,
+                0.8,
+                0.2
+              ],
+              [
+                0.215,
+                0.8,
+                0
+              ],
+              [
+                0.645,
+                0.8,
+                0.2
+              ],
+              [
+                1.075,
+                0.8,
+                0
+              ],
+              [
+                1.505,
+                0.8,
+                0.2
+              ]
+            ]
+          },
+          "show": {
+            "active": false,
+            "age": 0,
+            "first": false,
+            "kind": "restore",
+            "mode": "intact",
+            "line": "",
+            "indices": {
+              "collapse": 0,
+              "restore": 0
+            },
+            "snapshotReady": false,
+            "wideIndex": 0,
+            "phase": "closeup",
+            "buildingProgress": 0
+          },
+          "shopping": null,
+          "remnant": {
+            "born": false,
+            "visible": false,
+            "mode": "unborn",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "shape": "soft-lobed-creature",
+            "supportHeight": 0,
+            "bodyHeight": 0.28,
+            "emoji": "",
+            "thumbVisible": false
+          },
+          "tractor": false,
+          "microphone": false,
+          "phone": null
+        },
+        "last_line_characters": null
+      }
+    },
+    {
+      "file": "03-fridge-shock-before.png",
+      "issues": [
+        "F02"
+      ],
+      "side": "before",
+      "original_id": "05a",
+      "source_commit": "c88911624c23d19e3195868095791484e62aa8ee",
+      "capture_git_head": "c88911624c23d19e3195868095791484e62aa8ee",
+      "runtime_sha256": "d379739c91fb94b0a2407111b54cd3a51acf454ea73c150c8c5f8128c3558622",
+      "size_px": [
+        586,
+        1266
+      ],
+      "viewport_css_px": [
+        390,
+        844
+      ],
+      "device_scale_factor": 1.5,
+      "browser": "Chromium SwiftShader",
+      "quality": "balanced",
+      "png_sha256": "eaae6a8cf32f86406c639119e2a9fca6741fb01ee7b91875f4736d82d664ff9f",
+      "decoded_rgb_sha256": "03756a74b8b60781a8da4d6f57e9590a08e868dacb475b9a1e12ac5552672707",
+      "original_file_sha256": "0bbcdaecf01d90fefd2a2d88fec50005bfaa4f022208a43e8e89d10779eade6b",
+      "format_note": "JPEG decoded to lossless PNG; identical decoded RGB, no crop, resize or enhancement",
+      "state": {
+        "title": "龍泡泡反應相鄰睜眼影格",
+        "frame_index": 144,
+        "video_seconds": 12.0
+      }
+    },
+    {
+      "file": "03-fridge-shock-after.png",
+      "issues": [
+        "F02"
+      ],
+      "side": "after",
+      "original_id": "05-390x844",
+      "source_commit": "2f5c6fd25fb8d97476933fc372f705f5aedc7882",
+      "capture_git_head": "c88911624c23d19e3195868095791484e62aa8ee",
+      "runtime_sha256": "f2bf235fcd61dbd0cdcfa044d6e07cedddfe902abd270c9904c520a166d10cf3",
+      "size_px": [
+        585,
+        1266
+      ],
+      "viewport_css_px": [
+        390,
+        844
+      ],
+      "device_scale_factor": 1.5,
+      "browser": "Chromium SwiftShader",
+      "quality": "balanced",
+      "png_sha256": "bf45f449a2989f7b3c68442384e2a24aaf2acbf080ab166496574d64a852373d",
+      "decoded_rgb_sha256": "d3e877c6b7ccc868776b39c6be46a186739e5c0ee4f0bc7a2c263d670b1e65ef",
+      "original_file_sha256": "5c5118924c19cf3d1d97e364583f752b4807eba85260e463f266ecb4ee273a75",
+      "format_note": "JPEG decoded to lossless PNG; identical decoded RGB, no crop, resize or enhancement",
+      "state": {
+        "phase": "hack",
+        "age": 29.25000000000018,
+        "tablet": {
+          "stage": "hot",
+          "title": "設備警示",
+          "lines": [
+            "實際溫度：+105°C",
+            "模式：強制除霜"
+          ],
+          "buttons": [],
+          "dialogue": {
+            "speaker": "dragon",
+            "text": "正一百零五？！這台不是冰箱嗎？！",
+            "cue": "shock"
+          },
+          "dialogueAge": 1.3999999999999204,
+          "hot": true,
+          "powered": false,
+          "censored": false,
+          "censorAt": null,
+          "temperature": 105,
+          "notification": null,
+          "note": "",
+          "age": 1.3999999999999204,
+          "busy": false,
+          "revision": 21,
+          "wireBeat": null
+        },
+        "expression": "shock",
+        "xaihi": {
+          "loaded": true,
+          "phase": "hack",
+          "action": "terminal",
+          "visible": true,
+          "bones": 960,
+          "scale": 1.00924974058618,
+          "headYaw": -0.44,
+          "phoneVisible": true,
+          "mealVisible": false,
+          "eyeYaw": -0.035,
+          "eyePitch": 0,
+          "tabletLift": 0,
+          "performanceCue": "shock",
+          "refuseAmount": 0,
+          "headPosition": [
+            1.4237147009680164,
+            1.7972120172304928,
+            -1.486113757391502
+          ],
+          "screenButtons": [],
+          "handPositions": [
+            [
+              1.5199086889966458,
+              1.290000062106799,
+              -1.5934306239010325
+            ],
+            [
+              1.7301241049333664,
+              1.316892246376439,
+              -1.2309816368313546
+            ]
+          ],
+          "position": [
+            1.2,
+            0.31,
+            -1.35
+          ],
+          "pose": {
+            "head": [
+              -0.056309183495626886,
+              -0.21778333558922675,
+              0.014027213315693041,
+              0.9742704585012171
+            ],
+            "wrist": [
+              -0.1650565998491321,
+              0.968473689210853,
+              -0.018657478586764982,
+              -0.18565279937743956
+            ],
+            "arm": [
+              0.6523071601317275,
+              0.3272335971210894,
+              0.6815063087781573,
+              0.05443065664466225
+            ]
+          }
+        },
+        "staging": {
+          "damage": {
+            "state": "clean",
+            "progress": 1,
+            "visible": false,
+            "bandagesVisible": false
+          },
+          "catchGrip": [
+            -1.0739579643781847,
+            1.2957474960761062,
+            3.5328021084498404
+          ],
+          "rescue": null,
+          "concert": {
+            "visible": false,
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "hands": [
+              [
+                -1.505,
+                0.95,
+                0
+              ],
+              [
+                -1.075,
+                0.95,
+                0.2
+              ],
+              [
+                -0.645,
+                0.8,
+                0
+              ],
+              [
+                -0.215,
+                0.8,
+                0.2
+              ],
+              [
+                0.215,
+                0.8,
+                0
+              ],
+              [
+                0.645,
+                0.8,
+                0.2
+              ],
+              [
+                1.075,
+                0.8,
+                0
+              ],
+              [
+                1.505,
+                0.8,
+                0.2
+              ]
+            ]
+          },
+          "show": {
+            "active": false,
+            "age": 0,
+            "first": false,
+            "kind": "restore",
+            "mode": "intact",
+            "line": "",
+            "indices": {
+              "collapse": 0,
+              "restore": 0
+            },
+            "snapshotReady": false,
+            "wideIndex": 0,
+            "phase": "closeup",
+            "buildingProgress": 0
+          },
+          "shopping": null,
+          "remnant": {
+            "born": false,
+            "visible": false,
+            "mode": "unborn",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "shape": "soft-lobed-creature",
+            "supportHeight": 0,
+            "bodyHeight": 0.28,
+            "emoji": "",
+            "thumbVisible": false
+          },
+          "tractor": false,
+          "microphone": false,
+          "phone": null
+        },
+        "last_line_characters": 16
+      }
+    },
+    {
+      "file": "04-fridge-avert-before.png",
+      "issues": [
+        "F01",
+        "F05",
+        "F06",
+        "F07"
+      ],
+      "side": "before",
+      "original_id": "06",
+      "source_commit": "c88911624c23d19e3195868095791484e62aa8ee",
+      "capture_git_head": "c88911624c23d19e3195868095791484e62aa8ee",
+      "runtime_sha256": "d379739c91fb94b0a2407111b54cd3a51acf454ea73c150c8c5f8128c3558622",
+      "size_px": [
+        585,
+        1266
+      ],
+      "viewport_css_px": [
+        390,
+        844
+      ],
+      "device_scale_factor": 1.5,
+      "browser": "Chromium SwiftShader",
+      "quality": "balanced",
+      "png_sha256": "77a23e15304284d45a72902646db73de30d7a60271093af59664a4780de55410",
+      "decoded_rgb_sha256": "7fb11c4a6aeb97c618db8732040bad78530c081e6facdf3d7abd40ce17a1d768",
+      "original_file_sha256": "66b7d1ae5666408a11558361f27e37bf41b6158183eb0dea8cc714d6977e9381",
+      "format_note": "JPEG decoded to lossless PNG; identical decoded RGB, no crop, resize or enhancement",
+      "state": {
+        "stage": "hot",
+        "stage_age": 3.791666666666625,
+        "dialogue": {
+          "speaker": "xaihi",
+          "text": "……借了法國駭客的工具，忘了改預設模式。",
+          "cue": "avert"
+        },
+        "dialogue_age": 1.0000000000000284,
+        "temperature": 105,
+        "dragon_expression": "normal",
+        "xaihi": {
+          "loaded": true,
+          "phase": "hack",
+          "action": "terminal",
+          "visible": true,
+          "bones": 960,
+          "scale": 1.00924974058618,
+          "headYaw": 0.38,
+          "phoneVisible": true,
+          "mealVisible": false,
+          "refuseAmount": 0,
+          "headPosition": [
+            1.3675620115546827,
+            1.7973560626021852,
+            -1.5541035794082108
+          ],
+          "screenButtons": [],
+          "handPositions": [
+            [
+              1.423765174217294,
+              1.290000065258926,
+              -1.6839598900199133
+            ],
+            [
+              1.7395862762062646,
+              1.317545209167306,
+              -1.409407538087014
+            ]
+          ],
+          "position": [
+            1.2,
+            0.31,
+            -1.35
+          ],
+          "pose": {
+            "head": [
+              -0.05561808537885218,
+              0.18875674546179244,
+              -0.0071755576187081185,
+              0.9804213509620302
+            ],
+            "wrist": [
+              -0.1650565998491321,
+              0.968473689210853,
+              -0.018657478586764982,
+              -0.18565279937743956
+            ],
+            "arm": [
+              0.6507038636858933,
+              0.3319459584441884,
+              0.6807882843087631,
+              0.05407108879524175
+            ]
+          }
+        }
+      }
+    },
+    {
+      "file": "04-fridge-avert-after.png",
+      "issues": [
+        "F01",
+        "F05",
+        "F06",
+        "F07"
+      ],
+      "side": "after",
+      "original_id": "06-390x844",
+      "source_commit": "2f5c6fd25fb8d97476933fc372f705f5aedc7882",
+      "capture_git_head": "c88911624c23d19e3195868095791484e62aa8ee",
+      "runtime_sha256": "f2bf235fcd61dbd0cdcfa044d6e07cedddfe902abd270c9904c520a166d10cf3",
+      "size_px": [
+        585,
+        1266
+      ],
+      "viewport_css_px": [
+        390,
+        844
+      ],
+      "device_scale_factor": 1.5,
+      "browser": "Chromium SwiftShader",
+      "quality": "balanced",
+      "png_sha256": "8b3795c022abefeaf3d15c82a7bb8c49d13e445c447318b422926f6f79942cbb",
+      "decoded_rgb_sha256": "50e3483d3ccf8ed643cee9f561e6c6541aac9544eb55a0fdf782ea95e515a3bc",
+      "original_file_sha256": "1fe0ebc851fe49362128d2850b5529626849d5903037a5ef24e3ee1f03cef062",
+      "format_note": "JPEG decoded to lossless PNG; identical decoded RGB, no crop, resize or enhancement",
+      "state": {
+        "phase": "hack",
+        "age": 30.600000000000104,
+        "tablet": {
+          "stage": "hot",
+          "title": "設備警示",
+          "lines": [
+            "實際溫度：+105°C",
+            "模式：強制除霜"
+          ],
+          "buttons": [],
+          "dialogue": {
+            "speaker": "xaihi",
+            "text": "……借了法國駭客的工具，忘了改預設模式。",
+            "cue": "avert"
+          },
+          "dialogueAge": 0.9999999999999432,
+          "hot": true,
+          "powered": false,
+          "censored": false,
+          "censorAt": null,
+          "temperature": 105,
+          "notification": null,
+          "note": "",
+          "age": 2.7499999999998437,
+          "busy": false,
+          "revision": 22,
+          "wireBeat": null
+        },
+        "expression": "normal",
+        "xaihi": {
+          "loaded": true,
+          "phase": "hack",
+          "action": "terminal",
+          "visible": true,
+          "bones": 960,
+          "scale": 1.00924974058618,
+          "headYaw": -0.28,
+          "phoneVisible": true,
+          "mealVisible": false,
+          "eyeYaw": 0.08499999999999999,
+          "eyePitch": 0.035,
+          "tabletLift": -0.095,
+          "performanceCue": "avert",
+          "refuseAmount": 0,
+          "headPosition": [
+            1.434299349501645,
+            1.7975915652262242,
+            -1.4856727417748217
+          ],
+          "screenButtons": [],
+          "handPositions": [
+            [
+              1.5089261962376384,
+              1.227081282521951,
+              -1.5923726387864778
+            ],
+            [
+              1.7003104990272766,
+              1.2814537819904535,
+              -1.2507999895747481
+            ]
+          ],
+          "position": [
+            1.2,
+            0.31,
+            -1.35
+          ],
+          "pose": {
+            "head": [
+              -0.06462070359660341,
+              -0.13795631202218261,
+              0.02927157014200602,
+              0.9878944226227966
+            ],
+            "wrist": [
+              -0.1650565998491321,
+              0.968473689210853,
+              -0.018657478586764982,
+              -0.18565279937743956
+            ],
+            "arm": [
+              0.6894323222384938,
+              0.08046525257221301,
+              0.697409296145132,
+              0.1784059821698208
+            ]
+          }
+        },
+        "staging": {
+          "damage": {
+            "state": "clean",
+            "progress": 1,
+            "visible": false,
+            "bandagesVisible": false
+          },
+          "catchGrip": [
+            -1.0739554061100627,
+            1.295463251823734,
+            3.5333563170163536
+          ],
+          "rescue": null,
+          "concert": {
+            "visible": false,
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "hands": [
+              [
+                -1.505,
+                0.95,
+                0
+              ],
+              [
+                -1.075,
+                0.95,
+                0.2
+              ],
+              [
+                -0.645,
+                0.8,
+                0
+              ],
+              [
+                -0.215,
+                0.8,
+                0.2
+              ],
+              [
+                0.215,
+                0.8,
+                0
+              ],
+              [
+                0.645,
+                0.8,
+                0.2
+              ],
+              [
+                1.075,
+                0.8,
+                0
+              ],
+              [
+                1.505,
+                0.8,
+                0.2
+              ]
+            ]
+          },
+          "show": {
+            "active": false,
+            "age": 0,
+            "first": false,
+            "kind": "restore",
+            "mode": "intact",
+            "line": "",
+            "indices": {
+              "collapse": 0,
+              "restore": 0
+            },
+            "snapshotReady": false,
+            "wideIndex": 0,
+            "phase": "closeup",
+            "buildingProgress": 0
+          },
+          "shopping": null,
+          "remnant": {
+            "born": false,
+            "visible": false,
+            "mode": "unborn",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "shape": "soft-lobed-creature",
+            "supportHeight": 0,
+            "bodyHeight": 0.28,
+            "emoji": "",
+            "thumbVisible": false
+          },
+          "tractor": false,
+          "microphone": false,
+          "phone": null
+        },
+        "last_line_characters": 10
+      }
+    },
+    {
+      "file": "05-fridge-song-after.png",
+      "issues": [
+        "F02"
+      ],
+      "side": "after",
+      "original_id": "07",
+      "source_commit": "2f5c6fd25fb8d97476933fc372f705f5aedc7882",
+      "capture_git_head": "c88911624c23d19e3195868095791484e62aa8ee",
+      "runtime_sha256": "f2bf235fcd61dbd0cdcfa044d6e07cedddfe902abd270c9904c520a166d10cf3",
+      "size_px": [
+        585,
+        1266
+      ],
+      "viewport_css_px": [
+        390,
+        844
+      ],
+      "device_scale_factor": 1.5,
+      "browser": "Chromium SwiftShader",
+      "quality": "balanced",
+      "png_sha256": "14960cd715ff0a418767f40060524a71f17131509b43a9fe47de9b00ff229bee",
+      "decoded_rgb_sha256": "0aaac66d338a742683e8eef7cea1287a494e72a38ae10cc649092bd0ae63ddf8",
+      "original_file_sha256": "627f5cef54c3918cee767d81a9f99e78521f71449798f768aab32616d2f1681a",
+      "format_note": "JPEG decoded to lossless PNG; identical decoded RGB, no crop, resize or enhancement",
+      "state": {
+        "phase": "hack",
+        "age": 33.94999999999991,
+        "tablet": {
+          "stage": "hot",
+          "title": "設備警示",
+          "lines": [
+            "實際溫度：+105°C",
+            "模式：強制除霜"
+          ],
+          "buttons": [],
+          "dialogue": {
+            "speaker": "dragon",
+            "text": "熱愛105°C的你～🎶\n滴滴清純的蒸餾水～",
+            "cue": "song"
+          },
+          "dialogueAge": 2.999999999999826,
+          "hot": true,
+          "powered": false,
+          "censored": false,
+          "censorAt": null,
+          "temperature": 105,
+          "notification": null,
+          "note": "",
+          "age": 6.09999999999965,
+          "busy": false,
+          "revision": 23,
+          "wireBeat": null
+        },
+        "expression": "singing",
+        "xaihi": {
+          "loaded": true,
+          "phase": "hack",
+          "action": "terminal",
+          "visible": true,
+          "bones": 960,
+          "scale": 1.00924974058618,
+          "headYaw": -0.44,
+          "phoneVisible": true,
+          "mealVisible": false,
+          "eyeYaw": -0.035,
+          "eyePitch": 0,
+          "tabletLift": 0,
+          "performanceCue": "song",
+          "refuseAmount": 0,
+          "headPosition": [
+            1.4252546229977863,
+            1.797348096564196,
+            -1.4875723443321693
+          ],
+          "screenButtons": [],
+          "handPositions": [
+            [
+              1.519908689257533,
+              1.2900000617942375,
+              -1.593430623977092
+            ],
+            [
+              1.7301310840780426,
+              1.3169834468584853,
+              -1.2310641944190495
+            ]
+          ],
+          "position": [
+            1.2,
+            0.31,
+            -1.35
+          ],
+          "pose": {
+            "head": [
+              -0.05654743943349111,
+              -0.21772159386272893,
+              0.01509321190337158,
+              0.9742545273396054
+            ],
+            "wrist": [
+              -0.1650565998491321,
+              0.968473689210853,
+              -0.018657478586764982,
+              -0.18565279937743956
+            ],
+            "arm": [
+              0.6512480977861884,
+              0.3299462340803527,
+              0.6811553491680611,
+              0.05512523669717199
+            ]
+          }
+        },
+        "staging": {
+          "damage": {
+            "state": "clean",
+            "progress": 1,
+            "visible": false,
+            "bandagesVisible": false
+          },
+          "catchGrip": [
+            -1.0739632406713946,
+            1.2963337348716142,
+            3.531668989469165
+          ],
+          "rescue": null,
+          "concert": {
+            "visible": false,
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "hands": [
+              [
+                -1.505,
+                0.95,
+                0
+              ],
+              [
+                -1.075,
+                0.95,
+                0.2
+              ],
+              [
+                -0.645,
+                0.8,
+                0
+              ],
+              [
+                -0.215,
+                0.8,
+                0.2
+              ],
+              [
+                0.215,
+                0.8,
+                0
+              ],
+              [
+                0.645,
+                0.8,
+                0.2
+              ],
+              [
+                1.075,
+                0.8,
+                0
+              ],
+              [
+                1.505,
+                0.8,
+                0.2
+              ]
+            ]
+          },
+          "show": {
+            "active": false,
+            "age": 0,
+            "first": false,
+            "kind": "restore",
+            "mode": "intact",
+            "line": "",
+            "indices": {
+              "collapse": 0,
+              "restore": 0
+            },
+            "snapshotReady": false,
+            "wideIndex": 0,
+            "phase": "closeup",
+            "buildingProgress": 0
+          },
+          "shopping": null,
+          "remnant": {
+            "born": false,
+            "visible": false,
+            "mode": "unborn",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "shape": "soft-lobed-creature",
+            "supportHeight": 0,
+            "bodyHeight": 0.28,
+            "emoji": "",
+            "thumbVisible": false
+          },
+          "tractor": false,
+          "microphone": false,
+          "phone": null
+        },
+        "last_line_characters": 9
+      }
+    },
+    {
+      "file": "06-fridge-redirect-after.png",
+      "issues": [
+        "F01"
+      ],
+      "side": "after",
+      "original_id": "08-390x844",
+      "source_commit": "2f5c6fd25fb8d97476933fc372f705f5aedc7882",
+      "capture_git_head": "c88911624c23d19e3195868095791484e62aa8ee",
+      "runtime_sha256": "f2bf235fcd61dbd0cdcfa044d6e07cedddfe902abd270c9904c520a166d10cf3",
+      "size_px": [
+        585,
+        1266
+      ],
+      "viewport_css_px": [
+        390,
+        844
+      ],
+      "device_scale_factor": 1.5,
+      "browser": "Chromium SwiftShader",
+      "quality": "balanced",
+      "png_sha256": "7c2acc9ef2bab2578fa678e80cc29fc96c12dd7654c2e3f573b0b20aa27b4bfa",
+      "decoded_rgb_sha256": "d328afcd27a1ef7718ba464582c6f156f742f758883d59323a6a5ff23304d6e2",
+      "original_file_sha256": "931c449cc06a4bc03c3da95f459b921f565ec09b7e9025dbf3de399127119f65",
+      "format_note": "JPEG decoded to lossless PNG; identical decoded RGB, no crop, resize or enhancement",
+      "state": {
+        "phase": "hack",
+        "age": 35.299999999999834,
+        "tablet": {
+          "stage": "hot",
+          "title": "設備警示",
+          "lines": [
+            "實際溫度：+105°C",
+            "模式：強制除霜"
+          ],
+          "buttons": [],
+          "dialogue": {
+            "speaker": "xaihi",
+            "text": "……飲料晚點再說。先熱便當。",
+            "cue": "side-eye"
+          },
+          "dialogueAge": 0.9999999999999432,
+          "hot": true,
+          "powered": false,
+          "censored": false,
+          "censorAt": null,
+          "temperature": 105,
+          "notification": null,
+          "note": "",
+          "age": 7.449999999999573,
+          "busy": false,
+          "revision": 24,
+          "wireBeat": null
+        },
+        "expression": "normal",
+        "xaihi": {
+          "loaded": true,
+          "phase": "hack",
+          "action": "terminal",
+          "visible": true,
+          "bones": 960,
+          "scale": 1.00924974058618,
+          "headYaw": -0.6,
+          "phoneVisible": true,
+          "mealVisible": false,
+          "eyeYaw": -0.135,
+          "eyePitch": 0,
+          "tabletLift": 0.08,
+          "performanceCue": "side-eye",
+          "refuseAmount": 0,
+          "headPosition": [
+            1.4189512527199561,
+            1.7969215558914953,
+            -1.4866045023962644
+          ],
+          "screenButtons": [],
+          "handPositions": [
+            [
+              1.5199086040043583,
+              1.3700000136044288,
+              -1.5934306026067424
+            ],
+            [
+              1.7501895993909584,
+              1.369999989866504,
+              -1.2185031339266623
+            ]
+          ],
+          "position": [
+            1.2,
+            0.31,
+            -1.35
+          ],
+          "pose": {
+            "head": [
+              -0.07164052958469663,
+              -0.2946514830933611,
+              0.02264861853768725,
+              0.9526464047787775
+            ],
+            "wrist": [
+              -0.1650565998491321,
+              0.968473689210853,
+              -0.018657478586764982,
+              -0.18565279937743956
+            ],
+            "arm": [
+              0.6175276559261544,
+              0.44484120187943743,
+              0.6455619341876893,
+              -0.06344832600297648
+            ]
+          }
+        },
+        "staging": {
+          "damage": {
+            "state": "clean",
+            "progress": 1,
+            "visible": false,
+            "bandagesVisible": false
+          },
+          "catchGrip": [
+            -1.0739573159603426,
+            1.2956754516162814,
+            3.5329422780885467
+          ],
+          "rescue": null,
+          "concert": {
+            "visible": false,
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "hands": [
+              [
+                -1.505,
+                0.95,
+                0
+              ],
+              [
+                -1.075,
+                0.95,
+                0.2
+              ],
+              [
+                -0.645,
+                0.8,
+                0
+              ],
+              [
+                -0.215,
+                0.8,
+                0.2
+              ],
+              [
+                0.215,
+                0.8,
+                0
+              ],
+              [
+                0.645,
+                0.8,
+                0.2
+              ],
+              [
+                1.075,
+                0.8,
+                0
+              ],
+              [
+                1.505,
+                0.8,
+                0.2
+              ]
+            ]
+          },
+          "show": {
+            "active": false,
+            "age": 0,
+            "first": false,
+            "kind": "restore",
+            "mode": "intact",
+            "line": "",
+            "indices": {
+              "collapse": 0,
+              "restore": 0
+            },
+            "snapshotReady": false,
+            "wideIndex": 0,
+            "phase": "closeup",
+            "buildingProgress": 0
+          },
+          "shopping": null,
+          "remnant": {
+            "born": false,
+            "visible": false,
+            "mode": "unborn",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "shape": "soft-lobed-creature",
+            "supportHeight": 0,
+            "bodyHeight": 0.28,
+            "emoji": "",
+            "thumbVisible": false
+          },
+          "tractor": false,
+          "microphone": false,
+          "phone": null
+        },
+        "last_line_characters": 14
+      }
+    },
+    {
+      "file": "07-figurine-before.png",
+      "issues": [
+        "C-F01"
+      ],
+      "side": "before",
+      "original_id": "C02",
+      "source_commit": "c88911624c23d19e3195868095791484e62aa8ee",
+      "capture_git_head": "c88911624c23d19e3195868095791484e62aa8ee",
+      "runtime_sha256": "d379739c91fb94b0a2407111b54cd3a51acf454ea73c150c8c5f8128c3558622",
+      "size_px": [
+        585,
+        1266
+      ],
+      "viewport_css_px": [
+        390,
+        844
+      ],
+      "device_scale_factor": 1.5,
+      "browser": "Chromium SwiftShader",
+      "quality": "balanced",
+      "png_sha256": "c576e76aabc985bfb4494e32617ebb02fe9a0c181aa24526abbea36bc77c43ee",
+      "decoded_rgb_sha256": "f10dcb77d529093aa3bbf4e77919d471c65bf5b8ef5d9cdf14451b07d51cf0d2",
+      "original_file_sha256": "41031d095c10ff22eb326bacd4c090e7c132d04f4274ab449ec1b7ef91d737b6",
+      "format_note": "JPEG decoded to lossless PNG; identical decoded RGB, no crop, resize or enhancement",
+      "state": {
+        "phase": "briefing",
+        "scene_seconds": 5.60000000000008,
+        "tablet": null,
+        "xaihi": {
+          "loaded": false,
+          "loading": null,
+          "error": null
+        },
+        "staging": {
+          "damage": {
+            "state": "clean",
+            "progress": 1,
+            "visible": false,
+            "bandagesVisible": false
+          },
+          "catchGrip": [
+            -1.0229294853032085,
+            1.4200000313848766,
+            3.8299216557767726
+          ],
+          "rescue": null,
+          "concert": {
+            "visible": false,
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "hands": [
+              [
+                -1.505,
+                0.95,
+                0
+              ],
+              [
+                -1.075,
+                0.95,
+                0.2
+              ],
+              [
+                -0.645,
+                0.8,
+                0
+              ],
+              [
+                -0.215,
+                0.8,
+                0.2
+              ],
+              [
+                0.215,
+                0.8,
+                0
+              ],
+              [
+                0.645,
+                0.8,
+                0.2
+              ],
+              [
+                1.075,
+                0.8,
+                0
+              ],
+              [
+                1.505,
+                0.8,
+                0.2
+              ]
+            ]
+          },
+          "show": {
+            "active": false,
+            "age": 0,
+            "first": false,
+            "kind": "restore",
+            "mode": "intact",
+            "line": "",
+            "indices": {
+              "collapse": 0,
+              "restore": 0
+            },
+            "snapshotReady": false,
+            "wideIndex": 0,
+            "phase": "closeup",
+            "buildingProgress": 0
+          },
+          "shopping": null,
+          "remnant": {
+            "born": false,
+            "visible": false,
+            "mode": "unborn",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "shape": "soft-lobed-creature",
+            "supportHeight": 0,
+            "bodyHeight": 0.28,
+            "emoji": "",
+            "thumbVisible": false
+          },
+          "tractor": false,
+          "microphone": false,
+          "phone": [
+            -1.72,
+            1.68,
+            3.98
+          ]
+        },
+        "bonus": {
+          "active": false,
+          "route": "claims",
+          "lesson": "general",
+          "page": 0,
+          "response": 0,
+          "course": {
+            "steps": {},
+            "stamped": false,
+            "completed": [],
+            "percentage": 0,
+            "display": 0
+          },
+          "room": null,
+          "negotiation": {
+            "phase": "choice",
+            "field": 0,
+            "line": 0,
+            "round": -1,
+            "choices": {},
+            "cue": null,
+            "stampIndex": 0,
+            "policyholderVisible": false,
+            "polite": false
+          }
+        }
+      }
+    },
+    {
+      "file": "07-figurine-after.png",
+      "issues": [
+        "C-F01"
+      ],
+      "side": "after",
+      "original_id": "C02-390x844",
+      "source_commit": "2f5c6fd25fb8d97476933fc372f705f5aedc7882",
+      "capture_git_head": "c88911624c23d19e3195868095791484e62aa8ee",
+      "runtime_sha256": "f2bf235fcd61dbd0cdcfa044d6e07cedddfe902abd270c9904c520a166d10cf3",
+      "size_px": [
+        585,
+        1266
+      ],
+      "viewport_css_px": [
+        390,
+        844
+      ],
+      "device_scale_factor": 1.5,
+      "browser": "Chromium SwiftShader",
+      "quality": "balanced",
+      "png_sha256": "3d47260bbb786c0007c7e2bb016031d478f2b62afd74e68fc4c00d5c907971f6",
+      "decoded_rgb_sha256": "f22ad7d4d6970d839c7502ecc68c68ca95cee8765a760f4edd8c70e43ddafc83",
+      "original_file_sha256": "7f7aef8c9f90e0d6cc96697819e78d5179932e9266df5b79508319cf81172627",
+      "format_note": "JPEG decoded to lossless PNG; identical decoded RGB, no crop, resize or enhancement",
+      "state": {
+        "phase": "briefing",
+        "age": 1.599999999999909,
+        "tablet": null,
+        "expression": "normal",
+        "xaihi": {
+          "loaded": true,
+          "phase": "briefing",
+          "action": "waiting",
+          "visible": false,
+          "bones": 960,
+          "scale": 1.00924974058618,
+          "headYaw": 0,
+          "phoneVisible": false,
+          "mealVisible": false,
+          "eyeYaw": 0,
+          "eyePitch": 0,
+          "tabletLift": 0,
+          "performanceCue": "",
+          "refuseAmount": 0,
+          "headPosition": [
+            2.1766544988362786,
+            1.7969673003619029,
+            0.7462689555612476
+          ],
+          "screenButtons": [],
+          "handPositions": [
+            [
+              1.9713639997731693,
+              1.3583993812417088,
+              0.3462713779514035
+            ],
+            [
+              2.3451830842169388,
+              1.3584010018393409,
+              1.1630929075951066
+            ]
+          ],
+          "position": [
+            1.95,
+            0.31,
+            0.85
+          ],
+          "pose": {
+            "head": [
+              -0.042372554540634155,
+              -4.697754450237061e-38,
+              -1.9923479396969887e-39,
+              0.9991018772125244
+            ],
+            "wrist": [
+              -0.0016879822360351682,
+              0.9999933242797852,
+              -0.003245206316933036,
+              1.5805453585926443e-05
+            ],
+            "arm": [
+              0.655576765537262,
+              0.26498907804489136,
+              0.6269729733467102,
+              -0.3269629180431366
+            ]
+          }
+        },
+        "staging": {
+          "damage": {
+            "state": "clean",
+            "progress": 1,
+            "visible": false,
+            "bandagesVisible": false
+          },
+          "catchGrip": [
+            -1.0229294854615236,
+            1.4200000313231644,
+            3.829921655692091
+          ],
+          "rescue": null,
+          "concert": {
+            "visible": false,
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "hands": [
+              [
+                -1.505,
+                0.95,
+                0
+              ],
+              [
+                -1.075,
+                0.95,
+                0.2
+              ],
+              [
+                -0.645,
+                0.8,
+                0
+              ],
+              [
+                -0.215,
+                0.8,
+                0.2
+              ],
+              [
+                0.215,
+                0.8,
+                0
+              ],
+              [
+                0.645,
+                0.8,
+                0.2
+              ],
+              [
+                1.075,
+                0.8,
+                0
+              ],
+              [
+                1.505,
+                0.8,
+                0.2
+              ]
+            ]
+          },
+          "show": {
+            "active": false,
+            "age": 0,
+            "first": false,
+            "kind": "restore",
+            "mode": "intact",
+            "line": "",
+            "indices": {
+              "collapse": 0,
+              "restore": 0
+            },
+            "snapshotReady": false,
+            "wideIndex": 0,
+            "phase": "closeup",
+            "buildingProgress": 0
+          },
+          "shopping": null,
+          "remnant": {
+            "born": false,
+            "visible": false,
+            "mode": "unborn",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "shape": "soft-lobed-creature",
+            "supportHeight": 0,
+            "bodyHeight": 0.28,
+            "emoji": "",
+            "thumbVisible": false
+          },
+          "tractor": false,
+          "microphone": false,
+          "phone": null
+        },
+        "last_line_characters": 12
+      }
+    },
+    {
+      "file": "08-rescue-thumb-before.png",
+      "issues": [
+        "R-F02"
+      ],
+      "side": "before",
+      "original_id": "R04",
+      "source_commit": "c88911624c23d19e3195868095791484e62aa8ee",
+      "capture_git_head": "c88911624c23d19e3195868095791484e62aa8ee",
+      "runtime_sha256": "d379739c91fb94b0a2407111b54cd3a51acf454ea73c150c8c5f8128c3558622",
+      "size_px": [
+        585,
+        1266
+      ],
+      "viewport_css_px": [
+        390,
+        844
+      ],
+      "device_scale_factor": 1.5,
+      "browser": "Chromium SwiftShader",
+      "quality": "balanced",
+      "png_sha256": "92bb5aa19a279ad0c2250869c550d2b6613cd37908e96efb330052ff438c2ab6",
+      "decoded_rgb_sha256": "20143524c0eeebcbcc41387fb01b1b8597f3341f335d16521f7b51d0b117c5bd",
+      "original_file_sha256": "aa59ebf3f626c2ea672a9c62983c456f3646a15ece91f29945e7bb54610f6e42",
+      "format_note": "JPEG decoded to lossless PNG; identical decoded RGB, no crop, resize or enhancement",
+      "state": {
+        "phase": "aim-final",
+        "scene_seconds": 9.29999999999994,
+        "tablet": null,
+        "xaihi": {
+          "loaded": true,
+          "phase": "aim-final",
+          "action": "waiting",
+          "visible": false,
+          "bones": 960,
+          "scale": 1.00924974058618,
+          "headYaw": 0,
+          "phoneVisible": false,
+          "mealVisible": false,
+          "refuseAmount": 1,
+          "headPosition": [
+            2.1766544988362786,
+            1.7969673003619029,
+            0.7462689555612476
+          ],
+          "screenButtons": [],
+          "handPositions": [
+            [
+              1.9713639997731693,
+              1.3583993812417088,
+              0.3462713779514035
+            ],
+            [
+              2.3451830842169388,
+              1.3584010018393409,
+              1.1630929075951066
+            ]
+          ],
+          "position": [
+            1.95,
+            0.31,
+            0.85
+          ],
+          "pose": {
+            "head": [
+              -0.042372554540634155,
+              -4.697754450237061e-38,
+              -1.9923479396969887e-39,
+              0.9991018772125244
+            ],
+            "wrist": [
+              -0.0016879822360351682,
+              0.9999933242797852,
+              -0.003245206316933036,
+              1.5805453585926443e-05
+            ],
+            "arm": [
+              0.655576765537262,
+              0.26498907804489136,
+              0.6269729733467102,
+              -0.3269629180431366
+            ]
+          }
+        },
+        "staging": {
+          "damage": {
+            "state": "clean",
+            "progress": 1,
+            "visible": false,
+            "bandagesVisible": false
+          },
+          "catchGrip": [
+            -1.6210884623247837,
+            5.546819365421376,
+            15.109823434479283
+          ],
+          "rescue": {
+            "handoffPoint": [
+              -1.9721462241155145,
+              5.253998743540408,
+              15.688557024576463
+            ],
+            "age": 9.29999999999994,
+            "beat": "thumb",
+            "approach": 1,
+            "lowered": 0,
+            "release": 1,
+            "press": 0,
+            "thumb": 1,
+            "emoji": "👍",
+            "ready": false,
+            "base": [
+              -1.8433923023245904,
+              0.025,
+              16.115708441521754
+            ],
+            "tray": [
+              -1.8433923023245904,
+              0.665,
+              16.115708441521754
+            ],
+            "height": 0.64,
+            "airborne": false,
+            "tilt": 0,
+            "carrying": true
+          },
+          "concert": {
+            "visible": false,
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "hands": [
+              [
+                -1.505,
+                0.95,
+                0
+              ],
+              [
+                -1.075,
+                0.95,
+                0.2
+              ],
+              [
+                -0.645,
+                0.8,
+                0
+              ],
+              [
+                -0.215,
+                0.8,
+                0.2
+              ],
+              [
+                0.215,
+                0.8,
+                0
+              ],
+              [
+                0.645,
+                0.8,
+                0.2
+              ],
+              [
+                1.075,
+                0.8,
+                0
+              ],
+              [
+                1.505,
+                0.8,
+                0.2
+              ]
+            ]
+          },
+          "show": {
+            "active": false,
+            "age": 0,
+            "first": false,
+            "kind": "restore",
+            "mode": "intact",
+            "line": "",
+            "indices": {
+              "collapse": 0,
+              "restore": 0
+            },
+            "snapshotReady": false,
+            "wideIndex": 0,
+            "phase": "closeup",
+            "buildingProgress": 0
+          },
+          "shopping": null,
+          "remnant": {
+            "born": false,
+            "visible": true,
+            "mode": "holding-tray",
+            "position": [
+              -1.8433923023245904,
+              0.025,
+              16.115708441521754
+            ],
+            "shape": "soft-lobed-creature",
+            "supportHeight": 0.64,
+            "bodyHeight": 0.36,
+            "emoji": "👍",
+            "thumbVisible": true
+          },
+          "tractor": true,
+          "microphone": false,
+          "phone": [
+            -1.72,
+            1.68,
+            3.98
+          ]
+        }
+      }
+    },
+    {
+      "file": "08-rescue-thumb-after.png",
+      "issues": [
+        "R-F02"
+      ],
+      "side": "after",
+      "original_id": "R04-390x844",
+      "source_commit": "2f5c6fd25fb8d97476933fc372f705f5aedc7882",
+      "capture_git_head": "c88911624c23d19e3195868095791484e62aa8ee",
+      "runtime_sha256": "f2bf235fcd61dbd0cdcfa044d6e07cedddfe902abd270c9904c520a166d10cf3",
+      "size_px": [
+        585,
+        1266
+      ],
+      "viewport_css_px": [
+        390,
+        844
+      ],
+      "device_scale_factor": 1.5,
+      "browser": "Chromium SwiftShader",
+      "quality": "balanced",
+      "png_sha256": "a12962ed8bbcf76ff09690d9f9cf2a58128bf130df7ed30d2af958813a2e981e",
+      "decoded_rgb_sha256": "09f0ca46d9719b69c9f7e0d968ed7a4ebc94828c7de9d08afff1c9adee774af6",
+      "original_file_sha256": "0cbf498df17209af63ae3969740631ca13f68c418fb37eacc27ec8e2830b97d0",
+      "format_note": "JPEG decoded to lossless PNG; identical decoded RGB, no crop, resize or enhancement",
+      "state": {
+        "phase": "aim-final",
+        "age": 9.299999999999464,
+        "tablet": null,
+        "expression": "shock",
+        "xaihi": {
+          "loaded": true,
+          "phase": "aim-final",
+          "action": "waiting",
+          "visible": false,
+          "bones": 960,
+          "scale": 1.00924974058618,
+          "headYaw": -0.65,
+          "phoneVisible": false,
+          "mealVisible": false,
+          "eyeYaw": 0,
+          "eyePitch": 0,
+          "tabletLift": 0,
+          "performanceCue": "",
+          "refuseAmount": 0,
+          "headPosition": [
+            2.1756142218563075,
+            1.7967718316771182,
+            0.7479773613834734
+          ],
+          "screenButtons": [],
+          "handPositions": [
+            [
+              2.075903888354556,
+              1.2206756470974018,
+              0.5300539752444421
+            ],
+            [
+              2.337586364915349,
+              1.2226719798162788,
+              0.932585489255457
+            ]
+          ],
+          "position": [
+            1.95,
+            0.31,
+            0.85
+          ],
+          "pose": {
+            "head": [
+              -0.0322174147405634,
+              -0.31919987921376064,
+              0.00865939440551581,
+              0.947100039390652
+            ],
+            "wrist": [
+              -0.0016877287760699623,
+              0.9998321503348327,
+              -0.018243991073509262,
+              9.500837431709268e-05
+            ],
+            "arm": [
+              0.7101706933207214,
+              0.07208360996049704,
+              0.6858465682431722,
+              -0.14168981563081406
+            ]
+          }
+        },
+        "staging": {
+          "damage": {
+            "state": "clean",
+            "progress": 1,
+            "visible": false,
+            "bandagesVisible": false
+          },
+          "catchGrip": [
+            -1.6197306017280726,
+            5.534850749758598,
+            15.109823434479283
+          ],
+          "rescue": {
+            "handoffPoint": [
+              -1.9759165523140674,
+              5.262781356384639,
+              15.696165199684604
+            ],
+            "age": 9.299999999999464,
+            "beat": "thumb",
+            "approach": 1,
+            "lowered": 0,
+            "release": 1,
+            "press": 0,
+            "thumb": 1,
+            "emoji": "👍",
+            "ready": false,
+            "base": [
+              -1.8432153945126473,
+              0.025,
+              16.109645758954354
+            ],
+            "tray": [
+              -1.8432153945126473,
+              0.665,
+              16.109645758954354
+            ],
+            "height": 0.64,
+            "airborne": false,
+            "tilt": 0,
+            "carrying": true
+          },
+          "concert": {
+            "visible": false,
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "hands": [
+              [
+                -1.505,
+                0.95,
+                0
+              ],
+              [
+                -1.075,
+                0.95,
+                0.2
+              ],
+              [
+                -0.645,
+                0.8,
+                0
+              ],
+              [
+                -0.215,
+                0.8,
+                0.2
+              ],
+              [
+                0.215,
+                0.8,
+                0
+              ],
+              [
+                0.645,
+                0.8,
+                0.2
+              ],
+              [
+                1.075,
+                0.8,
+                0
+              ],
+              [
+                1.505,
+                0.8,
+                0.2
+              ]
+            ]
+          },
+          "show": {
+            "active": false,
+            "age": 0,
+            "first": false,
+            "kind": "restore",
+            "mode": "intact",
+            "line": "",
+            "indices": {
+              "collapse": 0,
+              "restore": 0
+            },
+            "snapshotReady": false,
+            "wideIndex": 0,
+            "phase": "closeup",
+            "buildingProgress": 0
+          },
+          "shopping": null,
+          "remnant": {
+            "born": true,
+            "visible": true,
+            "mode": "holding-tray",
+            "position": [
+              -1.8432153945126473,
+              0.025,
+              16.109645758954354
+            ],
+            "shape": "soft-lobed-creature",
+            "supportHeight": 0.64,
+            "bodyHeight": 0.36,
+            "emoji": "👍",
+            "thumbVisible": true
+          },
+          "tractor": true,
+          "microphone": false,
+          "phone": null
+        },
+        "last_line_characters": 10
+      }
+    },
+    {
+      "file": "09-post-rebuild-before.png",
+      "issues": [
+        "T-F01"
+      ],
+      "side": "before",
+      "original_id": "T07",
+      "source_commit": "c88911624c23d19e3195868095791484e62aa8ee",
+      "capture_git_head": "c88911624c23d19e3195868095791484e62aa8ee",
+      "runtime_sha256": "d379739c91fb94b0a2407111b54cd3a51acf454ea73c150c8c5f8128c3558622",
+      "size_px": [
+        585,
+        1266
+      ],
+      "viewport_css_px": [
+        390,
+        844
+      ],
+      "device_scale_factor": 1.5,
+      "browser": "Chromium SwiftShader",
+      "quality": "balanced",
+      "png_sha256": "001a68375de48c96eb1abf6d6964c8d1f80154ae76f775de906d0093118fbb72",
+      "decoded_rgb_sha256": "5ba78762652c5aa6382d9eed77864360df88db847fbbf78691c88b8e63a33e73",
+      "original_file_sha256": "8b24840e2bf18da0600a341ec05a0133a34b06a667709a99d8a6adc2f066032f",
+      "format_note": "JPEG decoded to lossless PNG; identical decoded RGB, no crop, resize or enhancement",
+      "state": {
+        "phase": "complete",
+        "scene_seconds": 28.85000000002168,
+        "tablet": null,
+        "xaihi": {
+          "loaded": true,
+          "phase": "complete",
+          "action": "waiting",
+          "visible": false,
+          "bones": 960,
+          "scale": 1.00924974058618,
+          "headYaw": -0.65,
+          "phoneVisible": false,
+          "mealVisible": false,
+          "refuseAmount": 0,
+          "headPosition": [
+            2.175703217995355,
+            1.7968277688349468,
+            0.7470814329192808
+          ],
+          "screenButtons": [],
+          "handPositions": [
+            [
+              2.075812441499751,
+              1.2200697946699688,
+              0.5309989519992847
+            ],
+            [
+              2.3374923094162985,
+              1.2230516548533519,
+              0.9325004779311266
+            ]
+          ],
+          "position": [
+            1.95,
+            0.31,
+            0.85
+          ],
+          "pose": {
+            "head": [
+              -0.03233939943388833,
+              -0.319187543482046,
+              0.009021342328270399,
+              0.9470966609278263
+            ],
+            "wrist": [
+              -0.0016877287760699623,
+              0.9998321503348327,
+              -0.018243991073509262,
+              9.500837431709268e-05
+            ],
+            "arm": [
+              0.7101706933207214,
+              0.07208360996049704,
+              0.6858465682431722,
+              -0.14168981563081406
+            ]
+          }
+        },
+        "staging": {
+          "damage": {
+            "state": "clean",
+            "progress": 1,
+            "visible": false,
+            "bandagesVisible": false
+          },
+          "catchGrip": [
+            -1.0229294889731615,
+            1.4200000293598272,
+            3.8299216551945534
+          ],
+          "rescue": {
+            "handoffPoint": [
+              -1.964045601690142,
+              5.269163456807334,
+              15.688762503176182
+            ],
+            "age": 107.87000000002439,
+            "beat": "aim",
+            "approach": 1,
+            "lowered": 0,
+            "release": 1,
+            "press": 0,
+            "thumb": 0,
+            "emoji": "",
+            "ready": true,
+            "base": [
+              -1.25,
+              0.33,
+              3.9
+            ],
+            "tray": [
+              -1.25,
+              0.8800000000000001,
+              3.9
+            ],
+            "height": 0.55,
+            "airborne": false,
+            "tilt": 0,
+            "carrying": true
+          },
+          "concert": {
+            "visible": false,
+            "position": [
+              0,
+              6.9165664633609785,
+              22.557802255813186
+            ],
+            "hands": [
+              [
+                -0.069654565535132,
+                6.817815764638684,
+                22.57643446311928
+              ],
+              [
+                -0.08513335787627242,
+                6.817815764638684,
+                22.57643446311928
+              ],
+              [
+                -0.10061215021741289,
+                6.817815764638684,
+                22.57643446311928
+              ],
+              [
+                -0.11609094255855333,
+                6.817815764638684,
+                22.57643446311928
+              ],
+              [
+                0.069654565535132,
+                6.817815764638684,
+                22.57643446311928
+              ],
+              [
+                0.08513335787627242,
+                6.817815764638684,
+                22.57643446311928
+              ]
+            ]
+          },
+          "show": {
+            "active": false,
+            "age": 17.20000000000391,
+            "first": true,
+            "kind": "restore",
+            "mode": "intact",
+            "line": "",
+            "indices": {
+              "collapse": 0,
+              "restore": 0
+            },
+            "snapshotReady": true,
+            "wideIndex": 0,
+            "phase": "hold",
+            "buildingProgress": 1
+          },
+          "shopping": null,
+          "remnant": {
+            "born": true,
+            "visible": true,
+            "mode": "helping",
+            "position": [
+              -1.25,
+              0.33,
+              3.9
+            ],
+            "shape": "soft-lobed-creature",
+            "supportHeight": 0.55,
+            "bodyHeight": 0.36,
+            "emoji": "",
+            "thumbVisible": false
+          },
+          "tractor": false,
+          "microphone": false,
+          "phone": [
+            -1.72,
+            1.68,
+            3.98
+          ]
+        },
+        "bonus": {
+          "active": false,
+          "route": "claims",
+          "lesson": "general",
+          "page": 0,
+          "response": 0,
+          "course": {
+            "steps": {},
+            "stamped": false,
+            "completed": [],
+            "percentage": 0,
+            "display": 0
+          },
+          "room": null,
+          "negotiation": {
+            "phase": "choice",
+            "field": 0,
+            "line": 0,
+            "round": -1,
+            "choices": {},
+            "cue": null,
+            "stampIndex": 0,
+            "policyholderVisible": false,
+            "polite": false
+          }
+        }
+      }
+    },
+    {
+      "file": "09-post-rebuild-after.png",
+      "issues": [
+        "T-F01"
+      ],
+      "side": "after",
+      "original_id": "T07-390x844",
+      "source_commit": "2f5c6fd25fb8d97476933fc372f705f5aedc7882",
+      "capture_git_head": "c88911624c23d19e3195868095791484e62aa8ee",
+      "runtime_sha256": "f2bf235fcd61dbd0cdcfa044d6e07cedddfe902abd270c9904c520a166d10cf3",
+      "size_px": [
+        585,
+        1266
+      ],
+      "viewport_css_px": [
+        390,
+        844
+      ],
+      "device_scale_factor": 1.5,
+      "browser": "Chromium SwiftShader",
+      "quality": "balanced",
+      "png_sha256": "17c99a966f19a47272794c75bad9c1fc11ac88f824a8888c6785f27a1ce885df",
+      "decoded_rgb_sha256": "e308f495e77d6e6f18e2bc38bcfe45f7ad30ad4975b5f99fb25fdddd465af6ac",
+      "original_file_sha256": "2e938e6b0ab4442b3db6c444ac9b5bd234cb4bfabae5106cfc2e633d9fe3befc",
+      "format_note": "JPEG decoded to lossless PNG; identical decoded RGB, no crop, resize or enhancement",
+      "state": {
+        "phase": "complete",
+        "age": 29.050000000014307,
+        "tablet": null,
+        "expression": "normal",
+        "xaihi": {
+          "loaded": true,
+          "phase": "complete",
+          "action": "waiting",
+          "visible": false,
+          "bones": 960,
+          "scale": 1.00924974058618,
+          "headYaw": -0.65,
+          "phoneVisible": false,
+          "mealVisible": false,
+          "eyeYaw": 0,
+          "eyePitch": 0,
+          "tabletLift": 0,
+          "performanceCue": "",
+          "refuseAmount": 0,
+          "headPosition": [
+            2.1756142218563075,
+            1.7967718316771182,
+            0.7479773613834734
+          ],
+          "screenButtons": [],
+          "handPositions": [
+            [
+              2.075903888354556,
+              1.2206756470974018,
+              0.5300539752444421
+            ],
+            [
+              2.337586364915349,
+              1.2226719798162788,
+              0.932585489255457
+            ]
+          ],
+          "position": [
+            1.95,
+            0.31,
+            0.85
+          ],
+          "pose": {
+            "head": [
+              -0.0322174147405634,
+              -0.31919987921376064,
+              0.00865939440551581,
+              0.947100039390652
+            ],
+            "wrist": [
+              -0.0016877287760699623,
+              0.9998321503348327,
+              -0.018243991073509262,
+              9.500837431709268e-05
+            ],
+            "arm": [
+              0.7101706933207214,
+              0.07208360996049704,
+              0.6858465682431722,
+              -0.14168981563081406
+            ]
+          }
+        },
+        "staging": {
+          "damage": {
+            "state": "clean",
+            "progress": 1,
+            "visible": false,
+            "bandagesVisible": false
+          },
+          "catchGrip": [
+            -1.0229294902431623,
+            1.4200000297956976,
+            3.8299216547769355
+          ],
+          "rescue": {
+            "handoffPoint": [
+              -1.9759165523140674,
+              5.262781356384639,
+              15.696165199684604
+            ],
+            "age": 108.07000000001477,
+            "beat": "aim",
+            "approach": 1,
+            "lowered": 0,
+            "release": 1,
+            "press": 0,
+            "thumb": 0,
+            "emoji": "",
+            "ready": true,
+            "base": [
+              -1.25,
+              0.33,
+              3.9
+            ],
+            "tray": [
+              -1.25,
+              0.8800000000000001,
+              3.9
+            ],
+            "height": 0.55,
+            "airborne": false,
+            "tilt": 0,
+            "carrying": true
+          },
+          "concert": {
+            "visible": false,
+            "position": [
+              0,
+              6.9165664633609785,
+              22.557802255813186
+            ],
+            "hands": [
+              [
+                -0.069654565535132,
+                6.817815764638684,
+                22.57643446311928
+              ],
+              [
+                -0.08513335787627242,
+                6.817815764638684,
+                22.57643446311928
+              ],
+              [
+                -0.10061215021741289,
+                6.817815764638684,
+                22.57643446311928
+              ],
+              [
+                -0.11609094255855333,
+                6.817815764638684,
+                22.57643446311928
+              ],
+              [
+                0.069654565535132,
+                6.817815764638684,
+                22.57643446311928
+              ],
+              [
+                0.08513335787627242,
+                6.817815764638684,
+                22.57643446311928
+              ]
+            ]
+          },
+          "show": {
+            "active": false,
+            "age": 17.20000000000391,
+            "first": true,
+            "kind": "restore",
+            "mode": "intact",
+            "line": "",
+            "indices": {
+              "collapse": 0,
+              "restore": 0
+            },
+            "snapshotReady": true,
+            "wideIndex": 0,
+            "phase": "hold",
+            "buildingProgress": 1
+          },
+          "shopping": null,
+          "remnant": {
+            "born": true,
+            "visible": true,
+            "mode": "returning-meal",
+            "position": [
+              0.39960232553025055,
+              0.33,
+              1.5035478964940354
+            ],
+            "shape": "soft-lobed-creature",
+            "supportHeight": 0,
+            "bodyHeight": 0.28,
+            "emoji": "",
+            "thumbVisible": false
+          },
+          "tractor": false,
+          "microphone": false,
+          "phone": null
+        },
+        "last_line_characters": null
+      }
+    },
+    {
+      "file": "10-meal-reclaim-after.png",
+      "issues": [
+        "T-F01"
+      ],
+      "side": "after",
+      "original_id": "T06",
+      "source_commit": "2f5c6fd25fb8d97476933fc372f705f5aedc7882",
+      "capture_git_head": "c88911624c23d19e3195868095791484e62aa8ee",
+      "runtime_sha256": "f2bf235fcd61dbd0cdcfa044d6e07cedddfe902abd270c9904c520a166d10cf3",
+      "size_px": [
+        585,
+        1266
+      ],
+      "viewport_css_px": [
+        390,
+        844
+      ],
+      "device_scale_factor": 1.5,
+      "browser": "Chromium SwiftShader",
+      "quality": "balanced",
+      "png_sha256": "878f17d38b0de3454234315ba5babd393ee5f0a8f27a4a3d83411f6ec9383a67",
+      "decoded_rgb_sha256": "3b36bd33b3541c34e61d657bd636ff6ac014b08ca27a726711a7b2568e919482",
+      "original_file_sha256": "cdcd7347c0b72eb1b2e41b6599d2fb79d88c587e5a8cab51e680e34edbb47c56",
+      "format_note": "JPEG decoded to lossless PNG; identical decoded RGB, no crop, resize or enhancement",
+      "state": {
+        "phase": "meal-reclaim",
+        "age": 2.449999999999946,
+        "tablet": null,
+        "expression": "normal",
+        "xaihi": {
+          "loaded": true,
+          "phase": "meal-reclaim",
+          "action": "waiting",
+          "visible": false,
+          "bones": 960,
+          "scale": 1.00924974058618,
+          "headYaw": -0.65,
+          "phoneVisible": false,
+          "mealVisible": false,
+          "eyeYaw": 0,
+          "eyePitch": 0,
+          "tabletLift": 0,
+          "performanceCue": "",
+          "refuseAmount": 0,
+          "headPosition": [
+            2.1756142218563075,
+            1.7967718316771182,
+            0.7479773613834734
+          ],
+          "screenButtons": [],
+          "handPositions": [
+            [
+              2.075903888354556,
+              1.2206756470974018,
+              0.5300539752444421
+            ],
+            [
+              2.337586364915349,
+              1.2226719798162788,
+              0.932585489255457
+            ]
+          ],
+          "position": [
+            1.95,
+            0.31,
+            0.85
+          ],
+          "pose": {
+            "head": [
+              -0.0322174147405634,
+              -0.31919987921376064,
+              0.00865939440551581,
+              0.947100039390652
+            ],
+            "wrist": [
+              -0.0016877287760699623,
+              0.9998321503348327,
+              -0.018243991073509262,
+              9.500837431709268e-05
+            ],
+            "arm": [
+              0.7101706933207214,
+              0.07208360996049704,
+              0.6858465682431722,
+              -0.14168981563081406
+            ]
+          }
+        },
+        "staging": {
+          "damage": {
+            "state": "dirty",
+            "progress": 0,
+            "visible": true,
+            "bandagesVisible": true
+          },
+          "catchGrip": [
+            -1.0699999857383757,
+            1.4195695483135657,
+            3.846213166510646
+          ],
+          "rescue": {
+            "handoffPoint": [
+              -1.9759165523140674,
+              5.262781356384639,
+              15.696165199684604
+            ],
+            "age": 44.87000000000041,
+            "beat": "aim",
+            "approach": 1,
+            "lowered": 0,
+            "release": 1,
+            "press": 0,
+            "thumb": 0,
+            "emoji": "",
+            "ready": true,
+            "base": [
+              -1.25,
+              0.33,
+              3.9
+            ],
+            "tray": [
+              -1.25,
+              1.1,
+              3.9
+            ],
+            "height": 0.77,
+            "airborne": false,
+            "tilt": 0,
+            "carrying": true
+          },
+          "concert": {
+            "visible": false,
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "hands": [
+              [
+                -1.505,
+                0.95,
+                0
+              ],
+              [
+                -1.075,
+                0.95,
+                0.2
+              ],
+              [
+                -0.645,
+                0.8,
+                0
+              ],
+              [
+                -0.215,
+                0.8,
+                0.2
+              ],
+              [
+                0.215,
+                0.8,
+                0
+              ],
+              [
+                0.645,
+                0.8,
+                0.2
+              ],
+              [
+                1.075,
+                0.8,
+                0
+              ],
+              [
+                1.505,
+                0.8,
+                0.2
+              ]
+            ]
+          },
+          "show": {
+            "active": false,
+            "age": 0,
+            "first": false,
+            "kind": "restore",
+            "mode": "intact",
+            "line": "",
+            "indices": {
+              "collapse": 0,
+              "restore": 0
+            },
+            "snapshotReady": false,
+            "wideIndex": 0,
+            "phase": "closeup",
+            "buildingProgress": 0
+          },
+          "shopping": null,
+          "remnant": {
+            "born": true,
+            "visible": true,
+            "mode": "helping",
+            "position": [
+              -1.25,
+              0.33,
+              3.9
+            ],
+            "shape": "soft-lobed-creature",
+            "supportHeight": 0,
+            "bodyHeight": 0.36,
+            "emoji": "",
+            "thumbVisible": false
+          },
+          "tractor": false,
+          "microphone": false,
+          "phone": null
+        },
+        "last_line_characters": 3
+      }
+    },
+    {
+      "file": "11-microwave-return-after.png",
+      "issues": [
+        "T-F01"
+      ],
+      "side": "after",
+      "original_id": "T08-microwave",
+      "source_commit": "2f5c6fd25fb8d97476933fc372f705f5aedc7882",
+      "capture_git_head": "c88911624c23d19e3195868095791484e62aa8ee",
+      "runtime_sha256": "f2bf235fcd61dbd0cdcfa044d6e07cedddfe902abd270c9904c520a166d10cf3",
+      "size_px": [
+        585,
+        1266
+      ],
+      "viewport_css_px": [
+        390,
+        844
+      ],
+      "device_scale_factor": 1.5,
+      "browser": "Chromium SwiftShader",
+      "quality": "balanced",
+      "png_sha256": "4a7f56592bb654609c800f6b8b512f22ddfb93c4ddac9aa92b224a43c307ad9d",
+      "decoded_rgb_sha256": "2e4a04dd053d40a1871a91860b5b567ede7e3afdb49cf67e40cf43e3ace8eaef",
+      "original_file_sha256": "94bd3f92ae6ff55fef05504aad0678bd0f42817bd79a2a50dc978f91cc03494f",
+      "format_note": "JPEG decoded to lossless PNG; identical decoded RGB, no crop, resize or enhancement",
+      "state": {
+        "phase": "complete",
+        "age": 69.0500000000234,
+        "tablet": null,
+        "expression": "normal",
+        "xaihi": {
+          "loaded": true,
+          "phase": "complete",
+          "action": "waiting",
+          "visible": false,
+          "bones": 960,
+          "scale": 1.00924974058618,
+          "headYaw": -0.65,
+          "phoneVisible": false,
+          "mealVisible": false,
+          "eyeYaw": 0,
+          "eyePitch": 0,
+          "tabletLift": 0,
+          "performanceCue": "",
+          "refuseAmount": 0,
+          "headPosition": [
+            2.1756142218563075,
+            1.7967718316771182,
+            0.7479773613834734
+          ],
+          "screenButtons": [],
+          "handPositions": [
+            [
+              2.075903888354556,
+              1.2206756470974018,
+              0.5300539752444421
+            ],
+            [
+              2.337586364915349,
+              1.2226719798162788,
+              0.932585489255457
+            ]
+          ],
+          "position": [
+            1.95,
+            0.31,
+            0.85
+          ],
+          "pose": {
+            "head": [
+              -0.0322174147405634,
+              -0.31919987921376064,
+              0.00865939440551581,
+              0.947100039390652
+            ],
+            "wrist": [
+              -0.0016877287760699623,
+              0.9998321503348327,
+              -0.018243991073509262,
+              9.500837431709268e-05
+            ],
+            "arm": [
+              0.7101706933207214,
+              0.07208360996049704,
+              0.6858465682431722,
+              -0.14168981563081406
+            ]
+          }
+        },
+        "staging": {
+          "damage": {
+            "state": "clean",
+            "progress": 1,
+            "visible": false,
+            "bandagesVisible": false
+          },
+          "catchGrip": [
+            -1.0229294891148186,
+            1.4200000293371193,
+            3.8299216550017987
+          ],
+          "rescue": {
+            "handoffPoint": [
+              -1.9759165523140674,
+              5.262781356384639,
+              15.696165199684604
+            ],
+            "age": 148.07000000002387,
+            "beat": "aim",
+            "approach": 1,
+            "lowered": 0,
+            "release": 1,
+            "press": 0,
+            "thumb": 0,
+            "emoji": "",
+            "ready": true,
+            "base": [
+              -1.25,
+              0.33,
+              3.9
+            ],
+            "tray": [
+              -1.25,
+              0.8800000000000001,
+              3.9
+            ],
+            "height": 0.55,
+            "airborne": false,
+            "tilt": 0,
+            "carrying": true
+          },
+          "concert": {
+            "visible": false,
+            "position": [
+              0,
+              6.9165664633609785,
+              22.557802255813186
+            ],
+            "hands": [
+              [
+                -0.069654565535132,
+                6.817815764638684,
+                22.57643446311928
+              ],
+              [
+                -0.08513335787627242,
+                6.817815764638684,
+                22.57643446311928
+              ],
+              [
+                -0.10061215021741289,
+                6.817815764638684,
+                22.57643446311928
+              ],
+              [
+                -0.11609094255855333,
+                6.817815764638684,
+                22.57643446311928
+              ],
+              [
+                0.069654565535132,
+                6.817815764638684,
+                22.57643446311928
+              ],
+              [
+                0.08513335787627242,
+                6.817815764638684,
+                22.57643446311928
+              ]
+            ]
+          },
+          "show": {
+            "active": false,
+            "age": 17.20000000000391,
+            "first": true,
+            "kind": "restore",
+            "mode": "intact",
+            "line": "",
+            "indices": {
+              "collapse": 0,
+              "restore": 0
+            },
+            "snapshotReady": true,
+            "wideIndex": 0,
+            "phase": "hold",
+            "buildingProgress": 1
+          },
+          "shopping": null,
+          "remnant": {
+            "born": true,
+            "visible": true,
+            "mode": "idle",
+            "position": [
+              3.599880994421711,
+              0.33,
+              0.646193100556707
+            ],
+            "shape": "soft-lobed-creature",
+            "supportHeight": 0,
+            "bodyHeight": 0.28,
+            "emoji": "",
+            "thumbVisible": false
+          },
+          "tractor": false,
+          "microphone": false,
+          "phone": null
+        },
+        "last_line_characters": null
+      }
+    },
+    {
+      "file": "12-restart-after.png",
+      "issues": [
+        "T-F01"
+      ],
+      "side": "after",
+      "original_id": "restart",
+      "source_commit": "2f5c6fd25fb8d97476933fc372f705f5aedc7882",
+      "capture_git_head": "c88911624c23d19e3195868095791484e62aa8ee",
+      "runtime_sha256": "f2bf235fcd61dbd0cdcfa044d6e07cedddfe902abd270c9904c520a166d10cf3",
+      "size_px": [
+        585,
+        1266
+      ],
+      "viewport_css_px": [
+        390,
+        844
+      ],
+      "device_scale_factor": 1.5,
+      "browser": "Chromium SwiftShader",
+      "quality": "balanced",
+      "png_sha256": "df83a76cdc10afa28b0333afa7a96e4ba8ae11d9f83ea3668e86fe6404d95de6",
+      "decoded_rgb_sha256": "16ce92071c68b19bd2e373e1d5e25f1afcf7bfff563bf80fac6208b8afa05b1c",
+      "original_file_sha256": "d140145fceab0afa11177ab75007910c3aeb15852c5965e3dedc0253f026b718",
+      "format_note": "JPEG decoded to lossless PNG; identical decoded RGB, no crop, resize or enhancement",
+      "state": {
+        "phase": "ready",
+        "age": 0.20000000000004547,
+        "tablet": null,
+        "expression": "normal",
+        "xaihi": {
+          "loaded": true,
+          "phase": "ready",
+          "action": "waiting",
+          "visible": false,
+          "bones": 960,
+          "scale": 1.00924974058618,
+          "headYaw": 0,
+          "phoneVisible": false,
+          "mealVisible": false,
+          "eyeYaw": 0,
+          "eyePitch": 0,
+          "tabletLift": 0,
+          "performanceCue": "",
+          "refuseAmount": 0,
+          "headPosition": [
+            2.1766544988362786,
+            1.7969673003619029,
+            0.7462689555612476
+          ],
+          "screenButtons": [],
+          "handPositions": [
+            [
+              1.9713639997731693,
+              1.3583993812417088,
+              0.3462713779514035
+            ],
+            [
+              2.3451830842169388,
+              1.3584010018393409,
+              1.1630929075951066
+            ]
+          ],
+          "position": [
+            1.95,
+            0.31,
+            0.85
+          ],
+          "pose": {
+            "head": [
+              -0.042372554540634155,
+              -4.697754450237061e-38,
+              -1.9923479396969887e-39,
+              0.9991018772125244
+            ],
+            "wrist": [
+              -0.0016879822360351682,
+              0.9999933242797852,
+              -0.003245206316933036,
+              1.5805453585926443e-05
+            ],
+            "arm": [
+              0.655576765537262,
+              0.26498907804489136,
+              0.6269729733467102,
+              -0.3269629180431366
+            ]
+          }
+        },
+        "staging": {
+          "damage": {
+            "state": "clean",
+            "progress": 1,
+            "visible": false,
+            "bandagesVisible": false
+          },
+          "catchGrip": [
+            -1.3065738182820281,
+            1.2964001362150412,
+            3.577190670370929
+          ],
+          "rescue": null,
+          "concert": {
+            "visible": false,
+            "position": [
+              0,
+              6.9165664633609785,
+              22.557802255813186
+            ],
+            "hands": [
+              [
+                -0.069654565535132,
+                6.817815764638684,
+                22.57643446311928
+              ],
+              [
+                -0.08513335787627242,
+                6.817815764638684,
+                22.57643446311928
+              ],
+              [
+                -0.10061215021741289,
+                6.817815764638684,
+                22.57643446311928
+              ],
+              [
+                -0.11609094255855333,
+                6.817815764638684,
+                22.57643446311928
+              ],
+              [
+                0.069654565535132,
+                6.817815764638684,
+                22.57643446311928
+              ],
+              [
+                0.08513335787627242,
+                6.817815764638684,
+                22.57643446311928
+              ]
+            ]
+          },
+          "show": {
+            "active": false,
+            "age": 17.20000000000391,
+            "first": true,
+            "kind": "restore",
+            "mode": "intact",
+            "line": "",
+            "indices": {
+              "collapse": 0,
+              "restore": 0
+            },
+            "snapshotReady": false,
+            "wideIndex": 0,
+            "phase": "hold",
+            "buildingProgress": 1
+          },
+          "shopping": null,
+          "remnant": {
+            "born": false,
+            "visible": false,
+            "mode": "unborn",
+            "position": [
+              3.599880994421711,
+              0.33,
+              0.646193100556707
+            ],
+            "shape": "soft-lobed-creature",
+            "supportHeight": 0,
+            "bodyHeight": 0.28,
+            "emoji": "",
+            "thumbVisible": false
+          },
+          "tractor": false,
+          "microphone": false,
+          "phone": null
+        },
+        "last_line_characters": null
+      }
+    },
+    {
+      "file": "13-classroom-microwave-before.png",
+      "issues": [
+        "K-F01"
+      ],
+      "side": "before",
+      "original_id": "K07",
+      "source_commit": "c88911624c23d19e3195868095791484e62aa8ee",
+      "capture_git_head": "c88911624c23d19e3195868095791484e62aa8ee",
+      "runtime_sha256": "d379739c91fb94b0a2407111b54cd3a51acf454ea73c150c8c5f8128c3558622",
+      "size_px": [
+        585,
+        1266
+      ],
+      "viewport_css_px": [
+        390,
+        844
+      ],
+      "device_scale_factor": 1.5,
+      "browser": "Chromium SwiftShader",
+      "quality": "balanced",
+      "png_sha256": "fe0d627dcd065e27ecaaa04abe3de01f27cec85b488963b3e941eea142f2dd91",
+      "decoded_rgb_sha256": "e2ee2988fafe3fe58852e1dd9d2581a4b2ec1bed812bfc2716d0f4d2647a52bd",
+      "original_file_sha256": "9a5dc70f60d90488b9f3595effbf11135effe5ad3c8cc5e48ec5f91b5c7a5736",
+      "format_note": "JPEG decoded to lossless PNG; identical decoded RGB, no crop, resize or enhancement",
+      "state": {
+        "phase": "complete",
+        "scene_seconds": 0,
+        "tablet": null,
+        "xaihi": {
+          "loaded": true,
+          "phase": "",
+          "action": "waiting",
+          "visible": false,
+          "bones": 960,
+          "scale": 1.00924974058618,
+          "headYaw": 0,
+          "phoneVisible": false,
+          "mealVisible": false,
+          "refuseAmount": 0,
+          "headPosition": [
+            2.1766544988362786,
+            1.7969673003619029,
+            0.7462689555612476
+          ],
+          "screenButtons": [],
+          "handPositions": [
+            [
+              1.9713639997731693,
+              1.3583993812417088,
+              0.3462713779514035
+            ],
+            [
+              2.3451830842169388,
+              1.3584010018393409,
+              1.1630929075951066
+            ]
+          ],
+          "position": [
+            1.95,
+            0.31,
+            0.85
+          ],
+          "pose": {
+            "head": [
+              -0.042372554540634155,
+              -4.697754450237061e-38,
+              -1.9923479396969887e-39,
+              0.9991018772125244
+            ],
+            "wrist": [
+              -0.0016879822360351682,
+              0.9999933242797852,
+              -0.003245206316933036,
+              1.5805453585926443e-05
+            ],
+            "arm": [
+              0.655576765537262,
+              0.26498907804489136,
+              0.6269729733467102,
+              -0.3269629180431366
+            ]
+          }
+        },
+        "staging": {
+          "damage": {
+            "state": "clean",
+            "progress": 1,
+            "visible": false,
+            "bandagesVisible": false
+          },
+          "catchGrip": [
+            -1.0229294899641967,
+            1.4200000295836137,
+            3.8299216544805423
+          ],
+          "rescue": {
+            "handoffPoint": [
+              -1.9702879990150075,
+              5.304721637606068,
+              15.700697123523216
+            ],
+            "age": 106.97000000002419,
+            "beat": "aim",
+            "approach": 1,
+            "lowered": 0,
+            "release": 1,
+            "press": 0,
+            "thumb": 0,
+            "emoji": "",
+            "ready": true,
+            "base": [
+              -1.25,
+              0.33,
+              3.9
+            ],
+            "tray": [
+              -1.25,
+              0.8800000000000001,
+              3.9
+            ],
+            "height": 0.55,
+            "airborne": false,
+            "tilt": 0,
+            "carrying": true
+          },
+          "concert": {
+            "visible": false,
+            "position": [
+              0,
+              6.9165664633609785,
+              22.557802255813186
+            ],
+            "hands": [
+              [
+                -0.069654565535132,
+                6.817815764638684,
+                22.57643446311928
+              ],
+              [
+                -0.08513335787627242,
+                6.817815764638684,
+                22.57643446311928
+              ],
+              [
+                -0.10061215021741289,
+                6.817815764638684,
+                22.57643446311928
+              ],
+              [
+                -0.11609094255855333,
+                6.817815764638684,
+                22.57643446311928
+              ],
+              [
+                0.069654565535132,
+                6.817815764638684,
+                22.57643446311928
+              ],
+              [
+                0.08513335787627242,
+                6.817815764638684,
+                22.57643446311928
+              ]
+            ]
+          },
+          "show": {
+            "active": false,
+            "age": 17.20000000000391,
+            "first": true,
+            "kind": "restore",
+            "mode": "intact",
+            "line": "",
+            "indices": {
+              "collapse": 0,
+              "restore": 0
+            },
+            "snapshotReady": true,
+            "wideIndex": 0,
+            "phase": "hold",
+            "buildingProgress": 1
+          },
+          "shopping": null,
+          "remnant": {
+            "born": false,
+            "visible": false,
+            "mode": "unborn",
+            "position": [
+              -1.25,
+              0.33,
+              3.9
+            ],
+            "shape": "soft-lobed-creature",
+            "supportHeight": 0.55,
+            "bodyHeight": 0.28,
+            "emoji": "",
+            "thumbVisible": false
+          },
+          "tractor": false,
+          "microphone": false,
+          "phone": [
+            -1.72,
+            1.68,
+            3.98
+          ]
+        },
+        "bonus": {
+          "active": true,
+          "route": "lesson",
+          "lesson": "microwave",
+          "page": 1,
+          "response": 0,
+          "course": {
+            "steps": {
+              "general": 4,
+              "lino": 4,
+              "taste": 3,
+              "compute": 3,
+              "cargo": 4,
+              "pear": 3,
+              "microwave": 1
+            },
+            "stamped": false,
+            "completed": [
+              "general",
+              "lino",
+              "taste",
+              "compute",
+              "cargo",
+              "pear"
+            ],
+            "percentage": 73.33333333333333,
+            "display": 73.28681453227279
+          },
+          "room": {
+            "mode": "classroom",
+            "focus": "board",
+            "cameraPosition": [
+              0.95,
+              2.1,
+              4.460798552864434
+            ],
+            "cameraFov": 40.999999999999986,
+            "board": {
+              "title": "先降溫 → 再過熱",
+              "lines": []
+            },
+            "representative": "serious",
+            "policyholderVisible": false,
+            "faceDetached": 0,
+            "completedStamps": 0,
+            "paperStamped": false,
+            "stampContactError": 0
+          },
+          "negotiation": {
+            "phase": "choice",
+            "field": 0,
+            "line": 0,
+            "round": -1,
+            "choices": {},
+            "cue": null,
+            "stampIndex": 0,
+            "policyholderVisible": false,
+            "polite": false
+          }
+        }
+      }
+    },
+    {
+      "file": "13-classroom-microwave-after.png",
+      "issues": [
+        "K-F01"
+      ],
+      "side": "after",
+      "original_id": "K07-current",
+      "source_commit": "2f5c6fd25fb8d97476933fc372f705f5aedc7882",
+      "capture_git_head": "2f5c6fd25fb8d97476933fc372f705f5aedc7882",
+      "runtime_sha256": "f2bf235fcd61dbd0cdcfa044d6e07cedddfe902abd270c9904c520a166d10cf3",
+      "size_px": [
+        585,
+        1266
+      ],
+      "viewport_css_px": [
+        390,
+        844
+      ],
+      "device_scale_factor": 1.5,
+      "browser": "Chromium SwiftShader",
+      "quality": "balanced",
+      "png_sha256": "91c8d5394ba0e0b2ddbcde9ddf97d05fb090325fc3afeb5c0e8bdbba728f376f",
+      "decoded_rgb_sha256": "57d2bac9a63748b1f27dcee7b5cdbbdbb0b5f8901596a26a983d8e582a5c4b07",
+      "original_file_sha256": "91c8d5394ba0e0b2ddbcde9ddf97d05fb090325fc3afeb5c0e8bdbba728f376f",
+      "format_note": "native Playwright PNG",
+      "state": {
+        "phase": "complete",
+        "scene_seconds": 0,
+        "bonus": {
+          "active": true,
+          "route": "lesson",
+          "busy": false,
+          "lesson": "microwave",
+          "page": 1,
+          "response": 0,
+          "room": {
+            "mode": "classroom",
+            "focus": "board",
+            "cameraPosition": [
+              0.95,
+              2.1,
+              4.460798552864434
+            ],
+            "cameraFov": 41,
+            "board": {
+              "title": "先降溫 → 再過熱",
+              "lines": []
+            },
+            "representative": "serious",
+            "policyholderVisible": false,
+            "faceDetached": 0,
+            "completedStamps": 0,
+            "paperStamped": false,
+            "stampContactError": 0
+          },
+          "presentation": {
+            "reveal": 2,
+            "dead": false,
+            "pose": "explain"
+          },
+          "stampPhase": "",
+          "taps": 0,
+          "unlocked": true,
+          "warned": false,
+          "read": [
+            "general",
+            "lino",
+            "taste",
+            "compute",
+            "cargo",
+            "pear"
+          ],
+          "finished": [],
+          "preference": "",
+          "reading": false,
+          "textSize": 18,
+          "course": {
+            "steps": {
+              "general": 4,
+              "lino": 4,
+              "taste": 3,
+              "compute": 3,
+              "cargo": 4,
+              "pear": 3,
+              "microwave": 1
+            },
+            "stamped": false,
+            "completed": [
+              "general",
+              "lino",
+              "taste",
+              "compute",
+              "cargo",
+              "pear"
+            ],
+            "percentage": 73.33333333333333,
+            "display": 73.33333333333333
+          },
+          "claimsSettled": false,
+          "negotiation": {
+            "phase": "choice",
+            "field": 0,
+            "line": 0,
+            "round": -1,
+            "choices": {},
+            "cue": null,
+            "stampIndex": 0,
+            "policyholderVisible": false,
+            "polite": false
+          }
+        }
+      }
+    }
+  ],
+  "automated_evidence": {
+    "targeted_capture_status": "complete",
+    "targeted_checks": [
+      "105 reading hold, shock, manual dialogue, quiet song and paused clock",
+      "pause holds returned-creature path",
+      "no support-pose recurrence after transfer, tour and first rebuild",
+      "returned creature reaches the real microwave area with actual shop obstacles",
+      "restart returns to ready and clears creature and unlock"
+    ],
+    "targeted_page_errors": [],
+    "feedback_posts": [],
+    "node_check_programs": 44,
+    "node_check_programs_passed": true,
+    "classroom_capture_status": "complete",
+    "classroom_page_errors": [],
+    "classroom_feedback_posts": []
+  }
+}

@@ -5,6 +5,7 @@ import argparse
 import asyncio
 import importlib.util
 import json
+import shutil
 from pathlib import Path
 
 SPEC=importlib.util.spec_from_file_location('visual_review',Path(__file__).with_name('visual-review.py'))
@@ -15,7 +16,9 @@ async def main(args):
  root=Path(args.out).resolve();root.mkdir(parents=True,exist_ok=False)
  data={'status':'capturing','source':TOOL.source_info(),'entry':'seven-tap unlock; figurine and birth debug shortcuts; birth followed by actual story controls','iphone_tested':False,'frames':[],'errors':[],'feedback_posts':[],'checks':[]}
  async with async_playwright() as p:
-  browser=await p.chromium.launch(executable_path='/usr/bin/chromium',args=['--no-sandbox','--use-angle=swiftshader','--enable-unsafe-swiftshader','--disable-dev-shm-usage'])
+  launch={'args':['--no-sandbox','--use-angle=swiftshader','--enable-unsafe-swiftshader','--disable-dev-shm-usage']}
+  if args.browser:launch['executable_path']=args.browser
+  browser=await p.chromium.launch(**launch)
   page=await browser.new_page(viewport={'width':390,'height':844},device_scale_factor=1.5)
   page.on('pageerror',lambda e:data['errors'].append(str(e)))
   page.on('request',lambda r:data['feedback_posts'].append(r.url) if r.method=='POST' and '/api/feedback' in r.url else None)
@@ -128,4 +131,5 @@ async def main(args):
 
 if __name__=='__main__':
  parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--url',default='http://127.0.0.1:4213/');parser.add_argument('--out',required=True)
+ parser.add_argument('--browser',default=shutil.which('chromium') or shutil.which('chromium-browser'),help='Chromium executable; otherwise use the Playwright-managed browser.')
  asyncio.run(main(parser.parse_args()))
