@@ -233,7 +233,7 @@ export class World {
     this.director.cinematicTrack.drawDebug(this.camera);
     if(close!==this.closeFraming){this.closeFraming=close;this.onFraming(close);}
     const presentation=this.missionState?.vcr,damage=presentation?0:this.store.destruction.state.progress;this.weather.setShelter(this.missionState?.postgame?this.streetShow?.state.mode==='intact':damage<80,this.missionState?.postgame?this.streetShow?.state.mode==='intact':damage<44);
-    const visualTime=this.director.visualTime??sceneTime;this.remnant.update(visualTime,this.missionState,this.missionState?.postgame?this.actors?.heelCenter:null,{doors:this.store.doors,floorPlan:this.store.floorPlan,intact:this.streetShow?.state.mode!=='collapsed',rescue:this.actors?.rescueFrame});
+    const visualTime=this.director.visualTime??sceneTime;this.remnant.update(visualTime,this.missionState,this.missionState?.postgame?this.actors?.heelCenter:null,{doors:this.store.doors,floorPlan:this.store.floorPlan,intact:!!this.missionState?.vcr||(this.streetShow?.state.snapshotReady?this.streetShow.state.mode!=='collapsed':this.store.destruction.state.progress<44),rescue:this.actors?.rescueFrame});
     this.creatureSpeech.update(this.camera,this.remnant.state.position,this.remnant.state.visible?this.remnant.state.emoji:'');
     this.store.glass.uniforms.uTime.value=visualTime;this.wet.update(visualTime);this.weather.update(visualTime);
     if(render){this.renderer.info.reset();this.composer.render();this.renderCount++;

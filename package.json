@@ -6,7 +6,11 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
-    "preview": "vite preview --host 0.0.0.0"
+    "preview": "vite preview --host 0.0.0.0",
+    "review:capture": "python3 scripts/visual-review.py capture",
+    "review:report": "python3 scripts/visual-review.py report",
+    "review:compare": "python3 scripts/visual-review.py compare",
+    "review:test": "python3 scripts/test_visual_review.py"
   },
   "dependencies": {
     "three": "0.180.0"

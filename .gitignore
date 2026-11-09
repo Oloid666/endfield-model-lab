@@ -16,3 +16,6 @@ artifacts/*.webm
 .dev.vars
 .dev.vars.*
 .wrangler/
+
+# Reproducible visual review evidence stays local; never enters the web bundle.
+artifacts/visual-review/

@@ -24,7 +24,12 @@ export function buildDragon(r) {
     c.lineWidth=8;c.strokeStyle='#344d42';c.lineCap='round';
     for(const x of [70,186]){
       if(blink||mood==='happy'){c.beginPath();c.moveTo(x-25,137);c.quadraticCurveTo(x,145,x+25,137);c.stroke();}
-      else{const shock=mood==='shock',doubt=mood==='doubt',g=c.createLinearGradient(0,75,0,178);g.addColorStop(0,'#408572');g.addColorStop(1,'#c1c777');c.fillStyle=g;c.beginPath();c.roundRect(x-(shock?29:27),shock?81:doubt&&x===70?111:88,shock?58:54,shock?88:doubt&&x===70?55:80,20);c.fill();c.stroke();c.beginPath();c.moveTo(x-29,shock?72:doubt&&x===70?102:88);c.lineTo(x+29,shock?66:doubt&&x===70?111:88);c.stroke();c.fillStyle='#e7efc6';c.beginPath();c.ellipse(x-6,shock?105:108,shock?6:7,shock?8:10,0,0,Math.PI*2);c.fill();}
+      else if(mood==='shock'){
+        c.fillStyle='#edf0d5';c.beginPath();c.ellipse(x,126,31,49,0,0,Math.PI*2);c.fill();c.stroke();
+        c.fillStyle='#408572';c.beginPath();c.ellipse(x,133,16,23,0,0,Math.PI*2);c.fill();
+        c.beginPath();c.moveTo(x-31,64);c.quadraticCurveTo(x,50,x+31,61);c.stroke();
+        c.fillStyle='#ffffff';c.beginPath();c.ellipse(x-5,125,5,7,0,0,Math.PI*2);c.fill();
+      }else{const doubt=mood==='doubt',g=c.createLinearGradient(0,75,0,178);g.addColorStop(0,'#408572');g.addColorStop(1,'#c1c777');c.fillStyle=g;c.beginPath();c.roundRect(x-27,doubt&&x===70?111:88,54,doubt&&x===70?55:80,20);c.fill();c.stroke();c.beginPath();c.moveTo(x-29,doubt&&x===70?102:88);c.lineTo(x+29,doubt&&x===70?111:88);c.stroke();c.fillStyle='#e7efc6';c.beginPath();c.ellipse(x-6,108,7,10,0,0,Math.PI*2);c.fill();}
     }
     c.lineWidth=5;c.beginPath();
     if(mood==='shock'){c.ellipse(128,195,12,17,0,0,Math.PI*2);c.fillStyle='#344d42';c.fill();}
@@ -80,6 +85,14 @@ export function buildDragon(r) {
       arms[0].position.set(-.32,.7,.36);arms[1].position.set(.32,.7,.36);
       arms[0].rotation.z=-.85;arms[1].rotation.z=.85;
       feet[0].position.z=.22;feet[1].position.z=-.02;tail.rotation.x=-.88;
+    }
+    if(action==='shock'&&s.action?.source==='fridge'){
+      const age=Math.max(0,s.action.age||0),brace=reduced?0:Math.sin(Math.min(1,age/.16)*Math.PI),rebound=reduced?0:Math.sin(Math.min(1,Math.max(0,age-.16)/.34)*Math.PI);
+      body.scale.set(1+brace*.035-rebound*.02,1-brace*.07+rebound*.05,1+brace*.025);
+      body.rotation.x-=.10*(reduced?1:T.MathUtils.smoothstep(age,.12,.4));
+      // Keep both palms behind the face plane so the painted mouth stays readable.
+      arms[0].position.set(-.62,.40,-.03);arms[1].position.set(.62,.40,-.03);
+      arms[0].rotation.z=-.38;arms[1].rotation.z=.38;
     }
     if(action==='sigh')s.reaction=null;
     if(action!=='sigh'&&!s.reaction&&s.allowIdleEmote&&t%10<1.6)s.reaction={id:[0,1,3,7,4,2][Math.floor(t/10)%6],age:t%10,large:false};

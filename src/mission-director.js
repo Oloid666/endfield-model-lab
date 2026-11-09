@@ -201,6 +201,7 @@ export class MissionDirector{
     if(cctv){
       const tablet=state.tablet,fridgeScene=['cooling','success','defrost','hot'].includes(tablet?.stage),singing=tablet?.dialogue?.cue==='song';
       actor.root.visible=this.world.charactersEnabled&&fridgeScene;if(actor.heroRoot)actor.heroRoot.visible=false;
+      if(tablet?.dialogue?.cue==='shock')actor.setCompanionAction?.({kind:'shock',source:'fridge',age:tablet.dialogueAge,amount:1});
       actor.setSceneAction?.({singing,singingAge:tablet?.dialogueAge||0,quietSong:singing,mealVisible:false,externalDevice:true});actor.setDragonProjectile([1.7,1.12,-.65],0);
       actor.setDragonHeading?.(singing&&tablet.dialogueAge>2.5?-2.42:-2.25);return;
     }

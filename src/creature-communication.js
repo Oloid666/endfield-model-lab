@@ -8,7 +8,8 @@ export function creatureCommunication(container){
   if(emoji!==last){node.textContent=emoji;node.setAttribute('aria-label',meanings[emoji]||emoji);node.dataset.emotion=emoji;last=emoji;}
   const scene=container.getBoundingClientRect(),parent=mount.getBoundingClientRect(),w=scene.width,h=scene.height;
   let floor=h-70;const panel=mount.querySelector('.mission-combat:not([hidden])');if(panel){const r=panel.getBoundingClientRect();if(r.width>w*.5)floor=Math.min(floor,r.top-scene.top-12);}
-  const x=Math.max(40,Math.min(w-40,(point.x+1)*w/2+54)),y=Math.max(Math.min(170,h*.25),Math.min(floor,(1-point.y)*h/2-10));
+  // On the acknowledgement beat, leave the real thumb on the other side visible.
+  const thumbsUp=emoji==='👍',x=Math.max(40,Math.min(w-40,(point.x+1)*w/2+(thumbsUp?-70:54))),y=Math.max(Math.min(170,h*.25),Math.min(floor,(1-point.y)*h/2-(thumbsUp?35:10)));
   node.style.left=`${scene.left-parent.left+x}px`;node.style.top=`${scene.top-parent.top+y}px`;node.hidden=false;
  },dispose(){node.remove();}};
 }

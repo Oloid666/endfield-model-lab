@@ -168,7 +168,7 @@ export function revisedStoryShot(s,{feet=[-1.25,.32,3.25],heroHead=null,dragon=[
 
  if(s.phase==='briefing'){
   if(s.node?.cue==='rossi-collection')return shot('briefing-rossi-collection',[.85,4.9,5.8],[.28,4.61,1.43],portrait?32:27);
-  if(s.node?.cue==='rossi-closeup')return shot('briefing-rossi-closeup',[.55,4.8,4.6],[.28,4.61,1.43],portrait?33:28);
+  if(s.node?.cue==='rossi-closeup')return shot('briefing-rossi-closeup',[.55,5.55,4.6],[.28,4.66,1.43],portrait?33:28);
   if(s.node?.cue==='age-reaction')return person('briefing-age-reaction',hero,{portrait,side:1,distance:3.3});
   if(index<2)return shot('briefing-evidence',[.45,4.84,5.7],[.28,4.57,1.43],portrait?36:30);
   if(index===2)return caster('briefing-wants-her-book',feet,0,portrait,heroHead);
@@ -210,7 +210,7 @@ export function revisedStoryShot(s,{feet=[-1.25,.32,3.25],heroHead=null,dragon=[
  }
  const temperature=()=>shot(stage==='defrost'?'fridge-temperature-reversal':'fridge-temperature-detail',[2.03,2.05,-.15],[1.79,1.92,-1.89],portrait?31:25);
  if(stage==='cooling'||stage==='defrost')return temperature();
- const face=xaihiHead||[1.2,1.75,-1.35],reaction=beat=>shot(beat,[face[0]+1.45,face[1]+.18,face[2]-.10],[face[0],face[1]-.03,face[2]],portrait?50:39);
+ const face=xaihiHead||[1.2,1.75,-1.35],reaction=beat=>shot(beat,[face[0]+1.35,face[1]+.14,face[2]+.05],[face[0],face[1]-.20,face[2]],portrait?45:39);
  if(stage==='success')return t.dialogue?.speaker==='xaihi'?reaction('fridge-hopeful-profile'):temperature();
  if(stage==='hot'){
   if(t.dialogue?.speaker==='xaihi')return reaction('fridge-xaihi-reaction');

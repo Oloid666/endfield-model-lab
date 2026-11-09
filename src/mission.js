@@ -141,6 +141,7 @@ export function createMission({mount=document.querySelector('#app'),onDinner,onG
       const angle=motionQuery?.matches?0:(rew?-1:1)*progress*2160;deckWheelL.style.transform=`rotate(${angle}deg)`;deckWheelR.style.transform=`rotate(${angle*.89}deg)`;vcrSymbol.style.opacity=transport==='reverse'&&!motionQuery?.matches?String(.55+.45*Math.sin(progress*24*Math.PI)**2):'1';vcrTimelineFill.style.transform=`scaleX(${rew?1-progress:progress})`;setText(vcrFrame,`FRAME ${String(Math.round(seconds*30)).padStart(5,'0')}`);
     }
     investigation.update(s);
+    panel.classList.toggle('tablet-dialogue',!!s.tablet?.dialogue);
     if(s.tablet?.dialogue){const d=s.tablet.dialogue;panel.hidden=false;setText(name,speakers[d.speaker]);name.hidden=false;setText(chapter,d.speaker==='rapi'?'3號天師樁 · 螢幕':'VCR · 現場旁白');setText(text,d.text);line.disabled=s.paused||s.tablet.busy;setText(next,'▼ 點一下繼續');panel.classList.toggle('dragon-aside',d.speaker==='dragon');panel.classList.remove('has-comm');comm.hidden=true;}
 
     if(lastPhase!==s.phase&&lastPhase==='login'||s.paused||document.hidden)cancelSpeech();syncPointer(s,force||lastPhase!==s.phase);lastPhase=s.phase;

@@ -57,7 +57,7 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
   const locomotion=makeLocomotion(root,pivot),follower=makeFollower(root.position,locomotion),idle={};let raining=true,dinner=null,lastTime=0,lastWalking=false;
   const pivotRest=pivot.position.clone(),cinematic={phase:'',elapsed:0,charge:0,flight:0,recoil:0,distance:1.2,height:2.7,castingElapsed:null,launchOverride:null};
   let smileTarget=0,smileAmount=0;
-  const companionAction={kind:'',amount:0};
+  const companionAction={kind:'',amount:0,source:'',age:0};
   const heroWorld=new T.Vector3(),projectileWorld=new T.Vector3();let dragonHeading=0;let castActive=false,projectileActive=false,projectileRoll=0,landingFeet=false;
   const castPhases=new Set(['login','captcha','lever','ascent','director-reminder','shoe-view','pylon-link','charge','fire-ready','combat','energy','last','aim-final','finisher','landing']);
   const walkPose={shoulderL:0,shoulderR:0,elbowL:0,elbowR:0,wristL:0,wristR:0};
@@ -130,7 +130,7 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
     setGesture(name,node={}){gesture.name=aliases[name]||String(name||'');gesture.start=lastTime;gesture.speaker=node.speaker||'';gesture.mood=node.mood||'calm';},
     setDinner(value){dinner=['A','B','C'].includes(String(value).toUpperCase())?String(value).toUpperCase():null;meal.setDinner(dinner);dragonMeal.setDinner(dinner);status.dinner=dinner;if(!dinner){damage.set('clean',lastTime);smileTarget=smileAmount=0;companionAction.kind='';companionAction.amount=0;}},
     setSmile(value){smileTarget=T.MathUtils.clamp(Number(value)||0,0,1);},
-    setCompanionAction(value){companionAction.kind=value?.kind||'';companionAction.amount=T.MathUtils.clamp(Number(value?.amount)||0,0,1);status.companionAction=companionAction.kind;},
+    setCompanionAction(value){companionAction.kind=value?.kind||'';companionAction.amount=T.MathUtils.clamp(Number(value?.amount)||0,0,1);companionAction.source=value?.source||'';companionAction.age=Math.max(0,Number(value?.age)||0);status.companionAction=companionAction.kind;},
     setCinematic(value){
       const active=Boolean(value&&castPhases.has(value.phase));
       if(castActive&&!active)landingFeet=true;
@@ -241,7 +241,7 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
       const companion=sceneAction.freeFlying?{...follower.state,walk:0,mode:'flying',lookYaw:sceneAction.freeLookYaw,lookPitch:sceneAction.freeLookPitch}:follower.update(delta,t);
       idle.dragon=attention;idle.rain=rain;idle.nod=Math.max(idle.nod,gest('happy'));idle.walk=companion.walk;idle.walkPhase=companion.phase;idle.lookYaw=companion.lookYaw;idle.lookPitch=companion.lookPitch;idle.followerMode=companion.mode;idle.glance=companion.glance;idle.gesture=status.gesture;idle.gestureAge=elapsed;idle.gestureAmount=g;idle.holding=!!dinner;idle.gestureAmount=sceneAction.photoLook||!dragonSpeaker?0:g;idle.action=companionAction;idle.projectile=!sceneAction.homecoming&&projectileActive&&['aim-final','finisher','landing','tour','complete'].includes(cinematic.phase)&&!['key','lever'].includes(companionAction.kind);idle.phoneHold=sceneAction.photoLook;idle.allowIdleEmote=sceneAction.playful&&!castActive;idle.singing=sceneAction.singing;idle.singingTrapped=sceneAction.singingTrapped;idle.singingAge=sceneAction.singingAge;idle.quietSong=sceneAction.quietSong;idle.reaction=reaction&&t-reaction.at<2?{...reaction,age:t-reaction.at}:null;dragon.update(t,idle);status.companionExpression=dragon.state.mood;status.companionHandsVisible=dragon.state.handsVisible;
       dragonWorldPosition.copy(projectileActive?projectileWorld:heroWorld.fromArray(companion.position));root.worldToLocal(dragonWorldPosition);dragon.root.position.copy(dragonWorldPosition);status.dragonHeading=dragonHeading;dragon.root.rotation.set(sceneAction.photoLook?.25:projectileActive?-.08:0,projectileActive?dragonHeading:companion.heading,projectileActive?projectileRoll:0);dragon.root.scale.set(.59,idle.projectile?.55:.59,.59);
-      const saving=carry.phase==='aim-final',rescue=rescueTiming(carry.rescueAge||0),holdingDragon=carry.owner==='dragon'||saving;
+      const saving=carry.phase==='aim-final',rescue=rescueTiming(carry.rescueAge||0),holdingDragon=carry.owner==='dragon'&&sceneAction.mealVisible!==false||saving;
       if(carry.phase==='meal-handoff')carryYaw=0;
       else if(carry.owner==='dragon'&&!rescueCaptured){const turn=Math.atan2(Math.sin(dragonHeading+Math.PI-carryYaw),Math.cos(dragonHeading+Math.PI-carryYaw));carryYaw+=turn*(delta>0?1-Math.exp(-Math.min(delta,.06)*6):0);}
       if(holdingDragon){

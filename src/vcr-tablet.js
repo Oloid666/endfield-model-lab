@@ -1,4 +1,7 @@
 export const FRIDGE_HOT_C=105;
+// Keep the settled reading visible before the reaction cut. Both use the scene clock.
+export const FRIDGE_RISE_END=3.6;
+export const FRIDGE_READING_HOLD=.65;
 // Every reveal uses the mission clock, including the deliberately late eye bar.
 // Slow down near both sockets so the final arrival is visible before power selection.
 export function wireProgress(age){const t=Math.max(0,Math.min(6,age));return t<.4?0:t<1.6?(t-.4)/1.2*.09:t<4.9?.09+(t-1.6)/3.3*.826:.916+(t-4.9)/1.1*.084;}
@@ -31,12 +34,12 @@ export const TABLET_PAGES={
  done:['極速加熱',['加熱控制交接中'],[]]
 };
 const NEXT={scan:'scan-php',tool:'fridge',detect:'scan-controller',control:'walk-fridge',apply:'cooling',meal:'walk-counter','scan-grid':'scan-grid','inspect-console':'backdoor',enable:'cable','800mw':'confirm',confirm:'ready',start:'done'};
-const AUTO={'scan-php':['php',1.6],'scan-controller':['controller',1.3],'walk-fridge':['temperature',3.2],cooling:['success',2],success:['defrost',0],defrost:['hot',3.6],'walk-counter':['meal-label',3.2],'meal-label':['grid',0],'scan-grid':['grid-found',4.8],backdoor:['rapi-request',1.5],'rapi-request':['rapi-answer',0],cable:['power',6]};
+const AUTO={'scan-php':['php',1.6],'scan-controller':['controller',1.3],'walk-fridge':['temperature',3.2],cooling:['success',2],success:['defrost',0],defrost:['hot',FRIDGE_RISE_END+FRIDGE_READING_HOLD],'walk-counter':['meal-label',3.2],'meal-label':['grid',0],'scan-grid':['grid-found',4.8],backdoor:['rapi-request',1.5],'rapi-request':['rapi-answer',0],cable:['power',6]};
 const TALKS={
  search:[['xaihi','冰箱能不能再調冷一點……'],['xaihi','要從後台設定，還要密碼。'],['dragon','妳知道密碼？'],['xaihi','不知道。我找找別的方法。']],
  php:[['xaihi','管理後台有個漏洞，不用密碼也能進去。'],['xaihi','PHP 出了個大漏洞，賽馬娘停服維修……我才有時間出門。','maintenance']],
  success:[['xaihi','嗯，有降。','satisfied'],['dragon','成功了？']],
- hot:[['dragon','正一百零五？！這台不是冰箱嗎？！'],['xaihi','……借了法國駭客的工具，忘了改預設模式。','avert'],['dragon','熱愛105°C的你～🎶\n滴滴清純的蒸餾水～','song'],['xaihi','……飲料晚點再說。先熱便當。','side-eye']],
+ hot:[['dragon','正一百零五？！這台不是冰箱嗎？！','shock'],['xaihi','……借了法國駭客的工具，忘了改預設模式。','avert'],['dragon','熱愛105°C的你～🎶\n滴滴清純的蒸餾水～','song'],['xaihi','……飲料晚點再說。先熱便當。','side-eye']],
  'meal-label':[['xaihi','微波三分鐘……','read-label'],['xaihi','太久了。我找個快一點的。','tablet']],
  'grid-found':[['xaihi','咦，這邊有機會。']],
  backdoor:[['xaihi','怎麼還裝了妮姬？'],['xaihi','這台妮姬啟動器裡有木馬，會偷玩家的帳號密碼。'],['dragon','玩遊戲還附贈盜帳號？'],['xaihi','惡意程式混進正常更新，叫供應鏈攻擊。這台也留下遠端通道。'],['dragon','別人偷帳號，妳偷電？'],['xaihi','留下來的通道還能用。這樣我們可以周轉一下。']],

@@ -1,0 +1,35 @@
+{
+  "id": "fridge-105-v1",
+  "title": "冰箱105°C：成功、反轉、心虛與轉移話題",
+  "goal": "觀眾看懂期待成功→發現升溫→塞西掩飾失誤→轉移話題，並感受到龍泡泡的調侃。",
+  "viewport": {"width": 390, "height": 844},
+  "device_scale_factor": 1.5,
+  "quality": "balanced",
+  "fps": 12,
+  "max_review_images": 8,
+  "setup": [
+    {"seconds": 2.2}, {"talk_through": true},
+    {"input": "scan"}, {"seconds": 1.7}, {"talk_through": true},
+    {"input": "tool"}, {"input": "detect"}, {"seconds": 1.4},
+    {"input": "control"}, {"seconds": 3.3}
+  ],
+  "timeline": [
+    {"input": "apply"}, {"until_stage": "success", "timeout": 3},
+    {"seconds": 2, "samples": [{"at": 1, "id": "01", "title": "塞西以為成功", "goal": "低調自信，讀出她認為降溫有效。"}]},
+    {"input": "talk-next"},
+    {"seconds": 2, "samples": [{"at": 1, "id": "02", "title": "低溫讀數", "goal": "看清−8°C；畫外提問可以成立，不強制出現說話者。"}]},
+    {"input": "talk-next"}, {"until_stage": "defrost", "timeout": 1},
+    {"seconds": 3.5, "samples": [
+      {"at": 1.8, "id": "03", "title": "升溫途中", "goal": "看懂溫度反轉；需連續影像確認變化與時機。"},
+      {"at": 3.4, "id": "04", "title": "反轉切鏡前", "goal": "檢查切到反應之前，觀眾實際讀到什麼數字。"}
+    ]},
+    {"until_stage": "hot", "timeout": 1},
+    {"seconds": 2.4, "samples": [{"at": 1.2, "id": "05", "title": "龍泡泡反應", "goal": "反應放大荒謬感；可用同框或前後鏡頭建立因果。"}]},
+    {"input": "talk-next"},
+    {"seconds": 2.5, "samples": [{"at": 1, "id": "06", "title": "塞西心虛", "goal": "淡定掩飾，讓眼神與姿勢傳達心虛。"}]},
+    {"input": "talk-next"},
+    {"seconds": 4.5, "samples": [{"at": 3, "id": "07", "title": "龍泡泡唱歌", "goal": "完整歌詞可讀；唱歌不出現手，放大調侃。"}]},
+    {"input": "talk-next"},
+    {"seconds": 2.5, "samples": [{"at": 1, "id": "08", "title": "塞西轉移話題", "goal": "恢復鎮定，把注意力轉向便當。"}]}
+  ]
+}

@@ -139,6 +139,12 @@ check('Companion routes around a shelf instead of cutting the corner',rackFollow
 
 const reactions=[];for(let i=0;i<8;i++){const time=1000+i*3.1;reactions.push(a.reactDragon(time,true));check('Reaction cooldown blocks rapid repeat '+i,a.reactDragon(time+.1,true)===null);a.update(time+.5,.016);}check('Eight clicks rotate through all unique reactions',new Set(reactions).size===8&&reactions.every(Boolean));a.cancelReaction();
 a.setMove(0,0,false);for(const heading of [-.9,.4,-.35]){a.setSceneAction({heading});for(let i=0;i<90;i++)a.update(1100+i/60,1/60);check('Standing feet follow the body turn '+heading,a.status.footDrift<.006,{footDrift:a.status.footDrift});}
+// A hidden VCR meal must not overwrite the reaction with the present-day carry pose.
+a.cancelReaction();a.setCinematic(null);a.setDinner('A');a.setTray({owner:'dragon',phase:'hack',rescueAge:null});a.setSceneAction({mealVisible:false,externalDevice:true});a.setCompanionAction({kind:'shock',source:'fridge',age:1,amount:1});a.update(1200,1/60);
+const faceHands=root.getObjectByName('dragon').children[0].children.filter(n=>n.isMesh&&Math.abs(n.scale.x-.16)<1e-6&&Math.abs(n.scale.y-.11)<1e-6);
+check('Real controller preserves the fridge shock and keeps palms behind the face',a.status.companionExpression==='shock'&&faceHands.length===2&&faceHands.every(h=>h.position.z<.1));
+a.setSceneAction({mealVisible:true});a.setCompanionAction({kind:'normal',amount:0});a.update(1200.1,1/60);
+check('Present-day carrying still restores the tray-support hands',faceHands.every(h=>h.position.z>.7));
 a.dispose();resources.dispose();
 const finalHash=createHash('sha256').update(await fs.readFile(file)).digest('hex');check('Original GLB unchanged after tests',finalHash===expectedHash);
 const result={kind:'Node actual-GLB geometry, skeleton and controller checks; in-memory image materials removed and Canvas painting stubbed; not a render, GPU benchmark or iPhone test',passed:checks.every(c=>c.passed),checks,trace};

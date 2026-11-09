@@ -90,7 +90,7 @@ export function buildXaihi(scene,r,gltf){
     get loaded(){return !disposed;},get state(){return {...status,headPosition:api.headPosition,screenButtons:phone.visible?hitButtons.map(b=>({id:b.id,world:screen.localToWorld(new T.Vector3(0,.23*(.5-(b.y+56)/768),0)).toArray()})):[],handPositions:['L','R'].map(side=>poses['wrist'+side]?.bone.getWorldPosition(new T.Vector3()).toArray()),position:root.position.toArray(),pose:{head:poses.head?.bone.quaternion.toArray(),wrist:poses.wristR?.bone.quaternion.toArray(),arm:poses.armL?.bone.quaternion.toArray()}};},
     setPosition(x,y,z){root.position.set(x,y,z);restPosition.copy(root.position);},
     setHeading(yaw){root.rotation.y=Number(yaw)||0;},
-    reset(){phase='';action='waiting';root.visible=false;root.position.copy(restPosition);root.rotation.y=2;phone.visible=meal.visible=false;for(const p of Object.values(poses)){p.bone.position.copy(p.rest);p.bone.quaternion.copy(p.q);}for(const lid of eyelids)lid.bone.position.copy(lid.rest);Object.assign(status,{phase,action,visible:false,headYaw:0,phoneVisible:false,mealVisible:false});},
+    reset(){phase='';action='waiting';root.visible=false;root.position.copy(restPosition);root.rotation.y=2;phone.visible=meal.visible=false;for(const p of Object.values(poses)){p.bone.position.copy(p.rest);p.bone.quaternion.copy(p.q);}for(const lid of eyelids)lid.bone.position.copy(lid.rest);Object.assign(status,{phase,action,visible:false,headYaw:0,eyeYaw:0,eyePitch:0,tabletLift:0,performanceCue:'',phoneVisible:false,mealVisible:false});},
     update(t,delta=0,state={}){
       if(disposed)return;time=Number.isFinite(t)?t:time;phase=state.phase||'';
       const visible=state.xaihiVisible??visiblePhases.has(phase);root.visible=visible;
@@ -102,37 +102,40 @@ export function buildXaihi(scene,r,gltf){
       action=operating?'microwave':receive?'receive-lunch':hack?'terminal':'waiting';
       const walking=['walk-fridge','walk-counter'].includes(stage);let distance=0;
       if(walking)distance=travel((state.tablet.age||0)/3.2,stage==='walk-counter');
-      else if(['temperature','cooling','success','defrost','hot'].includes(stage)){root.position.set(1.2,restPosition.y,-1.35);const reaction=stage==='success'||stage==='hot';root.rotation.y=Math.PI-(reaction?.69*clamp((state.tablet.age||0)/.6):0);}
+      else if(['temperature','cooling','success','defrost','hot'].includes(stage)){root.position.set(1.2,restPosition.y,-1.35);const reaction=stage==='success'||stage==='hot';root.rotation.y=Math.PI-(reaction?1.02*clamp((state.tablet.age||0)/.6):0);}
       else {root.position.copy(restPosition);root.rotation.y=phase==='meal-spawn'?1.6:2;}
       if(refusing)root.rotation.y+=.52*refuse;
       const recoil=phase==='meal-spawn'?clamp(((state.phaseElapsed||0)-6.2)/.6):0;if(recoil){root.position.x-=.14*recoil;root.position.z-=.10*recoil;}if(refusing){root.position.x-=Math.sin(root.rotation.y)*.16*refuse;root.position.z-=Math.cos(root.rotation.y)*.16*refuse;}
+      const cueAge=state.tablet?.dialogueAge||0,eyeLead=clamp(cueAge/.14),headFollow=clamp((cueAge-.08)/.38),bodyFollow=clamp((cueAge-.18)/.48),confident=cue==='satisfied',avert=cue==='avert',redirect=cue==='side-eye';
+      const tabletLift=(confident?.035:avert?-.095:redirect?.08:0)*bodyFollow;
       const beat=Math.sin(time*1.1),flinch=phase==='heat-demo'?Math.max(0,Math.sin((state.phaseElapsed||0)*3.1))*.08:0;
       for(const p of Object.values(poses))p.bone.position.copy(p.rest);
-      pose('spine',Math.sin(time*.8)*.006+(hack?.035:0)-flinch*.13-recoil*.04-refuse*.08,0,beat*.004);
+      pose('spine',Math.sin(time*.8)*.006+(hack?.035:0)-flinch*.13-recoil*.04-refuse*.08+(avert?.025:redirect?-.015:0)*bodyFollow,(redirect?-.10:avert?.035:0)*bodyFollow,beat*.004+(avert?.022:0)*bodyFollow);
       pose('neck',hack?.045:0,0,0);
-      const fridgeReaction=stage==='success'||stage==='hot',birth=phase==='meal-spawn',headYaw=refusing?.24*refuse:cue==='avert'?.38:cue==='side-eye'?-.65:readingLabel?-.10:birth?0:fridgeReaction?-.44:hack?-.22:-.65,nod=cue==='satisfied'?Math.sin(Math.min(1,state.tablet.age/1.2)*Math.PI)*.06:0;pose('head',readingLabel?.28:(refusing?-.02:birth?.16:fridgeReaction?-.03:hack?.14:.015)+nod,headYaw,Math.sin(time*.43)*.008+refuse*.06);
+      const fridgeReaction=stage==='success'||stage==='hot',birth=phase==='meal-spawn',headYaw=refusing?.24*refuse:avert?-.44+.16*headFollow:redirect?-.44-.16*headFollow:readingLabel?-.10:birth?0:fridgeReaction?-.44:hack?-.22:-.65,nod=confident?-Math.sin(Math.min(1,cueAge/1.2)*Math.PI)*.035:0;pose('head',readingLabel?.28:(refusing?-.02:birth?.16:fridgeReaction?-.03:hack?.14:.015)+nod+(avert?-.01:redirect?-.035:0)*headFollow,headYaw,Math.sin(time*.43)*.008+refuse*.06+(avert?.035:0)*headFollow);
       // Relax the A-pose, then bring the real forearms toward the terminal.
       pose('armL',hack?-.13:receive?-.18:0,.02,-.56+(hack?.10:0));
       pose('elbowL',hack?-1.22:receive?-.88:-.12,0,-.02);pose('wristL',hack?-.5:receive?-.06:0,.06,0);
       pose('armR',operating?-.27:hack?-.12:0,-.025,.59-(operating?.10:0));
       pose('elbowR',operating?-1.07:hack?-.95:-.13,operating?-.12:0,.02);pose('wristR',hack?-.5:0,0,operating?-.08:.03);
-      pose('eyeL',0,hack?-.035:0);pose('eyeR',0,hack?-.035:0);
+      const eyeYaw=hack?-.035+(confident?-.055:avert?.12:redirect?-.10:0)*eyeLead:0,eyePitch=avert?.035*eyeLead:0;
+      pose('eyeL',eyePitch,eyeYaw);pose('eyeR',eyePitch,eyeYaw);
       const blink=Math.max(0,1-Math.abs((time+.4)%4.7-.16)/.11);
-      for(const lid of eyelids)lid.bone.position.lerpVectors(lid.rest,lid.target,Math.max(blink,refuse*.08));
+      for(const lid of eyelids)lid.bone.position.lerpVectors(lid.rest,lid.target,Math.max(blink,refuse*.08,avert?.09*eyeLead:redirect?.04*eyeLead:0));
       for(let i=0;i<secondary.length;i++)pose(secondary[i],Math.sin(time*.85-i*.4)*.009,0,Math.sin(time*.63-i*.6)*.005);
       for(const suffix of ['L','R','DL','DR']){const swing=walking?Math.sin(distance*10)*(suffix.endsWith('L')?1:-1):0;pose('thigh'+suffix,swing*.25);pose('knee'+suffix,Math.max(0,-swing)*.38);pose('foot'+suffix,-swing*.12);}
       if(walking)root.position.y+=Math.abs(Math.sin(distance*10))*.014;
       root.updateMatrixWorld(true);
-      if(hack){holdArm('L',tabletLeft);holdArm('R',tabletRight);}
+      if(hack){tabletLeft.set(.04,.98+tabletLift,.40);tabletRight.set(-.40,.98+tabletLift,.40);holdArm('L',tabletLeft);holdArm('R',tabletRight);}
       else if(refusing){poses.wristL.bone.getWorldPosition(refusalStart);root.worldToLocal(refusalStart);refusalTarget.lerpVectors(refusalStart,refuseLeft,refuse);poses.wristL.bone.getWorldQuaternion(refusalRestQ);root.getWorldQuaternion(ikWorld).multiply(refusalBasis).multiply(palmCalibration);refusalQ.slerpQuaternions(refusalRestQ,ikWorld,refuse);holdArm('L',refusalTarget,refusalPole,refusalQ);holdArm('R',safeRight);}
       else {holdArm('R',safeRight);}
 
       if(poses.cuffL)poses.cuffL.bone.position.y-=.08*refuse;
-      for(const id of smileIds){const p=poses['smile'+id];if(p)p.bone.position.y+=refuse*([158,162].includes(id)?.003:[168,172].includes(id)?.0012:.0008);}
+      for(const id of smileIds){const p=poses['smile'+id];if(p)p.bone.position.y+=(refuse+(confident?.35*headFollow:0))*([158,162].includes(id)?.003:[168,172].includes(id)?.0012:.0008);}
       paint(state.tablet);phone.visible=hack&&!leaving;meal.visible=receive;
       const wrist=poses.wristL?.bone;
-      if(wrist){wrist.getWorldPosition(v);root.worldToLocal(v);phone.position.copy(v).add(phoneOffset);phone.rotation.set(.95,Math.PI,0);if(hack)phone.position.set(-.18,1.13,.46);meal.position.copy(v).add(mealOffset);meal.rotation.set(-.06,0,0);}
-      updateBounds();Object.assign(status,{action:refusing?'refuse-lunch':action,refuseAmount:refuse,headYaw,phoneVisible:phone.visible,mealVisible:meal.visible});
+      if(wrist){wrist.getWorldPosition(v);root.worldToLocal(v);phone.position.copy(v).add(phoneOffset);phone.rotation.set(.95,Math.PI,0);if(hack)phone.position.set(-.18,1.13+tabletLift,.46);meal.position.copy(v).add(mealOffset);meal.rotation.set(-.06,0,0);}
+      updateBounds();Object.assign(status,{action:refusing?'refuse-lunch':action,refuseAmount:refuse,headYaw,eyeYaw,eyePitch,tabletLift,performanceCue:cue,phoneVisible:phone.visible,mealVisible:meal.visible});
     },
     dispose(){if(disposed)return;disposed=true;api.reset();status.loaded=false;root.removeFromParent();},
   };
