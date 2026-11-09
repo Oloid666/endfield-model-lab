@@ -47,7 +47,9 @@ export function aimBone(bone,child,target,weight=1,fromDirection=null){
  if(fromDirection)from.copy(fromDirection);else{if(!child)return;child.getWorldPosition(b);from.subVectors(b,a);}
  to.subVectors(target,a);
  if(from.lengthSq()<1e-10||to.lengthSq()<1e-10)return;
- turn.setFromUnitVectors(from.normalize(),to.normalize());if(weight<1)turn.copy(none).slerp(turn,weight);
+ // Blend the computed turn toward identity without overwriting the turn first.
+ // copy(identity).slerp(turn, weight) aliases `turn` and erases every partial rotation.
+ turn.setFromUnitVectors(from.normalize(),to.normalize());if(weight<1)turn.slerp(none,1-weight);
  bone.getWorldQuaternion(world).premultiply(turn);bone.parent.getWorldQuaternion(parent).invert();
  bone.quaternion.copy(parent.multiply(world));bone.updateWorldMatrix(false,true);
 }

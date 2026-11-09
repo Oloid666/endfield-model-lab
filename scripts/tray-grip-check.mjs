@@ -9,8 +9,22 @@ import fs from 'node:fs/promises';
 import { Resources } from '../src/resources.js';
 import { buildPerformance } from '../src/performance.js';
 import { config } from '../src/config.js';
+import { aimBone } from '../src/tray-grip.js';
 
 const checks=[];const check=(name,passed,detail=null)=>checks.push({name,passed:!!passed,detail});
+// A quarter-turn must also work at partial weights, including a rotated parent and a tip
+// without a child. Static full-grip contact alone cannot catch a release-time rotation pop.
+const blendSamples=[];
+for(const parentAngle of [0,.6])for(const leaf of [false,true])for(const weight of [0,.25,.5,.75,1]){
+ const parent=new T.Group(),bone=new T.Bone(),child=new T.Bone();parent.rotation.z=parentAngle;parent.add(bone);
+ if(!leaf){bone.add(child);child.position.x=1;}parent.updateMatrixWorld(true);
+ const target=new T.Vector3(0,1,0).applyMatrix4(parent.matrixWorld);
+ const direction=leaf?new T.Vector3(1,0,0).transformDirection(parent.matrixWorld):null;
+ aimBone(bone,leaf?null:child,target,weight,direction);
+ const actual=bone.quaternion.angleTo(new T.Quaternion()),expected=Math.PI*.5*weight;
+ blendSamples.push({parentAngle,leaf,weight,actual,expected});
+}
+check('Thumb aim blends a quarter-turn proportionally at 0/25/50/75/100%, including rotated parents and terminal joints',blendSamples.every(s=>Math.abs(s.actual-s.expected)<1e-6),blendSamples);
 globalThis.ProgressEvent=class {constructor(type,props){this.type=type;Object.assign(this,props);}};
 const context={createRadialGradient:()=>({addColorStop(){}}),createLinearGradient:()=>({addColorStop(){}}),fillText(){},fillRect(){},beginPath(){},moveTo(){},lineTo(){},quadraticCurveTo(){},stroke(){},roundRect(){},fill(){},ellipse(){}};
 globalThis.document={createElement:()=>({width:256,height:256,getContext:()=>context})};
@@ -92,19 +106,24 @@ check('Walking/turning: thumbs never bury into the tray (<=12 vertices deeper th
 // One-hand carry (phone / handover): left hand under the middle, no thumb wrap; tray still carried.
 a.teleport(-1.25,2.48);a.setDinner('A');a.setSceneAction({handover:true});a.update(100,0);a.update(100.05,.05);
 {const r=measure();report.oneHand=r;const pen=Math.max(...['palm',...fingers].map(k=>r['L:'+k]?.maxPenMm||0));
- check('One-hand carry: left hand under the tray without sinking (<=4 mm)',pen<=4,{maxPenetrationMm:pen});
+ check('One-hand carry: left palm and four fingers under the tray without sinking (<=4 mm; excludes thumb)',pen<=4,{maxPenetrationMm:pen});
  check('One-hand carry: left finger pads touch the underside',sum(r,'L',fingers,'touch')>=40,{touching:sum(r,'L',fingers,'touch')});}
 a.setSceneAction({handover:false});
 
 // Handoff to the dragon: no single-frame jump of the hand or the tray while the IK weight blends out.
 a.teleport(-1.25,2.48);a.setDinner('A');a.setTray({owner:'hero',phase:'meal-handoff',age:0,rescueAge:null});
-let prevHand=null,prevTray=null,maxHand=0,maxTray=0,handAt=null,trayAt=null,maxHold=0,contactStep=0,releasePath=0;const hand=new T.Vector3();
+let prevHand=null,prevTray=null,maxHand=0,maxTray=0,handAt=null,trayAt=null,maxHold=0,contactStep=0,releasePath=0,prevThumbs=null,maxThumbStep=0,thumbStepAt=null;const hand=new T.Vector3();
 for(let i=0;i<=84;i++){const age=i/60;a.setTray({owner:age>=.70?'dragon':'hero',phase:'meal-handoff',age,rescueAge:null});
  const h=a.heroPosition;a.setDragonProjectile([h[0],h[1]+.68,h[2]+1.252],0);a.setDragonHeading(Math.PI);a.setCompanionAction({kind:'normal',amount:0});/* same staging as mission-director meal-handoff */a.update(110+age,1/60);
  poses.wristL.bone.getWorldPosition(hand);const tray=new T.Vector3().fromArray(a.status.mealSupport);
+ const thumbs=thumbIds.map(id=>byId(id).quaternion.clone());
+ if(prevThumbs&&age>=.70){const step=Math.max(...thumbs.map((q,j)=>q.angleTo(prevThumbs[j])));if(step>maxThumbStep){maxThumbStep=step;thumbStepAt=age;}}
+ prevThumbs=thumbs;
  if(prevHand&&i>2){const dh=hand.distanceTo(prevHand),dt=tray.distanceTo(prevTray);if(age<.70&&dh>maxHold)maxHold=dh;if(age>=.70&&age<=.72)contactStep=Math.max(contactStep,dh,dt);if(age>.72)releasePath+=dh;if(dh>maxHand){maxHand=dh;handAt=age;}if(dt>maxTray){maxTray=dt;trayAt=age;}}prevHand=hand.clone();prevTray=tray;}
 report.handoff={holdingMaxWristStepMm:+(maxHold*1000).toFixed(1),contactFrameStepMm:+(contactStep*1000).toFixed(1),releaseWristPathMm:+(releasePath*1000).toFixed(0),maxWristStepMm:+(maxHand*1000).toFixed(1),atAge:handAt&&+handAt.toFixed(3),maxTrayStepMm:+(maxTray*1000).toFixed(1),trayAtAge:trayAt&&+trayAt.toFixed(3)};
-check('Handoff: tray never moves more than 10 mm in one 1/60 s frame, including the ownership change at 0.70 s',maxTray<=.010,report.handoff);
+report.thumbRelease={maxJointStepDegrees:+T.MathUtils.radToDeg(maxThumbStep).toFixed(2),atAge:thumbStepAt&&+thumbStepAt.toFixed(3)};
+check('Handoff: thumb joints relax without a rotation snap (<=20 degrees per 1/60 s frame)',maxThumbStep<=T.MathUtils.degToRad(20),report.thumbRelease);
+check('Handoff: after two setup frames, tray steps stay <=10 mm per 1/60 s, including the ownership change at 0.70 s',maxTray<=.010,report.handoff);
 check('Handoff: at contact (0.70 s) neither wrist nor tray jumps more than 10 mm in a frame',contactStep<=.010,report.handoff);
 check('Handoff: while still holding (<0.70 s) the wrist follows the tray smoothly (<=10 mm/frame)',maxHold<=.010,report.handoff);
 a.setTray({owner:'hero',phase:'',age:0,rescueAge:null});a.setDinner(null);a.update(130,1/60);
