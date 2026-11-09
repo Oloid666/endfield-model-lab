@@ -93,9 +93,10 @@ a.setDinner(null);check('Replay clears meal props',!food.visible&&a.status.dinne
 a.setGesture('phone',{speaker:'zhuang'});a.update(66.2,0);a.update(66.8,0);
 check('Phone follows a real wrist during gesture',root.getObjectByName('phone').visible,{phonePosition:root.getObjectByName('phone').position.toArray()});
 a.teleport(-1.25,2.48);check('Teleport resets heading and walking input',Math.abs(pivot.rotation.y-.08)<.000001&&!a.moving,{heading:pivot.rotation.y,position:a.position.toArray()});
-a.setDinner('A');a.update(70,0);const heldArm=poses.armL.bone.quaternion.clone();let heldExcursion=0,maxPalmGap=0;a.setMove(1,0,true);
-for(let i=0;i<120;i++){a.update(70+i/60,1/60);heldExcursion=Math.max(heldExcursion,heldArm.angleTo(poses.armL.bone.quaternion));const plate=food.getObjectByName('meal-A').children[0],bottom=plate.getWorldPosition(vector()).y-.0225;for(const ids of [[349,353,357,361],[396,400,404,408]]){const palm=vector();for(const id of ids)palm.add(byId(id).getWorldPosition(vector()));palm.multiplyScalar(.25);maxPalmGap=Math.max(maxPalmGap,Math.abs(palm.y-bottom));}}
-check('Both palms remain under the real tray while walking and turning',maxPalmGap<.012&&heldExcursion<.20,{maxPalmGapMetres:maxPalmGap,heldPeakRadians:heldExcursion});
+a.setDinner('A');a.update(70,0);const heldArm=poses.armL.bone.quaternion.clone();let heldExcursion=0,maxPalmGap=0,minPalmDepth=Infinity;a.setMove(1,0,true);
+for(let i=0;i<120;i++){a.update(70+i/60,1/60);heldExcursion=Math.max(heldExcursion,heldArm.angleTo(poses.armL.bone.quaternion));const plate=food.getObjectByName('meal-A').children[0],bottom=plate.getWorldPosition(vector()).y-.0225;for(const ids of [[349,353,357,361],[396,400,404,408]]){const palm=vector();for(const id of ids)palm.add(byId(id).getWorldPosition(vector()));palm.multiplyScalar(.25);maxPalmGap=Math.max(maxPalmGap,Math.abs(palm.y-bottom));minPalmDepth=Math.min(minPalmDepth,bottom-palm.y);}}
+// D-F01: knuckle BONES sit ~15 mm under the underside so the finger SKIN (~11 mm thick) touches it; skin contact itself is measured in tray-grip-check.mjs.
+check('Both palms remain under the real tray while walking and turning',maxPalmGap<.018&&minPalmDepth>.004&&heldExcursion<.20,{maxPalmGapMetres:maxPalmGap,minKnuckleDepthMetres:minPalmDepth,heldPeakRadians:heldExcursion});
 a.setMove(0,0,false);a.teleport(-1.25,2.48);a.setDinner(null);
 
 const testRoot=new T.Group(),testPivot=new T.Group();testRoot.add(testPivot);const move=makeLocomotion(testRoot,testPivot);

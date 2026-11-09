@@ -1,6 +1,7 @@
 import * as T from 'three';
-import {trayRescueFrame,rescueTiming,rescueEase} from './tray-rescue.js';
+import {trayRescueFrame,rescueTiming,rescueEase,FIRST_HANDOFF_CONTACT} from './tray-rescue.js';
 import {makeArmSupport} from './arm-support.js';
+import {gripPoint,thumbPoints,aimBone,GRIP} from './tray-grip.js';
 import {damageAppearance} from './damage-appearance.js';
 import {buildDragonBandages} from './dragon-bandages.js';
 import { config } from './config.js';
@@ -77,8 +78,12 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
   const handSupports=['L','R'].map((side,index)=>{
     const wrist=poses['wrist'+side].bone,ids=index?[396,400,404,408]:[349,353,357,361],points=ids.map(id=>byId(id).getWorldPosition(new T.Vector3())),center=new T.Vector3();for(const p of points)center.add(p);center.multiplyScalar(.25);wrist.getWorldPosition(supportWrist);wrist.getWorldQuaternion(supportQ);
     handForward.copy(center).sub(supportWrist).normalize();sideAxis.copy(points[3]).sub(points[0]).normalize();palmNormal.crossVectors(handForward,sideAxis).normalize().multiplyScalar(side==='L'?-1:1);sideAxis.crossVectors(palmNormal,handForward).normalize();handForward.crossVectors(sideAxis,palmNormal).normalize();basis.makeBasis(sideAxis,palmNormal,handForward);
-    const calibration=new T.Quaternion().setFromRotationMatrix(basis).invert().multiply(supportQ),offset=center.clone().sub(supportWrist).applyQuaternion(supportQ.clone().invert());return {side,calibration,offset,pole:new T.Vector3(side==='L'?.55:-.55,-.8,.12),blend:['arm','elbow','wrist'].map(key=>({bone:poses[key+side].bone,q:new T.Quaternion(),solved:new T.Quaternion()}))};
+    const calibration=new T.Quaternion().setFromRotationMatrix(basis).invert().multiply(supportQ),offset=center.clone().sub(supportWrist).applyQuaternion(supportQ.clone().invert());return {side,calibration,offset,thumb:(index?[391,392,393]:[344,345,346]).map(byId),thumbRest:(index?[391,392,393]:[344,345,346]).map(id=>byId(id)?.quaternion.clone()),pole:new T.Vector3(side==='L'?.55:-.55,-.8,.12),blend:['arm','elbow','wrist'].map(key=>({bone:poses[key+side].bone,q:new T.Quaternion(),solved:new T.Quaternion()}))};
   });
+  // D-F01: fingertips slightly raised so finger pads, not the palm heel, carry the tray; thumbs brace the tray ends.
+  const handoffMatrix=new T.Matrix4(),handoffEuler=new T.Euler(),handoffScale=new T.Vector3(),gripTilts={L:new T.Quaternion().setFromEuler(new T.Euler(-GRIP.pitch,0,-GRIP.roll)),R:new T.Quaternion().setFromEuler(new T.Euler(-GRIP.pitch,0,GRIP.roll))},thumbTargets=[new T.Vector3(),new T.Vector3(),new T.Vector3()],thumbDirection=new T.Vector3(),thumbBase=new T.Vector3();
+  function wrapThumb(hand,weight){const [base,middle,tip]=hand.thumb;if(!base||!middle||!tip)return;thumbPoints(dinner,hand.side,thumbTargets);for(const p of thumbTargets)p.applyQuaternion(trayQ).add(trayWorld);
+   aimBone(base,middle,thumbTargets[0],weight);aimBone(middle,tip,thumbTargets[1],weight);middle.getWorldPosition(thumbBase);tip.getWorldPosition(thumbDirection).sub(thumbBase);aimBone(tip,null,thumbTargets[2],weight,thumbDirection);}
   const jointPosition=new T.Vector3(),footPosition=new T.Vector3(),toFoot=new T.Vector3(),toTarget=new T.Vector3(),handPosition=new T.Vector3(),rootQuaternion=new T.Quaternion(),dragonWorldPosition=new T.Vector3();
   const deltaQuaternion=new T.Quaternion(),worldQuaternion=new T.Quaternion(),parentQuaternion=new T.Quaternion();
   const desiredKnee=new T.Vector3(),kneePosition=new T.Vector3(),pole=new T.Vector3(),legDirection=new T.Vector3(),targetDirection=new T.Vector3();
@@ -257,6 +262,13 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
       shadows[0].position.set(0,.006-(castActive?.116*launch:0),.04+forward);shadows[0].scale.set(.7+lift*.07,.48+lift*.045,1);shadows[1].visible=!projectileActive;shadows[1].position.x=dragon.root.position.x;shadows[1].position.z=dragon.root.position.z;root.updateMatrixWorld(true);
       pivot.getWorldQuaternion(trayQ);trayQ.setFromAxisAngle(worldUp,pivot.rotation.y);
       trayWorld.set(0,1.10-reachDown*.32-.22*Math.min(1,Math.abs(motion.turn))-walk*(.012+.008*Math.cos(motion.phase*2)),.65);pivot.localToWorld(trayWorld);
+      if(handoff&&carry.owner==='hero'){
+        // D-F01: before contact, Zhuang's hands carry the tray onto the dragon's palms so ownership changes without a jump.
+        // Target = midpoint of the dragon's holding palms as the holding pose will place them at contact (body frame 0,.61,1.02; root scale .59).
+        handoffMatrix.compose(dragon.root.position,supportQ.setFromEuler(handoffEuler.set(0,dragon.root.rotation.y,0)),handoffScale.setScalar(.59)).premultiply(dragon.root.parent.matrixWorld);
+        supportPoint.set(0,.61,1.02).applyMatrix4(handoffMatrix);supportPoint.y+=.065;
+        const pass=T.MathUtils.smootherstep(carry.age,.30,FIRST_HANDOFF_CONTACT);trayWorld.lerp(supportPoint,pass);trayQ.slerp(supportQ.setFromAxisAngle(worldUp,carryYaw),pass);
+      }
       if(carry.owner==='dragon'||saving){
         // The plate follows the midpoint of both palm tops, not the dragon's belly.
         dragon.hands[0].getWorldPosition(supportPoint);dragon.hands[1].getWorldPosition(supportWrist);supportPoint.add(supportWrist).multiplyScalar(.5);supportPoint.y+=.065;
@@ -271,8 +283,10 @@ export function buildPerformance({scene,r,root,pivot,poses,eyelids,bones,byId,gl
       }
       if(carry.owner==='helper'&&!rescueCaptured){trayWorld.set(-1.25,.88,3.90);trayQ.identity();}
       // Aim both palms at the tray, instead of placing a tray behind a posed wrist.
+      // Thumbs are not driven by pose(); restore their rest rotation every frame so the wrap never accumulates or outlives the hold.
+      for(const hand of handSupports)hand.thumb.forEach((b,i)=>b&&b.quaternion.copy(hand.thumbRest[i]));
       if(dinner&&(carry.owner==='hero'||transferring)&&!castActive){
-        status.handSupportErrors??=[0,0];for(const hand of handSupports){if((sceneAction.handover||phoneLook>.1)&&hand.side==='R')continue;supportQ.copy(trayQ).multiply(hand.calibration);supportPoint.set((sceneAction.handover||phoneLook>.1)&&hand.side==='L'?0:hand.side==='L'?.18:-.18,0,.015).applyQuaternion(trayQ).add(trayWorld);supportWrist.copy(hand.offset).applyQuaternion(supportQ);supportWrist.subVectors(supportPoint,supportWrist);const weight=transferring?(handoff?1-T.MathUtils.smootherstep(carry.age,.70,1.2):T.MathUtils.smootherstep(carry.age,0,.8)):1;for(const b of hand.blend)b.q.copy(b.bone.quaternion);armSupport.reach(hand.side,supportWrist,supportQ,hand.pole);for(const b of hand.blend)b.solved.copy(b.bone.quaternion);for(const b of hand.blend)b.bone.quaternion.slerpQuaternions(b.q,b.solved,weight);root.updateMatrixWorld(true);poses['wrist'+hand.side].bone.getWorldQuaternion(mealQ);fingerWorld.copy(hand.offset).applyQuaternion(mealQ);poses['wrist'+hand.side].bone.getWorldPosition(handPosition);fingerWorld.add(handPosition);status.handSupportErrors[hand.side==='L'?0:1]=fingerWorld.distanceTo(supportPoint);}
+        status.handSupportErrors??=[0,0];for(const hand of handSupports){if((sceneAction.handover||phoneLook>.1)&&hand.side==='R')continue;const single=Boolean(sceneAction.handover||phoneLook>.1);supportQ.copy(trayQ).multiply(gripTilts[hand.side]).multiply(hand.calibration);gripPoint(dinner,hand.side,single,supportPoint).applyQuaternion(trayQ).add(trayWorld);supportWrist.copy(hand.offset).applyQuaternion(supportQ);supportWrist.subVectors(supportPoint,supportWrist);const weight=transferring?(handoff?1-T.MathUtils.smootherstep(carry.age,.70,1.2):T.MathUtils.smootherstep(carry.age,0,.8)):1;for(const b of hand.blend)b.q.copy(b.bone.quaternion);armSupport.reach(hand.side,supportWrist,supportQ,hand.pole);for(const b of hand.blend)b.solved.copy(b.bone.quaternion);for(const b of hand.blend)b.bone.quaternion.slerpQuaternions(b.q,b.solved,weight);root.updateMatrixWorld(true);if(!single)wrapThumb(hand,weight);poses['wrist'+hand.side].bone.getWorldQuaternion(mealQ);fingerWorld.copy(hand.offset).applyQuaternion(mealQ);poses['wrist'+hand.side].bone.getWorldPosition(handPosition);fingerWorld.add(handPosition);status.handSupportErrors[hand.side==='L'?0:1]=fingerWorld.distanceTo(supportPoint);}
       }
       fingerWorld.copy(trayWorld);root.worldToLocal(fingerWorld);meal.mount.position.copy(fingerWorld);root.getWorldQuaternion(mealRootQ).invert();meal.mount.quaternion.copy(mealRootQ).multiply(trayQ);
       // Branch trays have different authored base heights; align their undersides.
