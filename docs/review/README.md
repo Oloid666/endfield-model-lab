@@ -33,3 +33,4 @@
 ## 已補交的輪次
 
 - [2f5c6fd：105°C反應、還盤狀態與遮擋修正](2f5c6fd/README.md)
+- [d5721c1：D-F01莊端托盤的手與盤接觸（Claude實作，待Codex整合）](d5721c1/README.md)

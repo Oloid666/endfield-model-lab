@@ -1,0 +1,1058 @@
+{
+ "kind": "Node actual-GLB skinned-vertex contact checks; not a render or iPhone test",
+ "passed": true,
+ "checks": [
+  {
+   "name": "Standing, dinner A L: palm and fingers do not sink into the tray (<=4 mm)",
+   "passed": true,
+   "detail": {
+    "maxPenetrationMm": 2.1
+   }
+  },
+  {
+   "name": "Standing, dinner A L: finger pads touch the underside (>=40 skin vertices within 4 mm)",
+   "passed": true,
+   "detail": {
+    "touchingVertices": 91
+   }
+  },
+  {
+   "name": "Standing, dinner A L: palm heel is under the tray, not floating (gap <=8 mm)",
+   "passed": true,
+   "detail": {
+    "palmGapMm": 1.6
+   }
+  },
+  {
+   "name": "Standing, dinner A L: thumb is not buried in the tray (<=12 vertices deeper than 1 mm, <=4 mm)",
+   "passed": true,
+   "detail": {
+    "n": 299,
+    "under": 29,
+    "pen": 3,
+    "maxPenMm": 2.1,
+    "touch": 7,
+    "gapMm": 0.5,
+    "endFace": 120
+   }
+  },
+  {
+   "name": "Standing, dinner A L: thumb braces the tray end face (>=15 vertices within 12 mm)",
+   "passed": true,
+   "detail": {
+    "endFaceVertices": 120
+   }
+  },
+  {
+   "name": "Standing, dinner A R: palm and fingers do not sink into the tray (<=4 mm)",
+   "passed": true,
+   "detail": {
+    "maxPenetrationMm": 1.7
+   }
+  },
+  {
+   "name": "Standing, dinner A R: finger pads touch the underside (>=40 skin vertices within 4 mm)",
+   "passed": true,
+   "detail": {
+    "touchingVertices": 118
+   }
+  },
+  {
+   "name": "Standing, dinner A R: palm heel is under the tray, not floating (gap <=8 mm)",
+   "passed": true,
+   "detail": {
+    "palmGapMm": 1.6
+   }
+  },
+  {
+   "name": "Standing, dinner A R: thumb is not buried in the tray (<=12 vertices deeper than 1 mm, <=4 mm)",
+   "passed": true,
+   "detail": {
+    "n": 299,
+    "under": 29,
+    "pen": 3,
+    "maxPenMm": 2.1,
+    "touch": 7,
+    "gapMm": 0.5,
+    "endFace": 120
+   }
+  },
+  {
+   "name": "Standing, dinner A R: thumb braces the tray end face (>=15 vertices within 12 mm)",
+   "passed": true,
+   "detail": {
+    "endFaceVertices": 120
+   }
+  },
+  {
+   "name": "Standing, dinner B L: palm and fingers do not sink into the tray (<=4 mm)",
+   "passed": true,
+   "detail": {
+    "maxPenetrationMm": 2.1
+   }
+  },
+  {
+   "name": "Standing, dinner B L: finger pads touch the underside (>=40 skin vertices within 4 mm)",
+   "passed": true,
+   "detail": {
+    "touchingVertices": 91
+   }
+  },
+  {
+   "name": "Standing, dinner B L: palm heel is under the tray, not floating (gap <=8 mm)",
+   "passed": true,
+   "detail": {
+    "palmGapMm": 1.9
+   }
+  },
+  {
+   "name": "Standing, dinner B L: thumb is not buried in the tray (<=12 vertices deeper than 1 mm, <=4 mm)",
+   "passed": true,
+   "detail": {
+    "n": 299,
+    "under": 29,
+    "pen": 3,
+    "maxPenMm": 2.2,
+    "touch": 6,
+    "gapMm": 0.1,
+    "endFace": 92
+   }
+  },
+  {
+   "name": "Standing, dinner B L: thumb braces the tray end face (>=15 vertices within 12 mm)",
+   "passed": true,
+   "detail": {
+    "endFaceVertices": 92
+   }
+  },
+  {
+   "name": "Standing, dinner B R: palm and fingers do not sink into the tray (<=4 mm)",
+   "passed": true,
+   "detail": {
+    "maxPenetrationMm": 1.7
+   }
+  },
+  {
+   "name": "Standing, dinner B R: finger pads touch the underside (>=40 skin vertices within 4 mm)",
+   "passed": true,
+   "detail": {
+    "touchingVertices": 118
+   }
+  },
+  {
+   "name": "Standing, dinner B R: palm heel is under the tray, not floating (gap <=8 mm)",
+   "passed": true,
+   "detail": {
+    "palmGapMm": 1.9
+   }
+  },
+  {
+   "name": "Standing, dinner B R: thumb is not buried in the tray (<=12 vertices deeper than 1 mm, <=4 mm)",
+   "passed": true,
+   "detail": {
+    "n": 299,
+    "under": 29,
+    "pen": 3,
+    "maxPenMm": 2.2,
+    "touch": 6,
+    "gapMm": 0.1,
+    "endFace": 92
+   }
+  },
+  {
+   "name": "Standing, dinner B R: thumb braces the tray end face (>=15 vertices within 12 mm)",
+   "passed": true,
+   "detail": {
+    "endFaceVertices": 92
+   }
+  },
+  {
+   "name": "Standing, dinner C L: palm and fingers do not sink into the tray (<=4 mm)",
+   "passed": true,
+   "detail": {
+    "maxPenetrationMm": 2.1
+   }
+  },
+  {
+   "name": "Standing, dinner C L: finger pads touch the underside (>=40 skin vertices within 4 mm)",
+   "passed": true,
+   "detail": {
+    "touchingVertices": 91
+   }
+  },
+  {
+   "name": "Standing, dinner C L: palm heel is under the tray, not floating (gap <=8 mm)",
+   "passed": true,
+   "detail": {
+    "palmGapMm": 1.9
+   }
+  },
+  {
+   "name": "Standing, dinner C L: thumb is not buried in the tray (<=12 vertices deeper than 1 mm, <=4 mm)",
+   "passed": true,
+   "detail": {
+    "n": 299,
+    "under": 29,
+    "pen": 3,
+    "maxPenMm": 2.2,
+    "touch": 6,
+    "gapMm": 0.1,
+    "endFace": 92
+   }
+  },
+  {
+   "name": "Standing, dinner C L: thumb braces the tray end face (>=15 vertices within 12 mm)",
+   "passed": true,
+   "detail": {
+    "endFaceVertices": 92
+   }
+  },
+  {
+   "name": "Standing, dinner C R: palm and fingers do not sink into the tray (<=4 mm)",
+   "passed": true,
+   "detail": {
+    "maxPenetrationMm": 1.7
+   }
+  },
+  {
+   "name": "Standing, dinner C R: finger pads touch the underside (>=40 skin vertices within 4 mm)",
+   "passed": true,
+   "detail": {
+    "touchingVertices": 116
+   }
+  },
+  {
+   "name": "Standing, dinner C R: palm heel is under the tray, not floating (gap <=8 mm)",
+   "passed": true,
+   "detail": {
+    "palmGapMm": 1.9
+   }
+  },
+  {
+   "name": "Standing, dinner C R: thumb is not buried in the tray (<=12 vertices deeper than 1 mm, <=4 mm)",
+   "passed": true,
+   "detail": {
+    "n": 299,
+    "under": 29,
+    "pen": 3,
+    "maxPenMm": 2.2,
+    "touch": 6,
+    "gapMm": 0.1,
+    "endFace": 92
+   }
+  },
+  {
+   "name": "Standing, dinner C R: thumb braces the tray end face (>=15 vertices within 12 mm)",
+   "passed": true,
+   "detail": {
+    "endFaceVertices": 92
+   }
+  },
+  {
+   "name": "Walking/turning: worst finger/palm penetration stays <=5 mm",
+   "passed": true,
+   "detail": {
+    "pen": 2,
+    "pads": 83,
+    "thumb": 3,
+    "thumbMm": 2.1,
+    "frames": [
+     [
+      0,
+      "L",
+      3,
+      2.1,
+      "0.04"
+     ],
+     [
+      0,
+      "R",
+      3,
+      2.1,
+      "0.04"
+     ],
+     [
+      15,
+      "L",
+      3,
+      2.1,
+      "0.90"
+     ],
+     [
+      15,
+      "R",
+      3,
+      2.1,
+      "0.90"
+     ],
+     [
+      30,
+      "L",
+      3,
+      2.1,
+      "0.99"
+     ],
+     [
+      30,
+      "R",
+      3,
+      2.1,
+      "0.99"
+     ],
+     [
+      45,
+      "L",
+      3,
+      2.1,
+      "1.00"
+     ],
+     [
+      45,
+      "R",
+      3,
+      2.1,
+      "1.00"
+     ],
+     [
+      60,
+      "L",
+      3,
+      2.1,
+      "1.00"
+     ],
+     [
+      60,
+      "R",
+      3,
+      2.1,
+      "1.00"
+     ],
+     [
+      75,
+      "L",
+      3,
+      2.1,
+      "1.00"
+     ],
+     [
+      75,
+      "R",
+      3,
+      2.1,
+      "1.00"
+     ]
+    ]
+   }
+  },
+  {
+   "name": "Walking/turning: finger pads keep touching on every sampled frame",
+   "passed": true,
+   "detail": {
+    "pen": 2,
+    "pads": 83,
+    "thumb": 3,
+    "thumbMm": 2.1,
+    "frames": [
+     [
+      0,
+      "L",
+      3,
+      2.1,
+      "0.04"
+     ],
+     [
+      0,
+      "R",
+      3,
+      2.1,
+      "0.04"
+     ],
+     [
+      15,
+      "L",
+      3,
+      2.1,
+      "0.90"
+     ],
+     [
+      15,
+      "R",
+      3,
+      2.1,
+      "0.90"
+     ],
+     [
+      30,
+      "L",
+      3,
+      2.1,
+      "0.99"
+     ],
+     [
+      30,
+      "R",
+      3,
+      2.1,
+      "0.99"
+     ],
+     [
+      45,
+      "L",
+      3,
+      2.1,
+      "1.00"
+     ],
+     [
+      45,
+      "R",
+      3,
+      2.1,
+      "1.00"
+     ],
+     [
+      60,
+      "L",
+      3,
+      2.1,
+      "1.00"
+     ],
+     [
+      60,
+      "R",
+      3,
+      2.1,
+      "1.00"
+     ],
+     [
+      75,
+      "L",
+      3,
+      2.1,
+      "1.00"
+     ],
+     [
+      75,
+      "R",
+      3,
+      2.1,
+      "1.00"
+     ]
+    ]
+   }
+  },
+  {
+   "name": "Walking/turning: thumbs never bury into the tray (<=12 vertices deeper than 1 mm)",
+   "passed": true,
+   "detail": {
+    "pen": 2,
+    "pads": 83,
+    "thumb": 3,
+    "thumbMm": 2.1,
+    "frames": [
+     [
+      0,
+      "L",
+      3,
+      2.1,
+      "0.04"
+     ],
+     [
+      0,
+      "R",
+      3,
+      2.1,
+      "0.04"
+     ],
+     [
+      15,
+      "L",
+      3,
+      2.1,
+      "0.90"
+     ],
+     [
+      15,
+      "R",
+      3,
+      2.1,
+      "0.90"
+     ],
+     [
+      30,
+      "L",
+      3,
+      2.1,
+      "0.99"
+     ],
+     [
+      30,
+      "R",
+      3,
+      2.1,
+      "0.99"
+     ],
+     [
+      45,
+      "L",
+      3,
+      2.1,
+      "1.00"
+     ],
+     [
+      45,
+      "R",
+      3,
+      2.1,
+      "1.00"
+     ],
+     [
+      60,
+      "L",
+      3,
+      2.1,
+      "1.00"
+     ],
+     [
+      60,
+      "R",
+      3,
+      2.1,
+      "1.00"
+     ],
+     [
+      75,
+      "L",
+      3,
+      2.1,
+      "1.00"
+     ],
+     [
+      75,
+      "R",
+      3,
+      2.1,
+      "1.00"
+     ]
+    ]
+   }
+  },
+  {
+   "name": "One-hand carry: left hand under the tray without sinking (<=4 mm)",
+   "passed": true,
+   "detail": {
+    "maxPenetrationMm": 2.3
+   }
+  },
+  {
+   "name": "One-hand carry: left finger pads touch the underside",
+   "passed": true,
+   "detail": {
+    "touching": 122
+   }
+  },
+  {
+   "name": "Handoff: tray never moves more than 10 mm in one 1/60 s frame, including the ownership change at 0.70 s",
+   "passed": true,
+   "detail": {
+    "holdingMaxWristStepMm": 4.1,
+    "contactFrameStepMm": 0.2,
+    "releaseWristPathMm": 599,
+    "maxWristStepMm": 39.4,
+    "atAge": 0.933,
+    "maxTrayStepMm": 4.1,
+    "trayAtAge": 0.5
+   }
+  },
+  {
+   "name": "Handoff: at contact (0.70 s) neither wrist nor tray jumps more than 10 mm in a frame",
+   "passed": true,
+   "detail": {
+    "holdingMaxWristStepMm": 4.1,
+    "contactFrameStepMm": 0.2,
+    "releaseWristPathMm": 599,
+    "maxWristStepMm": 39.4,
+    "atAge": 0.933,
+    "maxTrayStepMm": 4.1,
+    "trayAtAge": 0.5
+   }
+  },
+  {
+   "name": "Handoff: while still holding (<0.70 s) the wrist follows the tray smoothly (<=10 mm/frame)",
+   "passed": true,
+   "detail": {
+    "holdingMaxWristStepMm": 4.1,
+    "contactFrameStepMm": 0.2,
+    "releaseWristPathMm": 599,
+    "maxWristStepMm": 39.4,
+    "atAge": 0.933,
+    "maxTrayStepMm": 4.1,
+    "trayAtAge": 0.5
+   }
+  },
+  {
+   "name": "Without the tray the thumbs return exactly to their GLB rest rotation (no leftover wrap; <0.3 deg)",
+   "passed": true,
+   "detail": {
+    "maxAngleRadians": 0.00021977385965239952
+   }
+  }
+ ],
+ "report": {
+  "stand-A": {
+   "L:f0": {
+    "n": 254,
+    "under": 152,
+    "pen": 4,
+    "maxPenMm": 2.1,
+    "touch": 33,
+    "gapMm": 0.1,
+    "endFace": 12
+   },
+   "L:palm": {
+    "n": 119,
+    "under": 102,
+    "pen": 0,
+    "maxPenMm": 0,
+    "touch": 6,
+    "gapMm": 1.6,
+    "endFace": 0
+   },
+   "L:thumb": {
+    "n": 299,
+    "under": 29,
+    "pen": 3,
+    "maxPenMm": 2.1,
+    "touch": 7,
+    "gapMm": 0.5,
+    "endFace": 120
+   },
+   "L:f1": {
+    "n": 272,
+    "under": 272,
+    "pen": 0,
+    "maxPenMm": 0,
+    "touch": 5,
+    "gapMm": 3.5,
+    "endFace": 0
+   },
+   "L:f2": {
+    "n": 280,
+    "under": 280,
+    "pen": 0,
+    "maxPenMm": 0,
+    "touch": 7,
+    "gapMm": 3,
+    "endFace": 0
+   },
+   "L:f3": {
+    "n": 267,
+    "under": 267,
+    "pen": 0,
+    "maxPenMm": 0,
+    "touch": 46,
+    "gapMm": 0.4,
+    "endFace": 0
+   },
+   "R:f0": {
+    "n": 254,
+    "under": 99,
+    "pen": 1,
+    "maxPenMm": 1.1,
+    "touch": 23,
+    "gapMm": 0.4,
+    "endFace": 32
+   },
+   "R:palm": {
+    "n": 119,
+    "under": 103,
+    "pen": 0,
+    "maxPenMm": 0,
+    "touch": 6,
+    "gapMm": 1.6,
+    "endFace": 0
+   },
+   "R:thumb": {
+    "n": 299,
+    "under": 29,
+    "pen": 3,
+    "maxPenMm": 2.1,
+    "touch": 7,
+    "gapMm": 0.5,
+    "endFace": 120
+   },
+   "R:f1": {
+    "n": 272,
+    "under": 272,
+    "pen": 0,
+    "maxPenMm": 0,
+    "touch": 15,
+    "gapMm": 1.9,
+    "endFace": 0
+   },
+   "R:f2": {
+    "n": 280,
+    "under": 280,
+    "pen": 0,
+    "maxPenMm": 0,
+    "touch": 24,
+    "gapMm": 1.3,
+    "endFace": 0
+   },
+   "R:f3": {
+    "n": 267,
+    "under": 267,
+    "pen": 3,
+    "maxPenMm": 1.7,
+    "touch": 56,
+    "gapMm": 0,
+    "endFace": 0
+   }
+  },
+  "stand-B": {
+   "L:f0": {
+    "n": 254,
+    "under": 152,
+    "pen": 4,
+    "maxPenMm": 2.1,
+    "touch": 33,
+    "gapMm": 0.1,
+    "endFace": 12
+   },
+   "L:palm": {
+    "n": 119,
+    "under": 102,
+    "pen": 0,
+    "maxPenMm": 0,
+    "touch": 6,
+    "gapMm": 1.9,
+    "endFace": 0
+   },
+   "L:thumb": {
+    "n": 299,
+    "under": 29,
+    "pen": 3,
+    "maxPenMm": 2.2,
+    "touch": 6,
+    "gapMm": 0.1,
+    "endFace": 92
+   },
+   "L:f1": {
+    "n": 272,
+    "under": 243,
+    "pen": 0,
+    "maxPenMm": 0,
+    "touch": 5,
+    "gapMm": 3.5,
+    "endFace": 0
+   },
+   "L:f2": {
+    "n": 280,
+    "under": 280,
+    "pen": 0,
+    "maxPenMm": 0,
+    "touch": 7,
+    "gapMm": 3,
+    "endFace": 0
+   },
+   "L:f3": {
+    "n": 267,
+    "under": 267,
+    "pen": 0,
+    "maxPenMm": 0,
+    "touch": 46,
+    "gapMm": 0.4,
+    "endFace": 0
+   },
+   "R:f0": {
+    "n": 254,
+    "under": 99,
+    "pen": 1,
+    "maxPenMm": 1.1,
+    "touch": 23,
+    "gapMm": 0.4,
+    "endFace": 32
+   },
+   "R:palm": {
+    "n": 119,
+    "under": 103,
+    "pen": 0,
+    "maxPenMm": 0,
+    "touch": 6,
+    "gapMm": 1.9,
+    "endFace": 0
+   },
+   "R:thumb": {
+    "n": 299,
+    "under": 29,
+    "pen": 3,
+    "maxPenMm": 2.2,
+    "touch": 6,
+    "gapMm": 0.1,
+    "endFace": 92
+   },
+   "R:f1": {
+    "n": 272,
+    "under": 246,
+    "pen": 0,
+    "maxPenMm": 0,
+    "touch": 15,
+    "gapMm": 1.9,
+    "endFace": 0
+   },
+   "R:f2": {
+    "n": 280,
+    "under": 280,
+    "pen": 0,
+    "maxPenMm": 0,
+    "touch": 24,
+    "gapMm": 1.3,
+    "endFace": 0
+   },
+   "R:f3": {
+    "n": 267,
+    "under": 267,
+    "pen": 3,
+    "maxPenMm": 1.7,
+    "touch": 56,
+    "gapMm": 0,
+    "endFace": 0
+   }
+  },
+  "stand-C": {
+   "L:f0": {
+    "n": 254,
+    "under": 152,
+    "pen": 4,
+    "maxPenMm": 2.1,
+    "touch": 33,
+    "gapMm": 0.1,
+    "endFace": 12
+   },
+   "L:palm": {
+    "n": 119,
+    "under": 102,
+    "pen": 0,
+    "maxPenMm": 0,
+    "touch": 6,
+    "gapMm": 1.9,
+    "endFace": 0
+   },
+   "L:thumb": {
+    "n": 299,
+    "under": 29,
+    "pen": 3,
+    "maxPenMm": 2.2,
+    "touch": 6,
+    "gapMm": 0.1,
+    "endFace": 92
+   },
+   "L:f1": {
+    "n": 272,
+    "under": 216,
+    "pen": 0,
+    "maxPenMm": 0,
+    "touch": 5,
+    "gapMm": 3.5,
+    "endFace": 0
+   },
+   "L:f2": {
+    "n": 280,
+    "under": 280,
+    "pen": 0,
+    "maxPenMm": 0,
+    "touch": 7,
+    "gapMm": 3,
+    "endFace": 0
+   },
+   "L:f3": {
+    "n": 267,
+    "under": 267,
+    "pen": 0,
+    "maxPenMm": 0,
+    "touch": 46,
+    "gapMm": 0.4,
+    "endFace": 0
+   },
+   "R:f0": {
+    "n": 254,
+    "under": 99,
+    "pen": 1,
+    "maxPenMm": 1.1,
+    "touch": 23,
+    "gapMm": 0.4,
+    "endFace": 32
+   },
+   "R:palm": {
+    "n": 119,
+    "under": 103,
+    "pen": 0,
+    "maxPenMm": 0,
+    "touch": 6,
+    "gapMm": 1.9,
+    "endFace": 0
+   },
+   "R:thumb": {
+    "n": 299,
+    "under": 29,
+    "pen": 3,
+    "maxPenMm": 2.2,
+    "touch": 6,
+    "gapMm": 0.1,
+    "endFace": 92
+   },
+   "R:f1": {
+    "n": 272,
+    "under": 216,
+    "pen": 0,
+    "maxPenMm": 0,
+    "touch": 13,
+    "gapMm": 1.9,
+    "endFace": 0
+   },
+   "R:f2": {
+    "n": 280,
+    "under": 280,
+    "pen": 0,
+    "maxPenMm": 0,
+    "touch": 24,
+    "gapMm": 1.3,
+    "endFace": 0
+   },
+   "R:f3": {
+    "n": 267,
+    "under": 267,
+    "pen": 3,
+    "maxPenMm": 1.7,
+    "touch": 56,
+    "gapMm": 0,
+    "endFace": 0
+   }
+  },
+  "walking": {
+   "pen": 2,
+   "pads": 83,
+   "thumb": 3,
+   "thumbMm": 2.1
+  },
+  "oneHand": {
+   "L:f0": {
+    "n": 254,
+    "under": 254,
+    "pen": 9,
+    "maxPenMm": 2.3,
+    "touch": 58,
+    "gapMm": 0.2,
+    "endFace": 0
+   },
+   "L:palm": {
+    "n": 119,
+    "under": 119,
+    "pen": 0,
+    "maxPenMm": 0,
+    "touch": 7,
+    "gapMm": 1.8,
+    "endFace": 0
+   },
+   "L:thumb": {
+    "n": 299,
+    "under": 299,
+    "pen": 239,
+    "maxPenMm": 19.9,
+    "touch": 15,
+    "gapMm": 0,
+    "endFace": 0
+   },
+   "L:f1": {
+    "n": 272,
+    "under": 272,
+    "pen": 0,
+    "maxPenMm": 0,
+    "touch": 6,
+    "gapMm": 3.2,
+    "endFace": 0
+   },
+   "L:f2": {
+    "n": 280,
+    "under": 280,
+    "pen": 0,
+    "maxPenMm": 0,
+    "touch": 12,
+    "gapMm": 2.9,
+    "endFace": 0
+   },
+   "L:f3": {
+    "n": 267,
+    "under": 267,
+    "pen": 0,
+    "maxPenMm": 0,
+    "touch": 46,
+    "gapMm": 0.2,
+    "endFace": 0
+   },
+   "R:f0": {
+    "n": 254,
+    "under": 0,
+    "pen": 0,
+    "maxPenMm": 0,
+    "touch": 0,
+    "gapMm": null,
+    "endFace": 0
+   },
+   "R:palm": {
+    "n": 119,
+    "under": 0,
+    "pen": 0,
+    "maxPenMm": 0,
+    "touch": 0,
+    "gapMm": null,
+    "endFace": 0
+   },
+   "R:thumb": {
+    "n": 299,
+    "under": 0,
+    "pen": 0,
+    "maxPenMm": 0,
+    "touch": 0,
+    "gapMm": null,
+    "endFace": 0
+   },
+   "R:f1": {
+    "n": 272,
+    "under": 0,
+    "pen": 0,
+    "maxPenMm": 0,
+    "touch": 0,
+    "gapMm": null,
+    "endFace": 0
+   },
+   "R:f2": {
+    "n": 280,
+    "under": 0,
+    "pen": 0,
+    "maxPenMm": 0,
+    "touch": 0,
+    "gapMm": null,
+    "endFace": 0
+   },
+   "R:f3": {
+    "n": 267,
+    "under": 0,
+    "pen": 0,
+    "maxPenMm": 0,
+    "touch": 0,
+    "gapMm": null,
+    "endFace": 0
+   }
+  },
+  "handoff": {
+   "holdingMaxWristStepMm": 4.1,
+   "contactFrameStepMm": 0.2,
+   "releaseWristPathMm": 599,
+   "maxWristStepMm": 39.4,
+   "atAge": 0.933,
+   "maxTrayStepMm": 4.1,
+   "trayAtAge": 0.5
+  },
+  "thumbReleaseRadians": 0.00022
+ }
+}
