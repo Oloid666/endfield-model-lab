@@ -1,0 +1,488 @@
+{
+ "url": "http://127.0.0.1:4215/",
+ "tag": "final",
+ "viewports": [
+  {
+   "viewport": "390x844",
+   "deviceScaleFactor": 1.5,
+   "checkpoints": [
+    {
+     "name": "03-before-handoff",
+     "phase": "lever",
+     "phaseElapsed": 0.85,
+     "node": "captcha_verified",
+     "measure": {
+      "tray": true,
+      "hands": {
+       "L": {
+        "handVertices": 1491,
+        "underTray": 1092,
+        "penetrating": 16,
+        "maxPenetrationMm": 3.1,
+        "nearestGapMm": 0.2,
+        "contactVertices": 235
+       },
+       "R": {
+        "handVertices": 1491,
+        "underTray": 1056,
+        "penetrating": 28,
+        "maxPenetrationMm": 3.1,
+        "nearestGapMm": 0.2,
+        "contactVertices": 299
+       }
+      },
+      "status": {
+       "owner": "hero",
+       "errors": [
+        5.21902425540567e-08,
+        2.5240808725056334e-08
+       ],
+       "dinner": "A"
+      }
+     }
+    },
+    {
+     "name": "03-handoff-0.35",
+     "phase": "meal-handoff",
+     "phaseElapsed": 0.35,
+     "node": "tray_pass",
+     "measure": {
+      "tray": true,
+      "hands": {
+       "L": {
+        "handVertices": 1491,
+        "underTray": 1092,
+        "penetrating": 16,
+        "maxPenetrationMm": 3.1,
+        "nearestGapMm": 0.2,
+        "contactVertices": 235
+       },
+       "R": {
+        "handVertices": 1491,
+        "underTray": 1055,
+        "penetrating": 28,
+        "maxPenetrationMm": 3.1,
+        "nearestGapMm": 0.2,
+        "contactVertices": 298
+       }
+      },
+      "status": {
+       "owner": "hero",
+       "errors": [
+        5.1474816917015336e-08,
+        2.5825741242800048e-08
+       ],
+       "dinner": "A"
+      }
+     }
+    },
+    {
+     "name": "03-handoff-0.70",
+     "phase": "meal-handoff",
+     "phaseElapsed": 0.7,
+     "node": "tray_pass",
+     "measure": {
+      "tray": true,
+      "hands": {
+       "L": {
+        "handVertices": 1491,
+        "underTray": 1092,
+        "penetrating": 16,
+        "maxPenetrationMm": 3.1,
+        "nearestGapMm": 0.2,
+        "contactVertices": 234
+       },
+       "R": {
+        "handVertices": 1491,
+        "underTray": 1055,
+        "penetrating": 28,
+        "maxPenetrationMm": 3.1,
+        "nearestGapMm": 0.2,
+        "contactVertices": 297
+       }
+      },
+      "status": {
+       "owner": "dragon",
+       "errors": [
+        5.133750346137024e-08,
+        2.9060091732795625e-08
+       ],
+       "dinner": "A"
+      }
+     }
+    },
+    {
+     "name": "03-handoff-0.75",
+     "phase": "meal-handoff",
+     "phaseElapsed": 0.751,
+     "node": "tray_pass",
+     "measure": {
+      "tray": true,
+      "hands": {
+       "L": {
+        "handVertices": 1491,
+        "underTray": 1107,
+        "penetrating": 14,
+        "maxPenetrationMm": 10,
+        "nearestGapMm": 1.7,
+        "contactVertices": 4
+       },
+       "R": {
+        "handVertices": 1491,
+        "underTray": 1080,
+        "penetrating": 8,
+        "maxPenetrationMm": 8.5,
+        "nearestGapMm": 1.5,
+        "contactVertices": 5
+       }
+      },
+      "status": {
+       "owner": "dragon",
+       "errors": [
+        5.322165660699768e-08,
+        2.349930916273417e-08
+       ],
+       "dinner": "A"
+      }
+     }
+    },
+    {
+     "name": "03-handoff-0.90",
+     "phase": "meal-handoff",
+     "phaseElapsed": 0.901,
+     "node": "tray_pass",
+     "measure": {
+      "tray": true,
+      "hands": {
+       "L": {
+        "handVertices": 1491,
+        "underTray": 39,
+        "penetrating": 0,
+        "maxPenetrationMm": 0,
+        "nearestGapMm": 25.1,
+        "contactVertices": 0
+       },
+       "R": {
+        "handVertices": 1491,
+        "underTray": 1426,
+        "penetrating": 0,
+        "maxPenetrationMm": 0,
+        "nearestGapMm": 33.6,
+        "contactVertices": 0
+       }
+      },
+      "status": {
+       "owner": "dragon",
+       "errors": [
+        5.7347580541969535e-08,
+        0.005959240463782719
+       ],
+       "dinner": "A"
+      }
+     }
+    },
+    {
+     "name": "03-handoff-1.00",
+     "phase": "meal-handoff",
+     "phaseElapsed": 1.001,
+     "node": "tray_pass",
+     "measure": {
+      "tray": true,
+      "hands": {
+       "L": {
+        "handVertices": 1491,
+        "underTray": 0,
+        "penetrating": 0,
+        "maxPenetrationMm": 0,
+        "nearestGapMm": null,
+        "contactVertices": 0
+       },
+       "R": {
+        "handVertices": 1491,
+        "underTray": 217,
+        "penetrating": 0,
+        "maxPenetrationMm": 0,
+        "nearestGapMm": 89.4,
+        "contactVertices": 0
+       }
+      },
+      "status": {
+       "owner": "dragon",
+       "errors": [
+        5.5462231249865615e-08,
+        2.2501818115419883e-08
+       ],
+       "dinner": "A"
+      }
+     }
+    },
+    {
+     "name": "04-reclaim-0.40",
+     "phase": "meal-reclaim",
+     "phaseElapsed": 0.4,
+     "node": "tray_back",
+     "measure": {
+      "tray": true,
+      "hands": {
+       "L": {
+        "handVertices": 1491,
+        "underTray": 0,
+        "penetrating": 0,
+        "maxPenetrationMm": 0,
+        "nearestGapMm": null,
+        "contactVertices": 0
+       },
+       "R": {
+        "handVertices": 1491,
+        "underTray": 0,
+        "penetrating": 0,
+        "maxPenetrationMm": 0,
+        "nearestGapMm": null,
+        "contactVertices": 0
+       }
+      },
+      "status": {
+       "owner": "helper",
+       "errors": [
+        5.592160819392778e-08,
+        0.0032509393190081628
+       ],
+       "dinner": "A"
+      }
+     }
+    },
+    {
+     "name": "04-reclaim-0.60",
+     "phase": "meal-reclaim",
+     "phaseElapsed": 0.6,
+     "node": "tray_back",
+     "measure": {
+      "tray": true,
+      "hands": {
+       "L": {
+        "handVertices": 1491,
+        "underTray": 0,
+        "penetrating": 0,
+        "maxPenetrationMm": 0,
+        "nearestGapMm": null,
+        "contactVertices": 0
+       },
+       "R": {
+        "handVertices": 1491,
+        "underTray": 0,
+        "penetrating": 0,
+        "maxPenetrationMm": 0,
+        "nearestGapMm": null,
+        "contactVertices": 0
+       }
+      },
+      "status": {
+       "owner": "helper",
+       "errors": [
+        5.8775079437615996e-08,
+        0.0014803669829065596
+       ],
+       "dinner": "A"
+      }
+     }
+    },
+    {
+     "name": "04-reclaim-0.80",
+     "phase": "meal-reclaim",
+     "phaseElapsed": 0.8,
+     "node": "tray_back",
+     "measure": {
+      "tray": true,
+      "hands": {
+       "L": {
+        "handVertices": 1491,
+        "underTray": 38,
+        "penetrating": 0,
+        "maxPenetrationMm": 0,
+        "nearestGapMm": 7.4,
+        "contactVertices": 0
+       },
+       "R": {
+        "handVertices": 1491,
+        "underTray": 1283,
+        "penetrating": 0,
+        "maxPenetrationMm": 0,
+        "nearestGapMm": 48.2,
+        "contactVertices": 0
+       }
+      },
+      "status": {
+       "owner": "helper",
+       "errors": [
+        4.91347451057154e-08,
+        4.654284609024188e-08
+       ],
+       "dinner": "A"
+      }
+     }
+    },
+    {
+     "name": "04-reclaim-1.10",
+     "phase": "meal-reclaim",
+     "phaseElapsed": 1.101,
+     "node": "tray_back",
+     "measure": {
+      "tray": true,
+      "hands": {
+       "L": {
+        "handVertices": 1491,
+        "underTray": 988,
+        "penetrating": 8,
+        "maxPenetrationMm": 1.1,
+        "nearestGapMm": 0.1,
+        "contactVertices": 81
+       },
+       "R": {
+        "handVertices": 1491,
+        "underTray": 1491,
+        "penetrating": 0,
+        "maxPenetrationMm": 0,
+        "nearestGapMm": 3.3,
+        "contactVertices": 1
+       }
+      },
+      "status": {
+       "owner": "helper",
+       "errors": [
+        0.053624107093887964,
+        0.003720697877404736
+       ],
+       "dinner": "A"
+      }
+     }
+    },
+    {
+     "name": "04-reclaim-1.40",
+     "phase": "meal-reclaim",
+     "phaseElapsed": 1.401,
+     "node": "tray_back",
+     "measure": {
+      "tray": true,
+      "hands": {
+       "L": {
+        "handVertices": 1491,
+        "underTray": 1102,
+        "penetrating": 17,
+        "maxPenetrationMm": 3.1,
+        "nearestGapMm": 0,
+        "contactVertices": 257
+       },
+       "R": {
+        "handVertices": 1491,
+        "underTray": 1053,
+        "penetrating": 24,
+        "maxPenetrationMm": 3.1,
+        "nearestGapMm": 0,
+        "contactVertices": 295
+       }
+      },
+      "status": {
+       "owner": "hero",
+       "errors": [
+        5.211607181986354e-08,
+        2.8638137245002042e-08
+       ],
+       "dinner": "A"
+      }
+     }
+    },
+    {
+     "name": "04-reclaim-2.20",
+     "phase": "meal-reclaim",
+     "phaseElapsed": 2.201,
+     "node": "tray_back",
+     "measure": {
+      "tray": true,
+      "hands": {
+       "L": {
+        "handVertices": 1491,
+        "underTray": 1100,
+        "penetrating": 18,
+        "maxPenetrationMm": 3.1,
+        "nearestGapMm": 0.2,
+        "contactVertices": 266
+       },
+       "R": {
+        "handVertices": 1491,
+        "underTray": 1054,
+        "penetrating": 28,
+        "maxPenetrationMm": 3.1,
+        "nearestGapMm": 0.3,
+        "contactVertices": 292
+       }
+      },
+      "status": {
+       "owner": "hero",
+       "errors": [
+        5.2052434307628034e-08,
+        2.4221524913971847e-08
+       ],
+       "dinner": "A"
+      }
+     }
+    },
+    {
+     "name": "04-after-return",
+     "phase": "tour",
+     "phaseElapsed": 1.501,
+     "node": null,
+     "measure": {
+      "tray": true,
+      "hands": {
+       "L": {
+        "handVertices": 1491,
+        "underTray": 1099,
+        "penetrating": 17,
+        "maxPenetrationMm": 3.1,
+        "nearestGapMm": 0.1,
+        "contactVertices": 251
+       },
+       "R": {
+        "handVertices": 1491,
+        "underTray": 1056,
+        "penetrating": 28,
+        "maxPenetrationMm": 3.1,
+        "nearestGapMm": 0.2,
+        "contactVertices": 297
+       }
+      },
+      "status": {
+       "owner": "hero",
+       "errors": [
+        4.930065238146416e-08,
+        3.3133874687990134e-08
+       ],
+       "dinner": "A"
+      }
+     }
+    }
+   ],
+   "rendererDpr": 1.25,
+   "quality": "balanced",
+   "handoffSteps": {
+    "wristMm": 32.4,
+    "wristAge": 1.018,
+    "trayMm": 31.1,
+    "trayAge": 0.033,
+    "trayAbsMm": 31.1,
+    "trayAbsAge": 0.033,
+    "owner": "hero"
+   },
+   "reclaimSteps": {
+    "wristMm": 24.4,
+    "wristAge": 0.65,
+    "trayMm": 10.5,
+    "trayAge": 2.034,
+    "trayAbsMm": 10.5,
+    "trayAbsAge": 2.034,
+    "owner": "hero"
+   }
+  }
+ ],
+ "errors": []
+}

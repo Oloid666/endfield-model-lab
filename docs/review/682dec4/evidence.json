@@ -1,0 +1,116 @@
+{
+ "commit": "682dec4455e76f82bde6c802d1cf0d87296c9bb0",
+ "note": "Captured in working trees before commits. Relevant subsystem code matches final: early single-hand capture is used only for unchanged single-hand pose; final transfer evidence uses grip-final-05, final info uses info-final-02, aiming uses aim-final. Old failed/intermediate captures are not represented as final passes.",
+ "images": [
+  {
+   "file": "01-single-hand-after.png",
+   "source": "grip-after/polish-390-02-photo-talk-L-side.png",
+   "size": [
+    585,
+    1266
+   ],
+   "sha256": "e8eeaced1b53eeb23203d635cd644249a02460f729bc2030744922a928a753a1",
+   "nativePNG": true
+  },
+  {
+   "file": "02-reclaim-left-after.png",
+   "source": "grip-final-05/final-390-04-reclaim-0.80-L-side.png",
+   "size": [
+    585,
+    1266
+   ],
+   "sha256": "298588759ab2d436e89f76926523fd3e0b9e9d11954335fd885cc4f2ae485047",
+   "nativePNG": true
+  },
+  {
+   "file": "03-reclaim-player-after.png",
+   "source": "grip-final-05/final-390-04-reclaim-1.40-game.png",
+   "size": [
+    585,
+    1266
+   ],
+   "sha256": "6a217e7cf0655f89c5fd3185194a0cc820ba11e23f8dac21f46cc456cbf8291a",
+   "nativePNG": true
+  },
+  {
+   "file": "04-refusal-after.png",
+   "source": "details-final-02/H02-refusal-390x844.png",
+   "size": [
+    585,
+    1266
+   ],
+   "sha256": "5a7b63f5c31469a967c790cbab6d4dda0b73845960dd43adb2d410ca66285fb8",
+   "nativePNG": true
+  },
+  {
+   "file": "05-nikke-portrait-after.png",
+   "source": "info-final-02/N01-console-390x844.png",
+   "size": [
+    585,
+    1266
+   ],
+   "sha256": "81888677d37a265981817aafdbdba8e143b09105c797b88aa6eec0fe8589aa2d",
+   "nativePNG": true
+  },
+  {
+   "file": "06-eye-bar-before.png",
+   "source": "info-final-02/N03-answer-unmasked.png",
+   "size": [
+    585,
+    1266
+   ],
+   "sha256": "7ad6215de7410393f1b9bdf0b024bd2db0550c1eb96a4ec5727597234b583912",
+   "nativePNG": true
+  },
+  {
+   "file": "07-eye-bar-after.png",
+   "source": "info-final-02/N04-answer-masked.png",
+   "size": [
+    585,
+    1266
+   ],
+   "sha256": "aac667035531011b7b4e263cad2eb0bddc8d66914f6a37846665e98aae634f29",
+   "nativePNG": true
+  },
+  {
+   "file": "08-book-pages-after.png",
+   "source": "info-final-02/B02-book-open-390x844.png",
+   "size": [
+    585,
+    1266
+   ],
+   "sha256": "b96ad65ae8a87cdacf97e89fa9039d4995f2bbf3f6882fa3009984f68a5a9f61",
+   "nativePNG": true
+  },
+  {
+   "file": "09-song-cheers-after.png",
+   "source": "finale-final/G01-song-390x844.png",
+   "size": [
+    585,
+    1266
+   ],
+   "sha256": "1ebdc09de72be8038d73863a8bfd2139e207d04bddd1a720ff8aa657a7fe9308",
+   "nativePNG": true
+  },
+  {
+   "file": "10-aim-face-after.png",
+   "source": "aim-final/R03-final-grip-390x844.png",
+   "size": [
+    585,
+    1266
+   ],
+   "sha256": "e96b81d982104d345907114fabe76381d1d742fdf9fffcf0fa618161bde45c2f",
+   "nativePNG": true
+  },
+  {
+   "file": "11-song-landscape-after.png",
+   "source": "finale-final/G01-song-844x390.png",
+   "size": [
+    1266,
+    585
+   ],
+   "sha256": "2e372a5f02185b67ee20a3a941d1d35ae03deebc3da1fff0ee19bb328a2f9e77",
+   "nativePNG": true
+  }
+ ]
+}

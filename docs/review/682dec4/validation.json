@@ -1,0 +1,222 @@
+{
+  "codeCommit": "682dec4455e76f82bde6c802d1cf0d87296c9bb0",
+  "baseCommit": "c178f0e66f1712f2374bbbae93e84b6b5f09d47d",
+  "nodeChecks": [
+    {
+      "script": "scripts/actor-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/air-upstairs-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/analytics-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/battle-warm-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/bonus-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/character-copy-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/cinematic-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/cinematic-track-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/concert-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/destruction-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/dinner-revision-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/director-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/entry-camera-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/feast-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/feedback-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/fx-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/indoor-camera-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/indoor-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/indoor-impact-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/indoor-passenger-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/living-world-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/loading-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/mission-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/next-dinner-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/photo-camera-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/polish-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/postgame-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/presentation-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/props-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/racing-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/review-synthesis-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/revision-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/second-wave-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/stage-detail-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/story-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/story-revision-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/street-camera-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/street-stage-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/touch-detail-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/tray-grip-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/vcr-props-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/vcr-tablet-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/viewer-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/walking-environment-check.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "scripts/warmup-check.mjs",
+      "exitCode": 0
+    }
+  ],
+  "build": {
+    "command": "npm run build",
+    "exitCode": 0,
+    "note": "Existing large chunk advisory remains"
+  },
+  "photoRecovery": {
+    "passed": true,
+    "checks": "invalid photo disabled; valid optical closeup; toggle full/close; settings/feedback/background/BFCache/restart; selectstart suppression; no feedback POST"
+  },
+  "sceneRegression": {
+    "status": "complete",
+    "viewports": [
+      [
+        390,
+        844
+      ],
+      [
+        844,
+        390
+      ],
+      [
+        1440,
+        900
+      ]
+    ],
+    "errors": [],
+    "checks": "105 hold, shock, quiet song, return to microwave, pause and restart"
+  },
+  "retryHistory": [
+    "First synthesis capture timed out waiting unlock toast; succeeded on second run. Tool now finishes presentation animation before capture.",
+    "Initial detail capture skipped the first birth dialogue by advancing immediately after tick; helper now checks target after tick. Second run passed.",
+    "Early transfer attempts exposed penetration or wrist overbend and were rejected. Final evidence is grip-final-05.",
+    "A full grip capture and an info capture encountered Chromium screenshot timeouts; focused final captures completed. These failures are not counted as passes."
+  ],
+  "iphoneTested": false,
+  "continuousAudioVideoTested": false
+}

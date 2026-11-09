@@ -1,0 +1,547 @@
+{
+  "status": "complete",
+  "source": {
+    "commit": "fdea28d9833c25f9d4108aa0e61c359de4dde748",
+    "runtime_sha256": "a41f84545794bdb34754635af92822045d4de00813dc8094cafc736d568e9c6f"
+  },
+  "entry": "seven-tap unlock; figurine and birth debug shortcuts; birth followed by actual story controls",
+  "iphone_tested": false,
+  "frames": [
+    {
+      "id": "R03-final-grip-390x844",
+      "file": "R03-final-grip-390x844.png",
+      "phase": "aim-final",
+      "age": 12.000000000000162,
+      "mealBorn": false,
+      "owner": "helper",
+      "camera": {
+        "position": [
+          -2.159837308202218,
+          6.290849719260425,
+          11.337450439452422
+        ],
+        "target": [
+          -1.4393306328525082,
+          5.379447954599071,
+          14.975499660835732
+        ],
+        "fov": 58,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.6333019899803214,
+          5.544736461233601,
+          15.109823434479283
+        ],
+        "rescue": {
+          "handoffPoint": [
+            -1.9644740427649139,
+            5.249790896770267,
+            15.69133213968577
+          ],
+          "age": 12.000000000000162,
+          "beat": "aim",
+          "approach": 1,
+          "lowered": 0,
+          "release": 1,
+          "press": 0,
+          "thumb": 0,
+          "emoji": "",
+          "ready": true,
+          "base": [
+            -1.8364462323758972,
+            0.025,
+            16.109401868494352
+          ],
+          "tray": [
+            -1.8364462323758972,
+            0.5750000000000001,
+            16.109401868494352
+          ],
+          "height": 0.55,
+          "airborne": false,
+          "tilt": 0,
+          "carrying": true
+        },
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": true,
+          "mode": "holding-tray",
+          "position": [
+            -1.8364462323758972,
+            0.025,
+            16.109401868494352
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0.55,
+          "bodyHeight": 0.36,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": true,
+        "microphone": false,
+        "phone": null
+      },
+      "xaihi": {
+        "loaded": false,
+        "loading": null,
+        "error": null
+      },
+      "tablet": null,
+      "expression": "shock",
+      "viewport": [
+        390,
+        844
+      ],
+      "overflow": false,
+      "emoji": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "last_line_characters": 9
+    },
+    {
+      "id": "R03-final-grip-844x390",
+      "file": "R03-final-grip-844x390.png",
+      "phase": "aim-final",
+      "age": 12.000000000000162,
+      "mealBorn": false,
+      "owner": "helper",
+      "camera": {
+        "position": [
+          -2.074276950440286,
+          6.213278022101853,
+          11.769469744181274
+        ],
+        "target": [
+          -2.991353737596093,
+          5.871396648536884,
+          15.371206392755138
+        ],
+        "fov": 46,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.6333019899803214,
+          5.544736461233601,
+          15.109823434479283
+        ],
+        "rescue": {
+          "handoffPoint": [
+            -1.9644740427649139,
+            5.249790896770267,
+            15.69133213968577
+          ],
+          "age": 12.000000000000162,
+          "beat": "aim",
+          "approach": 1,
+          "lowered": 0,
+          "release": 1,
+          "press": 0,
+          "thumb": 0,
+          "emoji": "",
+          "ready": true,
+          "base": [
+            -1.8364462323758972,
+            0.025,
+            16.109401868494352
+          ],
+          "tray": [
+            -1.8364462323758972,
+            0.5750000000000001,
+            16.109401868494352
+          ],
+          "height": 0.55,
+          "airborne": false,
+          "tilt": 0,
+          "carrying": true
+        },
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": true,
+          "mode": "holding-tray",
+          "position": [
+            -1.8364462323758972,
+            0.025,
+            16.109401868494352
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0.55,
+          "bodyHeight": 0.36,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": true,
+        "microphone": false,
+        "phone": null
+      },
+      "xaihi": {
+        "loaded": false,
+        "loading": null,
+        "error": null
+      },
+      "tablet": null,
+      "expression": "shock",
+      "viewport": [
+        844,
+        390
+      ],
+      "overflow": false,
+      "emoji": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "last_line_characters": 9
+    },
+    {
+      "id": "R03-final-grip-1440x900",
+      "file": "R03-final-grip-1440x900.png",
+      "phase": "aim-final",
+      "age": 12.000000000000162,
+      "mealBorn": false,
+      "owner": "helper",
+      "camera": {
+        "position": [
+          -2.0742769504402854,
+          6.213278022101853,
+          11.769469744181274
+        ],
+        "target": [
+          -1.4236206660149107,
+          5.838555433432837,
+          15.05482388443677
+        ],
+        "fov": 46,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.6333019899803214,
+          5.544736461233601,
+          15.109823434479283
+        ],
+        "rescue": {
+          "handoffPoint": [
+            -1.9644740427649139,
+            5.249790896770267,
+            15.69133213968577
+          ],
+          "age": 12.000000000000162,
+          "beat": "aim",
+          "approach": 1,
+          "lowered": 0,
+          "release": 1,
+          "press": 0,
+          "thumb": 0,
+          "emoji": "",
+          "ready": true,
+          "base": [
+            -1.8364462323758972,
+            0.025,
+            16.109401868494352
+          ],
+          "tray": [
+            -1.8364462323758972,
+            0.5750000000000001,
+            16.109401868494352
+          ],
+          "height": 0.55,
+          "airborne": false,
+          "tilt": 0,
+          "carrying": true
+        },
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": true,
+          "mode": "holding-tray",
+          "position": [
+            -1.8364462323758972,
+            0.025,
+            16.109401868494352
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0.55,
+          "bodyHeight": 0.36,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": true,
+        "microphone": false,
+        "phone": null
+      },
+      "xaihi": {
+        "loaded": false,
+        "loading": null,
+        "error": null
+      },
+      "tablet": null,
+      "expression": "shock",
+      "viewport": [
+        1440,
+        900
+      ],
+      "overflow": false,
+      "emoji": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "last_line_characters": 9
+    }
+  ],
+  "errors": [],
+  "feedback_posts": [],
+  "checks": [
+    "Final aiming face/hand/handle framing in portrait, landscape and desktop"
+  ]
+}

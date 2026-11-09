@@ -1,0 +1,1974 @@
+{
+  "status": "complete",
+  "source": {
+    "commit": "c178f0e66f1712f2374bbbae93e84b6b5f09d47d",
+    "runtime_sha256": "95c0ef6ec5fc4351edbd50b4d0a033bbe65b842f2af8c7b7a2c7481086c42591"
+  },
+  "entry": "seven-tap unlock; figurine and birth debug shortcuts; birth followed by actual story controls",
+  "iphone_tested": false,
+  "frames": [
+    {
+      "id": "B01-book-arrival",
+      "file": "B01-book-arrival.png",
+      "phase": "terminal-deploy",
+      "age": 1.2000000000000002,
+      "mealBorn": false,
+      "owner": "hero",
+      "camera": {
+        "position": [
+          0.41990573300366396,
+          4.561573527065184,
+          13.338019144689635
+        ],
+        "target": [
+          -1.4211604710433452,
+          -0.4142810784672734,
+          6.322064150888873
+        ],
+        "fov": 74,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -0.9500534037815521,
+          1.3953342136211417,
+          3.825454656986394
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": false,
+          "mode": "unborn",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "xaihi": {
+        "loaded": false,
+        "loading": null,
+        "error": null
+      },
+      "tablet": null,
+      "expression": "normal",
+      "viewport": [
+        390,
+        844
+      ],
+      "overflow": false,
+      "emoji": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "last_line_characters": 5
+    },
+    {
+      "id": "B02-book-open-390x844",
+      "file": "B02-book-open-390x844.png",
+      "phase": "terminal-deploy",
+      "age": 2.899999999999994,
+      "mealBorn": false,
+      "owner": "hero",
+      "camera": {
+        "position": [
+          0.3892237426689231,
+          4.478649228863181,
+          13.221095884224813
+        ],
+        "target": [
+          -1.4211604710433452,
+          -0.4142810784672734,
+          6.322064150888873
+        ],
+        "fov": 74,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -0.9500534012042391,
+          1.3953342135650457,
+          3.8254546568390078
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": false,
+          "mode": "unborn",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "xaihi": {
+        "loaded": false,
+        "loading": null,
+        "error": null
+      },
+      "tablet": null,
+      "expression": "blink",
+      "viewport": [
+        390,
+        844
+      ],
+      "overflow": false,
+      "emoji": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "last_line_characters": 5
+    },
+    {
+      "id": "B02-book-open-844x390",
+      "file": "B02-book-open-844x390.png",
+      "phase": "terminal-deploy",
+      "age": 2.899999999999994,
+      "mealBorn": false,
+      "owner": "hero",
+      "camera": {
+        "position": [
+          0.04688820399936078,
+          6.44476549824918,
+          11.916519912538103
+        ],
+        "target": [
+          -1.7634960097129075,
+          1.5518351909187265,
+          5.017488179202163
+        ],
+        "fov": 55,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -0.9500534012042391,
+          1.3953342135650457,
+          3.8254546568390078
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": false,
+          "mode": "unborn",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "xaihi": {
+        "loaded": false,
+        "loading": null,
+        "error": null
+      },
+      "tablet": null,
+      "expression": "blink",
+      "viewport": [
+        844,
+        390
+      ],
+      "overflow": false,
+      "emoji": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "last_line_characters": 5
+    },
+    {
+      "id": "B02-book-open-1440x900",
+      "file": "B02-book-open-1440x900.png",
+      "phase": "terminal-deploy",
+      "age": 2.899999999999994,
+      "mealBorn": false,
+      "owner": "hero",
+      "camera": {
+        "position": [
+          0.09211721085510116,
+          6.185004310226345,
+          12.088879100826194
+        ],
+        "target": [
+          -1.718267002857167,
+          1.2920740028958906,
+          5.189847367490256
+        ],
+        "fov": 55,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -0.9500534012042391,
+          1.3953342135650457,
+          3.8254546568390078
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": false,
+          "mode": "unborn",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "xaihi": {
+        "loaded": false,
+        "loading": null,
+        "error": null
+      },
+      "tablet": null,
+      "expression": "blink",
+      "viewport": [
+        1440,
+        900
+      ],
+      "overflow": false,
+      "emoji": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "last_line_characters": 5
+    },
+    {
+      "id": "N01-console-390x844",
+      "file": "N01-console-390x844.png",
+      "phase": "hack",
+      "age": 1.1999999999999957,
+      "mealBorn": false,
+      "owner": "dragon",
+      "camera": {
+        "position": [
+          7.4,
+          1.9499999999999997,
+          -10.25
+        ],
+        "target": [
+          7.4,
+          1.85,
+          -13.189
+        ],
+        "fov": 50,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.0759862940699103,
+          1.2966888495221929,
+          3.533189548291992
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": false,
+          "mode": "unborn",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "xaihi": {
+        "loaded": true,
+        "phase": "hack",
+        "action": "terminal",
+        "visible": true,
+        "bones": 960,
+        "scale": 1.00924974058618,
+        "headYaw": -0.22,
+        "phoneVisible": true,
+        "mealVisible": false,
+        "eyeYaw": -0.035,
+        "eyePitch": 0,
+        "tabletLift": 0,
+        "performanceCue": "",
+        "refuseAmount": 0,
+        "headPosition": [
+          2.1879254608505203,
+          1.7972235967499324,
+          0.7402419982459377
+        ],
+        "screenButtons": [],
+        "handPositions": [
+          [
+            2.3706071150911647,
+            1.3936481007330301,
+            0.9364826152573992
+          ],
+          [
+            2.2957452698941196,
+            1.3444569291154518,
+            0.7302583264422466
+          ]
+        ],
+        "position": [
+          1.95,
+          0.31,
+          0.85
+        ],
+        "pose": {
+          "head": [
+            0.027076859955511207,
+            -0.10982770365237511,
+            0.00029500473172413937,
+            0.9935817160986272
+          ],
+          "wrist": [
+            -0.7189628034863396,
+            0.6446113157908783,
+            -0.22597242985849664,
+            -0.12847250251121384
+          ],
+          "arm": [
+            0.6267337978938798,
+            -0.22096231937748248,
+            0.630657735477065,
+            0.4008132009763529
+          ]
+        }
+      },
+      "tablet": {
+        "stage": "backdoor",
+        "title": "3號天師樁：偵測到竊密木馬",
+        "lines": [
+          "NIKKE PC Launcher｜帳號密碼可能外洩",
+          "供應鏈攻擊｜CDN 腳本遭竄改",
+          "憑證竊取 Credential theft",
+          "C2 遠端控制通道：在線｜可操作天師樁供電"
+        ],
+        "buttons": [],
+        "dialogue": {
+          "speaker": "xaihi",
+          "text": "怎麼還裝了妮姬？",
+          "cue": null
+        },
+        "dialogueAge": 1.1999999999999957,
+        "hot": true,
+        "powered": false,
+        "censored": false,
+        "censorAt": null,
+        "temperature": 105,
+        "notification": null,
+        "note": "",
+        "age": 1.1999999999999957,
+        "busy": true,
+        "revision": 2,
+        "wireBeat": null
+      },
+      "expression": "normal",
+      "viewport": [
+        390,
+        844
+      ],
+      "overflow": false,
+      "emoji": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "last_line_characters": 8
+    },
+    {
+      "id": "N01-console-844x390",
+      "file": "N01-console-844x390.png",
+      "phase": "hack",
+      "age": 1.1999999999999957,
+      "mealBorn": false,
+      "owner": "dragon",
+      "camera": {
+        "position": [
+          7.64,
+          2.1,
+          -11.25
+        ],
+        "target": [
+          7.4,
+          1.85,
+          -13.189
+        ],
+        "fov": 34,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.0759862940699103,
+          1.2966888495221929,
+          3.533189548291992
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": false,
+          "mode": "unborn",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "xaihi": {
+        "loaded": true,
+        "phase": "hack",
+        "action": "terminal",
+        "visible": true,
+        "bones": 960,
+        "scale": 1.00924974058618,
+        "headYaw": -0.22,
+        "phoneVisible": true,
+        "mealVisible": false,
+        "eyeYaw": -0.035,
+        "eyePitch": 0,
+        "tabletLift": 0,
+        "performanceCue": "",
+        "refuseAmount": 0,
+        "headPosition": [
+          2.1879254608505203,
+          1.7972235967499324,
+          0.7402419982459377
+        ],
+        "screenButtons": [],
+        "handPositions": [
+          [
+            2.3706071150911647,
+            1.3936481007330301,
+            0.9364826152573992
+          ],
+          [
+            2.2957452698941196,
+            1.3444569291154518,
+            0.7302583264422466
+          ]
+        ],
+        "position": [
+          1.95,
+          0.31,
+          0.85
+        ],
+        "pose": {
+          "head": [
+            0.027076859955511207,
+            -0.10982770365237511,
+            0.00029500473172413937,
+            0.9935817160986272
+          ],
+          "wrist": [
+            -0.7189628034863396,
+            0.6446113157908783,
+            -0.22597242985849664,
+            -0.12847250251121384
+          ],
+          "arm": [
+            0.6267337978938798,
+            -0.22096231937748248,
+            0.630657735477065,
+            0.4008132009763529
+          ]
+        }
+      },
+      "tablet": {
+        "stage": "backdoor",
+        "title": "3號天師樁：偵測到竊密木馬",
+        "lines": [
+          "NIKKE PC Launcher｜帳號密碼可能外洩",
+          "供應鏈攻擊｜CDN 腳本遭竄改",
+          "憑證竊取 Credential theft",
+          "C2 遠端控制通道：在線｜可操作天師樁供電"
+        ],
+        "buttons": [],
+        "dialogue": {
+          "speaker": "xaihi",
+          "text": "怎麼還裝了妮姬？",
+          "cue": null
+        },
+        "dialogueAge": 1.1999999999999957,
+        "hot": true,
+        "powered": false,
+        "censored": false,
+        "censorAt": null,
+        "temperature": 105,
+        "notification": null,
+        "note": "",
+        "age": 1.1999999999999957,
+        "busy": true,
+        "revision": 2,
+        "wireBeat": null
+      },
+      "expression": "normal",
+      "viewport": [
+        844,
+        390
+      ],
+      "overflow": false,
+      "emoji": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "last_line_characters": 8
+    },
+    {
+      "id": "N01-console-1440x900",
+      "file": "N01-console-1440x900.png",
+      "phase": "hack",
+      "age": 1.1999999999999957,
+      "mealBorn": false,
+      "owner": "dragon",
+      "camera": {
+        "position": [
+          7.64,
+          2.1,
+          -11.25
+        ],
+        "target": [
+          7.4,
+          1.85,
+          -13.189
+        ],
+        "fov": 34,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.0759862940699103,
+          1.2966888495221929,
+          3.533189548291992
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": false,
+          "mode": "unborn",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "xaihi": {
+        "loaded": true,
+        "phase": "hack",
+        "action": "terminal",
+        "visible": true,
+        "bones": 960,
+        "scale": 1.00924974058618,
+        "headYaw": -0.22,
+        "phoneVisible": true,
+        "mealVisible": false,
+        "eyeYaw": -0.035,
+        "eyePitch": 0,
+        "tabletLift": 0,
+        "performanceCue": "",
+        "refuseAmount": 0,
+        "headPosition": [
+          2.1879254608505203,
+          1.7972235967499324,
+          0.7402419982459377
+        ],
+        "screenButtons": [],
+        "handPositions": [
+          [
+            2.3706071150911647,
+            1.3936481007330301,
+            0.9364826152573992
+          ],
+          [
+            2.2957452698941196,
+            1.3444569291154518,
+            0.7302583264422466
+          ]
+        ],
+        "position": [
+          1.95,
+          0.31,
+          0.85
+        ],
+        "pose": {
+          "head": [
+            0.027076859955511207,
+            -0.10982770365237511,
+            0.00029500473172413937,
+            0.9935817160986272
+          ],
+          "wrist": [
+            -0.7189628034863396,
+            0.6446113157908783,
+            -0.22597242985849664,
+            -0.12847250251121384
+          ],
+          "arm": [
+            0.6267337978938798,
+            -0.22096231937748248,
+            0.630657735477065,
+            0.4008132009763529
+          ]
+        }
+      },
+      "tablet": {
+        "stage": "backdoor",
+        "title": "3號天師樁：偵測到竊密木馬",
+        "lines": [
+          "NIKKE PC Launcher｜帳號密碼可能外洩",
+          "供應鏈攻擊｜CDN 腳本遭竄改",
+          "憑證竊取 Credential theft",
+          "C2 遠端控制通道：在線｜可操作天師樁供電"
+        ],
+        "buttons": [],
+        "dialogue": {
+          "speaker": "xaihi",
+          "text": "怎麼還裝了妮姬？",
+          "cue": null
+        },
+        "dialogueAge": 1.1999999999999957,
+        "hot": true,
+        "powered": false,
+        "censored": false,
+        "censorAt": null,
+        "temperature": 105,
+        "notification": null,
+        "note": "",
+        "age": 1.1999999999999957,
+        "busy": true,
+        "revision": 2,
+        "wireBeat": null
+      },
+      "expression": "normal",
+      "viewport": [
+        1440,
+        900
+      ],
+      "overflow": false,
+      "emoji": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "last_line_characters": 8
+    },
+    {
+      "id": "N02-request",
+      "file": "N02-request.png",
+      "phase": "hack",
+      "age": 5.199999999999998,
+      "mealBorn": false,
+      "owner": "dragon",
+      "camera": {
+        "position": [
+          7.569976621478739,
+          2.1536589325804307,
+          -11.80064945532063
+        ],
+        "target": [
+          7.52,
+          2.11,
+          -13.189
+        ],
+        "fov": 28,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.0697029946529664,
+          1.2953608928343245,
+          3.5384642206619965
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": false,
+          "mode": "unborn",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "xaihi": {
+        "loaded": true,
+        "phase": "hack",
+        "action": "terminal",
+        "visible": true,
+        "bones": 960,
+        "scale": 1.00924974058618,
+        "headYaw": -0.22,
+        "phoneVisible": true,
+        "mealVisible": false,
+        "eyeYaw": -0.035,
+        "eyePitch": 0,
+        "tabletLift": 0,
+        "performanceCue": "",
+        "refuseAmount": 0,
+        "headPosition": [
+          2.1904154447026207,
+          1.797389772763253,
+          0.7394078003366766
+        ],
+        "screenButtons": [],
+        "handPositions": [
+          [
+            2.3708731214187644,
+            1.3936287890856012,
+            0.9365049888243737
+          ],
+          [
+            2.2957452701868646,
+            1.3444569292212118,
+            0.7302583266147675
+          ]
+        ],
+        "position": [
+          1.95,
+          0.31,
+          0.85
+        ],
+        "pose": {
+          "head": [
+            0.02773646690562992,
+            -0.10966298110253067,
+            -0.005676711809298161,
+            0.9935655430570357
+          ],
+          "wrist": [
+            -0.7207984482302683,
+            0.6429952521112946,
+            -0.22510674022991392,
+            -0.12780314010821994
+          ],
+          "arm": [
+            0.6260211587470003,
+            -0.2198669266762224,
+            0.630577254711992,
+            0.40265167383629974
+          ]
+        }
+      },
+      "tablet": {
+        "stage": "rapi-request",
+        "title": "3號天師樁管理電腦",
+        "lines": [
+          "NIKKE PC Launcher"
+        ],
+        "buttons": [],
+        "dialogue": {
+          "speaker": "rapi",
+          "text": "可以幫我打馬賽克嗎？",
+          "cue": null
+        },
+        "dialogueAge": 0.7500000000000107,
+        "hot": true,
+        "powered": false,
+        "censored": false,
+        "censorAt": null,
+        "temperature": 105,
+        "notification": null,
+        "note": "",
+        "age": 0.7500000000000107,
+        "busy": false,
+        "revision": 9,
+        "wireBeat": null
+      },
+      "expression": "normal",
+      "viewport": [
+        390,
+        844
+      ],
+      "overflow": false,
+      "emoji": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "last_line_characters": 10
+    },
+    {
+      "id": "N03-answer-unmasked",
+      "file": "N03-answer-unmasked.png",
+      "phase": "hack",
+      "age": 5.500000000000003,
+      "mealBorn": false,
+      "owner": "dragon",
+      "camera": {
+        "position": [
+          7.569976621478739,
+          2.1536589325804307,
+          -11.80064945532063
+        ],
+        "target": [
+          7.52,
+          2.11,
+          -13.189
+        ],
+        "fov": 28,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.0697025042318622,
+          1.295286843261745,
+          3.538615342063147
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": false,
+          "mode": "unborn",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "xaihi": {
+        "loaded": true,
+        "phase": "hack",
+        "action": "terminal",
+        "visible": true,
+        "bones": 960,
+        "scale": 1.00924974058618,
+        "headYaw": -0.22,
+        "phoneVisible": true,
+        "mealVisible": false,
+        "eyeYaw": -0.035,
+        "eyePitch": 0,
+        "tabletLift": 0,
+        "performanceCue": "",
+        "refuseAmount": 0,
+        "headPosition": [
+          2.1904793480089686,
+          1.7974010581441646,
+          0.7390541764436762
+        ],
+        "screenButtons": [],
+        "handPositions": [
+          [
+            2.370860261712862,
+            1.3936322213577375,
+            0.9364559238997755
+          ],
+          [
+            2.2957452700929464,
+            1.3444569293059525,
+            0.7302583265537715
+          ]
+        ],
+        "position": [
+          1.95,
+          0.31,
+          0.85
+        ],
+        "pose": {
+          "head": [
+            0.02777614838767766,
+            -0.10965293709077302,
+            -0.0060362489737017695,
+            0.9935634237905144
+          ],
+          "wrist": [
+            -0.7209227463078964,
+            0.6427331310466969,
+            -0.22543663980011738,
+            -0.1278390468043295
+          ],
+          "arm": [
+            0.6261013960762579,
+            -0.2195784370815279,
+            0.6306784046911967,
+            0.4025259033990124
+          ]
+        }
+      },
+      "tablet": {
+        "stage": "rapi-answer",
+        "title": "3號天師樁管理電腦",
+        "lines": [
+          "NIKKE PC Launcher"
+        ],
+        "buttons": [],
+        "dialogue": {
+          "speaker": "dragon",
+          "text": "可以！",
+          "cue": null
+        },
+        "dialogueAge": 0.05000000000000071,
+        "hot": true,
+        "powered": false,
+        "censored": false,
+        "censorAt": 9.949999999999996,
+        "temperature": 105,
+        "notification": null,
+        "note": "",
+        "age": 0.05000000000000071,
+        "busy": true,
+        "revision": 11,
+        "wireBeat": null
+      },
+      "expression": "normal",
+      "viewport": [
+        390,
+        844
+      ],
+      "overflow": false,
+      "emoji": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "last_line_characters": 3
+    },
+    {
+      "id": "N04-answer-masked",
+      "file": "N04-answer-masked.png",
+      "phase": "hack",
+      "age": 7.100000000000025,
+      "mealBorn": false,
+      "owner": "dragon",
+      "camera": {
+        "position": [
+          7.569976621478739,
+          2.1536589325804307,
+          -11.80064945532063
+        ],
+        "target": [
+          7.52,
+          2.11,
+          -13.189
+        ],
+        "fov": 28,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.0697130299916682,
+          1.296433517983042,
+          3.5362984303935825
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": false,
+          "mode": "unborn",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "xaihi": {
+        "loaded": true,
+        "phase": "hack",
+        "action": "terminal",
+        "visible": true,
+        "bones": 960,
+        "scale": 1.00924974058618,
+        "headYaw": -0.22,
+        "phoneVisible": true,
+        "mealVisible": false,
+        "eyeYaw": -0.035,
+        "eyePitch": 0,
+        "tabletLift": 0,
+        "performanceCue": "",
+        "refuseAmount": 0,
+        "headPosition": [
+          2.190151350096593,
+          1.7973750453166883,
+          0.7394209917560808
+        ],
+        "screenButtons": [],
+        "handPositions": [
+          [
+            2.3708403503275357,
+            1.3936319510736626,
+            0.9364912355153018
+          ],
+          [
+            2.2957452701324548,
+            1.3444569292288526,
+            0.7302583265817771
+          ]
+        ],
+        "position": [
+          1.95,
+          0.31,
+          0.85
+        ],
+        "pose": {
+          "head": [
+            0.027882949978884,
+            -0.10962582798986911,
+            -0.007004092957444807,
+            0.9935570723656206
+          ],
+          "wrist": [
+            -0.7206214327264853,
+            0.6431164918258181,
+            -0.22527981522235943,
+            -0.1278863472241129
+          ],
+          "arm": [
+            0.6261193327745248,
+            -0.2199237915720738,
+            0.6306094737311061,
+            0.4024174448660497
+          ]
+        }
+      },
+      "tablet": {
+        "stage": "rapi-answer",
+        "title": "3號天師樁管理電腦",
+        "lines": [
+          "NIKKE PC Launcher"
+        ],
+        "buttons": [],
+        "dialogue": {
+          "speaker": "dragon",
+          "text": "可以！",
+          "cue": null
+        },
+        "dialogueAge": 1.6500000000000234,
+        "hot": true,
+        "powered": false,
+        "censored": true,
+        "censorAt": 9.949999999999996,
+        "temperature": 105,
+        "notification": null,
+        "note": "",
+        "age": 1.6500000000000234,
+        "busy": true,
+        "revision": 12,
+        "wireBeat": null
+      },
+      "expression": "normal",
+      "viewport": [
+        390,
+        844
+      ],
+      "overflow": false,
+      "emoji": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "last_line_characters": 3
+    }
+  ],
+  "errors": [],
+  "feedback_posts": [],
+  "checks": [
+    "BOOK open and readable page edges across three layouts",
+    "Full Nikke screen plus unchanged eye-bar framing"
+  ]
+}
