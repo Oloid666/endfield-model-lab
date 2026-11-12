@@ -1,0 +1,1607 @@
+{
+  "status": "passed",
+  "errors": [],
+  "iphone_tested": false,
+  "frames": [
+    {
+      "file": "01-charge-gold-after.png",
+      "phase": "combat",
+      "age": 1.299999999999926,
+      "camera": {
+        "position": [
+          -2,
+          9.199999999999998,
+          34
+        ],
+        "target": [
+          -0.7000000000000001,
+          3.6,
+          7.000000000000001
+        ],
+        "fov": 61,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "charge": {
+        "status": "gold",
+        "amount": 1,
+        "power": 1,
+        "damage": 22,
+        "result": "perfect",
+        "recoil": 1.4,
+        "active": true,
+        "age": 1.299999999999926,
+        "cooldownRemaining": 0,
+        "reason": ""
+      },
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.516673180567406,
+          5.357891416778808,
+          15.013432437774533
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": false,
+          "mode": "unborn",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "sha256": "8b7c556d8420ea00c5bd8ae6e760e994b3a0f94298054dd4f894f44485ac166b"
+    },
+    {
+      "file": "02-charge-landscape-after.png",
+      "phase": "combat",
+      "age": 12.30999999999932,
+      "camera": {
+        "position": [
+          4.186483920729092,
+          5.122337848004108,
+          9.167572801266841
+        ],
+        "target": [
+          0.2708161053523199,
+          3.613618446608192,
+          2.9620883072489694
+        ],
+        "fov": 42.65692256372808,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "charge": {
+        "status": "idle",
+        "amount": 0,
+        "power": 0.35,
+        "damage": 8,
+        "result": "hit",
+        "recoil": 0.55,
+        "active": false,
+        "age": 0,
+        "cooldownRemaining": 0,
+        "reason": ""
+      },
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.5505197464015952,
+          5.367515260318532,
+          15.020916381049211
+        ],
+        "rescue": null,
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": false,
+          "mode": "unborn",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.28,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "sha256": "687fe5eb6b715547e96e71c92cb669d5951aaa12fd43c3faa64c9e0e659ce899"
+    },
+    {
+      "file": "03-final-left-after.png",
+      "phase": "aim-final",
+      "age": 12.629999999999413,
+      "camera": {
+        "position": [
+          -2.1482224566073405,
+          6.312224889477665,
+          11.33444632052744
+        ],
+        "target": [
+          -1.4276342608933523,
+          5.385279024806922,
+          14.972907162105164
+        ],
+        "fov": 58,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "charge": {
+        "status": "idle",
+        "amount": 0,
+        "power": 0.35,
+        "damage": 8,
+        "result": "hit",
+        "recoil": 0.55,
+        "active": false,
+        "age": 0,
+        "cooldownRemaining": 0,
+        "reason": ""
+      },
+      "staging": {
+        "damage": {
+          "state": "clean",
+          "progress": 1,
+          "visible": false,
+          "bandagesVisible": false
+        },
+        "catchGrip": [
+          -1.6193746336703367,
+          5.540716502509731,
+          15.109823434479283
+        ],
+        "rescue": {
+          "handoffPoint": [
+            -1.9431949770954557,
+            5.268672398378911,
+            15.688644293667789
+          ],
+          "age": 12.629999999999413,
+          "beat": "aim",
+          "approach": 1,
+          "lowered": 0,
+          "release": 1,
+          "press": 0,
+          "thumb": 0,
+          "emoji": "",
+          "ready": true,
+          "base": [
+            -1.8701182099909779,
+            0.025,
+            15.71997767911732
+          ],
+          "tray": [
+            -1.8701182099909779,
+            0.5750000000000001,
+            15.71997767911732
+          ],
+          "height": 0.55,
+          "airborne": false,
+          "tilt": 0,
+          "carrying": true
+        },
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": true,
+          "mode": "holding-tray",
+          "position": [
+            -1.8701182099909779,
+            0.025,
+            15.71997767911732
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0.55,
+          "bodyHeight": 0.36,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": true,
+        "microphone": false,
+        "phone": null
+      },
+      "sha256": "bffa39b86a10dfa685ef648328ade539279946bd9a08f9196f413361e89abc9b"
+    },
+    {
+      "file": "04-landing-face-after.png",
+      "phase": "landing",
+      "age": 2.809999999999988,
+      "camera": {
+        "position": [
+          -1.3515390538929442,
+          2.0038292169743586,
+          0.5791603309633664
+        ],
+        "target": [
+          -1.1715193506502342,
+          1.8038292169743588,
+          2.8807945288308687
+        ],
+        "fov": 40.00000000568495,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "charge": {
+        "status": "idle",
+        "amount": 0,
+        "power": 0.35,
+        "damage": 8,
+        "result": "hit",
+        "recoil": 0.55,
+        "active": false,
+        "age": 0,
+        "cooldownRemaining": 0,
+        "reason": ""
+      },
+      "staging": {
+        "damage": {
+          "state": "dirty",
+          "progress": 0,
+          "visible": true,
+          "bandagesVisible": true
+        },
+        "catchGrip": [
+          -1.5166766238084868,
+          1.5583300223352143,
+          3.2185041512034376
+        ],
+        "rescue": {
+          "handoffPoint": [
+            -1.9431949770954557,
+            5.268672398378911,
+            15.688644293667789
+          ],
+          "age": 24.4399999999994,
+          "beat": "aim",
+          "approach": 1,
+          "lowered": 0,
+          "release": 1,
+          "press": 0,
+          "thumb": 0,
+          "emoji": "",
+          "ready": true,
+          "base": [
+            -1.25,
+            0.33,
+            3.9000000000000004
+          ],
+          "tray": [
+            -1.25,
+            0.8800000000000001,
+            3.9000000000000004
+          ],
+          "height": 0.55,
+          "airborne": false,
+          "tilt": 0,
+          "carrying": true
+        },
+        "concert": {
+          "visible": false,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "hands": [
+            [
+              -1.505,
+              0.95,
+              0
+            ],
+            [
+              -1.075,
+              0.95,
+              0.2
+            ],
+            [
+              -0.645,
+              0.8,
+              0
+            ],
+            [
+              -0.215,
+              0.8,
+              0.2
+            ],
+            [
+              0.215,
+              0.8,
+              0
+            ],
+            [
+              0.645,
+              0.8,
+              0.2
+            ],
+            [
+              1.075,
+              0.8,
+              0
+            ],
+            [
+              1.505,
+              0.8,
+              0.2
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": true,
+          "mode": "holding-tray",
+          "position": [
+            -1.25,
+            0.33,
+            3.9000000000000004
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0.55,
+          "bodyHeight": 0.36,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "sha256": "72326965d51b4deaa6cab3c614c6cf85db1f8edcc00da4feed4c2aab57f07f37"
+    },
+    {
+      "file": "05-dinner-thanks-after.png",
+      "phase": "tour",
+      "age": 30.049999999994895,
+      "camera": {
+        "position": [
+          -0.23491109133567434,
+          1.86,
+          5.275188962969623
+        ],
+        "target": [
+          -1.1980554489200377,
+          1.4800000000000002,
+          3.8979211090967025
+        ],
+        "fov": 38,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "charge": {
+        "status": "idle",
+        "amount": 0,
+        "power": 0.35,
+        "damage": 8,
+        "result": "hit",
+        "recoil": 0.55,
+        "active": false,
+        "age": 0,
+        "cooldownRemaining": 0,
+        "reason": ""
+      },
+      "staging": {
+        "damage": {
+          "state": "dirty",
+          "progress": 0,
+          "visible": true,
+          "bandagesVisible": true
+        },
+        "catchGrip": [
+          -0.9500534063166465,
+          1.395334209345911,
+          3.8254546582073825
+        ],
+        "rescue": {
+          "handoffPoint": [
+            -1.9431949770954557,
+            5.268672398378911,
+            15.688644293667789
+          ],
+          "age": 78.07999999999431,
+          "beat": "aim",
+          "approach": 1,
+          "lowered": 0,
+          "release": 1,
+          "press": 0,
+          "thumb": 0,
+          "emoji": "",
+          "ready": true,
+          "base": [
+            -1.25,
+            0.33,
+            3.9000000000000004
+          ],
+          "tray": [
+            -1.25,
+            0.8800000000000001,
+            3.9000000000000004
+          ],
+          "height": 0.55,
+          "airborne": false,
+          "tilt": 0,
+          "carrying": true
+        },
+        "concert": {
+          "visible": false,
+          "position": [
+            1.2620315280034142,
+            1.7696623906664022,
+            -3.31214532766203
+          ],
+          "hands": [
+            [
+              1.2144713731331118,
+              1.7323316548146013,
+              -3.302768132983619
+            ],
+            [
+              1.1996394061380575,
+              1.7323316548146013,
+              -3.300638504062546
+            ],
+            [
+              1.1848074391430032,
+              1.7323316548146013,
+              -3.298508875141473
+            ],
+            [
+              1.169975472147949,
+              1.7323316548146013,
+              -3.2963792462204
+            ],
+            [
+              1.3103086983319243,
+              1.7323316548146013,
+              -3.3165288121659375
+            ],
+            [
+              1.3251406653269786,
+              1.7323316548146013,
+              -3.3186584410870106
+            ],
+            [
+              1.339972632322033,
+              1.7323316548146013,
+              -3.3207880700080836
+            ],
+            [
+              1.3548045993170872,
+              1.7323316548146013,
+              -3.322917698929157
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": false,
+          "mode": "helping",
+          "position": [
+            -1.25,
+            0.33,
+            3.9000000000000004
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.36,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "sha256": "bb8fec14033c629d86c5fee336d61d7d49e5585c543847486fde0a4d4d36f0ae"
+    },
+    {
+      "file": "06-dinner-title-after.png",
+      "phase": "tour",
+      "age": 32.74999999999551,
+      "camera": {
+        "position": [
+          -0.24448745558381157,
+          1.8599999999999999,
+          5.15573988860539
+        ],
+        "target": [
+          -1.1980554489200377,
+          1.4800000000000002,
+          3.8979211090967025
+        ],
+        "fov": 38,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "charge": {
+        "status": "idle",
+        "amount": 0,
+        "power": 0.35,
+        "damage": 8,
+        "result": "hit",
+        "recoil": 0.55,
+        "active": false,
+        "age": 0,
+        "cooldownRemaining": 0,
+        "reason": ""
+      },
+      "staging": {
+        "damage": {
+          "state": "dirty",
+          "progress": 0,
+          "visible": true,
+          "bandagesVisible": true
+        },
+        "catchGrip": [
+          -0.9500534070503917,
+          1.3953342094138874,
+          3.825454658750265
+        ],
+        "rescue": {
+          "handoffPoint": [
+            -1.9431949770954557,
+            5.268672398378911,
+            15.688644293667789
+          ],
+          "age": 80.77999999999493,
+          "beat": "aim",
+          "approach": 1,
+          "lowered": 0,
+          "release": 1,
+          "press": 0,
+          "thumb": 0,
+          "emoji": "",
+          "ready": true,
+          "base": [
+            -1.25,
+            0.33,
+            3.9000000000000004
+          ],
+          "tray": [
+            -1.25,
+            0.8800000000000001,
+            3.9000000000000004
+          ],
+          "height": 0.55,
+          "airborne": false,
+          "tilt": 0,
+          "carrying": true
+        },
+        "concert": {
+          "visible": false,
+          "position": [
+            1.2620315280034142,
+            1.7696623906664022,
+            -3.31214532766203
+          ],
+          "hands": [
+            [
+              1.2144713731331118,
+              1.7323316548146013,
+              -3.302768132983619
+            ],
+            [
+              1.1996394061380575,
+              1.7323316548146013,
+              -3.300638504062546
+            ],
+            [
+              1.1848074391430032,
+              1.7323316548146013,
+              -3.298508875141473
+            ],
+            [
+              1.169975472147949,
+              1.7323316548146013,
+              -3.2963792462204
+            ],
+            [
+              1.3103086983319243,
+              1.7323316548146013,
+              -3.3165288121659375
+            ],
+            [
+              1.3251406653269786,
+              1.7323316548146013,
+              -3.3186584410870106
+            ],
+            [
+              1.339972632322033,
+              1.7323316548146013,
+              -3.3207880700080836
+            ],
+            [
+              1.3548045993170872,
+              1.7323316548146013,
+              -3.322917698929157
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": false,
+          "mode": "helping",
+          "position": [
+            -1.25,
+            0.33,
+            3.9000000000000004
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.36,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "sha256": "8556ac8bdc82b5fc5c5ccb891f5808d8d8ae5171d1f6c83834ae46e22fe97b4b"
+    },
+    {
+      "file": "07-fin-question-after.png",
+      "phase": "complete",
+      "age": 2.669999999996037,
+      "camera": {
+        "position": [
+          -0.24448745558381157,
+          1.8599999999999999,
+          5.15573988860539
+        ],
+        "target": [
+          -1.1980554489200377,
+          1.4800000000000002,
+          3.8979211090967025
+        ],
+        "fov": 38,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "charge": {
+        "status": "idle",
+        "amount": 0,
+        "power": 0.35,
+        "damage": 8,
+        "result": "hit",
+        "recoil": 0.55,
+        "active": false,
+        "age": 0,
+        "cooldownRemaining": 0,
+        "reason": ""
+      },
+      "staging": {
+        "damage": {
+          "state": "dirty",
+          "progress": 0,
+          "visible": true,
+          "bandagesVisible": true
+        },
+        "catchGrip": [
+          -0.9500534064325664,
+          1.3953342092813539,
+          3.8254546588302807
+        ],
+        "rescue": {
+          "handoffPoint": [
+            -1.9431949770954557,
+            5.268672398378911,
+            15.688644293667789
+          ],
+          "age": 84.69999999999546,
+          "beat": "aim",
+          "approach": 1,
+          "lowered": 0,
+          "release": 1,
+          "press": 0,
+          "thumb": 0,
+          "emoji": "",
+          "ready": true,
+          "base": [
+            -1.25,
+            0.33,
+            3.9000000000000004
+          ],
+          "tray": [
+            -1.25,
+            0.8800000000000001,
+            3.9000000000000004
+          ],
+          "height": 0.55,
+          "airborne": false,
+          "tilt": 0,
+          "carrying": true
+        },
+        "concert": {
+          "visible": false,
+          "position": [
+            1.2620315280034142,
+            1.7696623906664022,
+            -3.31214532766203
+          ],
+          "hands": [
+            [
+              1.2144713731331118,
+              1.7323316548146013,
+              -3.302768132983619
+            ],
+            [
+              1.1996394061380575,
+              1.7323316548146013,
+              -3.300638504062546
+            ],
+            [
+              1.1848074391430032,
+              1.7323316548146013,
+              -3.298508875141473
+            ],
+            [
+              1.169975472147949,
+              1.7323316548146013,
+              -3.2963792462204
+            ],
+            [
+              1.3103086983319243,
+              1.7323316548146013,
+              -3.3165288121659375
+            ],
+            [
+              1.3251406653269786,
+              1.7323316548146013,
+              -3.3186584410870106
+            ],
+            [
+              1.339972632322033,
+              1.7323316548146013,
+              -3.3207880700080836
+            ],
+            [
+              1.3548045993170872,
+              1.7323316548146013,
+              -3.322917698929157
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": false,
+          "mode": "helping",
+          "position": [
+            -1.25,
+            0.33,
+            3.9000000000000004
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.36,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "sha256": "0a5bdae4c691a2af7a56f6133fdcb1c7661fe4a616187930c54434ed352d6429"
+    },
+    {
+      "file": "08-title-landscape-after.png",
+      "phase": "tour",
+      "age": 32.799999999993815,
+      "camera": {
+        "position": [
+          -0.24448745558381157,
+          1.8599999999999999,
+          5.15573988860539
+        ],
+        "target": [
+          -1.1980554489200377,
+          1.4800000000000002,
+          3.8979211090967025
+        ],
+        "fov": 30,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "charge": {
+        "status": "idle",
+        "amount": 0,
+        "power": 0.35,
+        "damage": 8,
+        "result": "hit",
+        "recoil": 0.55,
+        "active": false,
+        "age": 0,
+        "cooldownRemaining": 0,
+        "reason": ""
+      },
+      "staging": {
+        "damage": {
+          "state": "dirty",
+          "progress": 0,
+          "visible": true,
+          "bandagesVisible": true
+        },
+        "catchGrip": [
+          -0.9500534047009065,
+          1.3953342091144796,
+          3.8254546576025352
+        ],
+        "rescue": {
+          "handoffPoint": [
+            -1.9352934467425016,
+            5.2971971745586846,
+            15.697226347932164
+          ],
+          "age": 80.4499999999966,
+          "beat": "aim",
+          "approach": 1,
+          "lowered": 0,
+          "release": 1,
+          "press": 0,
+          "thumb": 0,
+          "emoji": "",
+          "ready": true,
+          "base": [
+            -1.25,
+            0.33,
+            3.9
+          ],
+          "tray": [
+            -1.25,
+            0.8800000000000001,
+            3.9
+          ],
+          "height": 0.55,
+          "airborne": false,
+          "tilt": 0,
+          "carrying": true
+        },
+        "concert": {
+          "visible": false,
+          "position": [
+            1.1587209051638638,
+            1.7626278243227005,
+            -4.003927018538879
+          ],
+          "hands": [
+            [
+              0.9871632747301673,
+              1.7340747544083523,
+              -3.977161170478758
+            ],
+            [
+              0.9339585508110888,
+              1.7340747544083523,
+              -3.969605709150714
+            ],
+            [
+              0.8807538268920104,
+              1.7340747544083523,
+              -3.962050247822671
+            ],
+            [
+              0.827549102972932,
+              1.7340747544083523,
+              -3.954494786494627
+            ],
+            [
+              1.3309476446688275,
+              1.7340747544083523,
+              -4.025981074444578
+            ],
+            [
+              1.3841523685879058,
+              1.7340747544083523,
+              -4.033536535772622
+            ],
+            [
+              1.4373570925069843,
+              1.7340747544083523,
+              -4.041091997100665
+            ],
+            [
+              1.4905618164260628,
+              1.7340747544083523,
+              -4.048647458428709
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": false,
+          "mode": "helping",
+          "position": [
+            -1.25,
+            0.33,
+            3.9
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.36,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "sha256": "b71ab3f31e00d16b1ae454d6e1fb55aacd45c62c378ac3faa1c396c02c87a2a3"
+    },
+    {
+      "file": "09-fin-desktop-after.png",
+      "phase": "complete",
+      "age": 0.10000000001213039,
+      "camera": {
+        "position": [
+          -0.24448745558381157,
+          1.8599999999999999,
+          5.15573988860539
+        ],
+        "target": [
+          -1.1980554489200377,
+          1.4800000000000002,
+          3.8979211090967025
+        ],
+        "fov": 30,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "charge": {
+        "status": "idle",
+        "amount": 0,
+        "power": 0.35,
+        "damage": 8,
+        "result": "hit",
+        "recoil": 0.55,
+        "active": false,
+        "age": 0,
+        "cooldownRemaining": 0,
+        "reason": ""
+      },
+      "staging": {
+        "damage": {
+          "state": "dirty",
+          "progress": 0,
+          "visible": true,
+          "bandagesVisible": true
+        },
+        "catchGrip": [
+          -0.9500534067343807,
+          1.3953342093465866,
+          3.825454658789564
+        ],
+        "rescue": {
+          "handoffPoint": [
+            -1.9523206729531302,
+            5.300922719426173,
+            15.697370435234326
+          ],
+          "age": 81.75000000001495,
+          "beat": "aim",
+          "approach": 1,
+          "lowered": 0,
+          "release": 1,
+          "press": 0,
+          "thumb": 0,
+          "emoji": "",
+          "ready": true,
+          "base": [
+            -1.25,
+            0.33,
+            3.9
+          ],
+          "tray": [
+            -1.25,
+            0.8800000000000001,
+            3.9
+          ],
+          "height": 0.55,
+          "airborne": false,
+          "tilt": 0,
+          "carrying": true
+        },
+        "concert": {
+          "visible": false,
+          "position": [
+            1.162625182816132,
+            1.7626278464195886,
+            -4.004482730864343
+          ],
+          "hands": [
+            [
+              1.0816108883578441,
+              1.7340747763879905,
+              -3.9904463979667755
+            ],
+            [
+              1.05643035579727,
+              1.7340747763879905,
+              -3.9868308633059053
+            ],
+            [
+              1.0312498232366958,
+              1.7340747763879905,
+              -3.9832153286450356
+            ],
+            [
+              1.0060692906761215,
+              1.7340747763879905,
+              -3.9795997939841654
+            ],
+            [
+              1.2443158679800164,
+              1.7340747763879905,
+              -4.0138083142370125
+            ],
+            [
+              1.2694964005405907,
+              1.7340747763879905,
+              -4.017423848897883
+            ],
+            [
+              1.294676933101165,
+              1.7340747763879905,
+              -4.021039383558753
+            ],
+            [
+              1.3198574656617392,
+              1.7340747763879905,
+              -4.024654918219623
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": false,
+          "mode": "helping",
+          "position": [
+            -1.25,
+            0.33,
+            3.9
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0,
+          "bodyHeight": 0.36,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "sha256": "a2dd9c05a32e5c8a169d9e93ab0e8f4af9a06e644d4b7f394af60646d067e67e"
+    },
+    {
+      "file": "10-landing-desktop-after.png",
+      "phase": "landing",
+      "age": 3.2999999999991587,
+      "camera": {
+        "position": [
+          -1.3583957101125754,
+          2.0038292169743586,
+          0.6084443394903265
+        ],
+        "target": [
+          -1.1715193506502342,
+          1.8038292169743588,
+          2.8807945288308687
+        ],
+        "fov": 32.000000004074806,
+        "photoOrigin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "charge": {
+        "status": "idle",
+        "amount": 0,
+        "power": 0.35,
+        "damage": 8,
+        "result": "hit",
+        "recoil": 0.55,
+        "active": false,
+        "age": 0,
+        "cooldownRemaining": 0,
+        "reason": ""
+      },
+      "staging": {
+        "damage": {
+          "state": "dirty",
+          "progress": 0,
+          "visible": true,
+          "bandagesVisible": true
+        },
+        "catchGrip": [
+          -1.5166766238084868,
+          1.5583300223352143,
+          3.2185041512034376
+        ],
+        "rescue": {
+          "handoffPoint": [
+            -1.9523206729531302,
+            5.300922719426173,
+            15.697370435234326
+          ],
+          "age": 24.550000000001944,
+          "beat": "aim",
+          "approach": 1,
+          "lowered": 0,
+          "release": 1,
+          "press": 0,
+          "thumb": 0,
+          "emoji": "",
+          "ready": true,
+          "base": [
+            -1.25,
+            0.33,
+            3.9
+          ],
+          "tray": [
+            -1.25,
+            0.8800000000000001,
+            3.9
+          ],
+          "height": 0.55,
+          "airborne": false,
+          "tilt": 0,
+          "carrying": true
+        },
+        "concert": {
+          "visible": false,
+          "position": [
+            1.1587209051638638,
+            1.7626278243227005,
+            -4.003927018538879
+          ],
+          "hands": [
+            [
+              0.9871632747301673,
+              1.7340747544083523,
+              -3.977161170478758
+            ],
+            [
+              0.9339585508110888,
+              1.7340747544083523,
+              -3.969605709150714
+            ],
+            [
+              0.8807538268920104,
+              1.7340747544083523,
+              -3.962050247822671
+            ],
+            [
+              0.827549102972932,
+              1.7340747544083523,
+              -3.954494786494627
+            ],
+            [
+              1.3309476446688275,
+              1.7340747544083523,
+              -4.025981074444578
+            ],
+            [
+              1.3841523685879058,
+              1.7340747544083523,
+              -4.033536535772622
+            ],
+            [
+              1.4373570925069843,
+              1.7340747544083523,
+              -4.041091997100665
+            ],
+            [
+              1.4905618164260628,
+              1.7340747544083523,
+              -4.048647458428709
+            ]
+          ]
+        },
+        "show": {
+          "active": false,
+          "age": 0,
+          "first": false,
+          "kind": "restore",
+          "mode": "intact",
+          "line": "",
+          "indices": {
+            "collapse": 0,
+            "restore": 0
+          },
+          "snapshotReady": false,
+          "wideIndex": 0,
+          "phase": "closeup",
+          "buildingProgress": 0
+        },
+        "shopping": null,
+        "remnant": {
+          "born": false,
+          "visible": true,
+          "mode": "holding-tray",
+          "position": [
+            -1.25,
+            0.33,
+            3.9
+          ],
+          "shape": "soft-lobed-creature",
+          "supportHeight": 0.55,
+          "bodyHeight": 0.36,
+          "emoji": "",
+          "thumbVisible": false
+        },
+        "tractor": false,
+        "microphone": false,
+        "phone": null
+      },
+      "sha256": "a584380eb4d407d71ca72c3677b90c2a6165206cd9c650d326699bfd6d31f611"
+    }
+  ],
+  "checks": [
+    "real pointer full charge causes22 damage",
+    "overheat then release never fires",
+    "drag-out and blur cancel",
+    "pointercancel/lostcapture/pause cancel",
+    "Space and Enter release fire exactly once",
+    "actual final pointer stays in left5–11%; click bypasses timing",
+    "real tour→Fin camera remains continuous",
+    "portrait, landscape and desktop combat/final/landing/title rectangles fit viewport",
+    "restart resets ready, unlock and held input"
+  ],
+  "source_commit": "cdae8e39d851148e2b0e198d3a5f7a8efb0c8c3d",
+  "comparison_commit": "ee98e6ae6654aa360d8cd93945e6518afc320ed2",
+  "capture_worktree": "uncommitted runtime files later committed as source_commit; evidence from final production build, not earlier failed/interim runs",
+  "viewport_dpr": 1,
+  "quality": "balanced",
+  "renderer": "Chromium / SwiftShader",
+  "video": null
+}
