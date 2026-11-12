@@ -22,6 +22,7 @@ import './presentation.css';
 import './responsive.css';
 import './ui-refinement.css';
 import './button-materials.css';
+import './shot-charge.css';
 document.querySelector('#app').classList.add('ui-refined');
 
 const $=s=>document.querySelector(s),loading=$('#loading'),message=$('#loading-message'),error=$('#error');

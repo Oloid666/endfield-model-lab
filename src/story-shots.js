@@ -1,3 +1,4 @@
+import {LANDING_SETTLE_DURATION,DINNER_CLOSING,FAKE_END_DURATION} from './ending-title.js';
 import {RESCUE_READY,RESCUE_WAITING} from './tray-rescue.js';
 import {faceFrame} from './cinematic-track.js';
 import {mealBirthFrame,BIRTH_TIMES} from './meal-birth.js';
@@ -21,6 +22,20 @@ export function cinematicStoryShot(s,context,track){
  const h=track.head,d=track.pet,mid=track.mid;
  if(c.heroHead)h.fromArray(c.heroHead);else h.set(feet[0],feet[1]+1.48,feet[2]);
  d.fromArray(c.dragon||[-2,1.5,3.5]);d.y+=.32;mid.copy(h).lerp(d,.5);
+ // Land first; anchor the camera to the actual head rather than flying across a foot-based preset.
+ if(s.phase==='landing'&&(e<LANDING_SETTLE_DURATION||s.node?.event==='explosion-after')){
+  const settling=e<LANDING_SETTLE_DURATION,age=s.nodeElapsed||0,distance=settling?3.2:2.2-(c.reduced?0:.08*smooth(age/1.2)),yaw=c.heading||0,side=settling?.9:.7;
+  track.enter(settling?'landing-settle-side':'landing-satisfied-face',s,c,settling?origin:nodeOrigin);
+  track.p.set(h.x+Math.sin(yaw)*distance+Math.cos(yaw)*side,h.y+(settling?.12:.08),h.z+Math.cos(yaw)*distance-Math.sin(yaw)*side);
+  track.t.copy(h);track.t.y-=settling?.6:.12;
+  return track.pose(track.p,track.t,c.portrait?(settling?46:40):(settling?38:32));
+ }
+ if(s.phase==='tour'&&e>=DINNER_CLOSING.start||s.phase==='complete'&&e<FAKE_END_DURATION){
+  const p=c.tray||[feet[0],feet[1]+1.1,feet[2]+.65],yaw=c.heading||0,age=s.phase==='tour'?e-DINNER_CLOSING.start:DINNER_CLOSING.end-DINNER_CLOSING.start;
+  const push=c.reduced?0:.12*smooth(Math.min(age,DINNER_CLOSING.title-DINNER_CLOSING.start)/2.3);
+  track.offset.set(.85,.44,1.45-push).applyAxisAngle(TUP,yaw);track.p.fromArray(p).add(track.offset);track.t.fromArray(p);track.t.y+=.06;
+  track.enter('dinner-closing',s,c,origin);return track.pose(track.p,track.t,c.portrait?38:30);
+ }
  if(s.phase==='intro'&&s.purchaseElapsed==null){
   if(s.node?.cue==='opening-establish'&&(s.nodeElapsed||0)<1.2){track.enter('cinematic-opening-establish',s,c,nodeOrigin);return track.pose([-6.5,4.8,17],[-.3,2.8,1.4],c.portrait?58:44);}
   const soup=s.node?.cue==='opening-soup',id=soup?'cinematic-opening-shoulder':'cinematic-opening-pair';

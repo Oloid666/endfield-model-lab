@@ -19,7 +19,7 @@ for(const c of [context(320,740),context(),context(440,390),context(874,768)]){
   const q=sample(track,phase,12,{connection:{field:'password',lever:.8},dragon:[3,3,3]},c);check('Keys/field/lever never reframe input',JSON.stringify(q)===held&&track.fitCount===count);
  }
  sample(track,'login',12,{},context(c.width+20,c.height));check('Resize refits exactly once',track.fitCount===count+1);
- for(const phase of ['photo','cargo','hack','meal-spawn','tour','complete'])check('Protected sequences keep their camera system',sample(track,phase,4,{},c)===null);
+ for(const phase of ['photo','cargo','hack','meal-spawn','tour','complete'])check('Protected sequences keep their camera system',sample(track,phase,phase==='complete'?4.1:4,{},c)===null);
  const first=sequences.intro.find(n=>n.cue==='opening-establish'),soup=sequences.intro.find(n=>n.cue==='opening-soup');check('Cues belong to actual retained dialogue',first?.id==='intro_2'&&soup?.id==='intro_5');
  sample(track,'intro',0,{node:first,nodeElapsed:0},c);check('Opening establishes the street',track.id==='cinematic-opening-establish');
  for(let t=1.2;t<=3.5;t+=.1){const q=sample(track,'intro',t,{node:first,nodeElapsed:t},c);check('Opening push stays outside frontage',q.position[2]>2.65&&q.position[1]>.2);}

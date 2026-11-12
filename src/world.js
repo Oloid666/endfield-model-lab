@@ -1,3 +1,4 @@
+import {FAKE_END_DURATION} from './ending-title.js';
 import {creatureCommunication} from './creature-communication.js';
 import {shootingCameraLocked} from './camera-lock.js';
 import {qualityLocked,FrameStats} from './performance-guard.js';
@@ -205,7 +206,7 @@ export class World {
     if(!this.actors)return;const postgame=options.postgame??!!this.missionState?.postgame,intact=this.streetShow?.state.mode!=='collapsed',doorOpen=this.store.doors.isOpen,key=`${postgame}:${intact}:${doorOpen}`;
     if(force||this.walkEnvironmentKey!==key){this.actors.setObstacles(walkingEnvironment(this.store.floorPlan,{postgame,intact,doorOpen}));this.walkEnvironmentKey=key;}
   }
-  get upstairsInvitation(){return this.missionState?.phase==='complete'&&!this.missionState.postgame&&this.streetShow?.state.snapshotReady&&!this.streetShow.active&&!this.bonus?.active;}
+  get upstairsInvitation(){return this.missionState?.phase==='complete'&&!this.missionState.postgame&&this.missionState.phaseElapsed>=FAKE_END_DURATION&&this.streetShow?.state.snapshotReady&&!this.streetShow.active&&!this.bonus?.active;}
   tick(t,delta=.016,render=true){
     if(this.streetShow?.active){this.creatureSpeech.update(this.camera,[0,0,0],'');this.time=t;this.onTick(t,delta);this.streetShow.tick(t,render);return;}
     if(this.bonus?.active){this.creatureSpeech.update(this.camera,[0,0,0],'');this.time=t;this.bonus.tick(t,render);return;}

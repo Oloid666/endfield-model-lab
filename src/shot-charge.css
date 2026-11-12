@@ -1,0 +1,36 @@
+/* Charge is game state, not a looping decorative progress animation. */
+#app.ui-refined .mission-combat.is-charge{width:min(430px,calc(100% - 28px));grid-template-columns:1fr 116px;grid-template-rows:auto 1fr auto;gap:8px 16px;padding:14px 18px;background:#112c32f5;backdrop-filter:none;-webkit-backdrop-filter:none}
+#app.ui-refined .is-charge .mission-target{grid-column:1;grid-row:1;align-self:end;font-size:14px}
+#app.ui-refined .is-charge .mission-feedback{grid-column:1;grid-row:2;align-self:center;text-align:left;font-size:14px;line-height:1.5;color:#e4ce9f}
+#app.ui-refined .is-charge .mission-energy{grid-column:1;grid-row:3;font-size:12px;line-height:1.5;color:#b9c8bf}
+#app.ui-refined .is-charge .mission-attack{--charge-ink:#dfc58e;grid-column:2;grid-row:1/4;position:relative;isolation:isolate;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;width:116px;min-width:116px;height:116px;min-height:116px;padding:12px 5px;border:1px solid #c9bd8c73;border-radius:50%!important;background:conic-gradient(var(--charge-ink) calc(var(--shot-charge,0)*1turn),#526b6555 0)!important;box-shadow:0 3px 12px #0005,inset 0 0 0 3px #102c32!important;color:#f0e8d3!important;letter-spacing:.02em;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;translate:none!important;transition:border-color .12s}
+#app.ui-refined .is-charge .mission-attack::before{content:'';position:absolute;inset:7px;z-index:-1;border-radius:50%;border:1px solid #88a89a66;background:linear-gradient(145deg,#385550,#1a393b 70%);box-shadow:inset 0 1px 0 #fff6d329}
+#app.ui-refined .is-charge .mission-attack:disabled{opacity:1;--charge-ink:#7f9389;cursor:default}
+#app.ui-refined .is-charge .mission-attack:disabled::before{background:#243c3c}
+#app.ui-refined .shot-charge-icon{font:24px/1 Georgia,serif;color:#edce92}
+#app.ui-refined .shot-charge-label{font-size:16px;line-height:1.25;white-space:nowrap}
+#app.ui-refined .shot-charge-detail{font-size:12px;line-height:1.3;letter-spacing:.02em;color:#c2cdc0;white-space:nowrap}
+#app.ui-refined .is-charge[data-charge-status=gold] .mission-attack::before{background:linear-gradient(145deg,#e8d59c,#b79759);border-color:#fff0bf}
+#app.ui-refined .is-charge[data-charge-status=gold] .mission-attack{color:#24382e!important;box-shadow:0 0 16px #e6cd8055,inset 0 0 0 3px #102c32!important}
+#app.ui-refined .is-charge[data-charge-status=gold] :is(.shot-charge-icon,.shot-charge-detail){color:#344538}
+#app.ui-refined .is-charge[data-charge-status=warning] .mission-attack{--charge-ink:#edac78;border-color:#edac78}
+#app.ui-refined .is-charge[data-charge-status=warning] .shot-charge-detail{color:#ffd2a8}
+#app.ui-refined .is-final :is(.shot-charge-icon,.shot-charge-detail){display:none}
+#app.ui-refined .is-final .mission-meter-legend{font-size:12px;letter-spacing:.02em}
+#app.ui-refined .is-final .mission-attack{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.dinner-ending-card{position:absolute;left:50%;top:23%;transform:translateX(-50%);width:calc(100% - 40px);pointer-events:none;display:grid;gap:10px;justify-items:center;text-align:center;text-shadow:0 2px 16px #05181e,0 1px 4px #05181e;color:#efdaa6}
+.dinner-ending-card small{font:12px/1.5 sans-serif;letter-spacing:.18em;color:#d0ddd0}
+.dinner-ending-card strong{font:500 clamp(36px,7vw,68px)/1.3 'Songti TC','Noto Serif TC',serif;letter-spacing:.18em}
+.dinner-ending-fin{font:italic 26px/1.4 Georgia,serif;min-height:1.4em;color:#eee5cf;letter-spacing:.1em}
+#app.ui-refined .is-dinner-ending .mission-caption{top:23%!important;bottom:auto!important;left:50%;width:calc(100% - 44px);max-width:none;background:transparent;padding:0;font-size:18px;white-space:pre-line}
+@media(orientation:landscape) and (max-height:540px){
+ #app.ui-refined .mission-combat.is-charge{width:min(360px,46vw);grid-template-columns:1fr 100px;padding:10px 12px;gap:6px 10px}
+ #app.ui-refined .is-charge .mission-attack{width:100px;min-width:100px;height:100px;min-height:100px}
+ .dinner-ending-card{top:15%;left:25%;width:44%;gap:6px}
+ .dinner-ending-card strong{font-size:34px}#app.ui-refined .is-dinner-ending .mission-caption{top:20%!important;left:25%;width:44%;max-width:44%;font-size:16px}
+}
+@media(prefers-reduced-motion:reduce){#app.ui-refined .is-charge .mission-attack{transition:none}}
+
+#app.ui-refined.dinner-ending .debug-travel-toggle{visibility:hidden}
+/* The final title uses the full renderer instead of the desktop dialogue rail. */
+#app.ui-refined.dinner-ending #scene{right:0!important;width:100%!important}
