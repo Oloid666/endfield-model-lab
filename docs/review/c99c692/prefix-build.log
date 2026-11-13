@@ -1,0 +1,42 @@
+
+> endfield-model-lab@0.1.0 build
+> vite build --outDir /tmp/rain-prefix-root/endfield-model-lab
+
+vite v7.1.12 building for production...
+transforming...
+✓ 153 modules transformed.
+
+(!) outDir /tmp/rain-prefix-root/endfield-model-lab is not inside project root and will not be emptied.
+Use --emptyOutDir to override.
+
+rendering chunks...
+computing gzip size...
+../../tmp/rain-prefix-root/endfield-model-lab/feedback-admin.html                          2.32 kB │ gzip:   1.22 kB
+../../tmp/rain-prefix-root/endfield-model-lab/racing.html                                  3.02 kB │ gzip:   1.64 kB
+../../tmp/rain-prefix-root/endfield-model-lab/indoor.html                                  3.27 kB │ gzip:   1.76 kB
+../../tmp/rain-prefix-root/endfield-model-lab/index.html                                   5.98 kB │ gzip:   2.89 kB
+../../tmp/rain-prefix-root/endfield-model-lab/assets/feedbackAdmin-D2pjX9vU.css            0.99 kB │ gzip:   0.54 kB
+../../tmp/rain-prefix-root/endfield-model-lab/assets/racing-BNCiQFWA.css                   3.90 kB │ gzip:   1.42 kB
+../../tmp/rain-prefix-root/endfield-model-lab/assets/indoor-DWNeQ86L.css                   5.43 kB │ gzip:   1.78 kB
+../../tmp/rain-prefix-root/endfield-model-lab/assets/main-qwy6cYlK.css                   142.81 kB │ gzip:  29.73 kB
+../../tmp/rain-prefix-root/endfield-model-lab/assets/modulepreload-polyfill-B5Qt9EMX.js    0.71 kB │ gzip:   0.40 kB
+../../tmp/rain-prefix-root/endfield-model-lab/assets/feedback-client-C6AnEI5i.js           2.47 kB │ gzip:   1.47 kB
+../../tmp/rain-prefix-root/endfield-model-lab/assets/audio-CBBkbJyi.js                     2.81 kB │ gzip:   1.19 kB
+../../tmp/rain-prefix-root/endfield-model-lab/assets/feedbackAdmin-BPD_uFfy.js             4.39 kB │ gzip:   2.36 kB
+../../tmp/rain-prefix-root/endfield-model-lab/assets/xaihi-Sb_j3SRy.js                    12.87 kB │ gzip:   5.83 kB
+../../tmp/rain-prefix-root/endfield-model-lab/assets/racing-BXtkPSgC.js                   17.24 kB │ gzip:   8.20 kB
+../../tmp/rain-prefix-root/endfield-model-lab/assets/indoor-BmbNrqKJ.js                   40.30 kB │ gzip:  16.49 kB
+../../tmp/rain-prefix-root/endfield-model-lab/assets/store-DF6DDKAN.js                    60.73 kB │ gzip:  23.70 kB
+../../tmp/rain-prefix-root/endfield-model-lab/assets/main-QKDQmbGh.js                    605.05 kB │ gzip: 215.11 kB
+../../tmp/rain-prefix-root/endfield-model-lab/assets/interior-CT42zQWy.js                749.78 kB │ gzip: 199.20 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 3.92s
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.2
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.2
+npm notice To update run: npm install -g npm@12.2.2
+npm notice

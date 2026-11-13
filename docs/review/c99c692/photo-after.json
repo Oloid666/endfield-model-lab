@@ -1,0 +1,30 @@
+{
+  "width": 946,
+  "height": 2048,
+  "points": [
+    {
+      "id": "floor",
+      "x": 0.0808575850483933,
+      "y": 0.5447324745611749,
+      "z": 0.9912258051182249
+    },
+    {
+      "id": "server",
+      "x": 0.9575205405502738,
+      "y": 0.08662180043074535,
+      "z": 0.9910628157612188
+    }
+  ],
+  "captureOrigin": [
+    0.2227272727273083,
+    1.82,
+    9.911000000000097
+  ],
+  "faceValid": true,
+  "closeupWidth": 1024,
+  "closeupHeight": 1280,
+  "portraitSource": "optical",
+  "src_length": 379267,
+  "closeup_length": 228903,
+  "total_length": 608170
+}

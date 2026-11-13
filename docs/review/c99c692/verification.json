@@ -1,0 +1,137 @@
+{
+  "source_commit": "c99c692ef82eaf7ed1fedd7ae4033c77c211e1d4",
+  "comparison_commit": "32f88b3",
+  "capture_worktree": "Runtime changes captured before commit; final production build matches source_commit. Not the earlier harness failure in after/.",
+  "renderer": "Headless Chromium SwiftShader; DPR1; photos low quality; PNG screenshots unedited",
+  "iphone_tested": false,
+  "poster_pixels_equal": true,
+  "model_decoded_sha256": "43c4d1063caf4f5d5f7405aae32cbd02ceb2de0ab043acc54e26dd7aa49ceb94",
+  "frames": [
+    {
+      "file": "01-photo-wide-before.png",
+      "source": "before/02-photo-wide.png",
+      "sha256": "290dc78bebb373f1ea5be0fd5835fe4485aa6f117700ffc23654c18f28146bbe"
+    },
+    {
+      "file": "02-photo-wide-after.png",
+      "source": "verified/02-photo-wide.png",
+      "sha256": "0cf3d48175e92921e68bbcf49ddc67420a4a226f2e6d88fce6f8809ae026a484"
+    },
+    {
+      "file": "03-photo-closeup-before.png",
+      "source": "before/03-photo-closeup.png",
+      "sha256": "79f27854358cc4986a882a5679e6aad0a3080e32b025aa97dfe8afc053601aca"
+    },
+    {
+      "file": "04-photo-closeup-after.png",
+      "source": "verified/03-photo-closeup.png",
+      "sha256": "4ee45ab3d6bbb74609b6d9211be5e83621473360c4fc8dffcfe1f8d8b35507ab"
+    },
+    {
+      "file": "05-combat-landscape-after.png",
+      "source": "verified/05-combat-aside-844x390.png",
+      "sha256": "b8245deaf5385fa72cb4f7d608c74167b8988db33431ef28d876f5116826d593"
+    },
+    {
+      "file": "06-combat-desktop-after.png",
+      "source": "verified/05-combat-aside-1440x900.png",
+      "sha256": "d0bf216ca31317903ccaa9d78f833d89248aa8d7e8a298e72843814cd10a2754"
+    },
+    {
+      "file": "07-instructions-after.png",
+      "source": "verified/06-updated-instructions.png",
+      "sha256": "2f03e359602f23910aa5f08126be7451ca2be97bc05121f677999298edf08a8b"
+    },
+    {
+      "file": "08-gallery-landscape-after.png",
+      "source": "verified/04-gallery-844x390.png",
+      "sha256": "6ef08d75c7256a815a298f7aa2e9c94720c9aba39b862e8c56ea91ee508a6093"
+    }
+  ],
+  "browser_runs": {
+    "verified": {
+      "status": "passed",
+      "errors": [],
+      "frames": [
+        {
+          "file": "01-poster.png",
+          "phase": "ready"
+        },
+        {
+          "file": "02-photo-wide.png",
+          "phase": "photo-review"
+        },
+        {
+          "file": "03-photo-closeup.png",
+          "phase": "photo-review"
+        },
+        {
+          "file": "04-gallery-844x390.png",
+          "phase": "photo-review"
+        },
+        {
+          "file": "04-gallery-1440x900.png",
+          "phase": "photo-review"
+        },
+        {
+          "file": "04-gallery-390x844.png",
+          "phase": "photo-review"
+        },
+        {
+          "file": "05-combat-aside-390x844.png",
+          "phase": "combat"
+        },
+        {
+          "file": "05-combat-aside-844x390.png",
+          "phase": "combat"
+        },
+        {
+          "file": "05-combat-aside-1440x900.png",
+          "phase": "combat"
+        },
+        {
+          "file": "06-updated-instructions.png",
+          "phase": "combat"
+        }
+      ],
+      "iphone_tested": false
+    },
+    "prefix": {
+      "status": "passed",
+      "errors": [],
+      "frames": [
+        {
+          "file": "01-poster.png",
+          "phase": "ready"
+        }
+      ],
+      "transport_mode": "auto",
+      "iphone_tested": false
+    },
+    "legacy": {
+      "status": "passed",
+      "errors": [],
+      "frames": [
+        {
+          "file": "01-poster.png",
+          "phase": "ready"
+        }
+      ],
+      "transport_mode": "legacy",
+      "iphone_tested": false
+    },
+    "missing": {
+      "status": "passed",
+      "errors": [],
+      "frames": [
+        {
+          "file": "01-poster.png",
+          "phase": "ready"
+        }
+      ],
+      "transport_mode": "missing",
+      "iphone_tested": false
+    }
+  },
+  "video": null
+}

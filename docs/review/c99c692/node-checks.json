@@ -1,0 +1,237 @@
+[
+  {
+    "script": "scripts/actor-check.mjs",
+    "code": 0,
+    "output": "{\n  \"passed\": true,\n  \"checks\": 47,\n  \"failed\": [],\n  \"maxIdleFootError\": 0.0025011572658210084,\n  \"maxWalkingFootError\": 0.009119369590161854,\n  \"secondaryJoints\": 58\n}\n"
+  },
+  {
+    "script": "scripts/air-upstairs-check.mjs",
+    "code": 0,
+    "output": "Air / upstairs: 3940 checks passed.\n"
+  },
+  {
+    "script": "scripts/analytics-check.mjs",
+    "code": 0,
+    "output": "PASS analytics: real mission hooks, normal/replay/shortcut separation, deduplication, active time, reset, disabled config, privacy, blocked transport and DNT\n"
+  },
+  {
+    "script": "scripts/battle-warm-check.mjs",
+    "code": 0,
+    "output": "Battle draw preparation: live pools untouched, MSAA/reflection warm paths, lights isolated and failure cleanup passed.\n"
+  },
+  {
+    "script": "scripts/bonus-check.mjs",
+    "code": 0,
+    "output": "Bonus: 2648 checks passed (including all 32 negotiation combinations).\n"
+  },
+  {
+    "script": "scripts/character-copy-check.mjs",
+    "code": 0,
+    "output": "Character copy: tracked text name audit and living-meal reaction passed.\n"
+  },
+  {
+    "script": "scripts/cinematic-check.mjs",
+    "code": 0,
+    "output": "{\n  \"passed\": true,\n  \"checks\": 90,\n  \"failed\": [],\n  \"maxIdleFootError\": 0.0025011572658210084,\n  \"maxWalkingFootError\": 0.009119369590161854,\n  \"secondaryJoints\": 58\n}\n"
+  },
+  {
+    "script": "scripts/cinematic-track-check.mjs",
+    "code": 0,
+    "output": "Cinematic track: 734 checks passed.\n"
+  },
+  {
+    "script": "scripts/concert-check.mjs",
+    "code": 0,
+    "output": "Concert wall clearance, reduced motion and password dialogue checks passed.\n"
+  },
+  {
+    "script": "scripts/destruction-check.mjs",
+    "code": 0,
+    "output": "{\n  \"passed\": true,\n  \"checks\": 38,\n  \"intactMeshes\": 142,\n  \"ruins\": 188,\n  \"batches\": {\n    \"meshesBefore\": 325,\n    \"meshesAfter\": 280,\n    \"consolidated\": 50,\n    \"sharedDraws\": 5\n  }\n}\n"
+  },
+  {
+    "script": "scripts/dinner-revision-check.mjs",
+    "code": 0,
+    "output": "Dinner revision: 50 regression checks passed.\n"
+  },
+  {
+    "script": "scripts/director-check.mjs",
+    "code": 0,
+    "output": "V14 director: 479 checks passed.\n"
+  },
+  {
+    "script": "scripts/entry-camera-check.mjs",
+    "code": 0,
+    "output": "{\n  \"passed\": true,\n  \"checks\": 12,\n  \"failed\": []\n}\n"
+  },
+  {
+    "script": "scripts/feast-check.mjs",
+    "code": 0,
+    "output": "{ mealMeshes: 25, mealTriangles: 39014 }\nFeast: 4283 checks passed.\n"
+  },
+  {
+    "script": "scripts/feedback-check.mjs",
+    "code": 0,
+    "output": "PASS feedback: real SQLite schema, validation, SQL injection, CORS, auth, idempotency, atomic rate limit, pagination/filtering, private fields, failure, retry drafts, timeout and CSV safety\n"
+  },
+  {
+    "script": "scripts/fx-check.mjs",
+    "code": 0,
+    "output": "{\n  \"passed\": true,\n  \"checks\": 25,\n  \"failed\": []\n}\n"
+  },
+  {
+    "script": "scripts/indoor-camera-check.mjs",
+    "code": 0,
+    "output": "PASS indoor camera: preview, hold, smooth transition, straight recovery, swing/grade, manual modes, reset and hysteresis\n"
+  },
+  {
+    "script": "scripts/indoor-check.mjs",
+    "code": 0,
+    "output": "PASS 1 guided 16.29 no input 17.20 start height 5.32\nPASS 2 guided 20.06 no input 21.77 start height 5.32\nPASS 3 guided 16.82 no input 19.70 start height 5.26\nPASS slope energy, braking, recovery, 123 reset, pause, no flood and no quota\n"
+  },
+  {
+    "script": "scripts/indoor-impact-check.mjs",
+    "code": 0,
+    "output": "PASS impact variants, cooldown, nonblocking dense goods, finish, pause, injuries and restart\n"
+  },
+  {
+    "script": "scripts/indoor-passenger-check.mjs",
+    "code": 0,
+    "output": "PASS passenger: light scrape, warning, independent fall, brake rescue, repeated hits, real-course protection, reset and 30/60/120Hz\n"
+  },
+  {
+    "script": "scripts/living-world-check.mjs",
+    "code": 0,
+    "output": "Living world: 336 checks passed.\n"
+  },
+  {
+    "script": "scripts/loading-check.mjs",
+    "code": 0,
+    "output": "Loading: 27 narrative, resource-gated direct entry, background and slow-network checks passed.\n"
+  },
+  {
+    "script": "scripts/mission-check.mjs",
+    "code": 0,
+    "output": "V14 mission: 77 checks passed.\n"
+  },
+  {
+    "script": "scripts/model-transport-check.mjs",
+    "code": 0,
+    "output": "Model transport: 19 checks passed; 7520868 → 4661344 bytes, decoded model unchanged.\n"
+  },
+  {
+    "script": "scripts/next-dinner-check.mjs",
+    "code": 0,
+    "output": "Next dinner: 313 checks passed.\n"
+  },
+  {
+    "script": "scripts/photo-camera-check.mjs",
+    "code": 0,
+    "output": "Photo camera: fixed optical centre, turning, zoom, cancellation and pause passed.\n"
+  },
+  {
+    "script": "scripts/polish-check.mjs",
+    "code": 0,
+    "output": "Polish: 21 loading prop, acting, pause and preference checks passed.\n"
+  },
+  {
+    "script": "scripts/postgame-check.mjs",
+    "code": 0,
+    "output": "Postgame boundaries, absent/present creature and replay checks passed.\n"
+  },
+  {
+    "script": "scripts/presentation-check.mjs",
+    "code": 0,
+    "output": "Presentation: 36 checks passed.\n"
+  },
+  {
+    "script": "scripts/props-check.mjs",
+    "code": 0,
+    "output": "V11 props: 51 checks passed.\n"
+  },
+  {
+    "script": "scripts/racing-check.mjs",
+    "code": 0,
+    "output": "PASS racing: real bends, no auto-steering, both rope presets, two-way tension, collision angles, persistent boxes, recovery, brakes, reset, pause, 30/60/120Hz\n"
+  },
+  {
+    "script": "scripts/review-synthesis-check.mjs",
+    "code": 0,
+    "output": "Review synthesis: 10866 checks passed.\n"
+  },
+  {
+    "script": "scripts/revision-check.mjs",
+    "code": 0,
+    "output": "Revision: 18835 checks passed; Rossi 956 triangles.\n"
+  },
+  {
+    "script": "scripts/second-wave-check.mjs",
+    "code": 0,
+    "output": "Second wave: 17162 continuity, title and audience checks passed.\n"
+  },
+  {
+    "script": "scripts/shot-charge-check.mjs",
+    "code": 0,
+    "output": "Shot charge: 52 checks passed.\n"
+  },
+  {
+    "script": "scripts/stage-detail-check.mjs",
+    "code": 0,
+    "output": "Sigh timing/pause/cleanup and BOOK-before-login checks passed.\n"
+  },
+  {
+    "script": "scripts/story-check.mjs",
+    "code": 0,
+    "output": "{\n  \"passed\": true,\n  \"checks\": 411,\n  \"nodeCount\": 98,\n  \"chatterGroups\": 16,\n  \"hotspotKinds\": 5,\n  \"paths\": 9\n}\n"
+  },
+  {
+    "script": "scripts/story-revision-check.mjs",
+    "code": 0,
+    "output": "Story revision: 2821 checks passed.\n"
+  },
+  {
+    "script": "scripts/street-camera-check.mjs",
+    "code": 0,
+    "output": "Street camera: ordered stages, wide-before-building, three views and hold passed.\n"
+  },
+  {
+    "script": "scripts/street-stage-check.mjs",
+    "code": 0,
+    "output": "Street stage: 42 checks passed.\n"
+  },
+  {
+    "script": "scripts/touch-detail-check.mjs",
+    "code": 0,
+    "output": "Touch cancellation, keyboard activation and curved bandage surface checks passed.\n"
+  },
+  {
+    "script": "scripts/tray-grip-check.mjs",
+    "code": 0,
+    "output": "Tray grip: 54/54 checks passed.\n"
+  },
+  {
+    "script": "scripts/vcr-props-check.mjs",
+    "code": 0,
+    "output": "VCR props: 24 checks passed.\n"
+  },
+  {
+    "script": "scripts/vcr-tablet-check.mjs",
+    "code": 0,
+    "output": "VCR repair: 108 checks passed.\n"
+  },
+  {
+    "script": "scripts/viewer-check.mjs",
+    "code": 0,
+    "output": "Viewer/positioning: 57 aspect, bounds and steady-shot checks passed.\n"
+  },
+  {
+    "script": "scripts/walking-environment-check.mjs",
+    "code": 0,
+    "output": "Walking environment: six building switches, doors, ghost collision and replay boundaries passed.\n"
+  },
+  {
+    "script": "scripts/warmup-check.mjs",
+    "code": 0,
+    "output": "Shader warmup: 15 checks passed.\n"
+  }
+]

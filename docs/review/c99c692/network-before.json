@@ -1,0 +1,163 @@
+{
+  "bytes": 12332170,
+  "requests": [
+    {
+      "url": "http://127.0.0.1:4217/",
+      "type": "Document",
+      "bytes": 5987,
+      "finished": true,
+      "status": 200,
+      "mime": "text/html",
+      "disk": false,
+      "headers": {
+        "Content-Length": "5799"
+      }
+    },
+    {
+      "url": "http://127.0.0.1:4217/assets/main-DU-yZraM.js",
+      "type": "Script",
+      "bytes": 604479,
+      "finished": true,
+      "status": 200,
+      "mime": "text/javascript",
+      "disk": false,
+      "headers": {
+        "Content-Length": "604283"
+      }
+    },
+    {
+      "url": "http://127.0.0.1:4217/assets/modulepreload-polyfill-B5Qt9EMX.js",
+      "type": "Script",
+      "bytes": 904,
+      "finished": true,
+      "status": 200,
+      "mime": "text/javascript",
+      "disk": false,
+      "headers": {
+        "Content-Length": "711"
+      }
+    },
+    {
+      "url": "http://127.0.0.1:4217/assets/feedback-client-C6AnEI5i.js",
+      "type": "Script",
+      "bytes": 2659,
+      "finished": true,
+      "status": 200,
+      "mime": "text/javascript",
+      "disk": false,
+      "headers": {
+        "Content-Length": "2465"
+      }
+    },
+    {
+      "url": "http://127.0.0.1:4217/assets/interior-CT42zQWy.js",
+      "type": "Script",
+      "bytes": 749975,
+      "finished": true,
+      "status": 200,
+      "mime": "text/javascript",
+      "disk": false,
+      "headers": {
+        "Content-Length": "749779"
+      }
+    },
+    {
+      "url": "http://127.0.0.1:4217/assets/store-DA1t9h9S.js",
+      "type": "Script",
+      "bytes": 60901,
+      "finished": true,
+      "status": 200,
+      "mime": "text/javascript",
+      "disk": false,
+      "headers": {
+        "Content-Length": "60706"
+      }
+    },
+    {
+      "url": "http://127.0.0.1:4217/assets/main-3AGDo0aB.css",
+      "type": "Stylesheet",
+      "bytes": 142377,
+      "finished": true,
+      "status": 200,
+      "mime": "text/css",
+      "disk": false,
+      "headers": {
+        "Content-Length": "142188"
+      }
+    },
+    {
+      "url": "http://127.0.0.1:4217/models/zhuang-fangyi.glb",
+      "type": "Fetch",
+      "bytes": 7521067,
+      "finished": true,
+      "status": 200,
+      "mime": "model/gltf-binary",
+      "disk": false,
+      "headers": {
+        "Content-Length": "7520868"
+      }
+    },
+    {
+      "url": "http://127.0.0.1:4217/images/store-posters.png",
+      "type": "Image",
+      "bytes": 2846596,
+      "finished": true,
+      "status": 200,
+      "mime": "image/png",
+      "disk": false,
+      "headers": {
+        "Content-Length": "2846405"
+      }
+    },
+    {
+      "url": "http://127.0.0.1:4217/images/nikke-rapi.webp",
+      "type": "Image",
+      "bytes": 89340,
+      "finished": true,
+      "status": 200,
+      "mime": "image/webp",
+      "disk": false,
+      "headers": {
+        "Content-Length": "89150"
+      }
+    },
+    {
+      "url": "http://127.0.0.1:4217/favicon.svg",
+      "type": "Other",
+      "bytes": 423,
+      "finished": true,
+      "status": 200,
+      "mime": "image/svg+xml",
+      "disk": false,
+      "headers": {
+        "Content-Length": "232"
+      }
+    },
+    {
+      "url": "http://127.0.0.1:4217/images/mifu-a.jpg",
+      "type": "Image",
+      "bytes": 53417,
+      "finished": true,
+      "status": 200,
+      "mime": "image/jpeg",
+      "disk": false,
+      "headers": {
+        "Content-Length": "53227"
+      }
+    },
+    {
+      "url": "http://127.0.0.1:4217/images/receipt.webp",
+      "type": "Image",
+      "bytes": 254045,
+      "finished": true,
+      "status": 200,
+      "mime": "image/webp",
+      "disk": false,
+      "headers": {
+        "Content-Length": "253854"
+      }
+    }
+  ],
+  "milestone": "actorsLoaded && #loading.hidden; loading-details skip clicked; cache disabled; local HTTP server no content compression; viewport390x844 DPR1",
+  "iphone_tested": false
+}
