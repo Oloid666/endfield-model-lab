@@ -175,12 +175,12 @@ export class World {
       const wide=render(width,height),points=[['floor',[-3.05,1.08,2.1]],['server',[0,4.6,1.4]]].map(([id,p])=>{const q=this.projectPoint(p);return {id,x:(q[0]+1)/2,y:(1-q[1])/2,z:q[2]};});
       const h=this.actors.headPosition||this.actors.heroPosition,face=[h[0],h[1]+.08,h[2]];const projected=new T.Vector3(...face).project(camera),framePoints=[[-.14,-.17],[.14,.2]].map(([x,y])=>new T.Vector3(face[0]+x,face[1]+y,face[2]).project(camera));const yaw=this.actors.status.cinematic?.heading??0,toEye=new T.Vector3().subVectors(camera.position,new T.Vector3(...face)).normalize();const facing=Math.sin(yaw)*toEye.x+Math.cos(yaw)*toEye.z;const faceValid=projected.z>-1&&projected.z<1&&framePoints.every(q=>Math.abs(q.x)<.98&&Math.abs(q.y)<.98)&&!this.cameraOcclusion(face)&&facing>0;
       // Keep the actual exposure on the phone; render a separate optical portrait.
-      const src=wide.toDataURL('image/png');let closeup=null,closeupWidth=0,closeupHeight=0;
+      const src=wide.toDataURL('image/jpeg',.86);let closeup=null,closeupWidth=0,closeupHeight=0;
       if(faceValid){
         camera.lookAt(...face);const distance=camera.position.distanceTo(new T.Vector3(...face));
         camera.fov=T.MathUtils.radToDeg(2*Math.atan(.36/distance));
-        await nextFrame();const portrait=render(1536,1920);
-        closeup=portrait.toDataURL('image/png');closeupWidth=1536;closeupHeight=1920;
+        await nextFrame();const portrait=render(1024,1280);
+        closeup=portrait.toDataURL('image/jpeg',.86);closeupWidth=1024;closeupHeight=1280;
       }
       const display=this.photoPhone?.getObjectByName('camera-screen');if(display){const thumb=document.createElement('canvas');thumb.width=256;thumb.height=384;const ctx=thumb.getContext('2d');ctx.fillStyle='#07181d';ctx.fillRect(0,0,256,384);const fit=Math.min(256/width,384/height);ctx.drawImage(wide,(256-width*fit)/2,(384-height*fit)/2,width*fit,height*fit);this.photoTexture??=this.r.own(new T.CanvasTexture(thumb));this.photoTexture.image=thumb;this.photoTexture.colorSpace=T.SRGBColorSpace;this.photoTexture.needsUpdate=true;display.material.map=display.material.emissiveMap=this.photoTexture;display.material.color.set(0xffffff);display.material.emissive.set(0xffffff);display.material.emissiveIntensity=.3;display.material.needsUpdate=true;}
       return {src,width,height,points,closeup,captureOrigin,faceValid,closeupWidth,closeupHeight,portraitSource:closeup?'optical':null};

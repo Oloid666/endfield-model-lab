@@ -17,7 +17,7 @@ export function buildInvestigationProps(scene,r,{serverRoot=null}={}){
  label(cargo,'送貨方：終末地有限公司／地點：武陵 711',[.48,.59,.232],[.73,.12,1],{font:'bold 40px sans-serif'});
  const paperGroup=new T.Group();root.add(paperGroup);
  const posterPositions=[[-3.55,.90,2.91],[2.20,1.98,1.82],[3.30,1.98,1.82]];
- const posterUrl=`${import.meta.env?.BASE_URL||'/'}images/store-posters.png`;
+ const posterUrl=`${import.meta.env?.BASE_URL||'/'}images/store-posters.webp`;
  for(let i=1;i<3;i++){
    const texture=typeof document==='undefined'||typeof document.createElementNS!=='function'?null:r.own(new T.TextureLoader().load(posterUrl));
    if(texture){texture.colorSpace=T.SRGBColorSpace;texture.repeat.set(1/3,1);texture.offset.set(i/3,0);}

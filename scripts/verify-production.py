@@ -52,7 +52,7 @@ for path in entry_paths:
 relative_paths = {path.removeprefix(PREFIX) for path in entry_paths}
 relative_paths.update(str(path.relative_to(DIST)) for path in (DIST / 'assets').glob('*') if path.suffix in {'.js', '.css'})
 relative_paths.update(str(path.relative_to(DIST)) for path in (DIST / 'images').glob('*') if path.is_file())
-assert 'images/mifu-portrait-a-source.png' in relative_paths, 'Missing approved Mifu portrait'
+assert 'images/mifu-a.jpg' in relative_paths, 'Missing approved Mifu portrait'
 assets = []
 javascript = ''
 for relative in sorted(relative_paths):

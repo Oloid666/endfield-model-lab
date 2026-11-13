@@ -185,7 +185,7 @@ export function buildStore(scene, r) {
   // Outdoor shopboard.
   const board=new T.Group();board.position.set(-3.55,.22,2.85);board.rotation.y=.18;root.add(board);
   r.box(board,'#a48a5e',[0,.68,0],[.66,1.22,.1]);
-  const boardMap=typeof document.createElementNS==='function'?r.own(new T.TextureLoader().load(`${import.meta.env?.BASE_URL||'/'}images/store-posters.png`)):null;if(boardMap){boardMap.colorSpace=T.SRGBColorSpace;boardMap.repeat.set(1/3,1);boardMap.offset.set(0,0);}
+  const boardMap=typeof document.createElementNS==='function'?r.own(new T.TextureLoader().load(`${import.meta.env?.BASE_URL||'/'}images/store-posters.webp`)):null;if(boardMap){boardMap.colorSpace=T.SRGBColorSpace;boardMap.repeat.set(1/3,1);boardMap.offset.set(0,0);}
   const bm=r.mesh(r.geometry('PlaneGeometry',1,1),r.own(new T.MeshBasicMaterial({map:boardMap,toneMapped:false})),board,[0,.68,.056],[.52,1.04,1]);bm.name='tsundere-shopboard';
   r.box(board,'#896c49',[-.32,.12,-.25],[.07,.3,.65]);r.box(board,'#896c49',[.32,.12,-.25],[.07,.3,.65]);
   // Side vending machine, bins, parcels.

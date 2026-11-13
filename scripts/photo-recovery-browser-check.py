@@ -34,7 +34,7 @@ async def main():
     if await page.locator('.phone-gallery').is_visible():break
     await tick(.5);await js('__rainy711.missionNext()')
    assert await page.get_by_role('button',name='放大看有沒有眨眼',exact=True).is_enabled();assert await page.locator('.gallery-image').evaluate('(e)=>e.src===__rainy711.photo.src')
-   assert await js('__rainy711.photo.closeupWidth===1536&&__rainy711.photo.closeupHeight===1920&&__rainy711.photo.portraitSource==="optical"');assert await js('__rainy711.photo.src!==__rainy711.photo.closeup')
+   assert await js('__rainy711.photo.closeupWidth===1024&&__rainy711.photo.closeupHeight===1280&&__rainy711.photo.portraitSource==="optical"');assert await js('__rainy711.photo.src!==__rainy711.photo.closeup')
    await page.get_by_role('button',name='放大看有沒有眨眼',exact=True).click();assert await js('__rainy711.photoViewer.index===1');await page.get_by_role('button',name='回到全景',exact=True).click();assert await js('__rainy711.photoViewer.index===0&&__rainy711.photoViewer.scale===1');await page.get_by_role('button',name='放大看有沒有眨眼',exact=True).click();assert await js('__rainy711.photoViewer.index===1');await bg();await resume();await shot('valid-crop');await page.get_by_role('button',name='傳送給管理員',exact=True).click();await tick(1.3)
    await page.locator('#menu-toggle').click();await bg();await page.locator('#menu-close').click();await resume();assert not await page.locator('#scene').evaluate('(e)=>e.inert')
    await page.locator('#menu-toggle').click();await page.get_by_text('作品與回報',exact=True).click();await page.get_by_role('button',name='意見與問題回報',exact=True).click();await page.locator('.feedback-dialog textarea').fill('保留這份草稿');await bg();assert await page.locator('.feedback-dialog textarea').input_value()=='保留這份草稿';await page.get_by_role('button',name='取消',exact=True).click();await resume()
@@ -42,7 +42,7 @@ async def main():
    await js('window.dispatchEvent(new PageTransitionEvent("pagehide",{persisted:true}));window.dispatchEvent(new PageTransitionEvent("pageshow",{persisted:true}));__rainy711.pauseForCapture()');await resume();assert await page.locator('.mission-launch').is_enabled()
    # Actual text-bearing controls suppress selectstart; editable feedback fields stay selectable.
    assert await page.locator('.mission-launch span').first.evaluate('(e)=>!e.dispatchEvent(new Event("selectstart",{bubbles:true,cancelable:true}))');assert await page.locator('.mission-launch').evaluate('(e)=>getComputedStyle(e).webkitUserSelect')=='none'
-   assert not errors,errors;print('PASS actual invalid/valid exposures, independent optical portrait at 1536x1920, gallery/settings/feedback/background/BFCache recovery and true-entry restart',flush=True)
+   assert not errors,errors;print('PASS actual invalid/valid exposures, independent optical portrait at 1024x1280, gallery/settings/feedback/background/BFCache recovery and true-entry restart',flush=True)
   except Exception:await shot('FAILURE');raise
   finally:await b.close()
 asyncio.run(main())

@@ -34,3 +34,8 @@
 #app.ui-refined.dinner-ending .debug-travel-toggle{visibility:hidden}
 /* The final title uses the full renderer instead of the desktop dialogue rail. */
 #app.ui-refined.dinner-ending #scene{right:0!important;width:100%!important}
+
+/* Keep reactions beside the firing controls instead of across the performance. */
+#app.ui-refined .combat-aside{left:50%;right:auto;bottom:calc(186px + env(safe-area-inset-bottom));transform:translateX(-50%);box-sizing:border-box;width:min(430px,calc(100% - 28px));font-size:13px;line-height:1.6;text-wrap:pretty}
+@media(min-width:1000px) and (min-height:600px){#app.ui-refined .combat-aside{left:auto;right:16px;transform:none;width:calc(36% - 32px);bottom:calc(180px + env(safe-area-inset-bottom))}}
+@media(orientation:landscape) and (max-height:540px){#app.ui-refined .combat-aside{left:auto;right:19px;transform:none;width:min(360px,46vw);bottom:calc(156px + env(safe-area-inset-bottom));font-size:12px}}

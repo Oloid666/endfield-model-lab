@@ -21,7 +21,7 @@ machine.phaseTo('photo');"""
    await page.evaluate('ui.snapshot()');await page.wait_for_function('machine.phase==="photo-return"')
    await page.evaluate('machine.update(3);machine.update(9);for(let i=0;i<10&&machine.phase==="photo-check";i++)machine.next()')
    assert await page.locator('.phone-gallery').is_visible()
-   await page.get_by_role('button',name='返回一起看手機',exact=True).click()
+   await page.keyboard.press('Escape') # Current gallery closes with Escape; the old return button was removed.
    await page.locator('.photo-open').click();assert await page.evaluate('ui.viewer.index')==1
    await page.locator('.gallery-footer button').last.click()
    assert await page.evaluate('machine.phase')=='photo-sending'
