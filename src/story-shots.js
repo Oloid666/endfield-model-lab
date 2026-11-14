@@ -1,3 +1,4 @@
+import {DIRECTOR_BEAT} from './opening-handoff.js';
 import {LANDING_SETTLE_DURATION,DINNER_CLOSING,FAKE_END_DURATION} from './ending-title.js';
 import {RESCUE_READY,RESCUE_WAITING} from './tray-rescue.js';
 import {faceFrame} from './cinematic-track.js';
@@ -36,6 +37,20 @@ export function cinematicStoryShot(s,context,track){
   track.offset.set(.85,.44,1.45-push).applyAxisAngle(TUP,yaw);track.p.fromArray(p).add(track.offset);track.t.fromArray(p);track.t.y+=.06;
   track.enter('dinner-closing',s,c,origin);return track.pose(track.p,track.t,c.portrait?38:30);
  }
+ if(s.phase==='director-reminder'){
+  const lens=c.filmCamera?.position||[d.x+.75,d.y+.08,d.z+1.5];
+  if(e<DIRECTOR_BEAT.reply){
+   const wide=e<.6;track.enter(wide?'director-camera-establish':'director-dragon-front',s,c,origin);
+   track.p.set(d.x+(wide?1.7:.20),d.y+(wide?.45:.2),d.z+(wide?3.8:3.2));track.t.copy(d);track.t.y-=wide?.12:.12;
+   return track.pose(track.p,track.t,c.portrait?(wide?45:38):(wide?38:32));
+  }
+  if(e<DIRECTOR_BEAT.lens){
+   if(track.enter('director-camera-recording',s,c,origin+DIRECTOR_BEAT.reply)){track.p.set(lens[0]+1.1,lens[1]+.3,lens[2]-.55);track.t.fromArray(lens);track.fitBox([lens[0]-.4,lens[1]-.3,lens[2]-.4],[lens[0]+.4,lens[1]+.3,lens[2]+.4],track.p,track.t,c.portrait?38:32,c);}
+   return track.pose(track.fixedP,track.fixedT,c.portrait?38:32);
+  }
+  track.enter('director-dragon-thanks',s,c,origin+DIRECTOR_BEAT.lens);
+  track.p.set(d.x+.2,d.y+.2,d.z+3.2);track.t.copy(d);track.t.y-=.12;return track.pose(track.p,track.t,c.portrait?38:32);
+ }
  if(s.phase==='intro'&&s.purchaseElapsed==null){
   if(s.node?.cue==='opening-establish'&&(s.nodeElapsed||0)<1.2){track.enter('cinematic-opening-establish',s,c,nodeOrigin);return track.pose([-6.5,4.8,17],[-.3,2.8,1.4],c.portrait?58:44);}
   const soup=s.node?.cue==='opening-soup',id=soup?'cinematic-opening-shoulder':'cinematic-opening-pair';
@@ -61,9 +76,13 @@ export function cinematicStoryShot(s,context,track){
  }
  if(s.phase==='walk-out'){
   if(s.shopping?.handoff){
-   track.enter('cinematic-meal-handoff',s,c,origin+e-s.shopping.handoffElapsed);
-   const hand=c.grip||[feet[0],feet[1]+1.15,feet[2]+.2];
-   return track.pose([hand[0]+1.65,hand[1]+.62,Math.max(2.65,hand[2]+2.1)],[hand[0],hand[1]-.1,hand[2]],c.portrait?43:35);
+   const p=c.tray||[feet[0],feet[1]+1.1,feet[2]+.65];
+   if(track.enter('cinematic-meal-handoff',s,c,origin+e-s.shopping.handoffElapsed)){
+    track.t.copy(h).add(d).multiplyScalar(.5);track.t.y=Math.max(p[1]+.12,track.t.y-.20);
+    track.p.copy(track.t).add(track.offset.set(1,.35,3.7));
+    track.fitBox([Math.min(h.x-.30,d.x-.35),Math.min(feet[1]+.8,d.y-.35),Math.min(h.z-.35,d.z-.35)],[Math.max(h.x+.30,d.x+.35),Math.max(h.y+.25,d.y+.5),Math.max(h.z+.4,d.z+.55,p[2]+.4)],track.p,track.t,c.portrait?45:35,c);
+   }
+   return track.fixed(clock,1.5,.35,c.portrait?45:35,c.reduced);
   }
   const outside=(s.shopping?.segment||0)>=2;
   track.enter(outside?'cinematic-return-pair':'cinematic-return-door',s,c,origin);

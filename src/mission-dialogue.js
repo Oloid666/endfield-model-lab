@@ -1,5 +1,5 @@
 // Original fan fiction. These lines and the demolition episode are not official lore.
-export const speakers={zhuang:'莊方宜',dragon:'龍泡泡',mifoe:'弭弗',xaihi:'塞西',clerk:'店員',system:'天師樁終端',microwave:'微波爐',manager:'管理員',rapi:'拉毗',narrator:'旁白'};
+export const speakers={director:'導播',zhuang:'莊方宜',dragon:'龍泡泡',mifoe:'弭弗',xaihi:'塞西',clerk:'店員',system:'天師樁終端',microwave:'微波爐',manager:'管理員',rapi:'拉毗',narrator:'旁白'};
 
 export const dinnerChoices=[
   {id:'A',label:'熱便當＋湯',hint:'先吃頓熱的。'},

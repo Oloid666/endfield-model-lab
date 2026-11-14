@@ -74,6 +74,10 @@ export function buildDragon(r) {
     for(let i=0;i<ears.length;i++){const side=i?1:-1;ears[i].rotation.z=side*(-.28-startle*.18-catchUp*.09+curiosity*.1)+Math.sin(t*.65+i)*.009;ears[i].rotation.x=hesitate*.08+(s.lookYaw||0)*side*.08;}
     tail.rotation.z=Math.sin(t*(catchUp?3.2:1.1))*(.016+curiosity*.07+catchUp*.07)+curiosity*.09;
     tail.rotation.x=-1.1+walk*.09+hesitate*.06;tuft.rotation.z=-.18+(s.lookYaw||0)*.1;
+    if(action==='director'){
+      const age=s.action.age||0,pleased=age>=5.5&&age<6.35;state.mood=pleased?'happy':blink>.3?'blink':'normal';
+      material.map=maps[pleased?2:blink>.3?1:0];
+    }
     if(action==='sigh'){body.rotation.x=effort*.08;arms[0].rotation.z=-.1;arms[1].rotation.z=.1;}
     if(action==='key'){
       body.rotation.x=-.08;body.position.y=-Math.sin(effort*Math.PI)*.035;

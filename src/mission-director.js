@@ -1,3 +1,5 @@
+import {openingHandoff,openingEase,DIRECTOR_BEAT} from './opening-handoff.js';
+import {buildDirectorCamera} from './director-camera.js';
 import {buildVcrEffects} from './vcr-effects.js';
 import * as T from 'three';
 import {rescueTiming,RESCUE_READY} from './tray-rescue.js';
@@ -11,7 +13,7 @@ import {wireProgress} from './vcr-tablet.js';
 
 const flying=new Set(['ascent','director-reminder','shoe-view','pylon-link','charge','fire-ready','combat','energy','last','aim-final','finisher','landing']);
 const cctvPhases=new Set(['flashback','hack','credentials','heat-demo','meal-spawn','heat','flashback-end']);
-const lockedPhases=new Set(['meal-handoff','meal-reclaim','photo-return','photo-sending','purchase','walk-out','rewind','flashback','hack','credentials','heat-demo','meal-spawn','heat','flashback-end','return','fire-ready','combat','aim-final','finisher','landing','tour']);
+const lockedPhases=new Set(['director-reminder','meal-handoff','meal-reclaim','photo-return','photo-sending','purchase','walk-out','rewind','flashback','hack','credentials','heat-demo','meal-spawn','heat','flashback-end','return','fire-ready','combat','aim-final','finisher','landing','tour']);
 const cinematicPhases=new Set(['meal-handoff','meal-reclaim','terminal-quip','ascent','director-reminder','shoe-view','pylon-link','ready','intro','purchase','walk-out','photo-pose','photo-talk','photo-flight','photo','photo-return','photo-sending','photo-check','photo-review','terminal-deploy','verify-talk','verified-talk','cargo','observation','comm-request','briefing','login','captcha','lever','charge','fire-ready','combat','energy','rewind','flashback','hack','credentials','heat-demo','meal-spawn','heat','flashback-end','return','last','aim-final','finisher','landing','tour','complete']);
 const smooth=x=>{const p=Math.max(0,Math.min(1,x));return p*p*(3-2*p);};
 const lerp=(a,b,p,out)=>{for(let i=0;i<3;i++)out[i]=a[i]+(b[i]-a[i])*p;return out;};
@@ -38,7 +40,7 @@ export class MissionDirector{
   constructor(world){
     this.vcrEffects=buildVcrEffects(world.scene,world.r,{powerOutput:world.tianshi?.powerOutputs?.[2]});this.wireHolds=[2.15,3.3,4.4].map(age=>this.vcrEffects.path.getPointAt(wireProgress(age)).toArray());
     this.captureFx=buildCaptureEffects(world.scene,world.r);this.captureAt=-Infinity;this.captureFrom=[0,0,0];
-    this.cinematicTrack=new CinematicTrack();
+    this.cinematicTrack=new CinematicTrack();this.filmCamera=buildDirectorCamera(world.scene,world.r);this.directorFrom=null;this.directorYaw=0;this.openingFrame={};
     if(import.meta.env?.DEV&&typeof location!=='undefined'&&new URLSearchParams(location.search).get('cameraDebug')==='1'&&world.container)this.cinematicTrack.enableDebug(world.container);
     this.world=world;this.state=null;this.phase='ready';this.finalBegun=false;this.launched=false;this.impacted=false;this.neighborImpacted=false;this.stuckReleased=false;
     this.home=[0,0,0];this.hand=[0,0,0];this.end=[0,0,0];this.projectile=[0,0,0];this.hero=[0,0,0];this.wall=[-8.03,2.8,-1.96];
@@ -58,7 +60,7 @@ export class MissionDirector{
     this.marker=world.r.mesh(world.r.geometry('TorusGeometry',.36,.012,6,48),material,world.scene);this.marker.visible=false;
   }
   reset(){
-    this.dragonRoam.reset();this.roamState=null;this.cinematicTrack.reset();
+    this.filmCamera.reset();this.directorFrom=null;this.dragonRoam.reset();this.roamState=null;this.cinematicTrack.reset();
     this.captureAt=-Infinity;this.captureFx.reset();
     this.world.concert?.reset();this.breath?.reset();this.previousBeat=null;this.world.setCutaway?.(false);
     this.world.actors?.setCinematic(null);this.world.actors?.setDragonProjectile(null);
@@ -69,7 +71,7 @@ export class MissionDirector{
     this.world.weather.invalidateReflection();this.world.store.spill.shadow.needsUpdate=true;
   }
   stage(phase,state){
-    this.phase=phase;this.state=state;this.cinematicTrack.stage(phase,this.world.actors?.headPosition);if(phase==='last')this.captureAt=-Infinity;
+    this.phase=phase;this.state=state;if(phase==='director-reminder'){this.directorFrom=[...(this.world.actors?.dragonPosition||[-2,3,8])];this.directorYaw=this.world.actors?.status?.dragonHeading||0;}this.cinematicTrack.stage(phase,this.world.actors?.headPosition);if(phase==='last')this.captureAt=-Infinity;
     if(phase==='ready')this.world.setCutaway(false);
     if(phase==='photo-return'){this.photoReturnFrom=[...(this.world.actors?.dragonPosition||[0,2.6,11.2])];this.world.setCutaway(false);}
     if(phase==='intro'){
@@ -133,7 +135,7 @@ export class MissionDirector{
     this.world.store.destruction.neighbor?.impact();this.world.siege.impact(this.wall,1.45);
     this.world.weather.invalidateReflection();
   }
-  get status(){return {track:this.cinematicTrack.state,phase:this.phase,recoil:this.recoil,shotNumber:this.shotNumber,serverImpacted:this.impacted,neighborImpacted:this.neighborImpacted,dragonStuck:this.neighborImpacted&&!this.stuckReleased,stuckPosition:[...this.wall],flightDistance:12,lift:4,cctv:cctvPhases.has(this.phase),visualTime:this.visualTime,smile:this.world.actors?.status?.smile||0,cameraBeat:this.cameraBeat,cameraRoll:this.cameraRoll,shakeEnvelope:this.shakeEnvelope,cameraFov:this.world.camera.fov,reducedMotion:this.reducedMotion,cameraFocus:this.cameraTarget.toArray()};}
+  get status(){return {filmCamera:{...this.filmCamera.state},track:this.cinematicTrack.state,phase:this.phase,recoil:this.recoil,shotNumber:this.shotNumber,serverImpacted:this.impacted,neighborImpacted:this.neighborImpacted,dragonStuck:this.neighborImpacted&&!this.stuckReleased,stuckPosition:[...this.wall],flightDistance:12,lift:4,cctv:cctvPhases.has(this.phase),visualTime:this.visualTime,smile:this.world.actors?.status?.smile||0,cameraBeat:this.cameraBeat,cameraRoll:this.cameraRoll,shakeEnvelope:this.shakeEnvelope,cameraFov:this.world.camera.fov,reducedMotion:this.reducedMotion,cameraFocus:this.cameraTarget.toArray()};}
   get targets(){
     const d=this.world.store.destruction,s=d.state;
     if(s.progress>=99)return d.targets.filter(v=>v.id==='server');
@@ -154,7 +156,7 @@ export class MissionDirector{
     this.state=state;const actor=this.world.actors;if(!state||!actor)return;
     const phase=state.phase,e=state.phaseElapsed;this.world.controls.enabled=!this.world.upstairsInvitation&&!state.presentationLocked&&!['photo-flight','photo'].includes(phase)&&!lockedPhases.has(phase);
     actor.setTray?.({owner:state.trayOwner||'hero',phase,age:e,rescueAge:state.rescueAge});
-    actor.setSceneAction?.({aimMeter:phase==='aim-final'?.5:null,gazeTarget:!state.vcr&&state.node&&!['photo','photo-flight'].includes(phase)?actor.dragonPosition:null,mealReceive:phase==='walk-out'&&state.shopping?.handoff?Math.sin(Math.PI*smooth(state.shopping.handoffElapsed/1.2)):0,playful:phase==='ready',singing:phase==='tour'&&e>=14&&e<30,singingTrapped:phase==='tour',singingAge:Math.max(0,e-14),heading:['meal-handoff','meal-reclaim'].includes(phase)?0:['ready','intro','photo-talk','cargo'].includes(phase)?-.65:['photo-check','photo-review','photo-sending'].includes(phase)?-.35:['photo-flight','photo'].includes(phase)?0:undefined,handover:phase==='photo-talk'&&state.node?.event==='camera-handover',photoLook:['photo-check','photo-review','photo-sending','cargo'].includes(phase),externalDevice:phase.startsWith('photo')||phase==='cargo',mealVisible:!['ready','intro','purchase'].includes(phase)&&!(phase==='walk-out'&&(!state.shopping?.handoff||state.shopping.handoffElapsed<1.1))});
+    actor.setSceneAction?.({opening:phase==='walk-out'?state.shopping:null,directorAge:phase==='director-reminder'?e:null,directorTrayLower:phase==='director-reminder'?.30*openingEase(e,0,.6):phase==='shoe-view'?.30*(1-openingEase(e,0,DIRECTOR_BEAT.return)):0,aimMeter:phase==='aim-final'?.5:null,gazeTarget:!state.vcr&&state.node&&!['photo','photo-flight'].includes(phase)?actor.dragonPosition:null,mealReceive:phase==='walk-out'&&state.shopping?.handoff?Math.sin(Math.PI*smooth(state.shopping.handoffElapsed/1.2)):0,playful:phase==='ready',singing:phase==='tour'&&e>=14&&e<30,singingTrapped:phase==='tour',singingAge:Math.max(0,e-14),heading:['meal-handoff','meal-reclaim'].includes(phase)?0:['ready','intro','photo-talk','cargo'].includes(phase)?-.65:['photo-check','photo-review','photo-sending'].includes(phase)?-.35:['photo-flight','photo'].includes(phase)?0:undefined,handover:phase==='photo-talk'&&state.node?.event==='camera-handover',photoLook:['photo-check','photo-review','photo-sending','cargo'].includes(phase),externalDevice:phase.startsWith('photo')||phase==='cargo',mealVisible:!['ready','intro','purchase'].includes(phase)});
     if(state.postgame){
       actor.root.visible=this.world.charactersEnabled;actor.setCinematic(null);
       const roam=this.dragonRoam.update(state.clock,actor.heroPosition,actor.dragonPosition,{floorPlan:this.world.store.floorPlan,intact:this.world.streetShow?.state.mode!=='collapsed',doors:this.world.store.doors,meal:this.world.remnant?.state.visible?this.world.remnant.state.position:null});this.roamState=roam;
@@ -177,7 +179,7 @@ export class MissionDirector{
     else if(phase==='observation')dragonHeading=-.5;
     if(phase==='ready'||phase==='intro'&&state.purchaseElapsed==null||['photo-pose','photo-talk','observation'].includes(phase)){const h=actor.heroPosition,d=actor.dragonPosition;dragonHeading=Math.atan2(h[0]-d[0],h[2]-d[2]);}
     if(!state.postgame&&phase!=='ready')actor.cancelReaction?.();
-    actor.setDragonHeading?.(dragonHeading);if(actor.heroRoot)actor.heroRoot.visible=true;this.bag.visible=!!state.shopping?.collected&&['intro','purchase','walk-out'].includes(phase);if(this.world.photoPhone)this.world.photoPhone.visible=false;
+    actor.setDragonHeading?.(dragonHeading);if(actor.heroRoot)actor.heroRoot.visible=true;this.bag.visible=false;if(this.world.photoPhone)this.world.photoPhone.visible=false;
     const age=state.clock-this.lastShotAt;
     this.recoil=age>=0?Math.exp(-age*5.4)*Math.sin(Math.min(1,age/.11)*Math.PI/2)*this.recoilAmplitude:0;
     if(phase==='complete'&&this.world.walkCamera.enabled)this.stuckReleased=true;
@@ -227,12 +229,22 @@ export class MissionDirector{
       this.projectile.splice(0,3,...point);this.projectile[1]-=.32;
       actor.setDragonProjectile(this.projectile,-.16-(connection?.lever||0)*.3);actor.setCompanionAction?.({kind:'lever',amount:connection?.lever||0});return;
     }
+    if(phase==='director-reminder'){
+      actor.setDragonProjectile(this.directorFrom||[actor.heroPosition[0]-1,actor.heroPosition[1]+1,actor.heroPosition[2]+1],0);
+      const wanted=Math.atan2(.75,1.5),p=openingEase(e,0,.6);actor.setDragonHeading(this.directorYaw+Math.atan2(Math.sin(wanted-this.directorYaw),Math.cos(wanted-this.directorYaw))*p);
+      actor.setCompanionAction({kind:'director',age:e,amount:1});return;
+    }
     if(phase==='photo-flight'){const f=state.flight;actor.setDragonProjectile([f.x,1.5,f.z],0);if(this.world.photoPhone){this.world.photoPhone.visible=true;this.world.photoPhone.position.set(f.x+.35,1.82,f.z-.2);this.world.photoPhone.rotation.set(0,0,0);}return;}
     if(phase==='terminal-quip'){actor.setMove(0,0,false);const key=this.world.connectionStage?.keyPosition('e')||[-2,.55,4.6];actor.setDragonProjectile([key[0]-.45,1.45,key[2]],0);actor.setDragonHeading(.65);actor.setCompanionAction({kind:'sigh',amount:Math.min(1,e/1.2)});return;}
     if(phase==='terminal-deploy'){actor.setMove(0,0,false);const p=smooth((e-4.5)/1.5),key=this.world.connectionStage?.keyPosition('e')||[-2,.55,4.6];arc([-2.55,1.5,3.5],key,p,.25,this.projectile);actor.setDragonProjectile(this.projectile,0);return;}
     if(state.shopping&&['intro','purchase','walk-out'].includes(phase)){
-      const shop=state.shopping;actor.setMove(0,0,false);actor.setDragonProjectile(shop.position,0);actor.setDragonHeading(shop.heading);if(shop.atCounter)actor.setCompanionAction({kind:'checkout',amount:1});
-      this.bag.visible=shop.collected;if(shop.waiting)this.world.store.doors.requestPassage(state.clock);return;
+      const shop=state.shopping;actor.setMove(0,0,false);
+      let heading=shop.heading;const h=actor.heroPosition;
+      if(phase==='walk-out'&&shop.segment>=2){const yaw=actor.status?.cinematic?.heading??-.65,wanted=Math.atan2(h[0]+Math.sin(yaw)*.65-shop.position[0],h[2]+Math.cos(yaw)*.65-shop.position[2]),turn=shop.handoff?1:openingEase(e-3.6,.25,1.6);heading+=Math.atan2(Math.sin(wanted-heading),Math.cos(wanted-heading))*turn;}
+      if(phase==='walk-out'&&shop.handoff){const frame=openingHandoff(shop.handoffElapsed,this.openingFrame),p=frame.returnBody;this.projectile.splice(0,3,shop.position[0]+Math.sin(heading)*.35*p,shop.position[1]-.18*p,shop.position[2]+Math.cos(heading)*.35*p);actor.setDragonProjectile(this.projectile,0);}
+      else actor.setDragonProjectile(shop.position,0);
+      actor.setDragonHeading(heading);if(shop.atCounter)actor.setCompanionAction({kind:'checkout',amount:1});
+      this.bag.visible=false;if(shop.waiting)this.world.store.doors.requestPassage(state.clock);return;
     }
     if(phase==='intro'||phase==='ready'){
       const x=-2.55+Math.sin(state.clock*.7)*.055;actor.setDragonProjectile([x,1.5+Math.sin(state.clock*1.7)*.045,3.5],0);actor.setDragonHeading(Math.atan2(actor.heroPosition[0]-x,actor.heroPosition[2]-3.5));return;
@@ -265,7 +277,11 @@ export class MissionDirector{
       if(phase==='last'&&Number.isFinite(this.captureAt)){const p=smooth((state.clock-this.captureAt-.25)/1.8),g=actor.gripPosition||[h[0]+.2,h[1]+1.15,h[2]-.25];arc(this.captureFrom,[g[0]-.4,g[1]-.15,g[2]+.45],p,.35,this.projectile);actor.setDragonProjectile(this.projectile,0);actor.setDragonHeading?.(Math.atan2(h[0]-this.projectile[0],h[2]-this.projectile[2]));actor.setCompanionAction?.({kind:'shock',amount:1});return;}
       if(!['last','aim-final'].includes(phase)){
         const t=state.clock,a=t*.24,x=h[0]+Math.sin(a)*4.2,z=Math.max(3.1,h[2]+Math.cos(a)*3.2),y=Math.min(12,h[1]+2.3+Math.sin(t*.37)*1.8);
-        actor.setDragonProjectile([x,y,z],Math.sin(t*.3)*.06);this.faceFlight(actor,state.speaker==='dragon'||state.speaker==='zhuang'?h:[0,3,1],state);return;
+        if(phase==='shoe-view'&&this.directorFrom&&e<DIRECTOR_BEAT.return){
+          const p=openingEase(e,0,DIRECTOR_BEAT.return);lerp(this.directorFrom,[x,y,z],p,this.projectile);actor.setDragonProjectile(this.projectile,Math.sin(t*.3)*.06*p);
+          const target=state.speaker==='dragon'||state.speaker==='zhuang'?h:[0,3,1],heading=Math.atan2(target[0]-this.projectile[0],target[2]-this.projectile[2]),from=Math.atan2(.75,1.5);
+          actor.setDragonHeading(from+Math.atan2(Math.sin(heading-from),Math.cos(heading-from))*p);
+        }else{actor.setDragonProjectile([x,y,z],Math.sin(t*.3)*.06);this.faceFlight(actor,state.speaker==='dragon'||state.speaker==='zhuang'?h:[0,3,1],state);}return;
       }
       const floor=actor.position||{x:h[0],y:.32,z:3.25};actor.setDragonProjectile([floor.x+(h[0]-1.3-floor.x)*lag+loading*.9+(phase==='combat'?Math.sin(e*.7)*.3:0),floor.y+(h[1]+1.15-floor.y)*lag+loading*.95,floor.z+(h[2]-.25-floor.z)*lag],loading*.65);if(phase==='aim-final'&&e>1.4&&actor.gripPosition){const g=actor.gripPosition;actor.setDragonProjectile([g[0],g[1]-.3,g[2]],.65);}actor.setCompanionAction?.({kind:loading?'shock':'normal',amount:1});return;
     }
@@ -304,11 +320,7 @@ export class MissionDirector{
     this.captureFx.update(clock,s,this.world.actors?.gripPosition||feet,dragon,this.captureAt);
     this.panic.visible=['aim-final','finisher'].includes(s?.phase);this.panic.position.set(dragon[0],dragon[1]+.4,dragon[2]);this.panic.quaternion.copy(this.world.camera.quaternion);this.panic.scale.setScalar(this.reducedMotion?1:1+Math.sin(clock*8)*.05);
     const petGrip=this.world.actors?.dragonGripPosition||dragon;this.bag.position.set(petGrip[0],petGrip[1]-.32,petGrip[2]);this.bag.rotation.set(0,this.world.actors?.status?.dragonHeading||0,0);
-    if(s?.phase==='walk-out'&&s.shopping?.handoff){
-      const e=s.shopping.handoffElapsed,grip=this.world.actors?.gripPosition||feet,contact=smooth(e/.5)*(1-smooth((e-.9)/.5));
-      this.world.actors.alignDragonHand?.(grip,contact);const hand=this.world.actors.dragonGripPosition;
-      const ownership=smooth((e-.5)/.6);this.bag.position.set(hand[0]+(grip[0]-hand[0])*ownership,hand[1]+(grip[1]-hand[1])*ownership-.32,hand[2]+(grip[2]-hand[2])*ownership);this.bag.visible=e<1.1;
-    }
+    this.filmCamera.update(s,dragon,this.reducedMotion);
     if(s?.phase==='photo-talk'&&s.node?.event==='camera-handover'&&this.world.photoPhone){const p=smooth((s.nodeElapsed||0)/1.5),hand=this.world.actors.deviceGripPosition;this.world.photoPhone.position.set(hand[0]+(-1.7-hand[0])*p,hand[1]+(1.5-hand[1])*p,hand[2]+(3.05-hand[2])*p);}
 
     const personal=s?.phase==='last'&&Number((s.nodeId||'').split('_').at(-1))>=4||s?.phase==='aim-final';
@@ -464,7 +476,7 @@ export class MissionDirector{
     if(s.postgame){const h=w.actors.heelCenter;target=[h[0],h[1]+1.12,h[2]];position=[h[0],h[1]+2.35,h[2]+6.7];fov=portrait?48:38;beat='homecoming-pair';}
     if(s.node?.event==='vcr-cue'){const d=w.actors.dragonPosition;position=[d[0]+1.3,d[1]+.65,d[2]+3.2];target=[d[0],d[1]+.3,d[2]];fov=portrait?47:40;beat='vcr-dragon-flight';}
     if(s.phase==='complete'&&!s.postgame&&w.streetShow?.state.snapshotReady){position=[0,7,23];target=[0,3,1.8];fov=portrait?56:43;beat='rebuilt-upstairs-invite';}
-    const context={wireHoldPoint:this.wireHolds[s.tablet?.age<2.7?0:s.tablet?.age<3.9?1:2],grip:w.actors?.gripPosition,tray:w.actors?.mealSupportPosition,rescue:w.actors?.rescueFrame,powerSource:this.vcrEffects.state.powerSource,feet,heroHead:w.actors?.headPosition,dragon:w.actors?.dragonPosition,portrait,reduced:this.reducedMotion,heading,xaihiHead:s.tablet||s.phase==='meal-spawn'?w.xaihi?.headPosition:null,mealPosition:s.phase==='meal-spawn'&&w.remnant?.state.visible?w.remnant.state.position:null,wirePoint:s.tablet?.stage==='cable'?this.vcrEffects.path.getPointAt(wireProgress(s.tablet.age),this.point).toArray():null,aspect:w.camera.aspect,width:w.container?.clientWidth,height:w.container?.clientHeight,container:w.container,server:s.phase==='finisher'?this.end:w.store.destruction.state.serverPosition};
+    const context={filmCamera:this.filmCamera.state,wireHoldPoint:this.wireHolds[s.tablet?.age<2.7?0:s.tablet?.age<3.9?1:2],grip:w.actors?.gripPosition,tray:w.actors?.mealSupportPosition,rescue:w.actors?.rescueFrame,powerSource:this.vcrEffects.state.powerSource,feet,heroHead:w.actors?.headPosition,dragon:w.actors?.dragonPosition,portrait,reduced:this.reducedMotion,heading,xaihiHead:s.tablet||s.phase==='meal-spawn'?w.xaihi?.headPosition:null,mealPosition:s.phase==='meal-spawn'&&w.remnant?.state.visible?w.remnant.state.position:null,wirePoint:s.tablet?.stage==='cable'?this.vcrEffects.path.getPointAt(wireProgress(s.tablet.age),this.point).toArray():null,aspect:w.camera.aspect,width:w.container?.clientWidth,height:w.container?.clientHeight,container:w.container,server:s.phase==='finisher'?this.end:w.store.destruction.state.serverPosition};
     const revised=cinematicStoryShot(s,context,this.cinematicTrack)||revisedStoryShot(s,context);
     if(revised){({position,target,fov,beat}=revised);this.cameraRoll=0;}
     const storyCut=!!revised&&this.previousBeat!==beat;

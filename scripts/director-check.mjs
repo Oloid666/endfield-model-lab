@@ -30,6 +30,17 @@ function makeWorld(aspect=390/844){
 }
 function state(phase,overrides={}){return {phase,phaseElapsed:0,clock:10,castingElapsed:0,charge:0,progress:99,paused:false,rewindProgress:0,vcr:false,node:null,connection:{field:'account',keyNumber:0,keyAt:-Infinity,lastKey:'',lever:0},...overrides};}
 
+// The held dinner must not teleport when the camera cuts from the director to shoes.
+for(const hz of [30,60]){
+ const world=makeWorld(),director=new MissionDirector(world);world.actors.dragonPosition=[2.965,3.809,9.282];world.actors.status.dragonHeading=.4;
+ director.stage('director-reminder',state('director-reminder',{clock:40}));director.beforeActors(state('director-reminder',{clock:47.49,phaseElapsed:7.49,speaker:'director'}));
+ const before=[...world.actors.projectile],heading=world.actors.dragonHeading;
+ director.beforeActors(state('shoe-view',{clock:47.5,phaseElapsed:0,speaker:null}));
+ check('Shoe cut preserves donor position '+hz,world.actors.projectile.every((v,i)=>Math.abs(v-before[i])<1e-8));check('Shoe cut preserves donor heading '+hz,Math.abs(world.actors.dragonHeading-heading)<1e-8);
+ let previous=[...world.actors.projectile],largest=0;
+ for(let i=1;i<=hz*1.5;i++){director.beforeActors(state('shoe-view',{clock:47.5+i/hz,phaseElapsed:i/hz}));largest=Math.max(largest,new T.Vector3(...previous).distanceTo(new T.Vector3(...world.actors.projectile)));previous=[...world.actors.projectile];world.actors.status.dragonHeading=world.actors.dragonHeading;}
+ check('Returning to flight is a continuous path '+hz,largest<.3,{largest});world.r.dispose();
+}
 const w=makeWorld(),d=new MissionDirector(w),keys=[...'endfield_power'],expected=[];
 w.connectionStage.update(10,0,state('login'));
 for(const key of keys){expected.push(w.connectionStage.keyPosition(key));d.action({type:'key',value:key,time:10});}

@@ -1,8 +1,9 @@
+import {OPENING_HANDOFF} from './opening-handoff.js';
 const home=[-2.55,1.5,3.5],doorOut=[-.22,1.3,2.75],doorIn=[-.22,1.3,1.05],counter=[2.05,1.34,1.45];
 const smooth=p=>p*p*(3-2*p);
 // Segment time advances only when the real doorway is clear.
 export class ShoppingJourney{
- constructor(out=false){this.out=out;this.points=out?[counter,doorIn,doorOut,home,home]:[home,doorOut,doorIn,counter,counter];this.durations=out?[1.8,1.8,1.6,1.4]:[1.6,1.8,1.8,1.5];this.segment=0;this.age=0;this.done=false;this.waiting=false;this.position=[...this.points[0]];this.heading=out?-1.74:.9;}
+ constructor(out=false){this.out=out;this.points=out?[counter,doorIn,doorOut,home,home]:[home,doorOut,doorIn,counter,counter];this.durations=out?[1.8,1.8,1.6,OPENING_HANDOFF.duration]:[1.6,1.8,1.8,1.5];this.segment=0;this.age=0;this.done=false;this.waiting=false;this.position=[...this.points[0]];this.heading=out?-1.74:.9;}
  update(dt,doorOpen=1){
   this.waiting=false;let remaining=Math.max(0,dt);
   for(let guard=0;remaining>0&&!this.done&&guard<8;guard++){

@@ -1,3 +1,4 @@
+import {OPENING_HANDOFF,DIRECTOR_BEAT} from './opening-handoff.js';
 import {LANDING_SETTLE_DURATION,DINNER_CLOSING} from './ending-title.js';
 export {LANDING_SETTLE_DURATION} from './ending-title.js';
 import {chargeShot,SHOT_CHARGE,strugglePosition,STRUGGLE_PERIOD} from './shot-charge.js';
@@ -81,7 +82,7 @@ export class MissionMachine{
     }
     if(phase==='terminal-deploy')this.line({id:'terminal_book',speaker:'zhuang',text:'BOOK！',gesture:'point',event:'book-open'},entered);
     if(phase==='heat-demo')this.line(heatDemoLines[0],entered);
-    if(phase==='walk-out')this.shopping=new ShoppingJourney(true);
+    if(phase==='walk-out'){this.shopping=new ShoppingJourney(true);this.trayOwner='dragon';}
     if(phase==='heat')this.line(connectionPrompts.heat,entered);
     if(phase==='meal-spawn')this.line(this.hooks.tabletMode?{id:'overload',speaker:'system',text:'電流還在灌入……',event:'meal-overload'}:heatDemoLines[4],entered);
     if(phase==='return')this.line(connectionPrompts.returned,entered);
@@ -334,14 +335,14 @@ export class MissionMachine{
       if(phase==='meal-handoff'&&elapsed+1e-8>=FIRST_HANDOFF_DURATION){this.trayOwner='dragon';this.phaseTo('ascent',this.entered+FIRST_HANDOFF_DURATION);this.line({id:'ascent_authorized',speaker:'system',text:'系統：允許起飛。',gesture:'look'});changed=true;}
       else if(phase==='meal-reclaim'&&elapsed+1e-8>=2.6){this.trayOwner='hero';this.phaseTo('tour',this.entered+2.6);changed=true;}
       else if(phase==='ascent'&&elapsed>=5){this.phaseTo('director-reminder',this.entered+5);this.line({id:'director_reminder_0',speaker:'dragon',text:'等等！導播，這邊重點不要漏掉！要照顧一下玩家！',gesture:'point'});changed=true;}
-      else if(phase==='director-reminder'&&elapsed>=5){this.phaseTo('shoe-view',this.entered+5);changed=true;}
+      else if(phase==='director-reminder'&&elapsed>=DIRECTOR_BEAT.duration){this.phaseTo('shoe-view',this.entered+DIRECTOR_BEAT.duration);changed=true;}
       else if(phase==='pylon-link'&&elapsed>=4){this.phaseTo('charge',this.entered+4);changed=true;}
       else if(phase==='charge'&&elapsed>=CHARGE_DURATION){this.phaseTo('fire-ready',this.entered+CHARGE_DURATION);changed=true;}
       else if(phase==='terminal-deploy'&&elapsed>=6){this.sequence('terminal-quip',[{id:'terminal_hunter',speaker:'dragon',text:'這是貪婪之島，還是背鍋之島？',gesture:'shake',event:'book-quip'}]);changed=true;}
       else if(phase==='photo-sending'&&elapsed>=1.2){this.sequence('cargo',sequences.cargo);changed=true;}
       else if(phase==='photo-return'&&elapsed>=2.5){this.sequence('photo-check',this.photoFaceValid?sequences.photoCheck:[{id:'photo_missing_face',speaker:'dragon',text:'這張沒拍到妳的臉，重拍一張。',gesture:'look'}]);changed=true;}
       else if(phase==='purchase'&&this.shopping?.done){this.phaseTo('walk-out');changed=true;}
-      else if(phase==='walk-out'&&this.shopping?.done){this.phaseTo('photo-pose');changed=true;}
+      else if(phase==='walk-out'&&this.shopping?.done){this.trayOwner='hero';this.phaseTo('photo-pose');changed=true;}
       else if(phase==='photo-pose'&&elapsed>=2.6){this.sequence('photo-talk',sequences.photoTalk);changed=true;}
       else if(phase==='rewind'&&elapsed>=REWIND_DURATION){this.sequence('flashback',sequences.flashback);changed=true;}
       else if(phase==='heat-demo'&&elapsed>=HEAT_DEMO_DURATION){this.phaseTo('heat',this.entered+HEAT_DEMO_DURATION);changed=true;}
@@ -352,10 +353,11 @@ export class MissionMachine{
       if(!changed)break;
     }
     const elapsed=Math.max(0,this.time-this.entered);
+    if(this.phase==='walk-out'&&this.shopping?.state.handoff&&this.shopping.state.handoffElapsed>=OPENING_HANDOFF.owner)this.trayOwner='hero';
     if(this.phase==='meal-handoff'&&elapsed>=FIRST_HANDOFF_CONTACT)this.trayOwner='dragon';
     if(this.phase==='aim-final')this.trayOwner=elapsed>=RESCUE_CONTACT?'helper':elapsed>=RESCUE_RELEASE?'air':'dragon';if(this.phase==='meal-reclaim'&&elapsed>=1.35)this.trayOwner='hero';
     if(this.phase==='charge')this.timedLine(chargeLines,elapsed);
-    else if(this.phase==='director-reminder'&&elapsed>=2.7&&this.node?.id!=='director_reminder_1')this.line({id:'director_reminder_1',speaker:'system',text:'導播：差點忘了，謝謝龍董。',gesture:'look'},this.entered+2.7);
+    else if(this.phase==='director-reminder'&&elapsed>=DIRECTOR_BEAT.reply&&this.node?.id!=='director_reminder_1')this.line({id:'director_reminder_1',speaker:'director',text:'差點忘了，謝謝龍董。',gesture:'look'},this.entered+DIRECTOR_BEAT.reply);
 
     else if(this.phase==='lever'&&elapsed>=3&&this.node!==connectionPrompts.lever)this.line(connectionPrompts.lever,this.entered+3);
     else if(this.phase==='heat-demo')this.timedLine(heatDemoLines.slice(0,4),elapsed);
