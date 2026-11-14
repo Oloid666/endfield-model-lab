@@ -1,0 +1,222 @@
+[
+  {
+    "file": "01-opening-before.png",
+    "source": "before-complete/opening/0018.jpg",
+    "sha256": "3cae7c6ad4a403ab048b1ab3eca7f497acbd1849e2c5773d244ae7ddfe39e43b",
+    "size": [
+      390,
+      844
+    ],
+    "format": "JPEG quality82 to PNG; no new detail",
+    "game_commit": "75bebd5a32c0860f929ecb3c5f62f562481d9171"
+  },
+  {
+    "file": "01-opening-after.png",
+    "source": "delivery/opening/0018.jpg",
+    "sha256": "43095bc1bf3b8893b648909dea958be181554aac4576a362cec1a0c4e2904926",
+    "size": [
+      390,
+      844
+    ],
+    "format": "JPEG quality82 to PNG; no new detail",
+    "game_commit": "7cdb7d5b8ebf012ae564fd960957bb2337259d22"
+  },
+  {
+    "file": "02-support-before.png",
+    "source": "before-complete/opening/0023.jpg",
+    "sha256": "f4ecec74d3c0d0a4eff1d160f2008fc7a6a7dab912474fd82d23305d364dba49",
+    "size": [
+      390,
+      844
+    ],
+    "format": "JPEG quality82 to PNG; no new detail",
+    "game_commit": "75bebd5a32c0860f929ecb3c5f62f562481d9171"
+  },
+  {
+    "file": "02-support-after.png",
+    "source": "delivery/opening/0034.jpg",
+    "sha256": "aa8919da955fca8e32cc35fb277b18a971a59931a575c4eb10a829b750274f8f",
+    "size": [
+      390,
+      844
+    ],
+    "format": "JPEG quality82 to PNG; no new detail",
+    "game_commit": "7cdb7d5b8ebf012ae564fd960957bb2337259d22"
+  },
+  {
+    "file": "03-release-before.png",
+    "source": "before-complete/opening/0027.jpg",
+    "sha256": "7458e46ef2c91cb3a2d3627884f216df90acc4cb5a2fcc32f8f3adabe7cb5863",
+    "size": [
+      390,
+      844
+    ],
+    "format": "JPEG quality82 to PNG; no new detail",
+    "game_commit": "75bebd5a32c0860f929ecb3c5f62f562481d9171"
+  },
+  {
+    "file": "03-release-after.png",
+    "source": "delivery/opening/0045.jpg",
+    "sha256": "281d03d7cb79539c50fa5315d93ea84ab939dec2b1d321b353f0d2c1061eabb6",
+    "size": [
+      390,
+      844
+    ],
+    "format": "JPEG quality82 to PNG; no new detail",
+    "game_commit": "7cdb7d5b8ebf012ae564fd960957bb2337259d22"
+  },
+  {
+    "file": "04-settled-before.png",
+    "source": "before-complete/opening/0038.jpg",
+    "sha256": "7bbd13e2c6d61eb931484fbc783c10e874a494d212e2a5724886b45ac0e231fe",
+    "size": [
+      390,
+      844
+    ],
+    "format": "JPEG quality82 to PNG; no new detail",
+    "game_commit": "75bebd5a32c0860f929ecb3c5f62f562481d9171"
+  },
+  {
+    "file": "04-settled-after.png",
+    "source": "delivery/opening/0060.jpg",
+    "sha256": "3d22b6433b6cdd28729726c5f2fdf3b5948ac9c88dfbd741775ea5f1b5f3a5f9",
+    "size": [
+      390,
+      844
+    ],
+    "format": "JPEG quality82 to PNG; no new detail",
+    "game_commit": "7cdb7d5b8ebf012ae564fd960957bb2337259d22"
+  },
+  {
+    "file": "05-director-before.png",
+    "source": "before-complete/director/0018.jpg",
+    "sha256": "827e19d32277d1695346aff7351202eb6271a8f0aa1d22af17abb4ca292e466d",
+    "size": [
+      390,
+      844
+    ],
+    "format": "JPEG quality82 to PNG; no new detail",
+    "game_commit": "75bebd5a32c0860f929ecb3c5f62f562481d9171"
+  },
+  {
+    "file": "05-director-after.png",
+    "source": "delivery/director/0018.jpg",
+    "sha256": "bb0dc0f5eb6be2e67e1fc476bb1c882f09a4aa90fd64b6b761795b7923f3c031",
+    "size": [
+      390,
+      844
+    ],
+    "format": "JPEG quality82 to PNG; no new detail",
+    "game_commit": "7cdb7d5b8ebf012ae564fd960957bb2337259d22"
+  },
+  {
+    "file": "06-thanks-before.png",
+    "source": "before-complete/director/0040.jpg",
+    "sha256": "a734db3f35b39b8d564624664caf6278e5bae0329bed94a3f169628f21cd7217",
+    "size": [
+      390,
+      844
+    ],
+    "format": "JPEG quality82 to PNG; no new detail",
+    "game_commit": "75bebd5a32c0860f929ecb3c5f62f562481d9171"
+  },
+  {
+    "file": "06-thanks-after.png",
+    "source": "delivery/director/0085.jpg",
+    "sha256": "0d879f6df9f5649e669d7eccbd627dd42677782e6d22d67f7f6f3f50d27e454e",
+    "size": [
+      390,
+      844
+    ],
+    "format": "JPEG quality82 to PNG; no new detail",
+    "game_commit": "7cdb7d5b8ebf012ae564fd960957bb2337259d22"
+  },
+  {
+    "file": "07-camera-after.png",
+    "source": "delivery/director/0064.jpg",
+    "sha256": "652cd6ddef370fed2d8f5e93338cec7e3b669b9bc8f0c504d848b6c178218d7b",
+    "size": [
+      390,
+      844
+    ],
+    "format": "JPEG quality82 to PNG; no new detail",
+    "game_commit": "7cdb7d5b8ebf012ae564fd960957bb2337259d22"
+  },
+  {
+    "file": "08-opening-landscape-after.png",
+    "source": "delivery/layout-opening-844x390.png",
+    "sha256": "427e2a10c04e5e4045a84ddd33f33637c667531c25858fd8c87fd7557e6e6696",
+    "size": [
+      844,
+      390
+    ],
+    "format": "native PNG",
+    "game_commit": "7cdb7d5b8ebf012ae564fd960957bb2337259d22"
+  },
+  {
+    "file": "09-opening-desktop-after.png",
+    "source": "delivery/layout-opening-1440x900.png",
+    "sha256": "09462cc8122faca0f7ebdce59a3985706977cded1c7bc345342520f71e676859",
+    "size": [
+      1440,
+      900
+    ],
+    "format": "native PNG",
+    "game_commit": "7cdb7d5b8ebf012ae564fd960957bb2337259d22"
+  },
+  {
+    "file": "10-director-landscape-after.png",
+    "source": "delivery/layout-director-face-844x390.png",
+    "sha256": "6a5f23ee2d968bb1180da8aef0019aa9f5cf27590950d642f29df7949b9c0049",
+    "size": [
+      844,
+      390
+    ],
+    "format": "native PNG",
+    "game_commit": "7cdb7d5b8ebf012ae564fd960957bb2337259d22"
+  },
+  {
+    "file": "11-director-desktop-after.png",
+    "source": "delivery/layout-director-face-1440x900.png",
+    "sha256": "42a96c31bcde1e4fe424be26f57ade28f63f0df2ef95aea667f867f66db45ae4",
+    "size": [
+      1440,
+      900
+    ],
+    "format": "native PNG",
+    "game_commit": "7cdb7d5b8ebf012ae564fd960957bb2337259d22"
+  },
+  {
+    "file": "12-shoe-portrait-after.png",
+    "source": "delivery/layout-shoe-entry-390x844.png",
+    "sha256": "a25222981fd69cbb29a526fefdb2dfbc7625da2d1fabf7ad1e5b4edb73db8de6",
+    "size": [
+      390,
+      844
+    ],
+    "format": "native PNG",
+    "game_commit": "7cdb7d5b8ebf012ae564fd960957bb2337259d22"
+  },
+  {
+    "file": "13-shoe-landscape-after.png",
+    "source": "delivery/layout-shoe-entry-844x390.png",
+    "sha256": "d43a0eec4b94f1f3596aec66821426eaff308d6d858a6fbf5597bea2faeab523",
+    "size": [
+      844,
+      390
+    ],
+    "format": "native PNG",
+    "game_commit": "7cdb7d5b8ebf012ae564fd960957bb2337259d22"
+  },
+  {
+    "file": "14-shoe-desktop-after.png",
+    "source": "delivery/layout-shoe-entry-1440x900.png",
+    "sha256": "cc0eb51008097bf3a03bf297dfde832d002ec60ef7992f4f67a6680284441c9e",
+    "size": [
+      1440,
+      900
+    ],
+    "format": "native PNG",
+    "game_commit": "7cdb7d5b8ebf012ae564fd960957bb2337259d22"
+  }
+]

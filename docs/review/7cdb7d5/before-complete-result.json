@@ -1,0 +1,7 @@
+{
+  "status": "passed",
+  "errors": [],
+  "capture": "fixed-step actual runtime, all presented frames at12fps; no audio, not a hardware FPS measurement",
+  "iphone_tested": false,
+  "layouts_tested": false
+}

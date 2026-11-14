@@ -1,0 +1,242 @@
+[
+  {
+    "script": "scripts/actor-check.mjs",
+    "exitCode": 0,
+    "result": "}"
+  },
+  {
+    "script": "scripts/air-upstairs-check.mjs",
+    "exitCode": 0,
+    "result": "Air / upstairs: 3940 checks passed."
+  },
+  {
+    "script": "scripts/analytics-check.mjs",
+    "exitCode": 0,
+    "result": "PASS analytics: real mission hooks, normal/replay/shortcut separation, deduplication, active time, reset, disabled config, privacy, blocked transport and DNT"
+  },
+  {
+    "script": "scripts/battle-warm-check.mjs",
+    "exitCode": 0,
+    "result": "Battle draw preparation: live pools untouched, MSAA/reflection warm paths, lights isolated and failure cleanup passed."
+  },
+  {
+    "script": "scripts/bonus-check.mjs",
+    "exitCode": 0,
+    "result": "Bonus: 2648 checks passed (including all 32 negotiation combinations)."
+  },
+  {
+    "script": "scripts/character-copy-check.mjs",
+    "exitCode": 0,
+    "result": "Character copy: tracked text name audit and living-meal reaction passed."
+  },
+  {
+    "script": "scripts/cinematic-check.mjs",
+    "exitCode": 0,
+    "result": "}"
+  },
+  {
+    "script": "scripts/cinematic-track-check.mjs",
+    "exitCode": 0,
+    "result": "Cinematic track: 734 checks passed."
+  },
+  {
+    "script": "scripts/concert-check.mjs",
+    "exitCode": 0,
+    "result": "Concert wall clearance, reduced motion and password dialogue checks passed."
+  },
+  {
+    "script": "scripts/destruction-check.mjs",
+    "exitCode": 0,
+    "result": "}"
+  },
+  {
+    "script": "scripts/dinner-revision-check.mjs",
+    "exitCode": 0,
+    "result": "Dinner revision: 50 regression checks passed."
+  },
+  {
+    "script": "scripts/director-check.mjs",
+    "exitCode": 0,
+    "result": "V14 director: 485 checks passed."
+  },
+  {
+    "script": "scripts/entry-camera-check.mjs",
+    "exitCode": 0,
+    "result": "}"
+  },
+  {
+    "script": "scripts/feast-check.mjs",
+    "exitCode": 0,
+    "result": "Feast: 4283 checks passed."
+  },
+  {
+    "script": "scripts/feedback-check.mjs",
+    "exitCode": 0,
+    "result": "PASS feedback: real SQLite schema, validation, SQL injection, CORS, auth, idempotency, atomic rate limit, pagination/filtering, private fields, failure, retry drafts, timeout and CSV safety"
+  },
+  {
+    "script": "scripts/fx-check.mjs",
+    "exitCode": 0,
+    "result": "}"
+  },
+  {
+    "script": "scripts/indoor-camera-check.mjs",
+    "exitCode": 0,
+    "result": "PASS indoor camera: preview, hold, smooth transition, straight recovery, swing/grade, manual modes, reset and hysteresis"
+  },
+  {
+    "script": "scripts/indoor-check.mjs",
+    "exitCode": 0,
+    "result": "PASS slope energy, braking, recovery, 123 reset, pause, no flood and no quota"
+  },
+  {
+    "script": "scripts/indoor-impact-check.mjs",
+    "exitCode": 0,
+    "result": "PASS impact variants, cooldown, nonblocking dense goods, finish, pause, injuries and restart"
+  },
+  {
+    "script": "scripts/indoor-passenger-check.mjs",
+    "exitCode": 0,
+    "result": "PASS passenger: light scrape, warning, independent fall, brake rescue, repeated hits, real-course protection, reset and 30/60/120Hz"
+  },
+  {
+    "script": "scripts/living-world-check.mjs",
+    "exitCode": 0,
+    "result": "Living world: 336 checks passed."
+  },
+  {
+    "script": "scripts/loading-check.mjs",
+    "exitCode": 0,
+    "result": "Loading: 27 narrative, resource-gated direct entry, background and slow-network checks passed."
+  },
+  {
+    "script": "scripts/mission-check.mjs",
+    "exitCode": 0,
+    "result": "V14 mission: 77 checks passed."
+  },
+  {
+    "script": "scripts/model-transport-check.mjs",
+    "exitCode": 0,
+    "result": "Model transport: 19 checks passed; 7520868 → 4661344 bytes, decoded model unchanged."
+  },
+  {
+    "script": "scripts/next-dinner-check.mjs",
+    "exitCode": 0,
+    "result": "Next dinner: 349 checks passed."
+  },
+  {
+    "script": "scripts/opening-handoff-check.mjs",
+    "exitCode": 0,
+    "result": "Opening handoff: 1087 checks passed."
+  },
+  {
+    "script": "scripts/photo-camera-check.mjs",
+    "exitCode": 0,
+    "result": "Photo camera: fixed optical centre, turning, zoom, cancellation and pause passed."
+  },
+  {
+    "script": "scripts/polish-check.mjs",
+    "exitCode": 0,
+    "result": "Polish: 21 loading prop, acting, pause and preference checks passed."
+  },
+  {
+    "script": "scripts/postgame-check.mjs",
+    "exitCode": 0,
+    "result": "Postgame boundaries, absent/present creature and replay checks passed."
+  },
+  {
+    "script": "scripts/presentation-check.mjs",
+    "exitCode": 0,
+    "result": "Presentation: 36 checks passed."
+  },
+  {
+    "script": "scripts/props-check.mjs",
+    "exitCode": 0,
+    "result": "V11 props: 51 checks passed."
+  },
+  {
+    "script": "scripts/racing-check.mjs",
+    "exitCode": 0,
+    "result": "PASS racing: real bends, no auto-steering, both rope presets, two-way tension, collision angles, persistent boxes, recovery, brakes, reset, pause, 30/60/120Hz"
+  },
+  {
+    "script": "scripts/review-synthesis-check.mjs",
+    "exitCode": 0,
+    "result": "Review synthesis: 10866 checks passed."
+  },
+  {
+    "script": "scripts/revision-check.mjs",
+    "exitCode": 0,
+    "result": "Revision: 18835 checks passed; Rossi 956 triangles."
+  },
+  {
+    "script": "scripts/second-wave-check.mjs",
+    "exitCode": 0,
+    "result": "Second wave: 17162 continuity, title and audience checks passed."
+  },
+  {
+    "script": "scripts/shot-charge-check.mjs",
+    "exitCode": 0,
+    "result": "Shot charge: 52 checks passed."
+  },
+  {
+    "script": "scripts/stage-detail-check.mjs",
+    "exitCode": 0,
+    "result": "Sigh timing/pause/cleanup and BOOK-before-login checks passed."
+  },
+  {
+    "script": "scripts/story-check.mjs",
+    "exitCode": 0,
+    "result": "}"
+  },
+  {
+    "script": "scripts/story-revision-check.mjs",
+    "exitCode": 0,
+    "result": "Story revision: 2821 checks passed."
+  },
+  {
+    "script": "scripts/street-camera-check.mjs",
+    "exitCode": 0,
+    "result": "Street camera: ordered stages, wide-before-building, three views and hold passed."
+  },
+  {
+    "script": "scripts/street-stage-check.mjs",
+    "exitCode": 0,
+    "result": "Street stage: 42 checks passed."
+  },
+  {
+    "script": "scripts/touch-detail-check.mjs",
+    "exitCode": 0,
+    "result": "Touch cancellation, keyboard activation and curved bandage surface checks passed."
+  },
+  {
+    "script": "scripts/tray-grip-check.mjs",
+    "exitCode": 0,
+    "result": "Tray grip: 54/54 checks passed."
+  },
+  {
+    "script": "scripts/vcr-props-check.mjs",
+    "exitCode": 0,
+    "result": "VCR props: 24 checks passed."
+  },
+  {
+    "script": "scripts/vcr-tablet-check.mjs",
+    "exitCode": 0,
+    "result": "VCR repair: 108 checks passed."
+  },
+  {
+    "script": "scripts/viewer-check.mjs",
+    "exitCode": 0,
+    "result": "Viewer/positioning: 57 aspect, bounds and steady-shot checks passed."
+  },
+  {
+    "script": "scripts/walking-environment-check.mjs",
+    "exitCode": 0,
+    "result": "Walking environment: six building switches, doors, ghost collision and replay boundaries passed."
+  },
+  {
+    "script": "scripts/warmup-check.mjs",
+    "exitCode": 0,
+    "result": "Shader warmup: 15 checks passed."
+  }
+]
