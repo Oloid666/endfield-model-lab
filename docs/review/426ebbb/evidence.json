@@ -1,0 +1,255 @@
+[
+  {
+    "file": "01-satisfied-before.png",
+    "source": "before2/01-satisfied.png",
+    "game_commit": "8ec95776c8f2797ee6815c3d0b4912162821bdcc",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "da3b627b76b626f28d5bbc4c8a3add7a258f4d41d7ab10a9205436c8bf88910d",
+    "conversion": "native PNG"
+  },
+  {
+    "file": "01-satisfied-after.png",
+    "source": "delivery/01b-satisfied-eyes.png",
+    "game_commit": "b6c2df57461f852a67809705b3695ab94ff2b290",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "90051c3fe756bd2273d37e4aaf75fd73245cd76681325eeecefcea8e51ddc820",
+    "conversion": "native PNG"
+  },
+  {
+    "file": "02-avert-before.png",
+    "source": "before2/02-avert.png",
+    "game_commit": "8ec95776c8f2797ee6815c3d0b4912162821bdcc",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "855b0f80f06335c0d7e386ffb98ed38c8712848f1c11c14f0cf4738810494892",
+    "conversion": "native PNG"
+  },
+  {
+    "file": "02-avert-after.png",
+    "source": "delivery/02-avert.png",
+    "game_commit": "b6c2df57461f852a67809705b3695ab94ff2b290",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "36091da9e41cf1caff0ad5f4e16e9a1490d7ecf090d06e662beb9d9b3c7d01ce",
+    "conversion": "native PNG"
+  },
+  {
+    "file": "03-redirect-before.png",
+    "source": "before2/04-redirect.png",
+    "game_commit": "8ec95776c8f2797ee6815c3d0b4912162821bdcc",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "12c1d46110ccd88698ad91b8cee873564249f85a3ca6860292b000164bb34b60",
+    "conversion": "native PNG"
+  },
+  {
+    "file": "03-redirect-after.png",
+    "source": "delivery/04-redirect.png",
+    "game_commit": "b6c2df57461f852a67809705b3695ab94ff2b290",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "d78c86b8291d05859e2768c597d7516c998390ddde379faf0f98a068081721a9",
+    "conversion": "native PNG"
+  },
+  {
+    "file": "04-book-hand-before.png",
+    "source": "before2/05-book-hand.png",
+    "game_commit": "8ec95776c8f2797ee6815c3d0b4912162821bdcc",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "53df597c2f97e1efbe16233c9f9e1b4064d19fb279ecadcece95a6ceb284f6d6",
+    "conversion": "native PNG"
+  },
+  {
+    "file": "04-book-hand-after.png",
+    "source": "delivery/05-book-hand.png",
+    "game_commit": "b6c2df57461f852a67809705b3695ab94ff2b290",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "868536a58895095c06f060df3858b1b4d4b756380ba72beed83a22a460de967c",
+    "conversion": "native PNG"
+  },
+  {
+    "file": "05-book-open-before.png",
+    "source": "before2/06-book-open.png",
+    "game_commit": "8ec95776c8f2797ee6815c3d0b4912162821bdcc",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "bb347f3c2faca4bb7bc951e2feedf838de4cfd78c38501122a8d5168d09d4cd5",
+    "conversion": "native PNG"
+  },
+  {
+    "file": "05-book-open-after.png",
+    "source": "delivery/06-book-open.png",
+    "game_commit": "b6c2df57461f852a67809705b3695ab94ff2b290",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "e5c7899a0580c3267f39c91a0e63fd47b1f965f3f2231570faa420fe9affd1a5",
+    "conversion": "native PNG"
+  },
+  {
+    "file": "06-grip-before.png",
+    "source": "before2/08-grip.png",
+    "game_commit": "8ec95776c8f2797ee6815c3d0b4912162821bdcc",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "5e84f54b46dbab2dc81de1ef25d4338d01ebf2c912be702d1b923c25d5be0f16",
+    "conversion": "native PNG"
+  },
+  {
+    "file": "06-grip-after.png",
+    "source": "delivery/08-grip.png",
+    "game_commit": "b6c2df57461f852a67809705b3695ab94ff2b290",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "91587572c1d1041d81c6afb02e26dedd2929a733130950bfa302b4a2dfa2419d",
+    "conversion": "native PNG"
+  },
+  {
+    "file": "07-song-before.png",
+    "source": "before2/09-song.png",
+    "game_commit": "8ec95776c8f2797ee6815c3d0b4912162821bdcc",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "bab06a85ae07ec1e4594422f5a68a95e4afb9b0ce885b64b1cee06e3447f2754",
+    "conversion": "native PNG"
+  },
+  {
+    "file": "07-song-after.png",
+    "source": "delivery/09-song.png",
+    "game_commit": "b6c2df57461f852a67809705b3695ab94ff2b290",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "77fbc2a7ccc305128fa0c380e281ba88259e3e24d8c8f4488b6b9c7141ca3c86",
+    "conversion": "native PNG"
+  },
+  {
+    "file": "08-desktop-handoff-before.png",
+    "source": "before2/12-desktop-handoff.png",
+    "game_commit": "8ec95776c8f2797ee6815c3d0b4912162821bdcc",
+    "size": [
+      1440,
+      900
+    ],
+    "sha256": "a37cb9fd33ab8f6478ac385cd23392787a9c03cc58048b50f84b7c79946c935c",
+    "conversion": "native PNG"
+  },
+  {
+    "file": "08-desktop-handoff-after.png",
+    "source": "delivery/12-desktop-handoff.png",
+    "game_commit": "b6c2df57461f852a67809705b3695ab94ff2b290",
+    "size": [
+      1440,
+      900
+    ],
+    "sha256": "30f202a12d0752605fe7fef50c2552e183b38c0dca0304546968c7c5d781c53a",
+    "conversion": "native PNG"
+  },
+  {
+    "file": "09-desktop-panel-after.png",
+    "source": "delivery/13-desktop-panel.png",
+    "game_commit": "b6c2df57461f852a67809705b3695ab94ff2b290",
+    "size": [
+      1440,
+      900
+    ],
+    "sha256": "e832ee7e9f9d52ea16596041bcc440a460b8f65f80e0690c15768e4703ba476a",
+    "conversion": "native PNG"
+  },
+  {
+    "file": "10-grip-landscape-after.png",
+    "source": "delivery/08-grip-844x390.png",
+    "game_commit": "b6c2df57461f852a67809705b3695ab94ff2b290",
+    "size": [
+      844,
+      390
+    ],
+    "sha256": "34193d02a38c66d72fd5a0f51651f5cfe51cda3a237e6e575060df1986a62533",
+    "conversion": "native PNG"
+  },
+  {
+    "file": "11-song-landscape-after.png",
+    "source": "delivery/09-song-844x390.png",
+    "game_commit": "b6c2df57461f852a67809705b3695ab94ff2b290",
+    "size": [
+      844,
+      390
+    ],
+    "sha256": "1257d6e6782ac2f6bf690a63d308567aefcc6469c1f77daef1d3510d99eef343",
+    "conversion": "native PNG"
+  },
+  {
+    "file": "12-ascent-before.png",
+    "source": "delivery/handoff/0010.jpg",
+    "game_commit": "b6c2df57461f852a67809705b3695ab94ff2b290",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "45a64a9b6c0980adc938c55cbba5b840f65b72ad15ddacd5eb3d3e3c007a75c1",
+    "conversion": "JPEG82 -> PNG, no added detail"
+  },
+  {
+    "file": "12-ascent-after.png",
+    "source": "ascent-verified-final/0010.jpg",
+    "game_commit": "426ebbb86bfcbe342680bb99f1b66cfeb6c19271",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "d94133bd49eae767f1e0d328d0e135998349d12a49ae015b7b30eaf34546ec10",
+    "conversion": "JPEG82 -> PNG, no added detail"
+  },
+  {
+    "file": "13-reclaim-after.png",
+    "source": "delivery/reclaim/0010.jpg",
+    "game_commit": "b6c2df57461f852a67809705b3695ab94ff2b290",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "ff536da6e0ec2a4533fbc6a961e50e419f226664df480c3a1be8e5a968fce470",
+    "conversion": "JPEG82 -> PNG, no added detail"
+  },
+  {
+    "file": "14-book-desktop-after.png",
+    "source": "delivery/05-book-hand-1440x900.png",
+    "game_commit": "b6c2df57461f852a67809705b3695ab94ff2b290",
+    "size": [
+      1440,
+      900
+    ],
+    "sha256": "ffc9f758d81de2e7005e9a5f0ada78e642105e017abbb1e247a31836ab74a1f4",
+    "conversion": "native PNG"
+  }
+]

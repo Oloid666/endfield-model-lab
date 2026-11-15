@@ -1,0 +1,425 @@
+{
+  "source_commit": "b6c2df57461f852a67809705b3695ab94ff2b290",
+  "status": "passed",
+  "errors": [],
+  "share_image_requests": [],
+  "iphone_tested": false,
+  "frames": [
+    {
+      "name": "01-satisfied",
+      "phase": "hack",
+      "age": 22.100000000000037,
+      "viewport": [
+        390,
+        844
+      ],
+      "sceneWidth": 390,
+      "cue": {
+        "speaker": "xaihi",
+        "text": "嗯，有降。",
+        "cue": "satisfied"
+      },
+      "overflow": false
+    },
+    {
+      "name": "01b-satisfied-eyes",
+      "phase": "hack",
+      "age": 22.330000000000037,
+      "viewport": [
+        390,
+        844
+      ],
+      "sceneWidth": 390,
+      "cue": {
+        "speaker": "xaihi",
+        "text": "嗯，有降。",
+        "cue": "satisfied"
+      },
+      "overflow": false
+    },
+    {
+      "name": "01b-satisfied-eyes-390x844",
+      "phase": "hack",
+      "age": 22.330000000000037,
+      "viewport": [
+        390,
+        844
+      ],
+      "sceneWidth": 390,
+      "cue": {
+        "speaker": "xaihi",
+        "text": "嗯，有降。",
+        "cue": "satisfied"
+      },
+      "overflow": false
+    },
+    {
+      "name": "01b-satisfied-eyes-844x390",
+      "phase": "hack",
+      "age": 22.330000000000037,
+      "viewport": [
+        844,
+        390
+      ],
+      "sceneWidth": 844,
+      "cue": {
+        "speaker": "xaihi",
+        "text": "嗯，有降。",
+        "cue": "satisfied"
+      },
+      "overflow": false
+    },
+    {
+      "name": "01b-satisfied-eyes-1440x900",
+      "phase": "hack",
+      "age": 22.330000000000037,
+      "viewport": [
+        1440,
+        900
+      ],
+      "sceneWidth": 922,
+      "cue": {
+        "speaker": "xaihi",
+        "text": "嗯，有降。",
+        "cue": "satisfied"
+      },
+      "overflow": false
+    },
+    {
+      "name": "02-avert",
+      "phase": "hack",
+      "age": 32.73000000000046,
+      "viewport": [
+        390,
+        844
+      ],
+      "sceneWidth": 390,
+      "cue": {
+        "speaker": "xaihi",
+        "text": "……借了法國駭客的工具，忘了改預設模式。",
+        "cue": "avert"
+      },
+      "overflow": false
+    },
+    {
+      "name": "02-avert-390x844",
+      "phase": "hack",
+      "age": 32.73000000000046,
+      "viewport": [
+        390,
+        844
+      ],
+      "sceneWidth": 390,
+      "cue": {
+        "speaker": "xaihi",
+        "text": "……借了法國駭客的工具，忘了改預設模式。",
+        "cue": "avert"
+      },
+      "overflow": false
+    },
+    {
+      "name": "02-avert-844x390",
+      "phase": "hack",
+      "age": 32.73000000000046,
+      "viewport": [
+        844,
+        390
+      ],
+      "sceneWidth": 844,
+      "cue": {
+        "speaker": "xaihi",
+        "text": "……借了法國駭客的工具，忘了改預設模式。",
+        "cue": "avert"
+      },
+      "overflow": false
+    },
+    {
+      "name": "02-avert-1440x900",
+      "phase": "hack",
+      "age": 32.73000000000046,
+      "viewport": [
+        1440,
+        900
+      ],
+      "sceneWidth": 922,
+      "cue": {
+        "speaker": "xaihi",
+        "text": "……借了法國駭客的工具，忘了改預設模式。",
+        "cue": "avert"
+      },
+      "overflow": false
+    },
+    {
+      "name": "03-quiet-song",
+      "phase": "hack",
+      "age": 33.93000000000039,
+      "viewport": [
+        390,
+        844
+      ],
+      "sceneWidth": 390,
+      "cue": {
+        "speaker": "dragon",
+        "text": "熱愛105°C的你～🎶\n滴滴清純的蒸餾水～",
+        "cue": "song"
+      },
+      "overflow": false
+    },
+    {
+      "name": "04-redirect",
+      "phase": "hack",
+      "age": 35.430000000000305,
+      "viewport": [
+        390,
+        844
+      ],
+      "sceneWidth": 390,
+      "cue": {
+        "speaker": "xaihi",
+        "text": "……飲料晚點再說。先熱便當。",
+        "cue": "side-eye"
+      },
+      "overflow": false
+    },
+    {
+      "name": "04-redirect-390x844",
+      "phase": "hack",
+      "age": 35.430000000000305,
+      "viewport": [
+        390,
+        844
+      ],
+      "sceneWidth": 390,
+      "cue": {
+        "speaker": "xaihi",
+        "text": "……飲料晚點再說。先熱便當。",
+        "cue": "side-eye"
+      },
+      "overflow": false
+    },
+    {
+      "name": "04-redirect-844x390",
+      "phase": "hack",
+      "age": 35.430000000000305,
+      "viewport": [
+        844,
+        390
+      ],
+      "sceneWidth": 844,
+      "cue": {
+        "speaker": "xaihi",
+        "text": "……飲料晚點再說。先熱便當。",
+        "cue": "side-eye"
+      },
+      "overflow": false
+    },
+    {
+      "name": "04-redirect-1440x900",
+      "phase": "hack",
+      "age": 35.430000000000305,
+      "viewport": [
+        1440,
+        900
+      ],
+      "sceneWidth": 922,
+      "cue": {
+        "speaker": "xaihi",
+        "text": "……飲料晚點再說。先熱便當。",
+        "cue": "side-eye"
+      },
+      "overflow": false
+    },
+    {
+      "name": "05-book-hand",
+      "phase": "terminal-deploy",
+      "age": 0.9000000000000057,
+      "viewport": [
+        390,
+        844
+      ],
+      "sceneWidth": 390,
+      "cue": null,
+      "overflow": false
+    },
+    {
+      "name": "05-book-hand-390x844",
+      "phase": "terminal-deploy",
+      "age": 0.9000000000000057,
+      "viewport": [
+        390,
+        844
+      ],
+      "sceneWidth": 390,
+      "cue": null,
+      "overflow": false
+    },
+    {
+      "name": "05-book-hand-844x390",
+      "phase": "terminal-deploy",
+      "age": 0.9000000000000057,
+      "viewport": [
+        844,
+        390
+      ],
+      "sceneWidth": 844,
+      "cue": null,
+      "overflow": false
+    },
+    {
+      "name": "05-book-hand-1440x900",
+      "phase": "terminal-deploy",
+      "age": 0.9000000000000057,
+      "viewport": [
+        1440,
+        900
+      ],
+      "sceneWidth": 922,
+      "cue": null,
+      "overflow": false
+    },
+    {
+      "name": "06-book-open",
+      "phase": "terminal-deploy",
+      "age": 2.3999999999999204,
+      "viewport": [
+        390,
+        844
+      ],
+      "sceneWidth": 390,
+      "cue": null,
+      "overflow": false
+    },
+    {
+      "name": "07-book-grid",
+      "phase": "terminal-deploy",
+      "age": 4.499999999999801,
+      "viewport": [
+        390,
+        844
+      ],
+      "sceneWidth": 390,
+      "cue": null,
+      "overflow": false
+    },
+    {
+      "name": "08-grip",
+      "phase": "aim-final",
+      "age": 12,
+      "viewport": [
+        390,
+        844
+      ],
+      "sceneWidth": 390,
+      "cue": null,
+      "overflow": false
+    },
+    {
+      "name": "08-grip-390x844",
+      "phase": "aim-final",
+      "age": 12,
+      "viewport": [
+        390,
+        844
+      ],
+      "sceneWidth": 390,
+      "cue": null,
+      "overflow": false
+    },
+    {
+      "name": "08-grip-844x390",
+      "phase": "aim-final",
+      "age": 12,
+      "viewport": [
+        844,
+        390
+      ],
+      "sceneWidth": 844,
+      "cue": null,
+      "overflow": false
+    },
+    {
+      "name": "08-grip-1440x900",
+      "phase": "aim-final",
+      "age": 12,
+      "viewport": [
+        1440,
+        900
+      ],
+      "sceneWidth": 922,
+      "cue": null,
+      "overflow": false
+    },
+    {
+      "name": "09-song",
+      "phase": "tour",
+      "age": 14.399999999999352,
+      "viewport": [
+        390,
+        844
+      ],
+      "sceneWidth": 390,
+      "cue": null,
+      "overflow": false
+    },
+    {
+      "name": "09-song-390x844",
+      "phase": "tour",
+      "age": 14.399999999999352,
+      "viewport": [
+        390,
+        844
+      ],
+      "sceneWidth": 390,
+      "cue": null,
+      "overflow": false
+    },
+    {
+      "name": "09-song-844x390",
+      "phase": "tour",
+      "age": 14.399999999999352,
+      "viewport": [
+        844,
+        390
+      ],
+      "sceneWidth": 844,
+      "cue": null,
+      "overflow": false
+    },
+    {
+      "name": "09-song-1440x900",
+      "phase": "tour",
+      "age": 14.399999999999352,
+      "viewport": [
+        1440,
+        900
+      ],
+      "sceneWidth": 922,
+      "cue": null,
+      "overflow": false
+    },
+    {
+      "name": "12-desktop-handoff",
+      "phase": "walk-out",
+      "age": 6.866666666666276,
+      "viewport": [
+        1440,
+        900
+      ],
+      "sceneWidth": 1440,
+      "cue": null,
+      "overflow": false
+    },
+    {
+      "name": "13-desktop-panel",
+      "phase": "photo-talk",
+      "age": 0.7999999999999545,
+      "viewport": [
+        1440,
+        900
+      ],
+      "sceneWidth": 922,
+      "cue": null,
+      "overflow": false
+    }
+  ]
+}
