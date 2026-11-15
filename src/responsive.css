@@ -113,3 +113,7 @@ button:focus-visible,select:focus-visible{outline:3px solid #e7d39a;outline-offs
  .mission-shell[data-phase="energy"] .mission-status-title::before{font-size:1em}
  .mission-resume-panel{min-height:100px;font-size:19px}
 }
+/* A silent handoff needs the whole stage; restore the ordinary side panel on exit. */
+@media(min-width:1000px) and (min-height:600px){
+ #app.mission-active:not(.bonus-active)[data-mission-phase="walk-out"]:has(.mission-panel[hidden]) #scene{right:0!important;width:100%!important}
+}
