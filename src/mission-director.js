@@ -40,7 +40,7 @@ export class MissionDirector{
   constructor(world){
     this.vcrEffects=buildVcrEffects(world.scene,world.r,{powerOutput:world.tianshi?.powerOutputs?.[2]});this.wireHolds=[2.15,3.3,4.4].map(age=>this.vcrEffects.path.getPointAt(wireProgress(age)).toArray());
     this.captureFx=buildCaptureEffects(world.scene,world.r);this.captureAt=-Infinity;this.captureFrom=[0,0,0];
-    this.cinematicTrack=new CinematicTrack();this.filmCamera=buildDirectorCamera(world.scene,world.r);this.directorFrom=null;this.directorYaw=0;this.openingFrame={};
+    this.cinematicTrack=new CinematicTrack();this.filmCamera=buildDirectorCamera(world.scene,world.r);this.directorFrom=null;this.directorYaw=0;this.ascentFrom=null;this.ascentYaw=0;this.openingFrame={};
     if(import.meta.env?.DEV&&typeof location!=='undefined'&&new URLSearchParams(location.search).get('cameraDebug')==='1'&&world.container)this.cinematicTrack.enableDebug(world.container);
     this.world=world;this.state=null;this.phase='ready';this.finalBegun=false;this.launched=false;this.impacted=false;this.neighborImpacted=false;this.stuckReleased=false;
     this.home=[0,0,0];this.hand=[0,0,0];this.end=[0,0,0];this.projectile=[0,0,0];this.hero=[0,0,0];this.wall=[-8.03,2.8,-1.96];
@@ -60,7 +60,7 @@ export class MissionDirector{
     this.marker=world.r.mesh(world.r.geometry('TorusGeometry',.36,.012,6,48),material,world.scene);this.marker.visible=false;
   }
   reset(){
-    this.filmCamera.reset();this.directorFrom=null;this.dragonRoam.reset();this.roamState=null;this.cinematicTrack.reset();
+    this.filmCamera.reset();this.directorFrom=this.ascentFrom=null;this.dragonRoam.reset();this.roamState=null;this.cinematicTrack.reset();
     this.captureAt=-Infinity;this.captureFx.reset();
     this.world.concert?.reset();this.breath?.reset();this.previousBeat=null;this.world.setCutaway?.(false);
     this.world.actors?.setCinematic(null);this.world.actors?.setDragonProjectile(null);
@@ -71,7 +71,7 @@ export class MissionDirector{
     this.world.weather.invalidateReflection();this.world.store.spill.shadow.needsUpdate=true;
   }
   stage(phase,state){
-    this.phase=phase;this.state=state;if(phase==='director-reminder'){this.directorFrom=[...(this.world.actors?.dragonPosition||[-2,3,8])];this.directorYaw=this.world.actors?.status?.dragonHeading||0;}this.cinematicTrack.stage(phase,this.world.actors?.headPosition);if(phase==='last')this.captureAt=-Infinity;
+    this.phase=phase;this.state=state;if(phase==='ascent'){this.ascentFrom=[...(this.world.actors?.dragonPosition||[-1.25,1,4.5])];this.ascentYaw=this.world.actors?.status?.dragonHeading||0;}if(phase==='director-reminder'){this.directorFrom=[...(this.world.actors?.dragonPosition||[-2,3,8])];this.directorYaw=this.world.actors?.status?.dragonHeading||0;}this.cinematicTrack.stage(phase,this.world.actors?.headPosition);if(phase==='last')this.captureAt=-Infinity;
     if(phase==='ready')this.world.setCutaway(false);
     if(phase==='photo-return'){this.photoReturnFrom=[...(this.world.actors?.dragonPosition||[0,2.6,11.2])];this.world.setCutaway(false);}
     if(phase==='intro'){
@@ -277,6 +277,10 @@ export class MissionDirector{
       if(phase==='last'&&Number.isFinite(this.captureAt)){const p=smooth((state.clock-this.captureAt-.25)/1.8),g=actor.gripPosition||[h[0]+.2,h[1]+1.15,h[2]-.25];arc(this.captureFrom,[g[0]-.4,g[1]-.15,g[2]+.45],p,.35,this.projectile);actor.setDragonProjectile(this.projectile,0);actor.setDragonHeading?.(Math.atan2(h[0]-this.projectile[0],h[2]-this.projectile[2]));actor.setCompanionAction?.({kind:'shock',amount:1});return;}
       if(!['last','aim-final'].includes(phase)){
         const t=state.clock,a=t*.24,x=h[0]+Math.sin(a)*4.2,z=Math.max(3.1,h[2]+Math.cos(a)*3.2),y=Math.min(12,h[1]+2.3+Math.sin(t*.37)*1.8);
+        if(phase==='ascent'&&this.ascentFrom&&e<DIRECTOR_BEAT.return){
+          const p=openingEase(e,0,DIRECTOR_BEAT.return);lerp(this.ascentFrom,[x,y,z],p,this.projectile);actor.setDragonProjectile(this.projectile,Math.sin(t*.3)*.06*p);
+          const target=state.speaker==='dragon'||state.speaker==='zhuang'?h:[0,3,1],wanted=Math.atan2(target[0]-this.projectile[0],target[2]-this.projectile[2]);actor.setDragonHeading?.(this.ascentYaw+Math.atan2(Math.sin(wanted-this.ascentYaw),Math.cos(wanted-this.ascentYaw))*p);return;
+        }
         if(phase==='shoe-view'&&this.directorFrom&&e<DIRECTOR_BEAT.return){
           const p=openingEase(e,0,DIRECTOR_BEAT.return);lerp(this.directorFrom,[x,y,z],p,this.projectile);actor.setDragonProjectile(this.projectile,Math.sin(t*.3)*.06*p);
           const target=state.speaker==='dragon'||state.speaker==='zhuang'?h:[0,3,1],heading=Math.atan2(target[0]-this.projectile[0],target[2]-this.projectile[2]),from=Math.atan2(.75,1.5);

@@ -41,6 +41,15 @@ for(const hz of [30,60]){
  for(let i=1;i<=hz*1.5;i++){director.beforeActors(state('shoe-view',{clock:47.5+i/hz,phaseElapsed:i/hz}));largest=Math.max(largest,new T.Vector3(...previous).distanceTo(new T.Vector3(...world.actors.projectile)));previous=[...world.actors.projectile];world.actors.status.dragonHeading=world.actors.dragonHeading;}
  check('Returning to flight is a continuous path '+hz,largest<.3,{largest});world.r.dispose();
 }
+// A first meal handoff must flow into ascent from the same physical mark.
+for(const hz of [30,60]){
+ const world=makeWorld(),director=new MissionDirector(world);world.actors.dragonPosition=[-1.25,1,4.5];world.actors.status.dragonHeading=Math.PI;
+ director.stage('ascent',state('ascent',{clock:30}));director.beforeActors(state('ascent',{clock:30,phaseElapsed:0}));
+ check('Ascent begins at the held donor mark '+hz,world.actors.projectile.every((v,i)=>Math.abs(v-world.actors.dragonPosition[i])<1e-8));check('Ascent begins with the held donor heading '+hz,Math.abs(world.actors.dragonHeading-Math.PI)<1e-8);
+ let previous=[...world.actors.projectile],largest=0;
+ for(let i=1;i<=hz*1.6;i++){director.beforeActors(state('ascent',{clock:30+i/hz,phaseElapsed:i/hz}));const next=world.actors.projectile;largest=Math.max(largest,Math.hypot(...next.map((v,j)=>v-previous[j])));previous=[...next];}
+ check('Ascent joins the live flight path continuously '+hz,largest<.3,{largest});world.r.dispose();
+}
 const w=makeWorld(),d=new MissionDirector(w),keys=[...'endfield_power'],expected=[];
 w.connectionStage.update(10,0,state('login'));
 for(const key of keys){expected.push(w.connectionStage.keyPosition(key));d.action({type:'key',value:key,time:10});}
