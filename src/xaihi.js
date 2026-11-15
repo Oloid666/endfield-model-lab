@@ -1,3 +1,5 @@
+import {softenLipNormals} from './face-normals.js';
+import {xaihiBeat} from './acting-beats.js';
 import {makeArmSupport} from './arm-support.js';
 import {actorBounds} from './actor-bounds.js';
 import {downloadModel} from './model-download.js';
@@ -32,6 +34,9 @@ export function buildXaihi(scene,r,gltf){
   if(bounds.isEmpty()||!Number.isFinite(size.y)||size.y<=0){root.removeFromParent();disposeImported(gltf.scene);throw Error('塞西模型沒有可用的外形資料。');}
   const scale=1.8/size.y;visual.scale.setScalar(scale);visual.position.set(-center.x*scale,-bounds.min.y*scale,-center.z*scale);
   const imported=new Set();gltf.scene.traverse(n=>{if(n.isMesh){n.frustumCulled=false;imported.add(n.geometry);if(n.isSkinnedMesh)imported.add(n.skeleton);for(const m of Array.isArray(n.material)?n.material:[n.material]){imported.add(m);for(const value of Object.values(m))if(value?.isTexture){value.anisotropy=4;imported.add(value);}}}});
+  // Keep the original GLB/atlas; repair only a cloned runtime normal buffer on the skin mesh.
+  let lipNormals=0;
+  gltf.scene.traverse(n=>{if(n.isMesh&&gltf.parser.associations.get(n.material)?.materials===0){n.geometry=r.own(softenLipNormals(n.geometry));lipNormals+=n.geometry.userData.lipNormalsSoftened;}});
   for(const item of imported)r.own(item);
   root.updateMatrixWorld(true);
   const bones=[];gltf.scene.traverse(n=>{if(n.isBone)bones.push(n);});
@@ -41,6 +46,7 @@ export function buildXaihi(scene,r,gltf){
   for(const [name,id]of Object.entries(ids))remember(name,byId(id));
   remember('cuffL',byId(256));
   const smileIds=[158,162,168,172,157,161,167,171];for(const id of smileIds)remember('smile'+id,byId(id));
+  const lipSealJoints=[[164,1],[159,.9],[160,.6],[161,.3],[169,.9],[170,.6],[171,.3]];for(const [id]of lipSealJoints)remember('lip'+id,byId(id));
   const eyelids=[];
   for(const [upperId,lowerId]of [[70,60],[67,61],[65,62],[89,79],[86,80],[84,81]]){
     const upper=byId(upperId),lower=byId(lowerId);if(!upper||!lower||upper.parent!==lower.parent)continue;
@@ -51,7 +57,9 @@ export function buildXaihi(scene,r,gltf){
   for(const bone of bones){
     if(/^(hair_base_|hairscarf_base_|dress_base_)/.test(bone.name)&&/_(?:0?2|0?3)(?:_|$)/.test(bone.name)&&secondary.length<15){const name=`secondary${secondary.length}`;remember(name,bone);secondary.push(name);}
   }
-  function pose(name,pitch=0,yaw=0,roll=0){const p=poses[name];if(!p)return;q.setFromAxisAngle(p.x,pitch).multiply(axis.setFromAxisAngle(p.y,yaw)).multiply(axis.setFromAxisAngle(p.z,roll));p.bone.quaternion.copy(p.q).multiply(q);}
+  let poseDelta=0,poseFresh=true;const poseTarget=new T.Quaternion();
+  const rates={eyeL:22,eyeR:22,head:13,neck:12,spine:9};
+  function pose(name,pitch=0,yaw=0,roll=0){const p=poses[name];if(!p)return;q.setFromAxisAngle(p.x,pitch).multiply(axis.setFromAxisAngle(p.y,yaw)).multiply(axis.setFromAxisAngle(p.z,roll));poseTarget.copy(p.q).multiply(q);if(rates[name]&&!poseFresh)p.bone.quaternion.slerp(poseTarget,poseDelta>0?1-Math.exp(-poseDelta*rates[name]):0);else p.bone.quaternion.copy(poseTarget);}
   root.rotation.y=2;
   const phoneOffset=new T.Vector3(.025,.08,.13),mealOffset=new T.Vector3(0,.02,.075);
   const phone=new T.Group();phone.name='xaihi-terminal';root.add(phone);
@@ -86,22 +94,22 @@ export function buildXaihi(scene,r,gltf){
     return {side,offset:center.sub(w).applyQuaternion(rotation.clone().invert()),calibration:new T.Quaternion().setFromRotationMatrix(new T.Matrix4().makeBasis(across,normal,forward)).invert().multiply(rotation)};
   });
   const boardQ=new T.Quaternion(),boardTarget=new T.Vector3(),boardOffset=new T.Vector3(),boardNormal=new T.Vector3(),boardPole=new T.Vector3();
-  const restPosition=root.position.clone();
+  const restPosition=root.position.clone(),acting={},settled={tabletLift:0,tabletTurn:0,freeHand:0},settledKeys=['tabletLift','tabletTurn','freeHand'];
   const aisle=new T.Vector3();
   function travel(progress,back=false){let p=clamp(progress);if(back)p=1-p;if(p<.66)aisle.set(1.95,restPosition.y,.85-2.20*p/.66);else aisle.set(1.95-.75*(p-.66)/.34,restPosition.y,-1.35);root.position.copy(aisle);root.rotation.y=back?(p<.66?0:Math.PI/2):(p<.66?Math.PI:-Math.PI/2);return p*2.95;}
 
-  const status={loaded:true,phase:'',action:'waiting',visible:false,bones:bones.length,scale,headYaw:0,phoneVisible:false,mealVisible:false};
+  const status={loaded:true,lipNormals,phase:'',action:'waiting',visible:false,bones:bones.length,scale,headYaw:0,phoneVisible:false,mealVisible:false};
   const updateBounds=actorBounds(gltf.scene,root,{height:1,radius:1.75});
   const api={root,
     tabletTap(ray){if(!phone.visible)return null;const hit=ray.intersectObject(screen)[0];if(!hit?.uv)return null;const y=(1-hit.uv.y)*768;return hitButtons.find(b=>y>=b.y&&y<=b.y+112)?.id||null;},
     tabletFrame(aspect=.46){const center=screen.getWorldPosition(new T.Vector3()),normal=new T.Vector3(0,0,1).applyQuaternion(screen.getWorldQuaternion(new T.Quaternion())),eye=center.clone().addScaledVector(normal,.55).add(new T.Vector3(-.10,.035,.07).applyQuaternion(root.quaternion));if(aspect>=1){const side=new T.Vector3(1,0,0).applyQuaternion(screen.getWorldQuaternion(new T.Quaternion())).multiplyScalar(.1);center.add(side);eye.add(side);}const forward=center.clone().sub(eye).normalize(),right=forward.clone().cross(new T.Vector3(0,1,0)).normalize(),up=right.clone().cross(forward),wanted=new T.Vector3(0,1,0).applyQuaternion(screen.getWorldQuaternion(new T.Quaternion()));const roll=Math.atan2(-wanted.dot(right),wanted.dot(up));return {center:center.toArray(),position:eye.toArray(),fov:aspect<1?60:44,roll};},
     get headPosition(){return poses.head?.bone.getWorldPosition(v).toArray();},
-    get loaded(){return !disposed;},get state(){return {...status,headPosition:api.headPosition,screenButtons:phone.visible?hitButtons.map(b=>({id:b.id,world:screen.localToWorld(new T.Vector3(0,.23*(.5-(b.y+56)/768),0)).toArray()})):[],handPositions:['L','R'].map(side=>poses['wrist'+side]?.bone.getWorldPosition(new T.Vector3()).toArray()),position:root.position.toArray(),pose:{head:poses.head?.bone.quaternion.toArray(),wrist:poses.wristR?.bone.quaternion.toArray(),arm:poses.armL?.bone.quaternion.toArray()}};},
+    get loaded(){return !disposed;},get state(){return {...status,headPosition:api.headPosition,screenButtons:phone.visible?hitButtons.map(b=>({id:b.id,world:screen.localToWorld(new T.Vector3(0,.23*(.5-(b.y+56)/768),0)).toArray()})):[],palmPositions:tabletHands.map(h=>h.offset.clone().applyQuaternion(poses['wrist'+h.side].bone.getWorldQuaternion(new T.Quaternion())).add(poses['wrist'+h.side].bone.getWorldPosition(new T.Vector3())).toArray()),handPositions:['L','R'].map(side=>poses['wrist'+side]?.bone.getWorldPosition(new T.Vector3()).toArray()),position:root.position.toArray(),pose:{head:poses.head?.bone.quaternion.toArray(),wrist:poses.wristR?.bone.quaternion.toArray(),arm:poses.armL?.bone.quaternion.toArray()}};},
     setPosition(x,y,z){root.position.set(x,y,z);restPosition.copy(root.position);},
     setHeading(yaw){root.rotation.y=Number(yaw)||0;},
-    reset(){phase='';action='waiting';root.visible=false;root.position.copy(restPosition);root.rotation.y=2;phone.visible=meal.visible=false;for(const p of Object.values(poses)){p.bone.position.copy(p.rest);p.bone.quaternion.copy(p.q);}for(const lid of eyelids)lid.bone.position.copy(lid.rest);Object.assign(status,{phase,action,visible:false,headYaw:0,eyeYaw:0,eyePitch:0,tabletLift:0,performanceCue:'',phoneVisible:false,mealVisible:false});},
+    reset(){poseFresh=true;for(const k of settledKeys)settled[k]=0;phase='';action='waiting';root.visible=false;root.position.copy(restPosition);root.rotation.y=2;phone.visible=meal.visible=false;for(const p of Object.values(poses)){p.bone.position.copy(p.rest);p.bone.quaternion.copy(p.q);}for(const lid of eyelids)lid.bone.position.copy(lid.rest);Object.assign(status,{phase,action,visible:false,headYaw:0,eyeYaw:0,eyePitch:0,tabletLift:0,performanceCue:'',phoneVisible:false,mealVisible:false});},
     update(t,delta=0,state={}){
-      if(disposed)return;time=Number.isFinite(t)?t:time;phase=state.phase||'';
+      if(disposed)return;poseDelta=Math.max(0,delta);time=Number.isFinite(t)?t:time;phase=state.phase||'';
       const visible=state.xaihiVisible??visiblePhases.has(phase);root.visible=visible;
       Object.assign(status,{phase,visible});if(!visible)return;
       const gesture=state.node?.gesture||state.gesture||'',text=state.node?.text||state.text||'';
@@ -115,19 +123,20 @@ export function buildXaihi(scene,r,gltf){
       else {root.position.copy(restPosition);root.rotation.y=phase==='meal-spawn'?1.6:2;}
       if(refusing)root.rotation.y+=.52*refuse;
       const recoil=phase==='meal-spawn'?clamp(((state.phaseElapsed||0)-6.2)/.6):0;if(recoil){root.position.x-=.14*recoil;root.position.z-=.10*recoil;}if(refusing){root.position.x-=Math.sin(root.rotation.y)*.16*refuse;root.position.z-=Math.cos(root.rotation.y)*.16*refuse;}
-      const cueAge=state.tablet?.dialogueAge||0,eyeLead=clamp(cueAge/.14),headFollow=clamp((cueAge-.08)/.38),bodyFollow=clamp((cueAge-.18)/.48),confident=cue==='satisfied',avert=cue==='avert',redirect=cue==='side-eye';
-      const tabletLift=(confident?.035:avert?-.095:redirect?.08:0)*bodyFollow;
+      const cueAge=state.tablet?.dialogueAge||0,confident=cue==='satisfied',avert=cue==='avert',redirect=cue==='side-eye',act=xaihiBeat(cue,cueAge,acting),eyeLead=act.eye,headFollow=act.head,bodyFollow=act.body;
+      for(const key of settledKeys){settled[key]=poseFresh?act[key]:T.MathUtils.lerp(settled[key],act[key],poseDelta>0?1-Math.exp(-poseDelta*9):0);act[key]=settled[key];}
+      const tabletLift=act.tabletLift;
       const beat=Math.sin(time*1.1),flinch=phase==='heat-demo'?Math.max(0,Math.sin((state.phaseElapsed||0)*3.1))*.08:0;
       for(const p of Object.values(poses))p.bone.position.copy(p.rest);
-      pose('spine',Math.sin(time*.8)*.006+(hack?.035:0)-flinch*.13-recoil*.04-refuse*.08+(avert?.025:redirect?-.015:0)*bodyFollow,(redirect?-.10:avert?.035:0)*bodyFollow,beat*.004+(avert?.022:0)*bodyFollow);
+      pose('spine',Math.sin(time*.8)*.006+(hack?.035:0)-flinch*.13-recoil*.04-refuse*.08+(avert?.04:redirect?-.02:0)*bodyFollow,(redirect?-.16:avert?.06:0)*bodyFollow,beat*.004+act.shoulder);
       pose('neck',hack?.045:0,0,0);
-      const fridgeReaction=stage==='success'||stage==='hot',birth=phase==='meal-spawn',headYaw=refusing?.24*refuse:avert?-.44+.16*headFollow:redirect?-.44-.16*headFollow:readingLabel?-.10:birth?0:fridgeReaction?-.44:hack?-.22:-.65,nod=confident?-Math.sin(Math.min(1,cueAge/1.2)*Math.PI)*.035:0;pose('head',readingLabel?.28:(refusing?-.02:birth?.16:fridgeReaction?-.03:hack?.14:.015)+nod+(avert?-.01:redirect?-.035:0)*headFollow,headYaw,Math.sin(time*.43)*.008+refuse*.06+(avert?.035:0)*headFollow);
+      const fridgeReaction=stage==='success'||stage==='hot',birth=phase==='meal-spawn',headYaw=refusing?.24*refuse:avert?-.44+act.headYaw:redirect?-.44+act.headYaw:readingLabel?-.10:birth?0:fridgeReaction?-.44:hack?-.22:-.65,nod=confident?-Math.sin(Math.min(1,cueAge/1.2)*Math.PI)*.035:0;pose('head',readingLabel?.28:(refusing?-.02:birth?.16:fridgeReaction?-.03:hack?.14:.015)+nod+act.headPitch,headYaw,Math.sin(time*.43)*.008+refuse*.06+(avert?.035:0)*headFollow);
       // Relax the A-pose, then bring the real forearms toward the terminal.
       pose('armL',hack?-.13:receive?-.18:0,.02,-.56+(hack?.10:0));
       pose('elbowL',hack?-1.22:receive?-.88:-.12,0,-.02);pose('wristL',hack?-.5:receive?-.06:0,.06,0);
       pose('armR',operating?-.27:hack?-.12:0,-.025,.59-(operating?.10:0));
       pose('elbowR',operating?-1.07:hack?-.95:-.13,operating?-.12:0,.02);pose('wristR',hack?-.5:0,0,operating?-.08:.03);
-      const eyeYaw=refusing?-.11*refuse:hack?-.035+(confident?-.055:avert?.14:redirect?-.12:0)*eyeLead:0,eyePitch=refusing?.025*refuse:avert?.035*eyeLead:0;
+      const eyeYaw=refusing?-.11*refuse:hack?-.035+act.eyeYaw:0,eyePitch=refusing?.025*refuse:act.eyePitch;
       pose('eyeL',eyePitch,eyeYaw);pose('eyeR',eyePitch,eyeYaw);
       const blink=Math.max(0,1-Math.abs((time+.4)%4.7-.16)/.11);
       for(const lid of eyelids)lid.bone.position.lerpVectors(lid.rest,lid.target,Math.max(blink,refuse*.08,avert?.09*eyeLead:redirect?.04*eyeLead:0));
@@ -136,11 +145,16 @@ export function buildXaihi(scene,r,gltf){
       if(walking)root.position.y+=Math.abs(Math.sin(distance*10))*.014;
       root.updateMatrixWorld(true);
       if(hack){
-        phone.position.set(-.18,1.13+tabletLift,.46);phone.rotation.set(.95,Math.PI+(redirect?-.10:avert?.06:0)*bodyFollow,0);root.updateMatrixWorld(true);
+        phone.position.set(-.10,1.20+tabletLift,.30);phone.rotation.set(.95,Math.PI+act.tabletTurn,avert?.035*bodyFollow:0);root.updateMatrixWorld(true);
         for(const hand of tabletHands){
           boardTarget.set(hand.side==='L'?.145:-.145,-.070,-.022);phone.localToWorld(boardTarget);
           phone.getWorldQuaternion(boardQ).multiply(refusalBasis).multiply(hand.calibration);
           boardOffset.copy(hand.offset).applyQuaternion(boardQ);boardTarget.sub(boardOffset);
+          if(hand.side==='R'&&act.freeHand){
+            // Left hand continues to carry the tablet; the free palm stays in front of the torso.
+            boardNormal.set(redirect?-.41:-.30,redirect?1.10:1.02,redirect?.57:.38);root.localToWorld(boardNormal);
+            boardTarget.lerp(boardNormal,act.freeHand);
+          }
           boardPole.set(hand.side==='L'?.55:-.55,-.8,.15);
           armSupport.reach(hand.side,boardTarget,boardQ,boardPole);
         }
@@ -149,11 +163,15 @@ export function buildXaihi(scene,r,gltf){
       else {holdArm('R',safeRight);}
 
       if(poses.cuffL)poses.cuffL.bone.position.y-=.08*refuse;
-      for(const id of smileIds){const p=poses['smile'+id];if(p)p.bone.position.y+=(refuse*([158,168,157,167].includes(id)?1:.18)+(confident?.35*headFollow:0))*([158,162].includes(id)?.003:[168,172].includes(id)?.0012:.0008);}
+      for(const id of smileIds){const p=poses['smile'+id];if(p)p.bone.position.y+=(refuse*([158,168,157,167].includes(id)?1:.18)+act.smile)*([158,162].includes(id)?.003:[168,172].includes(id)?.0012:.0008);}
+      // The imported neutral mouth is open by ~8 mm. A restrained lower-lip closure
+      // expresses composure/embarrassment, instead of trying to light away the mouth cavity.
+      const lipSeal=refusing?.2:avert?.90*headFollow:confident?.62*headFollow:redirect?.72*headFollow:.45;
+      for(const [id,weight]of lipSealJoints){const p=poses['lip'+id];if(p){p.bone.position.y+=.006*weight*lipSeal;p.bone.position.z+=.003*weight*lipSeal;}}
       paint(state.tablet);phone.visible=hack&&!leaving;meal.visible=receive;
       const wrist=poses.wristL?.bone;
-      if(wrist){wrist.getWorldPosition(v);root.worldToLocal(v);phone.position.copy(v).add(phoneOffset);if(!hack)phone.rotation.set(.95,Math.PI,0);if(hack)phone.position.set(-.18,1.13+tabletLift,.46);meal.position.copy(v).add(mealOffset);meal.rotation.set(-.06,0,0);}
-      updateBounds();Object.assign(status,{action:refusing?'refuse-lunch':action,refuseAmount:refuse,headYaw,eyeYaw,eyePitch,tabletLift,performanceCue:cue,phoneVisible:phone.visible,mealVisible:meal.visible});
+      if(wrist){wrist.getWorldPosition(v);root.worldToLocal(v);if(!hack){phone.position.copy(v).add(phoneOffset);phone.rotation.set(.95,Math.PI,0);}meal.position.copy(v).add(mealOffset);meal.rotation.set(-.06,0,0);}
+      poseFresh=false;updateBounds();Object.assign(status,{action:refusing?'refuse-lunch':action,refuseAmount:refuse,headYaw,eyeYaw,eyePitch,tabletLift,performanceCue:cue,lipSeal,phoneVisible:phone.visible,mealVisible:meal.visible});
     },
     dispose(){if(disposed)return;disposed=true;api.reset();status.loaded=false;root.removeFromParent();},
   };

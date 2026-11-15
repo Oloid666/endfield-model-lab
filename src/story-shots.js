@@ -138,7 +138,14 @@ export function cinematicStoryShot(s,context,track){
   return track.pose(track.p,track.t,c.portrait?(near?44:52):(near?36:44));
  }
  if(s.phase==='terminal-deploy'){
-  if(e<1.0){track.enter('cinematic-book-summon',s,c,origin);return track.pose([.1,2.7,7.8],[-1.25,1.4,4.1],c.portrait?57:46);}
+  if(e<1.35){
+   const book=c.bookPosition||[-1.55,1.55,3.88];
+   if(track.enter('cinematic-book-summon',s,c,origin)){
+    track.t.copy(h).lerp(track.offset.fromArray(book),.48);track.p.copy(track.t).add(track.offset.set(.75,.15,1.9));
+    track.fitBox([Math.min(h.x-.30,book[0]-.35),Math.min(h.y-.65,book[1]-.25),Math.min(h.z-.25,book[2]-.25)],[Math.max(h.x+.30,book[0]+.35),h.y+.28,Math.max(h.z+.3,book[2]+.35)],track.p,track.t,c.portrait?45:36,c);
+   }
+   return track.fixed(clock,1.35,.04,c.portrait?45:36,c.reduced);
+  }
   if(e>=4.8){track.enter('cinematic-book-login',s,c,origin);return track.pose([-1.65,3.6,7.0],[-1.65,.94,5.45],c.portrait?62:44);}
   if(track.enter('cinematic-terminal-unfold',s,c,origin)){
    track.p.set(.2,5.9,12.5);track.t.set(-1.65,.9,5.45);
@@ -164,10 +171,11 @@ export function cinematicStoryShot(s,context,track){
   const server=c.server||[0,1.21,1.06];track.captureAxis(feet,h.toArray(track.headArray||(track.headArray=[0,0,0])),server,c.heading??2.91);
   if(aiming){
    if(track.enter('cinematic-final-shoulder',s,c,origin+RESCUE_READY)){
-    const face=faceFrame(feet,c.heading??2.91,3.2,1.6,1.9,1.3);track.p.fromArray(face.position);track.t.copy(h).lerp(track.offset.fromArray(c.grip||h.toArray()),.55);track.t.y-=.08;
-    const g=c.grip||h.toArray();track.fitBox([Math.min(h.x,g[0])-.45,Math.min(h.y,g[1])-.35,Math.min(h.z,g[2])-.4],[Math.max(h.x,g[0])+.45,Math.max(h.y,g[1])+.35,Math.max(h.z,g[2])+.4],track.p,track.t,c.portrait?58:46,c,'wide',true);
+    const yaw=c.heading??2.91,g=c.grip||h.toArray(),pet=[d.x,d.y+.40,d.z];
+    track.t.copy(h).lerp(track.offset.fromArray(g),.5);track.p.copy(track.t).add(track.offset.set(Math.sin(yaw)*2.8+Math.cos(yaw)*1.8,.35,Math.cos(yaw)*2.8-Math.sin(yaw)*1.8));
+    track.fitBox([Math.min(h.x,g[0],pet[0])-.30,Math.min(h.y,g[1],pet[1])-.25,Math.min(h.z,g[2],pet[2])-.30],[Math.max(h.x,g[0],pet[0])+.30,Math.max(h.y,g[1],pet[1])+.30,Math.max(h.z,g[2],pet[2])+.30],track.p,track.t,c.portrait?50:40,c,'wide');
    }
-   return track.pose(track.fixedP,track.fixedT,c.portrait?58:46);
+   return track.pose(track.fixedP,track.fixedT,c.portrait?50:40);
   }
   if(e<2.75){
    if(track.enter('cinematic-finisher-face',s,c,origin)){
@@ -244,7 +252,7 @@ export function revisedStoryShot(s,{feet=[-1.25,.32,3.25],heroHead=null,dragon=[
  }
  const temperature=()=>shot(stage==='defrost'?'fridge-temperature-reversal':'fridge-temperature-detail',[2.03,2.05,-.15],[1.79,1.92,-1.89],portrait?31:25);
  if(stage==='cooling'||stage==='defrost')return temperature();
- const face=xaihiHead||[1.2,1.75,-1.35],reaction=beat=>shot(beat,[face[0]+1.35,face[1]+.14,face[2]+.05],[face[0],face[1]-.20,face[2]],portrait?45:39);
+ const face=xaihiHead||[1.2,1.75,-1.35],cue=t.dialogue?.cue,reaction=beat=>{const shy=cue==='avert',redirect=cue==='side-eye';return shot(beat,[face[0]+(shy?1.5:1.38),face[1]+(shy?.08:.14),face[2]+(shy?.12:redirect?.30:.05)],[face[0],face[1]-.27,face[2]],portrait?(shy?53:47):39);};
  if(stage==='success')return t.dialogue?.speaker==='xaihi'?reaction('fridge-hopeful-profile'):temperature();
  if(stage==='hot'){
   if(t.dialogue?.speaker==='xaihi')return reaction('fridge-xaihi-reaction');

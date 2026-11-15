@@ -208,7 +208,8 @@ check('Xaihi GPU skinning textures share the world resource lifecycle',[...xSkel
 check('Xaihi is lazy-hidden outside the VCR',xaihi.loaded&&!xaihi.root.visible&&xaihi.state.bones===960,xaihi.state);
 xaihi.update(1,0,{phase:'flashback',node:{gesture:'phone'}});const xPose1=xaihi.state.pose;
 check('The original Xaihi appears with a wrist-mounted terminal',xaihi.root.visible&&xaihi.state.action==='terminal'&&xaihi.state.phoneVisible&&!xaihi.state.mealVisible,xaihi.state);
-xaihi.update(1.31,0,{phase:'heat',node:{gesture:'phone'}});
+// Head/eye easing uses elapsed time; a zero-delta paused update must not animate.
+for(let i=1;i<=12;i++)xaihi.update(1+i*.31/12,.31/12,{phase:'heat',node:{gesture:'phone'}});
 check('CCTV operation animates actual Xaihi wrist and head bones',xaihi.state.action==='microwave'&&JSON.stringify(xPose1.wrist)!==JSON.stringify(xaihi.state.pose.wrist)&&JSON.stringify(xPose1.head)!==JSON.stringify(xaihi.state.pose.head),xaihi.state.pose);
 xaihi.update(2,0,{phase:'flashback-end'});check('Xaihi can hold her lunch after the successful heat',xaihi.state.mealVisible&&!xaihi.state.phoneVisible&&xaihi.state.action==='receive-lunch');
 xaihi.update(3,0,{phase:'combat'});check('Returning to main story hides Xaihi without a second renderer',!xaihi.root.visible);

@@ -134,4 +134,15 @@ for(const hz of [30,60]){
  check('Shopping ends with hero and original quote',m.phase==='photo-pose'&&m.trayOwner==='hero'&&m.state.text==='買完了，來吃吧。');
  m.phaseTo('director-reminder');m.update(m.sourceTime+4.79);check('Director reply does not cut the reminder short',m.node?.id!=='director_reminder_1');m.update(m.sourceTime+.02);check('Director voice is identified correctly',m.node?.speaker==='director');m.setPaused(true);const age=m.state.phaseElapsed;m.update(m.sourceTime+50);check('Background holds director timing',m.state.phaseElapsed===age);m.setPaused(false);m.update(m.sourceTime+DIRECTOR_BEAT.duration-age+.001);check('Director ends at the shoe gate',m.phase==='shoe-view');m.replay();check('Replay clears donor ownership',m.phase==='ready'&&m.trayOwner==='hero');
 }
+// The summon palm follows the near book before it flies to the terminal, not a distant fixed keyboard.
+for(const hz of [30,60]){
+ a.teleport(-1.25,3.25);a.setDinner('A');a.setCinematic(null);a.setSceneAction({heading:-.65});for(let i=0;i<hz;i++)a.update(208+i/hz,1/hz);let maxError=0,maxStep=0,previous=poses.wristR.bone.getWorldPosition(new T.Vector3());
+ for(let i=0;i<hz;i++){
+  const age=i/hz;a.setTray({owner:'hero',phase:'terminal-deploy',age,rescueAge:null});a.setSceneAction({heading:-.65,bookAge:age,bookTarget:[-1.55,1.55,3.88],mealVisible:true});a.update(210+age,1/hz);
+  const wrist=poses.wristR.bone.getWorldPosition(new T.Vector3());maxStep=Math.max(maxStep,wrist.distanceTo(previous));previous=wrist;
+  if(age>=.4&&age<=.8)maxError=Math.max(maxError,a.status.bookGesture.error);
+ }
+ check('Entry from carried dinner into BOOK is continuous at '+hz+'Hz',maxStep<.06,{maxStep});
+ check('Actual summon palm reaches the near book at '+hz+'Hz',maxError<.025,{maxError});
+}
 console.log(JSON.stringify({traces,failed:checks.filter(q=>!q.passed)},null,2));assert.ok(checks.every(q=>q.passed),'Opening continuous geometry/state checks failed');console.log('Opening handoff: '+checks.length+' checks passed.');

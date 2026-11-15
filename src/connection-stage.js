@@ -1,3 +1,4 @@
+import {bookLayout} from './acting-beats.js';
 import * as T from 'three';
 import {optimizeStaticSet} from './static-batches.js';
 
@@ -83,7 +84,7 @@ export function buildConnectionStage(scene,r){
   for(const {hinge,side}of covers)for(let i=0;i<3;i++)box(hinge,ivory,[side*.94,.058+i*.012,0],[.012,.005,1.20]);
   const ease=value=>{const p=clamp(value);return p*p*(3-2*p);};
   const reduced=typeof matchMedia==='function'&&matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let deployment=1;
+  let deployment=1;const bookFrame={},bookPoint=[0,0,0],handBookPoint=[0,0,0];
   let phase='ready',field='account',lastKey='',keyNumber=0,keyAt=-Infinity,lever=0,pressed=false;
   let count=0;
   const position=[0,0,0];
@@ -100,8 +101,8 @@ export function buildConnectionStage(scene,r){
     field=c.field==='password'?'password':'account';lastKey=canonical(c.lastKey);keyNumber=Number(c.keyNumber)||0;keyAt=Number.isFinite(c.keyAt)?c.keyAt:-Infinity;lever=clamp(c.lever);
     scanner.visible=['terminal-deploy','lever'].includes(phase);scanner.position.z=-1.1+((Number(state.clock)||t)*.5%1)*2.2;
     const age=phase==='terminal-deploy'?Number(state.phaseElapsed)||0:6;deployment=ease((age-3.2)/2.3);root.scale.set(1,1,1);root.position.y=.335;
-    book.visible=phase==='terminal-deploy'&&age<5.2;const arrival=ease(age/1.1),settle=ease((age-2.4)/2);book.position.set(.4*(1-arrival),1.05-.98*settle,-1.4*(1-arrival));diagram.visible=age>=2.4&&age<4.6;diagramNodes.visible=diagram.visible;loginNotice.visible=phase==='terminal-deploy'&&age>=4.8;deployRing.visible=phase==='terminal-deploy'&&age>=3.2&&age<4.6;deployRing.scale.setScalar(1+ease((age-3.2)/1.4)*1.6);deployRing.material.opacity=.45*(1-ease((age-3.2)/1.4));book.scale.setScalar(.65+ease((age-1)/2.2)*1.2);
-    const opening=reduced?1:ease((age-.7)/2);for(const {hinge,side}of covers)hinge.rotation.z=side*(1-opening)*1.45;
+    book.visible=phase==='terminal-deploy'&&age<5.2;const layout=bookLayout(age,bookFrame);book.position.set(layout.x,layout.y,layout.z);diagram.visible=age>=2.4&&age<4.6;diagramNodes.visible=diagram.visible;loginNotice.visible=phase==='terminal-deploy'&&age>=4.8;deployRing.visible=phase==='terminal-deploy'&&age>=3.2&&age<4.6;deployRing.scale.setScalar(1+ease((age-3.2)/1.4)*1.6);deployRing.material.opacity=.45*(1-ease((age-3.2)/1.4));book.scale.setScalar(layout.scale);
+    const opening=reduced?1:ease((age-.85)/1.85);for(const {hinge,side}of covers)hinge.rotation.z=side*(1-opening)*1.45;
     for(const {page,side,index}of pages){page.rotation.z=side*(1-opening)*1.5+side*(reduced?0:Math.sin(ease((age-1-index*.18)/1.4)*Math.PI)*.55);page.position.y=.065+index*.012+(reduced?0:Math.sin(Math.max(0,Math.min(1,(age-1-index*.22)/.6))*Math.PI)*.06);}
     shell.visible=age>=3.1;shell.position.y=reduced?0:(1-deployment)*.22;keyboard.position.y=reduced?0:(1-deployment)*.4;
     scanner.visible=phase==='lever'||phase==='terminal-deploy'&&age>3.2;
@@ -117,7 +118,8 @@ export function buildConnectionStage(scene,r){
   }
   update(0,0,{phase:'ready'});
   return {root,keyPosition,leverPosition,
+    bookPositionAt(age,hand=false){const point=hand?handBookPoint:bookPoint,f=bookLayout(age,bookFrame);point[0]=root.position.x+f.x;point[1]=.335+f.y;point[2]=root.position.z+f.z;return point;},
     reset(){phase='ready';field='account';lastKey='';keyNumber=0;keyAt=-Infinity;lever=0;pressed=false;root.visible=false;handle.position.x=-1.18;},update,
-    get state(){return {visible:root.visible,phase,field,lastKey,keyNumber,pressed,lever,keys:count,position:root.position.toArray(),keyTop:root.position.y+.21,leverPosition:leverPosition(),physical:true,deployment,bookVisible:book.visible};}
+    get state(){return {visible:root.visible,phase,field,lastKey,keyNumber,pressed,lever,keys:count,position:root.position.toArray(),keyTop:root.position.y+.21,leverPosition:leverPosition(),physical:true,deployment,bookVisible:book.visible,bookPosition:book.getWorldPosition(new T.Vector3()).toArray()};}
   };
 }

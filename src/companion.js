@@ -1,3 +1,4 @@
+import {singingBeat} from './acting-beats.js';
 import * as T from 'three';
 
 // A small original fan model, adapted from the permitted dragon-only reference.
@@ -55,7 +56,7 @@ export function buildDragon(r) {
   const microphone=new T.Group();body.add(microphone);r.box(microphone,'#26363c',[0,-.1,0],[.045,.22,.045]);r.mesh(r.geometry('SphereGeometry',.075,12,8),r.material('#9ba7a5',{metalness:.7,roughness:.5}),microphone,[0,.05,0]);microphone.name='floating-singing-microphone';microphone.position.set(.34,.55,.72);microphone.visible=false;
   root.traverse(n=>n.userData.hotspot='dragon');
   const reduced=typeof matchMedia==='function'&&matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const state={mood:'normal',action:''};
+  const state={mood:'normal',action:''},songPose={};
   return {root,body,foodMount,grabHandle,hand:arms[1],hands:arms,feet,get state(){return {...state};},update(t,s={}){
     const blink=Math.max(0,1-Math.abs((t+.7)%4.3-.15)/.11);
     const action=s.action?.kind||'',effort=T.MathUtils.clamp(Number(s.action?.amount)||0,0,1),shocked=action==='shock'||!!s.projectile;
@@ -123,22 +124,13 @@ export function buildDragon(r) {
     }
     // Singing owns the final pose, including when the dragon is stuck in rubble.
     if(s.singing){
-      const tempo=104/60,phrase=4/tempo,part=(s.singingAge??t)/phrase,index=Math.floor(part)%6,blend=T.MathUtils.smoothstep(part%1,0,.10),wave=Math.sin(t*tempo*Math.PI),trapped=!!s.singingTrapped;
-      function clip(i){const soft=reduced?0:1;return [
-        [wave*.07,0,wave*.08,.1],
-        [0,Math.abs(wave)*.035,wave*.035,-.30],
-        [wave*.035,0,wave*.12,.25],
-        [wave*.04,Math.max(0,wave)*.09,wave*.05,-.75],
-        [0,0,wave*.04,-.55],
-        [0,.025,wave*.025,-.95]
-      ][i].map(x=>x*soft);}
-      const from=clip((index+5)%6),to=clip(index),v=to.map((x,i)=>T.MathUtils.lerp(from[i],x,blend));
-      arms[0].position.set(-.59,.46,.12);arms[0].rotation.z=-.12+v[3];
-      arms[1].position.set(.62,.69,.22);arms[1].rotation.z=.32+v[2]*.3;
-      body.rotation.set(index===1?v[1]*.5:0,0,v[2]);body.scale.set(1,1,1);body.position.x=trapped?0:v[0];body.position.y=trapped?0:v[1];
-      if(!trapped)for(let i=0;i<feet.length;i++){feet[i].position.y=.14+Math.max(0,Math.sin(t*tempo*Math.PI+i*Math.PI))*.035;feet[i].rotation.x=Math.sin(t*tempo*Math.PI+i*Math.PI)*.12;}
-      microphone.position.set(.18,.46+v[2]*.08,.79);state.songClip=index;state.songTrapped=trapped;
-      const songFace=index%3===0?2:index%3===1?4:0;material.map=maps[songFace];state.songFace=songFace;state.mood='singing';
+      const age=s.singingAge??t,v=singingBeat(age,reduced,songPose),index=v.index,trapped=!!s.singingTrapped,tempo=104/60;
+      arms[0].position.set(-.59,.46,.12);arms[0].rotation.z=v.armL;
+      arms[1].position.set(.62,.69,.22);arms[1].rotation.z=v.armR;
+      body.rotation.set(v.pitch,0,v.roll);body.scale.set(1,1,1);body.position.x=trapped?0:v.x;body.position.y=trapped?0:v.y;
+      if(!trapped)for(let i=0;i<feet.length;i++){feet[i].position.y=.14+Math.max(0,Math.sin(age*tempo*Math.PI+i*Math.PI))*.035;feet[i].rotation.x=Math.sin(age*tempo*Math.PI+i*Math.PI)*.12;}
+      microphone.position.set(.18,.46+v.roll*.08,.79);state.songClip=index;state.songTrapped=trapped;
+      const songFace=[2,0,2,4,0,2][index];material.map=maps[songFace];state.songFace=songFace;state.mood='singing';
     }
     for(const arm of arms)arm.visible=!s.quietSong;
     if(s.quietSong){microphone.visible=false;thumb.visible=false;body.rotation.set(0,0,reduced?0:Math.sin(t*1.8)*.018);body.position.set(0,0,0);}

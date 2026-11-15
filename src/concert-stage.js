@@ -7,9 +7,9 @@ export function songCamera(subject,age,{trapped=false,portrait=false,reduced=fal
 // Shared musical phrase, individual delay and a soft wrist follow-through.
 export function cheerPose(age,index,reduced=false){
  if(reduced)return {roll:(index%3-1)*.09,lift:0,pitch:0,wrist:0};
- const beat=60/104,phrase=age/(beat*8),part=phrase%1,ease=v=>{const p=Math.max(0,Math.min(1,v));return p*p*(3-2*p);},sync=Math.floor(phrase)%4===3?ease(part/.2)*ease((1-part)/.2):0;
- const t=Math.max(0,age-(index*.071% .31)),cycle=(t/beat+index*.13)%(index%3===1?4:2),arc=Math.sin(ease(cycle/1.6)*Math.PI*2),common=Math.sin(ease((age/beat%2)/1.6)*Math.PI*2),wave=arc+(common-arc)*sync,amplitude=.24+(index%3)*.065;
- return {roll:wave*(amplitude+(.30-amplitude)*sync),lift:Math.abs(wave)*.10,pitch:Math.sin(t/beat*Math.PI-index*.3)*.10*(1-sync),wrist:Math.sin((t-.10)/beat*Math.PI)*.13*(1-sync)};
+ const beat=60/104,phase=age/beat*Math.PI,delay=index*.27,individual=phase-delay,phrase=age/(beat*8),sync=Math.sin(phrase*Math.PI/4)**8;
+ const personal=Math.sin(individual)*.78+Math.sin(individual*2-.25)*.09,common=Math.sin(phase)*.78,amplitude=.24+(index%3)*.045;
+ return {roll:(personal*(1-sync)+common*sync)*amplitude,lift:(1-Math.cos(individual))*.026,pitch:Math.sin(individual-.18)*.065*(1-sync),wrist:Math.sin(individual-.32)*.11*(1-sync)};
 }
 export function buildConcertStage(scene,r){
  const root=new T.Group();root.name='dragon-concert-cheering';scene.add(root);root.visible=false;
@@ -29,6 +29,6 @@ export function buildConcertStage(scene,r){
  const depth=.45,foregroundScale=.084,halfH=Math.tan(camera.fov*Math.PI/360)*depth,halfW=halfH*camera.aspect;
  offset.set(0,0,-depth).applyQuaternion(camera.quaternion);root.position.copy(camera.position).add(offset);root.quaternion.copy(camera.quaternion);root.scale.setScalar(foregroundScale);wasActive=true;
  props.forEach(({pivot},i)=>{const side=i<4?-1:1,slot=i%4;pivot.position.x=side*halfW*(.42+slot*.13)/foregroundScale;pivot.position.z=0;});
- props.forEach(({pivot,wrist,y},i)=>{pivot.visible=quality!=='low'||i<6;const p=cheerPose(age,i,reduced);pivot.position.y=(-halfH*.15)/foregroundScale+p.lift;pivot.rotation.set(p.pitch,0,p.roll);wrist.rotation.z=p.wrist;});
+ props.forEach(({pivot,wrist,y},i)=>{pivot.visible=quality!=='low'||i<6;const p=cheerPose(age,i,reduced);pivot.position.y=(-halfH*.28)/foregroundScale+p.lift;pivot.rotation.set(p.pitch,0,p.roll);wrist.rotation.z=p.wrist;});
  }};
 }

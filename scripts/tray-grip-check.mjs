@@ -104,13 +104,13 @@ check('Walking/turning: finger pads keep touching on every sampled frame',worst.
 check('Walking/turning: thumbs never bury into the tray (<=12 vertices deeper than 1 mm)',worst.thumb<=12,worst);
 
 // One-hand carry (phone / handover): left hand under the middle, no thumb wrap; tray still carried.
-a.teleport(-1.25,2.48);a.setDinner('A');a.setSceneAction({handover:true});a.update(100,0);a.update(100.05,.05);
+a.teleport(-1.25,2.48);a.setDinner('A');a.setSceneAction({handover:true});a.update(100,0);for(let i=1;i<=60;i++)a.update(100+i/60,1/60);
 {const r=measure();report.oneHand=r;const pen=Math.max(...['palm',...fingers].map(k=>r['L:'+k]?.maxPenMm||0));
  check('One-hand carry: left palm and four fingers under the tray without sinking (<=4 mm; excludes thumb)',pen<=4,{maxPenetrationMm:pen});
  check('One-hand carry: left finger pads touch the underside',sum(r,'L',fingers,'touch')>=40,{touching:sum(r,'L',fingers,'touch')});}
 check('One-hand carry: thumb stays outside the slab (<=4 mm penetration)',report.oneHand['L:thumb'].maxPenMm<=4,report.oneHand['L:thumb']);
 for(const variant of ['B','C']){a.setDinner(variant);a.update(101,0);a.update(101.05,.05);const r=measure();report['oneHand-'+variant]=r;check(`One-hand ${variant}: all hand regions, including thumb, stay within 4 mm penetration`,Math.max(...['palm','thumb',...fingers].map(k=>r['L:'+k].maxPenMm))<=4,r['L:thumb']);}
-a.setSceneAction({photoLook:true});a.setDinner('A');a.update(102,.05);twoHandHold(measure(),'Photo review both hands');
+a.setSceneAction({photoLook:true});a.setDinner('A');for(let i=0;i<60;i++)a.update(102+i/60,1/60);twoHandHold(measure(),'Photo review both hands');
 a.setSceneAction({handover:false});
 
 // Handoff to the dragon: no single-frame jump of the hand or the tray while the IK weight blends out.
@@ -133,6 +133,20 @@ a.setTray({owner:'hero',phase:'',age:0,rescueAge:null});a.setDinner(null);a.upda
 {const drift=Math.max(...thumbIds.map((id,i)=>byId(id).quaternion.angleTo(thumbRest[i])));report.thumbReleaseRadians=+drift.toFixed(6);
  check('Without the tray the thumbs return exactly to their GLB rest rotation (no leftover wrap; <0.3 deg)',drift<.005,{maxAngleRadians:drift});}
 
+// Continuous two-hand <-> one-hand carry. A settled fixture alone misses thumb/rim crossings.
+report.transitions=[];
+for(const branch of ['A','B','C'])for(const hz of [30,60]){
+ a.setDinner(branch);a.teleport(-1.25,2.48);a.setTray({owner:'hero',phase:'photo-talk',age:0,rescueAge:null});a.setSceneAction({});for(let i=0;i<hz;i++)a.update(150+i/hz,1/hz);
+ let maxPen=0,maxStep=0,previous=null;
+ for(const forward of [true,false]){
+  a.setSceneAction({handover:forward});
+  for(let i=0;i<hz;i++){
+   a.update(152+Number(!forward)+i/hz,1/hz);const r=measure(),w=byId(342).getWorldPosition(new T.Vector3());
+   maxPen=Math.max(maxPen,...Object.values(r).map(v=>v.maxPenMm));if(previous)maxStep=Math.max(maxStep,w.distanceTo(previous));previous=w;
+  }
+ }
+ report.transitions.push({branch,hz,maxPen,maxStep});check('Continuous '+branch+' '+hz+'Hz: no deep hand penetration during grip switches',maxPen<=5,{maxPen});check('Continuous '+branch+' '+hz+'Hz: no wrist jump during grip switches',maxStep<.04,{maxStep});
+}
 const passed=checks.every(c=>c.passed);
 await fs.mkdir(new URL('../artifacts/',import.meta.url),{recursive:true});
 await fs.writeFile(new URL('../artifacts/tray-grip-check.json',import.meta.url),JSON.stringify({kind:'Node actual-GLB skinned-vertex contact checks; not a render or iPhone test',passed,checks,report},null,1)+'\n');
