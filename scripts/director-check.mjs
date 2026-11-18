@@ -200,6 +200,12 @@ for(let i=0;i<180;i++){
  check('Actual following camera keeps the moving energy in frame: '+i,Math.abs(point.x)<.9&&Math.abs(point.y)<.8&&point.z<1,point.toArray());
 }
 }
+// Continuity at the actual release, including rotation (not just aim→finisher entry).
+const releaseWorld=makeWorld(),releaseDirector=new MissionDirector(releaseWorld);
+releaseDirector.stage('finisher',state('finisher'));
+releaseDirector.beforeActors(state('finisher',{clock:11.999,phaseElapsed:1.999}));const heldRoll=releaseWorld.actors.roll;
+releaseDirector.beforeActors(state('finisher',{clock:12,phaseElapsed:2}));check('Release retains the held roll instead of reversing 37 degrees',Math.abs(releaseWorld.actors.roll-heldRoll)<.001);
+releaseDirector.beforeActors(state('finisher',{clock:12.001,phaseElapsed:2.001}));check('Projectile spins forward continuously after release',releaseWorld.actors.roll>heldRoll&&releaseWorld.actors.roll-heldRoll<.02);releaseWorld.r.dispose();
 wireWorld.r.dispose();rw.r.dispose();w.r.dispose();
 fs.writeFileSync('artifacts/v14-director-check.json',JSON.stringify({kind:'actual-director-with-mock-world-no-gpu',checks,projections,cameraShots},null,2)+'\n');
 console.log(`V14 director: ${checks.length} checks passed.`);

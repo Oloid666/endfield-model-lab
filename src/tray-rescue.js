@@ -9,7 +9,7 @@ export const RESCUE_TIMES=Object.freeze({notice:1.5,arrive:4.5,release:RESCUE_RE
 export const rescueEase=x=>{const v=Math.max(0,Math.min(1,x));return v*v*(3-2*v);};
 const mix=(a,b,t)=>a+(b-a)*t;
 export function rescueTiming(age=0){
- const e=Math.max(0,age),emoji=e<2.2?'':e<2.9?'✋':e<3.6?'😌':e<4.3?'🍱':e<5.5?'🫴':e<8.2?'':e<8.8?'👌':e<10.1?'👍':'';
+ const e=Math.max(0,age),emoji=e<2.2?'':e<2.9?'✋':e<3.6?'😌':e<4.3?'🍱':e<5.5?'🫴':e<8.2?'':e<10.1?'👍':'';
  return {age:e,beat:e<1.5?'hold':e<2.2?'notice':e<4.5?'approach':e<5.5?'prepare-toss':e<7?'fall':e<8.2?'weight':e<8.8?'okay':e<10.1?'thumb':e<12?'guard':'aim',approach:rescueEase((e-2.2)/2.3),lowered:0,release:rescueEase((e-RESCUE_RELEASE)/.3),press:e>=7&&e<8.2?Math.sin(Math.PI*rescueEase((e-7)/1.2)):0,thumb:rescueEase((e-8.8)/.22)*(1-rescueEase((e-9.88)/.22)),emoji,ready:e>=RESCUE_READY};
 }
 function streetRoute(from,to,progress,out){

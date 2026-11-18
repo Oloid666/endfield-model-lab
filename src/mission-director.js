@@ -94,9 +94,9 @@ export class MissionDirector{
     if(phase==='return')this.world.store.destruction.restorePresent();
     if(phase==='finisher'){
       this.finalBegun=true;this.launched=false;this.impacted=false;this.neighborImpacted=false;this.stuckReleased=false;
-      const actor=this.world.actors,feet=actor?.heroPosition||[-1.25,4.32,15.25];
+      const actor=this.world.actors;
       this.home.splice(0,3,...(actor?.dragonPosition||[-2,.325,3.25]));
-      const grip=actor?.gripPosition||[feet[0]+.2,feet[1]+1.15,feet[2]-.25];this.hand.splice(0,3,...grip);this.hand[1]-=.3;
+      this.hand.splice(0,3,...this.home);
       const rack=this.world.store.destruction.state.serverPosition;this.end.splice(0,3,...rack);
       const neighbor=this.world.store.destruction.neighbor;
       const hole=neighbor?.position||[.8,1.5,-8];
@@ -292,14 +292,14 @@ export class MissionDirector{
     if(phase==='finisher'){
       if(e<2)arc(this.home,this.hand,smooth(e/2),.12,this.projectile);
       else if(e<4.9){
-        if(!this.launched){this.launched=true;this.lastShotAt=state.clock;this.recoilAmplitude=1.4;this.end.splice(0,3,...this.world.store.destruction.state.serverPosition);this.world.missionState?.tabletMode&&this.world.showExplosionShout?.();this.world.siege.fire({from:this.hand,to:this.end,power:1,finisher:true,duration:2.9});}
+        if(!this.launched){this.launched=true;this.hand.splice(0,3,...(actor.dragonPosition||this.hand));this.lastShotAt=state.clock;this.recoilAmplitude=1.4;this.end.splice(0,3,...this.world.store.destruction.state.serverPosition);this.world.missionState?.tabletMode&&this.world.showExplosionShout?.();this.world.siege.fire({from:this.hand,to:this.end,power:1,finisher:true,duration:2.9});}
         arc(this.hand,this.end,smooth((e-2)/2.9),1.1,this.projectile);
       }else if(e<6.2){
         this.impact();arc(this.end,this.wall,smooth((e-4.9)/1.3),.6,this.projectile);
       }else{
         this.hitNeighbor();this.stuckPosition(state.clock);
       }
-      actor.setDragonProjectile(this.projectile,e>=2&&e<6.2?(e-2)*9.5:Math.sin(state.clock*39)*.045);
+      actor.setDragonProjectile(this.projectile,e<2?.65:e>=2&&e<6.2?.65+(e-2)*9.5:Math.sin(state.clock*39)*.045);
     }else if(['landing','tour','complete'].includes(phase)&&this.neighborImpacted&&!this.stuckReleased){
       this.stuckPosition(state.clock);actor.setDragonProjectile(this.projectile,phase==='tour'&&e>=14?0:Math.sin(state.clock*9)*.02);
     }else actor.setDragonProjectile(null);
@@ -396,7 +396,7 @@ export class MissionDirector{
       if(s.phase==='flashback'&&s.nodeId==='flashback_6'){position=[2.85,2.1,-.25];target=[2.05,1.25,.65];fov=portrait?49:40;beat='xaihi-phone-detail';}
       if(s.phase==='heat'&&s.heat?.status==='burnt'){position=[3.5,2.25,-.8];target=[3.45,1.6,1.25];fov=portrait?78:65;beat='cctv-food-burst';}
       if(s.tablet){const stage=s.tablet.stage,frame=w.xaihi?.tabletFrame(w.camera.aspect);if(frame){position=frame.position;target=frame.center;fov=frame.fov;beat='tablet-read';this.cameraRoll=frame.roll||0;}
-       if(stage==='search'&&e<1.9&&frame){const p=this.reducedMotion?1:smooth((e-.55)/1.35);position=[3.9+(frame.position[0]-3.9)*p,2.5+(frame.position[1]-2.5)*p,-.6+(frame.position[2]+.6)*p];target=frame.center;beat=e<.55?'tablet-hold-context':'tablet-approach';this.cameraRoll=(frame.roll||0)*p;fov=62+(frame.fov-62)*p;}
+       if(stage==='search'&&e<1.9&&frame){const p=this.reducedMotion?1:smooth((e-.55)/1.35);const start=frame.approach||frame.position;position=start.map((v,i)=>v+(frame.position[i]-v)*p);target=frame.center;beat=e<.55?'tablet-hold-context':'tablet-approach';this.cameraRoll=(frame.roll||0)*p;fov=62+(frame.fov-62)*p;}
        if(stage!=='search'&&['backdoor','rapi-request','rapi-answer','rapi-mask','cable','walk-fridge','walk-counter','cooling','success','defrost','hot','meal-label'].includes(stage))this.cameraRoll=0;
        if(stage==='backdoor'){position=portrait?[7.4,1.95,-10.25]:[7.64,2.10,-11.25];target=[7.4,1.85,-13.189];fov=portrait?50:34;beat='pylon-nikke-screen';}
        if(['rapi-request','rapi-answer','rapi-mask'].includes(stage)){position=[7.57,2.10,-11.8];target=[7.52,2.11,-13.189];fov=portrait?28:22;beat='rapi-eye-bar';}

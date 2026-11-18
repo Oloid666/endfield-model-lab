@@ -28,7 +28,7 @@ const raw=await new GLTFLoader().parseAsync(JSON.stringify(json),'');raw.scene.t
 const gltf=raw,actor=buildXaihi(new T.Scene(),resources,gltf),board=actor.root.getObjectByName('xaihi-terminal');let time=0,previous=null,maxStep=0,maxPalmError=0;
 for(const cue of ['satisfied','avert','song','side-eye'])for(let i=0;i<70;i++){
  time+=1/60;actor.update(time,1/60,{phase:'hack',tablet:{age:4,stage:cue==='satisfied'?'success':'hot',dialogue:{cue},dialogueAge:i/60}});actor.root.updateMatrixWorld(true);let s=actor.state;
- const target=board.localToWorld(new T.Vector3(.145,-.070,-.022));maxPalmError=Math.max(maxPalmError,target.distanceTo(new T.Vector3(...s.palmPositions[0])));
+ const target=board.localToWorld(new T.Vector3(-.185,-.100,-.034));maxPalmError=Math.max(maxPalmError,target.distanceTo(new T.Vector3(...s.palmPositions[0])));
  if(previous)maxStep=Math.max(maxStep,new T.Vector3(...s.handPositions[1]).distanceTo(previous));previous=new T.Vector3(...s.handPositions[1]);
 }
 check('Left palm stays attached to the moving tablet',maxPalmError<.004);check('Free-hand cue transitions do not jump',maxStep<.07);

@@ -19,7 +19,7 @@ export function buildDragon(r) {
   const tail=r.mesh(r.geometry('ConeGeometry',.15,.53,10),r.material('#80ab8d'),body,[0,.27,-.48]);tail.rotation.x=-1.1;
   const tuft=r.mesh(r.geometry('ConeGeometry',.1,.25,8),r.material('#a9c0b3'),body,[0,1.34,-.08]);tuft.rotation.z=-.18;
   r.box(body,'#b65843',[.42,1.19,.05],[.28,.06,.08]);r.box(body,'#b65843',[.54,1.03,.03],[.06,.3,.05]);
-  const grabHandle=new T.Object3D();grabHandle.name='dragon-grab-handle';grabHandle.position.set(.54,1.18,.03);body.add(grabHandle);
+  const grabHandle=new T.Object3D();grabHandle.name='dragon-grab-handle';grabHandle.position.set(.42,1.19,.05);body.add(grabHandle);
   function face(blink,mood='normal'){
     const canvas=document.createElement('canvas');canvas.width=canvas.height=256;const c=canvas.getContext('2d');
     c.lineWidth=8;c.strokeStyle='#344d42';c.lineCap='round';

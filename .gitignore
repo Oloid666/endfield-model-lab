@@ -19,3 +19,6 @@ artifacts/*.webm
 
 # Reproducible visual review evidence stays local; never enters the web bundle.
 artifacts/visual-review/
+
+# Raw tablet/grip captures and fixed-step films; selected PNGs live in docs/review.
+artifacts/tablet-grip/

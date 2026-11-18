@@ -12,12 +12,8 @@ export function buildMealRemnant(scene,r){
  for(let i=0;i<positions.count;i++){const y=rest[i*3+1];shade.set('#674079').lerp(new T.Color('#b093cf'),(y+1)*.5);shade.toArray(colors,i*3);}geometry.setAttribute('color',new T.BufferAttribute(colors,3));
  const material=r.own(new T.MeshPhysicalMaterial({color:'#ffffff',vertexColors:true,roughness:.49,metalness:0,clearcoat:.20,clearcoatRoughness:.38,emissive:0x4d2678,emissiveIntensity:.09}));
  const surface=r.mesh(geometry,material,body);surface.frustumCulled=false;
- // The helper earns a tiny expressive hand only after the weight settles.
- const thumbs=new T.Group();thumbs.name='purple-helper-thumbs-up';body.add(thumbs);thumbs.visible=false;
- const handMat=r.material('#b294d2',{roughness:.38,emissive:0x42235a,emissiveIntensity:.08}),round=r.geometry('SphereGeometry',1,10,8);
- r.mesh(round,handMat,thumbs,[0,0,0],[.065,.055,.032]);
- for(let i=0;i<3;i++)r.mesh(round,handMat,thumbs,[-.028+i*.024,.015,.023],[.016,.027,.021]);
- const thumb=r.mesh(round,handMat,thumbs,[.050,.073,0],[.022,.075,.025]);thumb.rotation.z=-.18;
+ // Success is communicated by the HUD 👍 bubble; support tendrils remain physical.
+ const round=r.geometry('SphereGeometry',1,10,8);
  const eyes=[];for(const side of [-1,1]){
   const eye=new T.Group();eye.name='purple-expressive-eye';eye.position.set(side*.082,.18,.238);body.add(eye);
   r.mesh(round,r.material('#efe4c9',{roughness:.48}),eye,[0,0,0],[.037,.042,.014]);
@@ -57,9 +53,9 @@ export function buildMealRemnant(scene,r){
   const wreck=!home&&(state.progress||0)>=62&&!state.vcr;root.visible=helper||born&&(!birthing||birth.visible)&&(home||returning||wreck||['heat','meal-spawn','flashback-end'].includes(state.phase));if(!root.visible)return;mode=home||returning?'crawling':birthing?birth.beat:'incident';
   const age=Math.max(0,time-bornAt),crawl=reduced?0:Math.sin(age*.45)*.12,press=Math.max(0,1-(time-touched)/.8);
   const rescue=environment.rescue;currentEmoji=helper?(rescue?rescue.emoji:state.phase==='aim-final'?rescueTiming(state.phaseElapsed||0).emoji:''):'';let supportHeight=.28;
-  thumbs.visible=false;support.visible=supportOther.visible=false;for(const arm of arms)arm.mesh.visible=false;
+  support.visible=supportOther.visible=false;for(const arm of arms)arm.mesh.visible=false;
   if(helper){
-    if(rescue){root.position.fromArray(rescue.base);supportHeight=rescue.height;if(state.phase==='meal-reclaim'&&state.trayOwner==='hero')supportHeight*=1-T.MathUtils.smootherstep(state.phaseElapsed,1.35,2.5);mode=state.trayOwner==='helper'?'holding-tray':'helping';thumbs.visible=rescue.thumb>.001;thumbs.position.set(.37,supportHeight-.10,-.03);thumbs.scale.setScalar(rescue.thumb);}
+    if(rescue){root.position.fromArray(rescue.base);supportHeight=rescue.height;if(state.phase==='meal-reclaim'&&state.trayOwner==='hero')supportHeight*=1-T.MathUtils.smootherstep(state.phaseElapsed,1.35,2.5);mode=state.trayOwner==='helper'?'holding-tray':'helping';}
     else root.position.fromArray(RESCUE_WAITING);
     body.scale.set(1,1,1);tendrils(supportHeight,(rescue?.tray[0]??root.position.x)-root.position.x,(rescue?.tray[2]??root.position.z)-root.position.z,supportHeight>.33);
   }
@@ -89,5 +85,5 @@ export function buildMealRemnant(scene,r){
   }else if(!helper&&birthing)body.scale.fromArray(birth.scale);else if(!helper)body.scale.set(1,1,1);
   if(helper||time-lastShape>=1/24||time<lastShape){shape(reduced?0:age,press,helper,supportHeight,rescue?.press||0);lastShape=time;}
   lightning.visible=!home&&!returning&&!helper&&!reduced&&age%4<.3;for(let i=0;i<10;i++){points[i*3]=-.31+i*.07;points[i*3+1]=.16+Math.sin(i*8+time*13)*.04;points[i*3+2]=.08+Math.cos(i*5)*.08;}boltGeo.attributes.position.needsUpdate=true;
- },get state(){return {born,visible:root.visible,mode,position:root.position.toArray(),shape:'soft-lobed-creature',supportHeight: support.visible?support.position.y+.025:0,bodyHeight:mode==='holding-tray'||mode==='helping'?.36:.28,emoji:currentEmoji,thumbVisible:thumbs.visible};}};
+ },get state(){return {born,visible:root.visible,mode,position:root.position.toArray(),shape:'soft-lobed-creature',supportHeight: support.visible?support.position.y+.025:0,bodyHeight:mode==='holding-tray'||mode==='helping'?.36:.28,emoji:currentEmoji,thumbVisible:false};}};
 }
