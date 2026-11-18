@@ -1,0 +1,210 @@
+[
+  {
+    "file": "scripts/acting-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/actor-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/air-upstairs-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/analytics-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/battle-warm-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/bonus-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/character-copy-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/cinematic-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/cinematic-track-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/concert-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/destruction-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/dinner-revision-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/director-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/entry-camera-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/feast-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/feedback-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/fx-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/handle-grip-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/indoor-camera-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/indoor-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/indoor-impact-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/indoor-passenger-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/living-world-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/loading-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/mission-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/model-transport-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/next-dinner-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/opening-handoff-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/photo-camera-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/polish-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/postgame-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/presentation-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/props-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/racing-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/review-synthesis-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/revision-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/second-wave-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/sharing-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/shot-charge-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/stage-detail-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/story-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/story-revision-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/street-camera-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/street-stage-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/tablet-geometry-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/touch-detail-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/tray-grip-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/vcr-props-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/vcr-tablet-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/viewer-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/walking-environment-check.mjs",
+    "code": 0
+  },
+  {
+    "file": "scripts/warmup-check.mjs",
+    "code": 0
+  }
+]
