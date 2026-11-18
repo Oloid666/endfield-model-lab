@@ -26,6 +26,11 @@ for(const c of [context(320,740),context(),context(440,390),context(874,768)]){
  sample(track,'intro',4,{node:soup,nodeElapsed:0},c);check('Soup reminder has its own OTS',track.id==='cinematic-opening-shoulder');
  for(let t=0;t<=5;t+=.05){const q=sample(track,'ascent',10+t,{phaseElapsed:t,heroHead:[-1.25,1.98+t*.2,3.25]},c);check('Ascent stays on street side',q.position[2]>2.65&&q.position[1]>.2);}
  track.reset();const final={...c,feet:[-1.25,4.32,15.25],heroHead:[-1.25,5.95,15.25],grip:[-1.3,5.35,15.5],server:[0,1.21,1.06]};
+ for(const t of [0,.25,.5,1,1.49]){
+  const dragon=[-1.9,5.3,17.8-t],c={...final,dragon},q=sample(track,'aim-final',t,{},c);
+  check('Approaching Dragon uses an exterior two-subject shot',q.beat==='rescue-hold-pair'&&q.fitValid&&new T.Vector3(...q.position).distanceTo(new T.Vector3(...dragon))>1.5);
+  assertEnvelope(track,q,[Math.min(c.heroHead[0]-.4,dragon[0]-.4),Math.min(c.heroHead[1]-1.5,dragon[1]+.32-.4),Math.min(c.heroHead[2]-.4,dragon[2]-.4)],[Math.max(c.heroHead[0]+.4,dragon[0]+.4),Math.max(c.heroHead[1]+.25,dragon[1]+.32+.55),Math.max(c.heroHead[2]+.4,dragon[2]+.4)],c);
+ }
  for(const t of [17,19,24]){const q=sample(track,'aim-final',t,{},final);check('Aim is a steady same-side shoulder shot',q.beat==='cinematic-final-shoulder'&&q.fitValid);}
  for(const [t,beat] of [[0,'face'],[2,'face'],[2.74,'face'],[2.75,'flight'],[4.349,'flight'],[4.35,'impact'],[4.89,'impact'],[5.5,'impact']]){
   const q=sample(track,'finisher',20+t,{phaseElapsed:t},final);check('Actual release/impact timing stays readable',q.beat==='cinematic-finisher-'+beat&&q.fitValid);

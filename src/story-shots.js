@@ -114,6 +114,13 @@ export function cinematicStoryShot(s,context,track){
   track.enter('cinematic-'+s.phase,s,c,origin);
   const p=c.tray||[-1.25,1.42,3.9];return track.pose([p[0]+1.65,p[1]+.38,p[2]+2.4],[p[0],p[1]+.12,p[2]],c.portrait?43:35);
  }
+ // Establish both actors from outside their approach path; never dolly through Dragon.
+ if(s.phase==='aim-final'&&e<1.5){
+  track.enter('rescue-hold-pair',s,c,origin);track.t.copy(h).lerp(d,.5);track.t.y-=.18;
+  track.p.copy(track.t).add(track.offset.set(1.1,.55,6));
+  track.fitBox([Math.min(h.x-.4,d.x-.4),Math.min(h.y-1.5,d.y-.4),Math.min(h.z-.4,d.z-.4)],[Math.max(h.x+.4,d.x+.4),Math.max(h.y+.25,d.y+.55),Math.max(h.z+.4,d.z+.4)],track.p,track.t,c.portrait?48:38,c,'wide');
+  return track.pose(track.p,track.t,c.portrait?48:38);
+ }
  if(s.phase==='aim-final'&&e>=1.5&&e<2.2&&!c.rescue){
   const b=RESCUE_WAITING;track.enter('cinematic-rescue-notice',s,c,origin);return track.pose([b[0]+1.4,b[1]+.62,b[2]+2.7],[b[0],b[1]+.3,b[2]],c.portrait?48:38);
  }
