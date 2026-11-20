@@ -1,0 +1,54 @@
+{
+  "metrics": {
+    "0": {
+      "vertices": 254,
+      "penetration": 0,
+      "depth": 0.001715126216160904,
+      "gap": 0,
+      "front": 0,
+      "back": 204,
+      "below": 62
+    },
+    "1": {
+      "vertices": 272,
+      "penetration": 0,
+      "depth": 0.00026341922410271586,
+      "gap": 0,
+      "front": 0,
+      "back": 181,
+      "below": 84
+    },
+    "2": {
+      "vertices": 280,
+      "penetration": 0,
+      "depth": 0.0017680041480177939,
+      "gap": 0,
+      "front": 0,
+      "back": 173,
+      "below": 71
+    },
+    "3": {
+      "vertices": 267,
+      "penetration": 0,
+      "depth": 0.0017920038090004614,
+      "gap": 0,
+      "front": 0,
+      "back": 165,
+      "below": 0
+    },
+    "thumb": {
+      "vertices": 299,
+      "penetration": 0,
+      "depth": 0,
+      "gap": 0.0014151018635653338,
+      "front": 299,
+      "back": 0,
+      "below": 221
+    }
+  },
+  "contactError": 2.220446049250313e-16
+}
+Handle grip: real GLB skin contact and reset checks passed; not an iPhone render.
+Alignment API, 30/60 Hz attach and finisher entry passed.
+{"wholeMotionMaxMm":1.7965804336567774}
+Complete 30/60 Hz attachment and release skin checks passed.

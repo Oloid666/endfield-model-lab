@@ -1,0 +1,69 @@
+{
+  "baseline": "18e1671fb839073a4ed467c96de2518426bd3d10",
+  "reviewed": "73ab9ee0e61c47df43d497feda58ef1019823f74",
+  "images": [
+    [
+      "natural-before/01b-satisfied-eyes.png",
+      "01-hold-before.png"
+    ],
+    [
+      "human-delivery/01b-satisfied-eyes.png",
+      "01-hold-after.png"
+    ],
+    [
+      "natural-before/00-search.png",
+      "02-search-before.png"
+    ],
+    [
+      "human-delivery/00-search.png",
+      "02-search-after.png"
+    ],
+    [
+      "natural-before/00-temperature.png",
+      "03-temperature-before.png"
+    ],
+    [
+      "human-delivery/00-temperature.png",
+      "03-temperature-after.png"
+    ],
+    [
+      "natural-before/02-avert.png",
+      "04-release-before.png"
+    ],
+    [
+      "human-delivery/02-avert.png",
+      "04-release-after.png"
+    ],
+    [
+      "natural-before/04-redirect.png",
+      "05-redirect-before.png"
+    ],
+    [
+      "human-delivery/04-redirect.png",
+      "05-redirect-after.png"
+    ],
+    [
+      "human-delivery/00-search-844x390.png",
+      "06-tablet-landscape-after.png"
+    ],
+    [
+      "human-delivery/01b-satisfied-eyes-1440x900.png",
+      "07-hold-desktop-after.png"
+    ],
+    [
+      "human-delivery/avert/0006.jpg",
+      "08-release-middle-after.png"
+    ],
+    [
+      "human-delivery/return-to-tablet/0003.jpg",
+      "09-reverse-cut-context.png"
+    ],
+    [
+      "human-zhuang/08-grip.png",
+      "10-handle-after.png"
+    ]
+  ],
+  "actual_render": "Chromium/SwiftShader, 390x844 / 844x390 /1440x900, DPR1, low quality",
+  "films": "avert12 frames and return-to-tablet7 frames at8fps, fixed30Hz clock, noaudio; return-to-tablet records the story reverse cut to Dragon, NOT a visual hand regrip",
+  "note": "JPEG evidence frames converted to PNG without enhancement; source GLBs untouched."
+}

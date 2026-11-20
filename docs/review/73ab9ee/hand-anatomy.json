@@ -1,0 +1,257 @@
+{
+  "contactFrames": [
+    {
+      "hz": 30,
+      "cue": "",
+      "Lfinger": {
+        "gapMm": 2.322459833587038,
+        "depthMm": 0
+      },
+      "Lthumb": {
+        "gapMm": 0,
+        "depthMm": 1.2750390992712357
+      },
+      "Rthumb": {
+        "gapMm": 2.0598249383570466,
+        "depthMm": 0
+      },
+      "Rfinger": {
+        "gapMm": 2.018175192763711,
+        "depthMm": 0
+      }
+    },
+    {
+      "hz": 30,
+      "cue": "satisfied",
+      "Lfinger": {
+        "gapMm": 2.322466429733889,
+        "depthMm": 0
+      },
+      "Lthumb": {
+        "gapMm": 0,
+        "depthMm": 1.270951532880371
+      },
+      "Rthumb": {
+        "gapMm": 1.9799838242732237,
+        "depthMm": 0
+      },
+      "Rfinger": {
+        "gapMm": 2.0181749128771527,
+        "depthMm": 0
+      }
+    },
+    {
+      "hz": 30,
+      "cue": "avert",
+      "Lfinger": {
+        "gapMm": 2.322451768344231,
+        "depthMm": 0
+      },
+      "Lthumb": {
+        "gapMm": 0,
+        "depthMm": 1.2658454622896387
+      },
+      "Rthumb": {
+        "gapMm": 154.6953443811082,
+        "depthMm": 0
+      },
+      "Rfinger": {
+        "gapMm": 200.2594837722327,
+        "depthMm": 0
+      }
+    },
+    {
+      "hz": 30,
+      "cue": "song",
+      "Lfinger": {
+        "gapMm": 2.3224573270136446,
+        "depthMm": 0
+      },
+      "Lthumb": {
+        "gapMm": 0,
+        "depthMm": 1.2741935302565954
+      },
+      "Rthumb": {
+        "gapMm": 2.0203677555146182,
+        "depthMm": 0
+      },
+      "Rfinger": {
+        "gapMm": 2.2126959032114986,
+        "depthMm": 0
+      }
+    },
+    {
+      "hz": 30,
+      "cue": "side-eye",
+      "Lfinger": {
+        "gapMm": 2.322466252357218,
+        "depthMm": 0
+      },
+      "Lthumb": {
+        "gapMm": 0,
+        "depthMm": 1.2877512263234914
+      },
+      "Rthumb": {
+        "gapMm": 78.90525316846573,
+        "depthMm": 0
+      },
+      "Rfinger": {
+        "gapMm": 94.30124435661622,
+        "depthMm": 0
+      }
+    },
+    {
+      "hz": 30,
+      "cue": "",
+      "Lfinger": {
+        "gapMm": 2.32245981309221,
+        "depthMm": 0
+      },
+      "Lthumb": {
+        "gapMm": 0,
+        "depthMm": 1.2801152347800548
+      },
+      "Rthumb": {
+        "gapMm": 2.107945159826763,
+        "depthMm": 0
+      },
+      "Rfinger": {
+        "gapMm": 2.049260648652746,
+        "depthMm": 0
+      }
+    },
+    {
+      "hz": 60,
+      "cue": "",
+      "Lfinger": {
+        "gapMm": 2.3224598627614785,
+        "depthMm": 0
+      },
+      "Lthumb": {
+        "gapMm": 0,
+        "depthMm": 1.2823796377913754
+      },
+      "Rthumb": {
+        "gapMm": 2.1106752584497124,
+        "depthMm": 0
+      },
+      "Rfinger": {
+        "gapMm": 2.018175265312345,
+        "depthMm": 0
+      }
+    },
+    {
+      "hz": 60,
+      "cue": "satisfied",
+      "Lfinger": {
+        "gapMm": 2.3224661820814347,
+        "depthMm": 0
+      },
+      "Lthumb": {
+        "gapMm": 0,
+        "depthMm": 1.26653185226977
+      },
+      "Rthumb": {
+        "gapMm": 1.957174477570156,
+        "depthMm": 0
+      },
+      "Rfinger": {
+        "gapMm": 2.0181745670280256,
+        "depthMm": 0
+      }
+    },
+    {
+      "hz": 60,
+      "cue": "avert",
+      "Lfinger": {
+        "gapMm": 2.3224516346420687,
+        "depthMm": 0
+      },
+      "Lthumb": {
+        "gapMm": 0,
+        "depthMm": 1.2558074558797483
+      },
+      "Rthumb": {
+        "gapMm": 154.85641832491137,
+        "depthMm": 0
+      },
+      "Rfinger": {
+        "gapMm": 200.4357053936463,
+        "depthMm": 0
+      }
+    },
+    {
+      "hz": 60,
+      "cue": "song",
+      "Lfinger": {
+        "gapMm": 2.3224574475009314,
+        "depthMm": 0
+      },
+      "Lthumb": {
+        "gapMm": 0,
+        "depthMm": 1.2784318530599803
+      },
+      "Rthumb": {
+        "gapMm": 2.045255941429791,
+        "depthMm": 0
+      },
+      "Rfinger": {
+        "gapMm": 2.212919829911015,
+        "depthMm": 0
+      }
+    },
+    {
+      "hz": 60,
+      "cue": "side-eye",
+      "Lfinger": {
+        "gapMm": 2.3224666269131617,
+        "depthMm": 0
+      },
+      "Lthumb": {
+        "gapMm": 0,
+        "depthMm": 1.2797901104045772
+      },
+      "Rthumb": {
+        "gapMm": 79.01645899996676,
+        "depthMm": 0
+      },
+      "Rfinger": {
+        "gapMm": 94.60440012730349,
+        "depthMm": 0
+      }
+    },
+    {
+      "hz": 60,
+      "cue": "",
+      "Lfinger": {
+        "gapMm": 2.3224598597957398,
+        "depthMm": 0
+      },
+      "Lthumb": {
+        "gapMm": 0,
+        "depthMm": 1.2762723040455337
+      },
+      "Rthumb": {
+        "gapMm": 2.0796115893627065,
+        "depthMm": 0
+      },
+      "Rfinger": {
+        "gapMm": 2.0492138933252475,
+        "depthMm": 0
+      }
+    }
+  ],
+  "checks": 3526,
+  "maxWrist": 14.00882470574176,
+  "minElbow": 65.69418089533993,
+  "maxElbow": 108.33213683896395,
+  "maxThumb": 87.35936789872282,
+  "maxSkin": 0.0013039921196131288,
+  "maxSkinAt": {
+    "hz": 30,
+    "cue": "",
+    "age": 0.03333333333333333,
+    "region": "Lthumb"
+  },
+  "note": "Actual GLB anatomy guard, not medical limits or an iPhone performance test"
+}
