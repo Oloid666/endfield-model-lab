@@ -27,6 +27,7 @@ const a=buildPerformance({scene:new T.Scene(),r:new Resources(),root,pivot,poses
 a.setCinematic({phase:'aim-final',elapsed:12.6,charge:1,height:4,distance:12});a.setDinner('A');a.setTray({owner:'helper',phase:'aim-final',age:12.6,rescueAge:12.6});a.update(300,1/60);root.updateMatrixWorld(true);
 
 const bar=root.getObjectByName('dragon-grab-handle'),skinned=[];gltf.scene.traverse(n=>{if(n.isSkinnedMesh)skinned.push(n);});
+let wholeMotionMax=0;
 function measure(){
  root.updateMatrixWorld(true);
 const barInverse=bar.matrixWorld.clone().invert(),radii=new T.Vector3(.14,.03,.04),v=new T.Vector3(),metrics={};
@@ -45,7 +46,7 @@ for(const m of skinned){m.skeleton.update();const sw=m.geometry.attributes.skinW
   if(depth>.002)q.penetration++;q.depth=Math.max(q.depth,depth);q.front+=Number(v.z>.04);q.back+=Number(v.z<-.04);q.below+=Number(v.y<-.03);
  }
 }
-return metrics;
+wholeMotionMax=Math.max(wholeMotionMax,...Object.values(metrics).map(q=>q.depth));return metrics;
 }
 const metrics=measure();
 console.log(JSON.stringify({metrics,contactError:a.status.catchGripError},null,2));
@@ -77,4 +78,4 @@ for(const hz of [30,60])for(let i=0;i<hz*2;i++){
  const age=i/hz;a.setCinematic({phase:'finisher',elapsed:age,charge:1,height:4,distance:12});a.setDragonProjectile(a.dragonPosition,.65);a.setTray({owner:'helper',phase:'finisher',age,rescueAge:12.6+age});a.update(315+age,1/hz);
  const m=measure();for(const [region,q]of Object.entries(m))assert.ok(q.depth<.003,'Release '+hz+'Hz age='+age+' region='+region+' depth='+q.depth);
 }
-console.log('Complete 30/60 Hz attachment and release skin checks passed.');
+assert.ok(wholeMotionMax<.002,'Entire L-handle contact stays below 2mm: '+wholeMotionMax);console.log(JSON.stringify({wholeMotionMaxMm:wholeMotionMax*1000}));console.log('Complete 30/60 Hz attachment and release skin checks passed.');

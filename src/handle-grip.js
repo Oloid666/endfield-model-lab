@@ -25,7 +25,7 @@ export function makeHandleGrip(byId,wrist,hand){
    for(const [i,[base,middle,tip]]of chains.entries()){
     base.getWorldPosition(local);toBar(local);const x=local.x;
     // Keep joints outside the 35×47 mm cross-section; pads, not bones, meet it.
-    target.set(x,i===3?.024:.012,i===3?-.050:-.041);toWorld(target);aimBone(base,middle,target,weight);
+    target.set(x,i===3?.034:.012,i===3?-.060:-.044);toWorld(target);aimBone(base,middle,target,weight);
     target.set(x,-.026,-.037);toWorld(target);aimBone(middle,tip,target,weight);
     target.set(x,-.035,-.005);toWorld(target);middle.getWorldPosition(anchor);tip.getWorldPosition(direction).sub(anchor);aimBone(tip,null,target,weight,direction);
    }

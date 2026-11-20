@@ -21,7 +21,7 @@ for(const stage of ['search','php','temperature','grid','power','confirm','ready
  }
  for(const m of meshes){for(let i=0;i<m.geometry.attributes.position.count;i++){m.getVertexPosition(i,v);m.localToWorld(v);board.worldToLocal(v);if(Math.abs(v.x)<.165&&Math.abs(v.y)<.115&&v.z>-.008&&v.z<.019){penetration++;maxDepth=Math.max(maxDepth,Math.min(.165-Math.abs(v.x),.115-Math.abs(v.y),v.z+.008,.019-v.z));}}}
  assert.equal(hidden,0,stage+': all central text/button sightlines are clear on the real skinned mesh');
- assert.ok(maxDepth<.004,stage+': no deep skin/sleeve penetration in the tablet: '+maxDepth);
+ assert.ok(maxDepth<.003,stage+': no deep skin/sleeve penetration in the tablet: '+maxDepth);
  for(const aspect of [.462,2.164,1.6]){
   const f=actor.tabletFrame(aspect),camera=new T.PerspectiveCamera(f.fov,aspect,.01,20);camera.position.fromArray(f.position);camera.lookAt(new T.Vector3(...f.center));camera.updateMatrixWorld(true);
   for(const x of [-.175,.175])for(const y of [-.125,.125]){const p=board.localToWorld(new T.Vector3(x,y,.017)).project(camera);assert.ok(Math.abs(p.x)<.94&&p.y<.74&&p.y>-.50,stage+': full tablet stays above portrait/landscape UI and inside view '+aspect+': '+p.toArray());}

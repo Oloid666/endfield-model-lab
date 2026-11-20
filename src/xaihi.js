@@ -1,3 +1,4 @@
+import {makeTabletHandPose} from './tablet-hand-pose.js';
 import {softenLipNormals} from './face-normals.js';
 import {xaihiBeat} from './acting-beats.js';
 import {makeArmSupport} from './arm-support.js';
@@ -93,7 +94,9 @@ export function buildXaihi(scene,r,gltf){
     across.crossVectors(normal,forward).normalize();forward.crossVectors(across,normal).normalize();
     return {side,offset:center.sub(w).applyQuaternion(rotation.clone().invert()),calibration:new T.Quaternion().setFromRotationMatrix(new T.Matrix4().makeBasis(across,normal,forward)).invert().multiply(rotation)};
   });
+  const tabletHandPose=makeTabletHandPose(byId,tabletHands),palmBasis=new T.Matrix4(),palmForwardWorld=new T.Vector3(),palmNormalWorld=new T.Vector3(),palmAcrossWorld=new T.Vector3(),freeQ=new T.Quaternion();
   const boardQ=new T.Quaternion(),boardTarget=new T.Vector3(),boardOffset=new T.Vector3(),boardNormal=new T.Vector3(),boardPole=new T.Vector3();
+  const freeOffset=new T.Vector3(-.22,1.02,.40),freeGoal=freeOffset.clone();
   const restPosition=root.position.clone(),acting={},settled={tabletLift:0,tabletTurn:0,freeHand:0},settledKeys=['tabletLift','tabletTurn','freeHand'];
   const aisle=new T.Vector3();
   function travel(progress,back=false){let p=clamp(progress);if(back)p=1-p;if(p<.66)aisle.set(1.95,restPosition.y,.85-2.20*p/.66);else aisle.set(1.95-.75*(p-.66)/.34,restPosition.y,-1.35);root.position.copy(aisle);root.rotation.y=back?(p<.66?0:Math.PI/2):(p<.66?Math.PI:-Math.PI/2);return p*2.95;}
@@ -105,7 +108,7 @@ export function buildXaihi(scene,r,gltf){
     tabletFrame(aspect=.46){
       // An exterior shoulder mark, not the board normal: the latter enters the torso.
       const center=screen.getWorldPosition(new T.Vector3());
-      const eye=root.localToWorld(new T.Vector3(-.62,1.80,-.18));
+      const eye=root.localToWorld(new T.Vector3(-.90,1.90,.10));
       if(aspect>=1)eye.add(new T.Vector3(-.10,.04,-.15).applyQuaternion(root.quaternion));
       const right=center.clone().sub(eye).cross(new T.Vector3(0,1,0)).normalize();
       center.addScaledVector(right,-.025);center.y-=.035;
@@ -116,7 +119,7 @@ export function buildXaihi(scene,r,gltf){
     get loaded(){return !disposed;},get state(){return {...status,headPosition:api.headPosition,screenButtons:phone.visible?hitButtons.map(b=>({id:b.id,world:screen.localToWorld(new T.Vector3(0,.23*(.5-(b.y+56)/768),0)).toArray()})):[],palmPositions:tabletHands.map(h=>h.offset.clone().applyQuaternion(poses['wrist'+h.side].bone.getWorldQuaternion(new T.Quaternion())).add(poses['wrist'+h.side].bone.getWorldPosition(new T.Vector3())).toArray()),handPositions:['L','R'].map(side=>poses['wrist'+side]?.bone.getWorldPosition(new T.Vector3()).toArray()),position:root.position.toArray(),pose:{head:poses.head?.bone.quaternion.toArray(),wrist:poses.wristR?.bone.quaternion.toArray(),arm:poses.armL?.bone.quaternion.toArray()}};},
     setPosition(x,y,z){root.position.set(x,y,z);restPosition.copy(root.position);},
     setHeading(yaw){root.rotation.y=Number(yaw)||0;},
-    reset(){poseFresh=true;for(const k of settledKeys)settled[k]=0;phase='';action='waiting';root.visible=false;root.position.copy(restPosition);root.rotation.y=2;phone.visible=meal.visible=false;for(const p of Object.values(poses)){p.bone.position.copy(p.rest);p.bone.quaternion.copy(p.q);}for(const lid of eyelids)lid.bone.position.copy(lid.rest);Object.assign(status,{phase,action,visible:false,headYaw:0,eyeYaw:0,eyePitch:0,tabletLift:0,performanceCue:'',phoneVisible:false,mealVisible:false});},
+    reset(){freeOffset.set(-.22,1.02,.40);freeGoal.copy(freeOffset);poseFresh=true;for(const k of settledKeys)settled[k]=0;phase='';action='waiting';root.visible=false;root.position.copy(restPosition);root.rotation.y=2;phone.visible=meal.visible=false;tabletHandPose.reset();for(const p of Object.values(poses)){p.bone.position.copy(p.rest);p.bone.quaternion.copy(p.q);}for(const lid of eyelids)lid.bone.position.copy(lid.rest);Object.assign(status,{phase,action,visible:false,headYaw:0,eyeYaw:0,eyePitch:0,tabletLift:0,performanceCue:'',phoneVisible:false,mealVisible:false});},
     update(t,delta=0,state={}){
       if(disposed)return;poseDelta=Math.max(0,delta);time=Number.isFinite(t)?t:time;phase=state.phase||'';
       const visible=state.xaihiVisible??visiblePhases.has(phase);root.visible=visible;
@@ -133,10 +136,12 @@ export function buildXaihi(scene,r,gltf){
       if(refusing)root.rotation.y+=.52*refuse;
       const recoil=phase==='meal-spawn'?clamp(((state.phaseElapsed||0)-6.2)/.6):0;if(recoil){root.position.x-=.14*recoil;root.position.z-=.10*recoil;}if(refusing){root.position.x-=Math.sin(root.rotation.y)*.16*refuse;root.position.z-=Math.cos(root.rotation.y)*.16*refuse;}
       const cueAge=state.tablet?.dialogueAge||0,confident=cue==='satisfied',avert=cue==='avert',redirect=cue==='side-eye',act=xaihiBeat(cue,cueAge,acting),eyeLead=act.eye,headFollow=act.head,bodyFollow=act.body;
-      for(const key of settledKeys){settled[key]=poseFresh?act[key]:T.MathUtils.lerp(settled[key],act[key],poseDelta>0?1-Math.exp(-poseDelta*9):0);act[key]=settled[key];}
+      for(const key of settledKeys){settled[key]=poseFresh?act[key]:T.MathUtils.lerp(settled[key],act[key],poseDelta>0?1-Math.exp(-poseDelta*(key==='freeHand'?4.5:9)):0);act[key]=settled[key];}
+      if(redirect)freeGoal.set(-.32,1.22,.52);else if(avert)freeGoal.set(-.22,1.02,.40);
+      freeOffset.lerp(freeGoal,poseFresh?1:poseDelta>0?1-Math.exp(-poseDelta*9):0);
       const tabletLift=act.tabletLift;
       const beat=Math.sin(time*1.1),flinch=phase==='heat-demo'?Math.max(0,Math.sin((state.phaseElapsed||0)*3.1))*.08:0;
-      for(const p of Object.values(poses))p.bone.position.copy(p.rest);
+      for(const p of Object.values(poses))p.bone.position.copy(p.rest);tabletHandPose.reset();
       pose('spine',Math.sin(time*.8)*.006+(hack?.035:0)-flinch*.13-recoil*.04-refuse*.08+(avert?.04:redirect?-.02:0)*bodyFollow,(redirect?-.16:avert?.06:0)*bodyFollow,beat*.004+act.shoulder);
       pose('neck',hack?.045:0,0,0);
       const fridgeReaction=stage==='success'||stage==='hot',birth=phase==='meal-spawn',headYaw=refusing?.24*refuse:avert?-.44+act.headYaw:redirect?-.44+act.headYaw:readingLabel?-.10:birth?0:fridgeReaction?-.44:hack?-.22:-.65,nod=confident?-Math.sin(Math.min(1,cueAge/1.2)*Math.PI)*.035:0;pose('head',readingLabel?.28:(refusing?-.02:birth?.16:fridgeReaction?-.03:hack?.14:.015)+nod+act.headPitch,headYaw,Math.sin(time*.43)*.008+refuse*.06+(avert?.035:0)*headFollow);
@@ -154,18 +159,30 @@ export function buildXaihi(scene,r,gltf){
       if(walking)root.position.y+=Math.abs(Math.sin(distance*10))*.014;
       root.updateMatrixWorld(true);
       if(hack){
-        phone.position.set(-.10,1.20+tabletLift,.58);phone.rotation.set(.55,Math.PI+act.tabletTurn,avert?.035*bodyFollow:0);root.updateMatrixWorld(true);
-        for(const hand of tabletHands){
-          boardTarget.set(hand.side==='L'?-.185:.185,-.100,-.034);phone.localToWorld(boardTarget);
+        phone.position.set(-.10,1.27+tabletLift*.30,.50);phone.rotation.set(1.2,Math.PI+act.tabletTurn,avert?.035*bodyFollow:0);root.updateMatrixWorld(true);
+        for(const [index,hand]of tabletHands.entries()){
+          const free=index?act.freeHand:0;
+          boardNormal.set(index?.180:-.160,.065,-.040);phone.localToWorld(boardNormal);
           phone.getWorldQuaternion(boardQ).multiply(refusalBasis).multiply(hand.calibration);
-          boardOffset.copy(hand.offset).applyQuaternion(boardQ);boardTarget.sub(boardOffset);
-          if(hand.side==='R'&&act.freeHand){
-            // Left hand continues to carry the tablet; the free palm stays in front of the torso.
-            boardNormal.set(redirect?-.41:-.30,redirect?1.10:1.02,redirect?.57:.38);root.localToWorld(boardNormal);
-            boardTarget.lerp(boardNormal,act.freeHand);
+          boardOffset.copy(hand.offset).applyQuaternion(boardQ);boardTarget.copy(boardNormal).sub(boardOffset);
+          if(free){v.copy(freeOffset);root.localToWorld(v);boardTarget.lerp(v,free);}
+          boardPole.set(index?-.55:.55,-1,.10);
+          // Solve the elbow first, then derive the palm length axis from the forearm.
+          // Its projection onto the cover keeps the wrist neutral rather than folded back.
+          for(let pass=0;pass<2;pass++){
+            armSupport.reach(hand.side,boardTarget,undefined,boardPole);
+            poses['wrist'+hand.side].bone.getWorldPosition(ikTarget);poses['elbow'+hand.side].bone.getWorldPosition(ikOrigin);
+            palmForwardWorld.subVectors(ikTarget,ikOrigin).normalize();
+            phone.getWorldQuaternion(ikWorld);palmNormalWorld.set(0,0,1).applyQuaternion(ikWorld);
+            v.copy(palmForwardWorld);palmForwardWorld.addScaledVector(palmNormalWorld,-palmForwardWorld.dot(palmNormalWorld));if(palmForwardWorld.lengthSq()<1e-8)palmForwardWorld.set(0,1,0).applyQuaternion(ikWorld);else palmForwardWorld.normalize();
+            palmAcrossWorld.crossVectors(palmNormalWorld,palmForwardWorld).normalize();
+            palmBasis.makeBasis(palmAcrossWorld,palmNormalWorld,palmForwardWorld);boardQ.setFromRotationMatrix(palmBasis).multiply(hand.calibration);
+            if(free){palmNormalWorld.addScaledVector(v,-palmNormalWorld.dot(v));if(palmNormalWorld.lengthSq()<1e-8){palmNormalWorld.set(Math.abs(v.x)<.9?1:0,Math.abs(v.x)<.9?0:1,0);palmNormalWorld.addScaledVector(v,-palmNormalWorld.dot(v));}palmNormalWorld.normalize();palmAcrossWorld.crossVectors(palmNormalWorld,v).normalize();palmBasis.makeBasis(palmAcrossWorld,palmNormalWorld,v);freeQ.setFromRotationMatrix(palmBasis).multiply(hand.calibration);boardQ.slerp(freeQ,free);}
+            boardOffset.copy(hand.offset).applyQuaternion(boardQ);boardTarget.copy(boardNormal).sub(boardOffset);
+            if(free){v.copy(freeOffset);root.localToWorld(v);boardTarget.lerp(v,free);}
+            armSupport.reach(hand.side,boardTarget,pass===1?boardQ:undefined,boardPole);
           }
-          boardPole.set(hand.side==='L'?.55:-.55,-.8,.15);
-          armSupport.reach(hand.side,boardTarget,boardQ,boardPole);
+          tabletHandPose.curl(index,1-free);tabletHandPose.thumb(index,phone,1-free);
         }
       }
       else if(refusing){poses.wristL.bone.getWorldPosition(refusalStart);root.worldToLocal(refusalStart);refusalTarget.lerpVectors(refusalStart,refuseLeft,refuse);poses.wristL.bone.getWorldQuaternion(refusalRestQ);root.getWorldQuaternion(ikWorld).multiply(refusalBasis).multiply(palmCalibration);refusalQ.slerpQuaternions(refusalRestQ,ikWorld,refuse);holdArm('L',refusalTarget,refusalPole,refusalQ);holdArm('R',safeRight);}
@@ -174,6 +191,7 @@ export function buildXaihi(scene,r,gltf){
       // Let the loose right cuff hang below the lower bezel instead of entering the glass.
       if(hack&&poses.cuffR){const cuff=poses.cuffR.bone;phone.getWorldQuaternion(ikWorld);v.set(0,-.035,-.025).applyQuaternion(ikWorld);cuff.getWorldPosition(ikOrigin).add(v);cuff.parent.worldToLocal(ikOrigin);cuff.position.copy(ikOrigin);}
 
+      if(hack)tabletHandPose.drape(root);
       if(poses.cuffL)poses.cuffL.bone.position.y-=.08*refuse;
       for(const id of smileIds){const p=poses['smile'+id];if(p)p.bone.position.y+=(refuse*([158,168,157,167].includes(id)?1:.18)+act.smile)*([158,162].includes(id)?.003:[168,172].includes(id)?.0012:.0008);}
       // The imported neutral mouth is open by ~8 mm. A restrained lower-lip closure
